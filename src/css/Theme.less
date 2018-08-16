@@ -1,0 +1,75 @@
+@charset "UTF-8";
+
+@import "Variables";
+
+@border-shadow: 0 0 @length-border-shadow 1px fade(@color-border, 30%);
+
+.btn-style(@name) {
+	@ref: "color-button-@{name}";
+	@reft: "color-button-@{name}-text";
+
+	&.border {
+		background-color: transparent;
+		color: @@ref;
+		border: solid 1px @@ref;
+		transition: ease-in-out .1s;
+
+		&:hover {
+			color: @@reft;
+			background-color: @@ref;
+		}
+		&:active {
+			background-color: @@ref + #0a0a0a;
+		}
+	}
+
+	&.glass {
+		background-color: transparent;
+		border: solid 1px fadeout(@@ref, 60%);
+		color: fadeout(@@ref, 20%);
+
+		&:hover {
+			background-color: fadeout(@@ref, 95%);
+			color: @@ref;
+			border-color: @@ref;
+		}
+		&:active {
+			background-color: fadeout(@@ref, 95%);
+		}
+	}
+
+	background-color: @@ref;
+	color: @@reft;
+
+	&:hover {
+		background-color: @@ref + #0a0a0a;
+		color: @@reft;
+	}
+	&:active {
+		background-color: @@ref - #080808;
+		color: @@reft;
+	}
+}
+
+.highlight-link() {
+	color: @color-link;
+	outline: none;
+	text-decoration: none;
+	&:visited {
+		color: @color-link;
+	}
+	&:hover {
+		color: @color-link;
+		text-decoration: underline;
+	}
+}
+
+.input-highlight-hover() {
+	border: solid 1px lighten(@color-input-active, 16%);
+	box-shadow: 0 0 4px lighten(@color-input-active, 20%);
+}
+
+.input-highlight-focus() {
+	border: solid 1px @color-input-active;
+	box-shadow: 0 0 4px lighten(@color-input-active, 12%);
+}

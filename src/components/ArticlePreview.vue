@@ -1,0 +1,146 @@
+<template>
+	<div class="article-preview">
+		<a :href="'/article/' + item.id" target="_blank">
+			<img :src="'/image/' + item.cover" class="cover-small">
+		</a>
+
+		<a :href="'/article/' + item.id" target="_Blank"><h2 class="compact">{{item.title}}</h2></a>
+
+		<span>{{item.summary}}</span>
+		<div>关键词：<span class="keyword" v-for="kw in item.keywords" :key="kw">{{kw}}</span></div>
+
+		<div class="tag-group">
+			<a v-for="cat in reserve(item.categoryPath)"
+			   :key="cat.id"
+			   :href="'/index?category=' + cat.id">{{cat.name}}</a>
+		</div>
+
+		<div class="minor-text">
+			<span title="发表于" class="full-time">
+				<i class="fa fa-edit"></i>{{item.create}}
+			</span>
+			<span title="最后更新" v-if="showUpdate(item)" class="full-time">
+				<i class="fas fa-sync"></i>{{item.update}}
+			</span>
+			<span title="时间" class="short-time">
+				<i class="far fa-clock"></i>{{item | shortTime}}
+			</span>
+			<span title="评论数">
+				<i class="fas fa-comment-dots"></i>{{item.discussionCount}}
+			</span>
+			<span title="浏览数">
+				<i class="fa fa-eye"></i>{{item.viewCount}}
+			</span>
+		</div>
+	</div>
+</template>
+
+<script>
+	export default {
+		name: "article-preview",
+		props: ["item"],
+		filters: {
+			shortTime(article) {
+				const time = article.create !== article.update
+					? article.update
+					: article.create;
+				return time.substring(5)
+			}
+		},
+		methods: {
+			reserve(array) {
+				const newArr = array.slice(0);
+				newArr.reverse();
+				return newArr;
+			},
+			showUpdate(item) {
+				return item["create"] !== item["update"];
+			},
+		}
+	}
+</script>
+
+<style lang="less">
+	@import "../css/Variables.less";
+
+	.article-preview {
+		display: grid;
+		grid-template-rows: auto;
+
+		grid-gap: 1rem;
+
+		padding-bottom: 1rem;
+		margin: 1rem 0;
+		border-bottom: solid 1px @color-border;
+
+		@media screen and (max-width: (@length-screen-mobile - 1px)) {
+			& > * {
+				justify-self: center;
+				justify-content: center;
+			}
+		}
+
+		& > *:nth-child(1) {
+			width: 10rem;
+			height: 9rem;
+		}
+
+		@media screen and (min-width: @length-screen-mobile) {
+			grid-template-rows: auto auto;
+			grid-template-columns: 10rem auto;
+
+			& > *:nth-child(1) {
+				grid-area: ~"1/1/4/2";
+			}
+
+			& > *:nth-child(2) {
+				grid-area: ~"1/2/2/2";
+			}
+
+			& > *:nth-child(3) {
+				grid-area: ~"2/2/3/-1";
+			}
+
+			& > *:nth-child(4) {
+				grid-area: ~"3/2/4/3";
+				align-self: end;
+			}
+
+			& > *:nth-child(5) {
+				grid-area: ~"4/1/5/3";
+			}
+
+			& > *:nth-child(6) {
+				grid-area: ~"5/1/6/3";
+				justify-self: right;
+			}
+		}
+
+		& > *:nth-child(6) > * {
+			margin: 0 .2rem;
+		}
+	}
+
+	.full-time {
+		display: none;
+		@media screen and (min-width: @length-screen-mobile) {
+			display: initial;
+		}
+	}
+
+	@media screen and (min-width: @length-screen-mobile) {
+		.short-time {
+			display: none;
+		}
+	}
+
+	.cover-small {
+		width: 100%;
+		height: 100%;
+	}
+
+	.preview-footer {
+		align-items: center;
+		margin: 1em 0;
+	}
+</style>
