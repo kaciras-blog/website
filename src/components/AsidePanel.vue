@@ -16,17 +16,17 @@
 </template>
 
 <script>
-	import apis from "../apis.js";
+import apis from "../apis.js";
 
-	export default {
-		name: "aside-panel",
-		data() {
-			return {
-				hotArticles: [],
-			};
-		},
-		created () {
-			apis.article.getRecommendations().then(hots => this.hotArticles = hots);
-		},
-	}
+export default {
+	name: "aside-panel",
+	data() {
+		return {
+			hotArticles: [],
+		};
+	},
+	created () {
+		apis.article.getRecommendations().then(hots => this.hotArticles = hots);
+	},
+};
 </script>

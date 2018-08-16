@@ -67,7 +67,7 @@ _default.discuss = {
 			articleId: article,
 			start: index,
 			count: count,
-		}
+		},
 	}).then(r => r.data),
 
 	/**
@@ -82,7 +82,7 @@ _default.discuss = {
 		params: {
 			start: (index - 1) * count,
 			count: count,
-		}
+		},
 	}).then(r => r.data),
 
 	/**
@@ -109,7 +109,7 @@ _default.draft = {
 
 	save: (id, data, newHistory) => {
 		if (newHistory) {
-			return mainServer.post(`/drafts/${id}/histories`, data)
+			return mainServer.post(`/drafts/${id}/histories`, data);
 		} else {
 			return mainServer.put(`/drafts/${id}`, data);
 		}
@@ -123,8 +123,8 @@ _default.draft = {
 
 	createFromPost: (postId) => mainServer.post("/drafts", null, {
 		params: {
-			article: postId
-		}
+			article: postId,
+		},
 	}).then(resp => resp.headers["location"].substring("/drafts/".length)),
 
 };
@@ -158,7 +158,7 @@ _default.misc = {
 	},
 
 	getTitleImage: (item, type) => frontService.get("/utils/titleImage", {
-		params: {item, type}
+		params: {item, type},
 	}).then(r => r.data.url),
 
 	captchaAddress: () => API_SERVER + "/utils/captcha",

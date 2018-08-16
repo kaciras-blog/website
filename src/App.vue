@@ -7,10 +7,10 @@
 </template>
 
 <script>
-	import TopNav from "./components/TopNav";
-	import PageFooter from "./components/PageFooter";
-	import Vue from "vue";
+import TopNav from "./components/TopNav";
+import PageFooter from "./components/PageFooter";
+import Vue from "vue";
 
-	Vue.component(TopNav.name, TopNav);
-	Vue.component(PageFooter.name, PageFooter);
+Vue.component(TopNav.name, TopNav);
+Vue.component(PageFooter.name, PageFooter);
 </script>

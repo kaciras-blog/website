@@ -32,37 +32,37 @@
 </template>
 
 <script>
-	import api from "../../apis/Api.js";
+import api from "../../apis/Api.js";
 
-	export default {
-		name: "discuz-editor",
-		data() {
-			return {
-				submiting: false,
-				content: "",
+export default {
+	name: "discuz-editor",
+	data() {
+		return {
+			submiting: false,
+			content: "",
+		};
+	},
+	computed: Vuex.mapState({
+		user: "loginedUser",
+		config: "discussionConfig",
+	}),
+	methods:{
+		async submitDiscuss(event) {
+			const text = this.content;
+			if (!text || /^\s*$/.test(text)) {
+				return this.$messageBox("发表评论", "您还没有写评论呢", "error");
 			}
-		},
-		computed: Vuex.mapState({
-			user: "loginedUser",
-			config: "discussionConfig",
-		}),
-		methods:{
-			async submitDiscuss(event) {
-				const text = this.content;
-				if (!text || /^\s*$/.test(text)) {
-					return this.$messageBox("发表评论", "您还没有写评论呢", "error");
-				}
 
-				this.submiting = true;
-				try{
-					await api.discussion.add(getUrlPathPart(-1), text);
-					this.content = "";
-					this.$emit("discussion-added");
-				} catch(e) {
-					this.$messageBox("发表评论", errMsg(e), "error")
-				}
-				this.submiting = false;
-			},
-		}
-	}
+			this.submiting = true;
+			try{
+				await api.discussion.add(getUrlPathPart(-1), text);
+				this.content = "";
+				this.$emit("discussion-added");
+			} catch(e) {
+				this.$messageBox("发表评论", errMsg(e), "error");
+			}
+			this.submiting = false;
+		},
+	},
+};
 </script>

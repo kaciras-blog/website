@@ -33,42 +33,42 @@
 </template>
 
 <script>
-	import apis from "../apis";
-	import {pageReturn, errMsg} from "../utils";
+import apis from "../apis";
+import {pageReturn, errMsg} from "../utils";
 
-	export default {
-		name: "SignupPanel",
-		data () {
-			return {
-				message: "",
-				captcha: null,
-				form: {
-					name: "",
-					password: "",
-					email: "",
-					captcha: "",
-				}
-			}
-		},
-		methods: {
-			signup() {
-				apis.user.signup(this.form)
-					.then(pageReturn)
-					.catch(err => this.message = errMsg(err));
+export default {
+	name: "SignupPanel",
+	data () {
+		return {
+			message: "",
+			captcha: null,
+			form: {
+				name: "",
+				password: "",
+				email: "",
+				captcha: "",
 			},
-			switchPanel() {
-				this.$emit("switch-panel", "loginPanel");
-			},
-			updateCaptcha() {
-				this.captcha = apis.captchaAddress();
-				this.form.captcha = "";
-				this.$refs.captchaInput.focus();
-			}
+		};
+	},
+	methods: {
+		signup() {
+			apis.user.signup(this.form)
+				.then(pageReturn)
+				.catch(err => this.message = errMsg(err));
 		},
-		created() {
-			this.updateCaptcha()
+		switchPanel() {
+			this.$emit("switch-panel", "loginPanel");
 		},
-	}
+		updateCaptcha() {
+			this.captcha = apis.captchaAddress();
+			this.form.captcha = "";
+			this.$refs.captchaInput.focus();
+		},
+	},
+	created() {
+		this.updateCaptcha();
+	},
+};
 </script>
 
 <style scoped>

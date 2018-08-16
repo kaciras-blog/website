@@ -1,6 +1,5 @@
 import Velocity from "velocity-animate";
 
-
 /**
  * 转义HTML文本中的特殊字符
  *
@@ -41,7 +40,7 @@ export function scrollToElementEnd(element) {
  * 给body元素加上一个标记，指示文档已经渲染完毕。用于通知预渲染服务。
  */
 export function markRenderComplete() {
-	document.getElementsByTagName("body")[0].setAttribute("data-render-complete", "true")
+	document.getElementsByTagName("body")[0].setAttribute("data-render-complete", "true");
 }
 
 /**
@@ -56,17 +55,6 @@ export function errMsg(reason) {
 		return res.data.message;
 	}
 	return reason.message || "未知的错误";
-}
-
-export function extendMarkdownConvert(target) {
-	target = $(target);
-	hljs.initHighlighting.called = false;
-	hljs.initHighlighting();
-	$("img", target).wrap($(document.createElement("div")).attr("class", "image-wrapper"));
-	$("code", target).not(".hljs").addClass("inline-code");
-	if(MathJax) {
-		MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-	}
 }
 
 /**

@@ -1,6 +1,6 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Login from './views/Login'
+import Vue from 'vue';
+import Router from 'vue-router';
+import Login from './views/Login';
 import Index from "./views/Index";
 import Error from "./views/Error";
 
@@ -22,12 +22,12 @@ export default new Router({
 		{
 			path: "/error/:code",
 			name: "error",
-			component: Error
+			component: Error,
 		},
 		{
 			path: "*",
 			alias: "/error/404",
 			component: Error,
-		}
-	]
-})
+		},
+	],
+});

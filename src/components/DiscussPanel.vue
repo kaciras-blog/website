@@ -26,43 +26,43 @@
 </template>
 
 <script>
-	import api from "../../apis/Api.js";
-	import discuzEditor from "./DiscuzEditor.vue";
-	import discussion from "./Discussion.vue";
-	import pagerButtons from "../../component/PagerButtons.vue";
+import api from "../../apis/Api.js";
+import discuzEditor from "./DiscuzEditor.vue";
+import discussion from "./Discussion.vue";
+import pagerButtons from "../../component/PagerButtons.vue";
 
-	export default {
-		name: "discuss-panel",
-		data() {
-			return {
-				discussions: [],
-				pageIndex: 0,
-				totalCount: 0,
-				pageSize: 20,
-			}
+export default {
+	name: "discuss-panel",
+	data() {
+		return {
+			discussions: [],
+			pageIndex: 0,
+			totalCount: 0,
+			pageSize: 20,
+		};
+	},
+	methods: {
+		loadPageBackground(index) {
+			return api.discussion.getList(getUrlPathPart(2), index * this.pageSize, this.pageSize).then(data =>{
+				this.discussions = data.list;
+				this.pageIndex = index;
+				this.totalCount = data.total;
+			});
 		},
-		methods: {
-			loadPageBackground(index) {
-				return api.discussion.getList(getUrlPathPart(2), index * this.pageSize, this.pageSize).then(data =>{
-					this.discussions = data.list;
-					this.pageIndex = index;
-					this.totalCount = data.total;
-				});
-			},
-			loadPage(index) {
-				this.loadPageBackground(index).then(() => scrollToElementStart($("#discuss")));
-			},
-			showLast() {
-				this.loadPageBackground(Math.floor(this.totalCount / this.pageSize)).then(() => scrollToElementEnd($("#discuss")));
-			},
+		loadPage(index) {
+			this.loadPageBackground(index).then(() => scrollToElementStart($("#discuss")));
 		},
-		components: {
-			discuzEditor,
-			discussion,
-			pagerButtons,
+		showLast() {
+			this.loadPageBackground(Math.floor(this.totalCount / this.pageSize)).then(() => scrollToElementEnd($("#discuss")));
 		},
-		created() {
-			this.loadPageBackground(0);
-		},
-	}
+	},
+	components: {
+		discuzEditor,
+		discussion,
+		pagerButtons,
+	},
+	created() {
+		this.loadPageBackground(0);
+	},
+};
 </script>

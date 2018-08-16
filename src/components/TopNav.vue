@@ -39,29 +39,29 @@
 </template>
 
 <script>
-	import apis from "../apis";
-	import Vuex from "vuex";
+import apis from "../apis";
+import Vuex from "vuex";
 
-	export default {
-		name: "TopNav",
-		data() {
-			return {
-				collapse: false,
-				showMenu: false,
-			}
+export default {
+	name: "TopNav",
+	data() {
+		return {
+			collapse: false,
+			showMenu: false,
+		};
+	},
+	computed: Vuex.mapState({
+		user: store => store.loginedUser,
+	}),
+	methods: {
+		logout() {
+			apis.session.logout();
 		},
-		computed: Vuex.mapState({
-			user: store => store.loginedUser,
-		}),
-		methods: {
-			logout() {
-				apis.session.logout()
-			},
-		},
-		created() {
-			// window.addEventListener("resize", ev => this.collapse = window.innerWidth <= 768)
-		}
-	}
+	},
+	created() {
+		// window.addEventListener("resize", ev => this.collapse = window.innerWidth <= 768)
+	},
+};
 </script>
 
 <style lang="less">

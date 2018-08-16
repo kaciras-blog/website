@@ -5,23 +5,23 @@
 </template>
 
 <script>
-	import LoginPanel from "../components/LoginPanel";
-	import SignupPanel from "../components/SignupPanel";
+import LoginPanel from "../components/LoginPanel";
+import SignupPanel from "../components/SignupPanel";
 
-	export default {
-		name: "Login",
-		components: {LoginPanel, SignupPanel},
-		data() {
-			return {
-				panel: "loginPanel",
-			};
+export default {
+	name: "Login",
+	components: {LoginPanel, SignupPanel},
+	data() {
+		return {
+			panel: "loginPanel",
+		};
+	},
+	methods: {
+		switchPanel(panel) {
+			this.panel = panel;
 		},
-		methods: {
-			switchPanel(panel) {
-				this.panel = panel;
-			},
-		},
-	}
+	},
+};
 </script>
 
 <style scoped>

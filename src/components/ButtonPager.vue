@@ -13,8 +13,8 @@
 			<span v-if="current - 3 > 0" class="omit">...</span>
 
 			<template v-for="i in totalPage" v-if="i>current - 3 && i < current + 3 && i<= totalPage">
-				<button class="square" v-if="i === current">{{i}}</button>
-				<button class="border square" @click="showPage(i)" v-else>{{i}}</button>
+				<button class="square" :key="i" v-if="i === current">{{i}}</button>
+				<button class="border square" :key="i" @click="showPage(i)" v-else>{{i}}</button>
 			</template>
 
 			<span v-if="current + 3 <= totalPage" class="omit">...</span>
@@ -37,40 +37,40 @@
 </template>
 
 <script>
-	export default {
-		name: "button-pager",
-		props: {
-			index: {
-				type: Number,
-				required: true,
-			},
-			pageSize: {
-				type: Number,
-				required: true,
-			},
-			totalCount: {
-				type: Number,
-				required: true,
-			}
+export default {
+	name: "button-pager",
+	props: {
+		index: {
+			type: Number,
+			required: true,
 		},
-		computed: {
-			current() {
-				return this.index + 1;
-			},
-			totalPage() {
-				return Math.max(0, Math.floor((this.totalCount - 1) / this.pageSize) + 1);
-			},
+		pageSize: {
+			type: Number,
+			required: true,
 		},
-		methods: {
-			showPage(index) {
-				this.$emit("load-page", index - 1);
-			},
-			jump(event) {
-				this.$emit("load-page", event.target.value - 1);
-				event.target.value = "";
-			},
+		totalCount: {
+			type: Number,
+			required: true,
 		},
-	}
+	},
+	computed: {
+		current() {
+			return this.index + 1;
+		},
+		totalPage() {
+			return Math.max(0, Math.floor((this.totalCount - 1) / this.pageSize) + 1);
+		},
+	},
+	methods: {
+		showPage(index) {
+			this.$emit("load-page", index - 1);
+		},
+		jump(event) {
+			this.$emit("load-page", event.target.value - 1);
+			event.target.value = "";
+		},
+	},
+};
 </script>
 
 <style scoped>

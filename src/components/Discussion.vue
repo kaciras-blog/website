@@ -37,34 +37,35 @@
 </template>
 
 <script>
-	import api from "../../apis/Api.js";
-	import disczEditor from "./DiscuzEditor.vue";
+import Apis from "../apis";
+import DisczEditor from "./DiscuzEditor.vue";
+import Vuex from "vuex";
 
-	export default {
-		name: "discussion",
-		props: ["value"],
-		components: {
-			disczEditor,
+export default {
+	name: "discussion",
+	props: ["value"],
+	components: {
+		DisczEditor,
+	},
+	computed: {
+		deleteable() {
+			if (!this.loginedUser) return false;
+			if (this.loginedUser.id === 1) return true;
+			return this.loginedUser.id === this.value.user.id;
 		},
-		computed: {
-			deleteable() {
-				if (!this.loginedUser) return false;
-				if (this.loginedUser.id === 1) return true;
-				return this.loginedUser.id === this.value.user.id;
-			},
-			...Vuex.mapState(["loginedUser", "replying"]),
+		...Vuex.mapState(["loginedUser", "replying"]),
+	},
+	methods: {
+		deleteDiscussion() {
+			Apis.discussion.deleteOne(this.value.id)
+				.then(this.$emit("item-removed", this.value))
+				.catch(r => alert("删除失败 " + r.message));
 		},
-		methods: {
-			deleteDiscussion() {
-				api.discussion.deleteOne(this.value.id)
-					.then(this.$emit("item-removed", this.value))
-					.catch(r => alert("删除失败 " + r.message))
-			},
-			reply() {
-				this.$store.commit("replying", this.value.id)
-			},
+		reply() {
+			this.$store.commit("replying", this.value.id);
 		},
-	}
+	},
+};
 </script>
 
 <style scoped>

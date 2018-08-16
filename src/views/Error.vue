@@ -41,14 +41,14 @@
 </template>
 
 <script>
-	export default {
-		name: "Error",
-		computed: {
-			status() {
-				return this.$route.params["code"];
-			}
+export default {
+	name: "Error",
+	computed: {
+		status() {
+			return this.$route.params["code"];
 		},
-	}
+	},
+};
 </script>
 
 <style scoped lang="less">

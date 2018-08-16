@@ -36,28 +36,28 @@
 </template>
 
 <script>
-	export default {
-		name: "article-preview",
-		props: ["item"],
-		filters: {
-			shortTime(article) {
-				const time = article.create !== article.update
-					? article.update
-					: article.create;
-				return time.substring(5)
-			}
+export default {
+	name: "article-preview",
+	props: ["item"],
+	filters: {
+		shortTime(article) {
+			const time = article.create !== article.update
+				? article.update
+				: article.create;
+			return time.substring(5);
 		},
-		methods: {
-			reserve(array) {
-				const newArr = array.slice(0);
-				newArr.reverse();
-				return newArr;
-			},
-			showUpdate(item) {
-				return item["create"] !== item["update"];
-			},
-		}
-	}
+	},
+	methods: {
+		reserve(array) {
+			const newArr = array.slice(0);
+			newArr.reverse();
+			return newArr;
+		},
+		showUpdate(item) {
+			return item["create"] !== item["update"];
+		},
+	},
+};
 </script>
 
 <style lang="less">

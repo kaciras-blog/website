@@ -34,76 +34,76 @@
 </template>
 
 <script>
-	class LoadTask {
+class LoadTask {
 
-		constructor(vm) {
-			this._finish = false;
-			this._vm = vm;
-		}
-
-		complete(allLoaded = false) {
-			this.finish(allLoaded ? "allLoaded" : "free");
-		}
-
-		error() {
-			this.finish("fail");
-		}
-
-		finish(state) {
-			if (this._finish) {
-				throw new Error("不能重复设置加载的结果");
-			}
-			this._finish = true;
-			this._vm.state = state;
-		}
+	constructor(vm) {
+		this._finish = false;
+		this._vm = vm;
 	}
 
-	export default {
-		name: "scroll-pager",
-		props: {
-			options: {
-			},
-			activeHeight: {
-				type: Number,
-				default: 400,
-			},
+	complete(allLoaded = false) {
+		this.finish(allLoaded ? "allLoaded" : "free");
+	}
+
+	error() {
+		this.finish("fail");
+	}
+
+	finish(state) {
+		if (this._finish) {
+			throw new Error("不能重复设置加载的结果");
+		}
+		this._finish = true;
+		this._vm.state = state;
+	}
+}
+
+export default {
+	name: "scroll-pager",
+	props: {
+		options: {
 		},
-		data() {
-			return {
-				state: "free", //free,fail,loading,allLoaded
-			};
+		activeHeight: {
+			type: Number,
+			default: 400,
 		},
-		computed: {
-			loadable() {
-				return ["allLoaded", "loading"].indexOf(this.state) < 0;
-			},
+	},
+	data() {
+		return {
+			state: "free", //free,fail,loading,allLoaded
+		};
+	},
+	computed: {
+		loadable() {
+			return ["allLoaded", "loading"].indexOf(this.state) < 0;
 		},
-		methods: {
-			loadManually(event) {
-				if (!this.options.tradition) {
-					this.loadPage();
-					event.preventDefault();
-				}
-			},
-			windowScrollHandler() {
-				if (this.state !== "free")
-					return;
+	},
+	methods: {
+		loadManually(event) {
+			if (!this.options.tradition) {
+				this.loadPage();
+				event.preventDefault();
+			}
+		},
+		windowScrollHandler() {
+			if (this.state !== "free")
+				return;
 				//网页高度 - 窗口高度 - 窗口之上部分的高度 = 窗口下面剩余的高度
-				const remain = document.body.offsetHeight - window.innerHeight - window.scrollY;
-				if (remain < this.activeHeight) this.loadPage();
-			},
-			loadPage() {
-				if (!this.loadable) return;
-				this.state = "loading";
-				this.$emit("load-page", new LoadTask(this))
-			}
+			const remain = document.body.offsetHeight - window.innerHeight - window.scrollY;
+			if (remain < this.activeHeight) this.loadPage();
 		},
-		created() {
-			if (!this.options.manually)
-				window.addEventListener("scroll", this.windowScrollHandler);
-			this.loadPage();
+		loadPage() {
+			if (!this.loadable) return;
+			this.state = "loading";
+			this.$emit("load-page", new LoadTask(this));
 		},
-	}
+	},
+	created() {
+		if (!this.options.manually)
+			window.addEventListener("scroll", this.windowScrollHandler);
+		this.loadPage();
+	},
+};
 </script>
 
 <style>

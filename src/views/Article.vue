@@ -18,51 +18,51 @@
 </template>
 
 <script>
-	import DiscussPanel from "../components/DiscussPanel";
-	import ArticleView from "../components/ArticleView";
-	import apis from "../apis";
-	import {scrollToElementStart, extendMarkdownConvert, getUrlPathPart} from "../utils";
-	import $ from "jquery";
+import DiscussPanel from "../components/DiscussPanel";
+import ArticleView from "../components/ArticleView";
+import apis from "../apis";
+import {scrollToElementStart, extendMarkdownConvert, getUrlPathPart} from "../utils";
+import $ from "jquery";
 
-	function gotoTop(button, minHeight, speed) {
-		button.css("display", "none");
-		$(button).click(function () {
-			$('html,body').animate({scrollTop: 0}, speed);
-		});
-		minHeight = minHeight ? minHeight : 400;
-		$(window).scroll(function () {
-			if ($(window).scrollTop() > minHeight) {
-				button.fadeIn(300);
-			} else {
-				button.fadeOut(300);
-			}
-		});
-	}
+function gotoTop(button, minHeight, speed) {
+	button.css("display", "none");
+	$(button).click(function () {
+		$('html,body').animate({scrollTop: 0}, speed);
+	});
+	minHeight = minHeight ? minHeight : 400;
+	$(window).scroll(function () {
+		if ($(window).scrollTop() > minHeight) {
+			button.fadeIn(300);
+		} else {
+			button.fadeOut(300);
+		}
+	});
+}
 
-	export default {
-		name: "Article",
-		components: {
-			DiscussPanel,
-			ArticleView
+export default {
+	name: "Article",
+	components: {
+		DiscussPanel,
+		ArticleView,
+	},
+	data() {
+		return {
+			article: null,
+		};
+	},
+	methods: {
+		gototop() {
+			scrollToElementStart("#discuss");
 		},
-		data() {
-			return {
-				article: null,
-			};
-		},
-		methods: {
-			gototop() {
-				scrollToElementStart("#discuss");
-			},
-		},
-		async created() {
-			this.article = await apis.article.get(getUrlPathPart(-1));
-		},
-		mounted() {
-			extendMarkdownConvert(".markdown");
-			gotoTop($('#gototop'), 600, 300);
-		},
-	}
+	},
+	async created() {
+		this.article = await apis.article.get(getUrlPathPart(-1));
+	},
+	mounted() {
+		extendMarkdownConvert(".markdown");
+		gotoTop($('#gototop'), 600, 300);
+	},
+};
 </script>
 
 <style scoped>

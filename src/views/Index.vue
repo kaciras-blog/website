@@ -28,69 +28,69 @@
 </template>
 
 <script>
-	import ArticlePreview from "../components/ArticlePreview.vue";
-	import AsidePanel from "../components/AsidePanel.vue";
-	import ScrollPager from "../components/ScrollPager.vue";
-	import apis from "../apis.js";
-	import * as utils from "../utils";
+import ArticlePreview from "../components/ArticlePreview.vue";
+import AsidePanel from "../components/AsidePanel.vue";
+import ScrollPager from "../components/ScrollPager.vue";
+import apis from "../apis.js";
+import * as utils from "../utils";
 
-	export default {
-		name: "Index",
-		components: {
-			ArticlePreview,
-			AsidePanel,
-			ScrollPager,
+export default {
+	name: "Index",
+	components: {
+		ArticlePreview,
+		AsidePanel,
+		ScrollPager,
+	},
+	data() {
+		return {
+			startPage: parseInt(utils.getQueryString("start") || "0"),
+			articles: [],
+			pageSize: 16,
+			categoryPath: null,
+		};
+	},
+	computed: {
+		pagerConfig() {
+			const config = {
+				tradition: utils.getQueryString("tradition") === "true",
+			};
+			if (utils.getQueryString("manually") === "true") {
+				const nextStart = this.startPage + this.articles.length;
+				const url = new URL(window.location.href);
+
+				url.searchParams.set("start", nextStart.toString());
+				config.manually = true;
+				config.nextPageLink = url.toString();
+			}
+			return config;
 		},
-		data() {
-			return {
-				startPage: parseInt(utils.getQueryString("start") || "0"),
-				articles: [],
-				pageSize: 16,
-				categoryPath: null,
+	},
+	created() {
+		const category = utils.getQueryString("category");
+		if (category) {
+			apis.category.getPath(category).then(path => this.categoryPath = path);
+		}
+	},
+	methods: {
+		async loadPage(task) {
+			const category = utils.getQueryString("category") || null;
+			const index = this.startPage + this.articles.length;
+
+			try {
+				const res = await apis.article.getList(category, index, this.pageSize);
+				[].push.apply(this.articles, res);
+				task.complete(res.length < this.pageSize);
+			} catch (e) {
+				return task.error(e);
+			} finally {
+				this.$nextTick(utils.markRenderComplete);
 			}
 		},
-		computed: {
-			pagerConfig() {
-				const config = {
-					tradition: utils.getQueryString("tradition") === "true",
-				};
-				if (utils.getQueryString("manually") === "true") {
-					const nextStart = this.startPage + this.articles.length;
-					const url = new URL(window.location.href);
-
-					url.searchParams.set("start", nextStart.toString());
-					config.manually = true;
-					config.nextPageLink = url.toString()
-				}
-				return config
-			}
+		excludeLast(arr) {
+			return [...arr].splice(0, arr.length - 1);
 		},
-		created() {
-			const category = utils.getQueryString("category");
-			if (category) {
-				apis.category.getPath(category).then(path => this.categoryPath = path);
-			}
-		},
-		methods: {
-			async loadPage(task) {
-				const category = utils.getQueryString("category") || null;
-				const index = this.startPage + this.articles.length;
-
-				try {
-					const res = await apis.article.getList(category, index, this.pageSize);
-					[].push.apply(this.articles, res);
-					task.complete(res.length < this.pageSize);
-				} catch (e) {
-					return task.error(e);
-				} finally {
-					this.$nextTick(utils.markRenderComplete)
-				}
-			},
-			excludeLast(arr) {
-				return [...arr].splice(0, arr.length - 1);
-			},
-		},
-	}
+	},
+};
 </script>
 
 <style scoped lang="less">

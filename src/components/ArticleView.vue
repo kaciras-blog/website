@@ -15,15 +15,15 @@
 </template>
 
 <script>
-	export default {
-		name: "ArticleView",
-		props: ["article"],
-		methods:{
-			renderMarkdown(text) {
+export default {
+	name: "ArticleView",
+	props: ["article"],
+	methods:{
+		renderMarkdown(text) {
 
-			},
-		}
-	}
+		},
+	},
+};
 </script>
 
 <style scoped>

@@ -25,29 +25,29 @@
 </template>
 
 <script>
-	import apis from "../apis";
-	import {pageReturn, errMsg} from "../utils";
+import apis from "../apis";
+import {pageReturn, errMsg} from "../utils";
 
-	export default {
-		name: "LoginPanel",
-		data() {
-			return {
-				message: "",
-				form: {
-					name: "",
-					password: "",
-					remenber: false,
-				},
-			}
+export default {
+	name: "LoginPanel",
+	data() {
+		return {
+			message: "",
+			form: {
+				name: "",
+				password: "",
+				remenber: false,
+			},
+		};
+	},
+	methods:{
+		login() {
+			apis.session.login(this.form).then(pageReturn).catch(err => this.message = errMsg(err));
 		},
-		methods:{
-			login() {
-				apis.session.login(this.form).then(pageReturn).catch(err => this.message = errMsg(err))
-			},
-			switchPanel() {
-				this.$emit("switch-panel", "signupPanel");
-				// this.$messageBox("别注册了", "个人博客你注册干嘛？\n评论的话匿名的就好")
-			},
-		}
-	}
+		switchPanel() {
+			this.$emit("switch-panel", "signupPanel");
+			// this.$messageBox("别注册了", "个人博客你注册干嘛？\n评论的话匿名的就好")
+		},
+	},
+};
 </script>
