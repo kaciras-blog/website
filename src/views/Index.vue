@@ -1,29 +1,26 @@
 <template>
-	<div>
-		<div class="background"></div>
+	<div id="index-page">
+		<main>
+			<h1 class='segment' v-if="categoryPath">
+				<a href='/index' target='_self'>全部文章</a>
+				<a target='_self'
+				   :key="category.id"
+				   v-for="category of excludeLast(categoryPath)"
+				   :href="'/index?category=' + category.id">&gt; {{category.name}}</a>
+				<span>&gt; {{categoryPath[categoryPath.length-1].name}}</span>
+			</h1>
+			<h1 class='segment' v-else>全部文章</h1>
 
-		<div class="flex serrated container-wide">
-			<section class="flex expansion vertical panel">
+			<article-preview :key="article.id"
+							 :item="article"
+							 v-for="article in articles">
+			</article-preview>
 
-				<h1 class='compact header' v-if="categoryPath">
-					<a href='/index' target='_self'>全部文章</a>
-					<a target='_self'
-					   :key="category.id"
-					   v-for="category of excludeLast(categoryPath)"
-					   :href="'/index?category=' + category.id">&gt; {{category.name}}</a>
-					<span>&gt; {{categoryPath[categoryPath.length-1].name}}</span>
-				</h1>
-				<h1 class='compact header' v-else>全部文章</h1>
-
-				<hr>
-				<article-preview :key="article.id"
-								 :item="article"
-								 v-for="article in articles">
-				</article-preview>
-				<scroll-pager :options="pagerConfig" @load-page="loadPage"></scroll-pager>
-			</section>
-			<aside-panel></aside-panel>
-		</div>
+			<scroll-pager :options="pagerConfig"
+						  @load-page="loadPage">
+			</scroll-pager>
+		</main>
+		<aside-panel></aside-panel>
 	</div>
 </template>
 
@@ -93,30 +90,34 @@ export default {
 };
 </script>
 
-<style scoped lang="less">
-	@import "../css/Filter.less";
+<style lang="less">
+	@import "../css/ToBeImpoert.less";
 
-	#top-nav {
-		.glass;
-		.glass.blur(4px);
+	#index-page {
+		display: flex;
+		align-items: flex-start;
 
-		&::before {
-			background-image: url("../assets/index-header.jpg");
-			background-size: cover;
+		@media screen {
+			@media (min-width: @length-screen-mobile) {max-width: 90%}
+			@media (min-width: @length-screen-wide) {max-width: 82%}
 		}
-	}
+		margin: 0 auto;
 
-	.background {
-		height: 180px;
-		width: 100%;
-		background-image: url("../assets/index-header.jpg");
-		@media screen and (min-width: 768px) {
-			margin-bottom: 3rem;
+		& > main {
+			flex-grow: 1;
 		}
-	}
 
-	.background, #top-nav::before {
-		background-position: center 0;
-		background-size: cover;
+		& > aside {
+			width: 29%;
+			flex: 0 0 auto;
+			display: none;
+
+			@media screen {
+				@media (min-width: @length-screen-pad) {
+					display: flex;
+					margin-left: 3rem;
+				}
+			}
+		}
 	}
 </style>

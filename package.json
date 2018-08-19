@@ -7,7 +7,6 @@
 	"scripts": {
 		"dev": "webpack-dev-server --progress --config build/webpack.dev.conf.js",
 		"start": "npm run dev",
-		"lint": "eslint --ext .js,.vue src",
 		"build": "node build/build.js",
 		"lint-fix": "eslint --fix --ext .js,.vue src"
 	},
@@ -34,7 +33,7 @@
 		"eslint-config-standard": "^11.0.0",
 		"eslint-friendly-formatter": "^4.0.1",
 		"eslint-loader": "^2.1.0",
-		"eslint-plugin-import": "^2.7.0",
+		"eslint-plugin-import": "^2.14.0",
 		"eslint-plugin-node": "^7.0.1",
 		"eslint-plugin-promise": "^3.4.0",
 		"eslint-plugin-standard": "^3.0.1",
@@ -51,7 +50,7 @@
 		"optimize-css-assets-webpack-plugin": "^5.0.0",
 		"portfinder": "^1.0.16",
 		"rimraf": "latest",
-		"url-loader": "^1.0.1",
+		"url-loader": "^1.1.1",
 		"vue-loader": "^15.3.0",
 		"vue-template-compiler": "^2.5.17",
 		"webpack": "^4.16.5",

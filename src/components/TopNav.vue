@@ -1,41 +1,40 @@
+<!--suppress XmlDuplicatedId -->
 <template>
-	<nav id="top-nav">
-		<div class="content" v-if="collapse">
-			<div></div>
-			<router-link to="/" class="logo" title="花了5分钟画的logo，点击回到首页"/>
-			<div class="button" @click="showMenu=true"><i class="fas fa-bars"></i></div>
-		</div>
-
-		<div class="content" v-else>
-			<div class="flex center-align compact">
+	<header>
+		<!-- 小屏幕折叠状态 -->
+		<nav id="top-nav" v-if="collapse">
+			<div class="content">
+				<div></div>
 				<router-link to="/" class="logo" title="花了5分钟画的logo，点击回到首页"/>
-				<router-link to="/welcome" class="block fold">欢迎页</router-link>
-				<!--<a class="block fold" href="/about">关于</a>-->
+				<div class="button" @click="showMenu=true"><i class="fas fa-bars"></i></div>
 			</div>
+		</nav>
 
-			<div class="flex center-align compact" v-if="user">
-				<img :src="'/image/' + user.head" class='head' title='别看了，不支持换头像'>
-				<h3 class='user-name'>{{user.name}}</h3>
-				<router-link v-if="user.id===1" class='block' to='/console'>管理</router-link>
-				<a @click="logout()" class='block'>退出登录</a>
-			</div>
+		<!-- 展开状态 -->
+		<nav id="top-nav" v-else>
+			<div class="content">
+				<div class="flex center-align compact">
+					<router-link to="/" class="logo" title="花了5分钟画的logo，点击回到首页"/>
+					<router-link to="/welcome" class="block fold">欢迎页</router-link>
+					<!--<a class="block fold" href="/about">关于</a>-->
+				</div>
 
-			<div class="flex center-align compact" v-else>
-				<router-link class="block" to="/login">登录</router-link>
-			</div>
-		</div>
+				<div class="flex center-align compact" v-if="user">
+					<img :src="'/image/' + user.head" class='head' title='别看了，不支持换头像'>
+					<h3 class='user-name'>{{user.name}}</h3>
+					<router-link v-if="user.id===1" class='block' to='/console'>管理</router-link>
+					<a @click="logout()" class='block'>退出登录</a>
+				</div>
 
-		<div class="global-dimmer" v-if="showMenu" @click="showMenu=false"></div>
-		<div class="menu" v-if="showMenu">
-			<div>
+				<div class="flex center-align compact" v-else>
+					<router-link class="nav-item" to="/login">登录</router-link>
+				</div>
+			</div>
+		</nav>
 
-			</div>
-			<div class="links">
-				<router-link class="block fold" to="/welcome">欢迎页</router-link>
-				<router-link class="block" to="/login" v-if="!user">登录</router-link>
-			</div>
-		</div>
-	</nav>
+		<!-- 最下面的大图 -->
+		<div id="banner"></div>
+	</header>
 </template>
 
 <script>
@@ -65,7 +64,7 @@ export default {
 </script>
 
 <style lang="less">
-	@import "../css/Main.less";
+	@import "../css/ToBeImpoert.less";
 
 	#top-nav {
 		.glass;
@@ -101,6 +100,20 @@ export default {
 		}
 	}
 
+	#banner {
+		height: 180px;
+		width: 100%;
+		background-image: url("../assets/index-header.jpg");
+		@media screen and (min-width: 768px) {
+			margin-bottom: 3rem;
+		}
+	}
+
+	#banner, #top-nav::before {
+		background-position: center 0;
+		background-size: cover;
+	}
+
 	.menu {
 		position: absolute;
 		top: 3rem;
@@ -123,6 +136,20 @@ export default {
 
 		&:hover {
 			background-position: 0 100%;
+		}
+	}
+
+	.nav-item {
+		display: block;
+		font-size: 16px;
+		padding: .8rem 1.5rem;
+		background-color: transparent;
+		height: 100%;
+
+		&:hover {
+			color: @color-text;
+			text-decoration: none;
+			background-color: rgba(255, 255, 255, 0.4);
 		}
 	}
 </style>

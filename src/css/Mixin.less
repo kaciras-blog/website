@@ -1,0 +1,294 @@
+/*
+ * 常用 Less 公共样式封装，修改自：
+ * https://blog.csdn.net/boyit0/article/details/78802385
+ */
+
+// 盒子宽高
+.size(@w, @h) {
+	width: @w;
+	height: @h;
+}
+
+// 最小尺寸
+.min-size(@w, @h) {
+	min-width: @w;
+	min-height: @h;
+}
+
+// 块级元素水平居中
+.center-block() {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+// 居中, 确定尺寸
+.center-absolute(@w, @h) {
+	.size(@w, @h);
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-top: -(@w / 2);
+	margin-left: -(@h / 2);
+}
+
+// 居中, 不确定尺寸
+.center-absolute-auto() {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto;
+}
+
+// 遮罩层, 全屏遮罩、区域遮罩
+.overlay-fixed() {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
+// 扩展点击区域
+.extend-click(@size) {
+	position: relative;
+	&:before {
+		content: '';
+		position: absolute;
+		top: -@size;
+		left: -@size;
+		right: -@size;
+		bottom: -@size;
+	}
+}
+
+// 定宽居中页面布局
+.layout-page(@width: 80%) {
+	width: @width;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+// 侧边栏
+// 主要区域：overflow: hidden; margin-left: xx; margin-right: xx;
+.sidebar(left, @width) {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: @width;
+}
+
+.sidebar(right, @width) {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: @width;
+}
+
+//------------------------------------- ├ 字体 ┆ └------------------------------------/
+
+// 字体颜色 + 自身 Hover
+.color(@color, @hovercolor) {
+	color: @color;
+	&:hover {
+		color: @hovercolor;
+	}
+}
+
+// 字体颜色 + 链接 Hover
+.color(@color, @acolor, @hovercolor) {
+	color: @color;
+	a {
+		color: @acolor;
+		&:hover {
+			color: @hovercolor;
+		}
+	}
+}
+
+// 禁止换行, 文本溢出省略号显示 (一行)
+.ellipsis() {
+	white-space: normal;
+	word-wrap: break-word;
+	word-break: break-all;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+// 文字透明
+.transparent-text() {
+	font: 0/0 serif;
+	text-shadow: none;
+	color: transparent;
+}
+
+// 文字外发光效果
+.glow-text(@r: 10px, @color: gold) {
+	text-shadow: 0 0 @r @color;
+}
+
+//------------------------------------- ├ 图像 ┆ └------------------------------------/
+
+// 用 max-width 来防止图片撑破容器
+.max-img() {
+	display: block;
+	max-width: 100%;
+	height: auto;
+}
+
+// 全屏大图背景
+.fullscreen-bg(@url) {
+	width: 100vw;
+	height: 100vh;
+	background: url(@url) no-repeat 50% 50%;
+	background-size: cover;
+}
+
+// 滤镜: 将彩色照片显示为黑白照片
+.grayscale() {
+	filter: grayscale(100%);
+}
+
+//------------------------------------- ├ 动效 ┆ └------------------------------------/
+
+// 链接默认无下划线，hover后有下划线的样式
+.hover-link() {
+	text-decoration: none;
+	&:hover {
+		text-decoration: underline;
+	}
+}
+
+// 将链接变成默认的文字样式
+.unstyled-link() {
+	color: inherit;
+	cursor: inherit;
+	text-decoration: inherit;
+	&:active, &:focus {
+		outline: none;
+	}
+}
+
+// 三维闪动 bug 处理
+.transform-fix() {
+	-webkit-backface-visibility: hidden;
+	-webkit-transform-style: preserve-3d;
+}
+
+// Animation
+.anime(@name, @time: 1s, @ease: ease-in-out, @fillmode: forwards) {
+	animation-name: @name;
+	animation-duration: @time;
+	animation-timing-function: @ease;
+	animation-fill-mode: @fillmode;
+}
+
+//------------------------------------- ├ 功能 ┆ └------------------------------------/
+
+// 禁止文本被选择
+.disable-user-select() {
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+}
+
+// 隔行换色
+.zebra-lists(odd, @color) {
+	&.odd {
+		> li:nth-child(odd) {
+			background-color: @color;
+		}
+	}
+}
+
+.zebra-lists(even, @color) {
+	&.even {
+		> li:nth-child(even) {
+			background: green;
+		}
+	}
+}
+
+// 首字下沉
+.first-letter(@font-size: 6em) {
+	&::first-letter {
+		float: left;
+		line-height: 1;
+		font-size: @font-size;
+	}
+}
+
+// 特殊标记段落第一行
+.first-line() {
+	&::first-line {
+		color: red
+	}
+}
+
+// 美化选中文本
+.beauty-select() {
+	&::selection {
+		color: #fff;
+		background-color: #6bc30d;
+		text-shadow: none;
+	}
+}
+
+//------------------------------------- ├ 组件 ┆ └------------------------------------/
+
+// 吸顶导航
+.fix-header(@h: 70px) {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: @h;
+	z-index: 1000;
+}
+
+// 吸底导航
+.fix-footer(@h: 70px) {
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: @h;
+	z-index: 1000;
+}
+
+// 关闭按钮 ×
+.close() {
+	position: relative;
+	-webkit-appearance: none;
+	padding: 0;
+	cursor: pointer;
+	background: 0 0;
+	border: 0;
+	font-size: 20px;
+	font-weight: 700;
+	line-height: 1;
+	color: #000;
+	text-shadow: 0 1px 0 #fff;
+	filter: alpha(opacity=20);
+	opacity: .2;
+
+	&:hover {
+		color: #000;
+		text-decoration: none;
+		cursor: pointer;
+		filter: alpha(opacity=50);
+		opacity: .5;
+	}
+	&:before {
+		content: '';
+		position: absolute;
+		top: -10px;
+		left: -10px;
+		right: -10px;
+		bottom: -10px;
+	}
+}
+

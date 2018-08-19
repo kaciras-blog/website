@@ -18,7 +18,7 @@ export default {
 </script>
 
 <style lang="less">
-	@import "../css/Main";
+	@import "../css/ToBeImpoert.less";
 
 	#bottom-footer {
 		width: 100%;

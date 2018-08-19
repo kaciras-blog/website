@@ -1,11 +1,11 @@
 <template>
-	<aside class="flex vertical panel aside-recommand">
+	<aside class="flex vertical panel">
 		<div>
-			<h2 class="compact header">置顶</h2>
+			<h3 class="padding">置顶</h3>
 			<p style="text-align: center">暂无</p>
 		</div>
 		<div>
-			<h2 class="compact header">浏览排行</h2>
+			<h3 class="padding">浏览排行</h3>
 			<ol class="rank">
 				<li v-for="article in hotArticles" :key="article.id">
 					<a target='_Blank' :href="'/article/' + article.id">{{article.title}}</a>

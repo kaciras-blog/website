@@ -451,3 +451,30 @@ label.select-button {
 		}
 	}
 }
+
+ol.rank {
+	padding-left: 0;
+	list-style: none;
+
+	& > li {
+		counter-increment: index;
+		&:first-child:before{
+			background: @color-rank-pad;
+		}
+		&:nth-child(2):before{
+			background: lighten(@color-rank-pad, 6%);
+		}
+		&:nth-child(3):before{
+			background: lighten(@color-rank-pad, 12%);
+		}
+		&:before {
+			content: counter(index);
+			padding: 0 .3em;
+			border-radius: .3em;
+			margin-right: .5em;
+			font-weight: 600;
+			color: white;
+			background: #CDCDCD;
+		}
+	}
+}

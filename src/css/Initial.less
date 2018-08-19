@@ -1,9 +1,11 @@
+@import "Variables";
+
 *, *::after, *::before {
 	box-sizing: border-box;
 }
 
 html {
-	font-family: sans-serif; // 2
+	font-family: Helvetica, Arial, Microsoft YaHei, WenQuanYi Micro Hei, sans-serif;
 	line-height: 1.15; // 3
 	-webkit-text-size-adjust: 100%; // 4
 	-ms-text-size-adjust: 100%; // 4
@@ -13,6 +15,8 @@ html {
 
 body {
 	margin: 0;
+	color: @color-text;
+	font-size: 14px;
 }
 
 //不能被选择的元素也不能高亮
@@ -74,4 +78,14 @@ button::-moz-focus-inner,
 textarea {
 	overflow: auto;
 	resize: vertical;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+
+	&:hover, :focus {
+		color: @color-link;
+		text-decoration: underline;
+	}
 }

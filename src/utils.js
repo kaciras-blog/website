@@ -105,19 +105,6 @@ export function openFile(multiple = false, accept = "*") {
 	return promise;
 }
 
-/**
- * 使用src对象中的值更新dest对象中相应的字段
- * @param src
- * @param dest
- * @return {*}
- */
-export function updateObject(src, dest) {
-	for (let k in dest) {
-		if (src.hasOwnProperty(k)) dest[k] = src[k];
-	}
-	return dest;
-}
-
 export function deleteOn(array, predicate) {
 	for (let i = 0; i < array.length; i++) {
 		if (predicate(array[i])) array.splice(i--, 1);
