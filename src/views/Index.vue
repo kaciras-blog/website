@@ -1,37 +1,37 @@
 <template>
-	<framework background="/static/img/index-banner.jpg"
-			   :banner="true">
-		<div id="index-page">
-			<main>
-				<h1 class='segment' v-if="categoryPath">
-					<a href='/index' target='_self'>全部文章</a>
-					<a target='_self'
-					   :key="category.id"
-					   v-for="category of excludeLast(categoryPath)"
-					   :href="'/index?category=' + category.id">&gt; {{category.name}}</a>
-					<span>&gt; {{categoryPath[categoryPath.length-1].name}}</span>
-				</h1>
-				<h1 class='segment' v-else>全部文章</h1>
+<framework optionalClass="index-header"
+		   :banner="true">
+	<div id="index-page">
+		<main>
+			<h1 class='segment' v-if="categoryPath">
+				<a href='/index' target='_self'>全部文章</a>
+				<a target='_self'
+				   :key="category.id"
+				   v-for="category of excludeLast(categoryPath)"
+				   :href="'/index?category=' + category.id">&gt; {{category.name}}</a>
+				<span>&gt; {{categoryPath[categoryPath.length-1].name}}</span>
+			</h1>
+			<h1 class='segment' v-else>全部文章</h1>
 
-				<article-preview :key="article.id"
-								 :item="article"
-								 v-for="article of articles">
-				</article-preview>
+			<article-preview :key="article.id"
+							 :item="article"
+							 v-for="article of articles">
+			</article-preview>
 
-				<scroll-pager :options="pagerConfig"
-							  @load-page="loadPage">
-				</scroll-pager>
-			</main>
-			<aside-panel></aside-panel>
-		</div>
-	</framework>
+			<scroll-pager :options="pagerConfig"
+						  @load-page="loadPage">
+			</scroll-pager>
+		</main>
+		<aside-panel></aside-panel>
+	</div>
+</framework>
 </template>
 
 <script>
 import ArticlePreview from "../components/ArticlePreview.vue";
 import AsidePanel from "../components/AsidePanel.vue";
 import ScrollPager from "../components/ScrollPager.vue";
-import apis from "../apis.js";
+import api from "../apis.js";
 import * as utils from "../utils";
 
 export default {
@@ -68,7 +68,7 @@ export default {
 	created() {
 		const category = utils.getQueryString("category");
 		if (category) {
-			apis.category.getPath(category).then(path => this.categoryPath = path);
+			api.category.getPath(category).then(path => this.categoryPath = path);
 		}
 	},
 	methods: {
@@ -77,7 +77,7 @@ export default {
 			const index = this.startPage + this.articles.length;
 
 			try {
-				const res = await apis.article.getList(category, index, this.pageSize);
+				const res = await api.article.getList(category, index, this.pageSize);
 				this.articles.push.apply(this.articles, res);
 				task.complete(res.length < this.pageSize);
 			} catch (e) {
@@ -94,37 +94,43 @@ export default {
 </script>
 
 <style lang="less">
-	@import "../css/ToBeImpoert.less";
+@import "../css/ToBeImpoert.less";
 
-	#index-page {
-		display: flex;
-		align-items: flex-start;
+#index-page {
+	display: flex;
+	align-items: flex-start;
+
+	@media screen {
+		@media (min-width: @length-screen-mobile) {
+			max-width: 90%
+		}
+		@media (min-width: @length-screen-wide) {
+			max-width: 82%
+		}
+	}
+	margin: 0 auto;
+
+	& > main {
+		flex-grow: 1;
+	}
+
+	& > aside {
+		width: 29%;
+		flex: 0 0 auto;
+		display: none;
 
 		@media screen {
-			@media (min-width: @length-screen-mobile) {
-				max-width: 90%
-			}
-			@media (min-width: @length-screen-wide) {
-				max-width: 82%
-			}
-		}
-		margin: 0 auto;
-
-		& > main {
-			flex-grow: 1;
-		}
-
-		& > aside {
-			width: 29%;
-			flex: 0 0 auto;
-			display: none;
-
-			@media screen {
-				@media (min-width: @length-screen-pad) {
-					display: flex;
-					margin-left: 3rem;
-				}
+			@media (min-width: @length-screen-pad) {
+				display: block;
+				margin-left: 3rem;
 			}
 		}
 	}
+}
+
+.index-header #banner,
+.index-header #top-nav::before {
+	background: url("../assets/index-banner.jpg") center 0;
+	background-size: cover;
+}
 </style>

@@ -4,8 +4,13 @@ import Article from './views/Article';
 import Login from './views/Login';
 import Index from "./views/Index";
 import Error from "./views/Error";
+
 import Console from "./views/Console";
 import ArticleConsole from "./views/ArticleConsole";
+import DraftConsole from "./views/DraftConsole";
+import CategoryConsole from "./views/CategoryConsole";
+import ConfigConsole from "./views/ConfigConsole";
+import CategoryEditor from "./views/CategoryEditor";
 
 Vue.use(Router);
 
@@ -34,6 +39,10 @@ export default new Router({
 			children: [
 				{ path: "", redirect: "article" },
 				{ path: "article", component: ArticleConsole },
+				{ path: "draft", component: DraftConsole },
+				{ path: "config", component: ConfigConsole },
+				{ path: "category", component: CategoryConsole },
+				{ path: "category/:id", component: CategoryEditor },
 			],
 		},
 		{

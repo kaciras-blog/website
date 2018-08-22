@@ -1,44 +1,38 @@
 <template>
-	<form class="flex vertical margin-vert blur glass" @keyup.13="signup()">
-		<h1 class="center compact">注册</h1>
-		<hr>
-		<label>
-			<span>用户名:</span>
-			<input v-model="form.name" placeholder="中英文数字和下划线" required>
-		</label>
-		<label>
-			<span>密码:</span>
-			<input v-model="form.password" type="password" placeholder="至少有个6位吧" required>
-		</label>
-		<label>
-			<span>邮箱:</span>
-			<input v-model="form.email" type="email" placeholder="不填也行">
-		</label>
+<form @keyup.13="signup">
+	<h1 class="center segment">注册</h1>
 
-		<div class="flex margin-horiz center-align">
-			<label class="expansion">
-				<span>验证码:</span>
-				<input ref="captchaInput" v-model="form.captcha" required>
-			</label>
-			<img class="captcha" :src="captcha" title="点击换一张" @click="updateCaptcha()">
-		</div>
+	<label>用户名:</label>
+	<input v-model="form.name" placeholder="中英文数字和下划线" required>
 
-		<span class="text-warning">{{message}}</span>
+	<label>密码:</label>
+	<input v-model="form.password" type="password" placeholder="至少有个6位吧" required>
 
-		<div class="flex margin momo">
-			<button type="button" class="primary square" @click="signup()">确定</button>
-			<button type="button" class="square" @click="switchPanel()"><i class="fa fa-arrow-left"></i>登录</button>
-		</div>
-	</form>
+	<label>邮箱:</label>
+	<input v-model="form.email" type="email" placeholder="不填也行">
+
+	<label for="captcha" class="expansion">验证码:</label>
+	<div>
+		<input id="captcha" ref="captchaInput" v-model="form.captcha" required>
+		<img class="captcha" :src="captcha" title="点击换一张" @click="updateCaptcha()">
+	</div>
+
+	<span class="text-warning center">{{message}}</span>
+
+	<div class="center">
+		<button type="button" class="primary square" @click="signup">确定</button>
+		<button type="button" class="square" @click="switchPanel"><i class="fa fa-arrow-left"></i>登录</button>
+	</div>
+</form>
 </template>
 
 <script>
-import apis from "../apis";
+import api from "../apis";
 import {pageReturn, errMsg} from "../utils";
 
 export default {
 	name: "SignupPanel",
-	data () {
+	data() {
 		return {
 			message: "",
 			captcha: null,
@@ -57,7 +51,7 @@ export default {
 				.catch(err => this.message = errMsg(err));
 		},
 		switchPanel() {
-			this.$emit("switch-panel", "loginPanel");
+			this.$emit("switch-panel", "LoginPanel");
 		},
 		updateCaptcha() {
 			this.captcha = apis.captchaAddress();
@@ -71,8 +65,33 @@ export default {
 };
 </script>
 
-<style scoped>
-	.captcha{
-		cursor: pointer;
+<style scoped lang="less">
+.captcha {
+	cursor: pointer;
+}
+
+form {
+	display: grid;
+	grid-template-columns: 4em 1fr;
+	grid-gap: 1em;
+}
+
+.center {
+	text-align: center;
+	grid-column: ~"1/3";
+}
+
+label {
+	align-self: center;
+	justify-self: right;
+	& + input {
+		grid-column-start: 2;
 	}
+}
+
+.text-warning {
+	font-size: 1.1em;
+	color: #ff646c;
+	height: 1em;
+}
 </style>

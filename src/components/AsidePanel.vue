@@ -1,5 +1,5 @@
 <template>
-	<aside class="flex vertical panel">
+	<aside class="panel">
 		<div>
 			<h3 class="padding">置顶</h3>
 			<p style="text-align: center">暂无</p>
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import apis from "../apis.js";
+import api from "../apis.js";
 
 export default {
 	name: "aside-panel",
@@ -30,3 +30,10 @@ export default {
 	},
 };
 </script>
+
+<style scoped lang="less">
+.padding{
+	padding-top: .2em;
+	padding-bottom: .2em;
+}
+</style>

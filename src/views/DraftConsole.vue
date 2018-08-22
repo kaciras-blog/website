@@ -1,11 +1,14 @@
 <template>
-	<div class="flex vertical margin-vert">
-		<div class="flex margin-horiz">
+	<div>
+		<div class="buttons">
 			<button class="dangerous" @click="deleteAll"><i class="far fa-trash-alt"></i>全部删除</button>
 		</div>
 
 		<div class="panel">
-			<div class="draft segment" v-for="draft in drafts">
+			<div class="draft segment"
+				 :key="draft.id"
+				 v-for="draft in drafts">
+
 				<div class="flex center-align margin-horiz">
 					<div class="flex expansion text-line">{{draft.title}}</div>
 					<span class="minor-text"><i class="fas fa-pencil-alt"></i>{{draft.time}}</span>
@@ -96,5 +99,8 @@ export default {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+	}
+	.buttons{
+		margin-bottom: 1rem;
 	}
 </style>

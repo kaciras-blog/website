@@ -110,3 +110,13 @@ export function deleteOn(array, predicate) {
 		if (predicate(array[i])) array.splice(i--, 1);
 	}
 }
+
+/**
+ * 返回一个Promise，在指定的时间后返回。
+ *
+ * @param time 时间，毫秒
+ * @return {Promise}
+ */
+export function sleep(time) {
+	return new Promise(resolve => setTimeout(resolve, time));
+}

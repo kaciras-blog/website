@@ -1,9 +1,8 @@
 <template>
 	<div id="app">
 		<top-nav v-if="showNav"
-				 :background="background"
-				 :banner="banner"
-				 :background-attach="backgroundAttach">
+				 :optionalClass="optionalClass"
+				 :banner="banner">
 		</top-nav>
 		<slot></slot>
 		<page-footer v-if="showFooter"></page-footer>
@@ -14,9 +13,8 @@
 export default {
 	name: "Framework",
 	props: {
-		background: {},
+		optionalClass: {},
 		banner: {},
-		backgroundAttach:{},
 		showNav: {
 			type: Boolean,
 			default: true,

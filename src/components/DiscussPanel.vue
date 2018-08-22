@@ -43,7 +43,7 @@ export default {
 	},
 	methods: {
 		loadPageBackground(index) {
-			return api.discussion.getList(getUrlPathPart(2), index * this.pageSize, this.pageSize).then(data =>{
+			return api.discuss.getList(getUrlPathPart(2), index * this.pageSize, this.pageSize).then(data =>{
 				this.discussions = data.list;
 				this.pageIndex = index;
 				this.totalCount = data.total;

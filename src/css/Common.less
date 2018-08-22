@@ -1,4 +1,4 @@
-@import "Variables";
+@import "ToBeImpoert";
 
 html.full-screen {
 	height: 100%;
@@ -46,24 +46,13 @@ h1, h2, h3, h4, h5, h6 {
 	padding: .5em;
 	min-width: 0; //谷歌浏览器默认有一个最小宽度，这里给他去掉
 
-	&:not([readonly]):hover {
-		.input-highlight-hover();
-	}
 	&:not([readonly]):focus {
 		.input-highlight-focus();
 	}
+
 	&[type=color] {
 		cursor: pointer;
 		height: 2rem;
 	}
 }
 
-.input-highlight-hover() {
-	border: solid 1px lighten(@color-input-active, 16%);
-	box-shadow: 0 0 4px lighten(@color-input-active, 20%);
-}
-
-.input-highlight-focus() {
-	border: solid 1px @color-input-active;
-	box-shadow: 0 0 4px lighten(@color-input-active, 12%);
-}

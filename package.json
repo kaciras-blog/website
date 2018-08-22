@@ -16,7 +16,8 @@
 		"velocity-animate": "^2.0.5",
 		"vue": "^2.5.17",
 		"vue-router": "^3.0.1",
-		"vuex": "^3.0.1"
+		"vuex": "^3.0.1",
+		"kxdialog": "file:D:/Coding/Blog-V8/KxDialog"
 	},
 	"devDependencies": {
 		"babel-core": "^6.26.3",

@@ -1,22 +1,18 @@
-@import "Variables";
+@import "ToBeImpoert";
 
 .button, button {
 	font-size: 1rem;
 	cursor: pointer;
-	padding: .3rem 1.2rem;
+	padding: .4rem 1.2rem;
 	text-align: center;
 	border: none;
-	border-radius: @length-button-radius;
 
-	user-select: none;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
+	.disable-user-select;
 
 	.btn-style("base");
 
-	&.square {
-		border-radius: 0;
+	&.round {
+		border-radius: @length-button-radius;
 	}
 
 	&.icon {
@@ -36,9 +32,6 @@
 	&.dangerous {
 		.btn-style("dangerous");
 	}
-	&.primary {
-		.btn-style("primary");
-	}
 	&.minor {
 		.btn-style("minor");
 	}
@@ -52,18 +45,31 @@
 	@ref: "color-button-@{name}";
 	@reft: "color-button-@{name}-text";
 
-	&.border {
-		background-color: transparent;
-		color: @@ref;
-		border: solid 1px @@ref;
-		transition: ease-in-out .1s;
+	background-color: transparent;
+	color: @@ref;
+	border: solid 1px @@ref;
+	transition: ease-in-out .1s;
+
+	&:hover {
+		color: @@reft;
+		background-color: @@ref;
+	}
+	&:active {
+		background-color: @@ref + #0a0a0a;
+	}
+
+
+	&.filled {
+		background-color: @@ref;
+		color: @@reft;
 
 		&:hover {
+			background-color: @@ref + #0a0a0a;
 			color: @@reft;
-			background-color: @@ref;
 		}
 		&:active {
-			background-color: @@ref + #0a0a0a;
+			background-color: @@ref - #080808;
+			color: @@reft;
 		}
 	}
 
@@ -80,17 +86,5 @@
 		&:active {
 			background-color: fadeout(@@ref, 95%);
 		}
-	}
-
-	background-color: @@ref;
-	color: @@reft;
-
-	&:hover {
-		background-color: @@ref + #0a0a0a;
-		color: @@reft;
-	}
-	&:active {
-		background-color: @@ref - #080808;
-		color: @@reft;
 	}
 }

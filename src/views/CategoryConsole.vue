@@ -1,5 +1,5 @@
 <template>
-<div class="flex vertical">
+<div>
 	<div class="flex between">
 		<button class="primary round" @click="showEditView()">添加分类</button>
 		<button class="round" @click="refresh()"><i class="fas fa-sync"></i>刷新</button>
@@ -12,9 +12,6 @@
 			<img :src="'/image/'+ C.cover">
 			<a class="category-header" :href="'/index?category=' + C.id">{{C.name}}</a>
 			<p><i title="文章数" class="far fa-edit"></i>{{C.articleCount}}</p>
-			<!--<label class="check-box">-->
-			<!--<input v-model="form.remenber" type="checkbox"><span>保持登录</span>-->
-			<!--</label>-->
 			<div class="flex compact momo">
 				<button class="square primary" @click="showEditView(C.id)">修改</button>
 				<button class="square dangerous" @click="deleteCategory(C.id)">删除</button>

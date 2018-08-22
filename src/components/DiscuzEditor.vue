@@ -41,14 +41,12 @@ export default {
 		return {
 			submiting: false,
 			content: "",
+			config: {}
 		};
 	},
-	computed: Vuex.mapState({
-		user: "loginedUser",
-		config: "discussionConfig",
-	}),
+	computed: Vuex.mapState(["user"]),
 	methods:{
-		async submitDiscuss(event) {
+		async submitDiscuss() {
 			const text = this.content;
 			if (!text || /^\s*$/.test(text)) {
 				return this.$messageBox("发表评论", "您还没有写评论呢", "error");

@@ -1,25 +1,25 @@
 <!--suppress XmlDuplicatedId -->
 <template>
-<header :style="optionalStyle">
+<header :class="optionalClass">
 	<!-- 小屏幕折叠状态 -->
-	<nav id="top-nav" v-if="collapse">
-		<div class="content">
+	<div id="top-nav" v-if="collapse">
+		<nav class="content">
 			<div></div>
 			<router-link to="/" class="logo" title="花了5分钟画的logo，点击回到首页"/>
 			<div class="button" @click="showMenu=true"><i class="fas fa-bars"></i></div>
-		</div>
-	</nav>
+		</nav>
+	</div>
 
 	<!-- 展开状态 -->
-	<nav id="top-nav" v-else>
-		<div class="content">
-			<div class="flex center-align compact">
+	<div id="top-nav" v-else>
+		<nav class="content">
+			<div class="nav-item-group">
 				<router-link to="/" class="logo" title="花了5分钟画的logo，点击回到首页"/>
 				<router-link to="/welcome" class="block fold">欢迎页</router-link>
 				<!--<a class="block fold" href="/about">关于</a>-->
 			</div>
 
-			<div class="flex center-align compact" v-if="user">
+			<div class="nav-item-group" v-if="user">
 				<img :src="'/image/' + user.head" class='head' title='别看了，不支持换头像'>
 				<h3 class='user-name'>{{user.name}}</h3>
 				<router-link v-if="user.id===1" class='block' to='/console'>管理</router-link>
@@ -30,8 +30,8 @@
 				<router-link class='nav-item' to='/console'>管理</router-link>
 				<router-link class="nav-item" to="/login">登录</router-link>
 			</div>
-		</div>
-	</nav>
+		</nav>
+	</div>
 
 	<!-- 最下面的大图 -->
 	<div id="banner" v-if="banner"></div>
@@ -39,19 +39,15 @@
 </template>
 
 <script>
-import apis from "../apis";
+import api from "../apis";
 import Vuex from "vuex";
 
 export default {
 	name: "TopNav",
 	props: {
-		background: {
+		optionalClass: {
 			type: String,
-			default: "none",
-		},
-		backgroundAttach:{
-			type: String,
-			default: "scroll",
+			default: null,
 		},
 		banner: {
 			type: Boolean,
@@ -65,11 +61,6 @@ export default {
 		};
 	},
 	computed: {
-		optionalStyle() {
-			return {
-				"--background": "url(" + this.background + ") " + this.backgroundAttach,
-			};
-		},
 		...Vuex.mapState(["user"]),
 	},
 	methods: {
@@ -116,24 +107,15 @@ export default {
 		}
 	}
 
-	&::before {
-		background: var(--background, none);
-		background-size: cover;
-	}
 }
 
 #banner {
 	height: 180px;
 	width: 100%;
-	background: var(--background, none);
+
 	@media screen and (min-width: 768px) {
 		margin-bottom: 3rem;
 	}
-}
-
-#banner, #top-nav::before {
-	background-position: center 0;
-	background-size: cover;
 }
 
 .menu {

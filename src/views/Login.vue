@@ -1,6 +1,5 @@
 <template>
-<framework background="/static/img/login-bkg.jpg"
-		   background-attach="fixed"
+<framework optionalClass="login-header"
 		   :show-footer="false">
 	<main id="login-view">
 		<div class="filter-container">
@@ -39,41 +38,6 @@ export default {
 <style scoped lang="less">
 @import "../css/ToBeImpoert";
 
-#login-view {
-	width: 100%;
-	height: 100%;
-
-	background-size: cover;
-	background-image: url("/static/img/login-bkg.jpg");
-
-	@media screen {
-		@media (min-width: @length-screen-mobile) {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-		}
-		@media (min-width: @length-screen-pad) {
-			justify-content: flex-end;
-			padding: 0 10%;
-		}
-		@media (min-width: @length-screen-wide) {
-			padding: 0 13%;
-		}
-	}
-}
-
-.filter-container{
-	.glass;
-	.glass.blur(4px);
-
-	box-shadow: rgba(50, 50, 50, .6) 0 0 5px 2px;
-
-	&::before {
-		background: url("/static/img/login-bkg.jpg") fixed;
-		background-size: cover;
-	}
-}
-
 form {
 	position: relative;
 	color: #fffafa;
@@ -91,6 +55,60 @@ form {
 	@media screen and (min-width: @length-screen-mobile) {
 		width: 25rem;
 		padding-top: 2rem;
+	}
+}
+</style>
+
+<style lang="less">
+@import "../css/ToBeImpoert";
+
+#login-view {
+	width: 100%;
+	height: 100%;
+
+	background-size: cover;
+	background-image: url("../assets/login-bkg.jpg");
+
+	@media screen {
+		@media (min-width: @length-screen-mobile) {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		@media (min-width: @length-screen-pad) {
+			justify-content: flex-end;
+			padding: 0 10%;
+		}
+		@media (min-width: @length-screen-wide) {
+			padding: 0 13%;
+		}
+	}
+}
+
+.login-header {
+	& .content {
+		color: white;
+		background-color: rgba(50, 50, 50, 0.3) !important;
+	}
+	& #banner, #top-nav::before {
+		background: url("../assets/login-bkg.jpg") fixed;
+		background-size: cover;
+	}
+}
+
+.filter-container{
+	.glass;
+	.glass.blur(4px);
+
+	margin-top: 3rem;
+	box-shadow: rgba(0, 0, 0, .6) 0 0 5px 4px;
+
+	&::before {
+		background: url("../assets/login-bkg.jpg") fixed;
+		background-size: cover;
+	}
+	@media screen and (min-width: @length-screen-mobile) {
+		margin-top: 0;
 	}
 }
 </style>

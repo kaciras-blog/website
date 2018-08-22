@@ -1,14 +1,17 @@
 <template>
-<div class="flex vertical margin-vert">
+<div>
 
-	<div class="flex margin-horiz">
-		<a class="primary button" @click="newArticle()"><i class="fa fa-edit"></i>新文章</a>
+	<div class="buttons">
+		<button class="primary" @click="newArticle"><i class="fa fa-edit"></i>新文章</button>
 	</div>
 
 	<div class="panel">
 		<span class="flex center-content" v-if="allLoaded && articles.length===0">没有找到文章,去写一篇吧~</span>
 
-		<div class="flex segment margin-horiz" v-for="A in articles">
+		<div class="segment"
+			 :key="A.id"
+			 v-for="A in articles">
+
 			<img class="cover-lite" :src="'/image/' + A.cover">
 			<div class="flex vertical expansion between">
 				<div class="flex margin-horiz">
@@ -16,7 +19,7 @@
 					<h3 class="compact">{{A.title}}</h3>
 				</div>
 				<div class="flex margin">
-					<span v-for="C in A.categories" class="tag">{{C.name}}</span>
+					<span class="tag" v-for="C in A.categories">{{C.name}}</span>
 				</div>
 				<div class="flex margin-horiz minor-text">
 					<span><i class="far fa-edit"></i>{{A.create}}</span>
@@ -31,21 +34,7 @@
 			</div>
 		</div>
 
-		<div v-if="loading" class="sk-fading-circle">
-			<div class="sk-circle1 sk-circle"></div>
-			<div class="sk-circle2 sk-circle"></div>
-			<div class="sk-circle3 sk-circle"></div>
-			<div class="sk-circle4 sk-circle"></div>
-			<div class="sk-circle5 sk-circle"></div>
-			<div class="sk-circle6 sk-circle"></div>
-			<div class="sk-circle7 sk-circle"></div>
-			<div class="sk-circle8 sk-circle"></div>
-			<div class="sk-circle9 sk-circle"></div>
-			<div class="sk-circle10 sk-circle"></div>
-			<div class="sk-circle11 sk-circle"></div>
-			<div class="sk-circle12 sk-circle"></div>
-		</div>
-
+		<sk-fading-circle v-if="loading"></sk-fading-circle>
 	</div>
 </div>
 </template>
@@ -54,22 +43,16 @@
 import api from "../apis";
 import pagerButtons from "../components/ButtonPager";
 
-function loadArticles() {
-	this.loading = true;
-	const len = this.articles.length;
-
-	api.article.getList(0, len === 0 ? 0 : list[len - 1]["id"], 10, "ALL")
-		.then(r => {
-			this.articles = r;
-			this.allLoaded = r.length === 0;
-			this.loading = false;
-		})
-		.catch(err => console.log(err));
-}
-
 export default {
+	name: "ArticleConsole",
 	components: {pagerButtons},
-	name: "article-page",
+	data() {
+		return {
+			loading: true,
+			allLoaded: false,
+			articles: [],
+		};
+	},
 	methods: {
 		editArticle(aid) {
 			api.draft.createFromPost(aid)
@@ -79,26 +62,40 @@ export default {
 		deleteArticle(id) {
 			api.article.deleteOne(id)
 				.then(() => deleteOn(this.articles, a => a.id === id))
-				.catch(err => this.$messageBox("删除文章", errMsg(err), "error"));
+				.catch(err => this.$dialog.messageBox({
+					title: "删除文章",
+					type: "error",
+					content: errMsg(err),
+				}));
 		},
 		newArticle() {
 			api.draft.createNew()
 				.then(id => window.location.href = "/edit/" + id)
 				.catch(err => console.log(err));
 		},
-		loadArticles,
-	},
-	data() {
-		return {
-			loading: true,
-			allLoaded: false,
-			articles: [],
-		};
+		loadArticles() {
+			this.loading = true;
+			const len = this.articles.length;
+
+			api.article.getList(0, len === 0 ? 0 : this.articles[len - 1]["id"], 10, "ALL")
+				.then(r => {
+					this.articles = r;
+					this.allLoaded = r.length === 0;
+					this.loading = false;
+				})
+				.catch(err => this.$dialog.messageBox({
+					title: "加载文章失败",
+					type: "error",
+					content: "原因：" + err,
+				}));
+		},
 	},
 	conponents: {
 		pagerButtons,
 	},
-	created: loadArticles,
+	created() {
+		this.loadArticles();
+	},
 };
 </script>
 
@@ -108,5 +105,9 @@ export default {
 	background-color: #ed575a;
 	color: whitesmoke;
 	padding: .2rem .3rem;
+}
+
+.buttons {
+	margin-bottom: 1rem;
 }
 </style>

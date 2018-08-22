@@ -1,6 +1,11 @@
 import axios from "axios";
 import * as utils from "./utils";
 
+axios.defaults.timeout = 10000;
+axios.defaults.xsrfCookieName = "CSRF-Token";
+axios.defaults.xsrfHeaderName = "X-CSRF-Token";
+axios.defaults.withCredentials = true;
+
 const API_SERVER = "https://localhost:2375";
 
 const mainServer = axios.create({

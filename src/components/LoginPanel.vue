@@ -1,5 +1,5 @@
 <template>
-<form class="flex vertical margin-vert" @keyup.13="login">
+<form @keyup.13="login">
 	<h1 class="center segment">登录</h1>
 
 	<label for="name">用户名:</label>
@@ -14,15 +14,15 @@
 
 	<span class="text-warning center">{{message}}</span>
 
-	<div class="center">
-		<button type="button" class="primary square border" @click="login">确定</button>
-		<button type="button" class="square border" @click="switchPanel">注册<i class="fa fa-arrow-right"></i></button>
+	<div class="buttons">
+		<button type="button" class="lightly" @click="login">确定</button>
+		<button type="button" class="lightly" @click="switchPanel">注册<i class="fa fa-arrow-right"></i></button>
 	</div>
 </form>
 </template>
 
 <script>
-import apis from "../apis";
+import api from "../apis";
 import {pageReturn, errMsg} from "../utils";
 
 export default {
@@ -42,7 +42,7 @@ export default {
 			apis.session.login(this.form).then(pageReturn).catch(err => this.message = errMsg(err));
 		},
 		switchPanel() {
-			this.$emit("switch-panel", "signupPanel");
+			this.$emit("switch-panel", "SignupPanel");
 			// this.$messageBox("别注册了", "个人博客你注册干嘛？\n评论的话匿名的就好")
 		},
 	},
@@ -74,5 +74,16 @@ label {
 	font-size: 1.1em;
 	color: #ff646c;
 	height: 1em;
+}
+
+.buttons{
+	grid-column: ~"1/3";
+	display: flex;
+	& > * {
+		flex: 1;
+	}
+	& > *:not(:last-child) {
+		margin-right: 1rem;
+	}
 }
 </style>
