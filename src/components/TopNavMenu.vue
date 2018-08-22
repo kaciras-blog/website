@@ -15,8 +15,8 @@
 
 <script>
 export default {
-	name: "TopNavMenu"
-}
+	name: "TopNavMenu",
+};
 </script>
 
 <style scoped>

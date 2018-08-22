@@ -26,10 +26,10 @@
 </template>
 
 <script>
-import api from "../../apis/Api.js";
+import api from "../apis";
 import discuzEditor from "./DiscuzEditor.vue";
 import discussion from "./Discussion.vue";
-import pagerButtons from "../../component/PagerButtons.vue";
+import pagerButtons from "./ButtonPager.vue";
 
 export default {
 	name: "discuss-panel",

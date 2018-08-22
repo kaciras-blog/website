@@ -22,7 +22,7 @@ export default {
 
 	#bottom-footer {
 		width: 100%;
-		margin-top: 2rem;
+		margin-top: 4rem;
 		color: #eee;
 		background-color: #303030;
 		padding: 1rem;

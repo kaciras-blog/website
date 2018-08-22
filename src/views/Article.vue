@@ -21,7 +21,7 @@
 import DiscussPanel from "../components/DiscussPanel";
 import ArticleView from "../components/ArticleView";
 import apis from "../apis";
-import {scrollToElementStart, extendMarkdownConvert, getUrlPathPart} from "../utils";
+import {scrollToElementStart, getUrlPathPart} from "../utils";
 import $ from "jquery";
 
 function gotoTop(button, minHeight, speed) {

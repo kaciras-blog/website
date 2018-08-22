@@ -32,7 +32,8 @@
 </template>
 
 <script>
-import api from "../../apis/Api.js";
+import api from "../apis";
+import Vuex from "vuex";
 
 export default {
 	name: "discuz-editor",

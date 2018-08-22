@@ -1,5 +1,14 @@
 @import "Variables";
 
+html.full-screen {
+	height: 100%;
+	overflow: hidden;
+
+	& body, #app {
+		height: 100%;
+		width: 100%;
+	}
+}
 
 .panel {
 	border: solid 1px @color-border;
@@ -16,8 +25,8 @@
 }
 
 .segment:not(:last-child) {
-	margin-bottom: 1em;
-	padding-bottom: 1em;
+	margin-bottom: 1.5rem;
+	padding-bottom: 1.5rem;
 	border-bottom: solid 1px @color-border;
 }
 
@@ -26,4 +35,35 @@ h1, h2, h3, h4, h5, h6 {
 		border-left: 8px solid @color-head-padding;
 		padding-left: 10px;
 	}
+}
+
+.input, input {
+	outline: none;
+	border: solid 1px @color-border;
+	border-radius: 6px;
+	color: inherit;
+	background: transparent;
+	padding: .5em;
+	min-width: 0; //谷歌浏览器默认有一个最小宽度，这里给他去掉
+
+	&:not([readonly]):hover {
+		.input-highlight-hover();
+	}
+	&:not([readonly]):focus {
+		.input-highlight-focus();
+	}
+	&[type=color] {
+		cursor: pointer;
+		height: 2rem;
+	}
+}
+
+.input-highlight-hover() {
+	border: solid 1px lighten(@color-input-active, 16%);
+	box-shadow: 0 0 4px lighten(@color-input-active, 20%);
+}
+
+.input-highlight-focus() {
+	border: solid 1px @color-input-active;
+	box-shadow: 0 0 4px lighten(@color-input-active, 12%);
 }

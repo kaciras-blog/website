@@ -1,27 +1,30 @@
 <template>
-	<div id="index-page">
-		<main>
-			<h1 class='segment' v-if="categoryPath">
-				<a href='/index' target='_self'>全部文章</a>
-				<a target='_self'
-				   :key="category.id"
-				   v-for="category of excludeLast(categoryPath)"
-				   :href="'/index?category=' + category.id">&gt; {{category.name}}</a>
-				<span>&gt; {{categoryPath[categoryPath.length-1].name}}</span>
-			</h1>
-			<h1 class='segment' v-else>全部文章</h1>
+	<framework background="/static/img/index-banner.jpg"
+			   :banner="true">
+		<div id="index-page">
+			<main>
+				<h1 class='segment' v-if="categoryPath">
+					<a href='/index' target='_self'>全部文章</a>
+					<a target='_self'
+					   :key="category.id"
+					   v-for="category of excludeLast(categoryPath)"
+					   :href="'/index?category=' + category.id">&gt; {{category.name}}</a>
+					<span>&gt; {{categoryPath[categoryPath.length-1].name}}</span>
+				</h1>
+				<h1 class='segment' v-else>全部文章</h1>
 
-			<article-preview :key="article.id"
-							 :item="article"
-							 v-for="article in articles">
-			</article-preview>
+				<article-preview :key="article.id"
+								 :item="article"
+								 v-for="article of articles">
+				</article-preview>
 
-			<scroll-pager :options="pagerConfig"
-						  @load-page="loadPage">
-			</scroll-pager>
-		</main>
-		<aside-panel></aside-panel>
-	</div>
+				<scroll-pager :options="pagerConfig"
+							  @load-page="loadPage">
+				</scroll-pager>
+			</main>
+			<aside-panel></aside-panel>
+		</div>
+	</framework>
 </template>
 
 <script>
@@ -75,7 +78,7 @@ export default {
 
 			try {
 				const res = await apis.article.getList(category, index, this.pageSize);
-				[].push.apply(this.articles, res);
+				this.articles.push.apply(this.articles, res);
 				task.complete(res.length < this.pageSize);
 			} catch (e) {
 				return task.error(e);
@@ -98,8 +101,12 @@ export default {
 		align-items: flex-start;
 
 		@media screen {
-			@media (min-width: @length-screen-mobile) {max-width: 90%}
-			@media (min-width: @length-screen-wide) {max-width: 82%}
+			@media (min-width: @length-screen-mobile) {
+				max-width: 90%
+			}
+			@media (min-width: @length-screen-wide) {
+				max-width: 82%
+			}
 		}
 		margin: 0 auto;
 

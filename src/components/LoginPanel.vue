@@ -1,27 +1,24 @@
 <template>
-	<form class="flex vertical margin-vert" @keyup.13="login()">
-		<h1 class="center compact">登录</h1>
-		<hr>
-		<label>
-			<span>用户名:</span>
-			<input v-model="form.name" required autofocus>
-		</label>
-		<label>
-			<span>密码:</span>
-			<input v-model="form.password" type="password" required>
-		</label>
+<form class="flex vertical margin-vert" @keyup.13="login">
+	<h1 class="center segment">登录</h1>
 
-		<div class="flex center-content">
-			<label class="check-box"><input v-model="form.remenber" type="checkbox"><span>保持登录</span></label>
-		</div>
+	<label for="name">用户名:</label>
+	<input id="name" v-model="form.name" required autofocus>
 
-		<span class="text-warning">{{message}}</span>
+	<label for="password">密码:</label>
+	<input id="password" v-model="form.password" type="password" required>
 
-		<div class="flex margin momo">
-			<button type="button" class="primary square" @click="login()">确定</button>
-			<button type="button" class="square" @click="switchPanel()">注册<i class="fa fa-arrow-right"></i></button>
-		</div>
-	</form>
+	<div class="center">
+		<label class="check-box"><input v-model="form.remenber" type="checkbox"><span>保持登录</span></label>
+	</div>
+
+	<span class="text-warning center">{{message}}</span>
+
+	<div class="center">
+		<button type="button" class="primary square border" @click="login">确定</button>
+		<button type="button" class="square border" @click="switchPanel">注册<i class="fa fa-arrow-right"></i></button>
+	</div>
+</form>
 </template>
 
 <script>
@@ -40,7 +37,7 @@ export default {
 			},
 		};
 	},
-	methods:{
+	methods: {
 		login() {
 			apis.session.login(this.form).then(pageReturn).catch(err => this.message = errMsg(err));
 		},
@@ -51,3 +48,31 @@ export default {
 	},
 };
 </script>
+
+<style scoped lang="less">
+form {
+	display: grid;
+	grid-template-columns: 4em 1fr;
+	grid-column-gap: .5em;
+	grid-row-gap: 1em;
+}
+
+.center {
+	text-align: center;
+	grid-column: ~"1/3";
+}
+
+label {
+	align-self: center;
+	justify-self: right;
+	& + input {
+		grid-column-start: 2;
+	}
+}
+
+.text-warning {
+	font-size: 1.1em;
+	color: #ff646c;
+	height: 1em;
+}
+</style>

@@ -1,18 +1,19 @@
 <template>
-	<div class="article-preview">
-		<a :href="'/article/' + item.id" target="_blank">
+	<div class="article-preview segment">
+		<router-link :to="'/article/' + item.id">
 			<img :src="'/image/' + item.cover" class="cover-small">
-		</a>
+		</router-link>
 
-		<a :href="'/article/' + item.id" target="_Blank"><h2 class="compact">{{item.title}}</h2></a>
+		<router-link :to="'/article/' + item.id" class="title">{{item.title}}</router-link>
 
 		<span>{{item.summary}}</span>
 		<div>关键词：<span class="keyword" v-for="kw in item.keywords" :key="kw">{{kw}}</span></div>
 
 		<div class="tag-group">
-			<a v-for="cat in reserve(item.categoryPath)"
-			   :key="cat.id"
-			   :href="'/index?category=' + cat.id">{{cat.name}}</a>
+			<router-link v-for="cat in reserve(item.categoryPath)"
+						 :key="cat.id"
+						 :to="'/?category=' + cat.id">{{cat.name}}
+			</router-link>
 		</div>
 
 		<div class="minor-text">
@@ -37,7 +38,7 @@
 
 <script>
 export default {
-	name: "article-preview",
+	name: "ArticlePreview",
 	props: ["item"],
 	filters: {
 		shortTime(article) {
@@ -142,5 +143,12 @@ export default {
 	.preview-footer {
 		align-items: center;
 		margin: 1em 0;
+	}
+</style>
+
+<style scoped lang="less">
+	.title {
+		font-size: 1.5em;
+		font-weight: 500;
 	}
 </style>

@@ -1,0 +1,96 @@
+@import "Variables";
+
+.button, button {
+	font-size: 1rem;
+	cursor: pointer;
+	padding: .3rem 1.2rem;
+	text-align: center;
+	border: none;
+	border-radius: @length-button-radius;
+
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+
+	.btn-style("base");
+
+	&.square {
+		border-radius: 0;
+	}
+
+	&.icon {
+		font-size: 1.3rem;
+		padding: .3rem;
+		border-radius: 0;
+	}
+
+	&.transparent {
+		color: @color-text;
+		background: none;
+		&:hover{
+			color: @color-text  + #303030;
+		}
+	}
+
+	&.dangerous {
+		.btn-style("dangerous");
+	}
+	&.primary {
+		.btn-style("primary");
+	}
+	&.minor {
+		.btn-style("minor");
+	}
+
+	&:focus{
+		outline: 0;
+	}
+}
+
+.btn-style(@name) {
+	@ref: "color-button-@{name}";
+	@reft: "color-button-@{name}-text";
+
+	&.border {
+		background-color: transparent;
+		color: @@ref;
+		border: solid 1px @@ref;
+		transition: ease-in-out .1s;
+
+		&:hover {
+			color: @@reft;
+			background-color: @@ref;
+		}
+		&:active {
+			background-color: @@ref + #0a0a0a;
+		}
+	}
+
+	&.glass {
+		background-color: transparent;
+		border: solid 1px fadeout(@@ref, 60%);
+		color: fadeout(@@ref, 20%);
+
+		&:hover {
+			background-color: fadeout(@@ref, 95%);
+			color: @@ref;
+			border-color: @@ref;
+		}
+		&:active {
+			background-color: fadeout(@@ref, 95%);
+		}
+	}
+
+	background-color: @@ref;
+	color: @@reft;
+
+	&:hover {
+		background-color: @@ref + #0a0a0a;
+		color: @@reft;
+	}
+	&:active {
+		background-color: @@ref - #080808;
+		color: @@reft;
+	}
+}
