@@ -113,8 +113,9 @@ export default {
 			//收到的数据对象可能不包含category字段，需要动态添加
 			api.misc.uploadImageFile().then(url => this.$set(this.category, "background", url));
 		},
-		deleteCategory(sub) {
-			api.category.deleteOne(sub.id).then(() => getSubCategories(id).then(r => this.subCategories = r));
+		async deleteCategory(sub) {
+			await api.category.deleteOne(sub.id);
+			api.category.getChildren(this.$router.params.id).then(r => this.subCategories = r);
 		},
 	},
 	watch: {

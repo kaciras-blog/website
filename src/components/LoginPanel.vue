@@ -39,7 +39,7 @@ export default {
 	},
 	methods: {
 		login() {
-			apis.session.login(this.form).then(pageReturn).catch(err => this.message = errMsg(err));
+			api.session.login(this.form).then(pageReturn).catch(err => this.message = errMsg(err));
 		},
 		switchPanel() {
 			this.$emit("switch-panel", "SignupPanel");

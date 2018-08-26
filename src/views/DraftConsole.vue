@@ -35,6 +35,7 @@
 
 <script>
 import api from "../apis";
+import {deleteOn} from "../utils";
 
 async function loadDrafts() {
 	if (this.allLoaded) {

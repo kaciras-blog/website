@@ -41,7 +41,7 @@ export default {
 		return {
 			submiting: false,
 			content: "",
-			config: {}
+			config: {},
 		};
 	},
 	computed: Vuex.mapState(["user"]),
@@ -49,16 +49,16 @@ export default {
 		async submitDiscuss() {
 			const text = this.content;
 			if (!text || /^\s*$/.test(text)) {
-				return this.$messageBox("发表评论", "您还没有写评论呢", "error");
+				return this.$dialog.messageBox("发表评论", "您还没有写评论呢", "error");
 			}
 
 			this.submiting = true;
 			try{
-				await api.discussion.add(getUrlPathPart(-1), text);
+				await api.discussion.add(this.$router.params.id, text);
 				this.content = "";
 				this.$emit("discussion-added");
 			} catch(e) {
-				this.$messageBox("发表评论", errMsg(e), "error");
+				this.$dialog.messageBox("发表评论", errMsg(e), "error");
 			}
 			this.submiting = false;
 		},

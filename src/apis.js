@@ -56,7 +56,6 @@ _default.article = {
 		},
 	}).then(r => r.data),
 
-	getRecommendations: () => mainServer.get("/recommendations/articles/").then(r => r.data),
 
 	deleteOne: (id) => mainServer.put(`/articles/${id}/deletion`, null, {params: {value: true}}),
 
@@ -194,6 +193,18 @@ _default.account = {
 	 * @return Promise
 	 */
 	signup: (data) => accountServer.post("/accounts", data),
+};
+
+_default.recommend = {
+
+	getHotArticles: () => mainServer.get("/recommendation/articles").then(r => r.data),
+
+	swiper: {
+		get: () => mainServer.get("/recommendation/swiper").then(r => r.data),
+
+		set: (list) => mainServer.put("/recommendation/swiper", list),
+	},
+
 };
 
 export default _default;

@@ -42,6 +42,7 @@
 <script>
 import api from "../apis";
 import pagerButtons from "../components/ButtonPager";
+import {deleteOn} from "../utils";
 
 export default {
 	name: "ArticleConsole",

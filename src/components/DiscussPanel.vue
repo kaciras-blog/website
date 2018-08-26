@@ -13,8 +13,8 @@
 		<discussion v-for="item of discussions"
 					:key="item.id"
 					:value="item"
-					@item-removed="loadPageBackground(pageIndex)"
-		/>
+					@item-removed="loadPageBackground(pageIndex)">
+		</discussion>
 
 		<!-- 分页按钮 -->
 		<pager-buttons v-if="totalCount > pageSize"
@@ -30,6 +30,7 @@ import api from "../apis";
 import discuzEditor from "./DiscuzEditor.vue";
 import discussion from "./Discussion.vue";
 import pagerButtons from "./ButtonPager.vue";
+import {scrollToElementStart, scrollToElementEnd} from "../utils";
 
 export default {
 	name: "discuss-panel",
@@ -43,17 +44,17 @@ export default {
 	},
 	methods: {
 		loadPageBackground(index) {
-			return api.discuss.getList(getUrlPathPart(2), index * this.pageSize, this.pageSize).then(data =>{
+			api.discuss.getList(this.$router.params.id, index * this.pageSize, this.pageSize).then(data =>{
 				this.discussions = data.list;
 				this.pageIndex = index;
 				this.totalCount = data.total;
 			});
 		},
 		loadPage(index) {
-			this.loadPageBackground(index).then(() => scrollToElementStart($("#discuss")));
+			this.loadPageBackground(index).then(() => scrollToElementStart("discuss"));
 		},
 		showLast() {
-			this.loadPageBackground(Math.floor(this.totalCount / this.pageSize)).then(() => scrollToElementEnd($("#discuss")));
+			this.loadPageBackground(Math.floor(this.totalCount / this.pageSize)).then(() => scrollToElementEnd("discuss"));
 		},
 	},
 	components: {

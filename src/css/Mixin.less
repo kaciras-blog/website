@@ -32,23 +32,24 @@
 	margin-left: -(@h / 2);
 }
 
-// 居中, 不确定尺寸
-.center-absolute-auto() {
-	position: absolute;
-	top: 0;
+.full-vertex() {
 	left: 0;
 	right: 0;
+	top: 0;
 	bottom: 0;
+}
+
+// 居中, 不确定尺寸
+.center-absolute-auto() {
+	.full-vertex;
+	position: absolute;
 	margin: auto;
 }
 
 // 遮罩层, 全屏遮罩、区域遮罩
 .overlay-fixed() {
+	.full-vertex;
 	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
 }
 
 // 扩展点击区域

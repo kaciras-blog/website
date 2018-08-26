@@ -26,7 +26,7 @@ export default {
 		};
 	},
 	created () {
-		apis.article.getRecommendations().then(hots => this.hotArticles = hots);
+		api.recommend.getHotArticles().then(hots => this.hotArticles = hots);
 	},
 };
 </script>

@@ -4,6 +4,7 @@ import Article from './views/Article';
 import Login from './views/Login';
 import Index from "./views/Index";
 import Error from "./views/Error";
+import Welcome from "./views/Welcome";
 
 import Console from "./views/Console";
 import ArticleConsole from "./views/ArticleConsole";
@@ -21,6 +22,11 @@ export default new Router({
 			path: '/',
 			name: 'index',
 			component: Index,
+		},
+		{
+			path: "/welcome",
+			naem: "welcome",
+			component: Welcome,
 		},
 		{
 			path: '/login',

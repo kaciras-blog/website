@@ -46,7 +46,7 @@ export default {
 	},
 	methods: {
 		signup() {
-			apis.user.signup(this.form)
+			api.user.signup(this.form)
 				.then(pageReturn)
 				.catch(err => this.message = errMsg(err));
 		},
@@ -54,7 +54,7 @@ export default {
 			this.$emit("switch-panel", "LoginPanel");
 		},
 		updateCaptcha() {
-			this.captcha = apis.captchaAddress();
+			this.captcha = api.captchaAddress();
 			this.form.captcha = "";
 			this.$refs.captchaInput.focus();
 		},

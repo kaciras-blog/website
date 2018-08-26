@@ -13,10 +13,11 @@
 	<!-- 展开状态 -->
 	<div id="top-nav" v-else>
 		<nav class="content">
+
+			<!-- 左边 -->
 			<div class="nav-item-group">
-				<router-link to="/" class="logo" title="花了5分钟画的logo，点击回到首页"/>
-				<router-link to="/welcome" class="block fold">欢迎页</router-link>
-				<!--<a class="block fold" href="/about">关于</a>-->
+				<router-link to="/welcome" class="logo" title="花了5分钟画的logo，点击回到首页"/>
+				<router-link to="/" class="block fold">博客</router-link>
 			</div>
 
 			<div class="nav-item-group" v-if="user">
@@ -64,8 +65,8 @@ export default {
 		...Vuex.mapState(["user"]),
 	},
 	methods: {
-		logout() {
-			apis.session.logout();
+		async logout() {
+			await api.session.logout();
 			this.$store.commit("clearUser");
 		},
 	},

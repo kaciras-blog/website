@@ -18,7 +18,7 @@
 export default {
 	name: "ArticleView",
 	props: ["article"],
-	methods:{
+	filters:{
 		renderMarkdown(text) {
 
 		},

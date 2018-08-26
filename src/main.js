@@ -16,7 +16,9 @@ Vue.component(TopNav.name, TopNav);
 Vue.component(PageFooter.name, PageFooter);
 Vue.component(SkFadingCircle.name, SkFadingCircle);
 Vue.component(Framework.name, Framework);
+
 Vue.config.productionTip = false;
+Vue.config.performance = true;
 
 new Vue({
 	router, store,
