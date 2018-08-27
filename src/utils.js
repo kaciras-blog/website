@@ -1,4 +1,5 @@
 import Velocity from "velocity-animate";
+import _export from "./markdown/utils";
 
 /**
  * 转义HTML文本中的特殊字符
@@ -109,6 +110,24 @@ export function deleteOn(array, predicate) {
 	for (let i = 0; i < array.length; i++) {
 		if (predicate(array[i])) array.splice(i--, 1);
 	}
+}
+
+/**
+ * 使用src对象中的值更新dest对象中相应的字段，该方法与
+ * Object.assign不同之处在于不会在目标对象中添加新字段，仅复制
+ * 目标对象已存在的字段。
+ *
+ * @param src 源对象
+ * @param dest 目标对象
+ * @return {*} 目标对象
+ */
+export function assignUpdate(src, dest) {
+	for (let k in dest) {
+		if (dest.hasOwnProperty(k) && src.hasOwnProperty(k)) {
+			dest[k] = src[k];
+		}
+	}
+	return dest;
 }
 
 /**
