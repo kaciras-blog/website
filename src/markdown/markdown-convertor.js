@@ -1,6 +1,6 @@
 import MarkdownIt from "markdown-it";
 import hljs from "highlight.js";
-import x from "markdown-it-anchor";
+import Anchor from "markdown-it-anchor";
 
 function detail(state, startLine, endLine, silent) {
 	let pos = state.bMarks[startLine] + state.tShift[startLine];
@@ -24,8 +24,10 @@ const convertor = new MarkdownIt({
 		return "<pre class='hljs'><code>" + convertor.utils.escapeHtml(str) + "</code></pre>";
 	},
 });
-convertor.use(x, {
+convertor.use(Anchor, {
 	permalink: true,
+	permalinkClass: "fas fa-link header-anchor",
+	permalinkSymbol: "",
 });
 
-export default convertor.render;
+export default convertor;

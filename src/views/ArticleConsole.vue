@@ -71,7 +71,7 @@ export default {
 		},
 		newArticle() {
 			api.draft.createNew()
-				.then(id => window.location.href = "/edit/" + id)
+				.then(id => this.$router.push("/edit/" + id))
 				.catch(err => console.log(err));
 		},
 		loadArticles() {

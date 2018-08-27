@@ -1,5 +1,5 @@
 <template>
-<div>
+<div id="app">
 	<router-view></router-view>
 	<kx-dialog-container></kx-dialog-container>
 </div>

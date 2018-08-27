@@ -1,11 +1,11 @@
 <template>
-	<kx-dialog v-bind="config">
+	<kx-dialog @CloseButtonClicked="ok">
 		<h2 class="compact" slot="title">编辑描述信息</h2>
 		<div class="content">
-			<img alt="封面" :src="'/image/' + metadata.cover" @click="changeCover"/>
-			<input title="标题" v-model="metadata.title" class="title" placeholder="标题最多50个字"/>
-			<textarea v-model="metadata.summary" class="summary input" placeholder="摘要，别写太多"></textarea>
-			<input title="关键字" v-model="metadata.keywords" class="keywords" placeholder="关键字,空格隔开"/>
+			<img alt="封面" :src="'/image/' + cover" @click="changeCover"/>
+			<input title="标题" v-model="title" class="title" placeholder="标题最多50个字"/>
+			<textarea v-model="summary" class="summary input" placeholder="摘要，别写太多"></textarea>
+			<input title="关键字" v-model="keywords" class="keywords" placeholder="关键字,空格隔开"/>
 		</div>
 		<button class="primary" slot="footer-right" @click="ok">确定</button>
 	</kx-dialog>
@@ -16,19 +16,16 @@ import api from "../apis";
 
 export default {
 	name: "MetadataDialog",
-	props: ["data"],
+	props: ["mdata"],
 	data() {
-		return {
-			metadata: this.data.metadata,
-			config: { closeIcon: true},
-		};
+		return this.mdata;
 	},
 	methods: {
 		ok() {
-			this.$dialog.close(this.metadata);
+			this.$dialog.close(this.$data);
 		},
 		changeCover() {
-			api.misc.uploadImageFile().then(name => this.metadata.cover = name);
+			api.misc.uploadImageFile().then(name => this.cover = name);
 		},
 	},
 };

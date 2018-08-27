@@ -119,15 +119,6 @@ export default {
 	}
 }
 
-.menu {
-	position: absolute;
-	top: 3rem;
-	background-color: rgba(0, 0, 0, 0.2);
-	& > * {
-		border-bottom: solid 1px #c5c5c5;
-	}
-}
-
 .links > * {
 	border-left: solid 1px #c5c5c5;
 }
@@ -155,6 +146,17 @@ export default {
 		color: @color-text;
 		text-decoration: none;
 		background-color: rgba(255, 255, 255, 0.4);
+	}
+}
+</style>
+
+<style scoped lang="less">
+.menu {
+	position: absolute;
+	top: 3rem;
+	background-color: rgba(0, 0, 0, 0.2);
+	& > * {
+		border-bottom: solid 1px #c5c5c5;
 	}
 }
 </style>

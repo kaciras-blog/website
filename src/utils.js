@@ -1,5 +1,4 @@
 import Velocity from "velocity-animate";
-import _export from "./markdown/utils";
 
 /**
  * 转义HTML文本中的特殊字符

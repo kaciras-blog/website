@@ -5,6 +5,7 @@ import Login from './views/Login';
 import Index from "./views/Index";
 import Error from "./views/Error";
 import Welcome from "./views/Welcome";
+import ArticleEditor from "./views/ArticleEditor";
 
 import Console from "./views/Console";
 import ArticleConsole from "./views/ArticleConsole";
@@ -37,6 +38,11 @@ export default new Router({
 			path: '/article/:id',
 			name: 'article',
 			component: Article,
+		},
+		{
+			path: '/edit/:id',
+			name: 'edit',
+			component: ArticleEditor,
 		},
 		{
 			path: "/console",

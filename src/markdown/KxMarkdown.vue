@@ -1,70 +1,70 @@
 <template>
 <div class="markdown-editor">
-	<div class="flex momo compact">
-		<button class="minor icon" title="标题" @click="addHeader(2)">
+	<div class="menu">
+		<button class="minor icon filled" title="标题" @click="addHeader(2)">
 			<i class="fas fa-heading"></i>
 		</button>
-		<button class="minor icon" title="粗体" @click="switchWrapper('**', '**')">
+		<button class="minor icon filled" title="粗体" @click="switchWrapper('**', '**')">
 			<i class="fa fa-bold"></i>
 		</button>
-		<button class="minor icon" title="斜体" @click="switchWrapper('_', '_')">
+		<button class="minor icon filled" title="斜体" @click="switchWrapper('_', '_')">
 			<i class="fa fa-italic"></i>
 		</button>
-		<button class="minor icon" title="删除线" @click="switchWrapper('~~', '~~')">
+		<button class="minor icon filled" title="删除线" @click="switchWrapper('~~', '~~')">
 			<i class="fa fa-strikethrough"></i>
 		</button>
-		<button class="minor icon" title="行内代码" @click="switchWrapper('`', '`')">
+		<button class="minor icon filled" title="行内代码" @click="switchWrapper('`', '`')">
 			<i class="fa fa-code"></i>
 		</button>
-		<button class="minor icon" title="横线" @click="addNewLine('- - -')">
+		<button class="minor icon filled" title="横线" @click="addNewLine('- - -')">
 			<i class="fa fa-minus"></i>
 		</button>
-		<button class="minor icon" title="代码块" @click="addCode">
+		<button class="minor icon filled" title="代码块" @click="addCode">
 			<i class="far fa-file-code"></i>
 		</button>
-		<button class="minor icon" title="引用块" @click="addPrefixToLines('>')">
+		<button class="minor icon filled" title="引用块" @click="addPrefixToLines('>')">
 			<i class="fa fa-quote-left"></i>
 		</button>
-		<button class="minor icon" title="列表" @click="addPrefixToLines('* ')">
+		<button class="minor icon filled" title="列表" @click="addPrefixToLines('* ')">
 			<i class="fas fa-list-ul"></i>
 		</button>
-		<button class="minor icon" title="插入链接" @click="addLink">
+		<button class="minor icon filled" title="插入链接" @click="addLink">
 			<i class="fa fa-link"></i>
 		</button>
-		<button class="minor icon" title="插入图片" @click="addImage">
+		<button class="minor icon filled" title="插入图片" @click="addImage">
 			<i class="far fa-file-image"></i>
 		</button>
 
 		<!--TODO:视频支持-->
-		<button class="minor icon" title="插入视频" @click="addHeader(2)">
+		<button class="minor icon filled" title="插入视频" @click="addHeader(2)">
 			<i class="far fa-file-video"></i>
 		</button>
 
-		<button class="icon" title="双列视图" @click="viewModel=0">
+		<button class="icon filled" title="双列视图" @click="viewModel=0">
 			<i class="fas fa-columns"></i>
 		</button>
-		<button class="icon" title="Markdown视图" @click="viewModel=1">
+		<button class="icon filled" title="Markdown视图" @click="viewModel=1">
 			<i class="far fa-edit"></i>
 		</button>
-		<button class="icon" title="Html视图" @click="viewModel=2">
+		<button class="icon filled" title="Html视图" @click="viewModel=2">
 			<i class="fas fa-eye"></i>
 		</button>
-		<button class="primary icon" title="编辑器设置">
+		<button class="icon filled" title="编辑器设置">
 			<i class="fas fa-cog"></i>
 		</button>
-		<button class="primary icon" title="修改简介" @click="metadataDialog">
+		<button class="icon filled" title="修改简介" @click="metadataDialog">
 			<i class="far fa-address-card"></i>
 		</button>
-		<button class="primary icon" title="保存" @click="save(true)">
+		<button class="icon filled" title="保存" @click="save(true)">
 			<i class="far fa-save"></i>
 		</button>
-		<button class="primary icon" title="发布!" @click="publish">
+		<button class="icon filled" title="发布!" @click="publish">
 			<i class="far fa-paper-plane"></i>
 		</button>
 	</div>
 
 	<div class="editor-main">
-		<textarea id="textarea"
+		<textarea id="textarea" ref="textarea"
 				  class="text-view"
 				  v-show="viewModel!==2"
 				  :class="{ split:viewModel===0, single:viewModel===1 }"
@@ -72,8 +72,8 @@
 				  @keydown.9.prevent="inputTab"
 				  v-model="content">
 		</textarea>
-		<article id="preview"
-				 class="text-view preview"
+		<article id="preview" ref="preview"
+				 class="text-view preview markdown"
 				 v-show="viewModel!==1"
 				 :class="{ split:viewModel===0, single:viewModel===2 }"
 				 v-html="htmlText">
@@ -89,7 +89,6 @@ import textOps from "./TextOperations";
 import {assignUpdate} from "../utils";
 import convertHtml from "./markdown-convertor";
 import api from "../apis";
-import _ from "./assets/monokai-sublime.css";
 
 import AddLinkDialog from "./AddLinkDialog.vue";
 import MetadataDialog from "./MetadataDialog.vue";
@@ -147,10 +146,10 @@ export default {
 	data() {
 		return {
 			metadata: {
-				title: null,
-				cover: null,
-				keywords: null,
-				summary: null,
+				title: "",
+				cover: "",
+				keywords: "",
+				summary: "",
 			},
 			content: "",
 			articleId: null,
@@ -159,7 +158,7 @@ export default {
 	},
 	computed: {
 		htmlText() {
-			return convertHtml(this.content);
+			return convertHtml.render(this.content);
 		},
 	},
 	methods: {
@@ -172,7 +171,7 @@ export default {
 		},
 		async addLink() {
 			const res = await this.$dialog.show(AddLinkDialog.name, this.$data);
-			if(res)
+			if (res)
 				textOps.addLink.call(this, res.text, res.href);
 		},
 		addCode() {
@@ -181,8 +180,10 @@ export default {
 		publish() {
 			this.$dialog.show(selectCategoryDialog.name, null).then(publish.bind(this));
 		},
-		metadataDialog() {
-			this.$dialog.show(MetadataDialog.name, this.$data).then(data => this.metadata = data);
+		async metadataDialog() {
+			const res =  this.$dialog.show(MetadataDialog.name, {mdata: this.metadata});
+			if (res)
+				this.metadata = res;
 		},
 		addImage() {
 			api.misc.uploadImageFile()
@@ -196,11 +197,11 @@ export default {
 		addNewLine: textOps.addNewLine,
 	},
 	created() {
-		const id = this.$router.params.id;
-		if (!id) {
+		const draftId = this.$route.params.id;
+		if (!draftId) {
 			return; // 必须先创建草稿
 		}
-		api.draft.get(id).then(json => {
+		api.draft.get(draftId).then(json => {
 			if (!json.articleId && json.saveCount === 0) {
 				this.metadataDialog();
 			}
@@ -214,6 +215,8 @@ export default {
 </script>
 
 <style scoped lang="less">
+@import "../css/ToBeImpoert";
+
 // 编辑器页面的两个编辑框
 .text-view {
 	height: 100%;
@@ -240,10 +243,6 @@ export default {
 	float: right;
 }
 
-.markdown {
-	float: right;
-}
-
 .split {
 	width: 50%;
 	padding: 10px 20px 0 20px;
@@ -252,10 +251,20 @@ export default {
 .single {
 	display: block;
 	width: 100%;
-	padding: 20px 15% 0 15%;
+	padding: 20px 10% 0 10%;
 }
 
 .hidden {
 	display: none;
 }
+
+.menu {
+	display: flex;
+	justify-content: space-between;
+
+	& > button {
+		flex: 1 1 0;
+	}
+}
 </style>
+

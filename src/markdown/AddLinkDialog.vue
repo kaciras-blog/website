@@ -1,13 +1,18 @@
 <template>
-	<kx-dialog :closeIcon="true" @keyup.27="cancel">
-		<span slot="title"><i class="fa fa-link"></i>添加链接</span>
-		<form class="flex vertical" @keyup.13="ok">
-			<label>文字</label>
-			<input title="文字" v-model="form.text" :placeholder="form.href"/>
+	<kx-dialog :closeIcon="true"
+			   @CloseButtonClicked="cancel">
+
+		<h3 class="compact"
+			slot="title">添加链接</h3>
+
+		<form @keyup.13="ok" @keyup.27="cancel">
 			<label>链接地址</label>
-			<input title="链接地址" v-model="form.href" placeholder="地址不能为空" required/>
+			<input title="链接地址" v-model="href" placeholder="地址不能为空" required v-autofocus/>
+			<label>文字</label>
+			<input title="文字" v-model="text" :placeholder="href"/>
 		</form>
-		<button slot="footer-right" class="square" @click="ok">确定</button>
+
+		<button @click="ok">确定</button>
 	</kx-dialog>
 </template>
 
@@ -44,5 +49,13 @@ export default {
 	}
 	input:last-child {
 		margin-bottom: .5em;
+	}
+	form{
+		display: flex;
+		flex-direction: column;
+	}
+	button{
+		float: right;
+		margin-top: .5rem;
 	}
 </style>
