@@ -1,39 +1,34 @@
 <template>
 <div>
-
 	<div class="buttons">
 		<button class="primary" @click="newArticle"><i class="fa fa-edit"></i>新文章</button>
 	</div>
 
 	<div class="panel">
-		<span class="flex center-content" v-if="allLoaded && articles.length===0">没有找到文章,去写一篇吧~</span>
+		<div class="article segment" :key="A.id" v-for="A in articles">
 
-		<div class="segment"
-			 :key="A.id"
-			 v-for="A in articles">
-
-			<img class="cover-lite" :src="'/image/' + A.cover">
-			<div class="flex vertical expansion between">
-				<div class="flex margin-horiz">
-					<span class="pad-red" v-if="A.deleted">已删除</span>
-					<h3 class="compact">{{A.title}}</h3>
+			<img :src="'/image/' + A.cover">
+			<div>
+				<span class="red note" v-if="A.deleted">已删除</span>
+				<h3 class="compact">{{A.title}}</h3>
+			</div>
+			<div>
+				<div class="tag-group">
+					<span v-for="c in A.categoryPath" :key="c.id">{{c.name}}</span>
 				</div>
-				<div class="flex margin">
-					<span class="tag" v-for="C in A.categories">{{C.name}}</span>
-				</div>
-				<div class="flex margin-horiz minor-text">
-					<span><i class="far fa-edit"></i>{{A.create}}</span>
-					<span><i class="fas fa-sync"></i>{{A.update}}</span>
-					<span><i class="fa fa-eye"></i>{{A.viewCount}}</span>
-					<span><i class="fas fa-comment-dots"></i>{{A.discussionCount}}</span>
+				<div class="info minor-text">
+					<i class="far fa-edit" title="发表于"></i><time>{{A.create}}</time>
+					<i class="fas fa-sync" title="最后更新"></i><time>{{A.update}}</time>
+					<i class="fas fa-comment-dots" title="评论数"></i><span>{{A.discussionCount}}</span>
+					<i class="fa fa-eye" title="浏览数"></i><span>{{A.viewCount}}</span>
 				</div>
 			</div>
-			<div class="flex vertical margin-vert">
-				<a class="border primary square button" @click="editArticle(A.id)">修改</a>
-				<button class="border dangerous square" @click="deleteArticle(A.id)">删除</button>
-			</div>
+
+			<button @click="editArticle(A.id)">修改</button>
+			<button class="dangerous" @click="deleteArticle(A.id)">删除</button>
 		</div>
 
+		<span v-if="allLoaded && articles.length===0">没有找到文章,去写一篇吧~</span>
 		<sk-fading-circle v-if="loading"></sk-fading-circle>
 	</div>
 </div>
@@ -100,15 +95,54 @@ export default {
 };
 </script>
 
-<style scoped>
-.pad-red {
+<style scoped lang="less">
+.note {
 	border-radius: .3rem;
-	background-color: #ed575a;
-	color: whitesmoke;
-	padding: .2rem .3rem;
+	padding: .2em .3em;
+
+	&.red{
+		background-color: #ed575a;
+		color: whitesmoke;
+	}
+
+	& + h3 {
+		display: inline-block;
+		vertical-align: middle;
+	}
 }
 
-.buttons {
+.panel {
 	margin-bottom: 1rem;
+	margin-top: 1rem;
+}
+
+.article {
+	display: grid;
+	grid-template-areas: "img title btn-1"
+						 "img meta  btn-2";
+	grid-template-columns: 8rem 1fr auto;
+	grid-template-rows: 3rem 3rem;
+
+	& > img {
+		grid-area: img;
+	}
+	& > button:nth-of-type(1) {
+		grid-area: btn-1;
+		align-self: center;
+	}
+	& > button:nth-of-type(2) {
+		grid-area: btn-2;
+		align-self: center;
+	}
+}
+
+.info {
+	margin-top: .5rem;
+	& > i {
+		&:not(:first-of-type) {
+			margin-left: 1rem;
+		}
+		margin-right: .2rem;
+	}
 }
 </style>

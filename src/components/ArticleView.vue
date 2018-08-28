@@ -1,26 +1,28 @@
 <template>
 	<article class="plate">
 		<header class="title segment">
-			<span>{{article.title}}</span>
-			<p class="metadata">
-				<span>首发：{{article.create}}</span>
-				<span>最后更新: {{article.update}}</span>
+			<h1>{{title}}</h1>
+			<p>
+				<span>首发：{{create}}</span>
+				<span>最后更新: {{update}}</span>
 			</p>
-			<div class="metadata">关键词：
-				<span style="padding: 0 5px" v-for="kw in article.keywords" :key="kw">{{kw}}</span>
+			<div>关键词：
+				<span style="padding: 0 5px" v-for="kw in keywords" :key="kw">{{kw}}</span>
 			</div>
 		</header>
-		<div class="markdown tight segment">{{article.content | renderMarkdown}}</div>
+		<div class="markdown segment" v-html="contentHtml"></div>
 	</article>
 </template>
 
 <script>
+import convertor from "../markdown/markdown-convertor";
+
 export default {
 	name: "ArticleView",
-	props: ["article"],
-	filters:{
-		renderMarkdown(text) {
-
+	props: ["title", "create", "update", "keywords", "content"],
+	computed: {
+		contentHtml() {
+			return convertor.render(this.content);
 		},
 	},
 };

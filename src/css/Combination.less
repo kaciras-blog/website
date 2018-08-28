@@ -110,7 +110,6 @@ label.select-button {
 
 	& > * {
 		position: relative;
-		cursor: pointer;
 		border: solid 1px @color-tags;
 		padding: .2em .4em;
 
@@ -147,6 +146,7 @@ label.select-button {
 		&:hover {
 			color: @color-tag-background;
 			background-color: @color-tags;
+			text-decoration: none;
 			&:after {
 				border-top-color: @color-tags;
 				border-right-color: @color-tags;
@@ -223,6 +223,8 @@ ol.rank {
 
 	& > li {
 		counter-increment: index;
+		margin-bottom: .5em;
+
 		&:first-child:before{
 			background: @color-rank-pad;
 		}

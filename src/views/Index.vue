@@ -112,6 +112,13 @@ export default {
 
 	& > main {
 		flex-grow: 1;
+
+		& > h1 {
+			text-align: center;
+			@media screen and (min-width: @length-screen-mobile) {
+				text-align: left;
+			}
+		}
 	}
 
 	& > aside {
@@ -122,7 +129,7 @@ export default {
 		@media screen {
 			@media (min-width: @length-screen-pad) {
 				display: block;
-				margin-left: 3rem;
+				margin-left: 4rem;
 			}
 		}
 	}

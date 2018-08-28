@@ -18,19 +18,24 @@
 
 		<div class="minor-text">
 			<span title="发表于" class="full-time">
-				<i class="fa fa-edit"></i>{{item.create}}
+				<i class="fa fa-edit"></i>
+				<time>{{item.create}}</time>
 			</span>
 			<span title="最后更新" v-if="showUpdate(item)" class="full-time">
-				<i class="fas fa-sync"></i>{{item.update}}
+				<i class="fas fa-sync"></i>
+				<time>{{item.update}}</time>
 			</span>
 			<span title="时间" class="short-time">
-				<i class="far fa-clock"></i>{{item | shortTime}}
+				<i class="far fa-clock"></i>
+				<time>{{item | shortTime}}</time>
 			</span>
 			<span title="评论数">
-				<i class="fas fa-comment-dots"></i>{{item.discussionCount}}
+				<i class="fas fa-comment-dots"></i>
+				<span>{{item.discussionCount}}</span>
 			</span>
 			<span title="浏览数">
-				<i class="fa fa-eye"></i>{{item.viewCount}}
+				<i class="fa fa-eye"></i>
+				<span>{{item.viewCount}}</span>
 			</span>
 		</div>
 	</div>
@@ -143,6 +148,11 @@ export default {
 	.preview-footer {
 		align-items: center;
 		margin: 1em 0;
+	}
+
+	.keyword {
+		margin-left: .3em;
+		margin-right: .3em;
 	}
 </style>
 

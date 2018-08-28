@@ -1,13 +1,13 @@
 <template>
 	<kx-dialog @CloseButtonClicked="ok">
-		<h2 class="compact" slot="title">编辑描述信息</h2>
+		<h2 slot="title">编辑描述信息</h2>
 		<div class="content">
 			<img alt="封面" :src="'/image/' + cover" @click="changeCover"/>
 			<input title="标题" v-model="title" class="title" placeholder="标题最多50个字"/>
 			<textarea v-model="summary" class="summary input" placeholder="摘要，别写太多"></textarea>
 			<input title="关键字" v-model="keywords" class="keywords" placeholder="关键字,空格隔开"/>
 		</div>
-		<button class="primary" slot="footer-right" @click="ok">确定</button>
+		<button slot="footer" @click="ok">确定</button>
 	</kx-dialog>
 </template>
 
@@ -31,7 +31,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="less">
 	.content{
 		width: 680px;
 		height: 200px;

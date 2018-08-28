@@ -10,7 +10,7 @@
 		<router-link to="/console/misc">其他功能</router-link>
 	</aside>
 
-	<nav id="nav-bar">
+	<nav id="nav-bar" class="light nav-item-group">
 		<router-link to="/" class="nav-item">返回首页</router-link>
 	</nav>
 	<router-view class="content-body"></router-view>
@@ -59,19 +59,6 @@ export default {
 	height: 100%;
 }
 
-.router-link-active::after {
-	content: "";
-	position: absolute;
-	top: 50%;
-	right: 0;
-	margin-top: -.8rem;
-
-	width: 0;
-	height: 0;
-	border: .8rem solid transparent;
-	border-right-color: #FCFCFC;
-}
-
 #tabs {
 	padding-top: 1rem;
 	grid-area: menu;
@@ -92,10 +79,24 @@ export default {
 		color: #dfdfdf;
 		transform: rotateZ(0);
 	}
+
+	& .router-link-active::after {
+		content: "";
+		position: absolute;
+		top: 50%;
+		right: 0;
+		margin-top: -.8rem;
+
+		width: 0;
+		height: 0;
+		border: .8rem solid transparent;
+		border-right-color: white;
+	}
 }
 
 .tabItem:hover {
 	color: #83daef;
 	background-color: rgba(255, 255, 255, 0.06);
 }
+
 </style>

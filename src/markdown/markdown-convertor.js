@@ -15,15 +15,16 @@ function detail(state, startLine, endLine, silent) {
 
 const convertor = new MarkdownIt({
 	highlight: function (str, lang) {
+		let result;
 		if (lang && hljs.getLanguage(lang)) {
-			try {
-				return "<pre class='hljs'><code>" + hljs.highlight(lang, str).value + "</code></pre>";
-			} catch (__) {
-			}
+			result = hljs.highlight(lang, str).value;
+		} else {
+			result = convertor.utils.escapeHtml(str);
 		}
-		return "<pre class='hljs'><code>" + convertor.utils.escapeHtml(str) + "</code></pre>";
+		return "<pre class='hljs'><code>" + result + "</code></pre>";
 	},
 });
+
 convertor.use(Anchor, {
 	permalink: true,
 	permalinkClass: "fas fa-link header-anchor",

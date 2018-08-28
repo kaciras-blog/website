@@ -97,7 +97,7 @@ export default {
 		justify-content: space-between;
 		width: 100%;
 		height: 100%;
-		background-color: rgba(255, 255, 255, 0.3);
+		background-color: rgba(255, 255, 255, 0.4);
 
 		padding: 0 1rem;
 
@@ -113,10 +113,7 @@ export default {
 #banner {
 	height: 180px;
 	width: 100%;
-
-	@media screen and (min-width: 768px) {
-		margin-bottom: 3rem;
-	}
+	margin-bottom: 3rem;
 }
 
 .links > * {
@@ -132,6 +129,19 @@ export default {
 
 	&:hover {
 		background-position: 0 100%;
+	}
+}
+.nav-item-group {
+	&.light {
+		& .nav-item:hover {
+			background-color: rgba(0, 0, 0, 0.05);
+		}
+	}
+	&.dark {
+		color: white;
+		& .nav-item:hover {
+			color: white;
+		}
 	}
 }
 

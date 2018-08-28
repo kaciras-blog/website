@@ -1,8 +1,8 @@
 <template>
 	<footer id="bottom-footer">
 		<div class="bft-text">
-			<span>Copyright &copy; 2017-2018 Kaciras.net All Rights Reserved.</span>
-			<strong>Email: Kaciras@outlook.com</strong>
+			<p>Copyright &copy; 2017-2018 Kaciras.net All Rights Reserved.</p>
+			<address>Kaciras@outlook.com</address>
 		</div>
 		<div class="bft-links">
 			<router-link class="link" to="/">首页</router-link>

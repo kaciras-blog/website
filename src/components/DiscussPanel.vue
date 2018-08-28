@@ -1,28 +1,28 @@
 <template>
-	<section id="discuss" class="panel">
+<section class="discuss round panel">
 
-		<header class="flex between center-align segment" style="font-size: initial">
-			<h2>评论区</h2>
-			<h3>{{totalCount}}条</h3>
-		</header>
+	<header class="segment">
+		<h2 class="compact">评论区</h2>
+		<span id="discuss-num">{{totalCount}}条</span>
+	</header>
 
-		<!-- 回复输入框 -->
-		<discuz-editor @discussion-added="showLast" />
+	<discuz-editor @discussion-added="showLast"></discuz-editor>
 
-		<!-- 评论列表 -->
-		<discussion v-for="item of discussions"
-					:key="item.id"
-					:value="item"
-					@item-removed="loadPageBackground(pageIndex)">
-		</discussion>
+	<discussion
+		v-for="item of discussions"
+		:key="item.id"
+		:value="item"
+		@item-removed="loadPageBackground(pageIndex)">
+	</discussion>
 
-		<!-- 分页按钮 -->
-		<pager-buttons v-if="totalCount > pageSize"
-					   :index="pageIndex"
-					   :page-size="pageSize"
-					   :total-count="totalCount"
-					   @loadPage="loadPage"/>
-	</section>
+	<pager-buttons
+		v-if="totalCount > pageSize"
+		:index="pageIndex"
+		:page-size="pageSize"
+		:total-count="totalCount"
+		@loadPage="loadPage">
+	</pager-buttons>
+</section>
 </template>
 
 <script>
@@ -44,7 +44,7 @@ export default {
 	},
 	methods: {
 		loadPageBackground(index) {
-			api.discuss.getList(this.$router.params.id, index * this.pageSize, this.pageSize).then(data =>{
+			api.discuss.getList(this.$route.params.id, index * this.pageSize, this.pageSize).then(data => {
 				this.discussions = data.list;
 				this.pageIndex = index;
 				this.totalCount = data.total;
@@ -67,3 +67,20 @@ export default {
 	},
 };
 </script>
+
+<style lang="less">
+.discuss > header {
+	font-size: initial;
+	& > h2 {
+		display: inline-block;
+	}
+}
+
+.round {
+	border-radius: .4rem;
+}
+
+#discuss-num {
+	float: right;
+}
+</style>

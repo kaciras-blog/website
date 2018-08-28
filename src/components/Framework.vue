@@ -1,5 +1,5 @@
 <template>
-	<div id="app">
+	<div>
 		<top-nav v-if="showNav"
 				 :optionalClass="optionalClass"
 				 :banner="banner">

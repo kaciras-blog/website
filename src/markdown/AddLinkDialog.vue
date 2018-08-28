@@ -1,18 +1,15 @@
 <template>
-	<kx-dialog :closeIcon="true"
-			   @CloseButtonClicked="cancel">
-
-		<h3 class="compact"
-			slot="title">添加链接</h3>
-
+	<kx-dialog :closeIcon="true" @CloseButtonClicked="cancel">
+		<h3 slot="title">添加链接</h3>
 		<form @keyup.13="ok" @keyup.27="cancel">
 			<label>链接地址</label>
 			<input title="链接地址" v-model="href" placeholder="地址不能为空" required v-autofocus/>
 			<label>文字</label>
 			<input title="文字" v-model="text" :placeholder="href"/>
 		</form>
-
-		<button @click="ok">确定</button>
+		<div slot="footer">
+			<button @click="ok">确定</button>
+		</div>
 	</kx-dialog>
 </template>
 
@@ -56,6 +53,5 @@ export default {
 	}
 	button{
 		float: right;
-		margin-top: .5rem;
 	}
 </style>
