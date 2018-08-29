@@ -62,3 +62,16 @@ h1, h2, h3, h4, h5, h6 {
 .minor-text{
 	color: @color-text-minor;
 }
+
+.circularity(@diameter) {
+	width: @diameter;
+	height: @diameter;
+	border-radius: @diameter / 2;
+}
+
+.head {
+	.circularity(3rem);
+	&-small{
+		.circularity(2.5rem)
+	}
+}

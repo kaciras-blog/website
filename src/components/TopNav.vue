@@ -1,6 +1,6 @@
 <!--suppress XmlDuplicatedId -->
 <template>
-<header :class="optionalClass">
+<header :class="clazz">
 	<!-- 小屏幕折叠状态 -->
 	<div id="top-nav" v-if="collapse">
 		<nav class="content">
@@ -46,7 +46,7 @@ import Vuex from "vuex";
 export default {
 	name: "TopNav",
 	props: {
-		optionalClass: {
+		clazz: {
 			type: String,
 			default: null,
 		},
@@ -131,6 +131,7 @@ export default {
 		background-position: 0 100%;
 	}
 }
+
 .nav-item-group {
 	&.light {
 		& .nav-item:hover {

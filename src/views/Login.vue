@@ -1,12 +1,9 @@
 <template>
-<framework optionalClass="login-header"
-		   :show-footer="false">
-	<main id="login-view">
-		<div class="filter-container">
-			<component :is="panel" @switch-panel="switchPanel"></component>
-		</div>
-	</main>
-</framework>
+<main id="login-view">
+	<div class="filter-container">
+		<component :is="panel" @switch-panel="switchPanel"></component>
+	</div>
+</main>
 </template>
 
 <script>
@@ -29,7 +26,7 @@ export default {
 		},
 	},
 	created() {
-		this.$store.commit("setNavBackground", {showBanner: false, url: "/static/img/login-bkg.jpg"});
+		this.$emit("layoutChanged", {clazz: "login-header", banner: false}, false);
 	},
 
 };
@@ -96,7 +93,7 @@ form {
 	}
 }
 
-.filter-container{
+.filter-container {
 	.glass;
 	.glass.blur(4px);
 

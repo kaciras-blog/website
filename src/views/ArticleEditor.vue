@@ -10,5 +10,8 @@ export default {
 	name: "ArticleEditor",
 	components:{KxMarkdown},
 	mixins:[FullScreen],
-}
+	created() {
+		this.$emit("layoutChanged", {show: false}, false);
+	},
+};
 </script>

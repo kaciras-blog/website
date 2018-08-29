@@ -1,7 +1,7 @@
 <template>
 <div>
 	<div class="buttons">
-		<button class="primary" @click="newArticle"><i class="fa fa-edit"></i>新文章</button>
+		<button @click="newArticle"><i class="fa fa-edit"></i>新文章</button>
 	</div>
 
 	<div class="panel">

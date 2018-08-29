@@ -1,20 +1,17 @@
 <template>
-<framework :banner="true">
-	<main id="article-page">
-		<div class="container">
-			<article-view v-bind="article"></article-view>
-			<discuss-panel></discuss-panel>
-		</div>
-		<div class="side-buttons">
-			<button id="gotodiscuss" class="center-all" title="转到评论区">
-				<i class="far fa-comments"></i>
-			</button>
-			<button id="gototop" class="square border center-all" title="回顶部" @click="gototop()">
-				<i class="fas fa-chevron-up"></i>
-			</button>
-		</div>
-	</main>
-</framework>
+<main id="article-page">
+	<article-view v-bind="article"></article-view>
+	<discuss-panel></discuss-panel>
+
+	<div class="side-buttons">
+		<button id="gotodiscuss" class="center-all" title="转到评论区" @click="gotodiscuss">
+			<i class="far fa-comments"></i>
+		</button>
+		<button id="gototop" class="center-all" title="回顶部">
+			<i class="fas fa-chevron-up"></i>
+		</button>
+	</div>
+</main>
 </template>
 
 <script>
@@ -51,8 +48,8 @@ export default {
 		};
 	},
 	methods: {
-		gototop() {
-			scrollToElementStart("#discuss");
+		gotodiscuss() {
+			scrollToElementStart("discuss");
 		},
 	},
 	mounted() {
@@ -105,7 +102,7 @@ export default {
 		}
 	}
 
-	& > button{
+	& > button {
 		margin-top: -1px;
 		padding: 0;
 		font-size: 1.5rem;
@@ -120,5 +117,11 @@ export default {
 			}
 		}
 	}
+}
+
+.center-all {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 </style>

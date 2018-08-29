@@ -1,20 +1,18 @@
 <template>
-<div id="console-page">
+<main id="console-page">
 	<aside id="tabs" class="flex vertical compact">
 		<h1>控制台</h1>
 		<router-link to="/console/article">文章列表</router-link>
 		<router-link to="/console/draft">我的草稿</router-link>
 		<router-link to="/console/category">管理分类</router-link>
 		<router-link to="/console/config">选项</router-link>
-		<router-link to="/console/overview">访问统计</router-link>
-		<router-link to="/console/misc">其他功能</router-link>
 	</aside>
 
 	<nav id="nav-bar" class="light nav-item-group">
 		<router-link to="/" class="nav-item">返回首页</router-link>
 	</nav>
 	<router-view class="content-body"></router-view>
-</div>
+</main>
 </template>
 
 <script>
@@ -23,6 +21,9 @@ import {FullScreen} from "../mixins";
 export default {
 	name: "Console",
 	mixins: [FullScreen],
+	created() {
+		this.$emit("layoutChanged", {show: false}, false);
+	},
 };
 </script>
 

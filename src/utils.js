@@ -1,4 +1,5 @@
-import Velocity from "velocity-animate";
+// import Velocity from "velocity-animate";
+import $ from "jquery";
 
 /**
  * 转义HTML文本中的特殊字符
@@ -23,17 +24,18 @@ export function pageReturn () {
 }
 
 export function scrollToElementStart(element) {
-	if(typeof(element) === "string") {
+	if(typeof element === "string") {
 		element = document.getElementById(element);
 	}
-	Velocity(document.body, {scrollTop: element.offsetTop}, 200);
+	$('html,body').animate({scrollTop: element.offsetTop}, 200);
 }
 
 export function scrollToElementEnd(element) {
-	if(typeof(element) === "string") {
+	if(typeof element === "string") {
 		element = document.getElementById(element);
 	}
-	Velocity(document.body, {scrollTop: element.offsetTop + element.clientHeight}, 200);
+	$('html,body').animate({scrollTop: element.offsetTop + element.clientHeight}, 200);
+	// Velocity(document.getElementsByTagName("html")[0], {scrollTop: element.offsetTop + element.clientHeight}, 200);
 }
 
 /**

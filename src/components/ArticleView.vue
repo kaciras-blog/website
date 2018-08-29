@@ -1,17 +1,15 @@
 <template>
-	<article class="plate">
-		<header class="title segment">
-			<h1>{{title}}</h1>
-			<p>
-				<span>首发：{{create}}</span>
-				<span>最后更新: {{update}}</span>
-			</p>
-			<div>关键词：
-				<span style="padding: 0 5px" v-for="kw in keywords" :key="kw">{{kw}}</span>
-			</div>
-		</header>
-		<div class="markdown segment" v-html="contentHtml"></div>
-	</article>
+<article class="plate">
+	<header class="title segment">
+		<h1>{{title}}</h1>
+		<p>发布时间<time>{{create}}</time></p>
+		<p>最后更新<time>{{update}}</time></p>
+		<div>
+			关键词：<span class="keyword" v-for="kw in keywords" :key="kw">{{kw}}</span>
+		</div>
+	</header>
+	<div class="markdown segment" v-html="contentHtml"></div>
+</article>
 </template>
 
 <script>
@@ -22,12 +20,26 @@ export default {
 	props: ["title", "create", "update", "keywords", "content"],
 	computed: {
 		contentHtml() {
+			if(!this.content) {
+				return "";
+			}
 			return convertor.render(this.content);
 		},
 	},
 };
 </script>
 
-<style scoped>
+<style lang="less">
+@import "../css/ToBeImpoert";
 
+.title {
+	text-align: center;
+	& > h1 {
+		font-size: 1.5rem;
+	}
+}
+
+.keyword{
+	margin-right: .3em;
+}
 </style>

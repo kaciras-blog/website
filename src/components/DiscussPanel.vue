@@ -1,5 +1,5 @@
 <template>
-<section class="discuss round panel">
+<section id="discuss" class="panel">
 
 	<header class="segment">
 		<h2 class="compact">评论区</h2>
@@ -12,6 +12,8 @@
 		v-for="item of discussions"
 		:key="item.id"
 		:value="item"
+		:replying="replying"
+		@reply="reply"
 		@item-removed="loadPageBackground(pageIndex)">
 	</discussion>
 
@@ -40,6 +42,8 @@ export default {
 			pageIndex: 0,
 			totalCount: 0,
 			pageSize: 20,
+
+			replying: 0,
 		};
 	},
 	methods: {
@@ -55,6 +59,9 @@ export default {
 		},
 		showLast() {
 			this.loadPageBackground(Math.floor(this.totalCount / this.pageSize)).then(() => scrollToElementEnd("discuss"));
+		},
+		reply(id) {
+			this.replying = id;
 		},
 	},
 	components: {

@@ -1,34 +1,35 @@
 <template>
-	<div class="flex vertical segment">
+<div class="segment">
 
-		<div class="discuss-box flex center-align center-content" v-if="config.disable">
-			已设置为禁止评论
+	<div class="discuss-editor center-all" v-if="config.disable">
+		已设置为禁止评论
+	</div>
+	<div class="discuss-editor center-all" v-else-if="config.loginRequired && !user">
+		已禁止匿名评论,请先<a class='highlight' href='/login'>登录</a>
+	</div>
+
+	<div class="discuss-editor" v-else>
+
+		<div v-if="user">
+			<img :src='"/image/" + user.head' class='head-small' alt="头像">
+			<span class="name">{{user.name}}</span>
 		</div>
-		<div class="discuss-box flex center-align center-content" v-else-if="config.loginRequired && !user">
-			已禁止匿名评论,请先<a class='highlight' href='/login'>登录</a>
+		<div class="discusser" v-else>
+			<img src='/image/akalin.jpg' class='head-small' alt="头像">
+			<span class="name">(匿名评论)</span>
 		</div>
 
-		<div class="flex vertical margin-vert" v-else>
-			<div class="flex center-align margin" v-if="user">
-				<img :src='"/image/" + user.head' class='head-small' alt="头像">
-				<span style="font-size: 1.1em; margin-left: .5em">{{user.name}}</span>
-			</div>
+		<textarea class='input discuss-box' v-model="content" placeholder='说点什么吧'></textarea>
 
-			<div class="flex center-align margin" v-else>
-				<img src='/image/akalin.jpg' class='head-small' alt="头像"><span>(匿名评论)</span>
-			</div>
-
-			<textarea class='input discuss-box' v-model="content" placeholder='说点什么吧'></textarea>
-
-			<div class='flex reserve'>
-				<button class='primary round'
-						:disabled="submiting"
-						@click='submitDiscuss'>
-					<i class="far fa-paper-plane"></i>发表评论
-				</button>
-			</div>
+		<div class='buttons'>
+			<button class='primary round'
+					:disabled="submiting"
+					@click='submitDiscuss'>
+				<i class="far fa-paper-plane"></i><span>发表评论</span>
+			</button>
 		</div>
 	</div>
+</div>
 </template>
 
 <script>
@@ -45,7 +46,7 @@ export default {
 		};
 	},
 	computed: Vuex.mapState(["user"]),
-	methods:{
+	methods: {
 		async submitDiscuss() {
 			const text = this.content;
 			if (!text || /^\s*$/.test(text)) {
@@ -53,11 +54,11 @@ export default {
 			}
 
 			this.submiting = true;
-			try{
+			try {
 				await api.discussion.add(this.$router.params.id, text);
 				this.content = "";
 				this.$emit("discussion-added");
-			} catch(e) {
+			} catch (e) {
 				this.$dialog.messageBox("发表评论", errMsg(e), "error");
 			}
 			this.submiting = false;
@@ -65,3 +66,25 @@ export default {
 	},
 };
 </script>
+
+<style scoped lang="less">
+.discuss-editor {
+	display: flex;
+	flex-direction: column;
+}
+
+.discuss-box {
+	min-height: 10em;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+}
+
+.buttons {
+	text-align: right;
+}
+
+.name {
+	font-size: 1.1em;
+	margin-left: .5em;
+}
+</style>

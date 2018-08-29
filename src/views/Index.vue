@@ -1,30 +1,27 @@
 <template>
-<framework optionalClass="index-header"
-		   :banner="true">
-	<div id="index-page">
-		<main>
-			<h1 class='segment' v-if="categoryPath">
-				<a href='/index' target='_self'>全部文章</a>
-				<a target='_self'
-				   :key="category.id"
-				   v-for="category of excludeLast(categoryPath)"
-				   :href="'/index?category=' + category.id">&gt; {{category.name}}</a>
-				<span>&gt; {{categoryPath[categoryPath.length-1].name}}</span>
-			</h1>
-			<h1 class='segment' v-else>全部文章</h1>
+<main id="index-page">
+	<div class="article-list">
+		<h1 class='segment' v-if="categoryPath">
+			<router-link to='/'>全部文章</router-link>
+			<router-link v-for="category of excludeLast(categoryPath)"
+						 :key="category.id"
+						 :to="'/index?category=' + category.id">&gt; {{category.name}}
+			</router-link>
+			<span>&gt; {{categoryPath[categoryPath.length-1].name}}</span>
+		</h1>
+		<h1 class='segment' v-else>全部文章</h1>
 
-			<article-preview :key="article.id"
-							 :item="article"
-							 v-for="article of articles">
-			</article-preview>
+		<article-preview :key="article.id"
+						 :item="article"
+						 v-for="article of articles">
+		</article-preview>
 
-			<scroll-pager :options="pagerConfig"
-						  @load-page="loadPage">
-			</scroll-pager>
-		</main>
-		<aside-panel></aside-panel>
+		<scroll-pager :options="pagerConfig"
+					  @load-page="loadPage">
+		</scroll-pager>
 	</div>
-</framework>
+	<aside-panel></aside-panel>
+</main>
 </template>
 
 <script>
@@ -70,6 +67,8 @@ export default {
 		if (category) {
 			api.category.getPath(category).then(path => this.categoryPath = path);
 		}
+
+		this.$emit("layoutChanged", {clazz: "index-header", banner: true}, true);
 	},
 	methods: {
 		async loadPage(task) {
@@ -110,17 +109,6 @@ export default {
 	}
 	margin: 0 auto;
 
-	& > main {
-		flex-grow: 1;
-
-		& > h1 {
-			text-align: center;
-			@media screen and (min-width: @length-screen-mobile) {
-				text-align: left;
-			}
-		}
-	}
-
 	& > aside {
 		width: 29%;
 		flex: 0 0 auto;
@@ -131,6 +119,17 @@ export default {
 				display: block;
 				margin-left: 4rem;
 			}
+		}
+	}
+}
+
+.article-list {
+	flex-grow: 1;
+
+	& > h1 {
+		text-align: center;
+		@media screen and (min-width: @length-screen-mobile) {
+			text-align: left;
 		}
 	}
 }

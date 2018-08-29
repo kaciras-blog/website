@@ -38,6 +38,12 @@
 	&:focus{
 		outline: 0;
 	}
+	&:disabled, :disabled:hover {
+		cursor: initial;
+		color: @color-text-minor;
+		border-color: @color-text-minor;
+		background-color: transparent;
+	}
 }
 
 .button-color(@name) {
