@@ -188,7 +188,7 @@ export default {
 		addImage() {
 			api.misc.uploadImageFile()
 				.then(textOps.addImageElement.bind(this))
-				.catch(() => this.$dialog.messageBox("上传图片", "上传失败", "error"));
+				.catch(err => this.$dialog.messageBox("图片上传失败", err, "error"));
 		},
 		addPrefixToLines: textOps.addPrefixToLines,
 		inputTab: textOps.inputTab,
