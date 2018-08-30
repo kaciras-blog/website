@@ -40,7 +40,7 @@ export default {
 			});
 		},
 		showEditView(id = null) {
-			this.$router.push(id ? "/editCategory/" + id : "/editCategory");
+			this.$router.push(id ? "category/detail/" + id : "category/detail");
 		},
 	},
 	created() {

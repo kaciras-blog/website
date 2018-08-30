@@ -15,7 +15,7 @@ const accountServer = axios.create({
 	baseURL: "https://localhost:26480",
 });
 const frontService = axios.create({
-	baseURL: "/api",
+	baseURL: "https://localhost",
 });
 
 const _default = {};
@@ -155,15 +155,11 @@ _default.misc = {
 	 *
 	 * @returns Promise<String> 保存的图片文件名
 	 */
-	uploadImageFile: async () => {
+	uploadImageFile: async function() {
 		const files = await utils.openFile(false, "image/*");
 		const url = await this.uploadImage(files[0]);
 		return url.substring("/image/".length);
 	},
-
-	getTitleImage: (item, type) => frontService.get("/utils/titleImage", {
-		params: {item, type},
-	}).then(r => r.data.url),
 
 	captchaAddress: () => API_SERVER + "/utils/captcha",
 };

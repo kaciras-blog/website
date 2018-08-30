@@ -29,10 +29,17 @@ export default {
 		},
 	},
 	watch: {
-		'$route'() { //当视图切换时重置布局
-			this.showFooter = true;
-			this.topNav.clazz = null;
-			this.topNav.banner = true;
+		//当视图切换时重置布局（仅最外层路由切换）
+		'$route'(to, form) {
+			const toPage = to.path.split("/")[1];
+			const formPage = form.path.split("/")[1];
+
+			if(toPage !== formPage) {
+				this.topNav.show = true;
+				this.topNav.clazz = null;
+				this.topNav.banner = true;
+				this.showFooter = true;
+			}
 		},
 	},
 };

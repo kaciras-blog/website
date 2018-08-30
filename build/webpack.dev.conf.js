@@ -30,7 +30,12 @@ const devWebpackConfig = merge(baseWebpackConfig, {
 		open: false,
 		overlay: false,
 
-		proxy: {}, //如果请求需要其他的服务器处理，比如API服务器
+		proxy: {
+			"/image": {
+				target: "https://localhost",
+				secure: false,
+			}
+		},
 		watchOptions: {
 			poll: config.dev.poll,
 		}

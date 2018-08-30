@@ -54,7 +54,7 @@ export default new Router({
 				{ path: "draft", component: DraftConsole },
 				{ path: "config", component: ConfigConsole },
 				{ path: "category", component: CategoryConsole },
-				{ path: "category/:id", component: CategoryEditor },
+				{ path: "category/detail/:id", component: CategoryEditor },
 			],
 		},
 		{
