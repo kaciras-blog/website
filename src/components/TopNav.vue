@@ -1,42 +1,42 @@
 <!--suppress XmlDuplicatedId -->
 <template>
-<header :class="clazz">
-	<!-- 小屏幕折叠状态 -->
-	<div id="top-nav" v-if="collapse">
-		<nav class="content">
-			<div></div>
-			<router-link to="/" class="logo" title="花了5分钟画的logo，点击回到首页"/>
-			<div class="button" @click="showMenu=true"><i class="fas fa-bars"></i></div>
-		</nav>
-	</div>
+	<header :class="clazz">
+		<!-- 小屏幕折叠状态 -->
+		<div id="top-nav" v-if="collapse">
+			<nav class="content">
+				<div></div>
+				<router-link to="/" class="logo" title="花了5分钟画的logo，点击回到首页"/>
+				<div class="button" @click="showMenu=true"><i class="fas fa-bars"></i></div>
+			</nav>
+		</div>
 
-	<!-- 展开状态 -->
-	<div id="top-nav" v-else>
-		<nav class="content">
+		<!-- 展开状态 -->
+		<div id="top-nav" v-else>
+			<nav class="content">
 
-			<!-- 左边 -->
-			<div class="nav-item-group">
-				<router-link to="/welcome" class="logo" title="花了5分钟画的logo，点击回到首页"/>
-				<router-link to="/" class="block fold">博客</router-link>
-			</div>
+				<!-- 左边 -->
+				<div class="nav-item-group">
+					<router-link to="/welcome" class="logo" title="花了5分钟画的logo，点击回到首页"/>
+					<router-link to="/" class="nav-item">博客</router-link>
+				</div>
 
-			<div class="nav-item-group" v-if="user">
-				<img :src="'/image/' + user.head" class='head' title='别看了，不支持换头像'>
-				<h3 class='user-name'>{{user.name}}</h3>
-				<router-link v-if="user.id===1" class='block' to='/console'>管理</router-link>
-				<a @click="logout()" class='block'>退出登录</a>
-			</div>
+				<div class="nav-item-group" v-if="user">
+					<img :src="'/image/' + user.head" class='head' title='别看了，不支持换头像'>
+					<h3 class='user-name'>{{user.name}}</h3>
+					<router-link v-if="user.id===1" class='block' to='/console'>管理</router-link>
+					<a @click="logout()" class='block'>退出登录</a>
+				</div>
 
-			<div class="nav-item-group" v-else>
-				<router-link class='nav-item' to='/console'>管理</router-link>
-				<router-link class="nav-item" to="/login">登录</router-link>
-			</div>
-		</nav>
-	</div>
+				<div class="nav-item-group" v-else>
+					<router-link class='nav-item' to='/console'>管理</router-link>
+					<router-link class="nav-item" to="/login">登录</router-link>
+				</div>
+			</nav>
+		</div>
 
-	<!-- 最下面的大图 -->
-	<div id="banner" v-if="banner"></div>
-</header>
+		<!-- 最下面的大图 -->
+		<div id="banner" v-if="banner"></div>
+	</header>
 </template>
 
 <script>
@@ -121,7 +121,7 @@ export default {
 }
 
 .logo {
-	display: block;
+	display: inline-block;
 	background: url("../assets/Logo-Width.png") 0 0;
 	width: 9rem;
 	height: 100%;
@@ -148,6 +148,7 @@ export default {
 
 .nav-item {
 	display: inline-block;
+	vertical-align: top;
 	font-size: 16px;
 	padding: .8rem 1.5rem;
 	background-color: transparent;

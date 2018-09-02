@@ -1,38 +1,38 @@
 <template>
-<div class="segment">
-	<header class="discuss-header">
-		<!-- 头像和用户名 -->
-		<div class='flex margin-horiz' v-if="value.user.id!==0">
-			<img src='/image/noface.gif' class='small head'>
-			<span class='name'>{{value.user.name}}</span>
-		</div>
-		<div class='flex center-align margin-horiz' v-else>
-			<img src='/image/akalin.jpg' class='small head'>
-			<span class='name'>(匿名评论)</span>
-		</div>
-		<!-- 右边的楼层号 -->
-		<span class="minor-text">{{value.floor}}楼</span>
-	</header>
+	<div class="segment">
+		<header class="discuss-header">
+			<!-- 头像和用户名 -->
+			<div class='flex margin-horiz' v-if="value.user.id!==0">
+				<img src='/image/noface.gif' class='small head'>
+				<span class='name'>{{value.user.name}}</span>
+			</div>
+			<div class='flex center-align margin-horiz' v-else>
+				<img src='/image/akalin.jpg' class='small head'>
+				<span class='name'>(匿名评论)</span>
+			</div>
+			<!-- 右边的楼层号 -->
+			<span class="minor-text">{{value.floor}}楼</span>
+		</header>
 
-	<div class="content">{{value.content}}</div>
+		<div class="content">{{value.content}}</div>
 
-	<div class="flex between minor-text">
-		<div class="minor-text tags">
-			<!--<span title="暂不支持点赞" class="clickable"><i class="fa fa-thumbs-o-up"></i>{{value.voteCount}}</span>-->
-			<span title="暂不支持楼中楼" class="clickable" @click="reply"><i class="far fa-comment"></i>回复(0)</span>
+		<div class="flex between minor-text">
+			<div class="minor-text tags">
+				<!--<span title="暂不支持点赞" class="clickable"><i class="fa fa-thumbs-o-up"></i>{{value.voteCount}}</span>-->
+				<span title="暂不支持楼中楼" class="clickable" @click="reply"><i class="far fa-comment"></i>回复(0)</span>
+			</div>
+
+			<div class="flex center-agign margin-horiz">
+				<a v-if="deleteable" @click='deleteDiscussion'><i class="far fa-trash-alt"></i> 删除</a>
+				<span>{{value.time}}</span>
+			</div>
 		</div>
 
-		<div class="flex center-agign margin-horiz">
-			<a v-if="deleteable" @click='deleteDiscussion'><i class="far fa-trash-alt"></i> 删除</a>
-			<span>{{value.time}}</span>
+		<div v-if="value.replyCount>0">
+			<!--<discussion v-for=""-->
 		</div>
+		<discz-editor style="margin-left: 6rem" v-if="replying === value.id"/>
 	</div>
-
-	<div v-if="value.replyCount>0">
-		<!--<discussion v-for=""-->
-	</div>
-	<discz-editor style="margin-left: 6rem" v-if="replying === value.id"/>
-</div>
 </template>
 
 <script>

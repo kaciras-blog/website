@@ -33,25 +33,30 @@ export default {
 			}
 			this.$dialog.close(data);
 		},
-		cancel() { this.$dialog.close(); },
+		cancel() {
+			this.$dialog.close();
+		},
 	},
 };
 </script>
 
 <style scoped>
-	input{
-		width: 24rem;
-		margin-top: .3em;
-		margin-bottom: 1em;
-	}
-	input:last-child {
-		margin-bottom: .5em;
-	}
-	form{
-		display: flex;
-		flex-direction: column;
-	}
-	button{
-		float: right;
-	}
+input {
+	width: 24rem;
+	margin-top: .3em;
+	margin-bottom: 1em;
+}
+
+input:last-child {
+	margin-bottom: .5em;
+}
+
+form {
+	display: flex;
+	flex-direction: column;
+}
+
+button {
+	float: right;
+}
 </style>

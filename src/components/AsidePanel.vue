@@ -25,14 +25,14 @@ export default {
 			hotArticles: [],
 		};
 	},
-	created () {
+	created() {
 		api.recommend.getHotArticles().then(hots => this.hotArticles = hots);
 	},
 };
 </script>
 
 <style scoped lang="less">
-.padding{
+.padding {
 	padding-top: .2em;
 	padding-bottom: .2em;
 }

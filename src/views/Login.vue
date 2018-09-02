@@ -1,9 +1,9 @@
 <template>
-<main id="login-view">
-	<div class="filter-container">
-		<component :is="panel" @switch-panel="switchPanel"></component>
-	</div>
-</main>
+	<main id="login-view">
+		<div class="filter-container">
+			<component :is="panel" @switch-panel="switchPanel"></component>
+		</div>
+	</main>
 </template>
 
 <script>

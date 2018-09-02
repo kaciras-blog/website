@@ -1,34 +1,34 @@
 <template>
-<form @keyup.13="signup">
-	<h1 class="center segment">注册</h1>
+	<form @keyup.13="signup">
+		<h1 class="center segment">注册</h1>
 
-	<label>用户名:</label>
-	<input v-model="form.name" placeholder="中英文数字和下划线" required>
+		<label>用户名:</label>
+		<input v-model="form.name" placeholder="中英文数字和下划线" required>
 
-	<label>密码:</label>
-	<input v-model="form.password" type="password" placeholder="至少有个6位吧" required>
+		<label>密码:</label>
+		<input v-model="form.password" type="password" placeholder="至少有个6位吧" required>
 
-	<label>邮箱:</label>
-	<input v-model="form.email" type="email" placeholder="不填也行">
+		<label>邮箱:</label>
+		<input v-model="form.email" type="email" placeholder="不填也行">
 
-	<label for="captcha" class="expansion">验证码:</label>
-	<div>
-		<input id="captcha" ref="captchaInput" v-model="form.captcha" required>
-		<img class="captcha" :src="captcha" title="点击换一张" @click="updateCaptcha()">
-	</div>
+		<label for="captcha" class="expansion">验证码:</label>
+		<div>
+			<input id="captcha" ref="captchaInput" v-model="form.captcha" required>
+			<img class="captcha" :src="captcha" title="点击换一张" @click="updateCaptcha()">
+		</div>
 
-	<span class="text-warning center">{{message}}</span>
+		<span class="text-warning center">{{message}}</span>
 
-	<div class="center">
-		<button type="button" class="primary square" @click="signup">确定</button>
-		<button type="button" class="square" @click="switchPanel"><i class="fa fa-arrow-left"></i>登录</button>
-	</div>
-</form>
+		<div class="center">
+			<button type="button" class="primary square" @click="signup">确定</button>
+			<button type="button" class="square" @click="switchPanel"><i class="fa fa-arrow-left"></i>登录</button>
+		</div>
+	</form>
 </template>
 
 <script>
 import api from "../apis";
-import {pageReturn, errMsg} from "../utils";
+import {errMsg, pageReturn} from "../utils";
 
 export default {
 	name: "SignupPanel",

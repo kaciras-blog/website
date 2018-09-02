@@ -1,27 +1,27 @@
 <template>
-<main id="index-page">
-	<div class="article-list">
-		<h1 class='segment' v-if="categoryPath">
-			<router-link to='/'>全部文章</router-link>
-			<router-link v-for="category of excludeLast(categoryPath)"
-						 :key="category.id"
-						 :to="'/index?category=' + category.id">&gt; {{category.name}}
-			</router-link>
-			<span>&gt; {{categoryPath[categoryPath.length-1].name}}</span>
-		</h1>
-		<h1 class='segment' v-else>全部文章</h1>
+	<main id="index-page">
+		<div class="article-list">
+			<h1 class='segment' v-if="categoryPath">
+				<router-link to='/'>全部文章</router-link>
+				<router-link v-for="category of excludeLast(categoryPath)"
+							 :key="category.id"
+							 :to="'/index?category=' + category.id">&gt; {{category.name}}
+				</router-link>
+				<span>&gt; {{categoryPath[categoryPath.length-1].name}}</span>
+			</h1>
+			<h1 class='segment' v-else>全部文章</h1>
 
-		<article-preview :key="article.id"
-						 :item="article"
-						 v-for="article of articles">
-		</article-preview>
+			<article-preview :key="article.id"
+							 :item="article"
+							 v-for="article of articles">
+			</article-preview>
 
-		<scroll-pager :options="pagerConfig"
-					  @load-page="loadPage">
-		</scroll-pager>
-	</div>
-	<aside-panel></aside-panel>
-</main>
+			<scroll-pager :options="pagerConfig"
+						  @load-page="loadPage">
+			</scroll-pager>
+		</div>
+		<aside-panel></aside-panel>
+	</main>
 </template>
 
 <script>

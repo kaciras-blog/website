@@ -1,17 +1,17 @@
 <template>
-<main id="article-page">
-	<article-view v-bind="article"></article-view>
-	<discuss-panel></discuss-panel>
+	<main id="article-page">
+		<article-view v-bind="article"></article-view>
+		<discuss-panel></discuss-panel>
 
-	<div class="side-buttons">
-		<button id="gotodiscuss" class="center-all" title="转到评论区" @click="gotodiscuss">
-			<i class="far fa-comments"></i>
-		</button>
-		<button id="gototop" class="center-all" title="回顶部">
-			<i class="fas fa-chevron-up"></i>
-		</button>
-	</div>
-</main>
+		<div class="side-buttons">
+			<button id="gotodiscuss" class="center-all" title="转到评论区" @click="gotodiscuss">
+				<i class="far fa-comments"></i>
+			</button>
+			<button id="gototop" class="center-all" title="回顶部">
+				<i class="fas fa-chevron-up"></i>
+			</button>
+		</div>
+	</main>
 </template>
 
 <script>

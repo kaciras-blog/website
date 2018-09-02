@@ -1,69 +1,69 @@
 <template>
-<div class="markdown-editor">
-	<div class="menu">
-		<button class="minor icon filled" title="标题" @click="addHeader(2)">
-			<i class="fas fa-heading"></i>
-		</button>
-		<button class="minor icon filled" title="粗体" @click="switchWrapper('**', '**')">
-			<i class="fa fa-bold"></i>
-		</button>
-		<button class="minor icon filled" title="斜体" @click="switchWrapper('_', '_')">
-			<i class="fa fa-italic"></i>
-		</button>
-		<button class="minor icon filled" title="删除线" @click="switchWrapper('~~', '~~')">
-			<i class="fa fa-strikethrough"></i>
-		</button>
-		<button class="minor icon filled" title="行内代码" @click="switchWrapper('`', '`')">
-			<i class="fa fa-code"></i>
-		</button>
-		<button class="minor icon filled" title="横线" @click="addNewLine('- - -')">
-			<i class="fa fa-minus"></i>
-		</button>
-		<button class="minor icon filled" title="代码块" @click="addCode">
-			<i class="far fa-file-code"></i>
-		</button>
-		<button class="minor icon filled" title="引用块" @click="addPrefixToLines('>')">
-			<i class="fa fa-quote-left"></i>
-		</button>
-		<button class="minor icon filled" title="列表" @click="addPrefixToLines('* ')">
-			<i class="fas fa-list-ul"></i>
-		</button>
-		<button class="minor icon filled" title="插入链接" @click="addLink">
-			<i class="fa fa-link"></i>
-		</button>
-		<button class="minor icon filled" title="插入图片" @click="addImage">
-			<i class="far fa-file-image"></i>
-		</button>
+	<div class="markdown-editor">
+		<div class="menu">
+			<button class="minor icon filled" title="标题" @click="addHeader(2)">
+				<i class="fas fa-heading"></i>
+			</button>
+			<button class="minor icon filled" title="粗体" @click="switchWrapper('**', '**')">
+				<i class="fa fa-bold"></i>
+			</button>
+			<button class="minor icon filled" title="斜体" @click="switchWrapper('_', '_')">
+				<i class="fa fa-italic"></i>
+			</button>
+			<button class="minor icon filled" title="删除线" @click="switchWrapper('~~', '~~')">
+				<i class="fa fa-strikethrough"></i>
+			</button>
+			<button class="minor icon filled" title="行内代码" @click="switchWrapper('`', '`')">
+				<i class="fa fa-code"></i>
+			</button>
+			<button class="minor icon filled" title="横线" @click="addNewLine('- - -')">
+				<i class="fa fa-minus"></i>
+			</button>
+			<button class="minor icon filled" title="代码块" @click="addCode">
+				<i class="far fa-file-code"></i>
+			</button>
+			<button class="minor icon filled" title="引用块" @click="addPrefixToLines('>')">
+				<i class="fa fa-quote-left"></i>
+			</button>
+			<button class="minor icon filled" title="列表" @click="addPrefixToLines('* ')">
+				<i class="fas fa-list-ul"></i>
+			</button>
+			<button class="minor icon filled" title="插入链接" @click="addLink">
+				<i class="fa fa-link"></i>
+			</button>
+			<button class="minor icon filled" title="插入图片" @click="addImage">
+				<i class="far fa-file-image"></i>
+			</button>
 
-		<!--TODO:视频支持-->
-		<button class="minor icon filled" title="插入视频" @click="addHeader(2)">
-			<i class="far fa-file-video"></i>
-		</button>
+			<!--TODO:视频支持-->
+			<button class="minor icon filled" title="插入视频" @click="addHeader(2)">
+				<i class="far fa-file-video"></i>
+			</button>
 
-		<button class="icon filled" title="双列视图" @click="viewModel=0">
-			<i class="fas fa-columns"></i>
-		</button>
-		<button class="icon filled" title="Markdown视图" @click="viewModel=1">
-			<i class="far fa-edit"></i>
-		</button>
-		<button class="icon filled" title="Html视图" @click="viewModel=2">
-			<i class="fas fa-eye"></i>
-		</button>
-		<button class="icon filled" title="编辑器设置">
-			<i class="fas fa-cog"></i>
-		</button>
-		<button class="icon filled" title="修改简介" @click="metadataDialog">
-			<i class="far fa-address-card"></i>
-		</button>
-		<button class="icon filled" title="保存" @click="save(true)">
-			<i class="far fa-save"></i>
-		</button>
-		<button class="icon filled" title="发布!" @click="publish">
-			<i class="far fa-paper-plane"></i>
-		</button>
-	</div>
+			<button class="icon filled" title="双列视图" @click="viewModel=0">
+				<i class="fas fa-columns"></i>
+			</button>
+			<button class="icon filled" title="Markdown视图" @click="viewModel=1">
+				<i class="far fa-edit"></i>
+			</button>
+			<button class="icon filled" title="Html视图" @click="viewModel=2">
+				<i class="fas fa-eye"></i>
+			</button>
+			<button class="icon filled" title="编辑器设置">
+				<i class="fas fa-cog"></i>
+			</button>
+			<button class="icon filled" title="修改简介" @click="metadataDialog">
+				<i class="far fa-address-card"></i>
+			</button>
+			<button class="icon filled" title="保存" @click="save(true)">
+				<i class="far fa-save"></i>
+			</button>
+			<button class="icon filled" title="发布!" @click="publish">
+				<i class="far fa-paper-plane"></i>
+			</button>
+		</div>
 
-	<div class="editor-main">
+		<div class="editor-main">
 		<textarea id="textarea" ref="textarea"
 				  class="text-view"
 				  v-show="viewModel!==2"
@@ -72,14 +72,14 @@
 				  @keydown.9.prevent="inputTab"
 				  v-model="content">
 		</textarea>
-		<article id="preview" ref="preview"
-				 class="text-view preview markdown"
-				 v-show="viewModel!==1"
-				 :class="{ split:viewModel===0, single:viewModel===2 }"
-				 v-html="htmlText">
-		</article>
+			<article id="preview" ref="preview"
+					 class="text-view preview markdown"
+					 v-show="viewModel!==1"
+					 :class="{ split:viewModel===0, single:viewModel===2 }"
+					 v-html="htmlText">
+			</article>
+		</div>
 	</div>
-</div>
 </template>
 
 <script>
@@ -182,7 +182,7 @@ export default {
 			this.$dialog.show(SelectCategoryDialog.name, null).then(publish.bind(this));
 		},
 		async metadataDialog() {
-			const res =  this.$dialog.show(MetadataDialog.name, {mdata: this.metadata});
+			const res = this.$dialog.show(MetadataDialog.name, {mdata: this.metadata});
 			if (res)
 				this.metadata = res;
 		},

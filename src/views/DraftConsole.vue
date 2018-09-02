@@ -43,7 +43,7 @@ async function loadDrafts() {
 	}
 	this.loading = true;
 
-	try{
+	try {
 		const list = await api.draft.getList(0, 0, 20);
 		if (list.length === 0) {
 			this.allLoaded = true;
@@ -85,23 +85,24 @@ export default {
 </script>
 
 <style scoped>
-	.draft {
-		display: flex;
-		flex-direction: column;
-	}
+.draft {
+	display: flex;
+	flex-direction: column;
+}
 
-	.history {
-		color: #c3c3c3;
-		background-color: #3a3a3a;
-		box-shadow: #0a0a0a 0 0 1px 1px inset;
-	}
+.history {
+	color: #c3c3c3;
+	background-color: #3a3a3a;
+	box-shadow: #0a0a0a 0 0 1px 1px inset;
+}
 
-	.history-item {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-	.buttons{
-		margin-bottom: 1rem;
-	}
+.history-item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.buttons {
+	margin-bottom: 1rem;
+}
 </style>

@@ -1,10 +1,10 @@
 <template>
-<div id="app">
-	<top-nav v-if="topNav.show" v-bind="topNav"></top-nav>
-	<router-view @layoutChanged="configLayout"></router-view>
-	<page-footer v-if="showFooter"></page-footer>
-	<kx-dialog-container></kx-dialog-container>
-</div>
+	<div id="app">
+		<top-nav v-if="topNav.show" v-bind="topNav"></top-nav>
+		<router-view @layoutChanged="configLayout"></router-view>
+		<page-footer v-if="showFooter"></page-footer>
+		<kx-dialog-container></kx-dialog-container>
+	</div>
 </template>
 
 <script>
@@ -19,9 +19,9 @@ export default {
 			showFooter: true,
 		};
 	},
-	methods:{
+	methods: {
 		configLayout(nav, showFooter) {
-			if(typeof nav === "function") {
+			if (typeof nav === "function") {
 				nav = nav();
 			}
 			Object.assign(this.topNav, nav);
@@ -34,7 +34,7 @@ export default {
 			const toPage = to.path.split("/")[1];
 			const formPage = form.path.split("/")[1];
 
-			if(toPage !== formPage) {
+			if (toPage !== formPage) {
 				this.topNav.show = true;
 				this.topNav.clazz = null;
 				this.topNav.banner = true;

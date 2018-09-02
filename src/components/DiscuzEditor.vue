@@ -1,35 +1,35 @@
 <template>
-<div class="segment">
+	<div class="segment">
 
-	<div class="discuss-editor center-all" v-if="config.disable">
-		已设置为禁止评论
-	</div>
-	<div class="discuss-editor center-all" v-else-if="config.loginRequired && !user">
-		已禁止匿名评论,请先<a class='highlight' href='/login'>登录</a>
-	</div>
-
-	<div class="discuss-editor" v-else>
-
-		<div v-if="user">
-			<img :src='"/image/" + user.head' class='small head' alt="头像">
-			<span class="name">{{user.name}}</span>
+		<div class="discuss-editor center-all" v-if="config.disable">
+			已设置为禁止评论
 		</div>
-		<div class="discusser" v-else>
-			<img src='/image/akalin.jpg' class='small head' alt="头像">
-			<span class="name">(匿名评论)</span>
+		<div class="discuss-editor center-all" v-else-if="config.loginRequired && !user">
+			已禁止匿名评论,请先<a class='highlight' href='/login'>登录</a>
 		</div>
 
-		<textarea class='input discuss-box' v-model="content" placeholder='说点什么吧'></textarea>
+		<div class="discuss-editor" v-else>
 
-		<div class='buttons'>
-			<button class='primary round'
-					:disabled="submiting"
-					@click='submitDiscuss'>
-				<i class="far fa-paper-plane"></i><span>发表评论</span>
-			</button>
+			<div v-if="user">
+				<img :src='"/image/" + user.head' class='small head' alt="头像">
+				<span class="name">{{user.name}}</span>
+			</div>
+			<div class="discusser" v-else>
+				<img src='/image/akalin.jpg' class='small head' alt="头像">
+				<span class="name">(匿名评论)</span>
+			</div>
+
+			<textarea class='input discuss-box' v-model="content" placeholder='说点什么吧'></textarea>
+
+			<div class='buttons'>
+				<button class='primary round'
+						:disabled="submiting"
+						@click='submitDiscuss'>
+					<i class="far fa-paper-plane"></i><span>发表评论</span>
+				</button>
+			</div>
 		</div>
 	</div>
-</div>
 </template>
 
 <script>

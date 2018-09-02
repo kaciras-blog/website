@@ -2,9 +2,9 @@ import MarkdownIt from "markdown-it";
 import hljs from "highlight.js";
 import Anchor from "markdown-it-anchor";
 
-function myPlugin(md, opts) {
+function myPlugin(markdownIt) {
 
-	// md.block.ruler.before("paragraph", "detail", (state, startLine, endLine, silent) => {
+	// markdownIt.block.ruler.before("paragraph", "detail", (state, startLine, endLine, silent) => {
 	// 	let pos = state.bMarks[startLine] + state.tShift[startLine];
 	// 	let token;
 	// 	const oldParentType = state.parentType;
@@ -56,7 +56,7 @@ function myPlugin(md, opts) {
 	// });
 
 	// 给行内代码加个class
-	md.core.ruler.push("xxx", state => state.tokens
+	markdownIt.core.ruler.push("xxx", state => state.tokens
 		.filter(token => token.type === 'inline')
 		.forEach(token => token.children
 			.filter(child => child.type==="code_inline")

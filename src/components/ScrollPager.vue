@@ -48,8 +48,7 @@ class LoadTask {
 export default {
 	name: "scroll-pager",
 	props: {
-		options: {
-		},
+		options: {},
 		activeHeight: {
 			type: Number,
 			default: 400,
@@ -75,7 +74,7 @@ export default {
 		windowScrollHandler() {
 			if (this.state !== "free")
 				return;
-				//网页高度 - 窗口高度 - 窗口之上部分的高度 = 窗口下面剩余的高度
+			//网页高度 - 窗口高度 - 窗口之上部分的高度 = 窗口下面剩余的高度
 			const remain = document.body.offsetHeight - window.innerHeight - window.scrollY;
 			if (remain < this.activeHeight) this.loadPage();
 		},
@@ -94,7 +93,7 @@ export default {
 </script>
 
 <style>
-	.sk-fading-circle {
-		margin-top: 1rem;
-	}
+.sk-fading-circle {
+	margin-top: 1rem;
+}
 </style>

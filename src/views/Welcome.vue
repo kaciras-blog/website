@@ -1,6 +1,4 @@
 <template>
-<framework id="welcome-page">
-
 	<swiper :options="swiperOption">
 		<figure class="swiper-slide swiper-no-swiping" v-for="(slide, index) of slides" :key="index">
 			<img :src="slide.picture"/>
@@ -12,13 +10,10 @@
 		</figure>
 		<div class="swiper-pagination" slot="pagination"></div>
 	</swiper>
-
-</framework>
 </template>
 
 <script>
 import Vue from "vue";
-import css from "swiper/dist/css/swiper.min.css";
 import VueAwesomeSwiper from "vue-awesome-swiper";
 import api from "../apis";
 
@@ -29,8 +24,8 @@ export default {
 	data() {
 		return {
 			swiperOption: {
-				autoplay:{
-					disableOnInteraction:false,
+				autoplay: {
+					disableOnInteraction: false,
 				},
 				pagination: {
 					el: '.swiper-pagination',
@@ -49,7 +44,7 @@ export default {
 <style lang="less">
 @import "../css/ToBeImpoert";
 
-#welcome-page{
+#welcome-page {
 	margin-top: 3rem;
 }
 
@@ -73,15 +68,15 @@ export default {
 			transition: all 0.35s;
 		}
 
-		&:hover{
-			&::before,&::after {
+		&:hover {
+			&::before, &::after {
 				opacity: 1;
 				-webkit-transform: scale(1);
 				transform: scale(1);
 			}
 		}
 
-		&::before{
+		&::before {
 			top: 50px;
 			right: 30px;
 			bottom: 50px;
@@ -90,13 +85,13 @@ export default {
 			border-top: 1px solid #fff;
 			border-bottom: 1px solid #fff;
 
-			-webkit-transform: scale(0,1);
-			transform: scale(0,1);
+			-webkit-transform: scale(0, 1);
+			transform: scale(0, 1);
 
 			-webkit-transform-origin: 0 0;
 			transform-origin: 0 0;
 		}
-		&::after{
+		&::after {
 			top: 30px;
 			right: 50px;
 			bottom: 30px;
@@ -104,8 +99,8 @@ export default {
 			border-right: 1px solid #fff;
 			border-left: 1px solid #fff;
 
-			-webkit-transform: scale(1,0);
-			transform: scale(1,0);
+			-webkit-transform: scale(1, 0);
+			transform: scale(1, 0);
 
 			-webkit-transform-origin: 100% 0;
 			transform-origin: 100% 0;

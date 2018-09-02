@@ -1,41 +1,41 @@
 <template>
-<div class="category">
-	<div class="info-container"
-		 v-if="current"
-		 @click="setBackground"
-		 :style="styleVars"
-		 :title="editable ? '点击换背景' : null">
+	<div class="category">
+		<div class="info-container"
+			 v-if="current"
+			 @click="setBackground"
+			 :style="styleVars"
+			 :title="editable ? '点击换背景' : null">
 
-		<div class="info" @click.stop>
-			<img class="head"
-				 :src="'/image/' + current.cover"
-				 :title="editable ? '点击换头像' : null"
-				 alt="分类图标"
-				 @click="setCover">
-			<input class="name" v-if="editable" title="名称" v-model="current.name">
-			<span class="name" v-else>{{current.name}}</span>
+			<div class="info" @click.stop>
+				<img class="head"
+					 :src="'/image/' + current.cover"
+					 :title="editable ? '点击换头像' : null"
+					 alt="分类图标"
+					 @click="setCover">
+				<input class="name" v-if="editable" title="名称" v-model="current.name">
+				<span class="name" v-else>{{current.name}}</span>
 
-			<textarea v-if="editable" title="描述" class="desc" v-model="current.description"></textarea>
-			<span v-else class="desc">{{current.description}}</span>
+				<textarea v-if="editable" title="描述" class="desc" v-model="current.description"></textarea>
+				<span v-else class="desc">{{current.description}}</span>
 
-			<div class="buttons" v-if="editable">
-				<button @click="move">移动</button>
-				<button @click="submit">应用更改</button>
-				<button class="dangerous">删除</button>
+				<div class="buttons" v-if="editable">
+					<button @click="move">移动</button>
+					<button @click="submit">应用更改</button>
+					<button class="dangerous">删除</button>
+				</div>
+			</div>
+		</div>
+		<div class="children-title" v-if="current">下级分类</div>
+		<div class="children">
+			<div class="category-card"
+				 v-for="child of children"
+				 :key="child.id"
+				 @click="goto(child)">
+				<img class="head" :src="'/image/' + child.cover" alt="分类图标">
+				<span>{{child.name}}</span>
 			</div>
 		</div>
 	</div>
-	<div class="children-title" v-if="current">下级分类</div>
-	<div class="children">
-		<div class="category-card"
-			 v-for="child of children"
-			 :key="child.id"
-			 @click="goto(child)">
-			<img class="head" :src="'/image/' + child.cover" alt="分类图标">
-			<span>{{child.name}}</span>
-		</div>
-	</div>
-</div>
 </template>
 
 <script>
@@ -65,7 +65,7 @@ export default {
 			const vars = {
 				"--background": `url(/image/${this.current.background})`,
 			};
-			if(this.editable) {
+			if (this.editable) {
 				vars["--cursor"] = "pointer";
 			}
 			return vars;
@@ -99,7 +99,7 @@ export default {
 	created() {
 		api.category.getInfo(this.id).then(json => this.current = json);
 		api.category.getChildren(this.id).then(r => this.children = r);
-	}
+	},
 };
 </script>
 

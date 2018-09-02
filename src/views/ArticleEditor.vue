@@ -1,5 +1,5 @@
 <template>
-<kx-markdown></kx-markdown>
+	<kx-markdown></kx-markdown>
 </template>
 
 <script>
@@ -8,8 +8,8 @@ import {FullScreen} from "../mixins";
 
 export default {
 	name: "ArticleEditor",
-	components:{KxMarkdown},
-	mixins:[FullScreen],
+	components: {KxMarkdown},
+	mixins: [FullScreen],
 	created() {
 		this.$emit("layoutChanged", {show: false}, false);
 	},

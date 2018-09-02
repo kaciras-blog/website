@@ -18,22 +18,22 @@ export default {
 </script>
 
 <style lang="less">
-	@import "../css/ToBeImpoert.less";
+@import "../css/ToBeImpoert.less";
 
-	#bottom-footer {
-		width: 100%;
-		margin-top: 4rem;
-		color: #eee;
-		background-color: #303030;
-		padding: 1rem;
+#bottom-footer {
+	width: 100%;
+	margin-top: 4rem;
+	color: #eee;
+	background-color: #303030;
+	padding: 1rem;
 
-		display: flex;
-		flex-direction: column;
+	display: flex;
+	flex-direction: column;
 
-		@media screen and (min-width: @length-screen-mobile) {
-			padding: 1rem 5%;
-			flex-direction: row;
-			justify-content: space-between;
-		}
+	@media screen and (min-width: @length-screen-mobile) {
+		padding: 1rem 5%;
+		flex-direction: row;
+		justify-content: space-between;
 	}
+}
 </style>

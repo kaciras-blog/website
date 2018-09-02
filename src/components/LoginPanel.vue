@@ -1,29 +1,29 @@
 <template>
-<form @keyup.13="login">
-	<h1 class="center segment">登录</h1>
+	<form @keyup.13="login">
+		<h1 class="center segment">登录</h1>
 
-	<label for="name">用户名:</label>
-	<input id="name" v-model="form.name" required autofocus>
+		<label for="name">用户名:</label>
+		<input id="name" v-model="form.name" required autofocus>
 
-	<label for="password">密码:</label>
-	<input id="password" v-model="form.password" type="password" required>
+		<label for="password">密码:</label>
+		<input id="password" v-model="form.password" type="password" required>
 
-	<div class="center">
-		<label class="check-box"><input v-model="form.remenber" type="checkbox"><span>保持登录</span></label>
-	</div>
+		<div class="center">
+			<label class="check-box"><input v-model="form.remenber" type="checkbox"><span>保持登录</span></label>
+		</div>
 
-	<span class="text-warning center">{{message}}</span>
+		<span class="text-warning center">{{message}}</span>
 
-	<div class="buttons">
-		<button type="button" class="lightly" @click="login">确定</button>
-		<button type="button" class="lightly" @click="switchPanel">注册<i class="fa fa-arrow-right"></i></button>
-	</div>
-</form>
+		<div class="buttons">
+			<button type="button" class="lightly" @click="login">确定</button>
+			<button type="button" class="lightly" @click="switchPanel">注册<i class="fa fa-arrow-right"></i></button>
+		</div>
+	</form>
 </template>
 
 <script>
 import api from "../apis";
-import {pageReturn, errMsg} from "../utils";
+import {errMsg, pageReturn} from "../utils";
 
 export default {
 	name: "LoginPanel",
@@ -76,7 +76,7 @@ label {
 	height: 1em;
 }
 
-.buttons{
+.buttons {
 	grid-column: ~"1/3";
 	display: flex;
 	& > * {

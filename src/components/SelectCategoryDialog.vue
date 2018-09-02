@@ -1,8 +1,8 @@
 <template>
-<kx-dialog class="category-selector" :draggable="true">
-	<h3 slot="title">选择分类</h3>
-	<category-view></category-view>
-</kx-dialog>
+	<kx-dialog class="category-selector" :draggable="true">
+		<h3 slot="title">选择分类</h3>
+		<category-view></category-view>
+	</kx-dialog>
 </template>
 
 <script>

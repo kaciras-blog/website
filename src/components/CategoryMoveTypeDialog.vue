@@ -1,18 +1,13 @@
 <template>
 	<kx-dialog>
+		<h3 slot="title">选择移动方式</h3>
 
 	</kx-dialog>
 </template>
 
 <script>
 export default {
-	name: "config-dialog",
-	props: ["data"],
-	methods: {
-		ok() {
-
-		},
-	},
+	name: "CategoryMoveTypeDialog",
 };
 </script>
 

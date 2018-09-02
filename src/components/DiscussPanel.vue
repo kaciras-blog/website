@@ -1,30 +1,30 @@
 <template>
-<section id="discuss" class="panel">
+	<section id="discuss" class="panel">
 
-	<header class="segment">
-		<h2 class="compact">评论区</h2>
-		<span id="discuss-num">{{totalCount}}条</span>
-	</header>
+		<header class="segment">
+			<h2 class="compact">评论区</h2>
+			<span id="discuss-num">{{totalCount}}条</span>
+		</header>
 
-	<discuz-editor @discussion-added="showLast"></discuz-editor>
+		<discuz-editor @discussion-added="showLast"></discuz-editor>
 
-	<discussion
-		v-for="item of discussions"
-		:key="item.id"
-		:value="item"
-		:replying="replying"
-		@reply="reply"
-		@item-removed="loadPageBackground(pageIndex)">
-	</discussion>
+		<discussion
+			v-for="item of discussions"
+			:key="item.id"
+			:value="item"
+			:replying="replying"
+			@reply="reply"
+			@item-removed="loadPageBackground(pageIndex)">
+		</discussion>
 
-	<pager-buttons
-		v-if="totalCount > pageSize"
-		:index="pageIndex"
-		:page-size="pageSize"
-		:total-count="totalCount"
-		@loadPage="loadPage">
-	</pager-buttons>
-</section>
+		<pager-buttons
+			v-if="totalCount > pageSize"
+			:index="pageIndex"
+			:page-size="pageSize"
+			:total-count="totalCount"
+			@loadPage="loadPage">
+		</pager-buttons>
+	</section>
 </template>
 
 <script>
@@ -32,7 +32,7 @@ import api from "../apis";
 import discuzEditor from "./DiscuzEditor.vue";
 import discussion from "./Discussion.vue";
 import pagerButtons from "./ButtonPager.vue";
-import {scrollToElementStart, scrollToElementEnd} from "../utils";
+import {scrollToElementEnd, scrollToElementStart} from "../utils";
 
 export default {
 	name: "discuss-panel",

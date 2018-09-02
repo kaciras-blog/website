@@ -32,27 +32,31 @@ export default {
 </script>
 
 <style scoped lang="less">
-	.content{
-		width: 680px;
-		height: 200px;
-		display: grid;
-		grid-template-columns: repeat(11, 1fr);
-		grid-template-rows: repeat(5, 1fr);
-		grid-gap: .8em;
-	}
-	img{
-		grid-area: 1/1/5/4;
-		width: 100%;
-		height: 100%;
-		cursor: pointer;
-	}
-	.title{
-		grid-area: 1/4/1/12;
-	}
-	.summary{
-		grid-area: 2/4/5/12;
-	}
-	.keywords{
-		grid-area: 5/1/5/12;
-	}
+.content {
+	width: 680px;
+	height: 200px;
+	display: grid;
+	grid-template-columns: repeat(11, 1fr);
+	grid-template-rows: repeat(5, 1fr);
+	grid-gap: .8em;
+}
+
+img {
+	grid-area: 1/1/5/4;
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+}
+
+.title {
+	grid-area: 1/4/1/12;
+}
+
+.summary {
+	grid-area: 2/4/5/12;
+}
+
+.keywords {
+	grid-area: 5/1/5/12;
+}
 </style>

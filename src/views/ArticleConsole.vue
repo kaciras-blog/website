@@ -1,37 +1,39 @@
 <template>
-<div>
-	<div class="buttons">
-		<button @click="newArticle"><i class="fa fa-edit"></i>新文章</button>
-	</div>
-
-	<div class="panel">
-		<div class="article segment" :key="A.id" v-for="A in articles">
-
-			<img :src="'/image/' + A.cover">
-			<div>
-				<span class="red note" v-if="A.deleted">已删除</span>
-				<h3 class="compact">{{A.title}}</h3>
-			</div>
-			<div>
-				<div class="tag-group">
-					<span v-for="c in A.categoryPath" :key="c.id">{{c.name}}</span>
-				</div>
-				<div class="info minor-text">
-					<i class="far fa-edit" title="发表于"></i><time>{{A.create}}</time>
-					<i class="fas fa-sync" title="最后更新"></i><time>{{A.update}}</time>
-					<i class="fas fa-comment-dots" title="评论数"></i><span>{{A.dcnt}}</span>
-					<i class="fa fa-eye" title="浏览数"></i><span>{{A.vcnt}}</span>
-				</div>
-			</div>
-
-			<button @click="editArticle(A.id)">修改</button>
-			<button class="dangerous" @click="deleteArticle(A.id)">删除</button>
+	<div>
+		<div class="buttons">
+			<button @click="newArticle"><i class="fa fa-edit"></i>新文章</button>
 		</div>
 
-		<span v-if="allLoaded && articles.length===0">没有找到文章,去写一篇吧~</span>
-		<sk-fading-circle v-if="loading"></sk-fading-circle>
+		<div class="panel">
+			<div class="article segment" :key="A.id" v-for="A in articles">
+
+				<img :src="'/image/' + A.cover">
+				<div>
+					<span class="red note" v-if="A.deleted">已删除</span>
+					<h3 class="compact">{{A.title}}</h3>
+				</div>
+				<div>
+					<div class="tag-group">
+						<span v-for="c in A.categoryPath" :key="c.id">{{c.name}}</span>
+					</div>
+					<div class="info minor-text">
+						<i class="far fa-edit" title="发表于"></i>
+						<time>{{A.create}}</time>
+						<i class="fas fa-sync" title="最后更新"></i>
+						<time>{{A.update}}</time>
+						<i class="fas fa-comment-dots" title="评论数"></i><span>{{A.dcnt}}</span>
+						<i class="fa fa-eye" title="浏览数"></i><span>{{A.vcnt}}</span>
+					</div>
+				</div>
+
+				<button @click="editArticle(A.id)">修改</button>
+				<button class="dangerous" @click="deleteArticle(A.id)">删除</button>
+			</div>
+
+			<span v-if="allLoaded && articles.length===0">没有找到文章,去写一篇吧~</span>
+			<sk-fading-circle v-if="loading"></sk-fading-circle>
+		</div>
 	</div>
-</div>
 </template>
 
 <script>
@@ -99,7 +101,7 @@ export default {
 	border-radius: .3rem;
 	padding: .2em .3em;
 
-	&.red{
+	&.red {
 		background-color: #ed575a;
 		color: whitesmoke;
 	}
@@ -117,8 +119,7 @@ export default {
 
 .article {
 	display: grid;
-	grid-template-areas: "img title btn-1"
-						 "img meta  btn-2";
+	grid-template-areas: "img title btn-1" "img meta  btn-2";
 	grid-template-columns: 8rem 1fr auto;
 	grid-template-rows: 3.5rem 3.5rem;
 	grid-column-gap: 1rem;
@@ -147,7 +148,7 @@ export default {
 	}
 }
 
-.cover{
+.cover {
 
 }
 </style>

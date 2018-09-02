@@ -1,18 +1,18 @@
 <template>
-<main id="console-page">
-	<aside id="tabs" class="flex vertical compact">
-		<h1>控制台</h1>
-		<router-link to="/console/article">文章列表</router-link>
-		<router-link to="/console/draft">我的草稿</router-link>
-		<router-link to="/console/category">管理分类</router-link>
-		<router-link to="/console/config">选项</router-link>
-	</aside>
+	<main id="console-page">
+		<aside id="tabs" class="flex vertical compact">
+			<h1>控制台</h1>
+			<router-link to="/console/article">文章列表</router-link>
+			<router-link to="/console/draft">我的草稿</router-link>
+			<router-link to="/console/category">管理分类</router-link>
+			<router-link to="/console/config">选项</router-link>
+		</aside>
 
-	<nav id="nav-bar" class="light nav-item-group">
-		<router-link to="/" class="nav-item">返回首页</router-link>
-	</nav>
-	<router-view class="content-body"></router-view>
-</main>
+		<nav id="nav-bar" class="light nav-item-group">
+			<router-link to="/" class="nav-item">返回首页</router-link>
+		</nav>
+		<router-view class="content-body"></router-view>
+	</main>
 </template>
 
 <script>
