@@ -96,7 +96,10 @@ export default {
 </script>
 
 <style scoped lang="less">
+@import "../css/ToBeImpoert";
+
 .note {
+	display: inline-block;
 	border-radius: .3rem;
 	padding: .2em .3em;
 
@@ -121,10 +124,12 @@ export default {
 	grid-template-areas: "img title btn-1"
 						 "img meta  btn-2";
 	grid-template-columns: 8rem 1fr auto;
-	grid-template-rows: 3rem 3rem;
+	grid-template-rows: 3.5rem 3.5rem;
+	grid-column-gap: 1rem;
 
 	& > img {
 		grid-area: img;
+		.size(100%, 100%);
 	}
 	& > button:nth-of-type(1) {
 		grid-area: btn-1;
@@ -144,5 +149,9 @@ export default {
 		}
 		margin-right: .2rem;
 	}
+}
+
+.cover{
+
 }
 </style>

@@ -31,11 +31,11 @@
 			</span>
 			<span title="评论数">
 				<i class="fas fa-comment-dots"></i>
-				<span>{{item.discussionCount}}</span>
+				<span>{{item.dcnt}}</span>
 			</span>
 			<span title="浏览数">
 				<i class="fa fa-eye"></i>
-				<span>{{item.viewCount}}</span>
+				<span>{{item.vcnt}}</span>
 			</span>
 		</div>
 	</div>

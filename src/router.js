@@ -53,8 +53,7 @@ export default new Router({
 				{ path: "article", component: ArticleConsole },
 				{ path: "draft", component: DraftConsole },
 				{ path: "config", component: ConfigConsole },
-				{ path: "category", component: CategoryConsole },
-				{ path: "category/detail/:id", component: CategoryEditor },
+				{ path: "category", component: CategoryEditor },
 			],
 		},
 		{

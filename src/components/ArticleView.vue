@@ -1,5 +1,5 @@
 <template>
-<article class="plate">
+<article>
 	<header class="title segment">
 		<h1>{{title}}</h1>
 		<p>发布时间<time>{{create}}</time></p>

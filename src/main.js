@@ -8,12 +8,14 @@ import PageFooter from "./components/PageFooter";
 import SkFadingCircle from "./components/SkFadingCircle";
 import apis from "./apis";
 import KxDialog from "kxdialog/src/index";
+import SelectCategoryDialog from "./components/SelectCategoryDialog";
 
 Vue.use(KxDialog);
 
 Vue.component(TopNav.name, TopNav);
 Vue.component(PageFooter.name, PageFooter);
 Vue.component(SkFadingCircle.name, SkFadingCircle);
+Vue.component(SelectCategoryDialog.name, SelectCategoryDialog);
 
 Vue.config.productionTip = false;
 Vue.config.performance = true;
