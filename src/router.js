@@ -10,8 +10,6 @@ import ArticleEditor from "./views/ArticleEditor";
 import Console from "./views/Console";
 import ArticleConsole from "./views/ArticleConsole";
 import DraftConsole from "./views/DraftConsole";
-import CategoryConsole from "./views/CategoryConsole";
-import ConfigConsole from "./views/ConfigConsole";
 import CategoryEditor from "./views/CategoryEditor";
 
 Vue.use(Router);
@@ -52,7 +50,6 @@ export default new Router({
 				{ path: "", redirect: "article" },
 				{ path: "article", component: ArticleConsole },
 				{ path: "draft", component: DraftConsole },
-				{ path: "config", component: ConfigConsole },
 				{ path: "category", component: CategoryEditor },
 			],
 		},
