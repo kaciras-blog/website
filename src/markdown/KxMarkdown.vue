@@ -86,13 +86,14 @@
 import Vue from "vue";
 import $ from "jquery";
 import textOps from "./TextOperations";
-import {assignUpdate} from "../utils";
+import {assignUpdate, errorMessage} from "../utils";
 import convertHtml from "./markdown-convertor";
 import api from "../apis";
 
 import AddLinkDialog from "./AddLinkDialog.vue";
 import MetadataDialog from "./MetadataDialog.vue";
 import CodingDialog from "./CodingDialog.vue";
+import SelectCategoryDialog from "../components/SelectCategoryDialog";
 
 Vue.component(AddLinkDialog.name, AddLinkDialog);
 Vue.component(MetadataDialog.name, MetadataDialog);
@@ -133,11 +134,11 @@ function publish(category) {
 	if (targetArticleId) {
 		api.article.update(targetArticleId, dto)
 			.then(() => window.location.href = "/article/" + targetArticleId)
-			.catch(reason => this.$dialog.messageBox("发表失败", errMsg(reason), "error"));
+			.catch(reason => this.$dialog.messageBox("发表失败", errorMessage(reason), "error"));
 	} else {
 		api.article.publish(dto)
 			.then(url => window.location.href = "/article/" + url.substring("/articles/".length))
-			.catch(reason => this.$dialog.messageBox("发表失败", errMsg(reason), "error"));
+			.catch(reason => this.$dialog.messageBox("发表失败", errorMessage(reason), "error"));
 	}
 }
 
@@ -178,7 +179,7 @@ export default {
 			this.$dialog.messageBox("标题222", "3333", "warning");
 		},
 		publish() {
-			this.$dialog.show(selectCategoryDialog.name, null).then(publish.bind(this));
+			this.$dialog.show(SelectCategoryDialog.name, null).then(publish.bind(this));
 		},
 		async metadataDialog() {
 			const res =  this.$dialog.show(MetadataDialog.name, {mdata: this.metadata});

@@ -35,6 +35,7 @@
 <script>
 import api from "../apis";
 import Vuex from "vuex";
+import {errorMessage} from "../utils";
 
 export default {
 	name: "DiscussEditor",
@@ -59,7 +60,7 @@ export default {
 				this.content = "";
 				this.$emit("discussion-added");
 			} catch (e) {
-				this.$dialog.messageBox("发表评论", errMsg(e), "error");
+				this.$dialog.messageBox("发表评论", errorMessage(e), "error");
 			}
 			this.submiting = false;
 		},

@@ -19,8 +19,8 @@
 				<div class="info minor-text">
 					<i class="far fa-edit" title="发表于"></i><time>{{A.create}}</time>
 					<i class="fas fa-sync" title="最后更新"></i><time>{{A.update}}</time>
-					<i class="fas fa-comment-dots" title="评论数"></i><span>{{A.discussionCount}}</span>
-					<i class="fa fa-eye" title="浏览数"></i><span>{{A.viewCount}}</span>
+					<i class="fas fa-comment-dots" title="评论数"></i><span>{{A.dcnt}}</span>
+					<i class="fa fa-eye" title="浏览数"></i><span>{{A.vcnt}}</span>
 				</div>
 			</div>
 
@@ -37,7 +37,7 @@
 <script>
 import api from "../apis";
 import pagerButtons from "../components/ButtonPager";
-import {deleteOn} from "../utils";
+import {deleteOn, errorMessage} from "../utils";
 
 export default {
 	name: "ArticleConsole",
@@ -58,11 +58,7 @@ export default {
 		deleteArticle(id) {
 			api.article.deleteOne(id)
 				.then(() => deleteOn(this.articles, a => a.id === id))
-				.catch(err => this.$dialog.messageBox({
-					title: "删除文章",
-					type: "error",
-					content: errMsg(err),
-				}));
+				.catch(err => this.$dialog.messageBox("删除文章", errorMessage(err), "error"));
 		},
 		newArticle() {
 			api.draft.createNew()

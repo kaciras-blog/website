@@ -48,16 +48,17 @@ export function markRenderComplete() {
 /**
  * 从Axios的错误原因对象中提取错误信息。
  *
- * @param reason {*} 异常
+ * @param object {*} 异常
  * @return {string} 错误信息
  */
-export function errMsg(reason) {
-	const res = reason.response;
+export function errorMessage(object) {
+	const res = object.response;
 	if(res && res.data && res.data.message) {
 		return res.data.message;
 	}
-	return reason.message || "未知的错误";
+	return object.message || "未知的错误";
 }
+
 
 /**
  * 获取URL中路径的某一片段
