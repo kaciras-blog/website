@@ -11,11 +11,11 @@
 	<div class="discuss-editor" v-else>
 
 		<div v-if="user">
-			<img :src='"/image/" + user.head' class='head-small' alt="头像">
+			<img :src='"/image/" + user.head' class='small head' alt="头像">
 			<span class="name">{{user.name}}</span>
 		</div>
 		<div class="discusser" v-else>
-			<img src='/image/akalin.jpg' class='head-small' alt="头像">
+			<img src='/image/akalin.jpg' class='small head' alt="头像">
 			<span class="name">(匿名评论)</span>
 		</div>
 
@@ -37,7 +37,7 @@ import api from "../apis";
 import Vuex from "vuex";
 
 export default {
-	name: "discuz-editor",
+	name: "DiscussEditor",
 	data() {
 		return {
 			submiting: false,

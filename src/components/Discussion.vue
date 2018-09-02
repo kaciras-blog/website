@@ -3,11 +3,11 @@
 	<header class="discuss-header">
 		<!-- 头像和用户名 -->
 		<div class='flex margin-horiz' v-if="value.user.id!==0">
-			<img src='/image/noface.gif' class='head'>
+			<img src='/image/noface.gif' class='small head'>
 			<span class='name'>{{value.user.name}}</span>
 		</div>
 		<div class='flex center-align margin-horiz' v-else>
-			<img src='/image/akalin.jpg' class='head'>
+			<img src='/image/akalin.jpg' class='small head'>
 			<span class='name'>(匿名评论)</span>
 		</div>
 		<!-- 右边的楼层号 -->
