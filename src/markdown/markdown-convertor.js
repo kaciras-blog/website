@@ -1,6 +1,7 @@
 import MarkdownIt from "markdown-it";
 import hljs from "highlight.js";
 import Anchor from "markdown-it-anchor";
+import $ from "jquery";
 
 function myPlugin(markdownIt) {
 
@@ -56,15 +57,15 @@ function myPlugin(markdownIt) {
 	// });
 
 	// 给行内代码加个class
-	markdownIt.core.ruler.push("xxx", state => state.tokens
+	markdownIt.core.ruler.push("inline_code_class", state => state.tokens
 		.filter(token => token.type === 'inline')
 		.forEach(token => token.children
-			.filter(child => child.type==="code_inline")
+			.filter(child => child.type === "code_inline")
 			.forEach(child => child.attrs = [["class", "inline-code"]])));
 }
 
 
-const convertor = new MarkdownIt({
+export const convertor = new MarkdownIt({
 	highlight: function (str, lang) {
 		let result;
 		if (lang && hljs.getLanguage(lang)) {
@@ -84,4 +85,13 @@ convertor.use(Anchor, {
 
 convertor.use(myPlugin);
 
-export default convertor;
+/**
+ * MarkdownIt真不好用，也没个文档，想改都难，还是从外层搞，有时间自己撸个解析器。
+ */
+export function afterConvert() {
+	const images = document.querySelectorAll(".markdown img");
+	for (let node of images) {
+		const p = node.parentNode;
+		if(p.childNodes.length === 1) p.classList.add("image-wrapper");
+	}
+}

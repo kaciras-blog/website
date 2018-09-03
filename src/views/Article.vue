@@ -55,8 +55,8 @@ export default {
 	mounted() {
 		gotoTop($('#gototop'), 600, 300);
 	},
-	created() {
-		api.article.get(this.$route.params.id).then(article => this.article = article);
+	async created() {
+		this.article = await api.article.get(this.$route.params.id);
 	},
 };
 </script>

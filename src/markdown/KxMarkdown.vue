@@ -87,7 +87,7 @@ import Vue from "vue";
 import $ from "jquery";
 import textOps from "./TextOperations";
 import {assignUpdate, errorMessage} from "../utils";
-import convertHtml from "./markdown-convertor";
+import {convertor, afterConvert} from "./markdown-convertor";
 import api from "../apis";
 
 import AddLinkDialog from "./AddLinkDialog.vue";
@@ -159,7 +159,8 @@ export default {
 	},
 	computed: {
 		htmlText() {
-			return convertHtml.render(this.content);
+			this.$nextTick(afterConvert);
+			return convertor.render(this.content);
 		},
 	},
 	methods: {
