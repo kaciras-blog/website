@@ -14,54 +14,56 @@ import CategoryEditor from "./views/CategoryEditor";
 
 Vue.use(Router);
 
-export default new Router({
-	mode: 'history',
-	routes: [
-		{
-			path: '/',
-			name: 'index',
-			component: Index,
-		},
-		{
-			path: "/welcome",
-			naem: "welcome",
-			component: Welcome,
-		},
-		{
-			path: '/login',
-			name: 'login',
-			component: Login,
-		},
-		{
-			path: '/article/:id',
-			name: 'article',
-			component: Article,
-		},
-		{
-			path: '/edit/:id',
-			name: 'edit',
-			component: ArticleEditor,
-		},
-		{
-			path: "/console",
-			name: "console",
-			component: Console,
-			children: [
-				{ path: "", redirect: "article" },
-				{ path: "article", component: ArticleConsole },
-				{ path: "draft", component: DraftConsole },
-				{ path: "category", component: CategoryEditor },
-			],
-		},
-		{
-			path: "/error/:code",
-			name: "error",
-			component: Error,
-		},
-		{
-			path: "*",
-			alias: "/error/404",
-			component: Error,
-		},
-	],
-});
+export default function () {
+	return new Router({
+		mode: 'history',
+		routes: [
+			{
+				path: '/',
+				name: 'index',
+				component: Index,
+			},
+			{
+				path: "/welcome",
+				naem: "welcome",
+				component: Welcome,
+			},
+			{
+				path: '/login',
+				name: 'login',
+				component: Login,
+			},
+			{
+				path: '/article/:id',
+				name: 'article',
+				component: Article,
+			},
+			{
+				path: '/edit/:id',
+				name: 'edit',
+				component: ArticleEditor,
+			},
+			{
+				path: "/console",
+				name: "console",
+				component: Console,
+				children: [
+					{ path: "", redirect: "article" },
+					{ path: "article", component: ArticleConsole },
+					{ path: "draft", component: DraftConsole },
+					{ path: "category", component: CategoryEditor },
+				],
+			},
+			{
+				path: "/error/:code",
+				name: "error",
+				component: Error,
+			},
+			{
+				path: "*",
+				alias: "/error/404",
+				component: Error,
+			},
+		],
+	});
+}

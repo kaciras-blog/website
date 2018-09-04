@@ -36,16 +36,37 @@ function gotoTop(button, minHeight, speed) {
 	});
 }
 
+const VuexModule = {
+	namespaced: true,
+	state: () => ({
+		article: {},
+	}),
+	actions: {
+		fetchItem({commit}, id) {
+			// `store.dispatch()` 会返回 Promise，以便我们能够知道数据在何时更新
+			return api.article.get(id).then(item => commit('setArticle', item));
+		},
+	},
+	mutations: {
+		setArticle: (state, item) => state.article = item,
+	},
+};
+
 export default {
 	name: "Article",
 	components: {
 		DiscussPanel,
 		ArticleView,
 	},
-	data() {
-		return {
-			article: {},
-		};
+	asyncData({store, route}) {
+		// 触发 action 后，会返回 Promise
+		// store.registerModule('ArticleStore', VuexModule);
+		return store.dispatch('fetchItem', route.params.id);
+	},
+	computed: {
+		article() {
+			return this.$store.state.article;
+		},
 	},
 	methods: {
 		gotodiscuss() {
@@ -55,8 +76,8 @@ export default {
 	mounted() {
 		gotoTop($('#gototop'), 600, 300);
 	},
-	async created() {
-		this.article = await api.article.get(this.$route.params.id);
+	destroyed () {
+		// this.$store.unregisterModule('ArticleStore');
 	},
 };
 </script>

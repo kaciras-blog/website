@@ -8,15 +8,32 @@ axios.defaults.withCredentials = true;
 
 const API_SERVER = "https://localhost:2375";
 
-const mainServer = axios.create({
+let mainServer = axios.create({
 	baseURL: "https://localhost:2375",
 });
-const accountServer = axios.create({
+let accountServer = axios.create({
 	baseURL: "https://localhost:26480",
 });
-const frontService = axios.create({
+let frontService = axios.create({
 	baseURL: "https://localhost",
 });
+
+if (typeof window === "undefined") {
+	const https = require("https");
+	const httpsAgent = new https.Agent({
+		rejectUnauthorized: false,
+	});
+
+	mainServer = axios.create({
+		baseURL: "https://localhost:2375",httpsAgent,
+	});
+	accountServer = axios.create({
+		baseURL: "https://localhost:26480",httpsAgent,
+	});
+	frontService = axios.create({
+		baseURL: "https://localhost",httpsAgent,
+	});
+}
 
 const _default = {};
 
@@ -155,7 +172,7 @@ _default.misc = {
 	 *
 	 * @returns Promise<String> 保存的图片文件名
 	 */
-	uploadImageFile: async function() {
+	uploadImageFile: async function () {
 		const files = await utils.openFile(false, "image/*");
 		const url = await this.uploadImage(files[0]);
 		return url.substring("/image/".length);

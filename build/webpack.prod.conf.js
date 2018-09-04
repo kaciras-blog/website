@@ -22,26 +22,6 @@ const webpackConfig = merge(baseWebpackConfig, {
 		filename: utils.assetsPath('js/[name].[chunkhash].js'),
 		chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
 	},
-	optimization: {
-		splitChunks: {
-			cacheGroups: {
-				vendor: {
-					name: "vendors",
-					test: /[\\/]node_modules[\\/]/,
-					priority: -10,
-					chunks: 'all',
-				},
-				async: {
-					name: 'async',
-					chunks: 'async',
-					minChunks: 3
-				},
-			},
-		},
-		runtimeChunk: {
-			name: "manifest",
-		},
-	},
 	plugins: [
 		new ExtractTextPlugin({
 			filename: utils.assetsPath('css/[name].[hash].css'),

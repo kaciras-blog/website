@@ -3,10 +3,11 @@ const path = require('path');
 const chalk = require('chalk');
 const webpack = require('webpack');
 const config = require('../config');
-const webpackConfig = require('./webpack.prod.conf');
+const webpackConfig = require('./webpack.client.conf');
 
 rm(path.join(config.build.assetsRoot, "static"), err => {
 	if (err) throw err;
+
 	webpack(webpackConfig, (err, stats) => {
 		if (err) throw err;
 		process.stdout.write(stats.toString({
