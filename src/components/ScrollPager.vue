@@ -1,22 +1,21 @@
 <template>
-	<div class="center">
+	<div class="scroll-pager">
+		<!-- 通过该插槽可以自定义状态显示，父组件内请使用inline-template -->
+		<slot name="state">
+			<sk-fading-circle v-if="state === 'loading'"></sk-fading-circle>
 
-		<!-- 加载动画 -->
-		<sk-fading-circle v-if="state === 'loading'"></sk-fading-circle>
+			<span v-else-if="state === 'failed'" class="text-warning">
+				加载失败,请<a class="inline" @click="loadPage">重试</a>
+			</span>
+
+			<span v-else-if="state === 'allLoaded'" class="minor-text">没有更多的了</span>
+		</slot>
 
 		<!-- 手动加载按钮 -->
 		<a :href="this.options.nextPageLink"
 		   class="button"
 		   v-if="this.options.manually && state==='free'"
 		   @click="loadManually($event)">下一页</a>
-
-		<!-- 失败提示 -->
-		<span v-if="state === 'fail'" class="text-warning">
-			加载失败,请<a class="highlight" @click="loadPage">重试</a>
-		</span>
-
-		<!-- 全部加载完成提示 -->
-		<span v-if="state === 'allLoaded'" class="minor-text">没有更多的了</span>
 	</div>
 </template>
 
@@ -33,7 +32,7 @@ class LoadTask {
 	}
 
 	error() {
-		this.finish("fail");
+		this.finish("failed");
 	}
 
 	finish(state) {
@@ -95,5 +94,8 @@ export default {
 <style>
 .sk-fading-circle {
 	margin-top: 1rem;
+}
+.scroll-pager{
+	text-align: center;
 }
 </style>

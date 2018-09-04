@@ -79,6 +79,7 @@ export default {
 		padding: .6rem;
 		color: #dfdfdf;
 		transform: rotateZ(0);
+		text-decoration: none;
 	}
 
 	& .router-link-active::after {

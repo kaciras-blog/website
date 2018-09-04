@@ -8,6 +8,8 @@
 </template>
 
 <script>
+import api from "./apis";
+
 export default {
 	data() {
 		return {
@@ -27,6 +29,9 @@ export default {
 			Object.assign(this.topNav, nav);
 			this.showFooter = showFooter;
 		},
+	},
+	beforeMount() {
+		api.session.getCurrentUser().then(user => this.$store.commit("setUser", user));
 	},
 	watch: {
 		//当视图切换时重置布局（仅最外层路由切换）

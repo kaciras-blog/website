@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import convertor from "../markdown/markdown-convertor";
+import {convertor, afterConvert} from "../markdown/markdown-convertor";
 
 export default {
 	name: "ArticleView",
@@ -29,6 +29,9 @@ export default {
 			}
 			return convertor.render(this.content);
 		},
+	},
+	mounted() {
+		afterConvert();
 	},
 };
 </script>

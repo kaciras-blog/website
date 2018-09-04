@@ -5,7 +5,6 @@ import createStore from './store';
 import TopNav from "./components/TopNav";
 import PageFooter from "./components/PageFooter";
 import SkFadingCircle from "./components/SkFadingCircle";
-import apis from "./apis";
 import KxDialog from "kxdialog/src/index";
 import SelectCategoryDialog from "./components/SelectCategoryDialog";
 import "./css/Main.less";
@@ -36,10 +35,6 @@ export default function () {
 		router,
 		store,
 		render: h => h(App),
-		created() {
-			// apis.session.getCurrentUser()
-			// 	.then(user => this.$store.commit("setUser", user));
-		},
 	});
 	return { vue, router, store };
 }
