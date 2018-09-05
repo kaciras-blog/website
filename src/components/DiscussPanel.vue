@@ -69,7 +69,8 @@ export default {
 		discussion,
 		pagerButtons,
 	},
-	created() {
+	// 评论经常变动，不进行预渲染，首屏显示菊花图
+	beforeMount() {
 		this.loadPageBackground(0);
 	},
 };

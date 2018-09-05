@@ -24,33 +24,20 @@ import $ from "jquery";
 function gotoTop(button, minHeight, speed) {
 	button.css("display", "none");
 	$(button).click(function () {
-		$('html,body').animate({scrollTop: 0}, speed);
+		$('html,body').animate({ scrollTop: 0 }, speed);
 	});
-	minHeight = minHeight ? minHeight : 400;
-	$(window).scroll(function () {
+}
+
+function scrollFadeIn(button, minHeight) {
+	minHeight = minHeight || 400;
+	return function () {
 		if ($(window).scrollTop() > minHeight) {
 			button.fadeIn(300);
 		} else {
 			button.fadeOut(300);
 		}
-	});
+	};
 }
-
-const VuexModule = {
-	namespaced: true,
-	state: () => ({
-		article: {},
-	}),
-	actions: {
-		fetchItem({commit}, id) {
-			// `store.dispatch()` 会返回 Promise，以便我们能够知道数据在何时更新
-			return api.article.get(id).then(item => commit('setArticle', item));
-		},
-	},
-	mutations: {
-		setArticle: (state, item) => state.article = item,
-	},
-};
 
 export default {
 	name: "Article",
@@ -58,9 +45,8 @@ export default {
 		DiscussPanel,
 		ArticleView,
 	},
-	asyncData({store, route}) {
+	asyncData({ store, route }) {
 		// 触发 action 后，会返回 Promise
-		// store.registerModule('ArticleStore', VuexModule);
 		return store.dispatch('fetchItem', route.params.id);
 	},
 	computed: {
@@ -74,10 +60,13 @@ export default {
 		},
 	},
 	mounted() {
-		gotoTop($('#gototop'), 600, 300);
+		let button = $("#gototop");
+		gotoTop(button, 600, 300);
+		this.scrollHandler = scrollFadeIn(button, 600);
+		$(window).on("scroll", this.scrollHandler);
 	},
-	destroyed () {
-		// this.$store.unregisterModule('ArticleStore');
+	destroyed()  {
+		$(window).off("scroll", this.scrollHandler);
 	},
 };
 </script>

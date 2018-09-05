@@ -16,10 +16,7 @@ export default context => {
 			// 对所有匹配的路由组件调用 `asyncData()`
 			Promise.all(matchedComponents.map(Component => {
 				if (Component.asyncData) {
-					return Component.asyncData({
-						store,
-						route: router.currentRoute,
-					});
+					return Component.asyncData({ store, route: router.currentRoute });
 				}
 			})).then(() => {
 				// 在所有预取钩子(preFetch hook) resolve 后，

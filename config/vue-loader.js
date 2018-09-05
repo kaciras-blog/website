@@ -1,5 +1,5 @@
-const utils = require('./utils');
-const config = require('../config');
+const utils = require('../build/utils');
+const config = require('./index');
 
 module.exports = {
 	loaders: utils.cssLoaders({

@@ -19,19 +19,15 @@ let frontService = axios.create({
 });
 
 if (typeof window === "undefined") {
-	const https = require("https");
-	const httpsAgent = new https.Agent({
-		rejectUnauthorized: false,
-	});
 
 	mainServer = axios.create({
-		baseURL: "https://localhost:2375",httpsAgent,
+		baseURL: "http://localhost:2374",
 	});
 	accountServer = axios.create({
-		baseURL: "https://localhost:26480",httpsAgent,
+		baseURL: "https://localhost:26480",
 	});
 	frontService = axios.create({
-		baseURL: "https://localhost",httpsAgent,
+		baseURL: "https://localhost",
 	});
 }
 

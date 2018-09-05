@@ -2,14 +2,11 @@
 	<article>
 		<header class="title segment">
 			<h1>{{title}}</h1>
-			<p>发布时间
-				<time>{{create}}</time>
-			</p>
-			<p>最后更新
-				<time>{{update}}</time>
-			</p>
+			<p><span>发布时间</span><time>{{create}}</time></p>
+			<p><span>最后更新</span><time>{{update}}</time></p>
 			<div>
-				关键词：<span class="keyword" v-for="kw in keywords" :key="kw">{{kw}}</span>
+				<span>关键词：</span>
+				<span class="keyword" v-for="kw in keywords" :key="kw">{{kw}}</span>
 			</div>
 		</header>
 		<div class="markdown segment" v-html="contentHtml"></div>
