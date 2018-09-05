@@ -1,5 +1,5 @@
 <template>
-	<footer id="bottom-footer">
+	<footer id="bottom-footer" v-once>
 		<div class="bft-text">
 			<p>Copyright &copy; 2017-2018 Kaciras.net All Rights Reserved.</p>
 			<address>Kaciras@outlook.com</address>

@@ -1,3 +1,4 @@
+<!-- 加载动画效果, 抄自 http://tobiasahlin.com/spinkit/ -->
 <template>
 	<div class="sk-fading-circle" v-once>
 		<div class="sk-circle1 sk-circle"></div>
@@ -23,10 +24,6 @@ export default {
 
 <style lang="less">
 @import "../css/ToBeImpoert";
-
-/*
- * 加载动画效果, 抄自 http://tobiasahlin.com/spinkit/
- */
 
 .sk-fading-circle {
 	margin: 1rem auto;

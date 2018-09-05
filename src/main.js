@@ -1,3 +1,4 @@
+import "./css/Main.less";
 import Vue from 'vue';
 import App from './App.vue';
 import createRouter from './router';
@@ -7,7 +8,6 @@ import PageFooter from "./components/PageFooter";
 import SkFadingCircle from "./components/SkFadingCircle";
 import KxDialog from "kxdialog/src/index";
 import SelectCategoryDialog from "./components/SelectCategoryDialog";
-import "./css/Main.less";
 import { sync } from 'vuex-router-sync';
 
 Vue.use(KxDialog);
