@@ -9,26 +9,18 @@
 				<span class="keyword" v-for="kw in keywords" :key="kw">{{kw}}</span>
 			</div>
 		</header>
-		<div class="markdown segment" v-html="contentHtml"></div>
+		<div class="markdown segment" v-html="content | markdownToHtml"></div>
 	</article>
 </template>
 
 <script>
-import {convertor, afterConvert} from "../markdown/markdown-convertor";
+import KxMarkdown from "../markdown";
 
 export default {
 	name: "ArticleView",
 	props: ["title", "create", "update", "keywords", "content"],
-	computed: {
-		contentHtml() {
-			if (!this.content) {
-				return "";
-			}
-			return convertor.render(this.content);
-		},
-	},
 	mounted() {
-		afterConvert();
+		KxMarkdown.afterConvert();
 	},
 };
 </script>

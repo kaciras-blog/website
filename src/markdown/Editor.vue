@@ -87,7 +87,7 @@ import Vue from "vue";
 import $ from "jquery";
 import textOps from "./TextOperations";
 import {assignUpdate, errorMessage} from "../utils";
-import {convertor, afterConvert} from "./markdown-convertor";
+import {convertor, afterConvert} from "./index";
 import api from "../apis";
 
 import AddLinkDialog from "./AddLinkDialog.vue";
@@ -143,7 +143,7 @@ function publish(category) {
 }
 
 export default {
-	name: "KxMarkdown",
+	name: "KxMarkdownEditor",
 	data() {
 		return {
 			metadata: {

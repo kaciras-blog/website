@@ -7,11 +7,14 @@ import TopNav from "./components/TopNav";
 import PageFooter from "./components/PageFooter";
 import CommonComponents from "./components/common/plugin";
 import KxDialog from "kxdialog/src/index";
+import KxMarkdown from "./markdown";
+
 import SelectCategoryDialog from "./components/SelectCategoryDialog";
 import { sync } from 'vuex-router-sync';
 
 Vue.use(CommonComponents);
 Vue.use(KxDialog);
+Vue.use(KxMarkdown);
 
 Vue.component(TopNav.name, TopNav);
 Vue.component(PageFooter.name, PageFooter);

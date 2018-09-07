@@ -1,10 +1,11 @@
 import MarkdownIt from "markdown-it";
 import hljs from "highlight.js";
 import Anchor from "markdown-it-anchor";
-import $ from "jquery";
 
+/**
+ * MarkdownIt真不好用，也没个文档，想改都难，还是从外层搞，有时间自己撸个解析器。
+ */
 function myPlugin(markdownIt) {
-
 	// markdownIt.block.ruler.before("paragraph", "detail", (state, startLine, endLine, silent) => {
 	// 	let pos = state.bMarks[startLine] + state.tShift[startLine];
 	// 	let token;
@@ -64,7 +65,6 @@ function myPlugin(markdownIt) {
 			.forEach(child => child.attrs = [["class", "inline-code"]])));
 }
 
-
 export const convertor = new MarkdownIt({
 	highlight: function (str, lang) {
 		let result;
@@ -85,13 +85,19 @@ convertor.use(Anchor, {
 
 convertor.use(myPlugin);
 
-/**
- * MarkdownIt真不好用，也没个文档，想改都难，还是从外层搞，有时间自己撸个解析器。
- */
-export function afterConvert() {
-	const images = document.querySelectorAll(".markdown img");
-	for (let node of images) {
-		const p = node.parentNode;
-		if(p.childNodes.length === 1) p.classList.add("image-wrapper");
-	}
-}
+export default {
+	install(Vue) {
+		Vue.filter("markdownToHtml", text => {
+			// Vue.$nextTick(afterConvert);
+			return convertor.render(text);
+		});
+		Vue.component("KxMarkdownEditor", () => import("./Editor"));
+	},
+	afterConvert() {
+		const images = document.querySelectorAll(".markdown img");
+		for (let node of images) {
+			const p = node.parentNode;
+			if (p.childNodes.length === 1) p.classList.add("image-wrapper");
+		}
+	},
+};
