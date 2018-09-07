@@ -13,7 +13,7 @@ export default function () {
 		actions: {
 			fetchItem({commit}, id) {
 				// `store.dispatch()` 会返回 Promise，以便我们能够知道数据在何时更新
-				return () => api.article.get(id).then(item => commit('setArticle', item));
+				return api.article.get(id).then(item => commit('setArticle', item));
 			},
 		},
 		mutations: {
