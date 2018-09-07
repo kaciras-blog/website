@@ -27,7 +27,6 @@
 <script>
 import ArticlePreview from "../components/ArticlePreview.vue";
 import AsidePanel from "../components/AsidePanel.vue";
-import ScrollPager from "../components/ScrollPager.vue";
 import api from "../apis.js";
 import * as utils from "../utils";
 
@@ -36,7 +35,6 @@ export default {
 	components: {
 		ArticlePreview,
 		AsidePanel,
-		ScrollPager,
 	},
 	data() {
 		return {

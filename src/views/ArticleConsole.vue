@@ -38,12 +38,10 @@
 
 <script>
 import api from "../apis";
-import pagerButtons from "../components/ButtonPager";
 import {deleteOn, errorMessage} from "../utils";
 
 export default {
 	name: "ArticleConsole",
-	components: {pagerButtons},
 	data() {
 		return {
 			loading: true,
@@ -83,9 +81,6 @@ export default {
 					content: "原因：" + err,
 				}));
 		},
-	},
-	conponents: {
-		pagerButtons,
 	},
 	created() {
 		this.loadArticles();

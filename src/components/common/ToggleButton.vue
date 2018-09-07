@@ -20,7 +20,7 @@ export default {
 </script>
 
 <style lang="less">
-@import "../css/ToBeImpoert";
+@import "../../css/ToBeImpoert";
 
 .toggle-button {
 	position: relative;

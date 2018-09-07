@@ -45,7 +45,7 @@ class LoadTask {
 }
 
 export default {
-	name: "scroll-pager",
+	name: "ScrollPager",
 	props: {
 		options: {},
 		activeHeight: {

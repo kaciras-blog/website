@@ -1,37 +1,23 @@
 <template>
-	<swiper :options="swiperOption">
-		<figure class="swiper-slide swiper-no-swiping" v-for="(slide, index) of slides" :key="index">
-			<img :src="slide.picture"/>
+	<swiper :options="swiperOption" :slides="slides">
+		<figure class="swiper-slide" slot-scope="props">
+			<img :src="props.slide.picture"/>
 			<figcaption>
-				<h2>{{slide.name}}</h2>
-				<p>{{slide.description}}</p>
-				<router-link :to="slide.link"></router-link>
+				<h2>{{props.slide.name}}</h2>
+				<p>{{props.slide.description}}</p>
+				<router-link :to="props.slide.link"></router-link>
 			</figcaption>
 		</figure>
-		<div class="swiper-pagination" slot="pagination"></div>
 	</swiper>
 </template>
 
 <script>
-import Vue from "vue";
-import VueAwesomeSwiper from "vue-awesome-swiper";
 import api from "../apis";
-
-Vue.use(VueAwesomeSwiper);
 
 export default {
 	name: "Welcome",
 	data() {
 		return {
-			swiperOption: {
-				autoplay: {
-					disableOnInteraction: false,
-				},
-				pagination: {
-					el: '.swiper-pagination',
-					clickable: true,
-				},
-			},
 			slides: [],
 		};
 	},
@@ -48,12 +34,10 @@ export default {
 	margin-top: 3rem;
 }
 
-.swiper-container {
+.swiper-slide {
 	width: 32rem;
 	height: 20rem;
-}
 
-.swiper-slide {
 	& > figcaption {
 		& > a {
 			z-index: 3;

@@ -5,16 +5,16 @@ import createRouter from './router';
 import createStore from './store';
 import TopNav from "./components/TopNav";
 import PageFooter from "./components/PageFooter";
-import SkFadingCircle from "./components/SkFadingCircle";
+import CommonComponents from "./components/common/plugin";
 import KxDialog from "kxdialog/src/index";
 import SelectCategoryDialog from "./components/SelectCategoryDialog";
 import { sync } from 'vuex-router-sync';
 
+Vue.use(CommonComponents);
 Vue.use(KxDialog);
 
 Vue.component(TopNav.name, TopNav);
 Vue.component(PageFooter.name, PageFooter);
-Vue.component(SkFadingCircle.name, SkFadingCircle);
 Vue.component(SelectCategoryDialog.name, SelectCategoryDialog);
 
 Vue.config.productionTip = false;
