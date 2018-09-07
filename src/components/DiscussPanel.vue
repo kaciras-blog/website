@@ -31,7 +31,6 @@
 import api from "../apis";
 import discuzEditor from "./DiscuzEditor.vue";
 import discussion from "./Discussion.vue";
-import pagerButtons from "./ButtonPager.vue";
 import {scrollToElementEnd, scrollToElementStart} from "../utils";
 
 export default {
@@ -45,6 +44,10 @@ export default {
 
 			replying: 0,
 		};
+	},
+	components: {
+		discuzEditor,
+		discussion,
 	},
 	methods: {
 		loadPageBackground(index) {
@@ -63,11 +66,6 @@ export default {
 		reply(id) {
 			this.replying = id;
 		},
-	},
-	components: {
-		discuzEditor,
-		discussion,
-		pagerButtons,
 	},
 	// 评论经常变动，不进行预渲染，首屏显示菊花图
 	beforeMount() {

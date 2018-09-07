@@ -1,6 +1,6 @@
 import createApp from "./main";
 import Vue from "vue";
-import TransitionsCurtain from "./components/TransitionCurtain";
+import TransitionsCurtain from "./components/common/TransitionCurtain";
 
 const curtain = Vue.prototype.$curtain = new Vue(TransitionsCurtain).$mount();
 document.body.appendChild(curtain.$el);
@@ -50,7 +50,10 @@ router.onReady(() => {
 		})).then(() => {
 			curtain.finish(); // 停止加载指示器(loading indicator)
 			next();
-		}).catch(next);
+		}).catch(err =>{
+			next();
+			console.error(err);
+		});
 	});
 
 	vue.$mount('#app');

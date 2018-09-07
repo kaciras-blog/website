@@ -5,7 +5,7 @@ import Swiper from "./Swiper";
 import ToggleButton from "./ToggleButton";
 import TransitionCurtain from "./TransitionCurtain";
 
-export default function install(Vue, options) {
+export default function install(Vue) {
 	Vue.component(SkFadingCircle.name, SkFadingCircle);
 	Vue.component(ButtonPager.name, ButtonPager);
 	Vue.component(ScrollPager.name, ScrollPager);

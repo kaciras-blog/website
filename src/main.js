@@ -3,14 +3,15 @@ import Vue from 'vue';
 import App from './App.vue';
 import createRouter from './router';
 import createStore from './store';
-import TopNav from "./components/TopNav";
-import PageFooter from "./components/PageFooter";
-import CommonComponents from "./components/common/plugin";
+import { sync } from 'vuex-router-sync';
+
+import CommonComponents from "./components/common";
 import KxDialog from "kxdialog/src/index";
 import KxMarkdown from "./markdown";
 
 import SelectCategoryDialog from "./components/SelectCategoryDialog";
-import { sync } from 'vuex-router-sync';
+import TopNav from "./components/TopNav";
+import PageFooter from "./components/PageFooter";
 
 Vue.use(CommonComponents);
 Vue.use(KxDialog);

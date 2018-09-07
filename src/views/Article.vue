@@ -17,7 +17,6 @@
 <script>
 import DiscussPanel from "../components/DiscussPanel";
 import ArticleView from "../components/ArticleView";
-import api from "../apis";
 import {scrollToElementStart} from "../utils";
 import $ from "jquery";
 

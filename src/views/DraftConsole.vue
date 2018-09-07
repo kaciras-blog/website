@@ -16,7 +16,7 @@
 					<button class="border dangerous square" @click="deleteDraft(draft.id)">删除</button>
 				</div>
 				<div class="history" v-if="showHistory===draft">
-					<div class="history-item" v-for="his in draft.histories">
+					<div class="history-item" v-for="his in draft.histories" :key="his.saveCount">
 						<div>
 							<span><i class="fa fa-save"></i>保存于：{{his.time}}</span>
 							<span><i class="fa fa-pencil"></i>字数：{{his.contentSize}}</span>
