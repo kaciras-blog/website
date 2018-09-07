@@ -1,19 +1,19 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Article from './views/Article';
-import Login from './views/Login';
-import Index from "./views/Index";
 import Error from "./views/Error";
 import Welcome from "./views/Welcome";
-import ArticleEditor from "./views/ArticleEditor";
 
-import Console from "./views/Console";
 import ArticleConsole from "./views/ArticleConsole";
 import DraftConsole from "./views/DraftConsole";
 import CategoryEditor from "./views/CategoryEditor";
 
 Vue.use(Router);
 
+/*
+ * 两种情况下使用异步组件：
+ * 1.不常被访问的页面，如编辑器、控制台。
+ * 2.预渲染的页面，如首页、文章页
+ */
 export default function () {
 	return new Router({
 		mode: 'history',
@@ -21,7 +21,7 @@ export default function () {
 			{
 				path: '/',
 				name: 'index',
-				component: Index,
+				component: () => import("./views/Index"),
 			},
 			{
 				path: "/welcome",
@@ -31,24 +31,23 @@ export default function () {
 			{
 				path: '/login',
 				name: 'login',
-				component: Login,
+				component: () => import('./views/Login'),
 			},
 			{
 				path: '/article/:id',
 				name: 'article',
-				component: Article,
+				component: () => import("./views/Article"),
 			},
 			{
 				path: '/edit/:id',
 				name: 'edit',
-				component: ArticleEditor,
+				component: () => import("./views/ArticleEditor"),
 			},
 			{
 				path: "/console",
-				name: "console",
-				component: Console,
+				component: () => import("./views/Console"),
 				children: [
-					{ path: "", redirect: "article" },
+					{ path: "", name: "console", redirect: "article" },
 					{ path: "article", component: ArticleConsole },
 					{ path: "draft", component: DraftConsole },
 					{ path: "category", component: CategoryEditor },
