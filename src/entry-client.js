@@ -1,5 +1,9 @@
 import createApp from "./main";
 import Vue from "vue";
+import TransitionsCurtain from "./components/TransitionsCurtain";
+
+const curtain = Vue.prototype.$curtain = new Vue(TransitionsCurtain).$mount();
+document.body.appendChild(curtain.$el);
 
 Vue.mixin({
 	beforeRouteUpdate (to, from, next) {
@@ -38,14 +42,13 @@ router.onReady(() => {
 			return next();
 		}
 
-		// 这里如果有加载指示器(loading indicator)，就触发
-
+		curtain.start(); // 这里如果有加载指示器(loading indicator)，就触发
 		Promise.all(activated.map(c => {
 			if (c.asyncData) {
 				return c.asyncData({ store, route: to });
 			}
 		})).then(() => {
-			// 停止加载指示器(loading indicator)
+			curtain.finish(); // 停止加载指示器(loading indicator)
 			next();
 		}).catch(next);
 	});
