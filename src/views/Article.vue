@@ -31,11 +31,8 @@ function gotoTop(button, minHeight, speed) {
 function scrollFadeIn(button, minHeight) {
 	minHeight = minHeight || 400;
 	return function () {
-		if ($(window).scrollTop() > minHeight) {
-			button.fadeIn(300);
-		} else {
-			button.fadeOut(300);
-		}
+		if ($(window).scrollTop() > minHeight) button.fadeIn(300);
+		else button.fadeOut(300);
 	};
 }
 

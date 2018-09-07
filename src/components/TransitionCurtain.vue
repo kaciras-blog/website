@@ -12,7 +12,7 @@
 
 <script>
 export default {
-	name: "TransitionsCurtain",
+	name: "TransitionCurtain",
 	props: {
 		timeout: {
 			type: Number,

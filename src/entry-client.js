@@ -1,6 +1,6 @@
 import createApp from "./main";
 import Vue from "vue";
-import TransitionsCurtain from "./components/TransitionsCurtain";
+import TransitionsCurtain from "./components/TransitionCurtain";
 
 const curtain = Vue.prototype.$curtain = new Vue(TransitionsCurtain).$mount();
 document.body.appendChild(curtain.$el);
