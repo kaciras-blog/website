@@ -174,7 +174,7 @@ _default.misc = {
 		return url.substring("/image/".length);
 	},
 
-	captchaAddress: () => API_SERVER + "/utils/captcha",
+	captchaAddress: () => API_SERVER + "/utils/captcha?r=" + Math.random(),
 };
 
 _default.session = {

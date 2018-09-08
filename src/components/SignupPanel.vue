@@ -12,9 +12,9 @@
 		<input v-model="form.email" type="email" placeholder="不填也行">
 
 		<label for="captcha" class="expansion">验证码:</label>
-		<div>
+		<div class="captcha">
 			<input id="captcha" ref="captchaInput" v-model="form.captcha" required>
-			<img class="captcha" :src="captcha" title="点击换一张" @click="updateCaptcha()">
+			<img :src="captcha" title="点击换一张" @click="updateCaptcha">
 		</div>
 
 		<span class="text-warning center">{{message}}</span>
@@ -54,12 +54,12 @@ export default {
 			this.$emit("switch-panel", "LoginPanel");
 		},
 		updateCaptcha() {
-			this.captcha = api.captchaAddress();
+			this.captcha = api.misc.captchaAddress();
 			this.form.captcha = "";
 			this.$refs.captchaInput.focus();
 		},
 	},
-	created() {
+	mounted() {
 		this.updateCaptcha();
 	},
 };
@@ -67,7 +67,15 @@ export default {
 
 <style scoped lang="less">
 .captcha {
-	cursor: pointer;
+	display: flex;
+	& > input {
+		flex: 1;
+	}
+	& > img {
+		width: 150px;
+		height: 40px;
+		cursor: pointer;
+	}
 }
 
 form {
