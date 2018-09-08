@@ -5,7 +5,7 @@
 			<sk-fading-circle v-if="state === 'loading'"></sk-fading-circle>
 
 			<span v-else-if="state === 'failed'" class="text-warning">
-				加载失败,请<a class="inline" @click="loadPage">重试</a>
+				加载失败,请<a class="error highlight" @click="loadPage">重试</a>
 			</span>
 
 			<span v-else-if="state === 'allLoaded'" class="minor-text">没有更多的了</span>

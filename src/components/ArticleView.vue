@@ -9,7 +9,7 @@
 				<span class="keyword" v-for="kw in keywords" :key="kw">{{kw}}</span>
 			</div>
 		</header>
-		<div class="markdown segment" v-html="content | markdownToHtml"></div>
+		<div class="markdown segment" v-html="html"></div>
 	</article>
 </template>
 
@@ -19,13 +19,16 @@ import KxMarkdown from "../markdown";
 export default {
 	name: "ArticleView",
 	props: ["title", "create", "update", "keywords", "content"],
+	computed:{
+		html() { return KxMarkdown.renderHtml(this.content); }, // 过滤器不支持v-html
+	},
 	mounted() {
 		KxMarkdown.afterConvert();
 	},
 };
 </script>
 
-<style lang="less">
+<style scoped lang="less">
 @import "../css/ToBeImpoert";
 
 .title {

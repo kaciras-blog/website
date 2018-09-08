@@ -8,6 +8,7 @@
 	color: @color-link;
 	outline: none;
 	text-decoration: none;
+
 	&:visited {
 		color: @color-link;
 	}
@@ -17,6 +18,11 @@
 	}
 }
 
+.highlight-link-color(@color) {
+	color: @color;
+	&:visited { color: @color; }
+	&:hover { color: @color; }
+}
 
 .input-highlight-hover() {
 	border: solid 1px lighten(@color-input-active, 16%);

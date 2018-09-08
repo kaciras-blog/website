@@ -100,4 +100,7 @@ export default {
 			if (p.childNodes.length === 1) p.classList.add("image-wrapper");
 		}
 	},
+	renderHtml(text) {
+		return convertor.render(text);
+	},
 };

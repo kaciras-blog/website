@@ -16,7 +16,7 @@
 
 		<div class="buttons">
 			<button type="button" class="lightly" @click="login">确定</button>
-			<button type="button" class="lightly" @click="switchPanel">注册<i class="fa fa-arrow-right"></i></button>
+			<button type="button" class="lightly" @click="switchPanel">注册</button>
 		</div>
 	</form>
 </template>

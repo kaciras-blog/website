@@ -5,8 +5,8 @@
 			<address>Kaciras@outlook.com</address>
 		</div>
 		<div class="bft-links">
-			<router-link class="link" to="/">首页</router-link>
-			<a class="link" href="/sitemap.xml">站点地图</a>
+			<router-link class="highlight" to="/">首页</router-link>
+			<a class="highlight" href="/sitemap.xml">站点地图</a>
 		</div>
 	</footer>
 </template>
