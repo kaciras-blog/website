@@ -3,7 +3,6 @@ import Vue from 'vue';
 import App from './App.vue';
 import createRouter from './router';
 import createStore from './store';
-import { sync } from 'vuex-router-sync';
 
 import CommonComponents from "./components/common";
 import KxDialog from "kxdialog/src/index";
@@ -32,8 +31,6 @@ Vue.directive('autofocus', {
 export default function () {
 	const store = createStore();
 	const router = createRouter();
-
-	sync(store, router);
 
 	const vue = new Vue({
 		router,

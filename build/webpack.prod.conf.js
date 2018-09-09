@@ -9,7 +9,7 @@ const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 
 
 const webpackConfig = merge(baseWebpackConfig, {
-	mode: "development",
+	mode: "production",
 	module: {
 		rules: utils.styleLoaders({
 			sourceMap: config.build.productionSourceMap,

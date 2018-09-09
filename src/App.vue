@@ -42,7 +42,7 @@ export default {
 			if (toPage !== formPage) {
 				this.topNav.show = true;
 				this.topNav.clazz = null;
-				this.topNav.banner = true;
+				this.topNav.banner = false;
 				this.showFooter = true;
 			}
 		},

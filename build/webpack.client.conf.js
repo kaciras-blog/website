@@ -17,6 +17,12 @@ module.exports = merge(baseConfig, {
 					chunks: 'async',
 					minChunks: 3
 				},
+				styles: {
+					name: 'styles',
+					test: /\.css$/,
+					chunks: 'all',
+					enforce: true
+				}
 			},
 		},
 		runtimeChunk: {

@@ -11,9 +11,9 @@
 		<label>邮箱:</label>
 		<input v-model="form.email" type="email" placeholder="不填也行">
 
-		<label for="captcha" class="expansion">验证码:</label>
+		<label>验证码:</label>
 		<div class="captcha">
-			<input id="captcha" ref="captchaInput" v-model="form.captcha" required>
+			<input title="验证码" ref="captchaInput" v-model="form.captcha" required>
 			<img :src="captcha" title="点击换一张" @click="updateCaptcha">
 		</div>
 
@@ -21,7 +21,7 @@
 
 		<div class="center">
 			<button type="button" class="primary square" @click="signup">确定</button>
-			<button type="button" class="square" @click="switchPanel"><i class="fa fa-arrow-left"></i>登录</button>
+			<button type="button" class="square" @click="switchPanel">登录</button>
 		</div>
 	</form>
 </template>
@@ -67,10 +67,6 @@ export default {
 
 <style scoped lang="less">
 .captcha {
-	display: flex;
-	& > input {
-		flex: 1;
-	}
 	& > img {
 		width: 150px;
 		height: 40px;

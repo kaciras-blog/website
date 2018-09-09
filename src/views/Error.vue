@@ -1,6 +1,6 @@
 <template>
 	<main id="error-container">
-		<div class="err-main panel" v-if="status === '400'">
+		<div class="err-main" v-if="status === '400'">
 			<img src="../assets/error-other.png">
 			<h2>400 Bad Request</h2>
 			<span></span>
@@ -10,7 +10,7 @@
 				<p>如果要尝试攻击本网站，还请换种参数或姿势</p>
 			</div>
 		</div>
-		<div class="err-main panel" v-else-if="status === '404'">
+		<div class="err-main" v-else-if="status === '404'">
 			<img src="../assets/baotou.jpg">
 			<h2>404 Not Found</h2>
 			<span></span>
@@ -21,7 +21,7 @@
 				<p>亦或是被Loli控<span class="red">吃掉</span>！！</p>
 			</div>
 		</div>
-		<div class="err-main panel" v-else-if="status === '500'">
+		<div class="err-main" v-else-if="status === '500'">
 			<img src="../assets/Home-Server-icon.png">
 			<h2>500 Internal Server Error</h2>
 			<span></span>
@@ -29,7 +29,7 @@
 				<p>服务器要<span class="red">爆炸啦！！</span>，快叫博主起床改BUG啊</p>
 			</div>
 		</div>
-		<div class="err-main large-padding round panel" v-else>
+		<div class="err-main" v-else>
 			<img src="../assets/error-other.png">
 			<h2>其它错误: {{status}}</h2>
 			<span></span>
@@ -50,6 +50,9 @@ export default {
 		status() {
 			return this.$route.params["code"];
 		},
+	},
+	created() {
+		this.$emit("layoutChanged", {banner: false}, true);
 	},
 };
 </script>
@@ -75,5 +78,10 @@ export default {
 
 span.red {
 	color: #f40000;
+}
+
+img {
+	width: 10rem;
+	height: 10rem;
 }
 </style>
