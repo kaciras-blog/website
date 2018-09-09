@@ -17,12 +17,6 @@ module.exports = merge(baseConfig, {
 					chunks: 'async',
 					minChunks: 3
 				},
-				styles: {
-					name: 'styles',
-					test: /\.css$/,
-					chunks: 'all',
-					enforce: true
-				}
 			},
 		},
 		runtimeChunk: {
@@ -30,8 +24,7 @@ module.exports = merge(baseConfig, {
 		},
 	},
 	plugins: [
-		// 此插件在输出目录中
-		// 生成 `vue-ssr-client-manifest.json`。
+		// 在输出目录中生成 `vue-ssr-client-manifest.json`。
 		new VueSSRClientPlugin()
 	]
 });

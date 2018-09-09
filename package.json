@@ -6,7 +6,7 @@
 	"private": true,
 	"scripts": {
 		"dev": "webpack-dev-server --config build/webpack.dev.conf.js",
-		"build": "node build/build.js",
+		"build": "webpack --config build/webpack.client.conf.js",
 		"build-server": "webpack --config build/webpack.server.conf.js",
 		"lint-fix": "eslint --fix --ext .js,.vue src"
 	},
@@ -49,7 +49,7 @@
 		"eslint-loader": "^2.1.0",
 		"eslint-plugin-import": "^2.14.0",
 		"eslint-plugin-node": "^7.0.1",
-		"eslint-plugin-promise": "^4.0.0",
+		"eslint-plugin-promise": "^4.0.1",
 		"eslint-plugin-standard": "^4.0.0",
 		"eslint-plugin-vue": "^4.0.0",
 		"file-loader": "^2.0.0",
@@ -59,7 +59,7 @@
 		"less": "^3.8.1",
 		"less-loader": "^4.1.0",
 		"less-plugin-clean-css": "^1.5.1",
-		"mini-css-extract-plugin": "^0.4.2",
+		"extract-text-webpack-plugin": "^4.0.0-beta.0",
 		"node-notifier": "^5.2.1",
 		"optimize-css-assets-webpack-plugin": "^5.0.1",
 		"rimraf": "latest",
@@ -69,7 +69,7 @@
 		"webpack": "^4.17.2",
 		"webpack-bundle-analyzer": "^2.13.1",
 		"webpack-cli": "^3.1.0",
-		"webpack-dev-server": "^3.1.7",
+		"webpack-dev-server": "^3.1.8",
 		"webpack-merge": "^4.1.4"
 	}
 }

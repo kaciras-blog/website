@@ -91,7 +91,7 @@ export default {
 </script>
 
 <style lang="less">
-@import "../css/ToBeImpoert.less";
+@import "../css/ToBeImpoert";
 
 #index-page {
 	display: flex;
