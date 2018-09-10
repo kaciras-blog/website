@@ -1,26 +1,25 @@
 import createApp from './main';
 
-export default context => new Promise((resolve, reject) => {
+function onReadyAsync(router) {
+	return new Promise((resolve, reject) => router.onReady(resolve, reject));
+}
+
+export default async context => {
 	const { vue, router, store } = createApp();
 
 	router.push(context.url);
+	await onReadyAsync(router);
 
-	router.onReady(() => {
-		const matchedComponents = router.getMatchedComponents();
-		if (!matchedComponents.length) {
-			return reject({ code: 404 });
-		}
+	const matchedComponents = router.getMatchedComponents();
+	if (!matchedComponents.length) {
+		throw { code: 404 };
+	}
 
-		// 对所有匹配的路由组件调用 `asyncData()`
-		Promise.all(matchedComponents.map(component => {
-			if (component.asyncData) {
-				return component.asyncData({ store, route: router.currentRoute });
-			}
-		})).then(() => {
-			context.state = store.state;
-			resolve(vue);
-		}).catch(reject);
-	}, reject);
+	// 对所有匹配的路由组件调用 `asyncData()`
+	await Promise.all(matchedComponents
+		.filter(c => c.asyncData).map(c => c.asyncData({ store, route: router.currentRoute })));
 
-});
+	context.state = store.state;
+	return vue;
+};
 
