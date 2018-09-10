@@ -18,23 +18,23 @@ export function escapeHtml(text) {
 	return text.replace(/[&<>"']/g, ch => map[ch]);
 }
 
-export function pageReturn () {
+export function pageReturn() {
 	const url = getQueryString("return");
 	window.location.href = url ? url : "index";
 }
 
 export function scrollToElementStart(element) {
-	if(typeof element === "string") {
+	if (typeof element === "string") {
 		element = document.getElementById(element);
 	}
-	$('html,body').animate({scrollTop: element.offsetTop}, 200);
+	$('html,body').animate({ scrollTop: element.offsetTop }, 200);
 }
 
 export function scrollToElementEnd(element) {
-	if(typeof element === "string") {
+	if (typeof element === "string") {
 		element = document.getElementById(element);
 	}
-	$('html,body').animate({scrollTop: element.offsetTop + element.clientHeight}, 200);
+	$('html,body').animate({ scrollTop: element.offsetTop + element.clientHeight }, 200);
 	// Velocity(document.getElementsByTagName("html")[0], {scrollTop: element.offsetTop + element.clientHeight}, 200);
 }
 
@@ -53,7 +53,7 @@ export function markRenderComplete() {
  */
 export function errorMessage(object) {
 	const res = object.response;
-	if(res && res.data && res.data.message) {
+	if (res && res.data && res.data.message) {
 		return res.data.message;
 	}
 	return object.message || "未知的错误";
@@ -96,17 +96,17 @@ export function getQueryString(name) {
  * @param accept {String} 文件类型
  * @return {Promise<File[]>} 一个Promise，将在用户点击确定时完成
  */
-export function openFile(multiple = false, accept = "*") {
+export const openFile = (multiple = false, accept = "*") => new Promise(resolve => {
 	const input = document.createElement("input");
 	input.setAttribute("type", "file");
 	input.setAttribute("accept", accept);
 	if (multiple) {
 		input.setAttribute("multiple", "");
 	}
-	const promise = new Promise(resolve => input.addEventListener("change", event => resolve(event.target.files)));
+	input.addEventListener("change", event => resolve(event.target.files));
 	input.click();
-	return promise;
-}
+});
+
 
 export function deleteOn(array, predicate) {
 	for (let i = 0; i < array.length; i++) {
