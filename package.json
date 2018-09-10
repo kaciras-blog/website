@@ -6,9 +6,9 @@
 	"private": true,
 	"scripts": {
 		"dev": "webpack-dev-server --config build/webpack.dev.conf.js",
+		"lint-fix": "eslint --fix --ext .js,.vue src",
 		"build": "webpack --config build/webpack.client.conf.js",
-		"build-server": "webpack --config build/webpack.server.conf.js",
-		"lint-fix": "eslint --fix --ext .js,.vue src"
+		"build-server": "webpack --config build/webpack.server.conf.js"
 	},
 	"dependencies": {
 		"@babel/runtime": "^7.0.0",
@@ -59,7 +59,7 @@
 		"less": "^3.8.1",
 		"less-loader": "^4.1.0",
 		"less-plugin-clean-css": "^1.5.1",
-		"extract-text-webpack-plugin": "^4.0.0-beta.0",
+		"mini-css-extract-plugin": "^0.4.2",
 		"node-notifier": "^5.2.1",
 		"optimize-css-assets-webpack-plugin": "^5.0.1",
 		"rimraf": "latest",

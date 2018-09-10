@@ -12,6 +12,12 @@ module.exports = merge(baseConfig, {
 					priority: -10,
 					chunks: 'all',
 				},
+				styles: {
+					name: 'styles',
+					test: /\.(css|less|vue)$/,
+					chunks: 'all',
+					enforce: true
+				},
 				async: {
 					name: 'async',
 					chunks: 'async',

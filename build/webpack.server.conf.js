@@ -4,10 +4,9 @@ const baseConfig = require('./webpack.base.conf');
 const VueSSRServerPlugin = require('vue-server-renderer/server-plugin');
 const utils = require('./utils');
 const config = require('../config');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = merge(baseConfig, {
-	mode: "production",
+	mode: "development",
 	entry: "./src/entry-server.js",
 	target: 'node',
 	devtool: 'source-map',
@@ -19,10 +18,9 @@ module.exports = merge(baseConfig, {
 	module: {
 		rules: utils.styleLoaders({
 			sourceMap: config.build.productionSourceMap,
-			extract: true,
+			extract: false,
 		})
 	},
-
 	// https://webpack.js.org/configuration/externals/#function
 	// https://github.com/liady/webpack-node-externals
 	// 外置化应用程序依赖模块。可以使服务器构建速度更快，
@@ -35,10 +33,6 @@ module.exports = merge(baseConfig, {
 	// 构建为单个 JSON 文件的插件。
 	// 默认文件名为 `vue-ssr-server-bundle.json`
 	plugins: [
-		new ExtractTextPlugin({
-			filename: utils.assetsPath('css/[name].[hash].css'),
-			allChunks: true,
-		}),
 		new VueSSRServerPlugin()
 	]
 });

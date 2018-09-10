@@ -4,7 +4,7 @@ const config = require('../config');
 const merge = require('webpack-merge');
 const baseWebpackConfig = require('./webpack.base.conf');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 
 
@@ -22,7 +22,7 @@ const webpackConfig = merge(baseWebpackConfig, {
 		chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
 	},
 	plugins: [
-		new ExtractTextPlugin({
+		new MiniCssExtractPlugin({
 			filename: utils.assetsPath('css/[name].[hash].css'),
 			allChunks: true,
 		}),
