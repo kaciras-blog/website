@@ -6,7 +6,7 @@
 	"private": true,
 	"scripts": {
 		"dev": "webpack-dev-server --config build/webpack.dev.conf.js",
-		"lint-fix": "eslint --fix --ext .js,.vue src",
+		"lint": "eslint --fix --ext .js,.vue build",
 		"build": "webpack --config build/webpack.client.conf.js",
 		"build-server": "webpack --config build/webpack.server.conf.js"
 	},
