@@ -2,11 +2,11 @@ import createApp from "./main";
 import Vue from "vue";
 import TransitionsCurtain from "./components/common/TransitionCurtain";
 
-const curtain = Vue.prototype.$curtain = new Vue(TransitionsCurtain).$mount();
+const curtain = new Vue(TransitionsCurtain).$mount();
 document.body.appendChild(curtain.$el);
 
 Vue.mixin({
-	beforeRouteUpdate (to, from, next) {
+	beforeRouteUpdate(to, from, next) {
 		const { asyncData } = this.$options;
 		if (asyncData) {
 			asyncData({ store: this.$store, route: to }).then(next).catch(next);
@@ -29,13 +29,13 @@ router.onReady(() => {
 	// 使用 `router.beforeResolve()`，以便确保所有异步组件都 resolve。
 	router.beforeResolve((to, from, next) => {
 		const matched = router.getMatchedComponents(to);
-		const prevMatched = router.getMatchedComponents(from);
+		const previous = router.getMatchedComponents(from);
 
 		// 我们只关心非预渲染的组件
 		// 所以我们对比它们，找出两个匹配列表的差异组件
 		let diffed = false;
 		const activated = matched.filter((c, i) => {
-			return diffed || (diffed = (prevMatched[i] !== c));
+			return diffed || (diffed = (previous[i] !== c));
 		});
 
 		if (!activated.length) {
@@ -43,17 +43,11 @@ router.onReady(() => {
 		}
 
 		curtain.start(); // 这里如果有加载指示器(loading indicator)，就触发
-		Promise.all(activated.map(c => {
-			if (c.asyncData) {
-				return c.asyncData({ store, route: to });
-			}
-		})).then(() => {
-			curtain.finish(); // 停止加载指示器(loading indicator)
-			next();
-		}).catch(err =>{
-			next();
-			console.error(err);
-		});
+		Promise.all(activated.filter(c => c.asyncData).map(c => c.asyncData({ store, route: to })))
+			.then(next).catch(err => {
+				next();
+				console.error(err);
+			}).finally(curtain.finish);// 停止加载指示器(loading indicator)
 	});
 
 	vue.$mount('#app');
