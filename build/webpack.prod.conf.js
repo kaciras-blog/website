@@ -14,12 +14,12 @@ const webpackConfig = merge(baseWebpackConfig, {
 		rules: utils.styleLoaders({
 			sourceMap: config.build.productionSourceMap,
 			extract: true,
-		})
+		}),
 	},
 	devtool: config.build.productionSourceMap ? config.build.devtool : false,
 	output: {
 		filename: utils.assetsPath('js/[name].[chunkhash].js'),
-		chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
+		chunkFilename: utils.assetsPath('js/[id].[chunkhash].js'),
 	},
 	plugins: [
 		new MiniCssExtractPlugin({
@@ -38,12 +38,12 @@ const webpackConfig = merge(baseWebpackConfig, {
 
 		new webpack.HashedModuleIdsPlugin(),
 		new webpack.optimize.ModuleConcatenationPlugin(),
-	]
+	],
 });
 
 if (config.build.bundleAnalyzerReport) {
 	const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-	webpackConfig.plugins.push(new BundleAnalyzerPlugin())
+	webpackConfig.plugins.push(new BundleAnalyzerPlugin());
 }
 
 module.exports = webpackConfig;

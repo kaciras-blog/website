@@ -2,7 +2,7 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 exports.assetsPath = function (_path) {
-	return path.posix.join('static', _path)
+	return path.posix.join('static', _path);
 };
 
 exports.cssLoaders = function (options) {
@@ -11,8 +11,8 @@ exports.cssLoaders = function (options) {
 	const cssLoader = {
 		loader: 'css-loader',
 		options: {
-			sourceMap: options.sourceMap
-		}
+			sourceMap: options.sourceMap,
+		},
 	};
 
 	// generate loader string to be used with extract text plugin
@@ -23,24 +23,24 @@ exports.cssLoaders = function (options) {
 			loaders.push({
 				loader: loader + '-loader',
 				options: Object.assign({}, loaderOptions, {
-					sourceMap: options.sourceMap
-				})
-			})
+					sourceMap: options.sourceMap,
+				}),
+			});
 		}
 
 		// Extract CSS when that option is specified
 		// (which is the case during production build)
 		if (options.extract) {
-			return [MiniCssExtractPlugin.loader].concat(loaders)
+			return [MiniCssExtractPlugin.loader].concat(loaders);
 		} else {
-			return ['vue-style-loader'].concat(loaders)
+			return ['vue-style-loader'].concat(loaders);
 		}
 	}
 
 	return {
 		css: generateLoaders(),
 		less: generateLoaders('less'),
-	}
+	};
 };
 
 // Generate loaders for standalone style files (outside of .vue)
@@ -53,8 +53,8 @@ exports.styleLoaders = function (options) {
 		output.push({
 			test: new RegExp('\\.' + extension + '$'),
 			use: loader,
-		})
+		});
 	}
 
-	return output
+	return output;
 };

@@ -6,7 +6,7 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 function resolve(dir) {
-	return path.join(__dirname, '..', dir)
+	return path.join(__dirname, '..', dir);
 }
 
 const createLintingRule = () => ({
@@ -16,8 +16,8 @@ const createLintingRule = () => ({
 	include: [resolve('src'), resolve('test')],
 	options: {
 		formatter: require('eslint-friendly-formatter'),
-		emitWarning: !config.dev.showEslintErrorsInOverlay
-	}
+		emitWarning: !config.dev.showEslintErrorsInOverlay,
+	},
 });
 
 module.exports = {
@@ -34,14 +34,14 @@ module.exports = {
 			'vue$': 'vue/dist/vue.esm.js',
 			'@': resolve('src'),
 			// "jquery": "jquery/dist/jquery.slim.js",
-		}
+		},
 	},
 	plugins: [
 		new CopyWebpackPlugin([
 			{
 				from: path.resolve(__dirname, '../public'),
 				to: ".",
-				ignore: ['index.html']
+				ignore: ['index.html'],
 			}]
 		),
 		new VueLoaderPlugin(),
@@ -52,38 +52,38 @@ module.exports = {
 			{
 				test: /\.vue$/,
 				loader: 'vue-loader',
-				options: vueLoaderConfig
+				options: vueLoaderConfig,
 			},
 			{
 				test: /\.js$/,
 				loader: 'babel-loader',
-				include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client')]
+				include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client')],
 			},
 			{
 				test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
 				loader: 'url-loader',
 				options: {
 					limit: 10000,
-					name: utils.assetsPath('img/[name].[hash:7].[ext]')
-				}
+					name: utils.assetsPath('img/[name].[hash:7].[ext]'),
+				},
 			},
 			{
 				test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
 				loader: 'url-loader',
 				options: {
 					limit: 10000,
-					name: utils.assetsPath('media/[name].[hash:7].[ext]')
-				}
+					name: utils.assetsPath('media/[name].[hash:7].[ext]'),
+				},
 			},
 			{
 				test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
 				loader: 'url-loader',
 				options: {
 					limit: 10000,
-					name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
-				}
-			}
-		]
+					name: utils.assetsPath('fonts/[name].[hash:7].[ext]'),
+				},
+			},
+		],
 	},
 	node: {
 		// prevent webpack from injecting useless setImmediate polyfill because Vue
@@ -96,6 +96,6 @@ module.exports = {
 		fs: 'empty',
 		net: 'empty',
 		tls: 'empty',
-		child_process: 'empty'
-	}
+		child_process: 'empty',
+	},
 };

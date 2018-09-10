@@ -8,7 +8,7 @@ const webpack = require("webpack");
 const devWebpackConfig = merge(baseWebpackConfig, {
 	mode: "development",
 	module: {
-		rules: utils.styleLoaders({sourceMap: config.dev.cssSourceMap, usePostCSS: true})
+		rules: utils.styleLoaders({sourceMap: config.dev.cssSourceMap, usePostCSS: true}),
 	},
 	// cheap-module-eval-source-map is faster for development
 	devtool: config.dev.devtool,
@@ -34,20 +34,20 @@ const devWebpackConfig = merge(baseWebpackConfig, {
 			"/image": {
 				target: "https://localhost",
 				secure: false,
-			}
+			},
 		},
 		watchOptions: {
 			poll: config.dev.poll,
-		}
+		},
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
 			filename: 'index.html',
 			template: 'public/index.html',
-			inject: true
+			inject: true,
 		}),
 		new webpack.HotModuleReplacementPlugin(),
-	]
+	],
 });
 
 module.exports = devWebpackConfig;

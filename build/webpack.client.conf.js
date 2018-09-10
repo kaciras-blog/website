@@ -12,16 +12,16 @@ module.exports = merge(baseConfig, {
 					priority: -10,
 					chunks: 'all',
 				},
-				styles: {
+				styles: { // 各组件的CSS并不大，故放在一起，并能避免mini-css-extract-plugin生成运行期代码
 					name: 'styles',
 					test: /\.(css|less|vue)$/,
 					chunks: 'all',
-					enforce: true
+					enforce: true,
 				},
 				async: {
 					name: 'async',
 					chunks: 'async',
-					minChunks: 3
+					minChunks: 3,
 				},
 			},
 		},
@@ -31,6 +31,6 @@ module.exports = merge(baseConfig, {
 	},
 	plugins: [
 		// 在输出目录中生成 `vue-ssr-client-manifest.json`。
-		new VueSSRClientPlugin()
-	]
+		new VueSSRClientPlugin(),
+	],
 });
