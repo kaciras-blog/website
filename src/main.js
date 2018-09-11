@@ -21,7 +21,6 @@ Vue.component(PageFooter.name, PageFooter);
 Vue.component(SelectCategoryDialog.name, SelectCategoryDialog);
 
 Vue.config.productionTip = false;
-Vue.config.performance = true;
 
 //自动聚焦支持 v-autofocus
 Vue.directive('autofocus', {

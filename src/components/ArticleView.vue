@@ -20,7 +20,10 @@ export default {
 	name: "ArticleView",
 	props: ["title", "create", "update", "keywords", "content"],
 	computed:{
-		html() { return KxMarkdown.renderHtml(this.content); }, // 过滤器不支持v-html
+		// 过滤器不支持v-html
+		html() {
+			return KxMarkdown.renderHtml(this.content);
+		},
 	},
 	mounted() {
 		KxMarkdown.afterConvert();

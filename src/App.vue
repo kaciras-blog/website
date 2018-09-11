@@ -1,7 +1,7 @@
 <template>
 	<div id="app">
 		<top-nav v-if="topNav.show" v-bind="topNav"/>
-		<router-view @layout-changed="configLayout"/>
+		<router-view @layout-changed="configLayout"></router-view>
 		<page-footer v-if="showFooter"/>
 		<kx-dialog-container/>
 	</div>

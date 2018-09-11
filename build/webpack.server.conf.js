@@ -8,7 +8,7 @@ const webpack = require('webpack');
 
 
 module.exports = merge(baseConfig, {
-	mode: "production",
+	mode: "development",
 	entry: "./src/entry-server.js",
 	target: 'node',
 	devtool: 'source-map',
@@ -35,7 +35,7 @@ module.exports = merge(baseConfig, {
 	// 构建为单个 JSON 文件的插件。
 	// 默认文件名为 `vue-ssr-server-bundle.json`
 	plugins: [
-		new webpack.DefinePlugin({ "process.env.NODE_ENV": "production" }),
+		new webpack.DefinePlugin({ "process.env.NODE_ENV": "development" }),
 		new VueSSRServerPlugin(),
 	],
 });

@@ -7,8 +7,8 @@
 	"scripts": {
 		"dev": "webpack-dev-server --config build/webpack.dev.conf.js",
 		"lint": "eslint --fix --ext .js,.vue build",
-		"build": "webpack --config build/webpack.client.conf.js",
-		"build-server": "webpack --config build/webpack.server.conf.js"
+		"build": "node build/build.js",
+		"build-server": "node build/build.js -server"
 	},
 	"dependencies": {
 		"@babel/runtime": "^7.0.0",
@@ -22,7 +22,6 @@
 		"vue-router": "^3.0.1",
 		"vue-server-renderer": "^2.5.17",
 		"vuex": "^3.0.1",
-		"vuex-router-sync": "^5.0.0",
 		"webpack-node-externals": "^1.7.2"
 	},
 	"devDependencies": {
@@ -60,7 +59,6 @@
 		"less-loader": "^4.1.0",
 		"less-plugin-clean-css": "^1.5.1",
 		"mini-css-extract-plugin": "^0.4.2",
-		"node-notifier": "^5.2.1",
 		"optimize-css-assets-webpack-plugin": "^5.0.1",
 		"rimraf": "latest",
 		"url-loader": "^1.1.1",
