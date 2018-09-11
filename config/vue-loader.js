@@ -12,6 +12,9 @@ module.exports = {
 		img: 'src',
 		image: 'xlink:href'
 	},
+	compilerOptions:{
+		preserveWhitespace: false,
+	},
 	cssSourceMap: true,
 	cacheBusting: config.dev.cacheBusting,
 };

@@ -27,7 +27,7 @@ const webpackConfig = merge(baseWebpackConfig, {
 			allChunks: true,
 		}),
 		new OptimizeCSSPlugin({
-			cssProcessorOptions: {map: {inline: false}},
+			cssProcessorOptions: { map: { inline: false } },
 		}),
 		new HtmlWebpackPlugin({
 			filename: config.build.index,
@@ -35,7 +35,7 @@ const webpackConfig = merge(baseWebpackConfig, {
 			inject: true,
 			chunksSortMode: 'dependency', // necessary to consistently work with multiple chunks via CommonsChunkPlugin
 		}),
-
+		new webpack.DefinePlugin({ "process.env.NODE_ENV": "production" }),
 		new webpack.HashedModuleIdsPlugin(),
 		new webpack.optimize.ModuleConcatenationPlugin(),
 	],
