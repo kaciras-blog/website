@@ -17,26 +17,20 @@
 		</div>
 
 		<div class="minor-text">
-			<span title="发表于" class="full-time">
+			<span title="发表于" class="full-time meta">
 				<i class="fa fa-edit"></i>
 				<time>{{item.create}}</time>
 			</span>
-			<span title="最后更新" v-if="showUpdate(item)" class="full-time">
+			<span title="最后更新" v-if="showUpdate(item)" class="full-time meta">
 				<i class="fas fa-sync"></i>
 				<time>{{item.update}}</time>
 			</span>
-			<span title="时间" class="short-time">
+			<span title="时间" class="short-time meta">
 				<i class="far fa-clock"></i>
 				<time>{{item | shortTime}}</time>
 			</span>
-			<span title="评论数">
-				<i class="fas fa-comment-dots"></i>
-				<span>{{item.dcnt}}</span>
-			</span>
-			<span title="浏览数">
-				<i class="fa fa-eye"></i>
-				<span>{{item.vcnt}}</span>
-			</span>
+			<span title="评论数" class="meta"><i class="fas fa-comment-dots"></i>{{item.dcnt}}</span>
+			<span title="浏览数" class="meta"><i class="fa fa-eye"></i>{{item.vcnt}}</span>
 		</div>
 	</div>
 </template>
@@ -122,10 +116,6 @@ export default {
 			grid-area: ~"5/1/6/3";
 			justify-self: right;
 		}
-	}
-
-	& > *:nth-child(6) > * {
-		margin: 0 .2rem;
 	}
 }
 

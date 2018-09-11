@@ -12,11 +12,11 @@
 					<span class="red note" v-if="A.deleted">已删除</span>
 					<h3 class="compact">{{A.title}}</h3>
 				</div>
-				<div>
+				<div class="info">
 					<div class="tag-group">
-						<span v-for="c in A.categoryPath" :key="c.id">{{c.name}}</span>
+						<span v-for="c in A.cpath" :key="c.id">{{c.name}}</span>
 					</div>
-					<div class="info minor-text">
+					<div class="minor-text">
 						<i class="far fa-edit" title="发表于"></i>
 						<time>{{A.create}}</time>
 						<i class="fas fa-sync" title="最后更新"></i>
@@ -92,9 +92,9 @@ export default {
 @import "../css/ToBeImpoert";
 
 .note {
-	display: inline-block;
 	border-radius: .3rem;
 	padding: .2em .3em;
+	margin-right: .5em;
 
 	&.red {
 		background-color: #ed575a;
@@ -102,8 +102,7 @@ export default {
 	}
 
 	& + h3 {
-		display: inline-block;
-		vertical-align: middle;
+		display: inline;
 	}
 }
 
@@ -114,7 +113,8 @@ export default {
 
 .article {
 	display: grid;
-	grid-template-areas: "img title btn-1" "img meta  btn-2";
+	grid-template-areas: "img title btn-1"
+						 "img meta  btn-2";
 	grid-template-columns: 8rem 1fr auto;
 	grid-template-rows: 3.5rem 3.5rem;
 	grid-column-gap: 1rem;
@@ -125,25 +125,24 @@ export default {
 	}
 	& > button:nth-of-type(1) {
 		grid-area: btn-1;
-		align-self: center;
+		align-self: start;
 	}
 	& > button:nth-of-type(2) {
 		grid-area: btn-2;
-		align-self: center;
+		align-self: start;
 	}
 }
 
 .info {
-	margin-top: .5rem;
-	& > i {
+	align-self: end;
+	& i {
 		&:not(:first-of-type) {
 			margin-left: 1rem;
 		}
 		margin-right: .2rem;
 	}
 }
-
-.cover {
-
+.tag-group {
+	margin-bottom: 1rem;
 }
 </style>

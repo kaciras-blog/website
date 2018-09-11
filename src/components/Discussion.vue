@@ -16,15 +16,18 @@
 
 		<div class="content">{{value.content}}</div>
 
-		<div class="flex between minor-text">
-			<div class="minor-text tags">
-				<!--<span title="暂不支持点赞" class="clickable"><i class="fa fa-thumbs-o-up"></i>{{value.voteCount}}</span>-->
-				<span title="暂不支持楼中楼" class="clickable" @click="reply"><i class="far fa-comment"></i>回复(0)</span>
+		<div class="minor-text metas">
+			<div>
+				<!--<span title="暂不支持点赞" class="clickable meta"><i class="fa fa-thumbs-o-up"></i>{{value.voteCount}}</span>-->
+				<span title="暂不支持楼中楼"
+					  class="clickable meta"
+					  @click="reply"><i class="far fa-comment"></i>回复(0)</span>
 			</div>
-
-			<div class="flex center-agign margin-horiz">
-				<a v-if="deleteable" @click='deleteDiscussion'><i class="far fa-trash-alt"></i> 删除</a>
-				<span>{{value.time}}</span>
+			<div>
+				<span v-if="deleteable"
+					  class="clickable meta"
+					  @click='remove'><i class="far fa-trash-alt"></i>删除</span>
+				<time>{{value.time}}</time>
 			</div>
 		</div>
 
@@ -55,7 +58,7 @@ export default {
 		...Vuex.mapState(["user"]),
 	},
 	methods: {
-		deleteDiscussion() {
+		remove() {
 			api.discussion.deleteOne(this.value.id)
 				.then(this.$emit("item-removed", this.value))
 				.catch(r => alert("删除失败 " + r.message));
@@ -73,8 +76,9 @@ export default {
 	font-weight: 600;
 }
 
-.tags {
+.metas {
 	display: flex;
+	justify-content: space-between;
 	align-items: baseline;
 }
 

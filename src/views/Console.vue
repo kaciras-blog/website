@@ -4,6 +4,7 @@
 			<h1>控制台</h1>
 			<router-link to="/console/article">文章列表</router-link>
 			<router-link to="/console/draft">我的草稿</router-link>
+			<router-link to="/console/swiper">轮播</router-link>
 			<router-link to="/console/category">管理分类</router-link>
 			<router-link to="/console/config">选项</router-link>
 		</aside>

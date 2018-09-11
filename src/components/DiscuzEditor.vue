@@ -78,6 +78,7 @@ export default {
 	min-height: 10em;
 	margin-top: 1rem;
 	margin-bottom: 1rem;
+	resize: vertical;
 }
 
 .buttons {

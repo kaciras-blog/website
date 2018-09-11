@@ -5,16 +5,15 @@
 		</div>
 
 		<div class="panel">
-			<div class="draft segment"
-				 :key="draft.id"
-				 v-for="draft in drafts">
+			<div class="segment" :key="draft.id" v-for="draft in drafts">
 
-				<div class="flex center-align margin-horiz">
-					<div class="flex expansion text-line">{{draft.title}}</div>
+				<div class="draft">
+					<div class="title">{{draft.title}}</div>
 					<span class="minor-text"><i class="fas fa-pencil-alt"></i>{{draft.time}}</span>
-					<a class="border button square" :href="'/edit/' + draft.id">编辑</a>
-					<button class="border dangerous square" @click="deleteDraft(draft.id)">删除</button>
+					<router-link class="button" :to="'/edit/' + draft.id">编辑</router-link>
+					<button class="dangerous" @click="deleteDraft(draft.id)">删除</button>
 				</div>
+
 				<div class="history" v-if="showHistory===draft">
 					<div class="history-item" v-for="his in draft.histories" :key="his.saveCount">
 						<div>
@@ -87,7 +86,9 @@ export default {
 <style scoped>
 .draft {
 	display: flex;
-	flex-direction: column;
+}
+.title {
+	flex: 1;
 }
 
 .history {
