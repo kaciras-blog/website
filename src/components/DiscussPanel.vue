@@ -21,7 +21,7 @@
 			:index="pageIndex"
 			:page-size="pageSize"
 			:total-count="totalCount"
-			@loadPage="loadPage"/>
+			@load-page="loadPage"/>
 	</section>
 </template>
 

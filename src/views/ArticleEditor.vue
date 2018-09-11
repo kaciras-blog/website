@@ -9,7 +9,7 @@ export default {
 	name: "ArticleEditor",
 	mixins: [FullScreen],
 	created() {
-		this.$emit("layoutChanged", {show: false}, false);
+		this.$emit("layout-changed", {show: false}, false);
 	},
 };
 </script>

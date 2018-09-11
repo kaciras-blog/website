@@ -1,5 +1,6 @@
 <template>
 	<div class="scroll-pager">
+
 		<!-- 通过该插槽可以自定义状态显示，父组件内请使用inline-template -->
 		<slot name="state">
 			<sk-fading-circle v-if="state === 'loading'"/>

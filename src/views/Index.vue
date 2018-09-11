@@ -66,7 +66,7 @@ export default {
 			api.category.getPath(category).then(path => this.categoryPath = path);
 		}
 
-		this.$emit("layoutChanged", { clazz: "index-header", banner: true }, true);
+		this.$emit("layout-changed", { clazz: "index-header", banner: true }, true);
 	},
 	methods: {
 		async loadPage(task) {

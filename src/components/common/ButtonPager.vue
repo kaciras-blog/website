@@ -61,10 +61,10 @@ export default {
 	},
 	methods: {
 		showPage(index) {
-			this.$emit("loadPage", index - 1);
+			this.$emit("load-page", index - 1);
 		},
 		jump(event) {
-			this.$emit("loadPage", event.target.value - 1);
+			this.$emit("load-page", event.target.value - 1);
 			event.target.value = "";
 		},
 	},
