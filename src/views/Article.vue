@@ -18,6 +18,7 @@
 import DiscussPanel from "../components/DiscussPanel";
 import ArticleView from "../components/ArticleView";
 import {scrollToElementStart} from "../utils";
+import api from "../apis";
 import $ from "jquery";
 
 function gotoTop(button, minHeight, speed) {
@@ -35,6 +36,22 @@ function scrollFadeIn(button, minHeight) {
 	};
 }
 
+const articleStoreModule = {
+	namespaced: true,
+	state: () => ({
+		item: {},
+	}),
+	actions: {
+		fetchItem({ commit }, id) {
+			// `store.dispatch()` 会返回 Promise，以便我们能够知道数据在何时更新
+			return api.article.get(id).then(item => commit('setItem', item));
+		},
+	},
+	mutations: {
+		setItem: (state, item) => state.item = item,
+	},
+};
+
 export default {
 	name: "Article",
 	components: {
@@ -43,11 +60,12 @@ export default {
 	},
 	asyncData({ store, route }) {
 		// 触发 action 后，会返回 Promise
-		return store.dispatch('fetchItem', route.params.id);
+		store.registerModule('article', articleStoreModule);
+		return store.dispatch('article/fetchItem', route.params.id);
 	},
 	computed: {
 		article() {
-			return this.$store.state.article;
+			return this.$store.state.article.item;
 		},
 	},
 	methods: {
@@ -55,13 +73,17 @@ export default {
 			scrollToElementStart("discuss");
 		},
 	},
+	created(){
+		this.$emit("layout-changed", { banner: true }, true);
+	},
 	mounted() {
 		let button = $("#gototop");
 		gotoTop(button, 600, 300);
 		this.scrollHandler = scrollFadeIn(button, 600);
 		$(window).on("scroll", this.scrollHandler);
 	},
-	destroyed()  {
+	destroyed() {
+		this.$store.unregisterModule('article');
 		$(window).off("scroll", this.scrollHandler);
 	},
 };
