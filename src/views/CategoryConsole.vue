@@ -4,7 +4,7 @@
 			<button><i class="fa fa-arrow-left"></i>返回顶层</button>
 			<button>新建分类</button>
 		</div>
-		<category-view :editable="true"></category-view>
+		<category-view :editable="true"/>
 	</div>
 </template>
 

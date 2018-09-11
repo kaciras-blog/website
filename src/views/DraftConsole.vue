@@ -27,7 +27,7 @@
 
 			<span class="flex center-content minor-text" v-if="!loading && drafts.length===0">空空如也</span>
 
-			<sk-fading-circle v-if="loading"></sk-fading-circle>
+			<sk-fading-circle v-if="loading"/>
 		</div>
 	</div>
 </template>

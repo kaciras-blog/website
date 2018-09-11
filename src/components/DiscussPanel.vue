@@ -6,7 +6,7 @@
 			<span id="discuss-num">{{totalCount}}条</span>
 		</header>
 
-		<discuz-editor @discussion-added="showLast"></discuz-editor>
+		<discuz-editor @discussion-added="showLast"/>
 
 		<discussion
 			v-for="item of discussions"
@@ -14,16 +14,14 @@
 			:value="item"
 			:replying="replying"
 			@reply="reply"
-			@item-removed="loadPageBackground(pageIndex)">
-		</discussion>
+			@item-removed="loadPageBackground(pageIndex)"/>
 
-		<pager-buttons
+		<button-pager
 			v-if="totalCount > pageSize"
 			:index="pageIndex"
 			:page-size="pageSize"
 			:total-count="totalCount"
-			@loadPage="loadPage">
-		</pager-buttons>
+			@loadPage="loadPage"/>
 	</section>
 </template>
 

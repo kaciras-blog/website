@@ -12,7 +12,7 @@
 		<nav id="nav-bar" class="light nav-item-group">
 			<router-link to="/" class="nav-item">返回首页</router-link>
 		</nav>
-		<router-view class="content-body"></router-view>
+		<router-view class="content-body"/>
 	</main>
 </template>
 

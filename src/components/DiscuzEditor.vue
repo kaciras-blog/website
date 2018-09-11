@@ -25,7 +25,7 @@
 				<button class='primary round'
 						:disabled="submiting"
 						@click='submitDiscuss'>
-					<i class="far fa-paper-plane"></i><span>发表评论</span>
+					<i class="far fa-paper-plane"></i>发表评论
 				</button>
 			</div>
 		</div>

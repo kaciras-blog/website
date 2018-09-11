@@ -2,7 +2,7 @@
 	<transition name="fade">
 	<div class="dimmer" v-show="show">
 		<div class="loading">
-			<sk-fading-circle></sk-fading-circle>
+			<sk-fading-circle/>
 			<span v-if="timeouted">10秒都没加载完，多半是废了，您可以继续等等，或是<a @click="cancel">取消</a></span>
 			<span v-else>加载中...</span>
 		</div>

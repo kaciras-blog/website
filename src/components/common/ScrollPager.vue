@@ -2,7 +2,7 @@
 	<div class="scroll-pager">
 		<!-- 通过该插槽可以自定义状态显示，父组件内请使用inline-template -->
 		<slot name="state">
-			<sk-fading-circle v-if="state === 'loading'"></sk-fading-circle>
+			<sk-fading-circle v-if="state === 'loading'"/>
 
 			<span v-else-if="state === 'failed'" class="text-warning">
 				加载失败,请<a class="error highlight" @click="loadPage">重试</a>

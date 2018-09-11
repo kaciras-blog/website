@@ -31,7 +31,7 @@
 			</div>
 
 			<span v-if="allLoaded && articles.length===0">没有找到文章,去写一篇吧~</span>
-			<sk-fading-circle v-if="loading"></sk-fading-circle>
+			<sk-fading-circle v-if="loading"/>
 		</div>
 	</div>
 </template>

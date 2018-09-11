@@ -1,5 +1,5 @@
 <template>
-	<kx-markdown-editor></kx-markdown-editor>
+	<kx-markdown-editor/>
 </template>
 
 <script>

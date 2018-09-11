@@ -1,10 +1,7 @@
 <template>
 	<main id="login-view">
 		<div class="filter-container">
-			<component
-				:is="panel"
-				@switch-panel="switchPanel">
-			</component>
+			<component :is="panel" @switch-panel="switchPanel"/>
 		</div>
 	</main>
 </template>
@@ -29,7 +26,7 @@ export default {
 		},
 	},
 	created() {
-		this.$emit("layoutChanged", {clazz: "login-header"}, false);
+		this.$emit("layout-changed", {clazz: "login-header"}, false);
 	},
 
 };

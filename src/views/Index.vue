@@ -13,12 +13,10 @@
 
 			<article-preview :key="article.id"
 							 :item="article"
-							 v-for="article of articles">
-			</article-preview>
+							 v-for="article of articles"/>
 
 			<scroll-pager :options="pagerConfig"
-						  @load-page="loadPage">
-			</scroll-pager>
+						  @load-page="loadPage"/>
 		</div>
 		<aside-panel></aside-panel>
 	</main>

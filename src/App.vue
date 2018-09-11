@@ -1,9 +1,9 @@
 <template>
 	<div id="app">
-		<top-nav v-if="topNav.show" v-bind="topNav"></top-nav>
-		<router-view @layoutChanged="configLayout"></router-view>
-		<page-footer v-if="showFooter"></page-footer>
-		<kx-dialog-container></kx-dialog-container>
+		<top-nav v-if="topNav.show" v-bind="topNav"/>
+		<router-view @layout-changed="configLayout"/>
+		<page-footer v-if="showFooter"/>
+		<kx-dialog-container/>
 	</div>
 </template>
 

@@ -1,7 +1,7 @@
 <template>
 	<main id="article-page">
-		<article-view v-bind="article"></article-view>
-		<discuss-panel></discuss-panel>
+		<article-view v-bind="article"/>
+		<discuss-panel/>
 
 		<div class="side-buttons">
 			<button id="gotodiscuss" class="center-all" title="转到评论区" @click="gotodiscuss">
