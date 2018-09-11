@@ -10,9 +10,10 @@
 		<div>关键词：<span class="keyword" v-for="kw in item.keywords" :key="kw">{{kw}}</span></div>
 
 		<div class="tag-group">
-			<router-link v-for="cat in reserve(item.cpath)"
-						 :key="cat.id"
-						 :to="'/?category=' + cat.id">{{cat.name}}
+			<router-link
+				v-for="cat in reserve(item.cpath)"
+				:key="cat.id"
+				:to="'/?category=' + cat.id">{{cat.name}}
 			</router-link>
 		</div>
 

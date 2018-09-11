@@ -1,7 +1,7 @@
 <template>
 	<div class="category">
-		<div class="info-container"
-			 v-if="current"
+		<div v-if="current"
+			 class="info-container"
 			 @click="setBackground"
 			 :style="styleVars"
 			 :title="editable ? '点击换背景' : null">
@@ -12,10 +12,17 @@
 					 :title="editable ? '点击换头像' : null"
 					 alt="分类图标"
 					 @click="setCover">
-				<input class="name" v-if="editable" title="名称" v-model="current.name">
-				<span class="name" v-else>{{current.name}}</span>
 
-				<textarea v-if="editable" title="描述" class="desc" v-model="current.description"></textarea>
+				<input v-if="editable" class="name" title="名称" v-model="current.name">
+				<span v-else class="name">{{current.name}}</span>
+
+				<textarea
+					v-if="editable"
+					title="描述"
+					class="desc"
+					v-model="current.description">
+				</textarea>
+
 				<span v-else class="desc">{{current.description}}</span>
 
 				<div class="buttons" v-if="editable">

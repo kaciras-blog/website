@@ -64,19 +64,23 @@
 		</div>
 
 		<div class="editor-main">
-		<textarea id="textarea" ref="textarea"
-				  class="text-view"
-				  v-show="viewModel!==2"
-				  :class="{ split:viewModel===0, single:viewModel===1 }"
-				  title="编辑区"
-				  @keydown.9.prevent="inputTab"
-				  v-model="content">
-		</textarea>
-			<article id="preview" ref="preview"
-					 class="text-view preview markdown"
-					 v-show="viewModel!==1"
-					 :class="{ split:viewModel===0, single:viewModel===2 }"
-					 v-html="htmlText">
+			<textarea
+				v-show="viewModel!==2"
+				id="textarea"
+				ref="textarea"
+				class="text-view"
+				:class="{ split:viewModel===0, single:viewModel===1 }"
+				title="编辑区"
+				@keydown.9.prevent="inputTab"
+				v-model="content">
+			</textarea>
+			<article
+				v-show="viewModel!==1"
+				id="preview"
+				ref="preview"
+				class="text-view preview markdown"
+				:class="{ split:viewModel===0, single:viewModel===2 }"
+				v-html="htmlText">
 			</article>
 		</div>
 	</div>
@@ -183,7 +187,7 @@ export default {
 			this.$dialog.show(SelectCategoryDialog.name, null).then(publish.bind(this));
 		},
 		async metadataDialog() {
-			const res = this.$dialog.show(MetadataDialog.name, {mdata: this.metadata});
+			const res = this.$dialog.show(MetadataDialog.name, { mdata: this.metadata });
 			if (res)
 				this.metadata = res;
 		},

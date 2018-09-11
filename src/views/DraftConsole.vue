@@ -5,7 +5,7 @@
 		</div>
 
 		<div class="panel">
-			<div class="segment" :key="draft.id" v-for="draft in drafts">
+			<div v-for="draft in drafts" :key="draft.id" class="segment" >
 
 				<div class="draft">
 					<div class="title">{{draft.title}}</div>

@@ -11,12 +11,14 @@
 			</h1>
 			<h1 class='segment' v-else>全部文章</h1>
 
-			<article-preview :key="article.id"
-							 :item="article"
-							 v-for="article of articles"/>
+			<article-preview
+				v-for="article of articles"
+				:key="article.id"
+				:item="article"/>
 
-			<scroll-pager :options="pagerConfig"
-						  @load-page="loadPage"/>
+			<scroll-pager
+				:options="pagerConfig"
+				@load-page="loadPage"/>
 		</div>
 		<aside-panel></aside-panel>
 	</main>
@@ -64,7 +66,7 @@ export default {
 			api.category.getPath(category).then(path => this.categoryPath = path);
 		}
 
-		this.$emit("layoutChanged", {clazz: "index-header", banner: true}, true);
+		this.$emit("layoutChanged", { clazz: "index-header", banner: true }, true);
 	},
 	methods: {
 		async loadPage(task) {

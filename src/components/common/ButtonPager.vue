@@ -3,12 +3,11 @@
 		<div class="buttons">
 			<button class="border square"
 					v-if="current > 1"
-					@click="showPage(1)">首页
-			</button>
+					@click="showPage(1)">首页</button>
+
 			<button class="border square"
 					v-if="current > 1"
-					@click="showPage(current-1)">上一页
-			</button>
+					@click="showPage(current-1)">上一页</button>
 
 			<span v-if="current - 3 > 0" class="omit">...</span>
 
@@ -21,12 +20,11 @@
 
 			<button class="border square"
 					v-if="current < totalPage"
-					@click="showPage(current+1)">下一页
-			</button>
+					@click="showPage(current+1)">下一页</button>
+
 			<button class="border square"
 					v-if="current < totalPage"
-					@click="showPage(totalPage)">尾页
-			</button>
+					@click="showPage(totalPage)">尾页</button>
 		</div>
 
 		<div class="minor-text">

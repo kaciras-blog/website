@@ -19,12 +19,17 @@
 				<span class="name">(匿名评论)</span>
 			</div>
 
-			<textarea class='input discuss-box' v-model="content" placeholder='说点什么吧'></textarea>
+			<textarea
+				class='input discuss-box'
+				v-model="content"
+				placeholder='说点什么吧'>
+			</textarea>
 
 			<div class='buttons'>
-				<button class='primary round'
-						:disabled="submiting"
-						@click='submitDiscuss'>
+				<button
+					class='primary round'
+					:disabled="submiting"
+					@click='submitDiscuss'>
 					<i class="far fa-paper-plane"></i>发表评论
 				</button>
 			</div>

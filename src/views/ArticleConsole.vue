@@ -6,7 +6,6 @@
 
 		<div class="panel">
 			<div class="article segment" :key="A.id" v-for="A in articles">
-
 				<img :src="'/image/' + A.cover">
 				<div>
 					<span class="red note" v-if="A.deleted">已删除</span>
@@ -17,10 +16,8 @@
 						<span v-for="c in A.cpath" :key="c.id">{{c.name}}</span>
 					</div>
 					<div class="minor-text">
-						<i class="far fa-edit" title="发表于"></i>
-						<time>{{A.create}}</time>
-						<i class="fas fa-sync" title="最后更新"></i>
-						<time>{{A.update}}</time>
+						<i class="far fa-edit" title="发表于"></i><time>{{A.create}}</time>
+						<i class="fas fa-sync" title="最后更新"></i><time>{{A.update}}</time>
 						<i class="fas fa-comment-dots" title="评论数"></i><span>{{A.dcnt}}</span>
 						<i class="fa fa-eye" title="浏览数"></i><span>{{A.vcnt}}</span>
 					</div>
