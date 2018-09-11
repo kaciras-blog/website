@@ -10,12 +10,9 @@ const VueSSRClientPlugin = require('vue-server-renderer/client-plugin');
 
 
 const webpackConfig = merge(baseWebpackConfig, {
-	mode: "production",
+	mode: "development",
 	module: {
-		rules: utils.styleLoaders({
-			sourceMap: config.build.productionSourceMap,
-			extract: true,
-		}),
+		rules: utils.styleLoaders({ sourceMap: config.build.productionSourceMap, extract: true, }),
 	},
 	devtool: config.build.productionSourceMap ? config.build.devtool : false,
 	output: {
@@ -31,12 +28,12 @@ const webpackConfig = merge(baseWebpackConfig, {
 					priority: -10,
 					chunks: 'all',
 				},
-				styles: { // 各组件的CSS并不大，故放在一起，并能避免mini-css-extract-plugin生成运行期代码
-					name: 'styles',
-					test: /\.(css|less|vue)$/,
-					chunks: 'all',
-					enforce: true,
-				},
+				// styles: {
+				// 	name: 'styles',
+				// 	test: /\.(css|less|vue)$/,
+				// 	chunks: 'all',
+				// 	enforce: true,
+				// },
 				async: {
 					name: 'async',
 					chunks: 'async',
@@ -62,9 +59,7 @@ const webpackConfig = merge(baseWebpackConfig, {
 			inject: true,
 			chunksSortMode: 'dependency', // necessary to consistently work with multiple chunks via CommonsChunkPlugin
 		}),
-		new webpack.DefinePlugin({ "process.env.NODE_ENV": "production" }),
 		new webpack.HashedModuleIdsPlugin(),
-		new webpack.optimize.ModuleConcatenationPlugin(),
 		new VueSSRClientPlugin(), // 在输出目录中生成 `vue-ssr-client-manifest.json`。
 	],
 });
