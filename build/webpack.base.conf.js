@@ -5,9 +5,7 @@ const vueLoaderConfig = require('../config/vue-loader');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-function resolve(dir) {
-	return path.join(__dirname, '..', dir);
-}
+const resolve = dir => path.join(__dirname, '..', dir);
 
 const createLintingRule = () => ({
 	test: /\.(js|vue)$/,
@@ -22,7 +20,7 @@ const createLintingRule = () => ({
 
 module.exports = {
 	context: path.resolve(__dirname, '../'),
-	entry: "./src/entry-client.js",
+	entry: resolve("src/entry-client.js"),
 	output: {
 		path: config.build.assetsRoot,
 		filename: '[name].js',
@@ -31,8 +29,7 @@ module.exports = {
 	resolve: {
 		extensions: ['.js', '.vue', '.json'],
 		alias: {
-			'vue$': 'vue/dist/vue.esm.js',
-			'@': resolve('src'),
+			'vue$': 'vue/dist/vue.runtime.esm.js',
 			// "jquery": "jquery/dist/jquery.slim.js",
 		},
 	},

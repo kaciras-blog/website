@@ -30,10 +30,11 @@ const devWebpackConfig = merge(baseWebpackConfig, {
 		open: false,
 		overlay: false,
 
+		// 一些需要其它服务器处理的请求
 		proxy: {
 			"/image": {
 				target: "https://localhost",
-				secure: false,
+				secure: false, // 开发环境使用自签名证书
 			},
 		},
 		watchOptions: {

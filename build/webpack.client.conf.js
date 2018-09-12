@@ -60,7 +60,7 @@ const webpackConfig = merge(baseWebpackConfig, {
 			chunksSortMode: 'dependency', // necessary to consistently work with multiple chunks via CommonsChunkPlugin
 		}),
 		new webpack.HashedModuleIdsPlugin(),
-		new VueSSRClientPlugin(), // 在输出目录中生成 `vue-ssr-client-manifest.json`。
+		new VueSSRClientPlugin(), // 生成 `vue-ssr-client-manifest.json`。
 	],
 });
 
