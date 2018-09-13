@@ -59,6 +59,11 @@ export function errorMessage(object) {
 	return object.message || "未知的错误";
 }
 
+export function showErrorDialog (vm, title) {
+	return function (err) {
+		vm.$dialog.messageBox(title, errorMessage(err), "error", false);
+	};
+}
 
 /**
  * 获取URL中路径的某一片段

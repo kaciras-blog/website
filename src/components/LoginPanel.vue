@@ -23,7 +23,7 @@
 
 <script>
 import api from "../apis";
-import {errMsg, pageReturn} from "../utils";
+import {showErrorDialog, pageReturn} from "../utils";
 
 export default {
 	name: "LoginPanel",
@@ -39,7 +39,9 @@ export default {
 	},
 	methods: {
 		login() {
-			api.session.login(this.form).then(pageReturn).catch(err => this.message = errMsg(err));
+			api.session.login(this.form)
+				.then(pageReturn)
+				.catch(showErrorDialog(this, "登录失败"));
 		},
 		switchPanel() {
 			this.$emit("switch-panel", "SignupPanel");
