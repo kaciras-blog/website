@@ -57,11 +57,13 @@ export default function () {
 				path: "/error/:code",
 				name: "error",
 				component: Error,
+				props: true,
 			},
 			{
 				path: "*",
 				alias: "/error/404",
 				component: Error,
+				props: { code: 0 },
 			},
 		],
 	});
