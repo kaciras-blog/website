@@ -6,6 +6,7 @@ import Welcome from "./views/Welcome";
 import ArticleConsole from "./views/ArticleConsole";
 import DraftConsole from "./views/DraftConsole";
 import CategoryEditor from "./views/CategoryEditor";
+import SwiperConsole from "./views/SwiperConsole";
 
 Vue.use(Router);
 
@@ -15,7 +16,7 @@ Vue.use(Router);
  * 2.预渲染的页面，如首页、文章页
  */
 export default function () {
-	return new Router({
+	const router = new Router({
 		mode: 'history',
 		routes: [
 			{
@@ -49,6 +50,7 @@ export default function () {
 				children: [
 					{ path: "", name: "console", redirect: "article" },
 					{ path: "article", component: ArticleConsole },
+					{ path: "swiper", component: SwiperConsole },
 					{ path: "draft", component: DraftConsole },
 					{ path: "category", component: CategoryEditor },
 				],
@@ -67,4 +69,5 @@ export default function () {
 			},
 		],
 	});
+	return router;
 }

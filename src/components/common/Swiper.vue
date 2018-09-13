@@ -1,8 +1,13 @@
 <template>
 	<div class="swiper">
-		<slot class="prev" :slide="prev"></slot>
-		<slot class="current" :slide="slides[index]"></slot>
-		<slot class="after" :slide="after"></slot>
+		<template v-if="slides.length === 0">
+			<div class="slide">空空如也</div>
+		</template>
+		<template v-else>
+			<div class="prev slide"><slot :slide="prev"/></div>
+			<div class="current slide"><slot :slide="slides[index]"/></div>
+			<div class="next slide"><slot :slide="next"/></div>
+		</template>
 	</div>
 </template>
 
@@ -19,7 +24,7 @@ export default {
 		prev() {
 			return this.index === 0 ? this.slides[this.slides.length - 1] : this.slides[this.index];
 		},
-		after() {
+		next() {
 			return this.index === this.slides.length - 1 ? this.slides[0] : this.slides[this.index];
 		},
 	},
@@ -35,17 +40,25 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="less">
 .swiper{
 	overflow: hidden;
 	position: relative;
 }
-
-.prev, .after {
+.slide {
 	position: absolute;
+	width: 100%;
+	height: 100%;
+	transition: all 0.3s;
+}
+.prev, .next {
+
 }
 
 .prev {
-
+	left: -100%;
+}
+.next {
+	left: 100%;
 }
 </style>
