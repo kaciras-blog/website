@@ -1,7 +1,7 @@
 <template>
 	<main id="article-page">
 		<article-view v-bind="article"/>
-		<discuss-panel/>
+		<discuss-panel ref="discss-panel"/>
 
 		<div class="side-buttons">
 			<button id="gotodiscuss" class="center-all" title="转到评论区" @click="gotodiscuss">
@@ -70,7 +70,7 @@ export default {
 	},
 	methods: {
 		gotodiscuss() {
-			scrollToElementStart("discuss");
+			scrollToElementStart(this.$refs["discss-panel"].$el);
 		},
 	},
 	created(){

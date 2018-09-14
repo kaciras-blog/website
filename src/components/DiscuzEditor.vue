@@ -1,38 +1,37 @@
 <template>
-	<div class="segment">
-
-		<div class="discuss-editor center-all" v-if="config.disable">
-			已设置为禁止评论
+	<div class="discuss-editor center-all" v-if="options.disable">
+		已设置为禁止评论
+	</div>
+	<div class="discuss-editor center-all" v-else-if="options.loginRequired && !user">
+		已禁止匿名评论,请先<a class='highlight' href='/login'>登录</a>
+	</div>
+	<div class="discuss-editor" v-else>
+		<div v-if="user">
+			<img class='small head'
+				 :src='"/image/" + user.head'
+				 alt="头像">
+			<span class="name">{{user.name}}</span>
 		</div>
-		<div class="discuss-editor center-all" v-else-if="config.loginRequired && !user">
-			已禁止匿名评论,请先<a class='highlight' href='/login'>登录</a>
+		<div v-else>
+			<img src='/image/akalin.jpg'
+				 class='small head'
+				 alt="头像">
+			<span class="name">(匿名评论)</span>
 		</div>
 
-		<div class="discuss-editor" v-else>
+		<textarea
+			class='input discuss-box'
+			v-model="content"
+			placeholder='说点什么吧'>
+		</textarea>
 
-			<div v-if="user">
-				<img :src='"/image/" + user.head' class='small head' alt="头像">
-				<span class="name">{{user.name}}</span>
-			</div>
-			<div class="discusser" v-else>
-				<img src='/image/akalin.jpg' class='small head' alt="头像">
-				<span class="name">(匿名评论)</span>
-			</div>
-
-			<textarea
-				class='input discuss-box'
-				v-model="content"
-				placeholder='说点什么吧'>
-			</textarea>
-
-			<div class='buttons'>
-				<button
-					class='primary round'
-					:disabled="submiting"
-					@click='submitDiscuss'>
-					<i class="far fa-paper-plane"></i>发表评论
-				</button>
-			</div>
+		<div class='buttons'>
+			<button
+				class='primary round'
+				:disabled="submiting"
+				@click='submitDiscuss'>
+				<i class="far fa-paper-plane"></i>发表评论
+			</button>
 		</div>
 	</div>
 </template>
@@ -43,17 +42,19 @@ import {errorMessage} from "../utils";
 
 export default {
 	name: "DiscussEditor",
-	props:{
+	props: {
 		submit: {
 			type: Function,
 			required: true,
+		},
+		options: {
+			default: () => ({}),
 		},
 	},
 	data() {
 		return {
 			submiting: false,
 			content: "",
-			config: {},
 		};
 	},
 	computed: Vuex.mapState(["user"]),

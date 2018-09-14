@@ -1,12 +1,14 @@
 <template>
-	<section id="discuss" class="panel">
+	<section class="discuss panel">
 
 		<header class="segment">
 			<h2 class="compact">评论区</h2>
 			<span id="discuss-num">{{totalCount}}条</span>
 		</header>
 
-		<discuz-editor :submit="submitDiscussion" @discussion-added="showLast"/>
+		<div class="segment">
+			<discuz-editor :submit="submitDiscussion" @discussion-added="showLast"/>
+		</div>
 
 		<discussion
 			v-for="item of discussions"
