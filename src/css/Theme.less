@@ -3,25 +3,10 @@
 @import "Variables";
 @import "Mixin";
 
-.highlight-link() {
-	cursor: pointer;
-	color: @color-link;
-	outline: none;
-	text-decoration: none;
-
-	&:visited {
-		color: @color-link;
-	}
-	&:hover {
-		color: @color-link;
-		text-decoration: underline;
-	}
-}
-
-.highlight-link-color(@color) {
-	color: @color;
-	&:visited { color: @color; }
-	&:hover { color: @color; }
+.highlight-color(@textColor, @hoverColor) {
+	color: @textColor;
+	&:visited { color: @hoverColor; }
+	&:hover { color: @hoverColor; }
 }
 
 .input-highlight-hover() {

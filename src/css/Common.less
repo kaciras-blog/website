@@ -77,10 +77,17 @@ h1, h2, h3, h4, h5, h6 {
 	}
 }
 
-a.highlight {
-	.highlight-link();
+.highlight {
+	.highlight-color(@color-link, @color-link);
+	&:hover {
+		text-decoration: underline;
+	}
+
 	&.error{
-		.highlight-link-color(#f94f55);
+		.highlight-color(#f94f55, #f94f55);
+	}
+	&.pink {
+		.highlight-color(white, #ff72ae);
 	}
 }
 

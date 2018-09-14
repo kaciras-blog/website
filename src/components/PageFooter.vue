@@ -1,12 +1,14 @@
 <template>
 	<footer id="bottom-footer" v-once>
-		<div class="bft-text">
+		<div class="address">
 			<p>Copyright &copy; 2017-2018 Kaciras.net All Rights Reserved.</p>
 			<address>Kaciras@outlook.com</address>
 		</div>
-		<div class="bft-links">
-			<router-link class="highlight" to="/">首页</router-link>
-			<a class="highlight" href="/sitemap.xml">站点地图</a>
+		<div>
+			<router-link class="highlight pink" to="/">首页</router-link>
+		</div>
+		<div>
+			<a class="highlight pink" href="/sitemap.xml">站点地图</a>
 		</div>
 	</footer>
 </template>
@@ -27,13 +29,24 @@ export default {
 	background-color: #303030;
 	padding: 1rem;
 
-	display: flex;
-	flex-direction: column;
+	display: grid;
+	grid-gap: 1rem;
+	grid-template-columns: 1fr 1fr;
+	justify-items: center;
 
 	@media screen and (min-width: @length-screen-mobile) {
 		padding: 1rem 5%;
-		flex-direction: row;
-		justify-content: space-between;
+		grid-template-rows: auto;
+		grid-template-columns: 1fr auto auto;
+		justify-items: start;
+	}
+}
+
+.address {
+	grid-column-start: 1;
+	grid-column-end: 3;
+	@media screen and (min-width: @length-screen-mobile) {
+		grid-column-end: 2;
 	}
 }
 </style>
