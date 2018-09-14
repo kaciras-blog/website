@@ -32,6 +32,7 @@
 				</div>
 			</div>
 		</div>
+
 		<div class="children-title" v-if="current">下级分类</div>
 		<div class="children">
 			<div class="category-card"
@@ -192,7 +193,6 @@ export default {
 
 	border: none;
 	background: none;
-	resize: none;
 	overflow: hidden;
 	color: white;
 	flex: 1;
@@ -218,7 +218,6 @@ export default {
 }
 
 .category-card {
-
 	cursor: pointer;
 	max-width: 9rem;
 	margin: 1rem;

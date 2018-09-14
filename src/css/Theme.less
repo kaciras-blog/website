@@ -5,7 +5,7 @@
 
 .highlight-color(@textColor, @hoverColor) {
 	color: @textColor;
-	&:visited { color: @hoverColor; }
+	&:visited { color: @textColor; }
 	&:hover { color: @hoverColor; }
 }
 
@@ -17,4 +17,13 @@
 .input-highlight-focus() {
 	border: solid 1px @color-input-active;
 	box-shadow: 0 0 4px lighten(@color-input-active, 12%);
+}
+
+/*
+ * 圆形元素，使用border-radius来实现。
+ */
+.circularity(@diameter) {
+	width: @diameter;
+	height: @diameter;
+	border-radius: @diameter / 2;
 }

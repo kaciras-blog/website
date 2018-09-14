@@ -31,12 +31,10 @@
 </template>
 
 <script>
-import {FullScreen} from "../mixins";
 import ErrorContent from "../components/ErrorContent";
 
 export default {
 	name: "Error",
-	mixins: [FullScreen],
 	components: { ErrorContent },
 	props: ["code"],
 	created() {

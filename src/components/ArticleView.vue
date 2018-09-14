@@ -6,7 +6,7 @@
 			<p><span>最后更新</span><time>{{update}}</time></p>
 			<div>
 				<span>关键词：</span>
-				<span class="keyword" v-for="kw in keywords" :key="kw">{{kw}}</span>
+				<span v-for="kw in keywords" :key="kw" class="keyword">{{kw}}</span>
 			</div>
 		</header>
 		<div class="markdown segment" v-html="html"></div>

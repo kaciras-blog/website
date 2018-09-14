@@ -28,7 +28,7 @@
 		</div>
 
 		<div class="minor-text">
-			<span>共{{totalPage}}页</span>
+			<span>共{{totalPage}}页，</span>
 			<label>跳至<input class="jump" @keyup.13="jump"/>页</label>
 		</div>
 	</div>
