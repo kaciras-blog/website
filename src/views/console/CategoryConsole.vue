@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import api from "../apis";
-import CategoryView from "../components/CategoryView";
+import api from "../../apis";
+import CategoryView from "../../components/CategoryView";
 
 export default {
 	name: "CategoryConsole",

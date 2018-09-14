@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import api from "../apis";
+import api from "../../apis";
 
 export default {
 	name: "SwiperConsole",
@@ -48,7 +48,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-@import "../css/ToBeImpoert";
+@import "../../css/ToBeImpoert";
 
 .slide {
 	border: solid 1px #6abdff;

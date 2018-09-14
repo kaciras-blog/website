@@ -34,8 +34,8 @@
 </template>
 
 <script>
-import api from "../apis";
-import {deleteOn, errorMessage} from "../utils";
+import api from "../../apis";
+import {deleteOn, errorMessage} from "../../utils";
 
 export default {
 	name: "ArticleConsole",
@@ -86,7 +86,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-@import "../css/ToBeImpoert";
+@import "../../css/ToBeImpoert";
 
 .note {
 	border-radius: .3rem;

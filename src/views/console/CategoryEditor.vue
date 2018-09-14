@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import CategoryView from "../components/CategoryView";
+import CategoryView from "../../components/CategoryView";
 
 export default {
 	name: "CategoryEditor",

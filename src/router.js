@@ -3,10 +3,10 @@ import Router from 'vue-router';
 import Error from "./views/Error";
 import Welcome from "./views/Welcome";
 
-import ArticleConsole from "./views/ArticleConsole";
-import DraftConsole from "./views/DraftConsole";
-import CategoryEditor from "./views/CategoryEditor";
-import SwiperConsole from "./views/SwiperConsole";
+import ArticleConsole from "./views/console/ArticleConsole";
+import DraftConsole from "./views/console/DraftConsole";
+import CategoryEditor from "./views/console/CategoryEditor";
+import SwiperConsole from "./views/console/SwiperConsole";
 
 Vue.use(Router);
 
@@ -65,7 +65,7 @@ export default function () {
 				path: "*",
 				alias: "/error/404",
 				component: Error,
-				props: { code: 0 },
+				props: { code: "404" },
 			},
 		],
 	});
