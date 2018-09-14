@@ -23,7 +23,7 @@ export default {
 	name: "Console",
 	mixins: [FullScreen],
 	created() {
-		this.$emit("layout-changed", {show: false}, false);
+		this.$emit("layout-changed", { show: false }, false);
 	},
 };
 </script>
@@ -101,5 +101,4 @@ export default {
 	color: #83daef;
 	background-color: rgba(255, 255, 255, 0.06);
 }
-
 </style>

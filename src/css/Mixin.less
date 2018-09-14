@@ -188,8 +188,9 @@
 
 //------------------------------------- ├ 功能 ┆ └------------------------------------/
 
-// 禁止文本被选择
-.disable-user-select() {
+// 用于点击的元素，指针为手指样式、并禁止选取
+.click-item() {
+	cursor: pointer;
 	user-select: none;
 	-webkit-user-select: none;
 	-moz-user-select: none;

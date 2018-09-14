@@ -1,7 +1,7 @@
 <template>
 	<div id="app">
 		<top-nav v-if="topNav.show" v-bind="topNav"/>
-		<router-view @layout-changed="configLayout"></router-view>
+		<router-view @layout-changed="configLayout"/>
 		<page-footer v-if="showFooter"/>
 		<kx-dialog-container/>
 	</div>
@@ -30,8 +30,10 @@ export default {
 			this.showFooter = showFooter;
 		},
 	},
-	beforeMount() {
-		api.session.getCurrentUser().then(user => this.$store.commit("setUser", user));
+	created() {
+		api.session.getCurrentUser()
+			.then(user => this.$store.commit("setUser", user))
+			.catch(() => console.error("无法连接账号服务器"));
 	},
 	watch: {
 		//当视图切换时重置布局（仅最外层路由切换）
