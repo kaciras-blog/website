@@ -105,6 +105,12 @@ export default {
 	}
 }
 
+#top-nav::before,
+#banner {
+	background: var(--background, white);
+	background-size: var(--background-size); // 这个属性写一起毛病多
+}
+
 #banner {
 	height: 180px;
 	width: 100%;

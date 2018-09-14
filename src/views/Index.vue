@@ -132,9 +132,8 @@ export default {
 	}
 }
 
-.index-header #banner,
-.index-header #top-nav::before {
-	background: url("../assets/index-banner.jpg") center 0;
-	background-size: cover;
+.index-header {
+	--background: url("../assets/index-banner.jpg") center 0;
+	--background-size: cover;
 }
 </style>

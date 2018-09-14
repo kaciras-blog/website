@@ -87,10 +87,8 @@ form {
 		color: white;
 		background-color: rgba(50, 50, 50, 0.3) !important;
 	}
-	& #banner, #top-nav::before {
-		background: url("../assets/login-bkg.jpg") fixed;
-		background-size: cover;
-	}
+	--background: url("../assets/login-bkg.jpg") fixed;
+	--background-size: cover;
 }
 
 .filter-container {
