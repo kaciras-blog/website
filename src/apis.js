@@ -187,7 +187,9 @@ _default.session = {
 
 	logout: () => mainServer.delete("/session/user").then(() => window.location.reload()),
 
-	getCurrentUser: () => mainServer.get("/session/user").then(r => r.data),
+	// TODO: API网关层做下聚合
+	getCurrentUser: () => accountServer.get("/session/user")
+		.then(r => mainServer.get("/users/" + r.data)).then(r => r.data),
 };
 
 _default.account = {
