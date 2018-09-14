@@ -6,7 +6,7 @@
 			<span id="discuss-num">{{totalCount}}条</span>
 		</header>
 
-		<discuz-editor @discussion-added="showLast"/>
+		<discuz-editor :submit="submitDiscussion" @discussion-added="showLast"/>
 
 		<discussion
 			v-for="item of discussions"
@@ -49,7 +49,7 @@ export default {
 	},
 	methods: {
 		loadPageBackground(index) {
-			api.discuss.getList(this.$route.params.id, index * this.pageSize, this.pageSize).then(data => {
+			return api.discuss.getList(this.$route.params.id, index * this.pageSize, this.pageSize).then(data => {
 				this.discussions = data.list;
 				this.pageIndex = index;
 				this.totalCount = data.total;
@@ -63,6 +63,10 @@ export default {
 		},
 		reply(id) {
 			this.replying = id;
+		},
+		submitDiscussion(text) {
+			// 文章以外的评论如何设计API？
+			return api.discuss.add(this.$route.params.id, text);
 		},
 	},
 	// 评论经常变动，不进行预渲染，首屏显示菊花图

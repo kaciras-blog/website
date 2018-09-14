@@ -38,12 +38,17 @@
 </template>
 
 <script>
-import api from "../apis";
 import Vuex from "vuex";
 import {errorMessage} from "../utils";
 
 export default {
 	name: "DiscussEditor",
+	props:{
+		submit: {
+			type: Function,
+			required: true,
+		},
+	},
 	data() {
 		return {
 			submiting: false,
@@ -61,7 +66,7 @@ export default {
 
 			this.submiting = true;
 			try {
-				await api.discussion.add(this.$router.params.id, text);
+				await this.submit(text);
 				this.content = "";
 				this.$emit("discussion-added");
 			} catch (e) {
