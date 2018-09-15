@@ -39,13 +39,6 @@ export function scrollToElementEnd(element) {
 }
 
 /**
- * 给body元素加上一个标记，指示文档已经渲染完毕。用于通知预渲染服务。
- */
-export function markRenderComplete() {
-	document.getElementsByTagName("body")[0].setAttribute("data-render-complete", "true");
-}
-
-/**
  * 从Axios的错误原因对象中提取错误信息。
  *
  * @param object {*} 异常

@@ -79,8 +79,6 @@ export default {
 				task.complete(res.length < this.pageSize);
 			} catch (e) {
 				return task.error(e);
-			} finally {
-				this.$nextTick(utils.markRenderComplete);
 			}
 		},
 		excludeLast(arr) {
