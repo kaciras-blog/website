@@ -17,14 +17,13 @@
 			</h1>
 			<h1 class='segment' v-else>全部文章</h1>
 
-			<article-preview
-				v-for="article of articles"
-				:key="article.id"
-				:item="article"/>
+			<scroll-pageing-view
+				:url-template="nextPage"
+				:start="startPage"
+				:loader="loadPage">
 
-			<scroll-pager
-				:options="pagerConfig"
-				@load-page="loadPage"/>
+				<article-preview slot-scope="{ item }" :key="item.id" :item="item"/>
+			</scroll-pageing-view>
 		</div>
 		<aside-panel></aside-panel>
 	</page-layout>
@@ -34,7 +33,7 @@
 import ArticlePreview from "../components/ArticlePreview.vue";
 import AsidePanel from "../components/AsidePanel.vue";
 import api from "../apis.js";
-import * as utils from "../utils";
+import {getQueryString} from "../utils";
 
 export default {
 	name: "Index",
@@ -44,48 +43,26 @@ export default {
 	},
 	data() {
 		return {
-			startPage: parseInt(utils.getQueryString("start") || "0"),
-			articles: [],
+			startPage: parseInt(getQueryString("start") || "0"),
+			category: getQueryString("category"),
 			pageSize: 16,
 			cpath: null,
 		};
 	},
-	computed: {
-		pagerConfig() {
-			const config = {
-				tradition: utils.getQueryString("tradition") === "true",
-			};
-			if (utils.getQueryString("manually") === "true") {
-				const nextStart = this.startPage + this.articles.length;
-				const url = new URL(window.location.href);
-
-				url.searchParams.set("start", nextStart.toString());
-				config.manually = true;
-				config.nextPageLink = url.toString();
-			}
-			return config;
-		},
-	},
 	created() {
-		const category = utils.getQueryString("category");
+		const category = this.category;
 		if (category) {
 			api.category.getPath(category).then(path => this.cpath = path);
 		}
-
-		// this.$emit("layout-changed", { clazz: "index-header", banner: true }, true);
 	},
 	methods: {
-		async loadPage(task) {
-			const category = utils.getQueryString("category") || null;
-			const index = this.startPage + this.articles.length;
-
-			try {
-				const res = await api.article.getList(category, index, this.pageSize);
-				this.articles.push.apply(this.articles, res);
-				task.complete(res.length < this.pageSize);
-			} catch (e) {
-				return task.error(e);
-			}
+		loadPage(index, size) {
+			return api.article.getList(this.category, index, size);
+		},
+		nextPage(index) {
+			const url = new URL(window.location.href);
+			url.searchParams.set("start", index);
+			return url;
 		},
 		excludeLast(arr) {
 			return [...arr].splice(0, arr.length - 1);

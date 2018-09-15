@@ -13,9 +13,9 @@
 		</slot>
 
 		<!-- 手动加载按钮 -->
-		<a :href="this.options.nextPageLink"
+		<a v-if="state==='free'"
+		   :href="nextPageUrl"
 		   class="button"
-		   v-if="this.options.manually && state==='free'"
 		   @click="loadManually($event)">下一页</a>
 	</div>
 </template>
@@ -40,25 +40,41 @@ class LoadTask {
 		if (this._finish) {
 			throw new Error("不能重复设置加载的结果");
 		}
-		this._finish = true;
-		this._vm.state = state;
+		// 可能一次加载后空余高度仍达不到activeHeight，还得继续加载
+		if(!this._vm.tryLoadPage()) {
+			this._finish = true;
+			this._vm.state = state;
+		}
 	}
 }
 
 export default {
 	name: "ScrollPager",
 	props: {
-		options: {},
+		// 用于多页显示模式，也能够让爬虫跟踪到后续页
+		nextPageUrl: {
+			type: String,
+			required: false,
+		},
+		// 滚动时自动加载，该选项为false时将不触发滚动加载
+		autoLoad: {
+			type: Boolean,
+			default: true,
+		},
+		// 滚动到距离底部还有多高时触发加载事件
 		activeHeight: {
 			type: Number,
-			default: 400,
+			default: 500,
+		},
+		// 多页模式，如果为true，点击加载按钮后将转到新页面显示下一页
+		multiPage: {
+			type: Boolean,
+			defailt: false,
 		},
 	},
-	data() {
-		return {
-			state: "free", //free,fail,loading,allLoaded
-		};
-	},
+	data: () => ({
+		state: "free", /* free,fail,loading,allLoaded */
+	}),
 	computed: {
 		loadable() {
 			return ["allLoaded", "loading"].indexOf(this.state) < 0;
@@ -66,17 +82,21 @@ export default {
 	},
 	methods: {
 		loadManually(event) {
-			if (!this.options.tradition) {
+			if (!this.multiPage) {
 				this.loadPage();
 				event.preventDefault();
 			}
 		},
-		windowScrollHandler() {
+		tryLoadPage() {
 			if (this.state !== "free")
 				return;
 			//网页高度 - 窗口高度 - 窗口之上部分的高度 = 窗口下面剩余的高度
 			const remain = document.body.offsetHeight - window.innerHeight - window.scrollY;
-			if (remain < this.activeHeight) this.loadPage();
+
+			if (remain < this.activeHeight) {
+				this.loadPage();
+			}
+			return remain < this.activeHeight;
 		},
 		loadPage() {
 			if (!this.loadable) return;
@@ -85,8 +105,8 @@ export default {
 		},
 	},
 	created() {
-		if (!this.options.manually)
-			window.addEventListener("scroll", this.windowScrollHandler);
+		if (this.autoLoad)
+			window.addEventListener("scroll", this.tryLoadPage);
 		this.loadPage();
 	},
 };
@@ -96,7 +116,7 @@ export default {
 .sk-fading-circle {
 	margin-top: 1rem;
 }
-.scroll-pager{
+.scroll-pager {
 	text-align: center;
 }
 </style>
