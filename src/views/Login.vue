@@ -1,9 +1,11 @@
 <template>
-	<main id="login-view">
+	<page-layout view-id="login-view"
+				 nav-class="login-header"
+				 :footer="false">
 		<div class="filter-container">
 			<component :is="panel" @switch-panel="switchPanel"/>
 		</div>
-	</main>
+	</page-layout>
 </template>
 
 <script>
@@ -25,10 +27,6 @@ export default {
 			this.panel = panel;
 		},
 	},
-	created() {
-		this.$emit("layout-changed", {clazz: "login-header"}, false);
-	},
-
 };
 </script>
 
@@ -96,7 +94,7 @@ form {
 	.glass.blur(4px);
 
 	margin-top: 3rem;
-	box-shadow: rgba(0, 0, 0, .6) 0 0 5px 4px;
+	box-shadow: rgba(0, 0, 0, .6) 0 0 4px 3px;
 
 	&::before {
 		background: url("../assets/login-bkg.jpg") fixed;

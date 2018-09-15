@@ -11,6 +11,7 @@ import KxMarkdown from "./markdown";
 import SelectCategoryDialog from "./components/SelectCategoryDialog";
 import TopNav from "./components/TopNav";
 import PageFooter from "./components/PageFooter";
+import PageLayout from "./components/PageLayout";
 
 Vue.use(CommonComponents);
 Vue.use(KxDialog);
@@ -19,6 +20,7 @@ Vue.use(KxMarkdown);
 Vue.component(TopNav.name, TopNav);
 Vue.component(PageFooter.name, PageFooter);
 Vue.component(SelectCategoryDialog.name, SelectCategoryDialog);
+Vue.component(PageLayout.name, PageLayout);
 
 Vue.config.productionTip = false;
 

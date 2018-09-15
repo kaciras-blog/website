@@ -1,14 +1,16 @@
 <template>
-	<swiper class="ms" :slides="slides">
-		<figure class="swiper-slide" slot-scope="{ slide }">
-			<img class="picture" :src="slide.picture"/>
-			<figcaption>
-				<h2>{{slide.name}}</h2>
-				<p>{{slide.description}}</p>
-				<router-link :to="slide.link"></router-link>
-			</figcaption>
-		</figure>
-	</swiper>
+	<page-layout view-id="welcome-page">
+		<swiper class="ms" :slides="slides">
+			<figure class="swiper-slide" slot-scope="{ slide }">
+				<img class="picture" :src="slide.picture"/>
+				<figcaption>
+					<h2>{{slide.name}}</h2>
+					<p>{{slide.description}}</p>
+					<router-link :to="slide.link"></router-link>
+				</figcaption>
+			</figure>
+		</swiper>
+	</page-layout>
 </template>
 
 <script>

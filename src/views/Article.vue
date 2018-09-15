@@ -1,17 +1,23 @@
 <template>
-	<main id="article-page">
+	<page-layout view-id="article-page" :banner="true" :footer="true">
+
 		<article-view v-bind="article"/>
 		<discuss-panel ref="discss-panel"/>
 
 		<div class="side-buttons">
-			<button id="gotodiscuss" class="center-all" title="转到评论区" @click="gotodiscuss">
+			<button class="center-all"
+					title="转到评论区"
+					@click="gotodiscuss">
 				<i class="far fa-comments"></i>
 			</button>
-			<button id="gototop" class="center-all" title="回顶部">
+			<button class="center-all"
+					ref="gotoTop"
+					title="回顶部"
+					@click="gotoTop">
 				<i class="fas fa-chevron-up"></i>
 			</button>
 		</div>
-	</main>
+	</page-layout>
 </template>
 
 <script>
@@ -21,14 +27,8 @@ import {scrollToElementStart} from "../utils";
 import api from "../apis";
 import $ from "jquery";
 
-function gotoTop(button, minHeight, speed) {
-	button.css("display", "none");
-	$(button).click(function () {
-		$('html,body').animate({ scrollTop: 0 }, speed);
-	});
-}
-
 function scrollFadeIn(button, minHeight) {
+	button = $(button);
 	minHeight = minHeight || 400;
 	return function () {
 		if ($(window).scrollTop() > minHeight) button.fadeIn(300);
@@ -72,14 +72,13 @@ export default {
 		gotodiscuss() {
 			scrollToElementStart(this.$refs["discss-panel"].$el);
 		},
-	},
-	created(){
-		this.$emit("layout-changed", { banner: true }, true);
+		gotoTop() {
+			$('html,body').animate({ scrollTop: 0 }, 300);
+		},
 	},
 	mounted() {
-		let button = $("#gototop");
-		gotoTop(button, 600, 300);
-		this.scrollHandler = scrollFadeIn(button, 600);
+		this.$refs.gotoTop.style.display = "none";
+		this.scrollHandler = scrollFadeIn(this.$refs.gotoTop, 600);
 		$(window).on("scroll", this.scrollHandler);
 	},
 	destroyed() {

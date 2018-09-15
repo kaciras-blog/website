@@ -1,6 +1,6 @@
 <!--suppress XmlDuplicatedId -->
 <template>
-	<header :class="clazz">
+	<header>
 		<!-- 小屏幕折叠状态 -->
 		<div id="top-nav" v-if="collapse">
 			<nav class="content">
@@ -45,10 +45,6 @@ import Vuex from "vuex";
 export default {
 	name: "TopNav",
 	props: {
-		clazz: {
-			type: String,
-			default: null,
-		},
 		banner: {
 			type: Boolean,
 			default: false,
@@ -107,7 +103,7 @@ export default {
 
 #top-nav::before,
 #banner {
-	background: var(--background, white);
+	background: var(--background);
 	background-size: var(--background-size); // 这个属性写一起毛病多
 }
 

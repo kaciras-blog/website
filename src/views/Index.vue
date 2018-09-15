@@ -1,13 +1,19 @@
 <template>
-	<main id="index-page">
+	<page-layout view-id="index-page"
+				 nav-class="index-header"
+				 :banner="true"
+				 :footer="true">
+
 		<div class="article-list">
-			<h1 class='segment' v-if="categoryPath">
+
+			<h1 class='segment' v-if="cpath">
 				<router-link to='/'>全部文章</router-link>
 				<router-link
-					v-for="category of excludeLast(categoryPath)"
-					:key="category.id"
-					:to="'/index?category=' + category.id">&gt; {{category.name}}</router-link>
-				<span>&gt; {{categoryPath[categoryPath.length-1].name}}</span>
+					v-for="cat of excludeLast(cpath)"
+					:key="cat.id"
+					:to="'/index?category=' + cat.id">&gt; {{cat.name}}
+				</router-link>
+				<span>&gt; {{cpath[cpath.length-1].name}}</span>
 			</h1>
 			<h1 class='segment' v-else>全部文章</h1>
 
@@ -20,8 +26,8 @@
 				:options="pagerConfig"
 				@load-page="loadPage"/>
 		</div>
-		<aside-panel/>
-	</main>
+		<aside-panel></aside-panel>
+	</page-layout>
 </template>
 
 <script>
@@ -41,7 +47,7 @@ export default {
 			startPage: parseInt(utils.getQueryString("start") || "0"),
 			articles: [],
 			pageSize: 16,
-			categoryPath: null,
+			cpath: null,
 		};
 	},
 	computed: {
@@ -63,10 +69,10 @@ export default {
 	created() {
 		const category = utils.getQueryString("category");
 		if (category) {
-			api.category.getPath(category).then(path => this.categoryPath = path);
+			api.category.getPath(category).then(path => this.cpath = path);
 		}
 
-		this.$emit("layout-changed", { clazz: "index-header", banner: true }, true);
+		// this.$emit("layout-changed", { clazz: "index-header", banner: true }, true);
 	},
 	methods: {
 		async loadPage(task) {
