@@ -44,7 +44,7 @@ import DisczEditor from "./DiscuzEditor.vue";
 import Vuex from "vuex";
 
 export default {
-	name: "discussion",
+	name: "Discussion",
 	props: ["value", "replying"],
 	components: {
 		DisczEditor,

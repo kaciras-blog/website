@@ -34,7 +34,7 @@ import discussion from "./Discussion.vue";
 import {scrollToElementEnd, scrollToElementStart} from "../utils";
 
 export default {
-	name: "discuss-panel",
+	name: "DiscussPanel",
 	data() {
 		return {
 			discussions: [],

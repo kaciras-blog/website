@@ -10,7 +10,12 @@
 <script>
 export default {
 	name: "ToggleButton",
-	props: ["value"],
+	props: {
+		value: {
+			type: Boolean,
+			default: false,
+		},
+	},
 	methods: {
 		change(event) {
 			this.$emit("input", event.target.checked);

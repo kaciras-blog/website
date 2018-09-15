@@ -28,10 +28,10 @@ export default {
 	methods: {
 		start() {
 			this.show = true;
-			this._timer = setTimeout(() => this.timeouted = true, this.timeout);
+			this.$_timer = setTimeout(() => this.timeouted = true, this.timeout);
 		},
 		finish() {
-			clearTimeout(this._timer);
+			clearTimeout(this.$_timer);
 			this.show = false;
 			this.timeouted = false;
 		},
@@ -41,7 +41,7 @@ export default {
 		},
 	},
 	destroyed() {
-		clearTimeout(this._timer);
+		clearTimeout(this.$_timer);
 	},
 };
 </script>

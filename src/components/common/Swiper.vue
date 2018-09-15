@@ -14,7 +14,12 @@
 <script>
 export default {
 	name: "Swiper",
-	props: ["options", "slides"],
+	props: {
+		slides: {
+			type: Array,
+			required: true,
+		},
+	},
 	data() {
 		return {
 			index: 0,

@@ -20,7 +20,7 @@
 import api from "../apis.js";
 
 export default {
-	name: "aside-panel",
+	name: "AsidePanel",
 	data() {
 		return {
 			hots: null,

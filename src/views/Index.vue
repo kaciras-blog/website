@@ -62,7 +62,7 @@ export default {
 		nextPage(index) {
 			const url = new URL(window.location.href);
 			url.searchParams.set("start", index);
-			return url;
+			return url.toString();
 		},
 		excludeLast(arr) {
 			return [...arr].splice(0, arr.length - 1);

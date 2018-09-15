@@ -39,7 +39,12 @@
 <script>
 export default {
 	name: "ArticlePreview",
-	props: ["item"],
+	props: {
+		item: {
+			type: Object,
+			required: true,
+		},
+	},
 	filters: {
 		shortTime(article) {
 			const time = article.create !== article.update

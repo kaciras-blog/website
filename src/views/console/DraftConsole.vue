@@ -57,14 +57,13 @@ async function loadDrafts() {
 }
 
 export default {
-	name: "draft",
+	name: "DraftConsole",
 	methods: {
 		deleteAll() {
 			api.draft.clear().then(() => {
 				this.drafts.splice(0, this.drafts.length);
 				this.last = 0;
-			})
-				.catch(() => alert("清空失败!"));
+			}).catch(() => alert("清空失败!"));
 		},
 		deleteDraft(id) {
 			api.draft.deleteOne(id).then(() => deleteOn(this.drafts, d => d["id"] === id));
