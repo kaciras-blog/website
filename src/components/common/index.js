@@ -1,12 +1,15 @@
-/**
- * 自动注册目录下的Vue组件。
- *
- * @param Vue Vue类型，使用Vue.use()来注册该插件
- */
+import ButtonPager from "./ButtonPager";
+import ScrollPager from "./ScrollPager";
+import SkFadingCircle from "./SkFadingCircle";
+import Swiper from "./Swiper";
+import ToggleButton from "./ToggleButton";
+import TransitionCurtain from "./TransitionCurtain";
+
 export default function install(Vue) {
-	const requireContext = require.context(".", false,  /.vue$/);
-	requireContext.keys().forEach(file => {
-		const component = requireContext(file).default;
-		Vue.component(component.name, component);
-	});
+	Vue.component(SkFadingCircle.name, SkFadingCircle);
+	Vue.component(ButtonPager.name, ButtonPager);
+	Vue.component(ScrollPager.name, ScrollPager);
+	Vue.component(Swiper.name, Swiper);
+	Vue.component(TransitionCurtain.name, TransitionCurtain);
+	Vue.component(ToggleButton.name, ToggleButton);
 }
