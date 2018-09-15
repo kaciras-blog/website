@@ -79,10 +79,15 @@ export default {
 </script>
 
 <style lang="less">
-.discuss > header {
-	font-size: initial;
-	& > h2 {
-		display: inline-block;
+.discuss{
+	margin-top: 3rem;
+	padding: 2rem;
+
+	&  > header {
+		font-size: initial;
+		& > h2 {
+			display: inline-block;
+		}
 	}
 }
 
