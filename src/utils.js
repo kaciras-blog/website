@@ -19,7 +19,7 @@ export function escapeHtml(text) {
 }
 
 export function pageReturn() {
-	const url = getQueryString("return");
+	const url = getUrlParamater("return");
 	window.location.href = url ? url : "index";
 }
 
@@ -80,10 +80,8 @@ export function getUrlPathPart(index) {
  * @param name {String} 参数名
  * @return {String} 参数值
  */
-export function getQueryString(name) {
-	const urlQueryRegex = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-	const r = window.location.search.substr(1).match(urlQueryRegex);
-	return r === null ? null : decodeURI(r[2]);
+export function getUrlParamater(name) {
+	return new URLSearchParams(window.location.search).get(name);
 }
 
 

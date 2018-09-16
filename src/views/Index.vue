@@ -33,15 +33,15 @@
 import ArticlePreview from "../components/ArticlePreview.vue";
 import AsidePanel from "../components/AsidePanel.vue";
 import api from "../apis.js";
-import {getQueryString} from "../utils";
+import {getUrlParamater} from "../utils";
 
 export default {
 	name: "Index",
 	components: { ArticlePreview, AsidePanel },
 	data() {
 		return {
-			startPage: parseInt(getQueryString("start") || "0"),
-			category: getQueryString("category"),
+			startPage: parseInt(getUrlParamater("start")) || 0,
+			category: getUrlParamater("category"),
 			pageSize: 16,
 			cpath: null,
 		};
