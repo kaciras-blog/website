@@ -2,11 +2,11 @@
 	<main id="console-page">
 		<aside id="tabs" class="flex vertical compact">
 			<h1>控制台</h1>
-			<router-link to="/console/article">文章列表</router-link>
-			<router-link to="/console/draft">我的草稿</router-link>
-			<router-link to="/console/swiper">轮播</router-link>
-			<router-link to="/console/category">管理分类</router-link>
-			<router-link to="/console/config">选项</router-link>
+			<router-link to="article">文章列表</router-link>
+			<router-link to="draft">我的草稿</router-link>
+			<router-link to="swiper">轮播</router-link>
+			<router-link to="category">管理分类</router-link>
+			<router-link to="config">选项</router-link>
 		</aside>
 
 		<nav id="nav-bar" class="light nav-item-group">
@@ -53,7 +53,7 @@ export default {
 
 .content-body {
 	grid-area: content;
-	overflow-y: auto;
+	overflow-y: scroll;
 	padding: 2rem;
 }
 

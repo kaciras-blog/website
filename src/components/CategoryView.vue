@@ -2,11 +2,11 @@
 	<div class="category">
 		<div v-if="current"
 			 class="info-container"
-			 @click="setBackground"
+			 @click.self="setBackground"
 			 :style="styleVars"
 			 :title="editable ? '点击换背景' : null">
 
-			<div class="info" @click.stop>
+			<div class="info">
 				<img class="head"
 					 :src="'/image/' + current.cover"
 					 :title="editable ? '点击换头像' : null"

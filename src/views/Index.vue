@@ -37,10 +37,7 @@ import {getQueryString} from "../utils";
 
 export default {
 	name: "Index",
-	components: {
-		ArticlePreview,
-		AsidePanel,
-	},
+	components: { ArticlePreview, AsidePanel },
 	data() {
 		return {
 			startPage: parseInt(getQueryString("start") || "0"),
@@ -48,12 +45,6 @@ export default {
 			pageSize: 16,
 			cpath: null,
 		};
-	},
-	created() {
-		const category = this.category;
-		if (category) {
-			api.category.getPath(category).then(path => this.cpath = path);
-		}
 	},
 	methods: {
 		loadPage(index, size) {
@@ -71,6 +62,7 @@ export default {
 };
 </script>
 
+<!--suppress CssNoGenericFontName -->
 <style lang="less">
 @import "../css/ToBeImpoert";
 

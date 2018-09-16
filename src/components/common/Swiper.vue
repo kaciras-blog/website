@@ -49,13 +49,15 @@ export default {
 .swiper{
 	overflow: hidden;
 	position: relative;
+
+	.slide {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		transition: all 0.3s;
+	}
 }
-.slide {
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	transition: all 0.3s;
-}
+
 .prev, .next {
 
 }

@@ -106,10 +106,22 @@ export const openFile = (multiple = false, accept = "*") => new Promise(resolve 
 });
 
 
+/**
+ * 删除并返回数组中符合条件的元素，删除使用splice()函数，能够触发Vue的更新。
+ *
+ * @param array 数组
+ * @param predicate 判断函数
+ * @return {Array} 被删除的元素
+ */
 export function deleteOn(array, predicate) {
-	for (let i = 0; i < array.length; i++) {
-		if (predicate(array[i])) array.splice(i--, 1);
+	const removed = [];
+	for (let i = array.length - 1; i >= 0; i--) {
+		if (predicate(array[i])) {
+			removed.push(array[i]);
+			array.splice(i, 1);
+		}
 	}
+	return removed;
 }
 
 /**

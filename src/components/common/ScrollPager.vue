@@ -113,9 +113,6 @@ export default {
 </script>
 
 <style>
-.sk-fading-circle {
-	margin-top: 1rem;
-}
 .scroll-pager {
 	text-align: center;
 }

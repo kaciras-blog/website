@@ -1,15 +1,17 @@
 <template>
 	<page-layout view-id="welcome-page">
-		<swiper class="ms" :slides="slides">
-			<figure class="swiper-slide" slot-scope="{ slide }">
-				<img class="picture" :src="slide.picture"/>
-				<figcaption>
-					<h2>{{slide.name}}</h2>
-					<p>{{slide.description}}</p>
-					<router-link :to="slide.link"></router-link>
-				</figcaption>
-			</figure>
-		</swiper>
+		<section id="blog">
+			<swiper class="ms" :slides="slides">
+				<figure class="swiper-slide" slot-scope="{ slide }">
+					<img class="picture" :src="slide.picture"/>
+					<figcaption>
+						<h2>{{slide.name}}</h2>
+						<p>{{slide.description}}</p>
+						<router-link :to="slide.link"></router-link>
+					</figcaption>
+				</figure>
+			</swiper>
+		</section>
 	</page-layout>
 </template>
 
@@ -31,6 +33,10 @@ export default {
 
 <style lang="less">
 @import "../css/ToBeImpoert";
+
+#blog {
+	padding: 5rem 5rem 0;
+}
 
 #welcome-page {
 	margin-top: 3rem;
