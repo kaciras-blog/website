@@ -29,7 +29,10 @@ class LoadTask {
 	}
 
 	complete(allLoaded = false) {
-		this.finish(allLoaded ? "allLoaded" : "free");
+		// 可能一次加载后空余高度仍达不到activeHeight，还得继续加载
+		if(!this._vm.tryLoadPage()) {
+			this.finish(allLoaded ? "allLoaded" : "free");
+		}
 	}
 
 	error() {
@@ -40,11 +43,8 @@ class LoadTask {
 		if (this._finish) {
 			throw new Error("不能重复设置加载的结果");
 		}
-		// 可能一次加载后空余高度仍达不到activeHeight，还得继续加载
-		if(!this._vm.tryLoadPage()) {
-			this._finish = true;
-			this._vm.state = state;
-		}
+		this._finish = true;
+		this._vm.state = state;
 	}
 }
 

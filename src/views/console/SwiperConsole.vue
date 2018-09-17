@@ -1,48 +1,95 @@
 <template>
 	<div>
 		<div class="buttons">
-			<button>确定</button>
+			<button @click="createNew">添加</button>
+			<button @click="submit">确定</button>
 		</div>
-		<details class="slide" v-for="slide of slides" :key="slide.tid">
-			<summary>
-				{{slide.name}}
-				<i class="fas fa-arrows-alt" @click.stop></i>
-				<i class="fas fa-trash" @click.stop></i>
-			</summary>
-			<div>
-				<img :src="slide.picture" @click="setPicture(slide)"/>
+
+		<section v-for="item of slides"
+				 :key="item.tid"
+				 class="slide">
+
+			<div class="summary">
+				<h2 class="compact" @click="item.open = !item.open">{{item.slide.name}}</h2>
+				<div class="handler" @click="drag(item)"><i class="fas fa-arrows-alt"></i></div>
+				<div class="delete" @click="remove(item)"><i class="fas fa-trash"></i></div>
+			</div>
+
+			<div v-show="item.open" class="details">
+				<div class="picture"
+					 @click="setPicture(item.slide)">
+					<img :src="item.slide.picture" alt="轮播图片"/>
+					<span class="tip">点击更换图片</span>
+				</div>
 				<label>
-					描述
-					<textarea class="input" v-model="slide.description"></textarea>
+					<span class="minor-text">标题</span>
+					<input v-model="item.slide.name"/>
 				</label>
 				<label>
-					标题
-					<input v-model="slide.name"/>
+					<span class="minor-text">URL（相对路径将使用页面内路由）</span>
+					<input v-model="item.slide.link"/>
 				</label>
 				<label>
-					连接
-					<input v-model="slide.link"/>
+					<span class="minor-text">描述</span>
+					<textarea class="input" v-model="item.slide.description"></textarea>
 				</label>
 			</div>
-		</details>
+		</section>
 	</div>
 </template>
 
 <script>
 import api from "../../apis";
+import {deleteOn} from "../../utils";
 
 export default {
 	name: "SwiperConsole",
 	data: () => ({
 		slides: [],
 	}),
-	methods:{
+	methods: {
+		createNew() {
+			this.slides.unshift({
+				open: true,
+				tid: Math.random(),
+				slide: {
+					picture: "/image/noface.gif",
+					name: "新的轮播页",
+					link: "",
+					description: "这是新添加的轮播页",
+				},
+			});
+		},
 		setPicture(slide) {
+			api.misc.uploadImageFile().then(name => slide.picture = name);
+		},
+		remove(item) {
+			deleteOn(this.slides, it => it.tid === item.tid);
+		},
+		submit() {
+			api.recommend.swiper.set(this.slides.map(item => item.slide))
+				.then(() => this.$dialog.messageBox("修改轮播", "修改成功"))
+				.catch(() => alert("失败了"));
+		},
+		drag(item, event) {
+			this.slides.forEach(s => s.open = false);
+			item.open = false;
+			event.dataTransfer.setData("Text", item);
+		},
+		dragOver(item) {
+			this.slides.forEach(s => s.open = false);
 
 		},
 	},
-	beforeMount() {
-		api.recommend.swiper.get().then(slides => this.slides = slides);
+	async beforeMount() {
+		const slides = await api.recommend.swiper.get();
+		for (const slide of slides) {
+			this.slides.push({
+				slide,
+				open: false,
+				tid: Math.random(),
+			});
+		}
 	},
 };
 </script>
@@ -51,25 +98,91 @@ export default {
 @import "../../css/ToBeImpoert";
 
 .slide {
-	border: solid 1px #6abdff;
+	margin: 1rem 0;
+}
+
+.summary {
+	display: flex;
+	line-height: 2.6rem;
+	color: white;
+	background-color: #51a5ff;
 	cursor: pointer;
-	margin-bottom: 1rem;
 
-	& ::-webkit-details-marker, ::-moz-list-bullet {
-		color: red;
+	& > h2 {
+		flex: 1;
+		padding-left: 1rem;
 	}
 
-	& > summary{
-		line-height: 2.6rem;
-		background-color: #adf0ff;
-
-		& > i {
-			float: right;
-			cursor: move;
-			background-color: wheat;
-			height: 100%;
-			width: 2.6rem;
-		}
+	& > div {
+		float: right;
+		font-size: 1.5rem;
+		text-align: center;
+		width: 3rem;
 	}
+}
+
+.details {
+	border: solid 1px #6abdff;
+	border-top-width: 0;
+	padding: 1.5rem;
+
+	display: grid;
+	grid-gap: 1rem;
+	grid-template-columns: auto 1fr;
+	grid-template-rows: auto auto 1fr;
+
+	input {
+		width: 100%;
+		margin-top: .5rem;
+	}
+
+	textarea {
+		width: 100%;
+		margin-top: .5rem;
+		height: calc(100% - 1.5rem);
+	}
+}
+
+.picture {
+	position: relative;
+	overflow: hidden;
+	grid-row: ~"1/4";
+	width: 28rem;
+	height: 16rem;
+	cursor: pointer;
+
+	& > img {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+	}
+
+	&:hover > .tip {
+		top: 0;
+	}
+}
+
+.tip {
+	transition: all ease .2s;
+
+	position: absolute;
+	height: 2.5rem;
+	line-height: 2.5rem;
+	top: -2.5rem;
+	left: 0;
+	right: 0;
+
+	text-align: center;
+	color: white;
+	background: rgba(0, 0, 0, .5);
+}
+
+.handler {
+	cursor: move;
+	background: #b4aa9e;
+}
+
+.delete {
+	background: #f5808d;
 }
 </style>

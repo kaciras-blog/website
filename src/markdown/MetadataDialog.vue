@@ -2,7 +2,7 @@
 	<kx-dialog @CloseButtonClicked="ok">
 		<h2 slot="title">编辑描述信息</h2>
 		<div class="content">
-			<img :src="'/image/' + cover"
+			<img :src="cover"
 				 alt="封面"
 				 @click="changeCover"/>
 

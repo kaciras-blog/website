@@ -168,10 +168,9 @@ _default.misc = {
 	 *
 	 * @returns Promise<String> 保存的图片文件名
 	 */
-	uploadImageFile: async function () {
+	async uploadImageFile() {
 		const files = await utils.openFile(false, "image/*");
-		const url = await this.uploadImage(files[0]);
-		return url.substring("/image/".length);
+		return await this.uploadImage(files[0]);
 	},
 
 	captchaAddress: () => API_SERVER + "/utils/captcha?r=" + Math.random(),
@@ -213,9 +212,8 @@ _default.recommend = {
 	swiper: {
 		get: () => mainServer.get("/recommendation/swiper").then(r => r.data),
 
-		set: (list) => mainServer.put("/recommendation/swiper", list),
+		set: list => mainServer.put("/recommendation/swiper", list),
 	},
-
 };
 
 export default _default;

@@ -5,12 +5,16 @@
 		</div>
 
 		<div class="panel">
-			<div class="article segment" :key="A.id" v-for="A in articles">
-				<img :src="'/image/' + A.cover">
+			<div v-for="A in articles"
+				 :key="A.id"
+				 class="article segment">
+
+				<img :src="A.cover" alt="文章封面">
 				<div>
 					<span class="red note" v-if="A.deleted">已删除</span>
 					<h3 class="compact">{{A.title}}</h3>
 				</div>
+
 				<div class="info">
 					<div class="tag-group">
 						<span v-for="c in A.cpath" :key="c.id">{{c.name}}</span>
@@ -27,7 +31,7 @@
 				<button class="dangerous" @click="deleteArticle(A.id)">删除</button>
 			</div>
 
-			<span v-if="allLoaded && articles.length===0">没有找到文章,去写一篇吧~</span>
+			<span v-if="allLoaded && !articles.length">没有找到文章,去写一篇吧~</span>
 			<sk-fading-circle v-if="loading"/>
 		</div>
 	</div>
