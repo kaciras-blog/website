@@ -21,7 +21,6 @@
 				:url-template="nextPage"
 				:start="startPage"
 				:loader="loadPage">
-
 				<article-preview slot-scope="{ item }" :key="item.id" :item="item"/>
 			</scroll-pageing-view>
 		</div>

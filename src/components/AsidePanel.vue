@@ -6,8 +6,13 @@
 		</div>
 		<div>
 			<h3 class="padding">浏览排行</h3>
-			<ol class="rank" v-if="hots">
-				<li v-for="article in hots" :key="article.id">
+			<ol v-if="hots"
+				role="listbox"
+				class="rank">
+
+				<li v-for="article in hots"
+					:key="article.id"
+					role="listitem">
 					<router-link class="item" :to="'/article/' + article.id">{{article.title}}</router-link>
 				</li>
 			</ol>

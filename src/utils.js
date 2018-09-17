@@ -86,7 +86,7 @@ export function getUrlParamater(name) {
 
 
 /**
- * 弹出文件选择框
+ * 弹出文件选择框。
  *
  * @param multiple {boolean} 是否多选
  * @param accept {String} 文件类型
@@ -115,8 +115,7 @@ export function deleteOn(array, predicate) {
 	const removed = [];
 	for (let i = array.length - 1; i >= 0; i--) {
 		if (predicate(array[i])) {
-			removed.push(array[i]);
-			array.splice(i, 1);
+			removed.push(array.splice(i, 1)[0]);
 		}
 	}
 	return removed;
@@ -141,10 +140,10 @@ export function assignUpdate(src, dest) {
 }
 
 /**
- * 返回一个Promise，在指定的时间后返回。
+ * 返回一个Promise，在指定的时间后完成，多用于模拟耗时的操作。
  *
  * @param time 时间，毫秒
- * @return {Promise}
+ * @return {Promise} 在指定的时间后完成的Promise
  */
 export function sleep(time) {
 	return new Promise(resolve => setTimeout(resolve, time));
