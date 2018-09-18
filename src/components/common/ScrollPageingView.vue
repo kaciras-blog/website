@@ -50,7 +50,7 @@ export default {
 					this.items.push.apply(this.items, items);
 					task.complete(items.length < this.pageSize);
 				})
-				.catch(task.error);
+				.catch(() => task.error());
 		},
 	},
 };

@@ -81,6 +81,10 @@ export default {
 		color: #dfdfdf;
 		transform: rotateZ(0);
 		text-decoration: none;
+
+		&:hover, &:focus {
+			background-color: #3d414b;
+		}
 	}
 
 	& .router-link-active::after {
