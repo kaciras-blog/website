@@ -9,6 +9,13 @@
 	height: @h;
 }
 
+.margin-abs(@margin) {
+	top: @margin;
+	bottom: @margin;
+	left: @margin;
+	right: @margin;
+}
+
 // 最小尺寸
 .min-size(@w, @h) {
 	min-width: @w;
@@ -240,26 +247,6 @@
 }
 
 //------------------------------------- ├ 组件 ┆ └------------------------------------/
-
-// 吸顶导航
-.fix-header(@h: 70px) {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: @h;
-	z-index: 1000;
-}
-
-// 吸底导航
-.fix-footer(@h: 70px) {
-	position: fixed;
-	left: 0;
-	bottom: 0;
-	width: 100%;
-	height: @h;
-	z-index: 1000;
-}
 
 // 关闭按钮 ×
 .close() {

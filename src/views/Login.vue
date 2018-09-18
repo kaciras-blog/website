@@ -16,7 +16,7 @@ import {FullScreen} from "../mixins";
 export default {
 	name: "Login",
 	components: {LoginPanel, SignupPanel},
-	mixins: [FullScreen],
+	// mixins: [FullScreen],
 	data() {
 		return {
 			panel: "loginPanel",
@@ -59,7 +59,7 @@ form {
 
 #login-view {
 	width: 100%;
-	height: 100%;
+	height: 100vh;
 
 	background-size: cover;
 	background-image: url("../assets/login-bkg.jpg");
