@@ -76,11 +76,7 @@ export default {
 					this.allLoaded = r.length === 0;
 					this.loading = false;
 				})
-				.catch(err => this.$dialog.messageBox({
-					title: "加载文章失败",
-					type: "error",
-					content: "原因：" + err,
-				}));
+				.catch(err => this.$dialog.messageBox("加载文章失败", "原因：" + err, "error"));
 		},
 	},
 	created() {

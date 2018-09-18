@@ -88,15 +88,16 @@ export default {
 			}
 		},
 		tryLoadPage() {
-			if (this.state !== "free")
+			const {state, activeHeight} = this;
+			if (state !== "free")
 				return;
 			//网页高度 - 窗口高度 - 窗口之上部分的高度 = 窗口下面剩余的高度
 			const remain = document.body.offsetHeight - window.innerHeight - window.scrollY;
 
-			if (remain < this.activeHeight) {
+			if (remain < activeHeight) {
 				this.loadPage();
 			}
-			return remain < this.activeHeight;
+			return remain < activeHeight;
 		},
 		loadPage() {
 			if (!this.loadable) return;

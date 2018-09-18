@@ -35,6 +35,12 @@ import {scrollToElementEnd, scrollToElementStart} from "../utils";
 
 export default {
 	name: "DiscussPanel",
+	props: {
+		articleId: {
+			type: Number,
+			required: true,
+		},
+	},
 	data() {
 		return {
 			discussions: [],
@@ -51,7 +57,8 @@ export default {
 	},
 	methods: {
 		loadPageBackground(index) {
-			return api.discuss.getList(this.$route.params.id, index * this.pageSize, this.pageSize).then(data => {
+			const { articleId, pageSize } = this;
+			return api.discuss.getList(articleId, index * pageSize, pageSize).then(data => {
 				this.discussions = data.list;
 				this.pageIndex = index;
 				this.totalCount = data.total;
@@ -68,7 +75,7 @@ export default {
 		},
 		submitDiscussion(text) {
 			// 文章以外的评论如何设计API？
-			return api.discuss.add(this.$route.params.id, text);
+			return api.discuss.add(this.articleId, text);
 		},
 	},
 	// 评论经常变动，不进行预渲染，首屏显示菊花图
@@ -79,11 +86,11 @@ export default {
 </script>
 
 <style lang="less">
-.discuss{
+.discuss {
 	margin-top: 3rem;
 	padding: 2rem;
 
-	&  > header {
+	& > header {
 		font-size: initial;
 		& > h2 {
 			display: inline-block;

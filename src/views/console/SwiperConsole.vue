@@ -82,14 +82,8 @@ export default {
 		},
 	},
 	async beforeMount() {
-		const slides = await api.recommend.swiper.get();
-		for (const slide of slides) {
-			this.slides.push({
-				slide,
-				open: false,
-				tid: Math.random(),
-			});
-		}
+		api.recommend.swiper.get()
+			.then(slides => slides.forEach(s => this.slides.push({ s, open: false, tid: Math.random() })));
 	},
 };
 </script>

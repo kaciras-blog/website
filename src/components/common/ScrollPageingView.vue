@@ -35,20 +35,20 @@ export default {
 	}),
 	computed:{
 		nextPageUrl() {
+			const { start, keyExtractor, pageSize, items} = this;
 			if(!this.urlTemplate) {
 				return null;
 			}
-			const index = this.start + this.keyExtractor(this.items);
-			return this.urlTemplate(index, this.pageSize);
+			return this.urlTemplate(start + keyExtractor(items), pageSize);
 		},
 	},
 	methods: {
 		loadPage(task) {
-			const index = this.start + this.keyExtractor(this.items);
-			this.loader(index, this.pageSize)
-				.then(items => {
-					this.items.push.apply(this.items, items);
-					task.complete(items.length < this.pageSize);
+			const { start, keyExtractor, pageSize, items} = this;
+			this.loader(start + keyExtractor(items), pageSize)
+				.then(loaded => {
+					this.items.push.apply(this.items, loaded);
+					task.complete(loaded.length < pageSize);
 				})
 				.catch(() => task.error());
 		},
