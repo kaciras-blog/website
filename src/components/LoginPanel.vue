@@ -15,8 +15,8 @@
 		<span class="text-warning center">{{message}}</span>
 
 		<div class="buttons">
-			<button type="button" class="dangerous" @click="login">确定</button>
-			<button type="button" class="outline" @click="switchPanel">注册</button>
+			<button type="button" class="outline" @click="login">确定</button>
+			<button type="button" class="second outline" @click="switchPanel">注册</button>
 		</div>
 	</form>
 </template>

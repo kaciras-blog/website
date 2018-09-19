@@ -1,24 +1,31 @@
 @import "ToBeImpoert";
 
-//基本按钮背景颜色
-@color-button-base: #00c6ff;
-//基本按钮文字颜色
-@color-button-base-text: #ffffff;
+// 主要按钮颜色
+@color-button-primary: #00c6ff;
+@color-button-primary-text: #ffffff;
 
-//次要按钮背景颜色
-@color-button-minor: #e7e7e7;
-//次要按钮文字颜色
-@color-button-minor-text: #5f5f5f;
+// 次要按钮颜色
+@color-button-second: #f884c5;
+@color-button-second-text: #ffffff;
 
-//危险按钮背景颜色
+//危险按钮颜色
 @color-button-dangerous: #ef4c42;
-//危险按钮文字颜色
 @color-button-dangerous-text: #f7f7f7;
 
-@color-button-info: #f151bb;
-@color-button-info-text: #5f5f5f;
+// 条纹宽度
+@stripeWidth: 32px;
 
-@stripeWidth: 32px; // 条纹宽度
+.button-group > .button,
+.button-group > button {
+	&:first-child {
+		border-top-left-radius: 0;
+		border-bottom-left-radius: 0;
+	}
+	&:last-child {
+		border-top-right-radius: 0;
+		border-bottom-right-radius: 0;
+	}
+}
 
 .button, button {
 	transition: ease-in-out .15s;
@@ -26,11 +33,14 @@
 	padding: .4rem 1.2rem;
 	text-align: center;
 	position: relative;
-	border: none;
 	border-radius: 5px;
-
 	.click-item;
-	.button-color("base");
+
+	&:focus {
+		outline: 0;
+	}
+
+	.button-color("primary");
 
 	&.icon {
 		font-size: 1.3rem;
@@ -45,85 +55,78 @@
 		}
 	}
 
+	&.second {.button-color("second");}
 	&.dangerous {.button-color("dangerous");}
-	&.info {.button-color("info");}
-	&.minor {.button-color("minor");}
-
-	&:focus {
-		outline: 0;
-	}
 
 	&:disabled, :disabled:hover {
 		cursor: initial;
-		color: @color-text-minor;
-		border-color: @color-text-minor;
-		background-color: transparent;
+		&:not(.running) {
+			color: dimgray;
+			border-color: #d1d7d7;
+			background-color: #d1d7d7;
+		}
 	}
 }
 
 .button-color(@name) {
-	@ref: "color-button-@{name}";
-	@reft: "color-button-@{name}-text";
+	// 先从变量名获取到相应的变量（背景色，文字色）
+	@cbkg: "color-button-@{name}";
+	@ctext: "color-button-@{name}-text";
+	@color-hover: @@cbkg - #101010;
 
-	background-color: @@ref;
-	color: @@reft;
+	border: none;
+	background-color: @@cbkg;
+	color: @@ctext;
 
-	&:not(.outline):not(.busy):hover {
-		background-color: @@ref - #101010;
+	&:hover {
+		background-color: @color-hover;
+	}
+	&:focus::after {
+		content: "";
+		pointer-events: none;
+		opacity: 0;
+		display: block;
+		position: absolute;
+		animation: button-ripple .4s;
+		.margin-abs(-2px);
 
-		&::after {
-			content: "";
-			pointer-events: none;
-			opacity: 0;
-			display: block;
-			position: absolute;
-			animation: btxn .4s;
-			.margin-abs(-1px);
-
-			border-radius: 6px;
-			border: solid 4px @@ref;
-		}
+		border-radius: 6px;
+		border: solid 4px @@cbkg;
 	}
 
-	&:focus{
-		box-shadow: 0 0 0 1px transparent, 0 0 0 .2rem fade(@@ref, 60%);
-	}
-
-	&:active {
-		background-color: @@ref - #080808;
-		color: @@reft;
-	}
-
+	// 镂空按钮样式
 	&.outline {
 		background-color: transparent;
-		color: @@ref;
-		border: solid 1px @@ref;
+		color: @@cbkg;
+		border: solid 1px @@cbkg;
 
 		&:hover {
-			color: @@reft;
-			background-color: @@ref;
+			color: @@ctext;
+			background-color: @@cbkg;
 		}
 		&:active {
-			background-color: @@ref + #0a0a0a;
+			background-color: @@cbkg + #0a0a0a;
 		}
 	}
 
-	&.busy {
-		@c: lighten(@@ref, 12%);
+	// 正在运行的按钮样式，因为需要长时间运行的任务并不一定是加载，所以没用.loading
+	// noinspection CssOptimizeSimilarProperties
+	&.running {
+		@c: lighten(@@cbkg, 12%);
+		background-color: @color-hover;
 		background-size: @stripeWidth @stripeWidth;
 		background-image: linear-gradient(-45deg, @c 25%, transparent 25%, transparent 50%, @c 50%, @c 75%, transparent 75%);
 		animation: barbershop linear .4s infinite;
 	}
-
 }
 
-@keyframes btxn {
+@keyframes button-ripple {
 	0% {
 		opacity: 1;
 	}
 	100% {
 		opacity: 0;
-		transform: scale(1.075, 1.2);
+		transform: scale(1.1, 1.3);
 	}
 }
 
