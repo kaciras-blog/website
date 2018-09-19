@@ -16,58 +16,59 @@ Vue.use(Router);
  * 2.预渲染的页面，如首页、文章页
  */
 export default function () {
-	const router = new Router({
-		mode: 'history',
-		routes: [
-			{
-				path: '/',
-				name: 'index',
-				component: () => import("./views/Index"),
-			},
-			{
-				path: "/welcome",
-				naem: "welcome",
-				component: Welcome,
-			},
-			{
-				path: '/login',
-				name: 'login',
-				component: () => import('./views/Login'),
-			},
-			{
-				path: '/article/:id',
-				name: 'article',
-				component: () => import("./views/Article"),
-			},
-			{
-				path: '/edit/:id',
-				name: 'edit',
-				component: () => import("./views/ArticleEditor"),
-			},
-			{
-				path: "/console",
-				component: () => import("./views/Console"),
-				children: [
-					{ path: "", name: "console", redirect: "article" },
-					{ path: "article", component: ArticleConsole },
-					{ path: "swiper", component: SwiperConsole },
-					{ path: "draft", component: DraftConsole },
-					{ path: "category", component: CategoryEditor },
-				],
-			},
-			{
-				path: "/error/:code",
-				name: "error",
-				component: Error,
-				props: true,
-			},
-			{
-				path: "*",
-				alias: "/error/404",
-				component: Error,
-				props: { code: "404" },
-			},
-		],
-	});
-	return router;
+	const routes = [
+		{
+			path: '/',
+			name: 'index',
+			component: () => import("./views/Index"),
+		},
+		{
+			path: "/welcome",
+			naem: "welcome",
+			component: Welcome,
+		},
+		{
+			path: '/login',
+			name: 'login',
+			component: () => import('./views/Login'),
+		},
+		{
+			path: '/article/:id',
+			name: 'article',
+			component: () => import("./views/Article"),
+		},
+		{
+			path: '/edit/:id',
+			name: 'edit',
+			component: () => import("./views/ArticleEditor"),
+		},
+		{
+			path: "/console",
+			component: () => import("./views/Console"),
+			children: [
+				{ path: "", name: "console", redirect: "article" },
+				{ path: "article", component: ArticleConsole },
+				{ path: "swiper", component: SwiperConsole },
+				{ path: "draft", component: DraftConsole },
+				{ path: "category", component: CategoryEditor },
+			],
+		},
+		{
+			path: "/error/:code",
+			name: "error",
+			component: Error,
+			props: true,
+		},
+		{
+			path: "*",
+			alias: "/error/404",
+			component: Error,
+			props: { code: "404" },
+		},
+	];
+	// 用来测试的页面
+	if (process.env.NODE_ENV !== 'production') {
+		routes.unshift({ path: "/test", component: () => import("./views/Test") });
+	}
+	return new Router({ mode: 'history', routes });
 }

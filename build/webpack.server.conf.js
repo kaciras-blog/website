@@ -7,7 +7,6 @@ const config = require('../config');
 
 
 module.exports = merge(baseConfig, {
-	mode: "development",
 	entry: "./src/entry-server.js",
 	target: 'node',
 	devtool: 'source-map',

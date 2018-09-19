@@ -5,7 +5,12 @@ const rimraf = promisify(require('rimraf'));
 const webpack = promisify(require('webpack'));
 const config = require('../config');
 
-
+/**
+ * 因为要构建客户端和预渲染两种环境下的输出，所以写了这个文件来统一构建。
+ *
+ * @param mode 构建目标参数
+ * @return {Promise<void>} 指示构建状态
+ */
 async function build(mode) {
 	let webpackConfig;
 
@@ -16,6 +21,7 @@ async function build(mode) {
 		await rimraf(path.join(config.build.assetsRoot, "static"));
 	}
 
+	webpackConfig.mode = "development";
 	const stats = await webpack(webpackConfig);
 	process.stdout.write(stats.toString({
 		colors: true,

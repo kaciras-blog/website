@@ -10,7 +10,6 @@ const VueSSRClientPlugin = require('vue-server-renderer/client-plugin');
 
 
 const webpackConfig = merge(baseWebpackConfig, {
-	mode: "development",
 	module: {
 		rules: utils.styleLoaders({ sourceMap: config.build.productionSourceMap, extract: true, }),
 	},
