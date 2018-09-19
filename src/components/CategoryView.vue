@@ -8,7 +8,7 @@
 
 			<div class="info">
 				<img class="head"
-					 :src="'/image/' + current.cover"
+					 :src="current.cover"
 					 :title="editable ? '点击换头像' : null"
 					 alt="分类图标"
 					 @click="setCover">
@@ -39,7 +39,7 @@
 				 v-for="child of children"
 				 :key="child.id"
 				 @click="goto(child)">
-				<img class="head" :src="'/image/' + child.cover" alt="分类图标">
+				<img class="head" :src="child.cover" alt="分类图标">
 				<span>{{child.name}}</span>
 			</div>
 		</div>
@@ -71,7 +71,7 @@ export default {
 	computed: {
 		styleVars() {
 			const vars = {
-				"--background": `url(/image/${this.current.background})`,
+				"--background": `url(${this.current.background})`,
 			};
 			if (this.editable) {
 				vars["--cursor"] = "pointer";
@@ -166,6 +166,7 @@ export default {
 
 .head {
 	grid-area: head;
+	display: block;
 	border: solid 3px white;
 	margin: 1rem;
 	cursor: var(--cursor);

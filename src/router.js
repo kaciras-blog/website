@@ -5,7 +5,7 @@ import Welcome from "./views/Welcome";
 
 import ArticleConsole from "./views/console/ArticleConsole";
 import DraftConsole from "./views/console/DraftConsole";
-import CategoryEditor from "./views/console/CategoryEditor";
+import CategoryConsole from "./views/console/CategoryConsole";
 import SwiperConsole from "./views/console/SwiperConsole";
 
 Vue.use(Router);
@@ -50,7 +50,7 @@ export default function () {
 				{ path: "article", component: ArticleConsole },
 				{ path: "swiper", component: SwiperConsole },
 				{ path: "draft", component: DraftConsole },
-				{ path: "category", component: CategoryEditor },
+				{ path: "category", component: CategoryConsole },
 			],
 		},
 		{

@@ -17,21 +17,28 @@
 
 .button-group > .button,
 .button-group > button {
-	&:first-child {
-		border-top-left-radius: 0;
-		border-bottom-left-radius: 0;
-	}
-	&:last-child {
+	&:not(:last-child) {
 		border-top-right-radius: 0;
 		border-bottom-right-radius: 0;
+	}
+	&:not(:first-child) {
+		border-top-left-radius: 0;
+		border-bottom-left-radius: 0;
+
+		margin-left: 1px;
+		&.outline {
+			margin-left: -1px;
+		}
 	}
 }
 
 .button, button {
-	transition: ease-in-out .15s;
+	display: inline-block;
+	line-height: 1;
 	font-size: 1rem;
-	padding: .4rem 1.2rem;
+	padding: .5rem 1.2rem;
 	text-align: center;
+	vertical-align: top;
 	position: relative;
 	border-radius: 5px;
 	.click-item;
@@ -40,6 +47,12 @@
 		outline: 0;
 	}
 
+	& .fa {
+		display: inline; // 这傻逼FontAwesome不知道发什么疯，::before比外层还高1px
+		margin-right: .2em;
+	}
+
+	transition: ease-in-out .15s;
 	.button-color("primary");
 
 	&.icon {
@@ -105,6 +118,7 @@
 			background-color: @@cbkg;
 		}
 		&:active {
+			color: @@ctext;
 			background-color: @@cbkg + #0a0a0a;
 		}
 	}

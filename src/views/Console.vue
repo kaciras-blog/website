@@ -17,11 +17,8 @@
 </template>
 
 <script>
-import {FullScreen} from "../mixins";
-
 export default {
 	name: "Console",
-	mixins: [FullScreen],
 	created() {
 		this.$emit("layout-changed", { show: false }, false);
 	},
@@ -32,7 +29,7 @@ export default {
 @import "../css/ToBeImpoert";
 
 #console-page {
-	height: 100%;
+	height: 100vh;
 
 	display: grid;
 	grid-template-areas: "menu nav" "menu content";

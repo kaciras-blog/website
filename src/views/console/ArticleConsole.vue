@@ -27,8 +27,8 @@
 					</div>
 				</div>
 
-				<button @click="editArticle(A.id)">修改</button>
-				<button class="dangerous" @click="deleteArticle(A.id)">删除</button>
+				<button class="outline" @click="editArticle(A.id)">修改</button>
+				<button class="dangerous outline" @click="deleteArticle(A.id)">删除</button>
 			</div>
 
 			<span v-if="allLoaded && !articles.length">没有找到文章,去写一篇吧~</span>

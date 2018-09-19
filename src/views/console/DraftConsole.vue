@@ -5,13 +5,18 @@
 		</div>
 
 		<div class="panel">
-			<div v-for="draft in drafts" :key="draft.id" class="segment" >
+			<div v-for="draft in drafts" :key="draft.id" class="segment">
 
 				<div class="draft">
-					<div class="title">{{draft.title}}</div>
-					<span class="minor-text"><i class="fas fa-pencil-alt"></i>{{draft.time}}</span>
-					<router-link class="button" :to="'/edit/' + draft.id">编辑</router-link>
-					<button class="dangerous" @click="deleteDraft(draft.id)">删除</button>
+					<h3 class="title">{{draft.title}}</h3>
+					<span class="minor-text">
+						<i class="fas fa-pencil-alt"></i>
+						<time>{{draft.time}}</time>
+					</span>
+					<div class="button-group">
+						<router-link class="outline button" :to="'/edit/' + draft.id">编辑</router-link>
+						<button class="dangerous outline" @click="deleteDraft(draft.id)">删除</button>
+					</div>
 				</div>
 
 				<div class="history" v-if="showHistory===draft">
@@ -43,7 +48,7 @@ async function loadDrafts() {
 	this.loading = true;
 
 	try {
-		const list = await api.draft.getList(0, 0, 20);
+		const list = await api.draft.getList(1, 0, 20);
 		if (list.length === 0) {
 			this.allLoaded = true;
 		} else {
@@ -85,9 +90,11 @@ export default {
 <style scoped>
 .draft {
 	display: flex;
+	align-items: center;
 }
 .title {
 	flex: 1;
+	margin: 0;
 }
 
 .history {
@@ -104,5 +111,9 @@ export default {
 
 .buttons {
 	margin-bottom: 1rem;
+}
+
+time {
+	margin: 0  1em 0 .5em;
 }
 </style>

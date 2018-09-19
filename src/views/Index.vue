@@ -68,6 +68,7 @@ export default {
 #index-page {
 	display: flex;
 	align-items: flex-start;
+	min-height: 100vh;
 
 	@media screen {
 		@media (min-width: @length-screen-mobile) {

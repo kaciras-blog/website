@@ -83,7 +83,7 @@ export default {
 	},
 	async beforeMount() {
 		api.recommend.swiper.get()
-			.then(slides => slides.forEach(s => this.slides.push({ s, open: false, tid: Math.random() })));
+			.then(slides => slides.forEach(slide => this.slides.push({ slide, open: false, tid: Math.random() })));
 	},
 };
 </script>

@@ -1,15 +1,17 @@
 <template>
 	<div>
 		<div class="buttons">
-			<button><i class="fa fa-arrow-left"></i>返回顶层</button>
-			<button>新建分类</button>
+			<div class="button-group">
+				<button><i class="fa fa-arrow-left"></i><span>返回顶层分类</span></button>
+				<button><i class="fa fa-arrow-top"></i><span>回到父级</span></button>
+			</div>
+			<button class="second">新建分类</button>
 		</div>
 		<category-view :editable="true"/>
 	</div>
 </template>
 
 <script>
-import api from "../../apis";
 import CategoryView from "../../components/CategoryView";
 
 export default {
@@ -17,22 +19,16 @@ export default {
 	components: {
 		CategoryView,
 	},
-	data() {
-		return {categories: []};
-	},
-	methods: {
-		refresh() {
-			api.category.getChildren(0).then(arr => {
-				this.categories = [];
-				arr.forEach(v => this.categories.push(v));
-			});
+	data: () => ({
+		id: 0,
+	}),
+	methods:{
+		toRoot() {
+			this.id = 0;
 		},
-		showEditView(id = null) {
-			this.$router.push(id ? "category/detail/" + id : "category/detail");
+		toParent() {
+			this.id = 11;
 		},
-	},
-	created() {
-		this.refresh();
 	},
 };
 </script>
@@ -40,5 +36,9 @@ export default {
 <style scoped>
 .buttons {
 	margin-bottom: 1rem;
+	display: flex;
+	justify-content: space-between;
 }
+
+
 </style>
