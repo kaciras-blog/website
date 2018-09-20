@@ -9,14 +9,14 @@
 					v-if="current > 1"
 					@click="showPage(current-1)">上一页</button>
 
-			<span v-if="current - 3 > 0" class="omit">...</span>
+			<span v-if="current - omitPos > 0" class="omit">...</span>
 
-			<template v-for="i in totalPage" v-if="i>current - 3 && i < current + 3 && i<= totalPage">
+			<template v-for="i in totalPage" v-if="i>current - omitPos && i < current + omitPos && i<= totalPage">
 				<button class="square" :key="i" v-if="i === current">{{i}}</button>
 				<button class="border square" :key="i" @click="showPage(i)" v-else>{{i}}</button>
 			</template>
 
-			<span v-if="current + 3 <= totalPage" class="omit">...</span>
+			<span v-if="current + omitPos <= totalPage" class="omit">...</span>
 
 			<button class="border square"
 					v-if="current < totalPage"
@@ -49,6 +49,14 @@ export default {
 		totalCount: {
 			type: Number,
 			required: true,
+		},
+		/**
+		 * 省略起始位置，在当前页面按钮左右omitPos之内
+		 * 的页面将显示为按钮，超出的显示省略号。
+		 */
+		omitPos:{
+			type: Number,
+			default: 2,
 		},
 	},
 	computed: {
