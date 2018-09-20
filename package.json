@@ -8,7 +8,8 @@
 		"dev": "webpack-dev-server --config build/webpack.dev.conf.js",
 		"lint": "eslint --fix --ext .js,.vue build",
 		"build": "node build/build.js",
-		"build-server": "node build/build.js -server"
+		"build-server": "node build/build.js -server",
+		"build-both": "node build/build.js -both"
 	},
 	"dependencies": {
 		"@babel/runtime": "^7.0.0",

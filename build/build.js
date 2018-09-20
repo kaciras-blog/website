@@ -12,17 +12,28 @@ const config = require('../config');
  * @return {Promise<void>} 指示构建状态
  */
 async function build(mode) {
-	let webpackConfig;
-
-	if(mode === "-server") {
-		webpackConfig = require('./webpack.server.conf')
-	} else {
-		webpackConfig = require('./webpack.client.conf');
+	if (mode === "-server") {
+		await invokeWebpack(require('./webpack.server.conf'));
+	} else if (mode === "-both") {
 		await rimraf(path.join(config.build.assetsRoot, "static"));
+		await invokeWebpack(require('./webpack.client.conf'));
+		await invokeWebpack(require('./webpack.server.conf'));
+	} else {
+		await rimraf(path.join(config.build.assetsRoot, "static"));
+		await invokeWebpack(require('./webpack.client.conf'));
 	}
+}
 
-	webpackConfig.mode = "development";
-	const stats = await webpack(webpackConfig);
+/**
+ * 调用webpack，并输出更友好的信息。
+ *
+ * @param config 配置
+ * @return {Promise<void>} 指示构建状态
+ */
+async function invokeWebpack(config) {
+	config.mode = "development";
+	const stats = await webpack(config);
+
 	process.stdout.write(stats.toString({
 		colors: true,
 		modules: false,
