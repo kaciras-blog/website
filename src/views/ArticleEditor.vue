@@ -1,13 +1,10 @@
 <template>
-	<kx-markdown-editor/>
+	<kx-markdown-editor class="full-screen"/>
 </template>
 
 <script>
-import {FullScreen} from "../mixins";
-
 export default {
 	name: "ArticleEditor",
-	mixins: [FullScreen],
 	created() {
 		this.$emit("layout-changed", {show: false}, false);
 	},

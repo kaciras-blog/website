@@ -21,7 +21,7 @@
 				<!--<span title="暂不支持点赞" class="clickable meta"><i class="fa fa-thumbs-o-up"></i>{{value.voteCount}}</span>-->
 				<span title="暂不支持楼中楼"
 					  class="clickable meta"
-					  @click="reply"><i class="far fa-comment"></i>回复(0)</span>
+					  @click="replyThis"><i class="far fa-comment"></i>回复(0)</span>
 			</div>
 			<div>
 				<span v-if="deleteable"
@@ -32,9 +32,12 @@
 		</div>
 
 		<div v-if="value.replyCount>0">
-			<!--<discussion v-for=""-->
+			<discussion v-for="reply of value.replies" :key="reply.id" :value="reply"/>
 		</div>
-		<discz-editor style="margin-left: 6rem" v-if="replying === value.id"/>
+		<discz-editor
+			v-if="replying === value.id"
+			style="margin-left: 6rem"
+			:submit="submitReply"/>
 	</div>
 </template>
 
@@ -58,12 +61,15 @@ export default {
 		...Vuex.mapState(["user"]),
 	},
 	methods: {
+		submitReply(text) {
+			api.discuss.reply(this.value.id, text);
+		},
 		remove() {
 			api.discussion.deleteOne(this.value.id)
 				.then(this.$emit("item-removed", this.value))
 				.catch(r => alert("删除失败 " + r.message));
 		},
-		reply() {
+		replyThis() {
 			this.$emit("reply", this.value.id);
 		},
 	},

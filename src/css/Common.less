@@ -6,10 +6,11 @@
 }
 
 .panel {
+	padding: 1.2rem;
+
 	border: solid 1px @color-border;
 	background-color: @color-panel-background;
 	box-shadow: 0 0 4px fade(@color-border, 70%);
-	padding: 1.2rem;
 
 	&.large-padding{
 		padding: 3rem;
@@ -36,13 +37,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .input, input {
+	padding: .5em;
+	min-width: 0; //谷歌浏览器默认有一个最小宽度，这里给他去掉
+
 	outline: none;
 	border: solid 1px @color-border;
 	border-radius: 6px;
 	color: inherit;
 	background: transparent;
-	padding: .5em;
-	min-width: 0; //谷歌浏览器默认有一个最小宽度，这里给他去掉
 
 	&:not([readonly]):focus {
 		.input-highlight-focus();
@@ -105,16 +107,17 @@ h1, h2, h3, h4, h5, h6 {
 .nav-item {
 	display: inline-block;
 	vertical-align: top;
-	font-size: 16px;
+
 	padding: .8rem 1.5rem;
-	background-color: transparent;
 	height: 100%;
 
+	font-size: 16px;
+	background-color: transparent;
 	.click-item;
 
 	&:hover {
-		color: @color-text;
 		text-decoration: none;
+		color: @color-text;
 		background-color: rgba(255, 255, 255, 0.4);
 	}
 }

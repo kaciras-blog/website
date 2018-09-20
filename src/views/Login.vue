@@ -11,12 +11,10 @@
 <script>
 import LoginPanel from "../components/LoginPanel";
 import SignupPanel from "../components/SignupPanel";
-import {FullScreen} from "../mixins";
 
 export default {
 	name: "Login",
 	components: {LoginPanel, SignupPanel},
-	// mixins: [FullScreen],
 	data() {
 		return {
 			panel: "loginPanel",
