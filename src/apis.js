@@ -6,6 +6,12 @@ axios.defaults.xsrfCookieName = "CSRF-Token";
 axios.defaults.xsrfHeaderName = "X-CSRF-Token";
 axios.defaults.withCredentials = true;
 
+if (process.env.NODE_ENV !== 'production') {
+	axios.interceptors.response.use(function (response) {
+		return response;
+	});
+}
+
 const API_SERVER = "https://localhost:2375";
 
 let mainServer = axios.create({
@@ -17,6 +23,7 @@ let accountServer = axios.create({
 let frontService = axios.create({
 	baseURL: "https://localhost",
 });
+
 
 if (typeof window === "undefined") {
 
@@ -44,7 +51,7 @@ _default.category = {
 	getInfo: (id) => mainServer.get("/categories/" + id).then(r => r.data),
 
 	move: (id, parent, treeMode) => mainServer.post("/categories/transfer", {
-		params: {id, parent, treeMode},
+		params: { id, parent, treeMode },
 	}),
 
 	create: (data) => mainServer.post("/categories/", data),
@@ -70,21 +77,18 @@ _default.article = {
 	}).then(r => r.data),
 
 
-	deleteOne: (id) => mainServer.put(`/articles/${id}/deletion`, null, {params: {value: true}}),
+	deleteOne: (id) => mainServer.put(`/articles/${id}/deletion`, null, { params: { value: true } }),
 
 	changeCategories: (id, cates) => mainServer.put(`/articles/${id}/categories`, cates),
 };
 
 _default.discuss = {
 
-	add: (article, content) => mainServer.post("/discussions", {articleId: article, content}),
+	add: (objectId, content) => mainServer.post("/discussions", { objectId, type: 0, content }),
 
-	getList: (article, index, count) => mainServer.get("/discussions", {
-		params: {
-			articleId: article,
-			start: index,
-			count: count,
-		},
+	getList: (objectId, start, count, cancelToken = null) => mainServer.get("/discussions", {
+		cancelToken,
+		params: { objectId, type: 0, start, count },
 	}).then(r => r.data),
 
 	/**
@@ -98,7 +102,7 @@ _default.discuss = {
 	getReplies: (discuz, index, count) => mainServer.get(`/discussions/${discuz}/replies`, {
 		params: {
 			start: (index - 1) * count,
-			count: count,
+			count,
 		},
 	}).then(r => r.data),
 
@@ -109,7 +113,9 @@ _default.discuss = {
 	 * @param content {String} 内容
 	 * @return Promise
 	 */
-	reply: (discuz, content) => mainServer.post(`/discussions/${discuz}/replies`, content),
+	reply: (discuz, content) => mainServer.post(`/discussions/${discuz}/replies`, content, {
+		headers: { "Content-Type": "text/plain;charset=UTF-8" },
+	}),
 
 	deleteOne: (id) => mainServer.delete("/discussions/" + id),
 
@@ -122,7 +128,9 @@ _default.draft = {
 
 	get: (id) => mainServer.get("/drafts/" + id).then(r => r.data),
 
-	getList: (userId, start, count) => mainServer.get("/drafts", {params: {userId, start, count}}).then(r => r.data),
+	getList: (userId, start, count) => mainServer.get("/drafts", {
+		params: { userId, start, count },
+	}).then(r => r.data),
 
 	save: (id, data, newHistory) => {
 		if (newHistory) {

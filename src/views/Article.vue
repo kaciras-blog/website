@@ -2,7 +2,7 @@
 	<page-layout view-id="article-page" :banner="true" :footer="true">
 
 		<article-view v-bind="article"/>
-		<discuss-panel ref="discss-panel"/>
+		<discuss-panel :article-id="article.id" ref="discss-panel"/>
 
 		<div class="side-buttons">
 			<button class="center-all"

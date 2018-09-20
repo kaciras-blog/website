@@ -28,6 +28,7 @@
 		<div class='buttons'>
 			<button
 				class='primary round'
+				:class="{ running: submiting }"
 				:disabled="submiting"
 				@click='submitDiscuss'>
 				<i class="far fa-paper-plane"></i>发表评论
@@ -38,7 +39,7 @@
 
 <script>
 import Vuex from "vuex";
-import {errorMessage} from "../utils";
+import { errorMessage } from "../utils";
 
 export default {
 	name: "DiscussEditor",

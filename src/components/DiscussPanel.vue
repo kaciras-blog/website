@@ -10,20 +10,18 @@
 			<discuz-editor :submit="submitDiscussion" @discussion-added="showLast"/>
 		</div>
 
-		<discussion
-			v-for="item of discussions"
-			:key="item.id"
-			:value="item"
-			:replying="replying"
-			@reply="reply"
-			@item-removed="loadPageBackground(pageIndex)"/>
+		<button-pageing-view
+			ref="discussions"
+			:loader="loadDiscussions">
 
-		<button-pager
-			v-if="totalCount > pageSize"
-			:index="pageIndex"
-			:page-size="pageSize"
-			:total-count="totalCount"
-			@load-page="loadPage"/>
+			<discussion
+				slot-scope="{ item }"
+				:key="item.id"
+				:value="item"
+				:replying="replying"
+				@reply="reply"
+				@item-removed="refresh"/>
+		</button-pageing-view>
 	</section>
 </template>
 
@@ -31,7 +29,6 @@
 import api from "../apis";
 import discuzEditor from "./DiscuzEditor.vue";
 import discussion from "./Discussion.vue";
-import {scrollToElementEnd, scrollToElementStart} from "../utils";
 
 export default {
 	name: "DiscussPanel",
@@ -41,34 +38,21 @@ export default {
 			required: true,
 		},
 	},
-	data() {
-		return {
-			discussions: [],
-			pageIndex: 0,
-			totalCount: 0,
-			pageSize: 20,
-
-			replying: 0,
-		};
-	},
-	components: {
-		discuzEditor,
-		discussion,
-	},
+	data:()  => ({
+		replying: 0,
+		totalCount: 0,
+	}),
+	components: { discuzEditor, discussion },
 	methods: {
-		loadPageBackground(index) {
-			const { articleId, pageSize } = this;
-			return api.discuss.getList(articleId, index * pageSize, pageSize).then(data => {
-				this.discussions = data.list;
-				this.pageIndex = index;
-				this.totalCount = data.total;
-			});
+		refresh() {
+			this.$refs.discussions.refresh();
 		},
-		loadPage(index) {
-			this.loadPageBackground(index).then(() => scrollToElementStart("discuss"));
+		loadDiscussions(index, size, cancelToken) {
+			return api.discuss.getList(this.articleId, index * size, size, cancelToken)
+				.then(res => { this.totalCount = res.total; return res;});
 		},
 		showLast() {
-			this.loadPageBackground(Math.floor(this.totalCount / this.pageSize)).then(() => scrollToElementEnd("discuss"));
+			this.$refs.discussions.switchToLast();
 		},
 		reply(id) {
 			this.replying = id;
@@ -77,10 +61,6 @@ export default {
 			// 文章以外的评论如何设计API？
 			return api.discuss.add(this.articleId, text);
 		},
-	},
-	// 评论经常变动，不进行预渲染，首屏显示菊花图
-	beforeMount() {
-		this.loadPageBackground(0);
 	},
 };
 </script>
