@@ -30,7 +30,7 @@ class LoadTask {
 
 	complete(allLoaded = false) {
 		// 可能一次加载后空余高度仍达不到activeHeight，还得继续加载
-		if(!this._vm.tryLoadPage()) {
+		if (!this._vm.tryLoadPage()) {
 			this.finish(allLoaded ? "allLoaded" : "free");
 		}
 	}
@@ -88,7 +88,7 @@ export default {
 			}
 		},
 		tryLoadPage() {
-			const {state, activeHeight} = this;
+			const { state, activeHeight } = this;
 			if (state !== "free")
 				return;
 			//网页高度 - 窗口高度 - 窗口之上部分的高度 = 窗口下面剩余的高度
@@ -106,9 +106,11 @@ export default {
 		},
 	},
 	created() {
+		this.loadPage();
+	},
+	mounted() {
 		if (this.autoLoad)
 			window.addEventListener("scroll", this.tryLoadPage);
-		this.loadPage();
 	},
 };
 </script>

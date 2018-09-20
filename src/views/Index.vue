@@ -32,15 +32,14 @@
 import ArticlePreview from "../components/ArticlePreview.vue";
 import AsidePanel from "../components/AsidePanel.vue";
 import api from "../apis.js";
-import {getUrlParamater} from "../utils";
 
 export default {
 	name: "Index",
 	components: { ArticlePreview, AsidePanel },
 	data() {
 		return {
-			startPage: parseInt(getUrlParamater("start")) || 0,
-			category: getUrlParamater("category"),
+			startPage: parseInt(this.$route.query.start) || 0,
+			category: this.$route.query.category,
 			pageSize: 16,
 			cpath: null,
 		};
@@ -50,9 +49,13 @@ export default {
 			return api.article.getList(this.category, index, size);
 		},
 		nextPage(index) {
-			const url = new URL(window.location.href);
-			url.searchParams.set("start", index);
-			return url.toString();
+			const params = Object.assign({}, this.$route.query);
+			const pairs = [];
+			params.start = index;
+			for (const k of Object.keys(params)) {
+				pairs.push(k + "=" + params[k]);
+			}
+			return "/?" + pairs.join("&");
 		},
 		excludeLast(arr) {
 			return [...arr].splice(0, arr.length - 1);
