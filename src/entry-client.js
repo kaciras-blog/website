@@ -18,15 +18,10 @@ Vue.mixin({
 
 const { vue, router, store } = createApp();
 
-if (window.__INITIAL_STATE__) {
-	store.replaceState(window.__INITIAL_STATE__);
-}
-
-router.onReady(() => {
-	// 添加路由钩子函数，用于处理 asyncData.
-	// 在初始路由 resolve 后执行，
-	// 以便我们不会二次预取(double-fetch)已有的数据。
-	// 使用 `router.beforeResolve()`，以便确保所有异步组件都 resolve。
+/**
+ * 使用 `router.beforeResolve()`，以便确保所有异步组件都 resolve。
+ */
+function initAppAndRouterHook() {
 	router.beforeResolve((to, from, next) => {
 		const matched = router.getMatchedComponents(to);
 		const previous = router.getMatchedComponents(from);
@@ -51,4 +46,17 @@ router.onReady(() => {
 	});
 
 	vue.$mount('#app');
-});
+}
+
+/*
+ * 检测并替换服务端渲染的状态，并添加路由钩子函数，用于处理 asyncData.
+ *
+ * 在服务端渲染下，将初始化注册到 router.onReady() 上，使其在初始
+ * 路由 resolve 后执行，以便我们不会二次预取(double-fetch)已有的数据。
+ */
+if (window.__INITIAL_STATE__) {
+	store.replaceState(window.__INITIAL_STATE__);
+	router.onReady(initAppAndRouterHook);
+} else {
+	initAppAndRouterHook(); // 非服务端渲染，直接初始化
+}
