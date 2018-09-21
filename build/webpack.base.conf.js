@@ -23,7 +23,7 @@ module.exports = {
 	entry: resolve("src/entry-client.js"),
 	output: {
 		path: config.build.assetsRoot,
-		filename: '[name].js',
+		filename: 'static/js/[name].js',
 		publicPath: config.build.publicPath,
 	},
 	resolve: {
