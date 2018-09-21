@@ -1,23 +1,26 @@
 const cacheName = "webCache";
-const regex = new RegExp("^/static/");
+const regex = new RegExp("^/static/"); // 仅匹配的请求才会缓存
 
 self.addEventListener('install', event => {
-	//waitUntil接受一个Promise，直到这个promise被resolve，安装阶段才算结束
 	event.waitUntil(caches.open(cacheName));
 });
 
 self.addEventListener('fetch', event => {
-	event.respondWith(requestOrCache(event.request));
-});
-
-async function requestOrCache(request) {
+	const request = event.request;
 	const url = new URL(request.url);
 
-	// 非前端静态资源直接转正常请求
-	if(!regex.test(url.pathname)) {
-		return await fetch(request);
+	if(regex.test(url.pathname)) {
+		event.respondWith(fetchWithCache(request));
 	}
+});
 
+/**
+ * 尝试从缓存里加载响应，如果缓存中没有则发送请求，并将成功的响应加入缓存。
+ *
+ * @param request 请求对象
+ * @return {Promise<Response>} 返回相应的Promise
+ */
+async function fetchWithCache(request) {
 	// 如果请求的资源已被缓存，则直接返回
 	const cached = await caches.match(request);
 	if (cached) return cached;
