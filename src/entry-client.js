@@ -2,6 +2,12 @@ import createApp from "./main";
 import Vue from "vue";
 import TransitionsCurtain from "./components/common/TransitionCurtain";
 
+if ('serviceWorker' in navigator) {
+	navigator.serviceWorker.register('/service-worker.js', { scope: "/" })
+		.then(() => console.log('Service worker registered successfully!'))
+		.catch(() => console.error('Service worker failed to register!'));
+}
+
 const curtain = new Vue(TransitionsCurtain).$mount();
 document.body.appendChild(curtain.$el);
 
