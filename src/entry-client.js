@@ -66,7 +66,7 @@ function initAppAndRouterHook() {
 			return next();
 		}
 
-		const prefetched = activated.filter(c => c.asyncData);
+		const prefetched = activated.filter(c => c.asyncData && c.prefetch);
 		if (!prefetched.length) {
 			curtain.finish(); // 别忘了关掉加载指示器，它可能由异步组件加载开启
 			return next();

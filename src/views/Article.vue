@@ -58,11 +58,12 @@ export default {
 		DiscussPanel,
 		ArticleView,
 	},
-	asyncData({ store, route }) {
+	asyncData({store, route}) {
 		// 触发 action 后，会返回 Promise
 		store.registerModule("article", articleStoreModule);
 		return store.dispatch("article/fetchItem", route.params.id);
 	},
+	prefetch: true, // 在客户端是否预加载数据
 	computed: {
 		article() {
 			return this.$store.state.article.item;
