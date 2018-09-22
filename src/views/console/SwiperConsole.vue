@@ -5,47 +5,39 @@
 			<button @click="submit">确定</button>
 		</div>
 
-		<section v-for="item of slides"
-				 :key="item.tid"
-				 class="slide">
+		<div ref="container">
+			<template v-for="item of slides">
+				<swiper-console-item
+					v-if="!item.hold"
+					:key="item.tid"
+					ref="slideComponents"
+					class="slide"
+					:item="item"
+					@drag-started="drag"
+					@remove="remove"/>
+				<div v-else :key="item.tid" class="hold slide"></div>
+			</template>
+		</div>
 
-			<div class="summary">
-				<h2 class="compact" @click="item.open = !item.open">{{item.slide.name}}</h2>
-				<div class="handler" @click="drag(item)"><i class="fas fa-arrows-alt"></i></div>
-				<div class="delete" @click="remove(item)"><i class="fas fa-trash"></i></div>
-			</div>
-
-			<div v-show="item.open" class="details">
-				<div class="picture"
-					 @click="setPicture(item.slide)">
-					<img :src="item.slide.picture" alt="轮播图片"/>
-					<span class="tip">点击更换图片</span>
-				</div>
-				<label>
-					<span class="minor-text">标题</span>
-					<input v-model="item.slide.name"/>
-				</label>
-				<label>
-					<span class="minor-text">URL（相对路径将使用页面内路由）</span>
-					<input v-model="item.slide.link"/>
-				</label>
-				<label>
-					<span class="minor-text">描述</span>
-					<textarea class="input" v-model="item.slide.description"></textarea>
-				</label>
-			</div>
-		</section>
+		<swiper-console-item
+			v-if="dragging"
+			ref="draggingComponent"
+			:style="dragging.style"
+			:item="dragging.item"/>
 	</div>
 </template>
 
 <script>
 import api from "../../apis";
-import {deleteOn} from "../../utils";
+import { deleteOn, drag, limitFrequency } from "../../utils";
+import SwiperConsoleItem from "../../components/SwiperConsoleItem";
 
 export default {
 	name: "SwiperConsole",
+	components: { SwiperConsoleItem },
 	data: () => ({
 		slides: [],
+		dragging: null,
 	}),
 	methods: {
 		createNew() {
@@ -60,28 +52,80 @@ export default {
 				},
 			});
 		},
-		setPicture(slide) {
-			api.misc.uploadImageFile().then(name => slide.picture = name);
-		},
-		remove(item) {
-			deleteOn(this.slides, it => it.tid === item.tid);
+		remove(id) {
+			deleteOn(this.slides, s => s.tid === id);
 		},
 		submit() {
 			api.recommend.swiper.set(this.slides.map(item => item.slide))
 				.then(() => this.$dialog.messageBox("修改轮播", "修改成功"))
 				.catch(() => alert("失败了"));
 		},
-		drag(item, event) {
-			this.slides.forEach(s => s.open = false);
-			item.open = false;
-			event.dataTransfer.setData("Text", item);
-		},
-		dragOver(item) {
-			this.slides.forEach(s => s.open = false);
+		drag({ event, item }) {
+			const slides = this.slides;
+			const slen = slides.length;
+			let index;
 
+			// 查找拖动页的索引，并折叠全部轮播页
+			for (let i = 0; i < slen; i++) {
+				if (slides[i].tid === item.tid) {
+					index = i;
+				}
+				slides[i].open = false;
+			}
+
+			// 等到全部折叠完了再计算高度。
+			this.$nextTick(() => {
+				// 此处有BUG，不能使用Vue的.$el，否则getBoundingClientRect()返回值是错的。
+				const el = document.querySelectorAll(".slide")[index];
+				// const el = this.$refs.slideComponents[index].$el;
+
+				const container = this.$refs.container.getBoundingClientRect();
+				const cTop = container.top;
+				const rect = el.getBoundingClientRect();
+				const span = rect.height / 2 + parseFloat(getComputedStyle(el).fontSize);
+
+				slides[index] = { hold: true }; // 替换原轮播页为占位元素
+
+				this.dragging = {
+					item,
+					tid: 0,
+					style: {
+						width: container.width + "px",
+						position: "absolute",
+						top: rect.top + "px",
+						left: rect.left + "px",
+					},
+				};
+
+				function moveTo(i) {
+					if (index === i) return;
+					const hold = slides.splice(index, 1)[0];
+					index = i;
+					slides.splice(i, 0, hold);
+				}
+
+				const callback = (x, y) => {
+					this.dragging.style.left = x + "px";
+					this.dragging.style.top = y + "px";
+					const i = Math.floor((y - cTop) / span);
+
+					if (i <= 0) {
+						moveTo(0);
+					} else if (i >= slen * 2 - 1) {
+						moveTo(slen - 1);
+					} else {
+						moveTo((i + 1) / 2);
+					}
+				};
+
+				drag(el, event.clientX, event.clientY, callback).then(() => {
+					this.dragging = null;
+					slides[index] = item;
+				});
+			});
 		},
 	},
-	async beforeMount() {
+	beforeMount() {
 		api.recommend.swiper.get()
 			.then(slides => slides.forEach(slide => this.slides.push({ slide, open: false, tid: Math.random() })));
 	},
@@ -95,88 +139,9 @@ export default {
 	margin: 1rem 0;
 }
 
-.summary {
-	display: flex;
-	line-height: 2.6rem;
-	color: white;
-	background-color: #51a5ff;
-	cursor: pointer;
-
-	& > h2 {
-		flex: 1;
-		padding-left: 1rem;
-	}
-
-	& > div {
-		float: right;
-		font-size: 1.5rem;
-		text-align: center;
-		width: 3rem;
-	}
-}
-
-.details {
-	border: solid 1px #6abdff;
-	border-top-width: 0;
-	padding: 1.5rem;
-
-	display: grid;
-	grid-gap: 1rem;
-	grid-template-columns: auto 1fr;
-	grid-template-rows: auto auto 1fr;
-
-	input {
-		width: 100%;
-		margin-top: .5rem;
-	}
-
-	textarea {
-		width: 100%;
-		margin-top: .5rem;
-		height: calc(100% - 1.5rem);
-	}
-}
-
-.picture {
-	position: relative;
-	overflow: hidden;
-	grid-row: ~"1/4";
-	width: 28rem;
-	height: 16rem;
-	cursor: pointer;
-
-	& > img {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-	}
-
-	&:hover > .tip {
-		top: 0;
-	}
-}
-
-.tip {
-	transition: all ease .2s;
-
-	position: absolute;
-	height: 2.5rem;
-	line-height: 2.5rem;
-	top: -2.5rem;
-	left: 0;
-	right: 0;
-
-	text-align: center;
-	color: white;
-	background: rgba(0, 0, 0, .5);
-}
-
-.handler {
-	cursor: move;
-	background: #b4aa9e;
-}
-
-.delete {
-	background: #f5808d;
+.hold {
+	height: 2.6rem;
+	border: solid 2px #f7f646;
+	box-shadow: 0 0 3px 3px #f4ef36 inset;
 }
 </style>

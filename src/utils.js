@@ -148,3 +148,66 @@ export function assignUpdate(src, dest) {
 export function sleep(time) {
 	return new Promise(resolve => setTimeout(resolve, time));
 }
+
+export function limitFrequency(action, duration, returnValue = null) {
+	let last = 0;
+	return function (...args) {
+		const current = new Date().getTime();
+		if (last + duration > current) {
+			last = current;
+			return action(...args);
+		}
+		return returnValue;
+	};
+}
+
+/**
+ *
+ * @param el {HTMLElement}
+ * @param startX
+ * @param startY
+ * @param onDragging {Function}
+ * @return {Promise}
+ */
+export function drag(el, startX, startY, onDragging) {
+	const clientRect = el.getBoundingClientRect();
+
+	//按住时窗口的左上角坐标
+	const originX = clientRect.left;
+	const originY = clientRect.top;
+
+	// el.style.position = "absolute";
+	// el.style.top = originY + "px";
+	// el.style.left = originX + "px";
+
+	function changeElementPosition(newX, newY) {
+		el.style.left = newX + "px";
+		el.style.top = newY + "px";
+	}
+
+	onDragging = onDragging || changeElementPosition;
+
+	const onMove = event => {
+		event.preventDefault();
+		const { clientX, clientY } = event.touches && event.touches.length > 0
+			? event.touches[0] : event;
+		const newX = originX + clientX - startX;
+		const newY = originY + clientY - startY;
+		onDragging(newX, newY);
+	};
+
+	return new Promise(resolve => {
+		const onUp = event => {
+			event.preventDefault();
+			document.removeEventListener("mousemove", onMove);
+			document.removeEventListener("touchmove", onMove);
+			document.removeEventListener("mouseup", onUp);
+			document.removeEventListener("touchend", onUp);
+			resolve();
+		};
+		document.addEventListener("mousemove", onMove);
+		document.addEventListener("touchmove", onMove);
+		document.addEventListener("mouseup", onUp);
+		document.addEventListener("touchend", onUp);
+	});
+}
