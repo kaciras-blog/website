@@ -2,10 +2,10 @@ import createApp from "./main";
 import Vue from "vue";
 import TransitionsCurtain from "./components/common/TransitionCurtain";
 
-if ('serviceWorker' in navigator) {
-	navigator.serviceWorker.register('/service-worker.js', { scope: "/" })
-		.then(() => console.log('Service worker registered successfully!'))
-		.catch(() => console.error('Service worker failed to register!'));
+if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator) {
+	navigator.serviceWorker.register("/service-worker.js", { scope: "/" })
+		.then(() => console.log("Service worker registered successfully!"))
+		.catch(() => console.error("Service worker failed to register!"));
 }
 
 const curtain = new Vue(TransitionsCurtain).$mount();
@@ -51,7 +51,7 @@ function initAppAndRouterHook() {
 			}).finally(curtain.finish);// 停止加载指示器(loading indicator)
 	});
 
-	vue.$mount('#app');
+	vue.$mount("#app");
 }
 
 /*

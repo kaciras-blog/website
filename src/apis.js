@@ -6,7 +6,7 @@ axios.defaults.xsrfCookieName = "CSRF-Token";
 axios.defaults.xsrfHeaderName = "X-CSRF-Token";
 axios.defaults.withCredentials = true;
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== "production") {
 	axios.interceptors.response.use(function (response) {
 		return response;
 	});

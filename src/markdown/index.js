@@ -59,7 +59,7 @@ function myPlugin(markdownIt) {
 
 	// 给行内代码加个class
 	markdownIt.core.ruler.push("inline_code_class", state => state.tokens
-		.filter(token => token.type === 'inline')
+		.filter(token => token.type === "inline")
 		.forEach(token => token.children
 			.filter(child => child.type === "code_inline")
 			.forEach(child => child.attrs = [["class", "inline-code"]])));

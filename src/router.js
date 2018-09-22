@@ -1,5 +1,5 @@
-import Vue from 'vue';
-import Router from 'vue-router';
+import Vue from "vue";
+import Router from "vue-router";
 import Error from "./views/Error";
 import Welcome from "./views/Welcome";
 
@@ -18,8 +18,8 @@ Vue.use(Router);
 export default function () {
 	const routes = [
 		{
-			path: '/',
-			name: 'index',
+			path: "/",
+			name: "index",
 			component: () => import("./views/Index"),
 		},
 		{
@@ -28,18 +28,18 @@ export default function () {
 			component: Welcome,
 		},
 		{
-			path: '/login',
-			name: 'login',
-			component: () => import('./views/Login'),
+			path: "/login",
+			name: "login",
+			component: () => import("./views/Login"),
 		},
 		{
-			path: '/article/:id',
-			name: 'article',
+			path: "/article/:id",
+			name: "article",
 			component: () => import("./views/Article"),
 		},
 		{
-			path: '/edit/:id',
-			name: 'edit',
+			path: "/edit/:id",
+			name: "edit",
 			component: () => import("./views/ArticleEditor"),
 		},
 		{
@@ -67,8 +67,8 @@ export default function () {
 		},
 	];
 	// 用来测试的页面
-	if (process.env.NODE_ENV !== 'production') {
+	if (process.env.NODE_ENV !== "production") {
 		routes.unshift({ path: "/test", component: () => import("./views/Test") });
 	}
-	return new Router({ mode: 'history', routes });
+	return new Router({ mode: "history", routes });
 }

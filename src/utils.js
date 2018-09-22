@@ -9,11 +9,11 @@ import $ from "jquery";
  */
 export function escapeHtml(text) {
 	const map = {
-		'&': '&amp;',
-		'<': '&lt;',
-		'>': '&gt;',
-		'"': '&quot;',
-		"'": '&#039;',
+		"&": "&amp;",
+		"<": "&lt;",
+		">": "&gt;",
+		"\"": "&quot;",
+		"'": "&#039;",
 	};
 	return text.replace(/[&<>"']/g, ch => map[ch]);
 }
@@ -27,14 +27,14 @@ export function scrollToElementStart(element) {
 	if (typeof element === "string") {
 		element = document.getElementById(element);
 	}
-	$('html,body').animate({ scrollTop: element.offsetTop }, 200);
+	$("html,body").animate({ scrollTop: element.offsetTop }, 200);
 }
 
 export function scrollToElementEnd(element) {
 	if (typeof element === "string") {
 		element = document.getElementById(element);
 	}
-	$('html,body').animate({ scrollTop: element.offsetTop + element.clientHeight }, 200);
+	$("html,body").animate({ scrollTop: element.offsetTop + element.clientHeight }, 200);
 	// Velocity(document.getElementsByTagName("html")[0], {scrollTop: element.offsetTop + element.clientHeight}, 200);
 }
 
@@ -52,7 +52,7 @@ export function errorMessage(object) {
 	return object.message || "未知的错误";
 }
 
-export function showErrorDialog (vm, title) {
+export function showErrorDialog(vm, title) {
 	return function (err) {
 		vm.$dialog.messageBox(title, errorMessage(err), "error", false);
 	};

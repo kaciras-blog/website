@@ -33,6 +33,21 @@ import ArticlePreview from "../components/ArticlePreview.vue";
 import AsidePanel from "../components/AsidePanel.vue";
 import api from "../apis.js";
 
+const indexStoreModule = {
+	namespaced: true,
+	state: () => ({
+		items: null,
+	}),
+	actions: {
+		fetchItem({ commit }, query) {
+			return api.article.getList(query.category, query.index, 16).then(items => commit("setItems", items));
+		},
+	},
+	mutations: {
+		setItems: (state, items) => state.items = items,
+	},
+};
+
 export default {
 	name: "Index",
 	components: { ArticlePreview, AsidePanel },

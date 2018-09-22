@@ -95,7 +95,7 @@ export default {
 		goto(category) {
 			this.current = category;
 			this.children = api.category.getChildren(category.id).then(r => this.children = r);
-			this.$emit('update:id', category.id);
+			this.$emit("update:id", category.id);
 		},
 		move() {
 			this.$dialog.show("SelectCategoryDialog");

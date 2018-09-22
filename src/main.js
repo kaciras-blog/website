@@ -1,8 +1,8 @@
 import "./css/Main.less";
-import Vue from 'vue';
-import App from './App.vue';
-import createRouter from './router';
-import createStore from './store';
+import Vue from "vue";
+import App from "./App.vue";
+import createRouter from "./router";
+import createStore from "./store";
 
 import CommonComponents from "./components/common";
 import KxDialog from "kxdialog/src/index";
@@ -25,7 +25,7 @@ Vue.component(PageLayout.name, PageLayout);
 Vue.config.productionTip = false;
 
 //自动聚焦支持 v-autofocus
-Vue.directive('autofocus', {
+Vue.directive("autofocus", {
 	inserted: el => el.focus(),
 });
 

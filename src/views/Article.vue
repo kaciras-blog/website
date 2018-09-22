@@ -44,7 +44,7 @@ const articleStoreModule = {
 	actions: {
 		fetchItem({ commit }, id) {
 			// `store.dispatch()` 会返回 Promise，以便我们能够知道数据在何时更新
-			return api.article.get(id).then(item => commit('setItem', item));
+			return api.article.get(id).then(item => commit("setItem", item));
 		},
 	},
 	mutations: {
@@ -60,8 +60,8 @@ export default {
 	},
 	asyncData({ store, route }) {
 		// 触发 action 后，会返回 Promise
-		store.registerModule('article', articleStoreModule);
-		return store.dispatch('article/fetchItem', route.params.id);
+		store.registerModule("article", articleStoreModule);
+		return store.dispatch("article/fetchItem", route.params.id);
 	},
 	computed: {
 		article() {
@@ -73,7 +73,7 @@ export default {
 			scrollToElementStart(this.$refs["discss-panel"].$el);
 		},
 		gotoTop() {
-			$('html,body').animate({ scrollTop: 0 }, 300);
+			$("html,body").animate({ scrollTop: 0 }, 300);
 		},
 	},
 	mounted() {
@@ -82,7 +82,7 @@ export default {
 		$(window).on("scroll", this.scrollHandler);
 	},
 	destroyed() {
-		this.$store.unregisterModule('article');
+		this.$store.unregisterModule("article");
 		$(window).off("scroll", this.scrollHandler);
 	},
 };

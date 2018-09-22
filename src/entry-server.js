@@ -1,4 +1,4 @@
-import createApp from './main';
+import createApp from "./main";
 
 function onReadyAsync(router) {
 	return new Promise((resolve, reject) => router.onReady(resolve, reject));
