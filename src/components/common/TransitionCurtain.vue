@@ -27,10 +27,16 @@ export default {
 	},
 	methods: {
 		start() {
+			if(this.show) {
+				return; // 忽略重复调用，下同
+			}
 			this.show = true;
 			this.$_timer = setTimeout(() => this.timeouted = true, this.timeout);
 		},
 		finish() {
+			if(!this.show) {
+				return;
+			}
 			clearTimeout(this.$_timer);
 			this.show = false;
 			this.timeouted = false;

@@ -28,10 +28,6 @@ export default {
 			type: Number,
 			default: 2,
 		},
-		urlTemplate: {
-			type: Function,
-			required: false,
-		},
 	},
 	data() {
 		return {
