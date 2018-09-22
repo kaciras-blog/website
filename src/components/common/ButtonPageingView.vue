@@ -26,7 +26,7 @@ export default {
 		},
 		initPageSize: {
 			type: Number,
-			default: 16,
+			default: 2,
 		},
 		urlTemplate: {
 			type: Function,

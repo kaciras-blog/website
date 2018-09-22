@@ -58,7 +58,7 @@
 	line-height: 1;
 	text-align: center;
 
-	border-radius: 5px;
+	border-radius: 4px;
 	.click-item;
 
 	&:focus {
@@ -112,6 +112,10 @@
 
 	&:hover {
 		background-color: @color-hover;
+
+		// <a class=".button"> 需要
+		color: @@ctext;
+		text-decoration: none;
 	}
 	&:focus::after {
 		content: "";

@@ -90,8 +90,8 @@
 import Vue from "vue";
 import $ from "jquery";
 import textOps from "./TextOperations";
-import {assignUpdate, errorMessage} from "../utils";
-import {convertor, afterConvert} from "./index";
+import { assignUpdate, errorMessage } from "../utils";
+import { convertor, afterConvert } from "./index";
 import api from "../apis";
 
 import AddLinkDialog from "./AddLinkDialog.vue";
@@ -127,9 +127,8 @@ function convertToTransfer(data) {
 	}, data.metadata);
 }
 
-function publish(category) {
+function publish() {
 	const dto = convertToTransfer(this.$data);
-	dto.categories = [category];
 	dto.keywords = dto.keywords.split(" ");
 
 	const targetArticleId = dto.articleId;
@@ -137,29 +136,37 @@ function publish(category) {
 
 	if (targetArticleId) {
 		api.article.update(targetArticleId, dto)
-			.then(() => window.location.href = "/article/" + targetArticleId)
+			.then(() => this.$router.push("/article/" + targetArticleId))
 			.catch(reason => this.$dialog.messageBox("发表失败", errorMessage(reason), "error"));
 	} else {
 		api.article.publish(dto)
-			.then(url => window.location.href = "/article/" + url.substring("/articles/".length))
+			.then(url => this.$router.push("/article/" + url.substring("/articles/".length)))
 			.catch(reason => this.$dialog.messageBox("发表失败", errorMessage(reason), "error"));
 	}
 }
 
 export default {
 	name: "KxMarkdownEditor",
+	props: {
+		value: {
+			type: Object,
+			default: () => ({}),
+		},
+	},
 	data() {
-		return {
-			metadata: {
-				title: "",
-				cover: "",
-				keywords: "",
-				summary: "",
-			},
-			content: "",
-			articleId: null,
-			viewModel: 0, // 0分隔，1编辑，2预览
-		};
+		// return {
+		// 	metadata: {
+		// 		title: "",
+		// 		cover: "",
+		// 		keywords: "",
+		// 		summary: "",
+		//		category: null,
+		// 	},
+		// 	content: "",
+		// 	articleId: null,
+		// 	viewModel: 0, // 0分隔，1编辑，2预览
+		// };
+		return this.value;
 	},
 	computed: {
 		htmlText() {
@@ -184,7 +191,10 @@ export default {
 			this.$dialog.messageBox("标题222", "3333", "warning");
 		},
 		publish() {
-			this.$dialog.show(SelectCategoryDialog.name, null).then(publish.bind(this));
+			if(this.articleId) {
+				return publish.call(this);
+			}
+			this.$dialog.show(SelectCategoryDialog.name, this.metadata.category).then(publish.bind(this));
 		},
 		async metadataDialog() {
 			const res = this.$dialog.show(MetadataDialog.name, { mdata: this.metadata });

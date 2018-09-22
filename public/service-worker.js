@@ -1,11 +1,11 @@
 const cacheName = "webCache";
 const regex = new RegExp("^/static/"); // 仅匹配的请求才会缓存
 
-self.addEventListener('install', event => {
+self.addEventListener("install", event => {
 	event.waitUntil(caches.open(cacheName));
 });
 
-self.addEventListener('fetch', event => {
+self.addEventListener("fetch", event => {
 	const request = event.request;
 	const url = new URL(request.url);
 
