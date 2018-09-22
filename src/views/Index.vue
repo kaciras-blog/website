@@ -36,8 +36,8 @@ const indexStoreModule = {
 		items: null,
 	}),
 	actions: {
-		fetchItem({ commit }, query) {
-			return api.article.getList(query.category, query.index, 16).then(items => commit("setItems", items));
+		fetchItem({ commit }, category, index) {
+			return api.article.getList(category, index, 16).then(items => commit("setItems", items));
 		},
 	},
 	mutations: {
@@ -47,7 +47,14 @@ const indexStoreModule = {
 
 export default {
 	name: "Index",
-	components: { ArticlePreview, AsidePanel },
+	components: {
+		ArticlePreview,
+		AsidePanel,
+	},
+	asyncData({store, route}) {
+		store.registerModule("index", indexStoreModule);
+		return store.dispatch("index/fetchItem", 0, route.params.index);
+	},
 	props: {
 		index: {
 			type: Number,
@@ -55,10 +62,11 @@ export default {
 		},
 	},
 	data() {
+		const store = this.$store.state.index;
 		return {
 			category: this.$route.query.category,
 			cpath: null,
-			initArticles: [],
+			initArticles: store ? store.items : [],
 		};
 	},
 	methods: {
@@ -79,6 +87,11 @@ export default {
 		excludeLast(arr) {
 			return [...arr].splice(0, arr.length - 1);
 		},
+	},
+	destroyed() {
+		if(this.$store.state.index) {
+			this.$store.unregisterModule("index");
+		}
 	},
 };
 </script>
