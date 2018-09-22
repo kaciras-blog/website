@@ -17,10 +17,7 @@
 			</h1>
 			<h1 class='segment' v-else>全部文章</h1>
 
-			<scroll-pageing-view
-				:url-template="nextPage"
-				:start="startPage"
-				:loader="loadPage">
+			<scroll-pageing-view :init-items="initArticles" :loader="loadPage">
 				<article-preview slot-scope="{ item }" :key="item.id" :item="item"/>
 			</scroll-pageing-view>
 		</div>
@@ -51,26 +48,33 @@ const indexStoreModule = {
 export default {
 	name: "Index",
 	components: { ArticlePreview, AsidePanel },
+	props: {
+		index: {
+			type: Number,
+			default: 0,
+		},
+	},
 	data() {
 		return {
-			startPage: parseInt(this.$route.query.start) || 0,
 			category: this.$route.query.category,
-			pageSize: 16,
 			cpath: null,
+			initArticles: [],
 		};
 	},
 	methods: {
-		loadPage(index, size) {
-			return api.article.getList(this.category, index, size);
-		},
-		nextPage(index) {
-			const params = Object.assign({}, this.$route.query);
+		async loadPage(items, size) {
+			const { $route, category, index } = this;
+			const loaded = await api.article.getList(category, index + items.length, size);
+			items.push.apply(items, loaded);
+
+			// 拼URL
+			const params = Object.assign({}, $route.query);
 			const pairs = [];
-			params.start = index;
 			for (const k of Object.keys(params)) {
 				pairs.push(k + "=" + params[k]);
 			}
-			return "/?" + pairs.join("&");
+			const nextPath =  "/page/" + (index + items.length);
+			return pairs.length ? nextPath + "?" + pairs.join("&") : nextPath;
 		},
 		excludeLast(arr) {
 			return [...arr].splice(0, arr.length - 1);

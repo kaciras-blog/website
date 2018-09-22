@@ -23,6 +23,11 @@ export default function () {
 			component: () => import("./views/Index"),
 		},
 		{
+			path: "/page/:index",
+			component: () => import("./views/Index"),
+			props: route => ({ index: parseInt(route.params.index ) }),
+		},
+		{
 			path: "/welcome",
 			naem: "welcome",
 			component: Welcome,

@@ -10,47 +10,36 @@ export default {
 	name: "ScrollPageingView",
 	props: {
 		loader: {
-			type: Function,
+			type: Function, // items, pageSize -> nextUrl
 			required: true,
 		},
-		start: {
-			type: Number,
-			default: 0,
+		initItems: {
+			type: Array,
+			default: () => [],
 		},
 		pageSize: {
 			type: Number,
-			default: 16,
-		},
-		keyExtractor: {
-			type: Function,
-			default: items => items.length,
-		},
-		urlTemplate:{
-			type: Function,
-			required: false,
+			default: 2,
 		},
 	},
-	data: () => ({
-		items: [],
-	}),
-	computed:{
-		nextPageUrl() {
-			const { start, keyExtractor, pageSize, items} = this;
-			if(!this.urlTemplate) {
-				return null;
-			}
-			return this.urlTemplate(start + keyExtractor(items), pageSize);
-		},
+	data() {
+		// 复制一份避免影响到父组件的状态
+		return {
+			items: this.initItems.slice(),
+			nextPageUrl: null,
+		};
 	},
 	methods: {
-		loadPage(task) {
-			const { start, keyExtractor, pageSize, items} = this;
-			this.loader(start + keyExtractor(items), pageSize)
-				.then(loaded => {
-					this.items.push.apply(this.items, loaded);
-					task.complete(loaded.length < pageSize);
-				})
-				.catch(() => task.error());
+		async loadPage(task) {
+			const { loader, items, pageSize } = this;
+
+			try {
+				const oldLength = items.length;
+				this.nextPageUrl = await loader(items, pageSize);
+				task.complete(items.length - oldLength < pageSize);
+			} catch (err) {
+				task.error(err);
+			}
 		},
 	},
 };

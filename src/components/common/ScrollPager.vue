@@ -16,7 +16,7 @@
 		<a v-if="state==='free'"
 		   :href="nextPageUrl"
 		   class="button"
-		   @click="loadManually($event)">下一页</a>
+		   @click.prevent="loadPage">下一页</a>
 	</div>
 </template>
 
@@ -59,17 +59,12 @@ export default {
 		// 滚动时自动加载，该选项为false时将不触发滚动加载
 		autoLoad: {
 			type: Boolean,
-			default: true,
+			default: false,
 		},
 		// 滚动到距离底部还有多高时触发加载事件
 		activeHeight: {
 			type: Number,
 			default: 500,
-		},
-		// 多页模式，如果为true，点击加载按钮后将转到新页面显示下一页
-		multiPage: {
-			type: Boolean,
-			defailt: false,
 		},
 	},
 	data: () => ({
@@ -81,12 +76,6 @@ export default {
 		},
 	},
 	methods: {
-		loadManually(event) {
-			if (!this.multiPage) {
-				this.loadPage();
-				event.preventDefault();
-			}
-		},
 		tryLoadPage() {
 			const { state, activeHeight } = this;
 			if (state !== "free")
