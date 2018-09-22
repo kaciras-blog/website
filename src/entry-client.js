@@ -2,6 +2,9 @@ import createApp from "./main";
 import Vue from "vue";
 import TransitionsCurtain from "./components/common/TransitionCurtain";
 
+/*
+ * 注册 ServiceWorker 提升加载速度。
+ */
 if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator) {
 	navigator.serviceWorker.register("/service-worker.js", { scope: "/" })
 		.then(() => console.log("Service worker registered successfully!"))
@@ -15,7 +18,9 @@ Vue.mixin({
 	beforeRouteUpdate(to, from, next) {
 		const { asyncData } = this.$options;
 		if (asyncData) {
-			asyncData({ store: this.$store, route: to }).then(next).catch(console.error);
+			asyncData({ store: this.$store, route: to })
+				.then(next)
+				.catch(console.error);
 		} else {
 			next();
 		}
@@ -25,9 +30,27 @@ Vue.mixin({
 const { vue, router, store } = createApp();
 
 /**
- * 使用 `router.beforeResolve()`，以便确保所有异步组件都 resolve。
+ * 在官方教程的基础上修改而来，增加了以下功能：
+ *   1.在异步组件解析前就显示加载指示器，让过渡更顺畅。
+ *   2.检测组件的 prefetch 属性，使其能够在客户端不进行预加载。
  */
 function initAppAndRouterHook() {
+
+	/**
+	 * 在异步组件解析前就显示加载指示器。
+	 * 异步组件getMatchedComponents()返回一个函数，加载完成的组件则返回对象。
+	 */
+	router.beforeEach((to, from, next) => {
+		const matched = router.getMatchedComponents(to);
+		if (matched.filter(c => typeof c === "function").length) {
+			curtain.start();
+		}
+		next();
+	});
+
+	/**
+	 * 使用 `router.beforeResolve()`，以便确保所有异步组件都 resolve。
+	 */
 	router.beforeResolve((to, from, next) => {
 		const matched = router.getMatchedComponents(to);
 		const previous = router.getMatchedComponents(from);
@@ -43,12 +66,17 @@ function initAppAndRouterHook() {
 			return next();
 		}
 
-		curtain.start(); // 这里如果有加载指示器(loading indicator)，就触发
-		Promise.all(activated.filter(c => c.asyncData).map(c => c.asyncData({ store, route: to })))
-			.then(next).catch(err => {
-				next();
-				console.error(err);
-			}).finally(curtain.finish);// 停止加载指示器(loading indicator)
+		const prefetched = activated.filter(c => c.asyncData);
+		if (!prefetched.length) {
+			curtain.finish(); // 别忘了关掉加载指示器，它可能由异步组件加载开启
+			return next();
+		}
+
+		curtain.start();
+		Promise.all(prefetched.map(c => c.asyncData({ store, route: to })))
+			.then(next)
+			.catch(next)
+			.finally(curtain.finish);
 	});
 
 	vue.$mount("#app");
