@@ -25,7 +25,6 @@ export default function () {
 		{
 			path: "/page/:index",
 			component: () => import("./views/Index"),
-			props: route => ({ index: parseInt(route.params.index ) }),
 		},
 		{
 			path: "/welcome",

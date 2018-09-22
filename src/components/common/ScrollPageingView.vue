@@ -13,20 +13,23 @@ export default {
 			type: Function, // items, pageSize -> nextUrl
 			required: true,
 		},
-		initItems: {
-			type: Array,
-			default: () => [],
-		},
 		pageSize: {
 			type: Number,
 			default: 2,
 		},
+		// 下面两个设置初始状态，可以用于预渲染
+		initItems: {
+			type: Array,
+			default: () => [],
+		},
+		initNextUrl:{
+			type: String,
+		},
 	},
 	data() {
-		// 复制一份避免影响到父组件的状态
 		return {
-			items: this.initItems.slice(),
-			nextPageUrl: null,
+			items: this.initItems.slice(), // 复制一份避免影响到父组件的状态
+			nextPageUrl: this.initNextUrl,
 		};
 	},
 	methods: {

@@ -17,7 +17,10 @@
 			</h1>
 			<h1 class='segment' v-else>全部文章</h1>
 
-			<scroll-pageing-view :init-items="initArticles" :loader="loadPage">
+			<scroll-pageing-view
+				:loader="loadPage"
+				:init-items="initArticles"
+				:init-next-url="nextUrl">
 				<article-preview slot-scope="{ item }" :key="item.id" :item="item"/>
 			</scroll-pageing-view>
 		</div>
@@ -29,6 +32,22 @@
 import ArticlePreview from "../components/ArticlePreview.vue";
 import AsidePanel from "../components/AsidePanel.vue";
 import api from "../apis.js";
+
+/**
+ * 根据路由和当前加载的文章数来构造下一页的URL。
+ * @param route 路由信息对象
+ * @param count 加载的文章数
+ * @return {string} 指向下一页的URL，相对路径
+ */
+function nextPageUrl(route, count) {
+	const params = Object.assign({}, route.query);
+	const pairs = [];
+	for (const k of Object.keys(params)) {
+		pairs.push(k + "=" + params[k]);
+	}
+	const nextPath = "/page/" + ((parseInt(route.params.index) || 0) + count);
+	return pairs.length ? nextPath + "?" + pairs.join("&") : nextPath;
+}
 
 const indexStoreModule = {
 	namespaced: true,
@@ -51,45 +70,39 @@ export default {
 		ArticlePreview,
 		AsidePanel,
 	},
-	asyncData({store, route}) {
+	asyncData({ store, route }) {
 		store.registerModule("index", indexStoreModule);
-		return store.dispatch("index/fetchItem", 0, route.params.index);
-	},
-	props: {
-		index: {
-			type: Number,
-			default: 0,
-		},
+		return store.dispatch("index/fetchItem", route);
 	},
 	data() {
-		const store = this.$store.state.index;
-		return {
+		const data = {
 			category: this.$route.query.category,
 			cpath: null,
-			initArticles: store ? store.items : [],
+			initArticles: [],
+			nextUrl: null,
+			index: parseInt(this.$route.params.index) || 0,
 		};
+
+		const store = this.$store.state.index;
+		if (store) {
+			data.initArticles = store.items;
+			data.nextUrl = nextPageUrl(this.$route, store.items.length);
+		}
+		return data;
 	},
 	methods: {
 		async loadPage(items, size) {
 			const { $route, category, index } = this;
 			const loaded = await api.article.getList(category, index + items.length, size);
 			items.push.apply(items, loaded);
-
-			// 拼URL
-			const params = Object.assign({}, $route.query);
-			const pairs = [];
-			for (const k of Object.keys(params)) {
-				pairs.push(k + "=" + params[k]);
-			}
-			const nextPath =  "/page/" + (index + items.length);
-			return pairs.length ? nextPath + "?" + pairs.join("&") : nextPath;
+			return nextPageUrl($route, items.length);
 		},
 		excludeLast(arr) {
 			return [...arr].splice(0, arr.length - 1);
 		},
 	},
 	destroyed() {
-		if(this.$store.state.index) {
+		if (this.$store.state.index) {
 			this.$store.unregisterModule("index");
 		}
 	},
