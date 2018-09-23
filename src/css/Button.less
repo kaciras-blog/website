@@ -16,7 +16,7 @@
 @stripeWidth: 32px;
 
 .button-group {
-	& > .button, & > button {
+	&:not(.vertical) > .button, &:not(.vertical) > button {
 		&:not(:last-child) {
 			border-top-right-radius: 0;
 			border-bottom-right-radius: 0;
@@ -58,7 +58,7 @@
 	line-height: 1;
 	text-align: center;
 
-	border-radius: 4px;
+	border-radius: 5px;
 	.click-item;
 
 	&:focus {
@@ -106,7 +106,7 @@
 	@ctext: "color-button-@{name}-text";
 	@color-hover: @@cbkg - #101010;
 
-	border: none;
+	border: solid 1px @@cbkg;
 	background-color: @@cbkg;
 	color: @@ctext;
 
@@ -134,7 +134,6 @@
 	&.outline {
 		background-color: transparent;
 		color: @@cbkg;
-		border: solid 1px @@cbkg;
 
 		&:hover {
 			color: @@ctext;

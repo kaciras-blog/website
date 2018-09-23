@@ -230,13 +230,13 @@ ol.rank {
 		margin-bottom: .8em;
 
 		&:first-child::before{
-			background: @color-rank-pad;
+			background: @color-second;
 		}
 		&:nth-child(2)::before{
-			background: lighten(@color-rank-pad, 6%);
+			background: lighten(@color-second, 6%);
 		}
 		&:nth-child(3)::before{
-			background: lighten(@color-rank-pad, 12%);
+			background: lighten(@color-second, 12%);
 		}
 		&::before {
 			content: counter(index);

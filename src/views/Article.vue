@@ -4,13 +4,13 @@
 		<article-view v-bind="article"/>
 		<discuss-panel :article-id="article.id" ref="discss-panel"/>
 
-		<div class="side-buttons">
-			<button class="center-all"
+		<div class="side-buttons vertical button-group">
+			<button class="outline"
 					title="转到评论区"
 					@click="gotodiscuss">
 				<i class="far fa-comments"></i>
 			</button>
-			<button class="center-all"
+			<button class="outline"
 					ref="gotoTop"
 					title="回顶部"
 					@click="gotoTop">
@@ -31,8 +31,13 @@ function scrollFadeIn(button, minHeight) {
 	button = $(button);
 	minHeight = minHeight || 400;
 	return function () {
-		if ($(window).scrollTop() > minHeight) button.fadeIn(300);
-		else button.fadeOut(300);
+		if ($(window).scrollTop() > minHeight) {
+			button.fadeIn(300);
+			document.querySelector(".side-buttons").classList.add("button-group");
+		} else {
+			button.fadeOut(300);
+			document.querySelector(".side-buttons").classList.remove("button-group");
+		}
 	};
 }
 
@@ -93,17 +98,24 @@ export default {
 @import "../css/ToBeImpoert";
 
 #article-page {
-	margin: 0 auto;
 
-	@media screen {
-		@media (min-width: @length-screen-mobile) {
-			max-width: 90%;
+	& > article {
+		margin: 0 auto;
+
+		@media screen {
+			@media (min-width: @length-screen-mobile) {  max-width: 90%;  }
+			@media (min-width: @length-screen-pad) {  max-width: 85%;  }
+			@media (min-width: @length-screen-wide) {  max-width: 75%;  }
 		}
-		@media (min-width: @length-screen-pad) {
-			max-width: 85%;
-		}
-		@media (min-width: @length-screen-wide) {
-			max-width: 75%;
+	}
+
+	& > .discuss{
+		margin-left: auto;
+		margin-right: auto;
+
+		@media screen {
+			@media (min-width: @length-screen-pad) {  max-width: 85%;  }
+			@media (min-width: @length-screen-wide) {  max-width: 75%;  }
 		}
 	}
 }
@@ -145,11 +157,5 @@ export default {
 			}
 		}
 	}
-}
-
-.center-all {
-	display: flex;
-	justify-content: center;
-	align-items: center;
 }
 </style>
