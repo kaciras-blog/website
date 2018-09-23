@@ -23,7 +23,8 @@
 <script>
 import DiscussPanel from "../components/DiscussPanel";
 import ArticleView from "../components/ArticleView";
-import {scrollToElementStart} from "../utils";
+import TitleMixin from "../title-mixin";
+import {scrollToElementStart, escapeHtml} from "../utils";
 import api from "../apis";
 import $ from "jquery";
 
@@ -62,6 +63,17 @@ export default {
 	components: {
 		DiscussPanel,
 		ArticleView,
+	},
+	mixins: [TitleMixin],
+	metadata() {
+		const {title, keywords, summary} = this.article;
+		return {
+			title: title + " - Kaciras的博客",
+			meta: `
+				<meta name="description" content="${escapeHtml(summary)}">
+				<meta name="keywords" content="${escapeHtml(keywords.join(","))}">
+			`,
+		};
 	},
 	asyncData({store, route}) {
 		// 触发 action 后，会返回 Promise
