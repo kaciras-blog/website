@@ -2,15 +2,18 @@
 	<div>
 		<div class="buttons">
 			<div class="button-group">
-				<button :disabled="current === null" @click="gotoTop">
-					<i class="fas fa-arrow-up"></i><span>返回顶层分类</span>
+				<button :disabled="current === null"
+						@click="gotoTop">
+					<i class="fas fa-arrow-up"></i><span>返回顶层</span>
 				</button>
-				<button :disabled="current === null" @click="gotoParent">
+				<button :disabled="current === null"
+						@click="gotoParent">
 					<i class="fa fa-arrow-left"></i><span>回到父级</span>
 				</button>
 			</div>
 			<button class="second" @click="createNew">新建分类</button>
 		</div>
+
 		<category-view v-if="current" :current="current" :editable="true"/>
 
 		<div class="children-title" v-if="current">下级分类</div>

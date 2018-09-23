@@ -2,8 +2,8 @@
 	<figure class="swiper-slide">
 		<img class="picture" :src="item.picture"/>
 		<figcaption>
-			<h2>{{item.name}}</h2>
-			<p>{{item.description}}</p>
+			<!--<h2>{{item.name}}</h2>-->
+			<p class="desc">{{item.description}}</p>
 			<router-link :to="item.link"></router-link>
 		</figcaption>
 	</figure>
@@ -26,9 +26,18 @@ export default {
 
 .swiper-slide {
 	margin: 0;
+	text-align: center;
+	color: white;
 }
 
 .swiper-slide > figcaption {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	padding: 3rem;
+
+	transition: all .3s;
+
 	& > a {
 		z-index: 3;
 		position: absolute;
@@ -43,7 +52,7 @@ export default {
 	}
 
 	&:hover {
-		background-color: rgba(0, 0, 0, 0.5);
+		background-color: rgba(0, 0, 0, 0.4);
 
 		&::before, &::after {
 			opacity: 1;
@@ -81,5 +90,18 @@ export default {
 		-webkit-transform-origin: 100% 0;
 		transform-origin: 100% 0;
 	}
+}
+
+.picture{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.desc{
+	text-transform: none;
+
 }
 </style>

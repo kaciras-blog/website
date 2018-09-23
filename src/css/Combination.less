@@ -156,68 +156,6 @@ label.select-button {
 }
 
 /*
-<label class="check-box"><input type="checkbox"><span>Text</span></label>
- */
-
-.check-box {
-	display: block;
-	position: relative;
-	height: 1.6em;
-	cursor: pointer;
-
-	& > span {
-		position: relative;
-		left: .9em;
-
-		&::before {
-			content: "";
-			position: absolute;
-			top: -.2em;
-			left: -1.9em;
-			height: 1.6em;
-			width: 1.6em;
-
-			border: 1px solid #dbdbdb;
-			border-radius: .8em;
-			box-sizing: border-box;
-		}
-
-		&::after {
-			content: "";
-			border: solid white;
-			border-width: 0 2px 2px 0;
-
-			position: absolute;
-			transform: translateX(-50%) translateY(-50%) rotate(45deg);
-			left: -15px;
-			top: 7px;
-			width: 7px;
-			height: 13px;
-
-			display: none;
-		}
-	}
-
-	&:hover > input + span::before {
-		background-color: rgba(255,255,255,0.3);
-	}
-
-	& > input {
-		position: absolute;
-		opacity: 0;
-
-		&:checked + span::before {
-			background-color: #2196F3;
-			border-color: #2196F3;
-		}
-
-		&:checked + span::after {
-			display: block;
-		}
-	}
-}
-
-/*
  * 排行列表
  */
 ol.rank {

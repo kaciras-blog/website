@@ -190,9 +190,9 @@ _default.session = {
 	 * @param data 一个对象，格式如下：{ name: "用户名", password: "密码" }
 	 * @return Promise
 	 */
-	login: (data) => mainServer.post("/session/user", data),
+	login: (data) => accountServer.post("/session/user", data),
 
-	logout: () => mainServer.delete("/session/user").then(() => window.location.reload()),
+	logout: () => accountServer.delete("/session/user"),
 
 	// TODO: API网关层做下聚合
 	getCurrentUser: () => accountServer.get("/session/user")

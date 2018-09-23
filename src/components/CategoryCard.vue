@@ -1,7 +1,7 @@
 <template>
 	<div class="category-card">
 		<img class="head" :src="cover" alt="分类图标">
-		<h3>{{name}}</h3>
+		<h3 class="compact">{{name}}</h3>
 	</div>
 </template>
 

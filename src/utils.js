@@ -27,14 +27,14 @@ export function scrollToElementStart(element) {
 	if (typeof element === "string") {
 		element = document.getElementById(element);
 	}
-	$("html,body").animate({ scrollTop: element.offsetTop }, 200);
+	$("html,body").animate({ scrollTop: element.offsetTop }, 500);
 }
 
 export function scrollToElementEnd(element) {
 	if (typeof element === "string") {
 		element = document.getElementById(element);
 	}
-	$("html,body").animate({ scrollTop: element.offsetTop + element.clientHeight }, 200);
+	$("html,body").animate({ scrollTop: element.offsetTop + element.clientHeight }, 500);
 	// Velocity(document.getElementsByTagName("html")[0], {scrollTop: element.offsetTop + element.clientHeight}, 200);
 }
 

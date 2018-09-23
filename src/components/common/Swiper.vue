@@ -51,10 +51,11 @@ export default {
 	position: relative;
 
 	.slide {
+
 		position: absolute;
 		width: 100%;
 		height: 100%;
-		transition: all 0.3s;
+		transition: all 1s;
 	}
 }
 

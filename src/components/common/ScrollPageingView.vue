@@ -15,7 +15,7 @@ export default {
 		},
 		pageSize: {
 			type: Number,
-			default: 2,
+			default: 16,
 		},
 		// 下面两个设置初始状态，可以用于预渲染
 		initItems: {
