@@ -66,9 +66,13 @@ export default {
 </script>
 
 <style lang="less">
+@import "../css/ToBeImpoert";
+
 .discuss {
 	margin-top: 3rem;
-	padding: 2rem;
+	padding: 2rem .5rem;
+
+	@media (min-width: @length-screen-mobile) {  padding: 2rem;  }
 
 	& > header {
 		font-size: initial;

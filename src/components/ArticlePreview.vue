@@ -75,7 +75,6 @@ export default {
 .article-preview {
 	display: grid;
 	grid-template-rows: auto;
-
 	grid-gap: 1rem;
 
 	padding: 1rem;
@@ -83,6 +82,7 @@ export default {
 	border-bottom: solid 1px @color-border;
 
 	@media screen and (max-width: (@length-screen-mobile - 1px)) {
+		text-align: center;
 		& > * {
 			justify-self: center;
 			justify-content: center;

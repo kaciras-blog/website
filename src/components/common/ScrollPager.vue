@@ -94,12 +94,10 @@ export default {
 			this.$emit("load-page", new LoadTask(this));
 		},
 	},
-	created() {
-		this.loadPage();
-	},
 	mounted() {
 		if (this.autoLoad)
 			window.addEventListener("scroll", this.tryLoadPage);
+		this.tryLoadPage();
 	},
 };
 </script>

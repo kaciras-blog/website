@@ -11,17 +11,21 @@
 				<span class='name'>(匿名评论)</span>
 			</div>
 			<!-- 右边的楼层号 -->
-			<span class="minor-text">{{value.floor}}楼</span>
+			<span v-if="value.parent === 0" class="minor-text">{{value.floor}}楼</span>
 		</header>
 
 		<div class="content">{{value.content}}</div>
 
 		<div class="minor-text metas">
 			<div>
-				<!--<span title="暂不支持点赞" class="clickable meta"><i class="fa fa-thumbs-o-up"></i>{{value.voteCount}}</span>-->
-				<span title="暂不支持楼中楼"
+				<span class="clickable meta">
+					<i class="far fa-thumbs-up"></i>{{value.voteCount}}
+				</span>
+				<span v-if="value.parent === 0"
 					  class="clickable meta"
-					  @click="replyThis"><i class="far fa-comment"></i>回复(0)</span>
+					  @click="replyThis">
+					<i class="far fa-comment"></i>回复({{value.replyCount}})
+				</span>
 			</div>
 			<div>
 				<span v-if="deleteable"
@@ -31,7 +35,7 @@
 			</div>
 		</div>
 
-		<div v-if="value.replyCount>0">
+		<div class="replies" v-if="value.replyCount>0">
 			<discussion v-for="reply of value.replies" :key="reply.id" :value="reply"/>
 		</div>
 		<discz-editor
@@ -111,5 +115,10 @@ export default {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+}
+
+.replies{
+	margin-left: 5rem;
+	margin-top: 2rem;
 }
 </style>

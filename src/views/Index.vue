@@ -55,8 +55,8 @@ const indexStoreModule = {
 		items: null,
 	}),
 	actions: {
-		fetchItem({ commit }, category, index) {
-			return api.article.getList(category, index, 16).then(items => commit("setItems", items));
+		fetchItem({ commit }, route) {
+			return api.article.getList(0, route.params.index || 0, 16).then(items => commit("setItems", items));
 		},
 	},
 	mutations: {

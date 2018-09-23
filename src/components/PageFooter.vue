@@ -45,7 +45,10 @@ export default {
 .address {
 	grid-column-start: 1;
 	grid-column-end: 3;
+	text-align: center;
+
 	@media screen and (min-width: @length-screen-mobile) {
+		text-align: start;
 		grid-column-end: 2;
 	}
 }

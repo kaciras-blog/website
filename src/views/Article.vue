@@ -2,7 +2,7 @@
 	<page-layout view-id="article-page" :banner="true" :footer="true">
 
 		<article-view v-bind="article"/>
-		<discuss-panel :article-id="article.id" ref="discss-panel"/>
+		<discuss-panel :article-id="article.id" ref="discssPanel"/>
 
 		<div class="side-buttons vertical button-group">
 			<button class="outline"
@@ -31,11 +31,14 @@ import $ from "jquery";
 function scrollFadeIn(button, minHeight) {
 	button = $(button);
 	minHeight = minHeight || 400;
+	let hidden = true;
+
 	return function () {
-		if ($(window).scrollTop() > minHeight) {
+		const beShown = $(window).scrollTop() > minHeight;
+		if (beShown && hidden) {
 			button.fadeIn(300);
 			document.querySelector(".side-buttons").classList.add("button-group");
-		} else {
+		} else if(!beShown && !hidden) {
 			button.fadeOut(300);
 			document.querySelector(".side-buttons").classList.remove("button-group");
 		}
@@ -88,7 +91,7 @@ export default {
 	},
 	methods: {
 		gotodiscuss() {
-			scrollToElementStart(this.$refs["discss-panel"].$el);
+			scrollToElementStart(this.$refs["discssPanel"].$el);
 		},
 		gotoTop() {
 			$("html,body").animate({ scrollTop: 0 }, 300);
@@ -110,9 +113,10 @@ export default {
 @import "../css/ToBeImpoert";
 
 #article-page {
+	margin: 0 auto;
 
 	& > article {
-		margin: 0 auto;
+		padding: 0 .5rem;
 
 		@media screen {
 			@media (min-width: @length-screen-mobile) {  max-width: 90%;  }
@@ -137,8 +141,7 @@ export default {
 	flex-direction: column;
 	position: fixed;
 
-	background-color: white;
-	top: 72%;
+	top: 72vh;
 	right: .8rem;
 
 	@media screen {
@@ -154,12 +157,14 @@ export default {
 		}
 	}
 
-	& > button {
+	& > .outline {
 		margin-top: -1px;
 		padding: 0;
-		font-size: 1.5rem;
 		width: 2.5rem;
 		height: 2.5rem;
+
+		font-size: 1.5rem;
+		background-color: white; // 按钮组边角
 
 		@media screen {
 			@media (min-width: @length-screen-mobile) {
