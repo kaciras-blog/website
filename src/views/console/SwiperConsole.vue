@@ -1,8 +1,8 @@
 <template>
 	<div>
 		<div class="buttons">
-			<button @click="createNew">添加</button>
-			<button @click="submit">确定</button>
+			<button class="second" @click="createNew">添加轮播</button>
+			<button @click="submit">应用更改</button>
 		</div>
 
 		<div ref="container">
@@ -82,7 +82,7 @@ export default {
 				const container = this.$refs.container.getBoundingClientRect();
 				const cTop = container.top;
 				const rect = el.getBoundingClientRect();
-				const span = rect.height / 2 + parseFloat(getComputedStyle(el).fontSize);
+				const span = rect.height / 2 + 1.5 * parseFloat(getComputedStyle(el).fontSize);
 
 				slides[index] = { hold: true }; // 替换原轮播页为占位元素
 
@@ -107,14 +107,14 @@ export default {
 				const callback = (x, y) => {
 					this.dragging.style.left = x + "px";
 					this.dragging.style.top = y + "px";
-					const i = Math.floor((y - cTop) / span);
+					const i = Math.round((y - cTop) / span);
 
 					if (i <= 0) {
 						moveTo(0);
 					} else if (i >= slen * 2 - 1) {
 						moveTo(slen - 1);
 					} else {
-						moveTo((i + 1) / 2);
+						moveTo(Math.floor((i + 1) / 2));
 					}
 				};
 
@@ -136,12 +136,21 @@ export default {
 @import "../../css/ToBeImpoert";
 
 .slide {
-	margin: 1rem 0;
+	margin: 1.5rem 0;
 }
 
 .hold {
 	height: 2.6rem;
 	border: solid 2px #f7f646;
 	box-shadow: 0 0 3px 3px #f4ef36 inset;
+}
+
+.buttons {
+	display: flex;
+	justify-content: right;
+
+	& > button:first-child {
+		margin-right: .5rem;
+	}
 }
 </style>
