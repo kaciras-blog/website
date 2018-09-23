@@ -1,44 +1,50 @@
-<!--<template>-->
-	<!--<div class="button-pager">-->
-		<!--<div class="buttons">-->
-			<!--<button class="outline"-->
-					<!--v-if="current > 1"-->
-					<!--@click="showPage(1)">首页-->
-			<!--</button>-->
-
-			<!--<button class="outline"-->
-					<!--v-if="current > 1"-->
-					<!--@click="showPage(current-1)">上一页-->
-			<!--</button>-->
-
-			<!--<span v-if="current - omitPos > 0" class="omit">...</span>-->
-
-			<!--<template v-for="i in totalPage" v-if="i>current - omitPos && i < current + omitPos && i<= totalPage">-->
-				<!--<button :key="i" v-if="i === current">{{i}}</button>-->
-				<!--<button class="outline" :key="i" @click="showPage(i)" v-else>{{i}}</button>-->
-			<!--</template>-->
-
-			<!--<span v-if="current + omitPos <= totalPage" class="omit">...</span>-->
-
-			<!--<button class="outline"-->
-					<!--v-if="current < totalPage"-->
-					<!--@click="showPage(current+1)">下一页-->
-			<!--</button>-->
-
-			<!--<button class="outline"-->
-					<!--v-if="current < totalPage"-->
-					<!--@click="showPage(totalPage)">尾页-->
-			<!--</button>-->
-		<!--</div>-->
-
-		<!--<div class="minor-text">-->
-			<!--<span>共{{totalPage}}页，</span>-->
-			<!--<label>跳至<input class="jump" @keyup.13="jump">页</label>-->
-		<!--</div>-->
-	<!--</div>-->
-<!--</template>-->
-
 <script>
+
+function contentOf(type, index) {
+	switch (type) {
+		case "FIRST":
+			return "首页";
+		case "PREV":
+			return "上一页";
+		case "NEXT":
+			return "下一页";
+		case "LAST":
+			return "尾页";
+		case "OMIT":
+			return "...";
+		default:
+			return index; // JUMP, CURRENT
+	}
+}
+
+function textButton(createElement, type, index) {
+	if(type === "OMIT") {
+		return createElement("span", { attrs: { "class": "omit" } }, "...");
+	}
+	const content = contentOf(type, index);
+	if(type === "CURRENT") {
+		return createElement("span", { attrs: { "class": "active" } }, content);
+	}
+	return createElement("a", {
+		attrs: { "class": "text-link" },
+		on: { click: () => this.showPage(index) },
+	}, content);
+}
+
+function simpleButton(createElement, type, index) {
+	if(type === "OMIT") {
+		return createElement("span", { attrs: { "class": "omit" } }, "...");
+	}
+	const content = contentOf(type, index);
+	if(type === "CURRENT") {
+		return createElement("button", content);
+	}
+	return createElement("button", {
+		attrs: { "class": "outline" },
+		on: { click: () => this.showPage(index) },
+	}, content);
+}
+
 export default {
 	name: "ButtonPager",
 	props: {
@@ -62,48 +68,48 @@ export default {
 			type: Number,
 			default: 2,
 		},
+		theme: {
+			type: String,
+			default: "button", // text
+		},
 	},
 	render(h) {
-		const { current, omitPos, totalPage } = this;
+		const { current, omitPos, totalPage, theme } = this;
 		const buttons = [];
 
-		const createButton = (page, content, current) => {
-			if(content === "...") {
-				return h("span", {attrs: { "class": "omit" }}, content);
-			}
-			return h("button", {
-				attrs: { "class": current ? "" : "outline" },
-				on: { click: () => this.showPage(page) },
-			}, content);
+		const createButton = (type, page) => {
+			if (theme === "button")
+				return simpleButton.call(this, h, type, page);
+			return textButton.call(this, h, type, page);
 		};
 
 		if (current > 1) {
-			buttons.push(createButton(1, "首页", false));
-			buttons.push(createButton(current - 1, "上一页", false));
+			buttons.push(createButton("FIRST", 1));
+			buttons.push(createButton("PREV", current - 1));
 		}
 		if (current - omitPos > 1) {
-			buttons.push(createButton(0, "...", false));
+			buttons.push(createButton("OMIT"));
 		}
 		for (let i = Math.max(current - omitPos, 1); i <= Math.min(current + omitPos, totalPage); i++) {
 			if (i === current) {
-				buttons.push(createButton(i, i, true));
+				buttons.push(createButton("CURRENT", i));
 			} else {
-				buttons.push(createButton(i, i, false));
+				buttons.push(createButton("JUMP", i));
 			}
 		}
-		if(current + omitPos < totalPage) {
-			buttons.push(createButton(0, "...", false));
+		if (current + omitPos < totalPage) {
+			buttons.push(createButton("OMIT"));
 		}
 		if (current < totalPage) {
-			buttons.push(createButton(current + 1, "下一页", false));
-			buttons.push(createButton(totalPage, "尾页", false));
+			buttons.push(createButton("NEXT", current + 1));
+			buttons.push(createButton("LAST", totalPage));
 		}
 
-		const btnWrapper = h("div", { attrs: { "class": "buttons" }}, buttons);
+		const btnWrapper = h("div", { attrs: { "class": "buttons" } }, buttons);
 
 		// <input class="jump" @keyup="jump"/>
 		const jumpInput = h("input", {
-			attrs:{ "class": "jump"},
+			attrs: { "class": "jump" },
 			on: { keyup: this.jump },
 		});
 
@@ -132,7 +138,7 @@ export default {
 	},
 	methods: {
 		jump(event) {
-			if(event.key === "Enter") {
+			if (event.key === "Enter") {
 				this.$emit("load-page", event.target.value - 1);
 				event.target.value = "";
 			}
@@ -145,6 +151,8 @@ export default {
 </script>
 
 <style scoped lang="less">
+@import "../../css/ToBeImpoert";
+
 .button-pager {
 	display: flex;
 	justify-content: space-between;
@@ -163,15 +171,34 @@ export default {
 }
 
 .omit {
+	cursor: default;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+button + .omit{
+	vertical-align: middle;
 	line-height: 34px;
 	padding: 0 1rem;
-	cursor: default;
 	font-size: 1.5em;
-	user-select: none;
 }
 
 label {
 	display: inline-flex;
 	align-items: center;
+}
+.active{
+	padding: 0 .3rem;
+	color: #00a1ff;
+	font-weight: 600;
+}
+.text-link {
+	padding: 0 .3rem;
+
+	&:hover {
+		color: @color-second;
+	}
 }
 </style>

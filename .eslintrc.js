@@ -8,7 +8,7 @@ module.exports = {
 		'eslint:recommended'
 	],
 	rules: {
-		"indent": ["error", "tab"],
+		"indent": ["error", "tab", { SwitchCase: 1 }],
 		"comma-dangle": ["error", "always-multiline"],
 		"semi": ["error", "always"],
 		"no-mixed-spaces-and-tabs": ["warn", "smart-tabs"],
