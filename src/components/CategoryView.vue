@@ -1,46 +1,33 @@
 <template>
-	<div class="category">
-		<div v-if="current"
-			 class="info-container"
-			 @click.self="setBackground"
-			 :style="styleVars"
-			 :title="editable ? '点击换背景' : null">
+	<div v-if="current"
+		 class="info-container"
+		 @click.self="setBackground"
+		 :style="styleVars"
+		 :title="editable ? '点击换背景' : null">
 
-			<div class="info">
-				<img class="head"
-					 :src="current.cover"
-					 :title="editable ? '点击换头像' : null"
-					 alt="分类图标"
-					 @click="setCover">
+		<div class="info">
+			<img class="head"
+				 :src="current.cover"
+				 :title="editable ? '点击换头像' : null"
+				 alt="分类图标"
+				 @click="setCover">
 
-				<input v-if="editable" class="name" title="名称" v-model="current.name">
-				<span v-else class="name">{{current.name}}</span>
+			<input v-if="editable" class="name" title="名称" v-model="current.name">
+			<span v-else class="name">{{current.name}}</span>
 
-				<textarea
-					v-if="editable"
-					title="描述"
-					class="desc"
-					v-model="current.description">
-				</textarea>
+			<textarea
+				v-if="editable"
+				title="描述"
+				class="desc"
+				v-model="current.description">
+			</textarea>
 
-				<span v-else class="desc">{{current.description}}</span>
+			<span v-else class="desc">{{current.description}}</span>
 
-				<div class="buttons" v-if="editable">
-					<button class="outline" @click="move">移动</button>
-					<button class="outline" @click="submit">应用更改</button>
-					<button class="outline dangerous">删除</button>
-				</div>
-			</div>
-		</div>
-
-		<div class="children-title" v-if="current">下级分类</div>
-		<div class="children">
-			<div class="category-card"
-				 v-for="child of children"
-				 :key="child.id"
-				 @click="goto(child)">
-				<img class="head" :src="child.cover" alt="分类图标">
-				<span>{{child.name}}</span>
+			<div class="buttons" v-if="editable">
+				<button class="outline" @click="submit">应用更改</button>
+				<button class="outline" @click="move">移动</button>
+				<button class="outline dangerous" @click="remove">删除</button>
 			</div>
 		</div>
 	</div>
@@ -52,21 +39,14 @@ import api from "../apis";
 export default {
 	name: "CategoryView",
 	props: {
-		id: {
-			type: Number,
-			default: 0,
+		current: {
+			type: Object,
+			required: true,
 		},
 		editable: {
 			type: Boolean,
 			default: false,
 		},
-	},
-	data() {
-		return {
-			current: null,
-			children: [],
-			cache: {},
-		};
 	},
 	computed: {
 		styleVars() {
@@ -88,35 +68,29 @@ export default {
 			if (this.editable)
 				api.misc.uploadImageFile().then(name => this.current.background = name);
 		},
-		submit() {
-			api.category.update(this.current.id, this.current)
-				.then(() => this.$dialog.messageBox("修改分类", "修改成功"));
-		},
-		goto(category) {
-			this.current = category;
-			this.children = api.category.getChildren(category.id).then(r => this.children = r);
-			this.$emit("update:id", category.id);
+		// 没有ID视为新建的
+		async submit() {
+			const { current } = this;
+			if(current.id) {
+				await api.category.update(current.id, current);
+			} else {
+				await api.category.create(current);
+			}
+			this.$dialog.messageBox("修改分类", "修改成功");
 		},
 		move() {
 			this.$dialog.show("SelectCategoryDialog");
 		},
-		delete() {
+		remove() {
 			api.category.deleteOne(this.current.id).then(() => this.goto());
 		},
 	},
-	created() {
-		api.category.getInfo(this.id).then(json => this.current = json);
-		api.category.getChildren(this.id).then(r => this.children = r);
-	},
+
 };
 </script>
 
 <style scoped lang="less">
 @import "../css/ToBeImpoert";
-
-.category {
-	font-size: initial;
-}
 
 .buttons {
 	grid-area: button;
@@ -166,9 +140,13 @@ export default {
 
 .head {
 	grid-area: head;
+
 	display: block;
-	border: solid 3px white;
 	margin: 1rem;
+
+	color: black;
+	border: solid 3px white;
+	background-color: white;
 	cursor: var(--cursor);
 }
 
@@ -204,31 +182,4 @@ export default {
 	}
 }
 
-.children-title {
-	font-size: 1.5rem;
-	width: 100%;
-	margin: 1rem 0;
-	padding: 0 1rem 1rem;
-	border-bottom: solid 1px @color-border;
-}
-
-.children {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-}
-
-.category-card {
-	cursor: pointer;
-	max-width: 9rem;
-	margin: 1rem;
-	text-align: center;
-	padding: 0 1rem 1rem;
-	border: solid 1px #f3f3f3;
-
-	&:hover {
-		border-color: transparent;
-		box-shadow: 0 0 4px 3px #97dfff;
-	}
-}
 </style>
