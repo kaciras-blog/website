@@ -6,6 +6,8 @@ import ToggleButton from "./ToggleButton";
 import TransitionCurtain from "./TransitionCurtain";
 import ScrollPageingView from "./ScrollPageingView";
 import ButtonPageingView from "./ButtonPageingView";
+import KxCheckBox from "./KxCheckBox";
+
 /**
  * 自动注册目录下的Vue组件。
  *
@@ -20,6 +22,7 @@ export default function install(Vue) {
 	Vue.component(ToggleButton.name, ToggleButton);
 	Vue.component(ScrollPageingView.name, ScrollPageingView);
 	Vue.component(ButtonPageingView.name, ButtonPageingView);
+	Vue.component(KxCheckBox.name, KxCheckBox);
 
 //	IDE 无法分析自动扫描的引用
 // 	const requireContext = require.context(".", false,  /.vue$/);

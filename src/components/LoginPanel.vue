@@ -1,5 +1,5 @@
 <template>
-	<form @keyup.13="login">
+	<base-login-form @ok="login">
 		<h1 class="center segment">登录</h1>
 
 		<label for="name">用户名:</label>
@@ -9,24 +9,29 @@
 		<input id="password" v-model="form.password" type="password" required>
 
 		<div class="center">
-			<label class="check-box"><input v-model="form.remenber" type="checkbox"><span>保持登录</span></label>
+			<kx-check-box v-model="form.remenber">保持登录</kx-check-box>
 		</div>
 
 		<span class="text-warning center">{{message}}</span>
 
-		<div class="buttons">
-			<button type="button" class="outline" @click="login">确定</button>
-			<button type="button" class="second outline" @click="switchPanel">注册</button>
-		</div>
-	</form>
+		<button slot="button" type="button"
+				class="outline"
+				@click="login">确定</button>
+
+		<button slot="button" type="button"
+				class="second outline"
+				@click="switchPanel">注册</button>
+	</base-login-form>
 </template>
 
 <script>
 import api from "../apis";
-import {showErrorDialog, pageReturn} from "../utils";
+import { showErrorDialog, pageReturn } from "../utils";
+import BaseLoginForm from "./BaseLoginForm";
 
 export default {
 	name: "LoginPanel",
+	components: { BaseLoginForm },
 	data() {
 		return {
 			message: "",
@@ -50,42 +55,3 @@ export default {
 	},
 };
 </script>
-
-<style scoped lang="less">
-form {
-	display: grid;
-	grid-template-columns: 4em 1fr;
-	grid-column-gap: .5em;
-	grid-row-gap: 1em;
-}
-
-.center {
-	text-align: center;
-	grid-column: ~"1/3";
-}
-
-label {
-	align-self: center;
-	justify-self: right;
-	& + input {
-		grid-column-start: 2;
-	}
-}
-
-.text-warning {
-	font-size: 1.1em;
-	color: #ff646c;
-	height: 1em;
-}
-
-.buttons {
-	grid-column: ~"1/3";
-	display: flex;
-	& > * {
-		flex: 1;
-	}
-	& > *:not(:last-child) {
-		margin-right: 1rem;
-	}
-}
-</style>

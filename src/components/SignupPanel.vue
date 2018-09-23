@@ -1,37 +1,55 @@
 <template>
-	<form @keyup.13="signup">
+	<base-login-form @ok="signup">
 		<h1 class="center segment">注册</h1>
 
 		<label>用户名:</label>
-		<input v-model="form.name" placeholder="中英文数字和下划线" required>
+		<input v-model="form.name"
+			   placeholder="中英文数字和下划线"
+			   required>
 
 		<label>密码:</label>
-		<input v-model="form.password" type="password" placeholder="至少有个6位吧" required>
+		<input v-model="form.password"
+			   type="password"
+			   placeholder="至少有个6位吧"
+			   required>
 
 		<label>邮箱:</label>
-		<input v-model="form.email" type="email" placeholder="不填也行">
+		<input v-model="form.email"
+			   type="email"
+			   placeholder="不填也行">
 
 		<label>验证码:</label>
 		<div class="captcha">
-			<input title="验证码" ref="captchaInput" v-model="form.captcha" required>
-			<img :src="captcha" title="点击换一张" @click="updateCaptcha">
+			<input class="input-captcha"
+				   title="验证码"
+				   ref="captchaInput"
+				   v-model="form.captcha"
+				   required>
+			<img :src="captcha"
+				 title="点击换一张"
+				 @click="updateCaptcha">
 		</div>
 
 		<span class="text-warning center">{{message}}</span>
 
-		<div class="center">
-			<button type="button" class="primary square" @click="signup">确定</button>
-			<button type="button" class="square" @click="switchPanel">登录</button>
-		</div>
-	</form>
+		<button slot="button" type="button"
+				class="outline"
+				@click="signup">确定</button>
+
+		<button slot="button" type="button"
+				class="second outline"
+				@click="switchPanel">登录</button>
+	</base-login-form>
 </template>
 
 <script>
 import api from "../apis";
 import {errMsg, pageReturn} from "../utils";
+import BaseLoginForm from "./BaseLoginForm";
 
 export default {
 	name: "SignupPanel",
+	components: { BaseLoginForm },
 	data() {
 		return {
 			message: "",
@@ -73,29 +91,8 @@ export default {
 		cursor: pointer;
 	}
 }
-
-form {
-	display: grid;
-	grid-template-columns: 4em 1fr;
-	grid-gap: 1em;
-}
-
-.center {
-	text-align: center;
-	grid-column: ~"1/3";
-}
-
-label {
-	align-self: center;
-	justify-self: right;
-	& + input {
-		grid-column-start: 2;
-	}
-}
-
-.text-warning {
-	font-size: 1.1em;
-	color: #ff646c;
-	height: 1em;
+.input-captcha{
+	width: calc(100% - 150px - 1em);
+	margin-right: 1em;
 }
 </style>
