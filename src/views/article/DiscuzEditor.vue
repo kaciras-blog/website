@@ -6,17 +6,11 @@
 		已禁止匿名评论,请先<a class='highlight' href='/login'>登录</a>
 	</div>
 	<div class="discuss-editor" v-else>
-		<div v-if="user">
+		<div>
 			<img class='small head'
-				 :src='"/image/" + user.head'
+				 :src='discusser.head'
 				 alt="头像">
-			<span class="name">{{user.name}}</span>
-		</div>
-		<div v-else>
-			<img src='/image/akalin.jpg'
-				 class='small head'
-				 alt="头像">
-			<span class="name">(匿名评论)</span>
+			<span class="name">{{discusser.name}}</span>
 		</div>
 
 		<textarea
@@ -31,7 +25,7 @@
 				:class="{ running: submiting }"
 				:disabled="submiting"
 				@click='submitDiscuss'>
-				<i class="far fa-paper-plane"></i>发表评论
+				发表评论
 			</button>
 		</div>
 	</div>
@@ -59,21 +53,27 @@ export default {
 			content: "",
 		};
 	},
-	computed: mapState(["user"]),
+	computed: {
+		discusser() {
+			return this.user || { head: "/image/akalin.jpg", name: "(匿名评论)" };
+		},
+		...mapState(["user"]),
+	},
 	methods: {
 		async submitDiscuss() {
-			const text = this.content;
-			if (!text || /^\s*$/.test(text)) {
+			const { content, submit, $dialog } = this.content;
+
+			if (!content || /^\s*$/.test(content)) {
 				return this.$dialog.messageBox("发表评论", "您还没有写评论呢", "error");
 			}
 
 			this.submiting = true;
 			try {
-				await this.submit(text);
+				await submit(content);
 				this.content = "";
 				this.$emit("discussion-added");
 			} catch (e) {
-				this.$dialog.messageBox("发表评论", errorMessage(e), "error");
+				$dialog.messageBox("发表评论", errorMessage(e), "error");
 			}
 			this.submiting = false;
 		},
