@@ -31,6 +31,7 @@ module.exports = {
 		alias: {
 			'vue$': 'vue/dist/vue.runtime.esm.js',
 			// "jquery": "jquery/dist/jquery.slim.js",
+			'@': resolve('src'),
 		},
 	},
 	plugins: [

@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import api from "../apis.js";
+import api from "../../apis.js";
 
 export default {
 	name: "AsidePanel",

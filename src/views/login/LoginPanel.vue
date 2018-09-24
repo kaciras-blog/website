@@ -9,24 +9,27 @@
 		<input id="password" v-model="form.password" type="password" required>
 
 		<div class="center">
-			<kx-check-box v-model="form.remenber">保持登录</kx-check-box>
+			<kx-check-box v-model="form.remember">保持登录</kx-check-box>
 		</div>
 
 		<span class="text-warning center">{{message}}</span>
 
 		<button slot="button" type="button"
 				class="outline"
-				@click="login">确定</button>
+				:class="{ running }"
+				@click="login">确定
+		</button>
 
 		<button slot="button" type="button"
 				class="second outline"
-				@click="switchPanel">注册</button>
+				@click="switchPanel">注册
+		</button>
 	</base-login-form>
 </template>
 
 <script>
-import api from "../apis";
-import { showErrorDialog, pageReturn } from "../utils";
+import api from "../../apis";
+import { errorMessage } from "../../utils";
 import BaseLoginForm from "./BaseLoginForm";
 
 export default {
@@ -38,15 +41,18 @@ export default {
 			form: {
 				name: "",
 				password: "",
-				remenber: false,
+				remember: false,
 			},
+			running: false,
 		};
 	},
 	methods: {
 		login() {
+			this.running = true;
 			api.session.login(this.form)
-				.then(pageReturn)
-				.catch(showErrorDialog(this, "登录失败"));
+				.then(() => this.$router.push(this.$route.params.return || "/"))
+				.catch(err => this.message = errorMessage(err))
+				.finally(() => this.running = false);
 		},
 		switchPanel() {
 			this.$emit("switch-panel", "SignupPanel");

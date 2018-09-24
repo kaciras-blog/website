@@ -21,11 +21,11 @@
 </template>
 
 <script>
-import DiscussPanel from "../components/DiscussPanel";
-import ArticleView from "../components/ArticleView";
-import TitleMixin from "../title-mixin";
-import {scrollToElementStart, escapeHtml} from "../utils";
-import api from "../apis";
+import DiscussPanel from "./DiscussPanel";
+import ArticleView from "./ArticleView";
+import TitleMixin from "../../title-mixin";
+import { scrollToElementStart, escapeHtml, sleep } from "../../utils";
+import api from "../../apis";
 import $ from "jquery";
 
 function scrollFadeIn(button, minHeight) {
@@ -38,7 +38,7 @@ function scrollFadeIn(button, minHeight) {
 		if (beShown && hidden) {
 			button.fadeIn(300);
 			document.querySelector(".side-buttons").classList.add("button-group");
-		} else if(!beShown && !hidden) {
+		} else if (!beShown && !hidden) {
 			button.fadeOut(300);
 			document.querySelector(".side-buttons").classList.remove("button-group");
 		}
@@ -69,7 +69,7 @@ export default {
 	},
 	mixins: [TitleMixin],
 	metadata() {
-		const {title, keywords, summary} = this.article;
+		const { title, keywords, summary } = this.article;
 		return {
 			title: title + " - Kaciras的博客",
 			meta: `
@@ -78,10 +78,10 @@ export default {
 			`,
 		};
 	},
-	asyncData({store, route}) {
+	asyncData({ store, route }) {
 		// 触发 action 后，会返回 Promise
 		store.registerModule("article", articleStoreModule);
-		return store.dispatch("article/fetchItem", route.params.id);
+		return sleep(9999999).then(() => store.dispatch("article/fetchItem", route.params.id));
 	},
 	prefetch: true, // 在客户端是否预加载数据
 	computed: {
@@ -110,28 +110,38 @@ export default {
 </script>
 
 <style lang="less">
-@import "../css/ToBeImpoert";
+@import "../../css/ToBeImpoert";
 
 #article-page {
-	margin: 0 auto;
 
 	& > article {
 		padding: 0 .5rem;
+		margin: 0 auto;
 
 		@media screen {
-			@media (min-width: @length-screen-mobile) {  max-width: 90%;  }
-			@media (min-width: @length-screen-pad) {  max-width: 85%;  }
-			@media (min-width: @length-screen-wide) {  max-width: 75%;  }
+			@media (min-width: @length-screen-mobile) {
+				max-width: 90%;
+			}
+			@media (min-width: @length-screen-pad) {
+				max-width: 80%;
+			}
+			@media (min-width: @length-screen-wide) {
+				max-width: 70%;
+			}
 		}
 	}
 
-	& > .discuss{
+	& > .discuss {
 		margin-left: auto;
 		margin-right: auto;
 
 		@media screen {
-			@media (min-width: @length-screen-pad) {  max-width: 85%;  }
-			@media (min-width: @length-screen-wide) {  max-width: 75%;  }
+			@media (min-width: @length-screen-pad) {
+				max-width: 85%;
+			}
+			@media (min-width: @length-screen-wide) {
+				max-width: 75%;
+			}
 		}
 	}
 }

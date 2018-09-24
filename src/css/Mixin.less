@@ -79,22 +79,6 @@
 	margin-right: auto;
 }
 
-// 侧边栏
-// 主要区域：overflow: hidden; margin-left: xx; margin-right: xx;
-.sidebar(left, @width) {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: @width;
-}
-
-.sidebar(right, @width) {
-	position: absolute;
-	top: 0;
-	right: 0;
-	width: @width;
-}
-
 //------------------------------------- ├ 字体 ┆ └------------------------------------/
 
 // 字体颜色 + 自身 Hover
@@ -132,11 +116,6 @@
 	color: transparent;
 }
 
-// 文字外发光效果
-.glow-text(@r: 10px, @color: gold) {
-	text-shadow: 0 0 @r @color;
-}
-
 //------------------------------------- ├ 图像 ┆ └------------------------------------/
 
 // 用 max-width 来防止图片撑破容器
@@ -152,11 +131,6 @@
 	height: 100vh;
 	background: url(@url) no-repeat 50% 50%;
 	background-size: cover;
-}
-
-// 滤镜: 将彩色照片显示为黑白照片
-.grayscale() {
-	filter: grayscale(100%);
 }
 
 //------------------------------------- ├ 动效 ┆ └------------------------------------/
@@ -185,19 +159,16 @@
 	-webkit-transform-style: preserve-3d;
 }
 
-// Animation
-.anime(@name, @time: 1s, @ease: ease-in-out, @fillmode: forwards) {
-	animation-name: @name;
-	animation-duration: @time;
-	animation-timing-function: @ease;
-	animation-fill-mode: @fillmode;
-}
-
 //------------------------------------- ├ 功能 ┆ └------------------------------------/
 
 // 用于点击的元素，指针为手指样式、并禁止选取
 .click-item() {
 	cursor: pointer;
+	.disable-user-select();
+}
+
+// 禁止选取文字，这个postcss不处理得自己搞前缀
+.disable-user-select() {
 	user-select: none;
 	-webkit-user-select: none;
 	-moz-user-select: none;
@@ -243,41 +214,6 @@
 		color: #fff;
 		background-color: #6bc30d;
 		text-shadow: none;
-	}
-}
-
-//------------------------------------- ├ 组件 ┆ └------------------------------------/
-
-// 关闭按钮 ×
-.close() {
-	position: relative;
-	-webkit-appearance: none;
-	padding: 0;
-	cursor: pointer;
-	background: 0 0;
-	border: 0;
-	font-size: 20px;
-	font-weight: 700;
-	line-height: 1;
-	color: #000;
-	text-shadow: 0 1px 0 #fff;
-	filter: alpha(opacity=20);
-	opacity: .2;
-
-	&:hover {
-		color: #000;
-		text-decoration: none;
-		cursor: pointer;
-		filter: alpha(opacity=50);
-		opacity: .5;
-	}
-	&:before {
-		content: '';
-		position: absolute;
-		top: -10px;
-		left: -10px;
-		right: -10px;
-		bottom: -10px;
 	}
 }
 

@@ -10,7 +10,7 @@
 
 //危险按钮颜色
 @color-button-dangerous: #ef4c42;
-@color-button-dangerous-text: #f7f7f7;
+@color-button-dangerous-text: white;
 
 // 条纹宽度
 @stripeWidth: 32px;
@@ -70,13 +70,12 @@
 		margin-right: .2em;
 	}
 
+	&.cusp{
+		border-radius: 0;
+	}
+
 	transition: ease-in-out .15s;
 	.button-color("primary");
-
-	&.icon {
-		font-size: 1.3rem;
-		padding: .3rem;
-	}
 
 	&.transparent {
 		color: @color-text;
@@ -143,6 +142,13 @@
 			color: @@ctext;
 			background-color: @@cbkg + #0a0a0a;
 		}
+	}
+
+	// 图标按钮样式
+	&.icon {
+		border: none;
+		font-size: 1.3rem;
+		padding: .3rem .8rem;
 	}
 
 	// 正在运行的按钮样式，因为需要长时间运行的任务并不一定是加载，所以没用.loading

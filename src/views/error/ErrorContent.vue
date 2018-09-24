@@ -16,14 +16,14 @@ export default {
 		},
 		image: {
 			type: String,
-			default: require("../assets/error-other.png"),
+			default: require("../../assets/error-other.png"),
 		},
 	},
 };
 </script>
 
 <style scoped lang="less">
-@import "../css/ToBeImpoert";
+@import "../../css/ToBeImpoert";
 
 span.red {
 	color: #f40000;

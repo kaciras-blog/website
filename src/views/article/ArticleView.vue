@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import KxMarkdown from "../markdown";
+import KxMarkdown from "../../markdown/index";
 
 export default {
 	name: "ArticleView",
@@ -32,7 +32,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-@import "../css/ToBeImpoert";
+@import "../../css/ToBeImpoert";
 
 .title {
 	text-align: center;

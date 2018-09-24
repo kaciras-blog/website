@@ -187,10 +187,10 @@ _default.misc = {
 _default.session = {
 	/**
 	 * 用户登录，登录成功后会添加相应的Cookie
-	 * @param data 一个对象，格式如下：{ name: "用户名", password: "密码" }
+	 * @param form 一个对象，格式如下：{ name: 用户名, password: 密码, remember: 是否保存登录 }
 	 * @return Promise
 	 */
-	login: (data) => accountServer.post("/session/user", data),
+	login: form => accountServer.post("/session/user", form),
 
 	logout: () => accountServer.delete("/session/user"),
 

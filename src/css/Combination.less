@@ -62,33 +62,6 @@
 	}
 }
 
-/*
-<label class="select-button">
-	<input type="checkbox">
-	<span>一些文字内容</span>
-</label>
- */
-label.select-button {
-	margin: .9rem .5rem;
-	cursor: pointer;
-
-	& > input {
-		display: none;
-	}
-	& > span {
-		padding: .4rem;
-		color: #b8b8b8;
-		border: solid 1px #dedede;
-		border-radius: 5px;
-	}
-	& > input:checked + span {
-		color: #f2584d;
-		border-color: #ff6373;
-		box-shadow: 0 0 3px 1px #ffbec3 inset;
-	}
-}
-
-
 
 @color-tag-background: white;
 
@@ -179,6 +152,7 @@ ol.rank {
 		&::before {
 			content: counter(index);
 			position: absolute;
+			top: .1em;
 			padding: 0 .3em;
 			border-radius: .3em;
 			font-weight: 600;
@@ -189,6 +163,7 @@ ol.rank {
 			position: relative;
 			display: block;
 			margin-left: 1.5em;
+			line-height: 1.4;
 		}
 	}
 }

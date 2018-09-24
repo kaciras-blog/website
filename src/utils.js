@@ -20,7 +20,7 @@ export function escapeHtml(text) {
 
 export function pageReturn() {
 	const url = getUrlParamater("return");
-	window.location.href = url ? url : "index";
+	window.location.href = url ? url : "/";
 }
 
 export function scrollToElementStart(element) {

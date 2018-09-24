@@ -29,9 +29,9 @@
 </template>
 
 <script>
-import ArticlePreview from "../components/ArticlePreview.vue";
-import AsidePanel from "../components/AsidePanel.vue";
-import api from "../apis.js";
+import AsidePanel from "./AsidePanel.vue";
+import ArticlePreview from "./ArticlePreview.vue";
+import api from "../../apis.js";
 
 /**
  * 根据路由和当前加载的文章数来构造下一页的URL。
@@ -65,7 +65,7 @@ const indexStoreModule = {
 };
 
 export default {
-	name: "Index",
+	name: "IndexPage",
 	components: {
 		ArticlePreview,
 		AsidePanel,
@@ -111,7 +111,7 @@ export default {
 
 <!--suppress CssNoGenericFontName -->
 <style lang="less">
-@import "../css/ToBeImpoert";
+@import "../../css/ToBeImpoert";
 
 #index-page {
 	display: flex;
@@ -154,7 +154,7 @@ export default {
 }
 
 .index-header {
-	--background: url("../assets/index-banner.jpg") center 0;
+	--background: url("../../assets/index-banner.jpg") center 0;
 	--background-size: cover;
 }
 </style>

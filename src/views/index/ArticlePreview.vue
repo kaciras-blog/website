@@ -70,7 +70,7 @@ export default {
 </script>
 
 <style lang="less">
-@import "../css/ToBeImpoert.less";
+@import "../../css/ToBeImpoert.less";
 
 .article-preview {
 	display: grid;

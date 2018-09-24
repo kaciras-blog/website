@@ -39,7 +39,7 @@
 
 <script>
 import Vuex from "vuex";
-import { errorMessage } from "../utils";
+import { errorMessage } from "../../utils";
 
 export default {
 	name: "DiscussEditor",

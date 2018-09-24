@@ -1,12 +1,8 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Error from "./views/Error";
+import Error from "./views/error/Error";
 import Welcome from "./views/Welcome";
 
-import ArticleConsole from "./views/console/ArticleConsole";
-import DraftConsole from "./views/console/DraftConsole";
-import CategoryConsole from "./views/console/CategoryConsole";
-import SwiperConsole from "./views/console/SwiperConsole";
 
 Vue.use(Router);
 
@@ -20,11 +16,11 @@ export default function () {
 		{
 			path: "/",
 			name: "index",
-			component: () => import("./views/Index"),
+			component: () => import("./views/index/IndexPage"),
 		},
 		{
 			path: "/page/:index",
-			component: () => import("./views/Index"),
+			component: () => import("./views/index/IndexPage"),
 		},
 		{
 			path: "/welcome",
@@ -34,12 +30,12 @@ export default function () {
 		{
 			path: "/login",
 			name: "login",
-			component: () => import("./views/Login"),
+			component: () => import("./views/login/LoginPage"),
 		},
 		{
 			path: "/article/:id",
 			name: "article",
-			component: () => import("./views/Article"),
+			component: () => import("./views/article/Article"),
 		},
 		{
 			path: "/edit/:id",
@@ -48,14 +44,11 @@ export default function () {
 		},
 		{
 			path: "/console",
-			component: () => import("./views/Console"),
-			children: [
-				{ path: "", name: "console", redirect: "article" },
-				{ path: "article", component: ArticleConsole },
-				{ path: "swiper", component: SwiperConsole },
-				{ path: "draft", component: DraftConsole },
-				{ path: "category", component: CategoryConsole },
-			],
+			component: () => import("./views/console/ConsolePage"),
+			beforeEnter: (to, from, next) => {
+				const user = router.app.$store.state.user;
+				if(user && user.id === 2) next();
+			},
 		},
 		{
 			path: "/error/:code",
@@ -70,9 +63,12 @@ export default function () {
 			props: { code: "404" },
 		},
 	];
+
 	// 用来测试的页面
 	if (process.env.NODE_ENV !== "production") {
 		routes.unshift({ path: "/test", component: () => import("./views/Test") });
 	}
-	return new Router({ mode: "history", routes });
+
+	const router = new Router({ mode: "history", routes });
+	return router;
 }

@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import api from "../apis";
+import api from "../../apis";
 import discuzEditor from "./DiscuzEditor.vue";
 import discussion from "./Discussion.vue";
 
@@ -66,7 +66,7 @@ export default {
 </script>
 
 <style lang="less">
-@import "../css/ToBeImpoert";
+@import "../../css/ToBeImpoert";
 
 .discuss {
 	margin-top: 3rem;

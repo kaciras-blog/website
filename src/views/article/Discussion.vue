@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import api from "../apis";
+import api from "../../apis";
 import DisczEditor from "./DiscuzEditor.vue";
 import Vuex from "vuex";
 

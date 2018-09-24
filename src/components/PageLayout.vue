@@ -10,6 +10,7 @@
 
 <script>
 export default {
+	// functional: true,
 	props: ["banner", "footer", "viewId", "navStyle", "navClass"],
 	name: "PageLayout",
 };

@@ -3,13 +3,17 @@
 		<div class="summary">
 			<h2 class="compact" @click="item.open = !item.open">{{item.slide.name}}</h2>
 
-			<div class="handler" title="拖动调整次序" @mousedown.stop="dragStart">
+			<button class="icon cusp handler"
+					title="拖动调整次序"
+					@mousedown.stop="dragStart">
 				<i class="fas fa-arrows-alt"></i>
-			</div>
+			</button>
 
-			<div class="delete" title="删除" @click="remove">
+			<button class="icon cusp dangerous"
+				 title="删除"
+				 @click="remove">
 				<i class="fas fa-trash"></i>
-			</div>
+			</button>
 		</div>
 
 		<div v-show="item.open" class="details">
@@ -35,7 +39,7 @@
 </template>
 
 <script>
-import api from "../apis";
+import api from "../../apis";
 
 export default {
 	name: "SwiperConsoleItem",
@@ -61,12 +65,13 @@ export default {
 </script>
 
 <style scoped lang="less">
+@main-color: #2f8bff;
 
 .summary {
 	display: flex;
 	line-height: 2.6rem;
 	color: white;
-	background-color: #51a5ff;
+	background-color: @main-color;
 	cursor: pointer;
 
 	& > h2 {
@@ -83,7 +88,7 @@ export default {
 }
 
 .details {
-	border: solid 1px #6abdff;
+	border: solid 1px @main-color;
 	border-top-width: 0;
 	padding: 1.5rem;
 

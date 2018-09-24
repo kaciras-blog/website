@@ -33,15 +33,12 @@
 </template>
 
 <script>
-import ErrorContent from "../components/ErrorContent";
+import ErrorContent from "./ErrorContent";
 
 export default {
 	name: "Error",
 	components: { ErrorContent },
 	props: ["code"],
-	created() {
-		this.$emit("layoutChanged", { banner: false }, true);
-	},
 };
 </script>
 

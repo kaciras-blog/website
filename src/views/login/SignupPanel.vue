@@ -34,17 +34,19 @@
 
 		<button slot="button" type="button"
 				class="outline"
-				@click="signup">确定</button>
+				@click="signup">确定
+		</button>
 
 		<button slot="button" type="button"
 				class="second outline"
-				@click="switchPanel">登录</button>
+				@click="switchPanel">登录
+		</button>
 	</base-login-form>
 </template>
 
 <script>
-import api from "../apis";
-import {errMsg, pageReturn} from "../utils";
+import api from "../../apis";
+import { errorMessage } from "../../utils";
 import BaseLoginForm from "./BaseLoginForm";
 
 export default {
@@ -64,9 +66,9 @@ export default {
 	},
 	methods: {
 		signup() {
-			api.user.signup(this.form)
-				.then(pageReturn)
-				.catch(err => this.message = errMsg(err));
+			api.account.signup(this.form)
+				.then(() => this.$router.push(this.$route.params.return || "/"))
+				.catch(err => this.message = errorMessage(err));
 		},
 		switchPanel() {
 			this.$emit("switch-panel", "LoginPanel");
@@ -91,7 +93,8 @@ export default {
 		cursor: pointer;
 	}
 }
-.input-captcha{
+
+.input-captcha {
 	width: calc(100% - 150px - 1em);
 	margin-right: 1em;
 }

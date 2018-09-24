@@ -29,6 +29,8 @@ Vue.mixin({
 
 const { vue, router, store } = createApp();
 
+store.dispatch("refreshUser"); // 异步加载用户信息
+
 /**
  * 在官方教程的基础上修改而来，增加了以下功能：
  *   1.在异步组件解析前就显示加载指示器，让过渡更顺畅。
@@ -73,6 +75,7 @@ function initAppAndRouterHook() {
 		}
 
 		curtain.start();
+
 		Promise.all(prefetched.map(c => c.asyncData({ store, route: to })))
 			.then(next)
 			.catch(next)

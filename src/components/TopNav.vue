@@ -21,9 +21,9 @@
 				</div>
 
 				<div class="nav-item-group" v-if="user">
-					<img :src="'/image/' + user.head" class='small head' title='别看了，不支持换头像'>
+					<img :src="user.head" class='small head' title='别看了，不支持换头像'>
 					<!--<h3 class='user-name'>{{user.name}}</h3>-->
-					<router-link v-if="user.id===1" class='nav-item' to='/console'>管理</router-link>
+					<router-link v-if="user.id === 2" class='nav-item' to='/console'>管理</router-link>
 					<div @click="logout()" class='nav-item'>退出登录</div>
 				</div>
 

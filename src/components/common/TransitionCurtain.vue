@@ -3,7 +3,10 @@
 	<div class="dimmer" v-show="show">
 		<div class="loading">
 			<sk-fading-circle/>
-			<span v-if="timeouted">10秒都没加载完，多半是废了，您可以继续等等，或是<a @click="cancel">取消</a></span>
+			<span v-if="timeouted">
+				10秒都没加载完，多半是废了，您可以继续等等，或是
+				<a class="highlight" @click="cancel">取消</a>
+			</span>
 			<span v-else>加载中...</span>
 		</div>
 	</div>
@@ -63,15 +66,15 @@ export default {
 
 .loading {
 	.center-absolute(12rem, 10rem);
-	border-radius: .5rem;
 	padding: 1rem;
+
+	border-radius: .5rem;
+	text-align: center;
 	background-color: #494949;
 	color: white;
-	--color: #ff7dd0;
+}
 
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
+.highlight {
+	color: @color-second;
 }
 </style>

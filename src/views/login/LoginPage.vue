@@ -9,11 +9,11 @@
 </template>
 
 <script>
-import LoginPanel from "../components/LoginPanel";
-import SignupPanel from "../components/SignupPanel";
+import LoginPanel from "./LoginPanel";
+import SignupPanel from "./SignupPanel";
 
 export default {
-	name: "Login",
+	name: "LoginPage",
 	components: {LoginPanel, SignupPanel},
 	data() {
 		return {
@@ -29,7 +29,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-@import "../css/ToBeImpoert";
+@import "../../css/ToBeImpoert";
 
 form {
 	position: relative;
@@ -53,14 +53,14 @@ form {
 </style>
 
 <style lang="less">
-@import "../css/ToBeImpoert";
+@import "../../css/ToBeImpoert";
 
 #login-view {
 	width: 100%;
 	height: 100vh;
 
 	background-size: cover;
-	background-image: url("../assets/login-bkg.jpg");
+	background-image: url("../../assets/login-bkg.jpg");
 
 	@media screen {
 		@media (min-width: @length-screen-mobile) {
@@ -83,7 +83,7 @@ form {
 		color: white;
 		background-color: rgba(50, 50, 50, 0.3) !important;
 	}
-	--background: url("../assets/login-bkg.jpg") fixed;
+	--background: url("../../assets/login-bkg.jpg") fixed;
 	--background-size: cover;
 }
 
@@ -95,7 +95,7 @@ form {
 	box-shadow: rgba(0, 0, 0, .6) 0 0 4px 3px;
 
 	&::before {
-		background: url("../assets/login-bkg.jpg") fixed;
+		background: url("../../assets/login-bkg.jpg") fixed;
 		background-size: cover;
 	}
 	@media screen and (min-width: @length-screen-mobile) {

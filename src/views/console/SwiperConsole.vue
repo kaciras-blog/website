@@ -30,7 +30,7 @@
 <script>
 import api from "../../apis";
 import { deleteOn, drag, limitFrequency } from "../../utils";
-import SwiperConsoleItem from "../../components/SwiperConsoleItem";
+import SwiperConsoleItem from "./SwiperConsoleItem";
 
 export default {
 	name: "SwiperConsole",

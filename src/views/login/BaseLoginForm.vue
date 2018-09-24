@@ -37,7 +37,8 @@ export default {
 
 	& > .text-warning {
 		height: 1em;
-		font-size: 1.1em;
+		font-size: 1.2em;
+		font-weight: 600;
 		color: #ff767b;
 	}
 
