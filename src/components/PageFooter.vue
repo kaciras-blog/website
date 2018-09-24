@@ -40,16 +40,16 @@ export default {
 		grid-template-columns: 1fr auto auto;
 		justify-items: start;
 	}
-}
 
-.address {
-	grid-column-start: 1;
-	grid-column-end: 3;
-	text-align: center;
+	& > .address {
+		grid-column-start: 1;
+		grid-column-end: 3;
+		text-align: center;
 
-	@media screen and (min-width: @length-screen-mobile) {
-		text-align: start;
-		grid-column-end: 2;
+		@media screen and (min-width: @length-screen-mobile) {
+			text-align: start;
+			grid-column-end: 2;
+		}
 	}
 }
 </style>

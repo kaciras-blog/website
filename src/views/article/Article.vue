@@ -1,5 +1,8 @@
 <template>
-	<page-layout view-id="article-page" :banner="true" :footer="true">
+	<page-layout
+		view-id="article-page"
+		:banner="true"
+		:footer="true">
 
 		<article-view v-bind="article"/>
 		<discuss-panel :article-id="article.id" ref="discssPanel"/>
@@ -11,7 +14,6 @@
 				<i class="far fa-comments"></i>
 			</button>
 			<button class="outline"
-					ref="gotoTop"
 					title="回顶部"
 					@click="gotoTop">
 				<i class="fas fa-chevron-up"></i>
@@ -27,25 +29,10 @@ import TitleMixin from "../../title-mixin";
 import { scrollToElementStart, escapeHtml, sleep } from "../../utils";
 import api from "../../apis";
 import $ from "jquery";
+import { mapState } from "vuex";
 
-function scrollFadeIn(button, minHeight) {
-	button = $(button);
-	minHeight = minHeight || 400;
-	let hidden = true;
 
-	return function () {
-		const beShown = $(window).scrollTop() > minHeight;
-		if (beShown && hidden) {
-			button.fadeIn(300);
-			document.querySelector(".side-buttons").classList.add("button-group");
-		} else if (!beShown && !hidden) {
-			button.fadeOut(300);
-			document.querySelector(".side-buttons").classList.remove("button-group");
-		}
-	};
-}
-
-const articleStoreModule = {
+const storeModule = {
 	namespaced: true,
 	state: () => ({
 		item: {},
@@ -80,14 +67,12 @@ export default {
 	},
 	asyncData({ store, route }) {
 		// 触发 action 后，会返回 Promise
-		store.registerModule("article", articleStoreModule);
-		return sleep(9999999).then(() => store.dispatch("article/fetchItem", route.params.id));
+		store.registerModule("article", storeModule);
+		return store.dispatch("article/fetchItem", route.params.id);
 	},
 	prefetch: true, // 在客户端是否预加载数据
 	computed: {
-		article() {
-			return this.$store.state.article.item;
-		},
+		...mapState("article", { article: "item" }),
 	},
 	methods: {
 		gotodiscuss() {
@@ -97,14 +82,8 @@ export default {
 			$("html,body").animate({ scrollTop: 0 }, 300);
 		},
 	},
-	mounted() {
-		this.$refs.gotoTop.style.display = "none";
-		this.scrollHandler = scrollFadeIn(this.$refs.gotoTop, 600);
-		$(window).on("scroll", this.scrollHandler);
-	},
 	destroyed() {
 		this.$store.unregisterModule("article");
-		$(window).off("scroll", this.scrollHandler);
 	},
 };
 </script>

@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import Vuex from "vuex";
+import { mapState } from "vuex";
 import { errorMessage } from "../../utils";
 
 export default {
@@ -59,7 +59,7 @@ export default {
 			content: "",
 		};
 	},
-	computed: Vuex.mapState(["user"]),
+	computed: mapState(["user"]),
 	methods: {
 		async submitDiscuss() {
 			const text = this.content;

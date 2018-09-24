@@ -1,7 +1,7 @@
 @import "ToBeImpoert";
 
 // 主要按钮颜色
-@color-button-primary: #00c6ff;
+@color-button-primary: @color-primary;
 @color-button-primary-text: #ffffff;
 
 // 次要按钮颜色
@@ -14,6 +14,9 @@
 
 // 条纹宽度
 @stripeWidth: 32px;
+
+// 园角按钮的圆角半径
+@radius: 5px;
 
 .button-group {
 	&:not(.vertical) > .button, &:not(.vertical) > button {
@@ -58,7 +61,7 @@
 	line-height: 1;
 	text-align: center;
 
-	border-radius: 5px;
+	border-radius: @radius;
 	.click-item;
 
 	&:focus {

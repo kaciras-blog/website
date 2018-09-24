@@ -34,6 +34,7 @@
 
 		<button slot="button" type="button"
 				class="outline"
+				:class="{ running }"
 				@click="signup">确定
 		</button>
 
@@ -48,6 +49,7 @@
 import api from "../../apis";
 import { errorMessage } from "../../utils";
 import BaseLoginForm from "./BaseLoginForm";
+import {REFRESH_USER} from "../../store/user";
 
 export default {
 	name: "SignupPanel",
@@ -62,13 +64,21 @@ export default {
 				email: "",
 				captcha: "",
 			},
+			running: false,
 		};
 	},
 	methods: {
-		signup() {
-			api.account.signup(this.form)
-				.then(() => this.$router.push(this.$route.params.return || "/"))
-				.catch(err => this.message = errorMessage(err));
+		async signup() {
+			this.running = true;
+			try {
+				await api.account.signup(this.form);
+				await this.$store.dispatch(REFRESH_USER);
+				this.$router.push(this.$route.params.return || "/");
+			} catch(e) {
+				this.message = errorMessage(e);
+			} finally {
+				this.running = false;
+			}
 		},
 		switchPanel() {
 			this.$emit("switch-panel", "LoginPanel");

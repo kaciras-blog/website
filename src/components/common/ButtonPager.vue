@@ -123,7 +123,7 @@ export default {
 			attrs: { "class": "minor-text" },
 		}, [
 			h("span", `共${totalPage}页，`),
-			h("label", ["跳至", jumpInput, "页"]),
+			h("label", { attrs: { "class": "jump-label" } }, ["跳至", jumpInput, "页"]),
 		]);
 
 		return h("div", { attrs: { "class": "button-pager" } }, [btnWrapper, jump]);
@@ -185,10 +185,11 @@ button + .omit{
 	font-size: 1.5em;
 }
 
-label {
+.jump-label {
 	display: inline-flex;
 	align-items: center;
 }
+
 .active{
 	padding: 0 .3rem;
 	color: #00a1ff;

@@ -142,7 +142,7 @@ export default {
 .hold {
 	height: 2.6rem;
 	border: solid 2px #f7f646;
-	box-shadow: 0 0 3px 3px #f4ef36 inset;
+	box-shadow: 0 0 3px 3px #fffa38 inset;
 }
 
 .buttons {

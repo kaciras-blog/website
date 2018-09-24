@@ -181,6 +181,11 @@ _default.misc = {
 		return await this.uploadImage(files[0]);
 	},
 
+	/**
+	 * 生成一个验证码URL，该函数返回的不是Promise。
+	 *
+	 * @return {string} 验证码URL
+	 */
 	captchaAddress: () => API_SERVER + "/utils/captcha?r=" + Math.random(),
 };
 
@@ -193,10 +198,6 @@ _default.session = {
 	login: form => accountServer.post("/session/user", form),
 
 	logout: () => accountServer.delete("/session/user"),
-
-	// TODO: API网关层做下聚合
-	getCurrentUser: () => accountServer.get("/session/user")
-		.then(r => mainServer.get("/users/" + r.data)).then(r => r.data),
 };
 
 _default.account = {
@@ -213,6 +214,14 @@ _default.account = {
 	signup: (data) => accountServer.post("/accounts", data),
 };
 
+_default.user = {
+
+	// 会自动创建用户，需要先登录
+	getCurrent: () => mainServer.get("/current-user").then(res => res.data),
+
+	get: id => mainServer.get("/users/" + id),
+};
+
 _default.recommend = {
 
 	getHotArticles: () => mainServer.get("/recommendation/articles").then(r => r.data),
@@ -222,6 +231,15 @@ _default.recommend = {
 
 		set: list => mainServer.put("/recommendation/swiper", list),
 	},
+};
+
+/**
+ * 作为Vue的插件安装，可以直接在组件内调用而无须import。
+ *
+ * @param Vue Vue类
+ */
+_default.install = function (Vue) {
+	Vue.$api = _default;
 };
 
 export default _default;

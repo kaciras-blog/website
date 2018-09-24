@@ -1,5 +1,9 @@
 @import "Theme";
 
+@quote-padding: #bfbfbf; // 引用块左边装饰颜色
+@quote-background: #f8f8f8; // 引用块背景颜色
+
+
 .markdown {
 
 	font-size: 16px;
@@ -26,8 +30,8 @@
 		word-wrap: break-word;
 		font-size: 16px;
 
-		background-color: @color-md-quote-background;
-		border-left: .5em solid @color-md-quote-padding;
+		background-color: @quote-background;
+		border-left: .5em solid @quote-padding;
 	}
 
 	img {

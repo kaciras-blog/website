@@ -31,6 +31,7 @@
 import api from "../../apis";
 import { errorMessage } from "../../utils";
 import BaseLoginForm from "./BaseLoginForm";
+import {REFRESH_USER} from "../../store/user";
 
 export default {
 	name: "LoginPanel",
@@ -47,12 +48,17 @@ export default {
 		};
 	},
 	methods: {
-		login() {
+		async login() {
 			this.running = true;
-			api.session.login(this.form)
-				.then(() => this.$router.push(this.$route.params.return || "/"))
-				.catch(err => this.message = errorMessage(err))
-				.finally(() => this.running = false);
+			try {
+				await api.session.login(this.form);
+				await this.$store.dispatch(REFRESH_USER);
+				this.$router.push(this.$route.params.return || "/")
+			} catch (e) {
+				this.message = errorMessage(e);
+			} finally {
+				this.running = false;
+			}
 		},
 		switchPanel() {
 			this.$emit("switch-panel", "SignupPanel");

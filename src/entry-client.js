@@ -1,15 +1,15 @@
 import createApp from "./main";
 import Vue from "vue";
 import TransitionsCurtain from "./components/common/TransitionCurtain";
-
+import { REFRESH_USER } from "./store/user";
 /*
  * 注册 ServiceWorker 提升加载速度。
  */
-if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator) {
-	navigator.serviceWorker.register("/service-worker.js", { scope: "/" })
-		.then(() => console.log("Service worker registered successfully!"))
-		.catch(() => console.error("Service worker failed to register!"));
-}
+// if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator) {
+// 	navigator.serviceWorker.register("/service-worker.js", { scope: "/" })
+// 		.then(() => console.log("Service worker registered successfully!"))
+// 		.catch(() => console.error("Service worker failed to register!"));
+// }
 
 const curtain = new Vue(TransitionsCurtain).$mount();
 document.body.appendChild(curtain.$el);
@@ -29,7 +29,8 @@ Vue.mixin({
 
 const { vue, router, store } = createApp();
 
-store.dispatch("refreshUser"); // 异步加载用户信息
+store.dispatch(REFRESH_USER)
+	.catch((e) => console.error("无法连接账号服务器", e)); // 异步加载用户信息
 
 /**
  * 在官方教程的基础上修改而来，增加了以下功能：

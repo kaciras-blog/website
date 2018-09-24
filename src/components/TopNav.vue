@@ -5,7 +5,10 @@
 		<div id="top-nav" v-if="collapse">
 			<nav class="content">
 				<div></div>
-				<router-link to="/" class="logo-kaciras" title="花了5分钟画的logo，点击回到首页"/>
+				<router-link
+					class="logo-kaciras"
+					to="/welcome"
+					title="LOGO，点击回到首页"/>
 				<div class="button" @click="showMenu=true"><i class="fas fa-bars"></i></div>
 			</nav>
 		</div>
@@ -16,15 +19,26 @@
 
 				<!-- 左边 -->
 				<div class="nav-item-group">
-					<router-link to="/welcome" class="logo-kaciras" title="花了5分钟画的logo，点击回到首页"/>
-					<router-link to="/" class="nav-item">博客</router-link>
+					<router-link
+						class="logo-kaciras"
+						to="/welcome"
+						title="LOGO，点击回到首页"/>
+					<router-link
+						to="/"
+						class="nav-item">博客
+					</router-link>
 				</div>
 
 				<div class="nav-item-group" v-if="user">
-					<img :src="user.head" class='small head' title='别看了，不支持换头像'>
-					<!--<h3 class='user-name'>{{user.name}}</h3>-->
-					<router-link v-if="user.id === 2" class='nav-item' to='/console'>管理</router-link>
-					<div @click="logout()" class='nav-item'>退出登录</div>
+					<img :src="user.head"
+						 class="small head"
+						 title="别看了，不支持换头像">
+					<router-link
+						v-if="user.id === 2"
+						to="/console"
+						class="nav-item">管理
+					</router-link>
+					<div @click="logout" class="nav-item">退出登录</div>
 				</div>
 
 				<div class="nav-item-group" v-else>
@@ -39,8 +53,8 @@
 </template>
 
 <script>
-import api from "../apis";
-import Vuex from "vuex";
+import { mapActions, mapState } from "vuex";
+import { REMOVE_USER } from "../store/user";
 
 export default {
 	name: "TopNav",
@@ -57,13 +71,10 @@ export default {
 		};
 	},
 	computed: {
-		...Vuex.mapState(["user"]),
+		...mapState(["user"]),
 	},
 	methods: {
-		async logout() {
-			await api.session.logout();
-			this.$store.commit("clearUser");
-		},
+		...mapActions({ logout: REMOVE_USER }),
 	},
 };
 </script>
@@ -123,6 +134,7 @@ export default {
 		border-bottom: solid 1px #c5c5c5;
 	}
 }
+
 .head {
 	margin: 0 .5rem;
 }

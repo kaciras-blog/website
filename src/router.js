@@ -43,14 +43,6 @@ export default function () {
 			component: () => import("./views/ArticleEditor"),
 		},
 		{
-			path: "/console",
-			component: () => import("./views/console/ConsolePage"),
-			beforeEnter: (to, from, next) => {
-				const user = router.app.$store.state.user;
-				if(user && user.id === 2) next();
-			},
-		},
-		{
 			path: "/error/:code",
 			name: "error",
 			component: Error,
@@ -69,6 +61,5 @@ export default function () {
 		routes.unshift({ path: "/test", component: () => import("./views/Test") });
 	}
 
-	const router = new Router({ mode: "history", routes });
-	return router;
+	return new Router({ mode: "history", routes });
 }

@@ -2,11 +2,12 @@ import "./css/Main.less";
 import Vue from "vue";
 import App from "./App.vue";
 import createRouter from "./router";
-import createStore from "./store";
+import createStore from "./store/index";
 
 import CommonComponents from "./components/common";
 import KxDialog from "kxdialog/src/index";
 import KxMarkdown from "./markdown";
+import API from "./apis";
 
 import SelectCategoryDialog from "./components/SelectCategoryDialog";
 import TopNav from "./components/TopNav";
@@ -16,6 +17,7 @@ import PageLayout from "./components/PageLayout";
 Vue.use(CommonComponents);
 Vue.use(KxDialog);
 Vue.use(KxMarkdown);
+Vue.use(API);
 
 Vue.component(TopNav.name, TopNav);
 Vue.component(PageFooter.name, PageFooter);
@@ -32,6 +34,22 @@ Vue.directive("autofocus", {
 export default function () {
 	const store = createStore();
 	const router = createRouter();
+
+	/*
+	 * router.app.$store获取不到store实例，所以就放在这了
+	 */
+	router.addRoutes([
+		{
+			path: "/console",
+			component: () => import("./views/console/ConsolePage"),
+			// beforeEnter: (to, from, next) => {
+			// 	const user = store.state.user;
+			// 	if(user && user.id === 2)
+			// 		return next();
+			// 	next("/error/404");
+			// },
+		},
+	]);
 
 	const vue = new Vue({
 		router,
