@@ -1,6 +1,7 @@
 <template>
 	<kx-dialog @CloseButtonClicked="ok">
-		<h2 slot="title">编辑描述信息</h2>
+		<h2 class="compact" slot="title">编辑描述信息</h2>
+
 		<div class="content">
 			<img :src="cover"
 				 alt="封面"
@@ -22,7 +23,11 @@
 				   v-model="keywords"
 				   placeholder="关键字,空格隔开"/>
 		</div>
-		<button slot="footer" @click="ok">确定</button>
+
+		<div class="footer" slot="footer">
+			<button @click="cancel">取消</button>
+			<button @click="ok">确定</button>
+		</div>
 	</kx-dialog>
 </template>
 
@@ -31,13 +36,18 @@ import api from "../apis";
 
 export default {
 	name: "MetadataDialog",
-	props: ["mdata"],
+	props: {
+		metadata: Object,
+	},
 	data() {
-		return this.mdata;
+		return this.metadata;
 	},
 	methods: {
 		ok() {
 			this.$dialog.close(this.$data);
+		},
+		cancel() {
+			this.$dialog.close();
 		},
 		changeCover() {
 			api.misc.uploadImageFile().then(name => this.cover = name);
@@ -46,7 +56,7 @@ export default {
 };
 </script>
 
-<style scoped lang="less">
+<style scoped>
 .content {
 	width: 680px;
 	height: 200px;
@@ -73,5 +83,10 @@ img {
 
 .keywords {
 	grid-area: 5/1/5/12;
+}
+
+.footer {
+	text-align: right;
+	padding-right: 1rem;
 }
 </style>

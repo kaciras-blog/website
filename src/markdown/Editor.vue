@@ -40,15 +40,16 @@
 				<i class="far fa-file-video"></i>
 			</button>
 
-			<button class="icon filled" title="双列视图" @click="viewModel=0">
+			<button class="icon green" title="双列视图" @click="viewModel = 0">
 				<i class="fas fa-columns"></i>
 			</button>
-			<button class="icon filled" title="Markdown视图" @click="viewModel=1">
+			<button class="icon green" title="Markdown视图" @click="viewModel = 1">
 				<i class="far fa-edit"></i>
 			</button>
-			<button class="icon filled" title="Html视图" @click="viewModel=2">
+			<button class="icon green" title="Html视图" @click="viewModel = 2">
 				<i class="fas fa-eye"></i>
 			</button>
+
 			<button class="icon filled" title="编辑器设置">
 				<i class="fas fa-cog"></i>
 			</button>
@@ -65,21 +66,21 @@
 
 		<div class="editor-main">
 			<textarea
-				v-show="viewModel!==2"
+				v-show="viewModel !== 2"
 				id="textarea"
 				ref="textarea"
 				class="text-view"
-				:class="{ split:viewModel===0, single:viewModel===1 }"
+				:class="{ split:viewModel === 0, single:viewModel === 1 }"
 				title="编辑区"
 				@keydown.9.prevent="inputTab"
 				v-model="content">
 			</textarea>
 			<article
-				v-show="viewModel!==1"
+				v-show="viewModel !== 1"
 				id="preview"
 				ref="preview"
 				class="text-view preview markdown"
-				:class="{ split:viewModel===0, single:viewModel===2 }"
+				:class="{ split:viewModel === 0, single:viewModel === 2 }"
 				v-html="htmlText">
 			</article>
 		</div>
@@ -116,13 +117,14 @@ function syncScroll() {
 
 function convertToFront(json, data) {
 	assignUpdate(json, data);
+	assignUpdate(json, data.archive);
 	assignUpdate(json, data.metadata);
 }
 
 function convertToTransfer(data) {
 	return Object.assign({
-		id: data.draftId,
-		articleId: data.articleId,
+		id: data.archive.id,
+		articleId: data.archive.articleId,
 		content: data.content,
 	}, data.metadata);
 }
@@ -154,19 +156,22 @@ export default {
 		},
 	},
 	data() {
-		// return {
-		// 	metadata: {
-		// 		title: "",
-		// 		cover: "",
-		// 		keywords: "",
-		// 		summary: "",
-		//		category: null,
-		// 	},
-		// 	content: "",
-		// 	articleId: null,
-		// 	viewModel: 0, // 0分隔，1编辑，2预览
-		// };
-		return this.value;
+		return {
+			archive: {
+				id: null,
+				articleId: null,
+				category: null,
+			},
+			metadata: {
+				title: "",
+				cover: "",
+				keywords: "",
+				summary: "",
+			},
+			content: "",
+			viewModel: 0, // 0分隔，1编辑，2预览
+		};
+		// return this.value;
 	},
 	computed: {
 		htmlText() {
@@ -176,7 +181,7 @@ export default {
 	},
 	methods: {
 		save(manually) {
-			const promise = api.draft.save(this.articleId, convertToTransfer(this.$data));
+			const promise = api.draft.save(this.archive.id, convertToTransfer(this.$data));
 			if (manually) {
 				promise.then(() => this.$dialog.messageBox("保存草稿", "保存成功"))
 					.catch(() => this.$dialog.messageBox("保存草稿", "保存失败，请手动备份", "error"));
@@ -191,13 +196,13 @@ export default {
 			this.$dialog.messageBox("标题222", "3333", "warning");
 		},
 		publish() {
-			if(this.articleId) {
+			if (this.articleId) {
 				return publish.call(this);
 			}
 			this.$dialog.show(SelectCategoryDialog.name, this.metadata.category).then(publish.bind(this));
 		},
 		async metadataDialog() {
-			const res = this.$dialog.show(MetadataDialog.name, { mdata: this.metadata });
+			const res = await this.$dialog.show(MetadataDialog.name, { metadata: this.metadata });
 			if (res)
 				this.metadata = res;
 		},
@@ -247,8 +252,7 @@ export default {
 }
 
 .markdown-editor {
-	width: 100%;
-	height: 100%;
+	height: 100vh;
 }
 
 .editor-main {
@@ -280,6 +284,31 @@ export default {
 
 	& > button {
 		flex: 1 1 0;
+	}
+}
+
+button {
+	border-radius: 0;
+
+	&::after {
+		content: none !important;
+	}
+
+	&.minor {
+		color: black;
+		background-color: #eeeeee;
+
+		&:hover {
+			background-color: #dedede
+		}
+	}
+
+	&.green {
+		background-color: #3fdb6a;
+
+		&:hover {
+			background-color: #46ca6b
+		}
 	}
 }
 </style>
