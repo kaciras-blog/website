@@ -23,6 +23,8 @@
 				:key="item.id"
 				v-bind="item"
 				@click.native="goto(item)"/>
+
+			<span v-if="!children.length">没有了</span>
 		</div>
 	</div>
 </template>
@@ -63,12 +65,12 @@ export default {
 		},
 		gotoTop() {
 			this.current = null;
-			this.children = api.category.getChildren(0).then(r => this.children = r);
+			api.category.getChildren(0).then(r => this.children = r);
 		},
 		gotoParent() {
 			this.current = this.stack.pop();
 			const id = this.current ? this.current.id : 0;
-			this.children = api.category.getChildren(id).then(r => this.children = r);
+			api.category.getChildren(id).then(r => this.children = r);
 		},
 		createNew() {
 			this.stack.push(this.current);

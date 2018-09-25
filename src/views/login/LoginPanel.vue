@@ -53,7 +53,7 @@ export default {
 			try {
 				await api.session.login(this.form);
 				await this.$store.dispatch(REFRESH_USER);
-				this.$router.push(this.$route.params.return || "/")
+				this.$router.push(this.$route.params.return || "/");
 			} catch (e) {
 				this.message = errorMessage(e);
 			} finally {

@@ -127,6 +127,7 @@ export default {
 	& > button:nth-of-type(2) {
 		grid-area: btn-2;
 		align-self: start;
+		margin: 0; // button自动间距
 	}
 }
 

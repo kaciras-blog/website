@@ -60,15 +60,15 @@
 }
 
 // 扩展点击区域
-.extend-click(@size) {
+.extend-click(@left, @right, @top, @bottom) {
 	position: relative;
 	&:before {
 		content: '';
 		position: absolute;
-		top: -@size;
-		left: -@size;
-		right: -@size;
-		bottom: -@size;
+		top: -@top;
+		left: -@left;
+		right: -@right;
+		bottom: -@bottom;
 	}
 }
 

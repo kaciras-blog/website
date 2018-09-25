@@ -5,7 +5,7 @@ import createRouter from "./router";
 import createStore from "./store/index";
 
 import CommonComponents from "./components/common";
-import KxDialog from "kxdialog/src/index";
+import KxDialog from "kxdialog";
 import KxMarkdown from "./markdown";
 import API from "./apis";
 
