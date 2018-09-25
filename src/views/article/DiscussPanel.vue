@@ -1,10 +1,11 @@
 <template>
 	<section class="discuss panel">
 
-		<header class="segment">
-			<h2 class="compact">评论区</h2>
+		<header>
+			<h2>评论区</h2>
 			<span id="discuss-num">{{totalCount}}条</span>
 		</header>
+		<hr>
 
 		<div class="segment">
 			<discuz-editor :submit="submitDiscussion" @discussion-added="showLast"/>
@@ -17,6 +18,7 @@
 			<discussion
 				slot-scope="{ item }"
 				:key="item.id"
+				class="segment"
 				:value="item"
 				:replying="replying"
 				@reply="reply"

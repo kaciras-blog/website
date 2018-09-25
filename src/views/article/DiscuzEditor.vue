@@ -55,7 +55,7 @@ export default {
 	},
 	computed: {
 		discusser() {
-			return this.user || { head: "/image/akalin.jpg", name: "(匿名评论)" };
+			return this.user || { id: 0, head: "/image/akalin.jpg", name: "(匿名评论)" };
 		},
 		...mapState(["user"]),
 	},
@@ -64,7 +64,7 @@ export default {
 			const { content, submit, $dialog } = this.content;
 
 			if (!content || /^\s*$/.test(content)) {
-				return this.$dialog.messageBox("发表评论", "您还没有写评论呢", "error");
+				return; // 没写评论就按发表按钮
 			}
 
 			this.submiting = true;
@@ -85,6 +85,7 @@ export default {
 .discuss-editor {
 	display: flex;
 	flex-direction: column;
+	margin-top: 1rem;
 }
 
 .discuss-box {

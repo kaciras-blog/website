@@ -1,54 +1,63 @@
 <template>
-	<div class="segment">
-		<header class="discuss-header">
-			<!-- 头像和用户名 -->
-			<div class='flex margin-horiz' v-if="value.user.id!==0">
-				<img src='/image/noface.gif' class='small head'>
-				<span class='name'>{{value.user.name}}</span>
-			</div>
-			<div class='flex center-align margin-horiz' v-else>
-				<img src='/image/akalin.jpg' class='small head'>
-				<span class='name'>(匿名评论)</span>
-			</div>
-			<!-- 右边的楼层号 -->
-			<span v-if="value.parent === 0" class="minor-text">{{value.floor}}楼</span>
-		</header>
+	<div>
+		<img :src="discusser.head" class="small head">
+		<div class="discuss-main">
+			<header class="discuss-header">
+				<!-- 用户名 -->
+				<span class='name'>{{discusser.name}}</span>
+				<!-- 右边的楼层号 -->
+				<span v-if="value.parent === 0" class="minor-text">{{value.floor}}楼</span>
+			</header>
 
-		<div class="content">{{value.content}}</div>
+			<div class="content">{{value.content}}</div>
 
-		<div class="minor-text metas">
-			<div>
-				<span class="clickable meta">
-					<i class="far fa-thumbs-up"></i>{{value.voteCount}}
-				</span>
-				<span v-if="value.parent === 0"
-					  class="clickable meta"
-					  @click="replyThis">
-					<i class="far fa-comment"></i>回复({{value.replyCount}})
-				</span>
+			<div class="minor-text metas">
+				<div>
+					<span class="meta"
+						  :class="{ clickable: user.id > 0, active: value.voted }"
+						  :title="value.voted ? '取消点赞' : '点赞'"
+						  @click="vote">
+						<i class="far fa-thumbs-up"></i>
+						{{value.voteCount}}
+					</span>
+
+					<span v-if="value.parent === 0"
+						  class="clickable meta"
+						  @click="replyThis">
+						<i class="far fa-comment"></i>
+						回复({{value.replyCount}})
+					</span>
+				</div>
+
+				<div>
+					<span v-if="deleteable"
+						  class="clickable meta"
+						  @click='remove'>
+						<i class="far fa-trash-alt"></i>删除
+					</span>
+					<time>{{value.time}}</time>
+				</div>
 			</div>
-			<div>
-				<span v-if="deleteable"
-					  class="clickable meta"
-					  @click='remove'><i class="far fa-trash-alt"></i>删除</span>
-				<time>{{value.time}}</time>
+
+			<div v-if="value.replyCount>0">
+				<discussion
+					v-for="reply of value.replies"
+					:key="reply.id"
+					class="reply"
+					:value="reply"/>
 			</div>
+
+			<discz-editor
+				v-if="replying === value.id"
+				:submit="submitReply"/>
 		</div>
-
-		<div class="replies" v-if="value.replyCount>0">
-			<discussion v-for="reply of value.replies" :key="reply.id" :value="reply"/>
-		</div>
-		<discz-editor
-			v-if="replying === value.id"
-			style="margin-left: 6rem"
-			:submit="submitReply"/>
 	</div>
 </template>
 
 <script>
 import api from "../../apis";
 import DisczEditor from "./DiscuzEditor.vue";
-import Vuex from "vuex";
+import { mapState } from "vuex";
 
 export default {
 	name: "Discussion",
@@ -59,10 +68,12 @@ export default {
 	computed: {
 		deleteable() {
 			if (!this.user) return false;
-			if (this.user.id === 1) return true;
-			return this.user.id === this.value.user.id;
+			return this.user.id === 2;
 		},
-		...Vuex.mapState(["user"]),
+		discusser() {
+			return this.value.user || { id: 0, head: "/image/akalin.jpg", name: "(匿名评论)" };
+		},
+		...mapState(["user"]),
 	},
 	methods: {
 		submitReply(text) {
@@ -76,11 +87,34 @@ export default {
 		replyThis() {
 			this.$emit("reply", this.value.id);
 		},
+		vote() {
+			const { value } = this;
+			if (value.voted) {
+				api.discuss.revokeVote(value.id)
+					.then(() => value.voted = false)
+					.then(() => value.voteCount--);
+			} else {
+				api.discuss.voteUp(value.id)
+					.then(() => value.voted = true)
+					.then(() => value.voteCount++);
+			}
+		},
 	},
 };
 </script>
 
 <style scoped>
+.head {
+	display: block;
+	float: left;
+	position: relative;
+}
+
+.discuss-main {
+	position: relative;
+	margin-left: 4rem;
+}
+
 .name {
 	font-size: 16px;
 	font-weight: 600;
@@ -100,7 +134,7 @@ export default {
 	cursor: pointer;
 }
 
-.clickable:hover {
+.clickable:hover, .active {
 	color: #f785d7;
 }
 
@@ -117,8 +151,7 @@ export default {
 	align-items: center;
 }
 
-.replies{
-	margin-left: 5rem;
+.reply {
 	margin-top: 2rem;
 }
 </style>
