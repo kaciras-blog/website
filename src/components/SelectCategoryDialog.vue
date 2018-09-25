@@ -38,6 +38,7 @@
 			<div v-else class="tip">已选择：{{ selected.length ? selected[0].name : '' }}</div>
 			<div>
 				<button class="second" @click="clear">清空选择</button>
+				<button @click="cancel">取消</button>
 				<button @click="ok">确定</button>
 			</div>
 		</div>
@@ -82,7 +83,14 @@ export default {
 		},
 		ok() {
 			const { multiple, selected } = this;
-			this.$dialog.close(multiple ? selected : selected[0]);
+			if(multiple) {
+				this.$dialog.close(selected.map(c => c.id));
+			} else {
+				this.$dialog.close(selected[0] && selected[0].id);
+			}
+		},
+		cancel() {
+			this.$dialog.close();
 		},
 		clear() {
 			this.selected.forEach(cate => cate.selected = false);
