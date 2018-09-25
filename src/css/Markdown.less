@@ -17,10 +17,27 @@
 	}
 
 	code {
+		display: inline-block;
+		font-size: .9em;
 		line-height: 20px;
 		& *{
 			line-height: 25px;
 		}
+	}
+
+	pre > code {
+		-moz-tab-size: 4;
+		tab-size: 4;
+	}
+
+	.inline-code {
+		vertical-align: top;
+		margin: 0 .2em;
+		padding: .2em .3em;
+
+		border-radius: .4em;
+		background-color: #23241f;
+		color: #efefe9;
 	}
 
 	blockquote {
@@ -37,16 +54,6 @@
 	img {
 		max-width: 100%;
 		resize: none;
-	}
-
-	.inline-code {
-		display: inline-block;
-		margin: 0 .2em;
-		padding: .2em .3em;
-
-		border-radius: .4em;
-		background-color: #23241f;
-		color: #efefe9;
 	}
 
 	.image-wrapper {
