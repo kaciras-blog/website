@@ -92,7 +92,7 @@ import Vue from "vue";
 import $ from "jquery";
 import textOps from "./TextOperations";
 import { assignUpdate, errorMessage } from "../utils";
-import { convertor, afterConvert } from "./index";
+import kxMarkdown, { convertor } from "./index";
 import api from "../apis";
 
 import AddLinkDialog from "./AddLinkDialog.vue";
@@ -129,21 +129,29 @@ function convertToTransfer(data) {
 	}, data.metadata);
 }
 
-function publish() {
-	const dto = convertToTransfer(this.$data);
-	dto.keywords = dto.keywords.split(" ");
+async function publish() {
+	try {
+		const data = convertToTransfer(this.$data);
+		data.draftId = data.id; // 文章API里是draftId
+		delete data.id;
 
-	const targetArticleId = dto.articleId;
-	delete dto.articleId;
+		data.keywords = data.keywords.split(" ");
 
-	if (targetArticleId) {
-		api.article.update(targetArticleId, dto)
-			.then(() => this.$router.push("/article/" + targetArticleId))
-			.catch(reason => this.$dialog.messageBox("发表失败", errorMessage(reason), "error"));
-	} else {
-		api.article.publish(dto)
-			.then(url => this.$router.push("/article/" + url.substring("/articles/".length)))
-			.catch(reason => this.$dialog.messageBox("发表失败", errorMessage(reason), "error"));
+		let article = data.articleId;
+		delete data.articleId;
+
+		if (article) {
+			await api.article.update(article, data);
+		} else {
+			data.category = await this.$dialog.show(SelectCategoryDialog.name);
+			if (!data.category) {
+				return; // 取消选择分类
+			}
+			article = (await api.article.publish(data)).substring("/articles/".length);
+		}
+		this.$router.push("/article/" + article);
+	} catch (e) {
+		this.$dialog.messageBox("发表失败", errorMessage(e), "error");
 	}
 }
 
@@ -160,7 +168,7 @@ export default {
 			archive: {
 				id: null,
 				articleId: null,
-				category: null,
+				saveCount: 0,
 			},
 			metadata: {
 				title: "",
@@ -175,7 +183,7 @@ export default {
 	},
 	computed: {
 		htmlText() {
-			this.$nextTick(afterConvert);
+			this.$nextTick(kxMarkdown.afterConvert);
 			return convertor.render(this.content);
 		},
 	},
@@ -195,12 +203,7 @@ export default {
 		addCode() {
 			this.$dialog.messageBox("标题222", "3333", "warning");
 		},
-		publish() {
-			if (this.articleId) {
-				return publish.call(this);
-			}
-			this.$dialog.show(SelectCategoryDialog.name, this.metadata.category).then(publish.bind(this));
-		},
+		publish,
 		async metadataDialog() {
 			const res = await this.$dialog.show(MetadataDialog.name, { metadata: this.metadata });
 			if (res)
@@ -280,7 +283,7 @@ export default {
 
 .menu {
 	display: flex;
-	justify-content: space-between;
+	/*justify-content: space-around;*/
 
 	& > button {
 		flex: 1 1 0;
@@ -288,6 +291,7 @@ export default {
 }
 
 button {
+	margin: 0;
 	border-radius: 0;
 
 	&::after {

@@ -113,7 +113,7 @@ function addLink(text, href) {
 
 function addImageElement(url) {
 	const [selStart, selEnd] = getSelectedRange.call(this);
-	changeTextArea.call(this, selEnd, selEnd, "![](/image/" + url + ")");
+	changeTextArea.call(this, selEnd, selEnd, `![](${url})`);
 	const p = selStart + 2;
 	reselect.call(this, p, p);
 }
