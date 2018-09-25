@@ -18,11 +18,19 @@
 // 园角按钮的圆角半径
 @radius: 5px;
 
-button {
-	& + button, .button {
-		margin-left: .5rem;
+.btn-margin {
+	& > button {
+		& + button, .button {
+			margin-left: .5rem;
+		}
+	}
+	& > .button {
+		& + button, .button {
+			margin-left: .5rem;
+		}
 	}
 }
+
 
 .button-group {
 	&:not(.vertical) > .button, &:not(.vertical) > button {

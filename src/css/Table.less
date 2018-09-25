@@ -1,0 +1,27 @@
+@table-border-color: #cfcfcf;
+@table-border-width: 1px;
+
+table {
+	width: 100%;
+	margin-bottom: 1rem;
+	background-color: white; // Reset for nesting within parents with `background-color`.
+}
+
+th, td {
+	padding: .75rem;
+	vertical-align: top;
+	border-top: @table-border-width solid @table-border-color;
+}
+
+thead th {
+	vertical-align: bottom;
+	border-bottom: (2 * @table-border-width) solid @table-border-color;
+}
+
+tbody + tbody {
+	border-top: (2 * @table-border-width) solid @table-border-color;
+}
+
+tr:hover {
+	background-color: rgba(0, 0, 0, 0.04);
+}
