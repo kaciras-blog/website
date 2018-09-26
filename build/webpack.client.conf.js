@@ -2,7 +2,7 @@ const utils = require('./utils');
 const webpack = require('webpack');
 const config = require('../config');
 const merge = require('webpack-merge');
-const baseWebpackConfig = require('./webpack.base.conf');
+const baseWebpackConfig = require('./webpack.polyfill.conf');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
@@ -27,12 +27,6 @@ const webpackConfig = merge(baseWebpackConfig, {
 					priority: -10,
 					chunks: 'all',
 				},
-				// styles: {
-				// 	name: 'styles',
-				// 	test: /\.(css|less|vue)$/,
-				// 	chunks: 'all',
-				// 	enforce: true,
-				// },
 				async: {
 					name: 'async',
 					chunks: 'async',
