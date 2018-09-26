@@ -33,6 +33,7 @@ module.exports = {
 			// "jquery": "jquery/dist/jquery.slim.js",
 			'@': resolve('src'),
 		},
+		symlinks: false,
 	},
 	plugins: [
 		new CopyWebpackPlugin([
