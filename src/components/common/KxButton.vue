@@ -30,17 +30,10 @@ export default {
 <style lang="less">
 @import "../../css/ToBeImpoert";
 
-// 主要按钮颜色
-@color-button-primary: @color-primary;
-@color-button-primary-text: white;
-
-// 次要按钮颜色
-@color-button-second: #f884c5;
-@color-button-second-text: #ffffff;
-
-//危险按钮颜色
-@color-button-dangerous: #ef4c42;
-@color-button-dangerous-text: white;
+@color-button-primary: @color-primary; // 主要
+@color-button-second: #f570c7; // 次要
+@color-button-info: #25cb58; // 信息
+@color-button-dangerous: #ef4c42; // 危险
 
 // 条纹宽度
 @stripeWidth: 32px;
@@ -70,55 +63,35 @@ export default {
 	border-radius: @radius;
 	.click-item;
 
-	// 默认的颜色变量，less还不支运算作为CSS变量值，需要先用变量定义
-	--background: @color-button-primary;
-	--text-color: @color-button-primary-text;
-
-	@color-active: @color-button-primary - #121212;
-	--background-active: @color-active;
-
-	@color-highlight: @color-button-primary - #121212;
-	--background-highlight: fade(@color-button-primary);
-
+	// 默认的颜色变量
+	.color-mixin(@color-button-primary);
 
 	// 各种伪类下的样式
 	transition: ease-in-out .15s;
 	.focus-ripple-mixin;
+	.psudo-style;
 
-	&:hover {
-		color: white;
-		background-color: @color-button-primary;
-		border-color: @color-button-primary;
-		text-decoration: none; // <a>作为按钮时需要
-	}
-	&:active {
-		color: white;
-		background-color: var(--background-active);
-		border-color: var(--background-active);
-	}
-	&:focus {
-		outline: 0;
-	}
 
-	// 混入各种主题颜色
-	&.primary {.button-color("primary");}
-	&.second {.button-color("second");}
-//	&.info {
-//		.button-color("info");
-//	}
+	// 混入主题颜色
+	&.primary {
+		.flat-style;
+	}
+	&.second {
+		.color-mixin(@color-button-second);
+		.flat-style;
+	}
+	&.info {
+		.color-mixin(@color-button-info);
+		.flat-style;
+	}
+	&.dangerous {
+		.color-mixin(@color-button-dangerous);
+		.flat-style;
+	}
 
 	// 镂空按钮样式
 	&.outline {
-		background-color: transparent;
-		color: var(--background);
-
-		&:hover {
-			color: var(--text-color);
-			background-color: var(--background);
-		}
-		&:active {
-			color: var(--text-color);
-		}
+		.outline-style;
 	}
 
 	// 禁用按钮样式，所有颜色按钮禁用样式都一样
@@ -133,46 +106,76 @@ export default {
 		}
 	}
 
-	// 正在运行的按钮样式，因为需要长时间运行的任务并不一定是加载，所以没用.loading
-	// noinspection CssOptimizeSimilarProperties
-	&.running {
-		color: var(--text-color);
-		background-color: var(--background);
-		border-color: var(--background);
-		background-size: @stripeWidth @stripeWidth;
-
-		background-image: linear-gradient(-45deg,
-			var(--background-active) 25%, transparent 25%,
-			transparent 50%, var(--background-active) 50%,
-			var(--background-active) 75%, transparent 75%);
-
-		animation: barbershop linear .4s infinite;
-	}
-}
-
-.button-color(@name) {
-	// 先从变量名获取到相应的变量（背景色，文字色）
-	@bkg-color-var: "color-button-@{name}";
-	@text-color-var: "color-button-@{name}-text";
-
-	// 配置各主题色
-	@color-active: @@bkg-color-var - #121212;
-	--background: @@bkg-color-var;
-	--text-color: @@text-color-var;
-	--background-active: @color-active;
-
-	border-color: var(--background);
-	background-color: var(--background);
-	color: var(--text-color);
-
 	// 图标按钮样式
 	&.icon {
 		border: none;
 		font-size: 1.3rem;
 		padding: .3rem .8rem;
 	}
+
+	// 正在运行的按钮样式，因为需要长时间运行的任务并不一定是加载，所以没用.loading
+	// noinspection CssOptimizeSimilarProperties
+	&.running {
+		&, &:hover {
+			color: white;
+			background-color: var(--background-active);
+			border-color: var(--background-highlight);
+			background-size: @stripeWidth @stripeWidth;
+		}
+
+		background-image: linear-gradient(-45deg,
+			var(--background-highlight) 25%, transparent 25%,
+			transparent 50%, var(--background-highlight) 50%,
+			var(--background-highlight) 75%, transparent 75%);
+
+		animation: barbershop linear .4s infinite;
+	}
 }
 
+.psudo-style() {
+	&:hover {
+		color: white;
+		background-color: var(--background);
+		border-color: var(--background);
+		text-decoration: none; // <a>作为按钮时需要
+	}
+	&:active {
+		color: white;
+		background-color: var(--background-active);
+		border-color: var(--background-active);
+	}
+	&:focus {
+		outline: 0;
+	}
+}
+
+// 填充样式
+.flat-style() {
+	color: white;
+	border-color: var(--background);
+	background-color: var(--background);
+	.psudo-style;
+}
+
+.outline-style() {
+	background-color: transparent;
+	color: var(--background);
+
+	&:hover, &:active {
+		color: white;
+		background-color: var(--background);
+	}
+	.psudo-style;
+}
+
+// 配置各主题色，less还不支运算作为CSS变量值，需要先用变量定义
+.color-mixin(@color) {
+	@color-active: @color - #101010;
+	@color-highlight: lighten(@color, 6%);
+	--background: @color;
+	--background-active: @color-active;
+	--background-highlight: @color-highlight;
+}
 
 // 聚焦时发出波纹效果
 .focus-ripple-mixin() {
