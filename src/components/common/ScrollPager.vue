@@ -3,24 +3,32 @@
 
 		<!-- 通过该插槽可以自定义状态显示，父组件内请使用inline-template -->
 		<slot name="state">
-			<sk-fading-circle v-if="state === 'loading'"/>
+			<sk-fading-circle v-if="state === 'LOADING'"/>
 
-			<span v-else-if="state === 'failed'" class="text-warning">
+			<span v-else-if="state === 'FAILED'" class="text-warning">
 				加载失败,请<a class="error highlight" @click="loadPage">重试</a>
 			</span>
 
-			<span v-else-if="state === 'allLoaded'" class="minor-text">没有更多的了</span>
+			<span v-else-if="state === 'ALL_LOADED'" class="minor-text">没有更多的了</span>
 		</slot>
 
 		<!-- 手动加载按钮 -->
-		<a v-if="state==='free'"
-		   :href="nextPageUrl"
-		   class="button"
-		   @click.prevent="loadPage">下一页</a>
+		<kx-button
+			v-if="state==='FREE'"
+			tag="a"
+			:href="nextPageUrl"
+			@click.prevent="loadPage">
+			下一页
+		</kx-button>
 	</div>
 </template>
 
 <script>
+const LOADING = "LOADING";
+const FREE = "FREE";
+const FAILED = "FAILED";
+const ALL_LOADED = "ALL_LOADED";
+
 class LoadTask {
 
 	constructor(vm) {
@@ -31,12 +39,12 @@ class LoadTask {
 	complete(allLoaded = false) {
 		// 可能一次加载后空余高度仍达不到activeHeight，还得继续加载
 		if (!this._vm.tryLoadPage()) {
-			this.finish(allLoaded ? "allLoaded" : "free");
+			this.finish(allLoaded ? ALL_LOADED : FREE);
 		}
 	}
 
 	error() {
-		this.finish("failed");
+		this.finish(FAILED);
 	}
 
 	finish(state) {
@@ -66,19 +74,25 @@ export default {
 			type: Number,
 			default: 500,
 		},
+		// 初始状态，用于预渲染。
+		initState: {
+			type: String,
+			default: FREE,
+		},
 	},
-	data: () => ({
-		state: "free", /* free,fail,loading,allLoaded */
-	}),
+	data() {
+		/* free,fail,loading,allLoaded */
+		return { state: this.initState };
+	},
 	computed: {
 		loadable() {
-			return ["allLoaded", "loading"].indexOf(this.state) < 0;
+			return [ALL_LOADED, LOADING].indexOf(this.state) < 0;
 		},
 	},
 	methods: {
 		tryLoadPage() {
 			const { state, activeHeight } = this;
-			if (state !== "free")
+			if (state !== FREE)
 				return;
 			//网页高度 - 窗口高度 - 窗口之上部分的高度 = 窗口下面剩余的高度
 			const remain = document.body.offsetHeight - window.innerHeight - window.scrollY;
@@ -90,7 +104,7 @@ export default {
 		},
 		loadPage() {
 			if (!this.loadable) return;
-			this.state = "loading";
+			this.state = LOADING;
 			this.$emit("load-page", new LoadTask(this));
 		},
 	},

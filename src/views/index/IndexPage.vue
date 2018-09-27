@@ -20,6 +20,7 @@
 			<scroll-pageing-view
 				:loader="loadPage"
 				:init-items="initArticles"
+				:init-state="initState"
 				:init-next-url="nextUrl">
 				<article-preview slot-scope="{ item }" :key="item.id" :item="item"/>
 			</scroll-pageing-view>
@@ -87,6 +88,7 @@ export default {
 		if (store) {
 			data.initArticles = store.items;
 			data.nextUrl = nextPageUrl(this.$route, store.items.length);
+			data.initState = store.items.length >= 16 ? "FREE" : "ALL_LOADED";
 		}
 		return data;
 	},

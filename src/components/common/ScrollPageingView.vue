@@ -1,7 +1,10 @@
 <template>
 	<div>
 		<slot v-for="item of items" :item="item"/>
-		<scroll-pager :next-page-url="nextPageUrl" @load-page="loadPage"/>
+		<scroll-pager
+			:init-state="initState"
+			:next-page-url="nextPageUrl"
+			@load-page="loadPage"/>
 	</div>
 </template>
 
@@ -22,9 +25,8 @@ export default {
 			type: Array,
 			default: () => [],
 		},
-		initNextUrl:{
-			type: String,
-		},
+		initNextUrl: String,
+		initState: String,
 	},
 	data() {
 		return {
