@@ -4,9 +4,15 @@
 			<div class="slide">空空如也</div>
 		</template>
 		<template v-else>
-			<div class="prev slide"><slot :slide="prev"/></div>
-			<div class="current slide"><slot :slide="slides[index]"/></div>
-			<div class="next slide"><slot :slide="next"/></div>
+			<div class="prev slide" :class="{}">
+				<slot :slide="prev"/>
+			</div>
+			<div class="current slide">
+				<slot :slide="slides[index]"/>
+			</div>
+			<div class="next slide">
+				<slot :slide="next"/>
+			</div>
 		</template>
 	</div>
 </template>

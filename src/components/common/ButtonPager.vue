@@ -1,4 +1,5 @@
 <script>
+import KxButton from "./KxButton";
 
 function contentOf(type, index) {
 	switch (type) {
@@ -18,11 +19,11 @@ function contentOf(type, index) {
 }
 
 function textButton(createElement, type, index) {
-	if(type === "OMIT") {
+	if (type === "OMIT") {
 		return createElement("span", { attrs: { "class": "omit" } }, "...");
 	}
 	const content = contentOf(type, index);
-	if(type === "CURRENT") {
+	if (type === "CURRENT") {
 		return createElement("span", { attrs: { "class": "active" } }, content);
 	}
 	return createElement("a", {
@@ -32,17 +33,14 @@ function textButton(createElement, type, index) {
 }
 
 function simpleButton(createElement, type, index) {
-	if(type === "OMIT") {
+	if (type === "OMIT") {
 		return createElement("span", { attrs: { "class": "omit" } }, "...");
 	}
 	const content = contentOf(type, index);
-	if(type === "CURRENT") {
-		return createElement("button", content);
+	if (type === "CURRENT") {
+		return createElement(KxButton, { attrs: { "class": "primary" } }, content);
 	}
-	return createElement("button", {
-		attrs: { "class": "outline" },
-		on: { click: () => this.showPage(index) },
-	}, content);
+	return createElement(KxButton, { on: { click: () => this.showPage(index) } }, content);
 }
 
 export default {
@@ -178,7 +176,7 @@ export default {
 	user-select: none;
 }
 
-button + .omit{
+button + .omit {
 	vertical-align: middle;
 	line-height: 34px;
 	padding: 0 1rem;
@@ -190,11 +188,12 @@ button + .omit{
 	align-items: center;
 }
 
-.active{
+.active {
 	padding: 0 .3rem;
 	color: #00a1ff;
 	font-weight: 600;
 }
+
 .text-link {
 	padding: 0 .3rem;
 

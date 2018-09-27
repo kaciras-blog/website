@@ -11,8 +11,8 @@
 			<label>文字</label>
 			<input title="文字" v-model="text" :placeholder="href"/>
 		</form>
-		<div slot="footer">
-			<button @click="ok">确定</button>
+		<div class="footer" slot="footer">
+			<kx-button class="primary" @click="ok">确定</kx-button>
 		</div>
 	</kx-dialog>
 </template>
@@ -60,7 +60,11 @@ form {
 	flex-direction: column;
 }
 
+.footer {
+	padding-left: 1rem;
+	padding-right: 1rem;
+}
 button {
-	float: right;
+	width: 100%;
 }
 </style>

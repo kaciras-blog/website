@@ -7,17 +7,19 @@
 		<article-view v-bind="article"/>
 		<discuss-panel :article-id="article.id" ref="discssPanel"/>
 
-		<div class="side-buttons vertical button-group">
-			<button class="outline"
-					title="转到评论区"
-					@click="gotodiscuss">
+		<div class="side-buttons compact vertical-btn-group">
+			<kx-button
+				class="primary outline"
+				title="转到评论区"
+				@click="gotodiscuss">
 				<i class="far fa-comments"></i>
-			</button>
-			<button class="outline"
-					title="回顶部"
-					@click="gotoTop">
+			</kx-button>
+			<kx-button
+				class="primary outline"
+				title="回顶部"
+				@click="gotoTop">
 				<i class="fas fa-chevron-up"></i>
-			</button>
+			</kx-button>
 		</div>
 	</page-layout>
 </template>
@@ -26,7 +28,7 @@
 import DiscussPanel from "./DiscussPanel";
 import ArticleView from "./ArticleView";
 import TitleMixin from "../../title-mixin";
-import { scrollToElementStart, escapeHtml, sleep } from "../../utils";
+import { scrollToElementStart, escapeHtml } from "../../utils";
 import api from "../../apis";
 import $ from "jquery";
 import { mapState } from "vuex";

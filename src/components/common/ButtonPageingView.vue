@@ -54,14 +54,21 @@ export default {
 			}).finally(() => this._loading = null);
 		},
 		switchPage(index) {
-			this.loadPage(index).then(() => scrollToElementStart(this.$el));
+			this.loadPage(index).then(this.scrollToStart);
 		},
 		refresh() {
 			this.loadPage(this.index);
 		},
 		switchToLast() {
-			const { loadPage, total, pageSize, $el } = this;
-			loadPage(Math.floor(total / pageSize)).then(() => scrollToElementEnd($el));
+			const { loadPage, total, pageSize, scrollToEnd } = this;
+			loadPage(Math.floor(total / pageSize)).then(scrollToEnd);
+		},
+		// scroll helper methods
+		scrollToStart() {
+			this.$nextTick(() => scrollToElementStart(this.$el));
+		},
+		scrollToEnd() {
+			this.$nextTick(() => scrollToElementEnd(this.$el));
 		},
 	},
 	beforeMount() {

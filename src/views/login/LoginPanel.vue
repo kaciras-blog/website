@@ -2,11 +2,19 @@
 	<base-login-form @ok="login">
 		<h1 class="center segment">登录</h1>
 
-		<label for="name">用户名:</label>
-		<input id="name" v-model="form.name" required autofocus>
+		<label>用户名:</label>
+		<input
+			title="用户名"
+			v-model="form.name"
+			required
+			autofocus>
 
-		<label for="password">密码:</label>
-		<input id="password" v-model="form.password" type="password" required>
+		<label>密码:</label>
+		<input
+			title="密码"
+			v-model="form.password"
+			type="password"
+			required>
 
 		<div class="center">
 			<kx-check-box v-model="form.remember">保持登录</kx-check-box>
@@ -14,16 +22,18 @@
 
 		<span class="text-warning center">{{message}}</span>
 
-		<button slot="button" type="button"
-				class="outline"
-				:class="{ running }"
-				@click="login">确定
-		</button>
-
-		<button slot="button" type="button"
-				class="second outline"
-				@click="switchPanel">注册
-		</button>
+		<kx-task-button
+			slot="button"
+			class="primary outline"
+			:on-click="login">
+			确定
+		</kx-task-button>
+		<kx-button
+			slot="button"
+			class="second outline"
+			@click="switchPanel">
+			注册
+		</kx-button>
 	</base-login-form>
 </template>
 
@@ -44,20 +54,16 @@ export default {
 				password: "",
 				remember: false,
 			},
-			running: false,
 		};
 	},
 	methods: {
 		async login() {
-			this.running = true;
 			try {
 				await api.session.login(this.form);
 				await this.$store.dispatch(REFRESH_USER);
 				this.$router.push(this.$route.params.return || "/");
 			} catch (e) {
 				this.message = errorMessage(e);
-			} finally {
-				this.running = false;
 			}
 		},
 		switchPanel() {

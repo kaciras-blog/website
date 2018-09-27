@@ -1,7 +1,7 @@
 <template>
 	<div>
-		<div class="buttons">
-			<button @click="newArticle"><i class="fa fa-edit"></i>新文章</button>
+		<div class="toolbar btn-group">
+			<kx-button class="primary" @click="newArticle"><i class="fa fa-edit"></i>新文章</kx-button>
 		</div>
 
 		<div class="panel">
@@ -20,15 +20,26 @@
 						<span v-for="c in A.cpath" :key="c.id">{{c.name}}</span>
 					</div>
 					<div class="minor-text">
-						<i class="far fa-edit" title="发表于"></i><time>{{A.create}}</time>
-						<i class="fas fa-sync" title="最后更新"></i><time>{{A.update}}</time>
+						<i class="far fa-edit" title="发表于"></i>
+						<time>{{A.create}}</time>
+						<i class="fas fa-sync" title="最后更新"></i>
+						<time>{{A.update}}</time>
 						<i class="fas fa-comment-dots" title="评论数"></i><span>{{A.dcnt}}</span>
 						<i class="fa fa-eye" title="浏览数"></i><span>{{A.vcnt}}</span>
 					</div>
 				</div>
 
-				<button class="outline" @click="editArticle(A.id)">修改</button>
-				<button class="dangerous outline" @click="deleteArticle(A.id)">删除</button>
+				<kx-button
+					class="primary outline"
+					@click="editArticle(A.id)">
+					修改
+				</kx-button>
+				<kx-button
+					v-if="!A.deleted"
+					class="dangerous outline"
+					@click="deleteArticle(A.id)">
+					删除
+				</kx-button>
 			</div>
 
 			<span v-if="allLoaded && !articles.length">没有找到文章,去写一篇吧~</span>
@@ -39,7 +50,7 @@
 
 <script>
 import api from "../../apis";
-import {deleteOn, errorMessage} from "../../utils";
+import { deleteOn, errorMessage } from "../../utils";
 
 export default {
 	name: "ArticleConsole",
@@ -88,6 +99,10 @@ export default {
 <style scoped lang="less">
 @import "../../css/ToBeImpoert";
 
+.toolbar {
+	margin-bottom: 1rem;
+}
+
 .note {
 	border-radius: .3rem;
 	padding: .2em .3em;
@@ -103,15 +118,9 @@ export default {
 	}
 }
 
-.panel {
-	margin-bottom: 1rem;
-	margin-top: 1rem;
-}
-
 .article {
 	display: grid;
-	grid-template-areas: "img title btn-1"
-						 "img meta  btn-2";
+	grid-template-areas: "img title btn-1" "img meta  btn-2";
 	grid-template-columns: 8rem 1fr auto;
 	grid-template-rows: 3.5rem 3.5rem;
 	grid-column-gap: 1rem;
@@ -140,6 +149,7 @@ export default {
 		margin-right: .2rem;
 	}
 }
+
 .tag-group {
 	margin-bottom: 1rem;
 }

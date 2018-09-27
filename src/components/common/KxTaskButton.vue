@@ -45,7 +45,7 @@ export default {
 			const task = onClick();
 			if (task) {
 				this.running = true;
-				task.then(() => this.running = false);
+				task.finally(() => this.running = false);
 			}
 		},
 	},

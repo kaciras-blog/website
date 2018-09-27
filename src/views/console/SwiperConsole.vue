@@ -1,8 +1,8 @@
 <template>
 	<div>
-		<div class="buttons">
-			<button class="second" @click="createNew">添加轮播</button>
-			<button @click="submit">应用更改</button>
+		<div class="toolbar btn-group">
+			<kx-button @click="createNew">添加轮播</kx-button>
+			<kx-button class="primary" @click="submit">应用更改</kx-button>
 		</div>
 
 		<div ref="container">
@@ -10,7 +10,6 @@
 				<swiper-console-item
 					v-if="!item.hold"
 					:key="item.tid"
-					ref="slideComponents"
 					class="slide"
 					:item="item"
 					@drag-started="drag"
@@ -29,7 +28,7 @@
 
 <script>
 import api from "../../apis";
-import { deleteOn, drag, limitFrequency } from "../../utils";
+import { deleteOn, drag } from "../../utils";
 import SwiperConsoleItem from "./SwiperConsoleItem";
 
 export default {
@@ -77,7 +76,6 @@ export default {
 			this.$nextTick(() => {
 				// 此处有BUG，不能使用Vue的.$el，否则getBoundingClientRect()返回值是错的。
 				const el = document.querySelectorAll(".slide")[index];
-				// const el = this.$refs.slideComponents[index].$el;
 
 				const container = this.$refs.container.getBoundingClientRect();
 				const cTop = container.top;
@@ -145,12 +143,7 @@ export default {
 	box-shadow: 0 0 3px 3px #fffa38 inset;
 }
 
-.buttons {
-	display: flex;
-	justify-content: right;
-
-	& > button:first-child {
-		margin-right: .5rem;
-	}
+.toolbar {
+	text-align: right;
 }
 </style>

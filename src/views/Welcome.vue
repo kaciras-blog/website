@@ -6,7 +6,7 @@
 			</swiper>
 			<header>
 				<h1 class="title">博客网站</h1>
-				<router-link class="big outline button" to="/">去看看</router-link>
+				<kx-button route="/test" class="big outline primary">去看看</kx-button>
 			</header>
 			<div class="others"></div>
 		</section>

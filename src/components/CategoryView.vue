@@ -25,9 +25,9 @@
 			<span v-else class="desc">{{current.description}}</span>
 
 			<div class="buttons" v-if="editable">
-				<button class="outline" @click="submit">应用更改</button>
-				<button class="outline" @click="move">移动</button>
-				<button class="outline dangerous" @click="remove">删除</button>
+				<kx-button class="primary outline" @click="submit">应用更改</kx-button>
+				<kx-button class="primary outline" @click="move">移动</kx-button>
+				<kx-button class="dangerous outline" @click="remove">删除</kx-button>
 			</div>
 		</div>
 	</div>

@@ -24,7 +24,7 @@ export default {
 	cursor: pointer;
 
 	text-align: center;
-	border: solid 1px #f3f3f3;
+	border: solid 1px #e8e8e8;
 
 	& > .head {
 		display: block;

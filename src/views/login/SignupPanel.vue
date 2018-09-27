@@ -3,28 +3,33 @@
 		<h1 class="center segment">注册</h1>
 
 		<label>用户名:</label>
-		<input v-model="form.name"
-			   placeholder="中英文数字和下划线"
-			   required>
+		<input
+			v-model="form.name"
+			placeholder="中英文数字和下划线"
+			required>
 
 		<label>密码:</label>
-		<input v-model="form.password"
-			   type="password"
-			   placeholder="至少有个6位吧"
-			   required>
+		<input
+			v-model="form.password"
+			type="password"
+			placeholder="至少有个6位吧"
+			required>
 
 		<label>邮箱:</label>
-		<input v-model="form.email"
-			   type="email"
-			   placeholder="不填也行">
+		<input
+			v-model="form.email"
+			type="email"
+			placeholder="不填也行">
 
 		<label>验证码:</label>
 		<div class="captcha">
-			<input class="input-captcha"
-				   title="验证码"
-				   ref="captchaInput"
-				   v-model="form.captcha"
-				   required>
+			<input
+				class="input-captcha"
+				title="验证码"
+				ref="captchaInput"
+				v-model="form.captcha"
+				required>
+
 			<img :src="captcha"
 				 title="点击换一张"
 				 @click="updateCaptcha">
@@ -32,16 +37,18 @@
 
 		<span class="text-warning center">{{message}}</span>
 
-		<button slot="button" type="button"
-				class="outline"
-				:class="{ running }"
-				@click="signup">确定
-		</button>
-
-		<button slot="button" type="button"
-				class="second outline"
-				@click="switchPanel">登录
-		</button>
+		<kx-task-button
+			slot="button"
+			class="primary outline"
+			:on-click="signup">
+			确定
+		</kx-task-button>
+		<kx-button
+			slot="button"
+			class="second outline"
+			@click="switchPanel">
+			登录
+		</kx-button>
 	</base-login-form>
 </template>
 
@@ -64,20 +71,16 @@ export default {
 				email: "",
 				captcha: "",
 			},
-			running: false,
 		};
 	},
 	methods: {
 		async signup() {
-			this.running = true;
 			try {
 				await api.account.signup(this.form);
 				await this.$store.dispatch(REFRESH_USER);
 				this.$router.push(this.$route.params.return || "/");
 			} catch(e) {
 				this.message = errorMessage(e);
-			} finally {
-				this.running = false;
 			}
 		},
 		switchPanel() {

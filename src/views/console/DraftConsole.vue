@@ -1,7 +1,7 @@
 <template>
 	<div>
-		<div class="buttons">
-			<button class="dangerous" @click="deleteAll"><i class="far fa-trash-alt"></i>全部删除</button>
+		<div class="toolbar btn-group">
+			<kx-button class="dangerous" @click="deleteAll"><i class="far fa-trash-alt"></i>全部删除</kx-button>
 		</div>
 
 		<div class="panel">
@@ -13,9 +13,10 @@
 						<i class="fas fa-pencil-alt"></i>
 						<time>{{draft.time}}</time>
 					</span>
-					<div class="button-group">
-						<router-link class="outline button" :to="'/edit/' + draft.id">编辑</router-link>
-						<button class="dangerous outline" @click="deleteDraft(draft.id)">删除</button>
+
+					<div class="btn-group">
+						<kx-button class="primary outline" :route="'/edit/' + draft.id">编辑</kx-button>
+						<kx-button class="dangerous outline" @click="deleteDraft(draft.id)">删除</kx-button>
 					</div>
 				</div>
 
@@ -109,7 +110,7 @@ export default {
 	align-items: center;
 }
 
-.buttons {
+.toolbar {
 	margin-bottom: 1rem;
 }
 

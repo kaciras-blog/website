@@ -15,14 +15,17 @@ export default {
 	},
 	render(h, ctx) {
 		const { data, children } = ctx;
-		const clazz = ["kx-btn"];
+		const { staticClass, attrs } = data;
 
-		if (data.staticClass) {
-			clazz.push(data.staticClass);
+		const clazz = ["kx-btn"];
+		if (staticClass) {
+			clazz.push(staticClass);
+		}
+		if (attrs && attrs.class) {
+			clazz.push(attrs.class);
+			delete attrs.class;
 		}
 		data.staticClass = clazz.join(" ");
-		data.attrs = data.attrs || {};
-		data.attrs.type = "button";
 
 		// 上面设置样式，下面处理特殊标签
 		let { tag, route } = ctx.props;
@@ -31,6 +34,10 @@ export default {
 			data.props.tag = tag;
 			data.props.to = route;
 			tag = Vue.component("router-link");
+		}
+		if(tag === "button") {
+			data.attrs = attrs || {};
+			data.attrs.type = "button";
 		}
 		return h(tag, data, children);
 	},
@@ -68,6 +75,7 @@ export default {
 	white-space: nowrap;
 
 	// 基本样式
+	/*<!--color: @color-text;-->*/
 	border: solid 1px #e0e0e0;
 	background-color: transparent;
 	border-radius: @radius;
@@ -110,8 +118,8 @@ export default {
 
 		&:not(.running) {
 			color: dimgray;
-			border-color: #d1d7d7;
-			background-color: #d1d7d7;
+			border-color: #d9dfdf;
+			background-color:#d9dfdf;
 		}
 	}
 
@@ -133,9 +141,9 @@ export default {
 		}
 
 		background-image: linear-gradient(-45deg,
-			var(--background-highlight) 25%, transparent 25%,
-			transparent 50%, var(--background-highlight) 50%,
-			var(--background-highlight) 75%, transparent 75%);
+		var(--background-highlight) 25%, transparent 25%,
+		transparent 50%, var(--background-highlight) 50%,
+		var(--background-highlight) 75%, transparent 75%);
 
 		animation: barbershop linear .4s infinite;
 	}

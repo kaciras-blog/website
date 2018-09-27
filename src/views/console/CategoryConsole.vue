@@ -1,17 +1,19 @@
 <template>
 	<div>
 		<div class="buttons">
-			<div class="button-group">
-				<button :disabled="current === null"
-						@click="gotoTop">
+			<div class="btn-group">
+				<kx-button
+					:disabled="current === null"
+					@click="gotoTop">
 					<i class="fas fa-arrow-up"></i><span>返回顶层</span>
-				</button>
-				<button :disabled="current === null"
-						@click="gotoParent">
+				</kx-button>
+				<kx-button
+					:disabled="current === null"
+					@click="gotoParent">
 					<i class="fa fa-arrow-left"></i><span>回到父级</span>
-				</button>
+				</kx-button>
 			</div>
-			<button class="second" @click="createNew">新建分类</button>
+			<kx-button class="second" @click="createNew">新建分类</kx-button>
 		</div>
 
 		<category-view v-if="current" :current="current" :editable="true"/>

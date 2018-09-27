@@ -3,17 +3,19 @@
 		<div class="summary">
 			<h2 class="compact" @click="item.open = !item.open">{{item.slide.name}}</h2>
 
-			<button class="icon cusp handler"
-					title="拖动调整次序"
-					@mousedown.stop="dragStart">
+			<kx-button
+				class="icon cusp handler"
+				title="拖动调整次序"
+				@mousedown.stop="dragStart">
 				<i class="fas fa-arrows-alt"></i>
-			</button>
+			</kx-button>
 
-			<button class="icon cusp dangerous"
-				 title="删除"
-				 @click="remove">
+			<kx-button
+				class="icon cusp dangerous"
+				title="删除"
+				@click="remove">
 				<i class="fas fa-trash"></i>
-			</button>
+			</kx-button>
 		</div>
 
 		<div v-show="item.open" class="details">

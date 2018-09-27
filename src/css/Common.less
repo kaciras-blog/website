@@ -12,10 +12,10 @@
 	background-color: @color-panel-background;
 	box-shadow: 0 0 4px fade(@color-border, 70%);
 
-	&.large-padding{
+	&.large-padding {
 		padding: 3rem;
 	}
-	&.round{
+	&.round {
 		border-radius: 1rem;
 	}
 }
@@ -61,14 +61,14 @@ hr {
 	}
 }
 
-.minor-text{
+.minor-text {
 	color: @color-text-minor;
 }
 
 .head {
 	.circularity(5rem);
 
-	&.small{
+	&.small {
 		.circularity(3rem)
 	}
 }
@@ -79,7 +79,7 @@ hr {
 		text-decoration: underline;
 	}
 
-	&.error{
+	&.error {
 		.highlight-color(#f94f55, #f94f55);
 	}
 	&.pink {
@@ -124,5 +124,52 @@ hr {
 		text-decoration: none;
 		color: @color-text;
 		background-color: rgba(255, 255, 255, 0.4);
+	}
+}
+
+.btn-group {
+
+	& > .kx-btn + .kx-btn {
+		margin-left: .5rem;
+	}
+
+	&.compact > .kx-btn {
+		&:not(:last-child) {
+			border-top-right-radius: 0;
+			border-bottom-right-radius: 0;
+		}
+		&:not(:first-child) {
+			border-top-left-radius: 0;
+			border-bottom-left-radius: 0;
+
+			margin-left: 1px;
+			&.outline {
+				margin-left: -1px;
+			}
+		}
+	}
+}
+
+.vertical-btn-group {
+
+	& > .kx-btn + .kx-btn {
+		margin-top: .3rem;
+	}
+
+	&.compact > .kx-btn {
+
+		&:not(:last-child) {
+			border-bottom-left-radius: 0;
+			border-bottom-right-radius: 0;
+		}
+		&:not(:first-child) {
+			border-top-left-radius: 0;
+			border-top-right-radius: 0;
+
+			margin-top: 1px;
+			&.outline {
+				margin-top: -1px;
+			}
+		}
 	}
 }

@@ -20,13 +20,11 @@
 		</textarea>
 
 		<div class='buttons'>
-			<button
-				class='primary round'
-				:class="{ running: submiting }"
-				:disabled="submiting"
-				@click='submitDiscuss'>
+			<kx-task-button
+				class='primary'
+				:on-click='submitDiscuss'>
 				发表评论
-			</button>
+			</kx-task-button>
 		</div>
 	</div>
 </template>
@@ -49,7 +47,6 @@ export default {
 	},
 	data() {
 		return {
-			submiting: false,
 			content: "",
 		};
 	},
@@ -67,7 +64,6 @@ export default {
 				return; // 没写评论就按发表按钮
 			}
 
-			this.submiting = true;
 			try {
 				await submit(content);
 				this.content = "";
@@ -75,7 +71,6 @@ export default {
 			} catch (e) {
 				$dialog.messageBox("发表评论", errorMessage(e), "error");
 			}
-			this.submiting = false;
 		},
 	},
 };

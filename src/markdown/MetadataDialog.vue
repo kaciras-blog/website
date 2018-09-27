@@ -24,9 +24,9 @@
 				   placeholder="关键字,空格隔开"/>
 		</div>
 
-		<div class="footer" slot="footer">
-			<button @click="cancel">取消</button>
-			<button @click="ok">确定</button>
+		<div class="footer btn-group" slot="footer">
+			<kx-button @click="cancel">取消</kx-button>
+			<kx-button class="primary" @click="ok">确定</kx-button>
 		</div>
 	</kx-dialog>
 </template>

@@ -9,14 +9,19 @@
 				<span class="name">{{current.name}}</span>
 			</template>
 			<div v-else class="hold"></div>
-			<button :disabled="current === null"
+
+			<div class="btn-group">
+				<kx-button
+					:disabled="current === null"
 					@click="gotoParent">
-				<i class="fa fa-arrow-left"></i><span>回到父级</span>
-			</button>
-			<button :disabled="current === null"
+					<i class="fa fa-arrow-left"></i><span>回到父级</span>
+				</kx-button>
+				<kx-button
+					:disabled="current === null"
 					@click="gotoTop">
-				<i class="fas fa-arrow-up"></i><span>返回顶层</span>
-			</button>
+					<i class="fas fa-arrow-up"></i><span>返回顶层</span>
+				</kx-button>
+			</div>
 		</div>
 
 		<div class="cards">
@@ -36,10 +41,10 @@
 		<div slot="footer" class="footer">
 			<div v-if="multiple" class="tip">已选择：{{ selected.length }} 个分类</div>
 			<div v-else class="tip">已选择：{{ selected.length ? selected[0].name : '' }}</div>
-			<div>
-				<button class="second" @click="clear">清空选择</button>
-				<button @click="cancel">取消</button>
-				<button @click="ok">确定</button>
+			<div class="btn-group">
+				<kx-button class="second" @click="clear">清空选择</kx-button>
+				<kx-button @click="cancel">取消</kx-button>
+				<kx-button class="primary" @click="ok">确定</kx-button>
 			</div>
 		</div>
 	</kx-dialog>
