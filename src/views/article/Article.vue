@@ -58,23 +58,25 @@ export default {
 	},
 	mixins: [TitleMixin],
 	metadata() {
-		const { title, keywords, summary } = this.article;
-		return {
-			title: title + " - Kaciras的博客",
-			meta: `
+		const { title, keywords, summary, prev, next } = this.article;
+		let headers = `
 				<meta name="description" content="${escapeHtml(summary)}">
-				<meta name="keywords" content="${escapeHtml(keywords.join(","))}">
-			`,
-		};
+				<meta name="keywords" content="${escapeHtml(keywords.join(","))}">`;
+		if (prev) {
+			headers += `<link rel="prev" title="${prev.title}" href="/article/${prev.id}">`;
+		}
+		if (next) {
+			headers += `<link rel="next" title="${next.title}" href="/article/${next.id}">`;
+		}
+		return { title: title + " - Kaciras的博客", meta: headers };
 	},
 	asyncData({ store, route }) {
-		// 触发 action 后，会返回 Promise
 		store.registerModule("article", storeModule);
 		return store.dispatch("article/fetchItem", route.params.id);
 	},
 	prefetch: true, // 在客户端是否预加载数据
 	computed: {
-		...mapState("article", { article: "item" }),
+		...mapState({ article: state => state.article.item }),
 	},
 	methods: {
 		gotodiscuss() {
