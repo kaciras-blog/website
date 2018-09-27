@@ -1,28 +1,38 @@
 <script>
+import Vue from "vue";
+
 export default {
 	name: "KxButton",
 	functional: true,
 	props: {
-		// 按钮的标签，比如可以把<a>作为按钮
+		// 按钮的标签可以为任何HTML标签，比如可以把<a>作为按钮。
 		tag: {
 			type: String,
 			default: "button",
 		},
+		// 设置此属性后将渲染为 router-link,其to属性等于此属性的值
+		route: String,
 	},
 	render(h, ctx) {
-		const { props, data, children } = ctx;
+		const { data, children } = ctx;
 		const clazz = ["kx-btn"];
 
 		if (data.staticClass) {
 			clazz.push(data.staticClass);
 		}
 		data.staticClass = clazz.join(" ");
-
-		if (!data.attrs) {
-			data.attrs = {};
-		}
+		data.attrs = data.attrs || {};
 		data.attrs.type = "button";
-		return h(props.tag, data, children);
+
+		// 上面设置样式，下面处理特殊标签
+		let { tag, route } = ctx.props;
+		if (route) {
+			data.props = data.props || {};
+			data.props.tag = tag;
+			data.props.to = route;
+			tag = Vue.component("router-link");
+		}
+		return h(tag, data, children);
 	},
 };
 </script>
@@ -70,7 +80,6 @@ export default {
 	transition: ease-in-out .15s;
 	.focus-ripple-mixin;
 	.psudo-style;
-
 
 	// 混入主题颜色
 	&.primary {
