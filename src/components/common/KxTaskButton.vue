@@ -23,6 +23,11 @@ export default {
 			type: Function,
 			required: true,
 		},
+		// 在运行状态下是否屏蔽点击事件
+		waiting: {
+			type: Boolean,
+			default: true,
+		},
 		// 直接代理到下层按钮组件
 		type: String,
 		tag: String,
@@ -33,7 +38,11 @@ export default {
 	}),
 	methods: {
 		handleClick() {
-			const task = this.onClick();
+			const { running, waiting, onClick } = this;
+			if (running && waiting) {
+				return;
+			}
+			const task = onClick();
 			if (task) {
 				this.running = true;
 				task.then(() => this.running = false);
