@@ -36,6 +36,7 @@ import { scrollToElementStart, escapeHtml } from "../../utils";
 import api from "../../apis";
 import $ from "jquery";
 import { mapState } from "vuex";
+import articleLink from "../../article-url-mixin";
 
 
 const storeModule = {
@@ -61,27 +62,52 @@ export default {
 		ArticleView,
 	},
 	mixins: [TitleMixin],
+
+	/**
+	 * 为了优化SEO，需要在预渲染的文章页面的<head>中加入一些标签。
+	 *
+	 * @return {{title: string, meta: string}}
+	 */
 	metadata() {
 		const { title, keywords, summary, prev, next } = this.article;
 		let headers = `
 				<meta name="description" content="${escapeHtml(summary)}">
 				<meta name="keywords" content="${escapeHtml(keywords.join(","))}">`;
 		if (prev) {
-			headers += `<link rel="prev" title="${prev.title}" href="/article/${prev.id}">`;
+			headers += `<link rel="prev" title="${prev.title}" href="${articleLink(prev)}">`;
 		}
 		if (next) {
-			headers += `<link rel="next" title="${next.title}" href="/article/${next.id}">`;
+			headers += `<link rel="next" title="${next.title}" href="${articleLink(next)}">`;
 		}
 		return { title: title + " - Kaciras的博客", meta: headers };
 	},
-	asyncData({ store, route }) {
+	/**
+	 * 在路由切换前加载数据。
+	 *
+	 * @param store 全局状态存储
+	 * @param route 路由信息
+	 * @return {Promise<void>} 指示加载状态的Promise
+	 */
+	async asyncData({ store, route }) {
+		const { id, urlTitle } = route.params;
+		const module = store.state.article;
+
+		if(module && module.item.id === parseInt(id)) {
+			return; // 重定向来的，文章已经加载过了，这里假定重定向后的urlTitle是正确的。
+		}
 		store.registerModule("article", storeModule);
-		return store.dispatch("article/fetchItem", route.params.id);
+		await store.dispatch("article/fetchItem", id);
+
+		// 检查URL中的标题，不正确则重定向到正确的URL
+		const correctUrlTitle = store.state.article.item.urlTitle;
+		if (!urlTitle || urlTitle !== correctUrlTitle) {
+			throw { code: 301, location: `/article/${id}/${correctUrlTitle}` };
+		}
 	},
 	prefetch: true, // 在客户端是否预加载数据
 	computed: {
-		navStyle () {
-			return {"--background": `url(${this.article.banner || require("../../assets/index-banner.jpg")})` };
+		navStyle() {
+			return { "--background": `url(${this.article.banner || require("../../assets/index-banner.jpg")})` };
 		},
 		...mapState({ article: state => state.article.item }),
 	},

@@ -6,8 +6,8 @@
  * @param url 在URL中显示的文章名
  * @return {string} URL中的Path部分。
  */
-function articleLink({ id, url }) {
-	return `/article/${id}/${url}`;
+function articleLink({ id, urlTitle }) {
+	return `/article/${id}/${urlTitle}`;
 }
 
 export default articleLink;

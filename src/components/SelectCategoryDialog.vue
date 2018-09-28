@@ -1,5 +1,5 @@
 <template>
-	<kx-dialog class="category-selector" :draggable="true">
+	<kx-dialog class="category-selector">
 		<h3 slot="title">选择分类</h3>
 
 		<div class="buttons">
@@ -30,7 +30,10 @@
 				 class="category"
 				 :class="{ selected: cate.selected }">
 
-				<kx-check-box :value="cate.selected" @changed="select(cate)"/>
+				<kx-check-box
+					:value="cate.selected"
+					@changed="select(cate)"/>
+
 				<div @click="showChild(cate)">
 					<img class="head" :src="cate.cover" alt="分类图标">
 					<h3 class="name">{{cate.name}}</h3>
@@ -41,6 +44,7 @@
 		<div slot="footer" class="footer">
 			<div v-if="multiple" class="tip">已选择：{{ selected.length }} 个分类</div>
 			<div v-else class="tip">已选择：{{ selected.length ? selected[0].name : '' }}</div>
+
 			<div class="btn-group">
 				<kx-button class="second" @click="clear">清空选择</kx-button>
 				<kx-button @click="cancel">取消</kx-button>
@@ -89,6 +93,9 @@ export default {
 		ok() {
 			const { multiple, selected } = this;
 			this.$dialog.close(multiple ? selected : selected[0]);
+		},
+		cancel() {
+			this.$dialog.close();
 		},
 		clear() {
 			this.selected.forEach(cate => cate.selected = false);
@@ -189,7 +196,7 @@ export default {
 	}
 }
 
-.hold{
+.hold {
 	height: 3rem;
 	flex: 1;
 }

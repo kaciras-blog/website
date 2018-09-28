@@ -1,7 +1,7 @@
 import createApp from "./main";
 import Vue from "vue";
 import TransitionsCurtain from "./components/common/TransitionCurtain";
-import { REFRESH_USER } from "./store/user";
+import { REFRESH_USER } from "./store/types";
 /*
  * 注册 ServiceWorker 提升加载速度。
  */
@@ -39,7 +39,7 @@ store.dispatch(REFRESH_USER)
  */
 function initAppAndRouterHook() {
 
-	/**
+	/*
 	 * 在异步组件解析前就显示加载指示器。
 	 * 异步组件getMatchedComponents()返回一个函数，加载完成的组件则返回对象。
 	 */
@@ -51,7 +51,7 @@ function initAppAndRouterHook() {
 		next();
 	});
 
-	/**
+	/*
 	 * 使用 `router.beforeResolve()`，以便确保所有异步组件都 resolve。
 	 */
 	router.beforeResolve((to, from, next) => {
@@ -79,11 +79,23 @@ function initAppAndRouterHook() {
 
 		Promise.all(prefetched.map(c => c.asyncData({ store, route: to })))
 			.then(next)
-			.catch(next)
+			.catch(err => handleError(err, next))
 			.finally(curtain.finish);
 	});
 
 	vue.$mount("#app");
+}
+
+function handleError(err, next) {
+	switch (err.code) {
+		case 301:
+		case 302:
+			next(err.location);
+			break;
+		default:
+			console.error(err);
+			return next("/error/500");
+	}
 }
 
 /*

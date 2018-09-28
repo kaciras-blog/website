@@ -1,10 +1,9 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import api from "../apis";
-import { REFRESH_USER, REMOVE_USER, SET_USER } from "./user";
+import { REFRESH_USER, REMOVE_USER, SET_USER } from "./types";
 
 Vue.use(Vuex);
-
 
 export default function () {
 	return new Vuex.Store({

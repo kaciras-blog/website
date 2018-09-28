@@ -37,7 +37,7 @@ export default function () {
 			component: () => import("./views/article/Article"),
 		},
 		{
-			path: "/article/:id/:url",
+			path: "/article/:id/:urlTitle",
 			name: "article",
 			component: () => import("./views/article/Article"),
 		},

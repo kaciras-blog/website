@@ -54,7 +54,7 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import { REMOVE_USER } from "../store/user";
+import { REMOVE_USER } from "../store/types";
 
 export default {
 	name: "TopNav",

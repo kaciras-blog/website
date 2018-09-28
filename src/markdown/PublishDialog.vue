@@ -39,7 +39,7 @@
 import api from "../apis";
 import SelectCategoryDialog from "../components/SelectCategoryDialog";
 import { errorMessage } from "../utils";
-
+import articleLink from "../article-url-mixin";
 
 export default {
 	name: "PublishDialog",
@@ -72,15 +72,17 @@ export default {
 				if (article) {
 					await api.article.update(article, data);
 				} else {
-					data.url = url = this.url.length ? this.url : data.title.replace(/\s+/g, "-");
-					data.category = this.category.id;
-					if (!data.category) {
-						return; // 取消选择分类
+					if (!this.category) {
+						this.$dialog.messageBox("发表失败", "请选择分类", "error");
+						return;
 					}
+					data.category = this.category.id;
+					data.urlTitle = url = this.url.length ? this.url : data.title;
+
 					article = (await api.article.publish(data)).substring("/articles/".length);
 				}
 				this.$dialog.close();
-				this.$router.push(`/article/${article}/${url}`);
+				this.$router.push(`/article/${article}`);
 			} catch (e) {
 				this.$dialog.messageBox("发表失败", errorMessage(e), "error");
 			}

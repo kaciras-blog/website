@@ -56,7 +56,7 @@
 import api from "../../apis";
 import { errorMessage } from "../../utils";
 import BaseLoginForm from "./BaseLoginForm";
-import {REFRESH_USER} from "../../store/user";
+import {REFRESH_USER} from "../../store/types";
 
 export default {
 	name: "SignupPanel",
