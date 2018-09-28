@@ -39,7 +39,6 @@
 import api from "../api";
 import SelectCategoryDialog from "../components/SelectCategoryDialog";
 import { errorMessage } from "../utils";
-import articleLink from "../article-url-mixin";
 
 export default {
 	name: "PublishDialog",
@@ -67,7 +66,6 @@ export default {
 				data.draftId = archive.id; // 文章API里是draftId
 
 				let article = archive.articleId;
-				let url = archive.url;
 
 				if (article) {
 					await api.article.update(article, data);
@@ -77,7 +75,7 @@ export default {
 						return;
 					}
 					data.category = this.category.id;
-					data.urlTitle = url = this.url.length ? this.url : data.title;
+					data.urlTitle = this.url.length ? this.url : data.title;
 
 					article = (await api.article.publish(data)).substring("/articles/".length);
 				}
