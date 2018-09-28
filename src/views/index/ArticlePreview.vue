@@ -11,7 +11,7 @@
 
 		<div class="tag-group">
 			<router-link
-				v-for="cat in reserve(item.cpath)"
+				v-for="cat in item.cpath"
 				:key="cat.id"
 				:to="'/?category=' + cat.id">{{cat.name}}
 			</router-link>

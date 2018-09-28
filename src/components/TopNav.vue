@@ -21,12 +21,12 @@
 				<div class="nav-item-group">
 					<router-link
 						class="logo-kaciras"
-						to="/welcome"
-						title="LOGO，点击回到首页"/>
-					<router-link
 						to="/"
-						class="nav-item">博客
-					</router-link>
+						title="LOGO，点击回到首页"/>
+					<!--<router-link-->
+						<!--to="/"-->
+						<!--class="nav-item">博客-->
+					<!--</router-link>-->
 				</div>
 
 				<div class="nav-item-group" v-if="user">
@@ -115,13 +115,13 @@ export default {
 #top-nav::before,
 #banner {
 	background: var(--background);
-	background-size: var(--background-size); // 这个属性写一起毛病多
+	background-size: var(--background-size, cover); // 这个属性写一起毛病多
 }
 
 #banner {
 	height: 180px;
 	width: 100%;
-	margin-bottom: 3rem;
+	margin-bottom: 4rem;
 }
 </style>
 

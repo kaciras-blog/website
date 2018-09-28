@@ -37,7 +37,7 @@ export default {
 .title {
 	text-align: center;
 	& > h1 {
-		font-size: 1.5rem;
+		font-size: 2rem;
 	}
 }
 

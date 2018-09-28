@@ -1,6 +1,7 @@
 <template>
 	<page-layout
 		view-id="article-page"
+		:style="navStyle"
 		:banner="true"
 		:footer="true">
 
@@ -76,6 +77,9 @@ export default {
 	},
 	prefetch: true, // 在客户端是否预加载数据
 	computed: {
+		navStyle () {
+			return {"--background": `url(${this.article.banner || require("../../assets/index-banner.jpg")})` };
+		},
 		...mapState({ article: state => state.article.item }),
 	},
 	methods: {
