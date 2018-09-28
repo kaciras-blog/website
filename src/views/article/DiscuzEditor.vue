@@ -3,7 +3,8 @@
 		已设置为禁止评论
 	</div>
 	<div class="discuss-editor center-all" v-else-if="options.loginRequired && !user">
-		已禁止匿名评论,请先<a class='highlight' href='/login'>登录</a>
+		已禁止匿名评论,请先
+		<router-link class='highlight' to='/login'>登录</router-link>
 	</div>
 	<div class="discuss-editor" v-else>
 		<div>

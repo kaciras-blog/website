@@ -6,7 +6,10 @@
 		:footer="true">
 
 		<article-view v-bind="article"/>
-		<discuss-panel :article-id="article.id" ref="discssPanel"/>
+
+		<discuss-panel
+			:article-id="article.id"
+			ref="discssPanel"/>
 
 		<div class="side-buttons compact vertical-btn-group">
 			<kx-button

@@ -22,10 +22,11 @@
 				:init-items="initArticles"
 				:init-state="initState"
 				:init-next-url="nextUrl">
+
 				<article-preview slot-scope="{ item }" :key="item.id" :item="item"/>
 			</scroll-pageing-view>
 		</div>
-		<aside-panel></aside-panel>
+		<aside-panel/>
 	</page-layout>
 </template>
 

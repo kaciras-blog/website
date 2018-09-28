@@ -75,7 +75,6 @@ export default {
 	white-space: nowrap;
 
 	// 基本样式
-	/*<!--color: @color-text;-->*/
 	border: solid 1px #e0e0e0;
 	background-color: transparent;
 	border-radius: @radius;

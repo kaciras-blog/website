@@ -1,3 +1,4 @@
+<!--suppress HtmlUnknownTarget -->
 <template>
 	<footer id="bottom-footer" v-once>
 		<div class="address">
