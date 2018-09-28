@@ -3,7 +3,8 @@
 		<h2 class="compact" slot="title">编辑描述信息</h2>
 
 		<div class="content">
-			<img :src="cover"
+			<img class="cover"
+				 :src="cover"
 				 alt="封面"
 				 @click="changeCover"/>
 
@@ -56,33 +57,35 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="less">
 .content {
 	width: 680px;
-	height: 200px;
 	display: grid;
-	grid-template-columns: repeat(11, 1fr);
-	grid-template-rows: repeat(5, 1fr);
-	grid-gap: .8em;
+	grid-template-areas: "cover title"
+						 "cover summary"
+						 "keywords keywords";
+	grid-template-columns: auto 1fr;
+	grid-template-rows: auto 1fr auto;
+	grid-gap: 1rem;
 }
 
-img {
-	grid-area: 1/1/5/4;
-	width: 100%;
-	height: 100%;
+.cover {
+	grid-area: cover;
+	width: 12rem;
+	height: 10rem;
 	cursor: pointer;
 }
 
 .title {
-	grid-area: 1/4/1/12;
+	grid-area: title;
 }
 
 .summary {
-	grid-area: 2/4/5/12;
+	grid-area: summary;
 }
 
 .keywords {
-	grid-area: 5/1/5/12;
+	grid-area: keywords;
 }
 
 .footer {
