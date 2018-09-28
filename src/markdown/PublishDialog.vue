@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import api from "../apis";
+import api from "../api";
 import SelectCategoryDialog from "../components/SelectCategoryDialog";
 import { errorMessage } from "../utils";
 import articleLink from "../article-url-mixin";

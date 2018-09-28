@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import api from "../../apis";
+import api from "../../api";
 import { deleteOn, drag } from "../../utils";
 import SwiperConsoleItem from "./SwiperConsoleItem";
 

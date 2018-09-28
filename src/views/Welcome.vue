@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import api from "../apis";
+import api from "../api";
 import SwiperSlide from "../components/SwiperSlide";
 import KxCarousel from "../components/common/KxCarousel";
 

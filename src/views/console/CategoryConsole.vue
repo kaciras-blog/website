@@ -34,7 +34,7 @@
 <script>
 import CategoryView from "../../components/CategoryView";
 import CategoryCard from "../../components/CategoryCard";
-import api from "../../apis";
+import api from "../../api";
 
 const _default = {
 	name: "新建分类",

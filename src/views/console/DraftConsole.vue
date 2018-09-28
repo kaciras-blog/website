@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import api from "../../apis";
+import api from "../../api";
 import {deleteOn} from "../../utils";
 
 async function loadDrafts() {

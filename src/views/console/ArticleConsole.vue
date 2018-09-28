@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import api from "../../apis";
+import api from "../../api";
 import { deleteOn, errorMessage } from "../../utils";
 
 export default {

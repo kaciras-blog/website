@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import api from "../apis";
+import api from "../api";
 
 export default {
 	name: "CategoryView",

@@ -7,7 +7,7 @@ import createStore from "./store";
 import CommonComponents from "./components/common";
 import KxDialog from "kxdialog";
 import KxMarkdown from "./markdown";
-import API from "./apis";
+import API from "./api";
 
 import SelectCategoryDialog from "./components/SelectCategoryDialog";
 import TopNav from "./components/TopNav";

@@ -33,7 +33,7 @@
 <script>
 import AsidePanel from "./AsidePanel.vue";
 import ArticlePreview from "./ArticlePreview.vue";
-import api from "../../apis.js";
+import api from "../../api.js";
 
 /**
  * 根据路由和当前加载的文章数来构造下一页的URL。

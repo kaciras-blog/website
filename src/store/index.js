@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import api from "../apis";
+import api from "../api";
 import { REFRESH_USER, REMOVE_USER, SET_USER } from "./types";
 
 Vue.use(Vuex);

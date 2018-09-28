@@ -33,7 +33,7 @@ import DiscussPanel from "./DiscussPanel";
 import ArticleView from "./ArticleView";
 import TitleMixin from "../../title-mixin";
 import { scrollToElementStart, escapeHtml } from "../../utils";
-import api from "../../apis";
+import api from "../../api";
 import $ from "jquery";
 import { mapState } from "vuex";
 import articleLink from "../../article-url-mixin";

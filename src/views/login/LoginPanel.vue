@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import api from "../../apis";
+import api from "../../api";
 import { errorMessage } from "../../utils";
 import BaseLoginForm from "./BaseLoginForm";
 import {REFRESH_USER} from "../../store/types";

@@ -94,7 +94,7 @@ import $ from "jquery";
 import textOps from "./TextOperations";
 import { assignUpdate } from "../utils";
 import kxMarkdown, { convertor } from "./index";
-import api from "../apis";
+import api from "../api";
 
 import AddLinkDialog from "./AddLinkDialog.vue";
 import MetadataDialog from "./MetadataDialog.vue";

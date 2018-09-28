@@ -56,7 +56,7 @@
 
 <script>
 import CategoryCard from "./CategoryCard";
-import api from "../apis";
+import api from "../api";
 import { deleteOn } from "../utils";
 
 export default {

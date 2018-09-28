@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import api from "../../apis";
+import api from "../../api";
 import discuzEditor from "./DiscuzEditor.vue";
 import discussion from "./Discussion.vue";
 
