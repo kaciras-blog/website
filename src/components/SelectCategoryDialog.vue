@@ -88,14 +88,7 @@ export default {
 		},
 		ok() {
 			const { multiple, selected } = this;
-			if(multiple) {
-				this.$dialog.close(selected.map(c => c.id));
-			} else {
-				this.$dialog.close(selected[0] && selected[0].id);
-			}
-		},
-		cancel() {
-			this.$dialog.close();
+			this.$dialog.close(multiple ? selected : selected[0]);
 		},
 		clear() {
 			this.selected.forEach(cate => cate.selected = false);
