@@ -34,6 +34,10 @@ export default function () {
 		},
 		{
 			path: "/article/:id",
+			component: () => import("./views/article/Article"),
+		},
+		{
+			path: "/article/:id/:url",
 			name: "article",
 			component: () => import("./views/article/Article"),
 		},

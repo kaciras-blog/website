@@ -14,10 +14,14 @@ import TopNav from "./components/TopNav";
 import PageFooter from "./components/PageFooter";
 import PageLayout from "./components/PageLayout";
 
+import articleLink from "./article-url-mixin";
+
 Vue.use(CommonComponents);
 Vue.use(KxDialog);
 Vue.use(KxMarkdown);
 Vue.use(API);
+
+Vue.filter("articleLink", articleLink);
 
 Vue.component(TopNav.name, TopNav);
 Vue.component(PageFooter.name, PageFooter);

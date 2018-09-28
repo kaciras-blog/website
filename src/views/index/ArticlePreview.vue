@@ -1,10 +1,10 @@
 <template>
 	<div class="article-preview segment">
-		<router-link :to="'/article/' + item.id">
+		<router-link :to="item | articleLink">
 			<img :src="item.cover" class="cover-small">
 		</router-link>
 
-		<router-link :to="'/article/' + item.id" class="title">{{item.title}}</router-link>
+		<router-link :to="item | articleLink" class="title">{{item.title}}</router-link>
 
 		<span>{{item.summary}}</span>
 		<div>关键词：<span v-for="kw in item.keywords" :key="kw" class="keyword">{{kw}}</span></div>

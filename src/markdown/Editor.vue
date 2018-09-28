@@ -73,6 +73,7 @@
 				:class="{ split:viewModel === 0, single:viewModel === 1 }"
 				title="编辑区"
 				@keydown.9.prevent="inputTab"
+				spellcheck="false"
 				v-model="content">
 			</textarea>
 			<article
@@ -91,18 +92,19 @@
 import Vue from "vue";
 import $ from "jquery";
 import textOps from "./TextOperations";
-import { assignUpdate, errorMessage } from "../utils";
+import { assignUpdate } from "../utils";
 import kxMarkdown, { convertor } from "./index";
 import api from "../apis";
 
 import AddLinkDialog from "./AddLinkDialog.vue";
 import MetadataDialog from "./MetadataDialog.vue";
 import CodingDialog from "./CodingDialog.vue";
-import SelectCategoryDialog from "../components/SelectCategoryDialog";
+import PublishDialog from "./PublishDialog";
 
 Vue.component(AddLinkDialog.name, AddLinkDialog);
 Vue.component(MetadataDialog.name, MetadataDialog);
 Vue.component(CodingDialog.name, CodingDialog);
+Vue.component(PublishDialog.name, PublishDialog);
 
 /**
  * 按百分比同步滚动，注意原文与预览的对应内容并非一定在对应百分比的位置上。
@@ -129,32 +131,6 @@ function convertToTransfer(data) {
 	}, data.metadata);
 }
 
-async function publish() {
-	try {
-		const data = convertToTransfer(this.$data);
-		data.draftId = data.id; // 文章API里是draftId
-		delete data.id;
-
-		data.keywords = data.keywords.split(" ");
-
-		let article = data.articleId;
-		delete data.articleId;
-
-		if (article) {
-			await api.article.update(article, data);
-		} else {
-			data.category = await this.$dialog.show(SelectCategoryDialog.name);
-			if (!data.category) {
-				return; // 取消选择分类
-			}
-			article = (await api.article.publish(data)).substring("/articles/".length);
-		}
-		this.$router.push("/article/" + article);
-	} catch (e) {
-		this.$dialog.messageBox("发表失败", errorMessage(e), "error");
-	}
-}
-
 export default {
 	name: "KxMarkdownEditor",
 	props: {
@@ -168,6 +144,7 @@ export default {
 			archive: {
 				id: null,
 				articleId: null,
+				url: null,
 				saveCount: 0,
 			},
 			metadata: {
@@ -203,7 +180,9 @@ export default {
 		addCode() {
 			this.$dialog.messageBox("标题222", "3333", "warning");
 		},
-		publish,
+		publish() {
+			this.$dialog.show(PublishDialog.name, this.$data);
+		},
 		async metadataDialog() {
 			const res = await this.$dialog.show(MetadataDialog.name, { metadata: this.metadata });
 			if (res)
