@@ -1,7 +1,10 @@
-const path = require('path');
 const baseWebpackConfig = require('./webpack.base.conf');
+const apiConfig = require("./api.config");
+const webpack = require("webpack");
+const { resolve } = require('./utils');
 
-const resolve = dir => path.join(__dirname, '..', dir);
+
+process.env.API = apiConfig.web;
 
 // polyfill要放在项目入口之前
 baseWebpackConfig.entry = [
@@ -20,5 +23,9 @@ baseWebpackConfig.module.rules.push({
 		resolve('node_modules/markdown-it-anchor'),
 	],
 });
+
+baseWebpackConfig.plugins.push(new webpack.DefinePlugin({
+	"process.env.SERVER_SIDE": "false"
+}));
 
 module.exports = baseWebpackConfig;

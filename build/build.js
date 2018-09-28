@@ -31,7 +31,7 @@ async function build(mode) {
  * @return {Promise<void>} 指示构建状态
  */
 async function invokeWebpack(config) {
-	config.mode = "production";
+	config.mode = "development";
 	const stats = await webpack(config);
 
 	process.stdout.write(stats.toString({

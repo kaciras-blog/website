@@ -1,6 +1,8 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
+exports.resolve = dir => path.join(__dirname, '..', dir);
+
 exports.assetsPath = function (_path) {
 	return path.posix.join('static', _path);
 };

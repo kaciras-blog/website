@@ -4,7 +4,11 @@ const baseConfig = require('./webpack.base.conf');
 const VueSSRServerPlugin = require('vue-server-renderer/server-plugin');
 const utils = require('./utils');
 const config = require('../config');
+const apiConfig = require("./api.config");
+const webpack = require("webpack");
 
+
+process.env.API = apiConfig.server;
 
 module.exports = merge(baseConfig, {
 	entry: "./src/entry-server.js",
@@ -33,6 +37,9 @@ module.exports = merge(baseConfig, {
 	// 构建为单个 JSON 文件的插件。
 	// 默认文件名为 `vue-ssr-server-bundle.json`
 	plugins: [
+		new webpack.DefinePlugin({
+			"process.env.SERVER_SIDE": "true"
+		}),
 		new VueSSRServerPlugin(),
 	],
 });

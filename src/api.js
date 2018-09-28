@@ -1,41 +1,60 @@
 import axios from "axios";
 import * as utils from "./utils";
 
+
 axios.defaults.xsrfCookieName = "CSRF-Token";
 axios.defaults.xsrfHeaderName = "X-CSRF-Token";
 axios.defaults.withCredentials = true;
 
+if (process.env.NODE_ENV === "production") {
+	axios.defaults.timeout = 10000;
+}
+
+/*
+ * 在服务端时关闭证书验证
+ */
+if (process.env.SERVER_SIDE) {
+	const https = require("https");
+	axios.defaults.httpsAgent = new https.Agent({ rejectUnauthorized: false });
+}
+
+let apiConfig;
+
 if (process.env.NODE_ENV !== "production") {
-	axios.interceptors.response.use(function (response) {
-		return response;
-	});
+	if (process.env.SERVER_SIDE) {
+		apiConfig = {
+			main: "http://localhost:2374",
+			account: "http://localhost:26481",
+			front: "http://localhost",
+		};
+	} else {
+		apiConfig = {
+			main: "https://localhost:2375",
+			account: "https://localhost:26480",
+			front: "https://localhost",
+		};
+	}
+} else {
+	if (process.env.SERVER_SIDE) {
+		apiConfig = {
+			main: "http://localhost:2374",
+			account: "http://localhost:26481",
+			front: "http://localhost",
+		};
+	} else {
+		apiConfig = {
+			main: "https://api.kaciras.net:2375",
+			account: "https://api.kaciras.net:26480",
+			front: "https://blog.kaciras.net",
+		};
+	}
 }
 
-const API_SERVER = "https://localhost:2375";
 
-let mainServer = axios.create({
-	baseURL: "https://localhost:2375",
-});
-let accountServer = axios.create({
-	baseURL: "https://localhost:26480",
-});
-let frontService = axios.create({
-	baseURL: "https://localhost",
-});
+const mainServer = axios.create({ baseURL: apiConfig.main });
+const accountServer = axios.create({ baseURL: apiConfig.account });
+const frontService = axios.create({ baseURL: apiConfig.front });
 
-
-if (typeof window === "undefined") {
-
-	mainServer = axios.create({
-		baseURL: "http://localhost:2374",
-	});
-	accountServer = axios.create({
-		baseURL: "https://localhost:26480",
-	});
-	frontService = axios.create({
-		baseURL: "https://localhost",
-	});
-}
 
 const _default = {};
 
@@ -179,7 +198,7 @@ _default.misc = {
 	 *
 	 * @return {string} 验证码URL
 	 */
-	captchaAddress: () => API_SERVER + "/utils/captcha?r=" + Math.random(),
+	captchaAddress: () => apiConfig.main + "/utils/captcha?r=" + Math.random(),
 };
 
 _default.session = {

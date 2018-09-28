@@ -1,11 +1,10 @@
 const path = require('path');
-const utils = require('./utils');
 const config = require('../config');
 const vueLoaderConfig = require('../config/vue-loader');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const { assetsPath, resolve } = require('./utils');
 
-const resolve = dir => path.join(__dirname, '..', dir);
 
 const createLintingRule = () => ({
 	test: /\.(js|vue)$/,
@@ -57,7 +56,7 @@ module.exports = {
 				loader: 'url-loader',
 				options: {
 					limit: 10000,
-					name: utils.assetsPath('img/[name].[hash:7].[ext]'),
+					name: assetsPath('img/[name].[hash:7].[ext]'),
 				},
 			},
 			{
@@ -65,7 +64,7 @@ module.exports = {
 				loader: 'url-loader',
 				options: {
 					limit: 10000,
-					name: utils.assetsPath('media/[name].[hash:7].[ext]'),
+					name: assetsPath('media/[name].[hash:7].[ext]'),
 				},
 			},
 			{
@@ -73,7 +72,7 @@ module.exports = {
 				loader: 'url-loader',
 				options: {
 					limit: 10000,
-					name: utils.assetsPath('fonts/[name].[hash:7].[ext]'),
+					name: assetsPath('fonts/[name].[hash:7].[ext]'),
 				},
 			},
 		],
