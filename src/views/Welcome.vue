@@ -1,9 +1,9 @@
 <template>
 	<page-layout view-id="welcome-page">
 		<section id="blog">
-			<swiper class="ms" :slides="slides">
-				<swiper-slide slot-scope="{ slide }" :item="slide"/>
-			</swiper>
+			<kx-carousel class="ms" :items="slides">
+				<swiper-slide slot-scope="{ slide }" :key="slide.tid" :item="slide"/>
+			</kx-carousel>
 			<header>
 				<h1 class="title">博客网站</h1>
 				<kx-button route="/test" class="big outline primary">去看看</kx-button>
@@ -18,17 +18,22 @@
 <script>
 import api from "../apis";
 import SwiperSlide from "../components/SwiperSlide";
+import KxCarousel from "../components/common/KxCarousel";
 
 export default {
 	name: "Welcome",
-	components: { SwiperSlide },
+	components: { KxCarousel, SwiperSlide },
 	data() {
 		return {
 			slides: [],
 		};
 	},
 	created() {
-		api.recommend.swiper.get().then(slides => this.slides = slides);
+		api.recommend.swiper.get().then(slides => {
+			let counter = 0;
+			slides.forEach(s => s.tid = ++counter);
+			this.slides = slides;
+		});
 	},
 };
 </script>
