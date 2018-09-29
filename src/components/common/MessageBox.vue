@@ -2,7 +2,7 @@
 	<kx-base-dialog
 		:dimmer-close="dimmerClose"
 		:class="type"
-		:closeIcon="cancelable"
+		:closeIcon="true"
 		:draggable="true"
 		@close-button-clicked="cancel"
 		@dimmer-clicked="dimmerClick">
@@ -29,7 +29,7 @@ export default {
 		},
 		cancelable: {
 			type: Boolean,
-			default: true,
+			default: false,
 		},
 		dimmerClose: {
 			type: Boolean,
@@ -68,9 +68,13 @@ export default {
 }
 
 .kx-msgbox-buttons {
-	text-align: center;
-	& > button {
+	display: flex;
+	padding-left: 1rem;
+	padding-right: 1rem;
+
+	& > .kx-btn {
 		margin: 0 .5rem;
+		flex-grow: 1;
 	}
 }
 
