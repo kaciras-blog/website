@@ -1,5 +1,5 @@
 <template>
-	<kx-dialog class="category-selector">
+	<kx-base-dialog class="category-selector">
 		<h3 slot="title">选择分类</h3>
 
 		<div class="buttons">
@@ -51,7 +51,7 @@
 				<kx-button class="primary" @click="ok">确定</kx-button>
 			</div>
 		</div>
-	</kx-dialog>
+	</kx-base-dialog>
 </template>
 
 <script>

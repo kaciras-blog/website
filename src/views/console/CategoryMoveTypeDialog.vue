@@ -1,8 +1,8 @@
 <template>
-	<kx-dialog v-once>
+	<kx-base-dialog v-once>
 		<h3 slot="title">选择移动方式</h3>
 
-	</kx-dialog>
+	</kx-base-dialog>
 </template>
 
 <script>

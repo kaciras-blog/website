@@ -1,7 +1,7 @@
 <template>
-	<kx-dialog>
+	<kx-base-dialog>
 
-	</kx-dialog>
+	</kx-base-dialog>
 </template>
 
 <script>

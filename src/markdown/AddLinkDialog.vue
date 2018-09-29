@@ -1,6 +1,7 @@
 <template>
-	<kx-dialog :closeIcon="true" @CloseButtonClicked="cancel">
+	<kx-base-dialog :closeIcon="true" @close-button-clicked="cancel">
 		<h3 slot="title">添加链接</h3>
+
 		<form @keyup.13="ok" @keyup.27="cancel">
 			<label>链接地址</label>
 			<input title="链接地址"
@@ -8,13 +9,17 @@
 				   placeholder="地址不能为空"
 				   required
 				   v-autofocus/>
+
 			<label>文字</label>
-			<input title="文字" v-model="text" :placeholder="href"/>
+			<input title="文字"
+				   v-model="text"
+				   :placeholder="href"/>
 		</form>
+
 		<div class="footer" slot="footer">
 			<kx-button class="primary" @click="ok">确定</kx-button>
 		</div>
-	</kx-dialog>
+	</kx-base-dialog>
 </template>
 
 <script>

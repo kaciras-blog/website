@@ -1,5 +1,5 @@
 <template>
-	<kx-dialog :draggable="true">
+	<kx-base-dialog :draggable="true">
 		<h3 slot="title">{{ archive.articleId ? "更新文章": "发表文章" }}</h3>
 
 		<div class="body">
@@ -32,7 +32,7 @@
 			<kx-button :on-click="cancel">取消</kx-button>
 			<kx-task-button class="primary" :on-click="accept">确定</kx-task-button>
 		</div>
-	</kx-dialog>
+	</kx-base-dialog>
 </template>
 
 <script>

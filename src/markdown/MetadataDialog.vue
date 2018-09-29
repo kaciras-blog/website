@@ -1,5 +1,5 @@
 <template>
-	<kx-dialog @CloseButtonClicked="ok">
+	<kx-base-dialog @close-button-clicked="ok">
 		<h2 class="compact" slot="title">编辑描述信息</h2>
 
 		<div class="content">
@@ -29,7 +29,7 @@
 			<kx-button @click="cancel">取消</kx-button>
 			<kx-button class="primary" @click="ok">确定</kx-button>
 		</div>
-	</kx-dialog>
+	</kx-base-dialog>
 </template>
 
 <script>
