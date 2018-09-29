@@ -1,16 +1,22 @@
 <template>
 	<page-layout view-id="welcome-page">
 		<section id="blog">
-			<kx-carousel class="ms" :items="slides">
-				<swiper-slide slot-scope="{ slide }" :key="slide.tid" :item="slide"/>
-			</kx-carousel>
 			<header>
 				<h1 class="title">博客网站</h1>
 				<kx-button route="/test" class="big outline primary">去看看</kx-button>
 			</header>
+
+			<sk-fading-circle v-if="loading"/>
+			<kx-carousel v-else class="ms" :items="slides">
+				<swiper-slide slot-scope="{ slide }" :key="slide.tid" :item="slide"/>
+			</kx-carousel>
+
 			<div class="others"></div>
 		</section>
 		<section id="im">
+			<header>
+				<h1>网页即时通信</h1>
+			</header>
 		</section>
 	</page-layout>
 </template>
@@ -23,16 +29,16 @@ import KxCarousel from "../components/common/KxCarousel";
 export default {
 	name: "Welcome",
 	components: { KxCarousel, SwiperSlide },
-	data() {
-		return {
-			slides: [],
-		};
-	},
+	data: () => ({
+		loading: true,
+		slides: [],
+	}),
 	created() {
 		api.recommend.swiper.get().then(slides => {
 			let counter = 0;
 			slides.forEach(s => s.tid = ++counter);
 			this.slides = slides;
+			this.loading = false;
 		});
 	},
 };
@@ -49,20 +55,19 @@ export default {
 	display: grid;
 	grid-template-rows: auto auto;
 	grid-template-columns: auto 1fr;
-	grid-template-areas: "slide summary"
-						 "others others";
+	grid-template-areas: "slide header" "others others";
 	grid-gap: 2rem;
 
-	padding: 5rem 5rem 0;
+	padding: 6rem 5rem 0;
 
-	& > header{
-		padding: 2rem 0;
-		grid-area: summary;
+	& > header {
+		padding: 4rem 0;
+		grid-area: header;
 		text-align: center;
 	}
 }
 
-.others{
+.others {
 	grid-area: others;
 }
 
@@ -71,8 +76,13 @@ export default {
 	padding: .8rem 0;
 	font-size: 1.3rem;
 }
-#im{
+
+#im {
 	display: none;
+	padding: 5rem;
+
+	color: white;
+	background-color: #0093ee;
 }
 
 .ms {
@@ -80,8 +90,7 @@ export default {
 	height: 20rem;
 }
 
-
-.title{
+.title {
 	font-size: 3rem;
 }
 </style>
