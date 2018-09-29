@@ -1,10 +1,7 @@
 const baseWebpackConfig = require('./webpack.base.conf');
-const apiConfig = require("./api.config");
 const webpack = require("webpack");
 const { resolve } = require('./utils');
 
-
-process.env.API = apiConfig.web;
 
 // polyfill要放在项目入口之前
 baseWebpackConfig.entry = [

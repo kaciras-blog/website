@@ -10,14 +10,15 @@ export default async context => {
 	router.push(context.url);
 	await onReadyAsync(router);
 
-	const matchedComponents = router.getMatchedComponents();
-	if (!matchedComponents.length) {
+	const matched = router.getMatchedComponents();
+	if (!matched.length) {
 		throw { code: 404 };
 	}
 
 	// 对所有匹配的路由组件调用 `asyncData()`
-	await Promise.all(matchedComponents
-		.filter(c => c.asyncData).map(c => c.asyncData({ store, route: router.currentRoute })));
+	await Promise.all(matched
+		.filter(c => c.asyncData)
+		.map(c => c.asyncData({ store, route: router.currentRoute })));
 
 	context.state = store.state;
 	return vue;

@@ -56,6 +56,10 @@ const accountServer = axios.create({ baseURL: apiConfig.account });
 const frontService = axios.create({ baseURL: apiConfig.front });
 
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *							下面是API调用函数
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 const _default = {};
 
 _default.category = {
@@ -251,7 +255,7 @@ _default.recommend = {
  * @param Vue Vue类
  */
 _default.install = function (Vue) {
-	Vue.$api = _default;
+	Vue.prototype.$api = _default;
 };
 
 export default _default;

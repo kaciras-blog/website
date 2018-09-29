@@ -4,11 +4,8 @@ const baseConfig = require('./webpack.base.conf');
 const VueSSRServerPlugin = require('vue-server-renderer/server-plugin');
 const utils = require('./utils');
 const config = require('../config');
-const apiConfig = require("./api.config");
 const webpack = require("webpack");
 
-
-process.env.API = apiConfig.server;
 
 module.exports = merge(baseConfig, {
 	entry: "./src/entry-server.js",

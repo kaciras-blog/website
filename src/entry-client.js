@@ -2,6 +2,8 @@ import createApp from "./main";
 import Vue from "vue";
 import TransitionsCurtain from "./components/common/TransitionCurtain";
 import { REFRESH_USER } from "./store/types";
+
+
 /*
  * 注册 ServiceWorker 提升加载速度。
  */
@@ -33,9 +35,10 @@ store.dispatch(REFRESH_USER)
 	.catch((e) => console.error("无法连接账号服务器", e)); // 异步加载用户信息
 
 /**
- * 在官方教程的基础上修改而来，增加了以下功能：
+ * 导航前加载数据，在官方教程的基础上修改而来，增加了以下功能：
  *   1.在异步组件解析前就显示加载指示器，让过渡更顺畅。
  *   2.检测组件的 prefetch 属性，使其能够在客户端不进行预加载。
+ *   3.处理一些异常情况，例如跳转。在出现内部错误时显示错误页面。
  */
 function initAppAndRouterHook() {
 
