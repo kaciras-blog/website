@@ -1,5 +1,5 @@
 <template>
-	<div class="toggle-button">
+	<div class="kx-toggle-button">
 		<input type="checkbox" :checked="value" @change="change">
 		<label class="toggle-button-trench"></label>
 	</div>
@@ -25,7 +25,7 @@ export default {
 <style lang="less">
 @import "../../css/ToBeImpoert";
 
-.toggle-button {
+.kx-toggle-button {
 	position: relative;
 	display: inline-block;
 

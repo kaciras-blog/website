@@ -8,7 +8,7 @@
 export default {
 	name: "CategoryHeader",
 	props: {
-		item: {
+		value: {
 			type: Object,
 			required: true,
 		},
