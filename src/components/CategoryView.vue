@@ -1,13 +1,12 @@
 <template>
-	<div v-if="current"
-		 class="info-container"
+	<div class="info-container"
 		 @click.self="setBackground"
 		 :style="styleVars"
 		 :title="editable ? '点击换背景' : null">
 
 		<div class="info">
 			<img class="head"
-				 :src="current.cover"
+				 :src="item.cover"
 				 :title="editable ? '点击换头像' : null"
 				 alt="分类图标"
 				 @click="setCover">
@@ -15,23 +14,23 @@
 			<input v-if="editable"
 				   class="name"
 				   title="名称"
-				   v-model="current.name">
+				   v-model="item.name">
 			<span v-else
 				  class="name">
-				{{current.name}}
+				{{item.name}}
 			</span>
 
 			<textarea
 				v-if="editable"
 				title="描述"
 				class="desc"
-				v-model="current.description">
+				v-model="item.description">
 			</textarea>
 
-			<span v-else class="desc">{{current.description}}</span>
+			<span v-else class="desc">{{item.description}}</span>
 
 			<div class="buttons" v-if="editable">
-				<kx-button class="primary outline" @click="submit">应用更改</kx-button>
+				<kx-button class="primary outline" @click="$emit('change')">应用更改</kx-button>
 				<kx-button class="primary outline" @click="move">移动</kx-button>
 				<kx-button class="dangerous outline" @click="remove">删除</kx-button>
 			</div>
@@ -45,7 +44,7 @@ import api from "../api";
 export default {
 	name: "CategoryView",
 	props: {
-		current: {
+		item: {
 			type: Object,
 			required: true,
 		},
@@ -53,14 +52,18 @@ export default {
 			type: Boolean,
 			default: false,
 		},
+		parent: Number,
 	},
 	computed: {
 		styleVars() {
-			const vars = {
-				"--background": `url(${this.current.background})`,
-			};
-			if (this.editable) {
+			const { item, editable } = this;
+			const vars = {};
+
+			if (editable) {
 				vars["--cursor"] = "pointer";
+			}
+			if(item.background) {
+				vars["--background"] = `url(${item.background})`;
 			}
 			return vars;
 		},
@@ -68,27 +71,17 @@ export default {
 	methods: {
 		setCover() {
 			if (this.editable)
-				api.misc.uploadImageFile().then(name => this.current.cover = name);
+				api.misc.uploadImageFile().then(name => this.item.cover = name);
 		},
 		setBackground() {
 			if (this.editable)
-				api.misc.uploadImageFile().then(name => this.current.background = name);
-		},
-		// 没有ID视为新建的
-		async submit() {
-			const { current } = this;
-			if(current.id) {
-				await api.category.update(current.id, current);
-			} else {
-				await api.category.create(current);
-			}
-			this.$dialog.messageBox("修改分类", "修改成功");
+				api.misc.uploadImageFile().then(name => this.item.background = name);
 		},
 		move() {
 			this.$dialog.show("SelectCategoryDialog");
 		},
 		remove() {
-			api.category.deleteOne(this.current.id).then(() => this.$emit("removed"));
+			api.category.deleteOne(this.item.id).then(() => this.$emit("removed"));
 		},
 	},
 

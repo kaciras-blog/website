@@ -13,13 +13,19 @@
 					<i class="fa fa-arrow-left"></i><span>回到父级</span>
 				</kx-button>
 			</div>
-			<kx-button class="second" @click="createNew">新建分类</kx-button>
+
+			<kx-button
+				class="second"
+				@click="createNew">
+				新建分类
+			</kx-button>
 		</div>
 
 		<category-view
 			v-if="current"
-			:current="current"
+			:item="current"
 			:editable="true"
+			@change="submit"
 			@removed="gotoParent"/>
 
 		<div class="children-title" v-if="current">下级分类</div>
@@ -43,7 +49,8 @@ import api from "../../api";
 const _default = {
 	name: "新建分类",
 	cover: "/image/category-default.png",
-	description: "",
+	description: "没有",
+	background: null,
 };
 
 export default {
@@ -61,7 +68,7 @@ export default {
 		goto(category) {
 			this.stack.push(this.current);
 			this.current = category;
-			this.children = api.category.getChildren(category.id).then(r => this.children = r);
+			api.category.getChildren(category.id).then(r => this.children = r);
 		},
 		gotoTop() {
 			this.current = null;
@@ -74,8 +81,19 @@ export default {
 		},
 		createNew() {
 			this.stack.push(this.current);
-			this.current = _default;
+			this.current = Object.assign({}, _default);
 			this.children = [];
+		},
+		async submit() {
+			const { current, stack, $dialog } = this;
+			if (current.id) {
+				await api.category.update(current.id, current);
+				await $dialog.messageBox("修改分类", "修改成功");
+			} else {
+				current.parent = stack.length ? stack[stack.length - 1].id : 0;
+				await api.category.create(current);
+				await $dialog.messageBox("新建分类", "添加成功");
+			}
 		},
 	},
 	created() {
