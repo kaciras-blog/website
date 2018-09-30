@@ -66,7 +66,7 @@ _default.category = {
 
 	getPath: (id) => mainServer.get(`/categories/${id}/path`).then(r => r.data),
 
-	getChildren: (id) => mainServer.get(`/categories/${id}/subCategories`).then(r => r.data),
+	getChildren: (id) => mainServer.get(`/categories/${id}/children`).then(r => r.data),
 
 	deleteOne: (id) => mainServer.delete("/categories/" + id),
 

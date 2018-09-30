@@ -16,7 +16,11 @@
 			<kx-button class="second" @click="createNew">新建分类</kx-button>
 		</div>
 
-		<category-view v-if="current" :current="current" :editable="true"/>
+		<category-view
+			v-if="current"
+			:current="current"
+			:editable="true"
+			@removed="gotoParent"/>
 
 		<div class="children-title" v-if="current">下级分类</div>
 		<div class="cards">
@@ -54,12 +58,6 @@ export default {
 		stack: [],
 	}),
 	methods: {
-		toRoot() {
-			this.id = 0;
-		},
-		toParent() {
-			this.id = 11;
-		},
 		goto(category) {
 			this.stack.push(this.current);
 			this.current = category;

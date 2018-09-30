@@ -88,7 +88,7 @@ export default {
 			this.$dialog.show("SelectCategoryDialog");
 		},
 		remove() {
-			api.category.deleteOne(this.current.id).then(() => this.goto());
+			api.category.deleteOne(this.current.id).then(() => this.$emit("removed"));
 		},
 	},
 
