@@ -66,9 +66,7 @@ import { mapState } from "vuex";
 export default {
 	name: "Discussion",
 	props: ["value", "replying"],
-	components: {
-		DisczEditor,
-	},
+	components: { DisczEditor },
 	computed: {
 		deleteable() {
 			if (!this.user) return false;
