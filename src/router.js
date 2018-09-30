@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
 import Error from "./views/error/Error";
-import Welcome from "./views/Welcome";
+import Welcome from "./views/welcome/Welcome";
 
 
 Vue.use(Router);

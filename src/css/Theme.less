@@ -10,20 +10,11 @@
 }
 
 .input-highlight-hover() {
-	border: solid 1px lighten(@color-input-active, 16%);
+	border-color: lighten(@color-input-active, 16%);
 	box-shadow: 0 0 4px lighten(@color-input-active, 20%);
 }
 
 .input-highlight-focus() {
-	border: solid 1px @color-input-active;
+	border-color: @color-input-active;
 	box-shadow: 0 0 4px lighten(@color-input-active, 12%);
-}
-
-/*
- * 圆形元素，使用border-radius来实现。
- */
-.circularity(@diameter) {
-	width: @diameter;
-	height: @diameter;
-	border-radius: @diameter / 2;
 }

@@ -1,6 +1,6 @@
 <!--suppress XmlDuplicatedId -->
 <template>
-	<header>
+	<div>
 		<!-- 小屏幕折叠状态 -->
 		<div id="top-nav" v-if="collapse">
 			<nav class="content">
@@ -49,7 +49,7 @@
 
 		<!-- 最下面的大图 -->
 		<div id="banner" v-if="banner"></div>
-	</header>
+	</div>
 </template>
 
 <script>

@@ -25,7 +25,7 @@ export default {
 </script>
 
 <style lang="less">
-@import "../css/ToBeImpoert";
+@import "../../css/ToBeImpoert";
 
 .swiper-slide {
 	display: block;

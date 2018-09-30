@@ -12,8 +12,14 @@
 				 alt="分类图标"
 				 @click="setCover">
 
-			<input v-if="editable" class="name" title="名称" v-model="current.name">
-			<span v-else class="name">{{current.name}}</span>
+			<input v-if="editable"
+				   class="name"
+				   title="名称"
+				   v-model="current.name">
+			<span v-else
+				  class="name">
+				{{current.name}}
+			</span>
 
 			<textarea
 				v-if="editable"

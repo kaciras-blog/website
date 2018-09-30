@@ -9,6 +9,7 @@ import ButtonPageingView from "./ButtonPageingView";
 import KxCheckBox from "./KxCheckBox";
 import KxButton from "./KxButton";
 import KxTaskButton from "./KxTaskButton";
+import KxCarousel from "./KxCarousel";
 
 /**
  * 自动注册目录下的Vue组件。
@@ -27,6 +28,7 @@ export default function install(Vue) {
 	Vue.component(KxCheckBox.name, KxCheckBox);
 	Vue.component(KxButton.name, KxButton);
 	Vue.component(KxTaskButton.name, KxTaskButton);
+	Vue.component(KxCarousel.name, KxCarousel);
 
 //	IDE 无法分析自动扫描的引用
 // 	const requireContext = require.context(".", false,  /.vue$/);

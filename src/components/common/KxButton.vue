@@ -197,15 +197,16 @@ export default {
 .focus-ripple-mixin() {
 	&:focus::after {
 		content: "";
-		pointer-events: none;
-		opacity: 0;
 		display: block;
 		position: absolute;
-		animation: button-ripple .4s;
-		.margin-abs(-2px);
 
 		border-radius: 6px;
+		.margin-abs(-2px);
 		border: solid 4px var(--background);
+
+		pointer-events: none;
+		opacity: 0;
+		animation: button-ripple .4s;
 	}
 }
 

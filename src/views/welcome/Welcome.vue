@@ -22,13 +22,12 @@
 </template>
 
 <script>
-import api from "../api";
-import SwiperSlide from "../components/SwiperSlide";
-import KxCarousel from "../components/common/KxCarousel";
+import api from "../../api";
+import SwiperSlide from "./SwiperSlide";
 
 export default {
 	name: "Welcome",
-	components: { KxCarousel, SwiperSlide },
+	components: { SwiperSlide },
 	data: () => ({
 		loading: true,
 		slides: [],
@@ -45,7 +44,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-@import "../css/ToBeImpoert";
+@import "../../css/ToBeImpoert";
 
 #welcome-page {
 	margin-top: 4rem;
