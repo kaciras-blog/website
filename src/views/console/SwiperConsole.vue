@@ -6,20 +6,19 @@
 		</div>
 
 		<div ref="container">
-			<template v-for="item of slides">
-				<swiper-console-item
-					v-if="!item.hold"
-					:key="item.tid"
-					class="slide"
-					:item="item"
-					@drag-started="drag"
-					@remove="remove"/>
-
-				<div v-else
-					 class="hold slide"
-					 :key="item.tid">
-				</div>
-			</template>
+			<div v-for="item of slides"
+				 v-if="item.hold"
+				 class="hold slide"
+				 :key="item.tid">
+			</div>
+			
+			<swiper-console-item
+				v-else
+				:key="item.tid"
+				class="slide"
+				:item="item"
+				@drag-started="drag"
+				@remove="remove"/>
 		</div>
 
 		<swiper-console-item
@@ -161,8 +160,8 @@ export default {
 
 .hold {
 	height: 2.6rem;
-	border: solid 2px #f7f646;
-	box-shadow: 0 0 3px 3px #fffa38 inset;
+	border: solid 2px #f8f078;
+	box-shadow: 0 0 3px 3px #f8efa0 inset;
 }
 
 .toolbar {

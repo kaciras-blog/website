@@ -248,13 +248,5 @@ _default.recommend = {
 	},
 };
 
-/**
- * 作为Vue的插件安装，可以直接在组件内调用而无须import。
- *
- * @param Vue Vue类
- */
-_default.install = function (Vue) {
-	Vue.prototype.$api = _default;
-};
 
 export default _default;

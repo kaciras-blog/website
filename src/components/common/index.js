@@ -30,6 +30,11 @@ export default function install(Vue) {
 	Vue.component(KxTaskButton.name, KxTaskButton);
 	Vue.component(KxCarousel.name, KxCarousel);
 
+	// 自动聚焦支持 v-autofocus
+	Vue.directive("autofocus", {
+		inserted: el => el.focus(),
+	});
+
 //	IDE 无法分析自动扫描的引用
 // 	const requireContext = require.context(".", false,  /.vue$/);
 // 	requireContext.keys().forEach(file => {

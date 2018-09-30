@@ -21,7 +21,7 @@
 				class="segment"
 				:value="item"
 				:replying="replying"
-				@reply="reply"
+				@reply="replying = item.id"
 				@item-removed="refresh"/>
 		</button-pageing-view>
 	</section>
@@ -55,9 +55,6 @@ export default {
 		},
 		showLast() {
 			this.$refs.discussions.switchToLast();
-		},
-		reply(id) {
-			this.replying = id;
 		},
 		submitDiscussion(text) {
 			// 文章以外的评论如何设计API？

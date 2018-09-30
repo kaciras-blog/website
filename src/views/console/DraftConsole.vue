@@ -5,31 +5,11 @@
 		</div>
 
 		<div class="panel">
-			<div v-for="draft in drafts" :key="draft.id" class="segment">
-
-				<div class="draft">
-					<h3 class="title">{{draft.title}}</h3>
-					<span class="minor-text">
-						<i class="fas fa-pencil-alt"></i>
-						<time>{{draft.time}}</time>
-					</span>
-
-					<div class="btn-group">
-						<kx-button class="primary outline" :route="'/edit/' + draft.id">编辑</kx-button>
-						<kx-button class="dangerous outline" @click="deleteDraft(draft.id)">删除</kx-button>
-					</div>
-				</div>
-
-				<div class="history" v-if="showHistory===draft">
-					<div class="history-item" v-for="his in draft.histories" :key="his.saveCount">
-						<div>
-							<span><i class="fa fa-save"></i>保存于：{{his.time}}</span>
-							<span><i class="fa fa-pencil"></i>字数：{{his.contentSize}}</span>
-						</div>
-						<button class="primary">编辑</button>
-					</div>
-				</div>
-			</div>
+			<draft-console-item
+				v-for="draft in drafts"
+				:key="draft.id"
+				class="segment"
+				:value="draft"/>
 
 			<span class="flex center-content minor-text" v-if="!loading && drafts.length===0">空空如也</span>
 
@@ -41,6 +21,7 @@
 <script>
 import api from "../../api";
 import {deleteOn} from "../../utils";
+import DraftConsoleItem from "./DraftConsoleItem";
 
 async function loadDrafts() {
 	if (this.allLoaded) {
@@ -64,6 +45,7 @@ async function loadDrafts() {
 
 export default {
 	name: "DraftConsole",
+	components: { DraftConsoleItem },
 	methods: {
 		deleteAll() {
 			api.draft.clear().then(() => {

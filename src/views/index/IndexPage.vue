@@ -5,17 +5,7 @@
 				 :footer="true">
 
 		<div class="article-list">
-
-			<h1 class='segment' v-if="cpath">
-				<router-link to='/'>全部文章</router-link>
-				<router-link
-					v-for="cat of excludeLast(cpath)"
-					:key="cat.id"
-					:to="'/index?category=' + cat.id">&gt; {{cat.name}}
-				</router-link>
-				<span>&gt; {{cpath[cpath.length-1].name}}</span>
-			</h1>
-			<h1 class='segment' v-else>全部文章</h1>
+			<h1 class="segment">全部文章</h1>
 
 			<scroll-pageing-view
 				:loader="loadPage"
@@ -26,6 +16,7 @@
 				<article-preview slot-scope="{ item }" :key="item.id" :item="item"/>
 			</scroll-pageing-view>
 		</div>
+
 		<aside-panel/>
 	</page-layout>
 </template>
@@ -100,9 +91,6 @@ export default {
 			const loaded = await api.article.getList(category, index + items.length, size);
 			items.push.apply(items, loaded);
 			return nextPageUrl($route, items.length);
-		},
-		excludeLast(arr) {
-			return [...arr].splice(0, arr.length - 1);
 		},
 	},
 	destroyed() {
