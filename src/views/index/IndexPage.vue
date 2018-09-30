@@ -80,9 +80,10 @@ export default {
 		const data = {
 			category: this.$route.query.category,
 			cpath: null,
+			index: parseInt(this.$route.params.index) || 0,
 			initArticles: [],
 			nextUrl: null,
-			index: parseInt(this.$route.params.index) || 0,
+			initState: "FREE",
 		};
 
 		const store = this.$store.state.index;

@@ -2,6 +2,7 @@
 	<div>
 		<img :src="discusser.head" class="small head">
 		<div class="discuss-main">
+
 			<header class="discuss-header">
 				<!-- 用户名 -->
 				<span class='name'>{{discusser.name}}</span>
@@ -39,13 +40,16 @@
 				</div>
 			</div>
 
-			<div v-if="value.replyCount>0">
+			<button-pageing-view
+				v-if="value.replyCount>0"
+				:loader="loadReplies">
+
 				<discussion
-					v-for="reply of value.replies"
-					:key="reply.id"
+					slot-scope="{ item }"
+					:key="item.id"
 					class="reply"
 					:value="reply"/>
-			</div>
+			</button-pageing-view>
 
 			<discz-editor
 				v-if="replying === value.id"
@@ -76,8 +80,9 @@ export default {
 		...mapState(["user"]),
 	},
 	methods: {
-		submitReply(text) {
-			api.discuss.reply(this.value.id, text);
+		async submitReply(text) {
+			await api.discuss.reply(this.value.id, text);
+
 		},
 		remove() {
 			api.discussion.deleteOne(this.value.id)
@@ -98,6 +103,9 @@ export default {
 					.then(() => value.voted = true)
 					.then(() => value.voteCount++);
 			}
+		},
+		loadReplies(index, size, cancelToken) {
+			return api.discuss.getReplies(this.value.id, index, size, cancelToken);
 		},
 	},
 };

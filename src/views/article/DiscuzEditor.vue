@@ -23,7 +23,7 @@
 		<div class='buttons'>
 			<kx-task-button
 				class='primary'
-				:on-click='submitDiscuss'>
+				:on-click='doSubmit'>
 				发表评论
 			</kx-task-button>
 		</div>
@@ -46,11 +46,9 @@ export default {
 			default: () => ({}),
 		},
 	},
-	data() {
-		return {
-			content: "",
-		};
-	},
+	data: () => ({
+		content: "",
+	}),
 	computed: {
 		discusser() {
 			return this.user || { id: 0, head: "/image/akalin.jpg", name: "(匿名评论)" };
@@ -58,8 +56,8 @@ export default {
 		...mapState(["user"]),
 	},
 	methods: {
-		async submitDiscuss() {
-			const { content, submit, $dialog } = this.content;
+		async doSubmit() {
+			const { content, submit, $dialog } = this;
 
 			if (!content || /^\s*$/.test(content)) {
 				return; // 没写评论就按发表按钮

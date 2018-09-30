@@ -41,7 +41,7 @@
 			<kx-button
 				v-if="!value.deleted"
 				class="dangerous outline"
-				@click="delete">
+				@click="remove">
 				删除
 			</kx-button>
 		</div>
@@ -69,7 +69,7 @@ export default {
 		move() {
 
 		},
-		delete() {
+		remove() {
 			const id = this.value.id;
 			api.article.deleteOne(id)
 				.then(() => deleteOn(this.articles, a => a.id === id))

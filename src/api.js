@@ -119,13 +119,12 @@ _default.discuss = {
 	 * @param discuz {int} 评论id
 	 * @param index {int} 页码，从1开始
 	 * @param count {int} 每页数量
+	 * @param cancelToken 取消令牌，用于中止请求
 	 * @return Promise<?> 回复列表
 	 */
-	getReplies: (discuz, index, count) => mainServer.get(`/discussions/${discuz}/replies`, {
-		params: {
-			start: (index - 1) * count,
-			count,
-		},
+	getReplies: (discuz, index, count, cancelToken = null) => mainServer.get(`/discussions/${discuz}/replies`, {
+		cancelToken,
+		params: { start: (index - 1) * count, count },
 	}).then(r => r.data),
 
 	/**

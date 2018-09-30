@@ -17,7 +17,7 @@ export default {
 	name: "ButtonPageingView",
 	props: {
 		loader: {
-			type: Function,
+			type: Function, // index, size, cancelToken => { items, total } or items
 			required: true,
 		},
 		start: {
@@ -47,10 +47,15 @@ export default {
 			const cancelToken = axios.CancelToken.source();
 			this._loading = cancelToken;
 
-			return loader(index, pageSize, cancelToken.token).then(({ items, total }) => {
+			return loader(index, pageSize, cancelToken.token).then(res => {
 				this.index = index;
-				this.items = items;
-				this.total = total;
+
+				if(typeof res === "object") {
+					this.items = res.items;
+					this.total = res.total;
+				} else if(Array.isArray(res)) {
+					this.items = res;
+				}
 			}).finally(() => this._loading = null);
 		},
 		switchPage(index) {
