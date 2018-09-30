@@ -139,7 +139,7 @@ export default {
 		@media screen {
 			@media (min-width: @length-screen-pad) {
 				display: block;
-				margin-left: 4rem;
+				margin-left: 6%;
 			}
 		}
 	}

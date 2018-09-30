@@ -100,7 +100,7 @@ export default {
 		justify-content: space-between;
 		width: 100%;
 		height: 100%;
-		background-color: rgba(255, 255, 255, 0.4);
+		background-color: rgba(255, 255, 255, 0.5);
 
 		padding: 0 1rem;
 
@@ -119,8 +119,7 @@ export default {
 }
 
 #banner {
-	height: 180px;
-	width: 100%;
+	height: 12rem;
 	margin-bottom: 4rem;
 }
 </style>

@@ -131,7 +131,7 @@ export default {
 #article-page {
 
 	& > article {
-		padding: 0 .5rem;
+		padding: 0 .8rem;
 		margin: 0 auto;
 
 		@media screen {
@@ -139,10 +139,10 @@ export default {
 				max-width: 90%;
 			}
 			@media (min-width: @length-screen-pad) {
-				max-width: 80%;
+				max-width: 78%;
 			}
 			@media (min-width: @length-screen-wide) {
-				max-width: 70%;
+				max-width: 66%;
 			}
 		}
 	}

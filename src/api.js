@@ -76,7 +76,7 @@ _default.category = {
 		params: { id, parent, treeMode },
 	}),
 
-	create: (data) => mainServer.post("/categories/", data),
+	create: data => mainServer.post("/categories/", data),
 
 	update: (id, data) => mainServer.put("/categories/" + id, data),
 };
