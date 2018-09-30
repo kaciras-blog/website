@@ -1,46 +1,19 @@
 <template>
 	<div>
 		<div class="toolbar btn-group">
-			<kx-button class="primary" @click="newArticle"><i class="fa fa-edit"></i>新文章</kx-button>
+			<kx-button
+				class="primary"
+				@click="newArticle">
+				<i class="fa fa-edit"></i>新文章
+			</kx-button>
 		</div>
 
 		<div class="panel">
-			<div v-for="A in articles"
-				 :key="A.id"
-				 class="article segment">
-
-				<img :src="A.cover" alt="文章封面">
-				<div>
-					<span class="red note" v-if="A.deleted">已删除</span>
-					<h3 class="compact">{{A.title}}</h3>
-				</div>
-
-				<div class="info">
-					<div class="tag-group">
-						<span v-for="c in A.cpath" :key="c.id">{{c.name}}</span>
-					</div>
-					<div class="minor-text">
-						<i class="far fa-edit" title="发表于"></i>
-						<time>{{A.create}}</time>
-						<i class="fas fa-sync" title="最后更新"></i>
-						<time>{{A.update}}</time>
-						<i class="fas fa-comment-dots" title="评论数"></i><span>{{A.dcnt}}</span>
-						<i class="fa fa-eye" title="浏览数"></i><span>{{A.vcnt}}</span>
-					</div>
-				</div>
-
-				<kx-button
-					class="primary outline"
-					@click="editArticle(A.id)">
-					修改
-				</kx-button>
-				<kx-button
-					v-if="!A.deleted"
-					class="dangerous outline"
-					@click="deleteArticle(A.id)">
-					删除
-				</kx-button>
-			</div>
+			<article-console-item
+				v-for="item of articles"
+				:key="item.id"
+				:value="item"
+				class="segment"/>
 
 			<span v-if="allLoaded && !articles.length">没有找到文章,去写一篇吧~</span>
 			<sk-fading-circle v-if="loading"/>
@@ -50,10 +23,11 @@
 
 <script>
 import api from "../../api";
-import { deleteOn, errorMessage } from "../../utils";
+import ArticleConsoleItem from "./ArticleConsoleItem";
 
 export default {
 	name: "ArticleConsole",
+	components: { ArticleConsoleItem },
 	data() {
 		return {
 			loading: true,
@@ -62,16 +36,6 @@ export default {
 		};
 	},
 	methods: {
-		editArticle(aid) {
-			api.draft.createFromPost(aid)
-				.then(id => window.location.href = "/edit/" + id)
-				.catch(err => console.log(err));
-		},
-		deleteArticle(id) {
-			api.article.deleteOne(id)
-				.then(() => deleteOn(this.articles, a => a.id === id))
-				.catch(err => this.$dialog.messageBox("删除文章", errorMessage(err), "error"));
-		},
 		newArticle() {
 			api.draft.createNew()
 				.then(id => this.$router.push("/edit/" + id))
@@ -100,57 +64,6 @@ export default {
 @import "../../css/ToBeImpoert";
 
 .toolbar {
-	margin-bottom: 1rem;
-}
-
-.note {
-	border-radius: .3rem;
-	padding: .2em .3em;
-	margin-right: .5em;
-
-	&.red {
-		background-color: #ed575a;
-		color: whitesmoke;
-	}
-
-	& + h3 {
-		display: inline;
-	}
-}
-
-.article {
-	display: grid;
-	grid-template-areas: "img title btn-1" "img meta  btn-2";
-	grid-template-columns: 8rem 1fr auto;
-	grid-template-rows: 3.5rem 3.5rem;
-	grid-column-gap: 1rem;
-
-	& > img {
-		grid-area: img;
-		.size(100%, 100%);
-	}
-	& > button:nth-of-type(1) {
-		grid-area: btn-1;
-		align-self: start;
-	}
-	& > button:nth-of-type(2) {
-		grid-area: btn-2;
-		align-self: start;
-		margin: 0; // button自动间距
-	}
-}
-
-.info {
-	align-self: end;
-	& i {
-		&:not(:first-of-type) {
-			margin-left: 1rem;
-		}
-		margin-right: .2rem;
-	}
-}
-
-.tag-group {
 	margin-bottom: 1rem;
 }
 </style>
