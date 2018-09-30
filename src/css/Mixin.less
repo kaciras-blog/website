@@ -39,6 +39,10 @@
 	margin-top: -(@h / 2);
 }
 
+.full-percent() {
+	.size(100%, 100%);
+}
+
 .full-vertex() {
 	left: 0;
 	right: 0;
@@ -88,29 +92,10 @@
 
 //------------------------------------- ├ 字体 ┆ └------------------------------------/
 
-// 字体颜色 + 自身 Hover
-.color(@color, @hovercolor) {
-	color: @color;
-	&:hover {
-		color: @hovercolor;
-	}
-}
-
-// 字体颜色 + 链接 Hover
-.color(@color, @acolor, @hovercolor) {
-	color: @color;
-	a {
-		color: @acolor;
-		&:hover {
-			color: @hovercolor;
-		}
-	}
-}
 
 // 禁止换行, 文本溢出省略号显示 (一行)
 .ellipsis() {
 	white-space: normal;
-	word-wrap: break-word;
 	word-break: break-all;
 	text-overflow: ellipsis;
 	overflow: hidden;

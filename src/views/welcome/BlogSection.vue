@@ -36,7 +36,7 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style scoped lang="less">
 #blog {
 	display: grid;
 	grid-template-rows: auto auto;

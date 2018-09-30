@@ -1,54 +1,49 @@
 <!--suppress XmlDuplicatedId -->
 <template>
-	<div>
-		<!-- 小屏幕折叠状态 -->
-		<div id="top-nav" v-if="collapse">
-			<nav class="content">
-				<div></div>
+	<!-- 小屏幕折叠状态 -->
+	<div id="top-nav" v-if="collapse">
+		<nav class="content">
+			<div></div>
+			<router-link
+				class="logo-kaciras"
+				to="/welcome"
+				title="LOGO，点击回到首页"/>
+			<div class="button" @click="showMenu=true"><i class="fas fa-bars"></i></div>
+		</nav>
+	</div>
+
+	<!-- 展开状态 -->
+	<div id="top-nav" v-else>
+		<nav class="content">
+
+			<!-- 左边 -->
+			<div class="nav-item-group">
 				<router-link
 					class="logo-kaciras"
-					to="/welcome"
+					to="/"
 					title="LOGO，点击回到首页"/>
-				<div class="button" @click="showMenu=true"><i class="fas fa-bars"></i></div>
-			</nav>
-		</div>
+				<!--<router-link-->
+				<!--to="/"-->
+				<!--class="nav-item">博客-->
+				<!--</router-link>-->
+			</div>
 
-		<!-- 展开状态 -->
-		<div id="top-nav" v-else>
-			<nav class="content">
+			<div class="nav-item-group" v-if="user">
+				<img :src="user.head"
+					 class="small head"
+					 title="别看了，不支持换头像">
+				<router-link
+					v-if="user.id === 2"
+					to="/console"
+					class="nav-item">管理
+				</router-link>
+				<div @click="logout" class="nav-item">退出登录</div>
+			</div>
 
-				<!-- 左边 -->
-				<div class="nav-item-group">
-					<router-link
-						class="logo-kaciras"
-						to="/"
-						title="LOGO，点击回到首页"/>
-					<!--<router-link-->
-						<!--to="/"-->
-						<!--class="nav-item">博客-->
-					<!--</router-link>-->
-				</div>
-
-				<div class="nav-item-group" v-if="user">
-					<img :src="user.head"
-						 class="small head"
-						 title="别看了，不支持换头像">
-					<router-link
-						v-if="user.id === 2"
-						to="/console"
-						class="nav-item">管理
-					</router-link>
-					<div @click="logout" class="nav-item">退出登录</div>
-				</div>
-
-				<div class="nav-item-group" v-else>
-					<router-link class="nav-item" to="/login">登录</router-link>
-				</div>
-			</nav>
-		</div>
-
-		<!-- 最下面的大图 -->
-		<div id="banner" v-if="banner"></div>
+			<div class="nav-item-group" v-else>
+				<router-link class="nav-item" to="/login">登录</router-link>
+			</div>
+		</nav>
 	</div>
 </template>
 
@@ -58,12 +53,6 @@ import { REMOVE_USER } from "../store/types";
 
 export default {
 	name: "TopNav",
-	props: {
-		banner: {
-			type: Boolean,
-			default: false,
-		},
-	},
 	data() {
 		return {
 			collapse: false,
@@ -98,11 +87,11 @@ export default {
 		position: relative;
 		display: flex;
 		justify-content: space-between;
-		width: 100%;
-		height: 100%;
-		background-color: rgba(255, 255, 255, 0.5);
 
 		padding: 0 1rem;
+		.full-percent;
+
+		background-color: rgba(255, 255, 255, 0.5);
 
 		@media screen {
 			@media (min-width: @length-screen-mobile) {
@@ -119,7 +108,7 @@ export default {
 }
 
 #banner {
-	height: 12rem;
+	height: 11rem;
 	margin-bottom: 4rem;
 }
 </style>

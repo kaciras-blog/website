@@ -67,6 +67,9 @@ export default {
 </script>
 
 <style scoped lang="less">
+@import "../../css/ToBeImpoert";
+
+
 @main-color: #2f8bff;
 
 .summary {
@@ -121,8 +124,7 @@ export default {
 
 	& > img {
 		position: absolute;
-		width: 100%;
-		height: 100%;
+		.full-percent;
 	}
 
 	&:hover > .tip {

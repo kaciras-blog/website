@@ -1,8 +1,7 @@
 <template>
 	<div id="container">
-		<top-nav :class="navClass"
-				 :style="navStyle"
-				 :banner="banner"/>
+		<top-nav/>
+		<div v-if="banner" id="banner"></div>
 		<main :id="viewId"><slot/></main>
 		<page-footer v-if="footer"/>
 	</div>
@@ -11,7 +10,7 @@
 <script>
 export default {
 	// functional: true,
-	props: ["banner", "footer", "viewId", "navStyle", "navClass"],
+	props: ["footer", "viewId", "banner"],
 	name: "PageLayout",
 };
 </script>

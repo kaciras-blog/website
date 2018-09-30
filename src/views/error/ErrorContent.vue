@@ -37,8 +37,7 @@ span.red {
 
 .err-img {
 	grid-area: image;
-	width: 100%;
-	height: 100%;
+	.full-percent;
 }
 
 .err-content {

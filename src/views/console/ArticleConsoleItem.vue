@@ -92,7 +92,7 @@ export default {
 
 .cover {
 	grid-area: img;
-	.size(100%, 100%);
+	.full-percent;
 }
 
 .ops {

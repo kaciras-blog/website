@@ -34,6 +34,8 @@ export default {
 </script>
 
 <style scoped lang="less">
+@import "../../css/ToBeImpoert";
+
 .pagination {
 	position: absolute;
 	left: 0;
@@ -52,9 +54,7 @@ export default {
 
 .title {
 	flex-grow: 1;
-	word-break: keep-all;
-	overflow: hidden;
-	text-overflow: ellipsis;
+	.ellipsis;
 }
 
 .buttons {

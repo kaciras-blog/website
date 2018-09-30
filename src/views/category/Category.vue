@@ -1,6 +1,10 @@
 <template>
-	<page-layout view-id="category">
-		<category-header/>
+	<page-layout
+		view-id="category"
+		:style="{ '--background': category.background }"
+		:banner="true">
+
+		<category-header :value="category"/>
 		<category-body/>
 	</page-layout>
 </template>
@@ -22,6 +26,9 @@ export default {
 	},
 	async asyncData({ store, route }) {
 
+	},
+	computed: {
+		category() { return null; },
 	},
 };
 </script>

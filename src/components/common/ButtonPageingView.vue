@@ -28,13 +28,17 @@ export default {
 			type: Number,
 			default: 2,
 		},
+		initTotalCount: {
+			type: Number,
+			default: 0,
+		},
 	},
 	data() {
 		return {
 			index: this.start,
 			pageSize: this.initPageSize,
 			items: [],
-			total: 0,
+			total: this.initTotalCount,
 			loading: null,
 		};
 	},

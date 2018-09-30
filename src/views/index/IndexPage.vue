@@ -1,6 +1,6 @@
 <template>
 	<page-layout view-id="index-page"
-				 nav-class="index-header"
+				 class="index-header"
 				 :banner="true"
 				 :footer="true">
 

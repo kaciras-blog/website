@@ -93,6 +93,8 @@ export default {
 </script>
 
 <style scoped lang="less">
+@import "../css/ToBeImpoert";
+
 .body {
 	width: 480px;
 }
@@ -115,9 +117,7 @@ export default {
 	& > h3 {
 		display: inline-block;
 		margin: 0 .5rem;
-		word-break: keep-all;
-		overflow: hidden;
-		text-overflow: ellipsis;
+		.ellipsis;
 	}
 }
 
