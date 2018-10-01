@@ -103,7 +103,6 @@ export default {
 			buttons.push(createButton("LAST", totalPage));
 		}
 
-		const btnWrapper = h("div", { attrs: { "class": "buttons" } }, buttons);
 
 		// <input class="jump" @keyup="jump"/>
 		const jumpInput = h("input", {
@@ -117,14 +116,18 @@ export default {
 		 *     <label>跳至<input ...>页</label>
 		 * </div>
 		 */
-		const jump = h("div", {
-			attrs: { "class": "minor-text" },
-		}, [
-			h("span", `共${totalPage}页，`),
-			h("label", { attrs: { "class": "jump-label" } }, ["跳至", jumpInput, "页"]),
-		]);
+		if (theme === "button") {
+			const jump = h("div", { attrs: { "class": "minor-text" } }, [
+				h("span", `共${totalPage}页，`),
+				h("label", { attrs: { "class": "jump-label" } }, ["跳至", jumpInput, "页"]),
+			]);
+			const btnWrapper = h("div", { attrs: { "class": "buttons" } }, buttons);
+			return h("div", { attrs: { "class": "button-pager" } }, [btnWrapper, jump]);
+		}
 
-		return h("div", { attrs: { "class": "button-pager" } }, [btnWrapper, jump]);
+		buttons.unshift(h("span", { staticClass: "total" }, "共" + totalPage + "页"));
+		const btnWrapper = h("div", { staticClass: "buttons" }, buttons);
+		return h("div", { attrs: { "class": "text-pager" } }, [btnWrapper]);
 	},
 	computed: {
 		current() {
@@ -156,7 +159,9 @@ export default {
 	justify-content: space-between;
 	align-items: center;
 }
-
+.total{
+	margin-right: 1rem;
+}
 .buttons button {
 	margin: 0 .2rem;
 }

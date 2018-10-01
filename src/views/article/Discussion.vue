@@ -42,13 +42,16 @@
 
 			<button-pageing-view
 				v-if="value.replyCount>0"
+				theme="text"
+				:init-items="value.replies"
+				:init-total-count="value.replyCount"
 				:loader="loadReplies">
 
 				<discussion
 					slot-scope="{ item }"
 					:key="item.id"
 					class="reply"
-					:value="reply"/>
+					:value="item"/>
 			</button-pageing-view>
 
 			<discz-editor
@@ -73,7 +76,10 @@ export default {
 			return this.user.id === 2;
 		},
 		discusser() {
-			return this.value.user || { id: 0, head: "/image/akalin.jpg", name: "(匿名评论)" };
+			if(this.value.user.id) {
+				return this.value.user;
+			}
+			return { id: 0, head: "/image/akalin.jpg", name: "(匿名评论)" };
 		},
 		...mapState(["user"]),
 	},
@@ -130,6 +136,7 @@ export default {
 	display: flex;
 	justify-content: space-between;
 	align-items: baseline;
+	margin-bottom: 2rem;
 }
 
 .tags > *:not(:last-child) {
@@ -158,6 +165,6 @@ export default {
 }
 
 .reply {
-	margin-top: 2rem;
+	margin-bottom: 1.5rem;
 }
 </style>

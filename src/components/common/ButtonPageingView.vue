@@ -2,6 +2,7 @@
 	<div>
 		<slot v-for="item of items" :item="item"/>
 		<button-pager
+			:theme="theme"
 			:total-count="total"
 			:index="index"
 			:page-size="pageSize"
@@ -24,6 +25,10 @@ export default {
 			type: Number,
 			default: 0,
 		},
+		initItems: {
+			type: Array,
+			default: () =>([]),
+		},
 		initPageSize: {
 			type: Number,
 			default: 2,
@@ -32,12 +37,13 @@ export default {
 			type: Number,
 			default: 0,
 		},
+		theme: String,
 	},
 	data() {
 		return {
 			index: this.start,
 			pageSize: this.initPageSize,
-			items: [],
+			items: this.initItems,
 			total: this.initTotalCount,
 			loading: null,
 		};
@@ -54,11 +60,11 @@ export default {
 			return loader(index, pageSize, cancelToken.token).then(res => {
 				this.index = index;
 
-				if(typeof res === "object") {
+				if(Array.isArray(res)) {
+					this.items = res;
+				} else {
 					this.items = res.items;
 					this.total = res.total;
-				} else if(Array.isArray(res)) {
-					this.items = res;
 				}
 			}).finally(() => this._loading = null);
 		},
@@ -74,14 +80,17 @@ export default {
 		},
 		// scroll helper methods
 		scrollToStart() {
-			this.$nextTick(() => scrollToElementStart(this.$el));
+			// # 窗口高，楼中楼滚到屏幕顶了？
+			// this.$nextTick(() => scrollToElementStart(this.$el));
 		},
 		scrollToEnd() {
-			this.$nextTick(() => scrollToElementEnd(this.$el));
+			// this.$nextTick(() => scrollToElementEnd(this.$el));
 		},
 	},
 	beforeMount() {
-		this.refresh();
+		if(!this.items.length) {
+			this.refresh();
+		}
 	},
 };
 </script>

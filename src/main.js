@@ -35,7 +35,7 @@ export default function () {
 			const user = store.state.user;
 			if (user && user.id === 2)
 				return next();
-			next("/error/404");
+			next({path: "/error/404", replace: true});
 		};
 	}
 	router.addRoutes([coneoleRoute]);

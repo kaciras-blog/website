@@ -124,7 +124,7 @@ _default.discuss = {
 	 */
 	getReplies: (discuz, index, count, cancelToken = null) => mainServer.get(`/discussions/${discuz}/replies`, {
 		cancelToken,
-		params: { start: (index - 1) * count, count },
+		params: { start: index * count, count },
 	}).then(r => r.data),
 
 	/**
@@ -201,7 +201,7 @@ _default.misc = {
 	 *
 	 * @return {string} 验证码URL
 	 */
-	captchaAddress: () => apiConfig.main + "/utils/captcha?r=" + Math.random(),
+	captchaAddress: () => apiConfig.account + "/captcha?r=" + Math.random(),
 };
 
 _default.session = {

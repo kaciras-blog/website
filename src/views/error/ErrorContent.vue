@@ -16,7 +16,7 @@ export default {
 		},
 		image: {
 			type: String,
-			default: require("../../assets/error-other.png"),
+			default: "/static/img/error-other.png",
 		},
 	},
 };
