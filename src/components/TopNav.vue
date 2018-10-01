@@ -14,7 +14,7 @@
 
 	<!-- 展开状态 -->
 	<div id="top-nav" v-else>
-		<nav class="content">
+		<nav :class="$style.content">
 
 			<!-- 左边 -->
 			<div class="nav-item-group">
@@ -83,22 +83,6 @@ export default {
 	height: 3rem;
 	box-shadow: rgba(100, 100, 100, 0.2) 0 0 3px 2px;
 
-	& > .content {
-		position: relative;
-		display: flex;
-		justify-content: space-between;
-
-		padding: 0 1rem;
-		.full-percent;
-
-		background-color: rgba(255, 255, 255, 0.5);
-
-		@media screen {
-			@media (min-width: @length-screen-mobile) {
-				padding: 0 5%;
-			}
-		}
-	}
 }
 
 #top-nav::before,
@@ -125,5 +109,26 @@ export default {
 
 .head {
 	margin: 0 .5rem;
+}
+</style>
+
+<style module lang="less">
+@import "../css/ToBeImpoert.less";
+
+.content {
+	position: relative;
+	display: flex;
+	justify-content: space-between;
+
+	padding: 0 1rem;
+	.full-percent;
+
+	background-color: rgba(255, 255, 255, 0.5);
+
+	@media screen {
+		@media (min-width: @length-screen-mobile) {
+			padding: 0 5%;
+		}
+	}
 }
 </style>

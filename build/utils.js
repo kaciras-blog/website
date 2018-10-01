@@ -14,6 +14,8 @@ exports.cssLoaders = function (options) {
 		loader: 'css-loader',
 		options: {
 			sourceMap: options.sourceMap,
+			modules: options.modules,
+			localIdentName: "[local]_[hash:base64:8]"
 		},
 	};
 
@@ -49,12 +51,21 @@ exports.cssLoaders = function (options) {
 exports.styleLoaders = function (options) {
 	const output = [];
 	const loaders = exports.cssLoaders(options);
+	options.modules = true;
+	const moduleLoaders = exports.cssLoaders(options);
 
 	for (const extension in loaders) {
-		const loader = loaders[extension];
 		output.push({
 			test: new RegExp('\\.' + extension + '$'),
-			use: loader,
+			oneOf: [
+				{
+					resourceQuery: /module/,
+					use: moduleLoaders[extension]
+				},
+				{
+					use: loaders[extension]
+				}
+			]
 		});
 	}
 
