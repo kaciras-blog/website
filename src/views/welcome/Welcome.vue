@@ -16,7 +16,7 @@ export default {
 </script>
 
 <style lang="less">
-@import "../../css/ToBeImpoert";
+@import "../../css/ToBeImport";
 
 #welcome-page {
 	margin-top: 4rem;

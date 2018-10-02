@@ -70,7 +70,7 @@ export default {
 </script>
 
 <style lang="less">
-@import "../css/ToBeImpoert.less";
+@import "../css/ToBeImport.less";
 
 #top-nav {
 	.glass;
@@ -98,7 +98,7 @@ export default {
 </style>
 
 <style module lang="less">
-@import "../css/ToBeImpoert.less";
+@import "../css/ToBeImport.less";
 
 .head {
 	margin: 0 .5rem;

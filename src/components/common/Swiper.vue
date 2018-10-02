@@ -71,7 +71,7 @@ export default {
 </script>
 
 <style lang="less">
-@import "../../css/ToBeImpoert";
+@import "../../css/ToBeImport";
 
 .swiper {
 	position: absolute;

@@ -11,7 +11,7 @@
 				 class="hold slide"
 				 :key="item.tid">
 			</div>
-			
+
 			<swiper-console-item
 				v-else
 				:key="item.tid"
@@ -152,7 +152,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-@import "../../css/ToBeImpoert";
+@import "../../css/ToBeImport";
 
 .slide {
 	margin: 1.5rem 0;

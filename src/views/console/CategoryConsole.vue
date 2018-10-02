@@ -103,7 +103,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-@import "../../css/ToBeImpoert";
+@import "../../css/ToBeImport";
 
 .buttons {
 	margin-bottom: 1rem;

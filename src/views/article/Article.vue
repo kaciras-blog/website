@@ -126,7 +126,7 @@ export default {
 </script>
 
 <style lang="less">
-@import "../../css/ToBeImpoert";
+@import "../../css/ToBeImport";
 
 #article-page {
 

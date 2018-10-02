@@ -29,7 +29,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-@import "../../css/ToBeImpoert";
+@import "../../css/ToBeImport";
 
 form {
 	position: relative;
@@ -53,7 +53,7 @@ form {
 </style>
 
 <style lang="less">
-@import "../../css/ToBeImpoert";
+@import "../../css/ToBeImport";
 
 #login-view {
 	width: 100%;

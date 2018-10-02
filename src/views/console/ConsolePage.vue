@@ -48,7 +48,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-@import "../../css/ToBeImpoert";
+@import "../../css/ToBeImport";
 
 #console-page {
 	height: 100vh;

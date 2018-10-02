@@ -30,7 +30,7 @@ export default {
 </script>
 
 <style module lang="less">
-@import "../../css/ToBeImpoert";
+@import "../../css/ToBeImport";
 
 .slide {
 	display: block;

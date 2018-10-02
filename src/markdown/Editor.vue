@@ -218,7 +218,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-@import "../css/ToBeImpoert";
+@import "../css/ToBeImport";
 
 // 编辑器页面的两个编辑框
 .text-view {

@@ -23,6 +23,10 @@ export default function () {
 			component: () => import("./views/index/IndexPage"),
 		},
 		{
+			path: "/category/:name",
+			component: () => import("./views/category/Category"),
+		},
+		{
 			path: "/welcome",
 			naem: "welcome",
 			component: Welcome,

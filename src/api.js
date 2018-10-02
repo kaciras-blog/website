@@ -70,7 +70,9 @@ _default.category = {
 
 	deleteOne: (id) => mainServer.delete("/categories/" + id),
 
-	getInfo: (id) => mainServer.get("/categories/" + id).then(r => r.data),
+	getByName: name => mainServer.get("/categories/" + name, {
+		headers: { "Identified-By": "name" },
+	}).then(r => r.data),
 
 	move: (id, parent, treeMode) => mainServer.post("/categories/transfer", {
 		params: { id, parent, treeMode },

@@ -103,7 +103,7 @@ export default {
 
 <!--suppress CssNoGenericFontName -->
 <style lang="less">
-@import "../../css/ToBeImpoert";
+@import "../../css/ToBeImport";
 
 #index-page {
 	display: flex;

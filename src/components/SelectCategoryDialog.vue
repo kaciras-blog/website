@@ -129,7 +129,7 @@ export default {
 </style>
 
 <style scoped lang="less">
-@import "../css/ToBeImpoert";
+@import "../css/ToBeImport";
 
 .cards {
 	width: 50vmax;

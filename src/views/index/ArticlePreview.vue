@@ -13,7 +13,8 @@
 			<router-link
 				v-for="cat in item.cpath"
 				:key="cat.id"
-				:to="'/?category=' + cat.id">{{cat.name}}
+				:to="'/category/' + cat.name">
+				{{cat.name}}
 			</router-link>
 		</div>
 
@@ -70,7 +71,7 @@ export default {
 </script>
 
 <style lang="less">
-@import "../../css/ToBeImpoert.less";
+@import "../../css/ToBeImport.less";
 
 .article-preview {
 	display: grid;
