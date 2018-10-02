@@ -1,7 +1,7 @@
 <template>
 	<page-layout
 		view-id="category"
-		:style="{ '--background': category.background }"
+		:style="navStyle"
 		:banner="true">
 
 		<category-header :value="category"/>
@@ -10,25 +10,40 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import CategoryHeader from "./CategoryHeader";
 import CategoryBody from "./CategoryBody";
+import api from "../../api";
 
-
+const storeModule = {
+	namespaced: true,
+	state: () => ({
+		item: {},
+	}),
+	mutations: {
+		setItem: (state, item) => state.item = item,
+	},
+};
 
 export default {
 	name: "CategoryPage",
-	components: { CategoryBody, CategoryHeader },
-	props: {
-		name: {
-			type: String,
-			required: true,
-		},
+	components: {
+		CategoryHeader,
+		CategoryBody,
 	},
-	async asyncData({ store, route }) {
-
+	async asyncData({ store, route, cancelToken }) {
+		store.registerModule("category", storeModule);
+		store.commit("category/setItem", await api.category.getByName(route.params.name));
 	},
+	prefetch: true,
 	computed: {
-		category() { return null; },
+		navStyle() {
+			return { "--background": `url(${this.category.bsetBackground || require("../../assets/index-banner.jpg")})` };
+		},
+		...mapState({ category: state => state.category.item }),
+	},
+	destroyed() {
+		this.$store.unregisterModule("category");
 	},
 };
 </script>
