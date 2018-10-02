@@ -1,9 +1,14 @@
 <template>
-	<a v-if="isAbsoluteLink" :href="item.link">
-		<img class="picture" :src="item.picture"/>
+	<a v-if="isAbsoluteLink"
+	   :class="$style.slide"
+	   :href="item.link">
+		<img :class="$style.img" :src="item.picture"/>
 	</a>
-	<router-link v-else class="swiper-slide" :to="item.link">
-		<img class="picture" :src="item.picture"/>
+	<router-link
+		v-else
+		:class="$style.slide"
+		:to="item.link">
+		<img :class="$style.img" :src="item.picture"/>
 	</router-link>
 </template>
 
@@ -24,22 +29,21 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style module lang="less">
 @import "../../css/ToBeImpoert";
 
-.swiper-slide {
+.slide {
 	display: block;
 	position: absolute;
 	width: 100%;
 	height: 100%;
 }
 
-.picture{
+.img {
 	position: absolute;
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
 }
-
 </style>

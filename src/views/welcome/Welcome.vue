@@ -15,7 +15,7 @@ export default {
 };
 </script>
 
-<style scoped lang="less">
+<style lang="less">
 @import "../../css/ToBeImpoert";
 
 #welcome-page {

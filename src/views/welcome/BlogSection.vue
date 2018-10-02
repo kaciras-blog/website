@@ -1,16 +1,22 @@
 <template>
-	<section id="blog">
-		<header>
-			<h1 class="title">博客网站</h1>
-			<kx-button route="/test" class="big outline primary">去看看</kx-button>
+	<section id="blog-section">
+
+		<header :class="$style.header">
+			<h1 :class="$style.title">博客网站</h1>
+			<kx-button
+				route="/test"
+				class="outline primary"
+				:class="$style.link_button">
+				去看看
+			</kx-button>
 		</header>
 
 		<sk-fading-circle v-if="loading"/>
-		<kx-carousel v-else class="ms" :items="slides">
+		<kx-carousel v-else :class="$style.carousel" :items="slides">
 			<swiper-slide slot-scope="{ slide }" :key="slide.tid" :item="slide"/>
 		</kx-carousel>
 
-		<div class="others"></div>
+		<div :class="$style.others"></div>
 	</section>
 </template>
 
@@ -36,8 +42,8 @@ export default {
 };
 </script>
 
-<style scoped lang="less">
-#blog {
+<style module lang="less">
+:global(#blog-section) {
 	display: grid;
 	grid-template-rows: auto auto;
 	grid-template-columns: auto 1fr;
@@ -45,25 +51,25 @@ export default {
 	grid-gap: 2rem;
 
 	padding: 6rem 5rem 0;
+}
 
-	& > header {
-		padding: 4rem 0;
-		grid-area: header;
-		text-align: center;
-	}
+.header {
+	padding: 4rem 0;
+	grid-area: header;
+	text-align: center;
 }
 
 .others {
 	grid-area: others;
 }
 
-.big {
+.link_button {
 	width: 30%;
 	padding: .8rem 0;
 	font-size: 1.3rem;
 }
 
-.ms {
+.carousel {
 	width: 32rem;
 	height: 20rem;
 }

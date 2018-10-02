@@ -31,6 +31,7 @@
 			<div class="nav-item-group" v-if="user">
 				<img :src="user.head"
 					 class="small head"
+					 :class="$style.head"
 					 title="别看了，不支持换头像">
 				<router-link
 					v-if="user.id === 2"
@@ -85,35 +86,23 @@ export default {
 
 }
 
-#top-nav::before,
-#banner {
-	background: var(--background);
-	background-size: var(--background-size, cover); // 这个属性写一起毛病多
-}
-
 #banner {
 	height: 11rem;
 	margin-bottom: 4rem;
 }
-</style>
 
-<style scoped lang="less">
-.menu {
-	position: absolute;
-	top: 3rem;
-	background-color: rgba(0, 0, 0, 0.2);
-	& > * {
-		border-bottom: solid 1px #c5c5c5;
-	}
-}
-
-.head {
-	margin: 0 .5rem;
+#top-nav::before, #banner {
+	background: var(--background);
+	background-size: var(--background-size, cover); // 这个属性写一起毛病多
 }
 </style>
 
 <style module lang="less">
 @import "../css/ToBeImpoert.less";
+
+.head {
+	margin: 0 .5rem;
+}
 
 .content {
 	position: relative;

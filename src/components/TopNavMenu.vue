@@ -19,6 +19,13 @@ export default {
 };
 </script>
 
-<style scoped>
-
+<style scoped lang="less">
+.menu {
+	position: absolute;
+	top: 3rem;
+	background-color: rgba(0, 0, 0, 0.2);
+	& > * {
+		border-bottom: solid 1px #c5c5c5;
+	}
+}
 </style>
