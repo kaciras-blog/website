@@ -1,6 +1,6 @@
 <template>
 	<transition name="fade">
-		<div class="dimmer" v-show="show">
+		<div class="dimmer" v-show="show" tabindex="-1" @keyup.esc="cancel">
 			<div class="loading">
 				<sk-fading-circle/>
 				<span v-if="timeouted">
@@ -33,6 +33,7 @@ export default {
 			}
 			this.show = true;
 			this.$_timer = setTimeout(() => this.timeouted = true, this.timeout);
+			this.$nextTick(() => this.$el.focus());
 		},
 		finish() {
 			if (!this.show) {
@@ -60,6 +61,10 @@ export default {
 	.overlay-fixed;
 	z-index: 1000;
 	background-color: rgba(255, 255, 255, 0.6);
+
+	&:focus {
+		background-color: rgba(255, 98, 93, 0.6);
+	}
 }
 
 .loading {
