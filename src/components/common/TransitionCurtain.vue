@@ -61,10 +61,6 @@ export default {
 	.overlay-fixed;
 	z-index: 1000;
 	background-color: rgba(255, 255, 255, 0.6);
-
-	&:focus {
-		background-color: rgba(255, 98, 93, 0.6);
-	}
 }
 
 .loading {

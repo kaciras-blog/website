@@ -38,7 +38,7 @@ export default {
 	prefetch: true,
 	computed: {
 		navStyle() {
-			return { "--background": `url(${this.category.bsetBackground || require("../../assets/index-banner.jpg")})` };
+			return { "--background": `url(${this.category.bestBackground || require("../../assets/index-banner.jpg")})` };
 		},
 		...mapState({ category: state => state.category.item }),
 	},

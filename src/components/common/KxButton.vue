@@ -35,7 +35,7 @@ export default {
 			data.props.to = route;
 			tag = Vue.component("router-link");
 		}
-		if(tag === "button") {
+		if (tag === "button") {
 			data.attrs = attrs || {};
 			data.attrs.type = "button";
 		}
@@ -118,7 +118,7 @@ export default {
 		&:not(.running) {
 			color: dimgray;
 			border-color: #d9dfdf;
-			background-color:#d9dfdf;
+			background-color: #d9dfdf;
 		}
 	}
 
@@ -195,18 +195,20 @@ export default {
 
 // 聚焦时发出波纹效果
 .focus-ripple-mixin() {
-	&:focus::after {
-		content: "";
-		display: block;
-		position: absolute;
+	@media screen and (min-width: @length-screen-mobile) {
+		&:focus::after {
+			content: "";
+			display: block;
+			position: absolute;
 
-		border-radius: 6px;
-		.margin-abs(-2px);
-		border: solid 4px var(--background);
+			border-radius: 6px;
+			.margin-abs(-2px);
+			border: solid 4px var(--background);
 
-		pointer-events: none;
-		opacity: 0;
-		animation: button-ripple .4s;
+			pointer-events: none;
+			opacity: 0;
+			animation: button-ripple .4s;
+		}
 	}
 }
 

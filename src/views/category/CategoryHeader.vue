@@ -18,6 +18,7 @@
 
 <script>
 import CategoryCard from "../../components/CategoryCard";
+
 export default {
 	name: "CategoryHeader",
 	components: { CategoryCard },
@@ -76,5 +77,7 @@ export default {
 
 .children {
 	grid-area: children;
+	display: flex;
+	overflow-x: auto;
 }
 </style>
