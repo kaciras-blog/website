@@ -2,6 +2,7 @@
 	<div class="swiper">
 		<template v-if="slides.length">
 			<div class="slide"
+				 ref="test"
 				 :class="{ 'fade-in': scrolling }"
 				 :style="{ animationDuration: speed + 'ms' }">
 				<slot :slide="slides[next]"/>
@@ -24,20 +25,11 @@
 
 <script>
 export default {
-	name: "Swiper",
+	name: "FadeCarousel",
 	props: {
-		slides: {
-			type: Array,
-			required: true,
-		},
-		index: {
-			type: Number,
-			required: true,
-		},
-		speed: {
-			type: Number,
-			default: 1000,
-		},
+		slides: Array,
+		index: Number,
+		speed: Number,
 	},
 	data() {
 		return {
@@ -46,24 +38,28 @@ export default {
 			scrolling: false,
 		};
 	},
-	// computed: {
-	// 	current() {
-	// 		return this.slides[this.index];
-	// 	},
-	// 	next() {
-	// 		const { slides, index } = this;
-	// 		return index === slides.length - 1 ? slides[0] : slides[index + 1];
-	// 	},
-	// },
 	watch: {
 		index(nv, ov) {
-			this.scrolling = true;
-			this.next = nv;
-			this.current = ov;
+			const startFade = () => {
+				this.$refs.test.offsetHeight;
+				this.scrolling = true;
+				this.next = nv;
+				this.current = ov;
+			};
 
-			setTimeout(() => {
+			if (this.scrolling) {
+				clearTimeout(this.$_timer);
 				this.current = nv;
 				this.scrolling = false;
+				this.$nextTick(startFade);
+			} else {
+				startFade();
+			}
+
+			this.$_timer = setTimeout(() => {
+				this.current = nv;
+				this.scrolling = false;
+				this.$emit("switched");
 			}, this.speed);
 		},
 	},
