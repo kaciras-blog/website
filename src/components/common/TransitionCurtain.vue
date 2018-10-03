@@ -1,15 +1,15 @@
 <template>
 	<transition name="fade">
-	<div class="dimmer" v-show="show">
-		<div class="loading">
-			<sk-fading-circle/>
-			<span v-if="timeouted">
-				10秒都没加载完，多半是废了，您可以继续等等，或是
+		<div class="dimmer" v-show="show">
+			<div class="loading">
+				<sk-fading-circle/>
+				<span v-if="timeouted">
+					10秒都没加载完，多半是废了，您可以继续等等，或是
+				</span>
+				<span v-else>加载中...</span>
 				<a class="highlight" @click="cancel">取消</a>
-			</span>
-			<span v-else>加载中...</span>
+			</div>
 		</div>
-	</div>
 	</transition>
 </template>
 
@@ -22,22 +22,20 @@ export default {
 			default: 10 * 1000,
 		},
 	},
-	data() {
-		return {
-			show: false,
-			timeouted: false,
-		};
-	},
+	data: () => ({
+		show: false,
+		timeouted: false,
+	}),
 	methods: {
 		start() {
-			if(this.show) {
+			if (this.show) {
 				return; // 忽略重复调用，下同
 			}
 			this.show = true;
 			this.$_timer = setTimeout(() => this.timeouted = true, this.timeout);
 		},
 		finish() {
-			if(!this.show) {
+			if (!this.show) {
 				return;
 			}
 			clearTimeout(this.$_timer);

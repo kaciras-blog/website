@@ -3,7 +3,6 @@ import Router from "vue-router";
 import Error from "./views/error/Error";
 import Welcome from "./views/welcome/Welcome";
 
-
 Vue.use(Router);
 
 /*
