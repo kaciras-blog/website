@@ -35,7 +35,7 @@ module.exports = merge(baseConfig, {
 	// 默认文件名为 `vue-ssr-server-bundle.json`
 	plugins: [
 		new webpack.DefinePlugin({
-			"process.env.SERVER_SIDE": "true"
+			"process.env.VUE_ENV": "'server'"
 		}),
 		new VueSSRServerPlugin(),
 	],

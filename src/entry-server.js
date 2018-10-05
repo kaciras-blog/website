@@ -1,4 +1,8 @@
 import createApp from "./main";
+import { CancelToken } from "./utils";
+
+
+const cancelToken = CancelToken.never();
 
 function onReadyAsync(router) {
 	return new Promise((resolve, reject) => router.onReady(resolve, reject));
@@ -18,7 +22,7 @@ export default async context => {
 	// 对所有匹配的路由组件调用 `asyncData()`
 	await Promise.all(matched
 		.filter(c => c.asyncData)
-		.map(c => c.asyncData({ store, route: router.currentRoute })));
+		.map(c => c.asyncData(store, router.currentRoute, cancelToken)));
 
 	context.state = store.state;
 	return vue;

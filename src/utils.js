@@ -211,3 +211,34 @@ export function drag(el, startX, startY, onDragging) {
 		document.addEventListener("touchend", onUp);
 	});
 }
+
+export class CancelToken {
+
+	constructor() {
+		this.canceled = false;
+		this.completed = false;
+		this.callbacks = [];
+	}
+
+	cancel() {
+		if(!this.completed) {
+			this.canceled = true;
+			this.callbacks.forEach(cb => cb());
+		}
+	}
+
+	onCancel(callback) {
+		this.callbacks.push(callback);
+	}
+
+	complete() {
+		this.completed = true;
+	}
+
+	static never() {
+		const token = new CancelToken();
+		token.cancel = () => {};
+		token.onCancel = () => {};
+		return token;
+	}
+}

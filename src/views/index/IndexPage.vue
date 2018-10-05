@@ -63,7 +63,7 @@ export default {
 		ArticlePreview,
 		AsidePanel,
 	},
-	asyncData({ store, route }) {
+	asyncData(store, route) {
 		store.registerModule("index", indexStoreModule);
 		return store.dispatch("index/fetchItem", route);
 	},

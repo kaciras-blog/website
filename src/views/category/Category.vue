@@ -14,6 +14,7 @@ import { mapState } from "vuex";
 import CategoryHeader from "./CategoryHeader";
 import CategoryBody from "./CategoryBody";
 import api from "../../api";
+import axios from "axios";
 
 const storeModule = {
 	namespaced: true,
@@ -31,9 +32,11 @@ export default {
 		CategoryHeader,
 		CategoryBody,
 	},
-	async asyncData({ store, route, cancelToken }) {
+	async asyncData(store, route, cancelToken) {
 		store.registerModule("category", storeModule);
-		store.commit("category/setItem", await api.category.getByName(route.params.name));
+		const axiosCancelToken = axios.CancelToken.source();
+		cancelToken.onCancel(axiosCancelToken.cancel);
+		store.commit("category/setItem", await api.category.getByName(route.params.name, axiosCancelToken.token));
 	},
 	prefetch: true,
 	computed: {

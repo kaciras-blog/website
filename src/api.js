@@ -11,17 +11,17 @@ if (process.env.NODE_ENV === "production") {
 }
 
 /*
- * 在服务端时关闭证书验证
+ * 在服务端时关闭证书验证, HTTP2 ?
  */
-if (process.env.SERVER_SIDE) {
-	const https = require("https");
-	axios.defaults.httpsAgent = new https.Agent({ rejectUnauthorized: false });
-}
+// if (process.env.VUE_ENV === "server") {
+// 	const https = require("https");
+// 	axios.defaults.httpsAgent = new https.Agent({ rejectUnauthorized: false });
+// }
 
 let apiConfig;
 
 if (process.env.NODE_ENV !== "production") {
-	if (process.env.SERVER_SIDE) {
+	if (process.env.VUE_ENV === "server") {
 		apiConfig = {
 			main: "http://localhost:2374",
 			account: "http://localhost:26481",
@@ -35,7 +35,7 @@ if (process.env.NODE_ENV !== "production") {
 		};
 	}
 } else {
-	if (process.env.SERVER_SIDE) {
+	if (process.env.VUE_ENV === "server") {
 		apiConfig = {
 			main: "http://localhost:2374",
 			account: "http://localhost:26481",
@@ -70,7 +70,8 @@ _default.category = {
 
 	deleteOne: (id) => mainServer.delete("/categories/" + id),
 
-	getByName: name => mainServer.get("/categories/" + name, {
+	getByName: (name, cancelToken) => mainServer.get("/categories/" + name, {
+		cancelToken,
 		headers: { "Identified-By": "name" },
 	}).then(r => r.data),
 
@@ -85,7 +86,7 @@ _default.category = {
 
 _default.article = {
 
-	get: id => mainServer.get("/articles/" + id).then(r => r.data),
+	get: (id, cancelToken) => mainServer.get("/articles/" + id, { cancelToken }).then(r => r.data),
 
 	publish: (data) => mainServer.post("/articles", data).then(r => r.headers["location"]),
 
