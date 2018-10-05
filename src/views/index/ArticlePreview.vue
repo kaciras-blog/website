@@ -1,13 +1,21 @@
 <template>
 	<div class="article-preview segment">
-		<router-link :to="item | articleLink">
+		<router-link
+			:to="item | articleLink"
+			tabindex="-1">
 			<img :src="item.cover" class="cover-small">
 		</router-link>
 
 		<router-link :to="item | articleLink" class="title">{{item.title}}</router-link>
 
 		<span>{{item.summary}}</span>
-		<div>关键词：<span v-for="kw in item.keywords" :key="kw" class="keyword">{{kw}}</span></div>
+
+		<div>
+			关键词：
+			<span v-for="kw in item.keywords"
+				  :key="kw"
+				  class="keyword">{{kw}}</span>
+		</div>
 
 		<div class="tag-group">
 			<router-link
@@ -24,7 +32,9 @@
 				<time>{{item.create}}</time>
 			</span>
 
-			<span title="最后更新" v-if="showUpdate(item)" class="full-time meta">
+			<span v-if="showUpdate(item)"
+				  title="最后更新"
+				  class="full-time meta">
 				<i class="fas fa-sync"></i>
 				<time>{{item.update}}</time>
 			</span>

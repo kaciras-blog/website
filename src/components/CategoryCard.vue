@@ -1,22 +1,27 @@
-<template>
-	<div class="category-card">
-		<img class="head" :src="cover" alt="分类图标">
-		<h3 class="compact">{{name}}</h3>
+<template functional>
+	<div :class="$style.container"
+		 tabindex="0"
+		 @click="listeners.click"
+		 @keyup.enter="listeners.click">
+
+		<img :src="props.cover"
+			 alt="分类图标"
+			 class="head"
+			 :class="$style.head">
+
+		<h3 class="compact">{{props.name}}</h3>
 	</div>
 </template>
 
 <script>
 export default {
 	name: "CategoryCard",
-	props: {
-		cover: String,
-		name: String,
-	},
+	props: { name: String, cover: String },
 };
 </script>
 
-<style lang="less">
-.category-card {
+<style module lang="less">
+.container {
 	margin: 1rem;
 	padding: 0 1rem 1rem;
 	max-width: 9rem;
@@ -26,14 +31,15 @@ export default {
 	text-align: center;
 	border: solid 1px #e8e8e8;
 
-	& > .head {
-		display: block;
-		margin: 1rem;
-	}
-
-	&:hover {
+	&:hover, &:focus {
+		outline: none;
 		border-color: transparent;
 		box-shadow: 0 0 4px 3px #97dfff;
 	}
+}
+
+.head {
+	display: block;
+	margin: 1rem;
 }
 </style>

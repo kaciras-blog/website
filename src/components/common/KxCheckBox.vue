@@ -1,17 +1,18 @@
 <template>
-	<label class="check-box"
+	<label class="kx-check-box"
 		   :class="{ disabled }"
 		   role="checkbox"
 		   :aria-checked="model"
 		   :aria-disabled="disabled">
 
-		<span class="check-box-mark" :class="{ ckecked: model }"></span>
-
-		<input type="checkbox"
+		<input class="check-box-input"
+			   type="checkbox"
 			   :disabled="disabled"
 			   v-model="model"
 			   aria-hidden="true"
 			   @change="handleChange">
+
+		<span class="check-box-mark" :class="{ ckecked: model }"></span>
 
 		<span class="check-box-label"><slot/></span>
 	</label>
@@ -54,15 +55,20 @@ export default {
 </script>
 
 <style lang="less">
-.check-box {
+.kx-check-box {
 	display: block;
 	height: 1.6em;
 	cursor: pointer;
+}
 
-	& input {
-		position: absolute;
-		opacity: 0;
-	}
+.kx-check-box:hover > .check-box-mark,
+.check-box-input:focus + .check-box-mark {
+	background-color: rgba(255, 255, 255, 0.3);
+}
+
+.check-box-input {
+	position: absolute;
+	opacity: 0;
 }
 
 .check-box-mark {
@@ -92,9 +98,6 @@ export default {
 		display: none;
 	}
 
-	&:hover {
-		background-color: rgba(255, 255, 255, 0.3);
-	}
 	&.ckecked {
 		background-color: #2196F3;
 		border-color: #2196F3;

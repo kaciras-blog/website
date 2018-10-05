@@ -6,7 +6,7 @@
 .highlight-color(@textColor, @hoverColor) {
 	color: @textColor;
 	&:visited { color: @textColor; }
-	&:hover { color: @hoverColor; }
+	&:hover, &:focus { color: @hoverColor; }
 }
 
 .input-highlight-hover() {

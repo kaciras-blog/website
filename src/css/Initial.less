@@ -65,6 +65,10 @@ button, select {
 	text-transform: none; // Remove the inheritance of text transform in Firefox
 }
 
+button {
+	border: none;
+}
+
 // Remove inner border and padding from Firefox, but don't restore the outline like Normalize.
 button::-moz-focus-inner,
 [type="button"]::-moz-focus-inner,
@@ -90,7 +94,7 @@ a {
 	outline: none;
 	cursor: pointer;
 
-	&:hover, :focus {
+	&:hover, &:focus {
 		color: @color-link;
 		text-decoration: underline;
 	}

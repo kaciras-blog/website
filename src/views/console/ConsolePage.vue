@@ -1,23 +1,23 @@
 <template>
 	<main id="console-page">
 		<nav id="nav-bar" class="light nav-item-group">
-			<router-link to="/" class="nav-item">返回首页</router-link>
+			<router-link  tabindex="1" to="/" class="nav-item">返回首页</router-link>
 		</nav>
 		<aside id="tabs" role="tablist">
 			<h1>控制台</h1>
-			<ul>
+			<ul :class="$style.menu">
 				<li v-for="link of views"
 					:key="link.name"
 					role="tab"
-					class="tab-item"
-					:class="{ active: active === link.name}"
+					tabindex="2"
+					:class="{ active: active === link.name, [$style.tabItem]: true}"
 					@click="active = link.name"
-				>
+					@keyup.enter="active = link.name">
 					{{link.label}}
 				</li>
 			</ul>
 		</aside>
-		<component :is="active" class="content-body"/>
+		<component :is="active" :class="$style.body"/>
 	</main>
 </template>
 
@@ -54,7 +54,7 @@ export default {
 	height: 100vh;
 
 	display: grid;
-	grid-template-areas: "menu nav" "menu content";
+	grid-template-areas: "menu nav" "menu body";
 	grid-template-columns: 12rem 1fr;
 	grid-template-rows: 3rem 1fr;
 }
@@ -68,12 +68,6 @@ export default {
 	border-bottom: solid 1px #c9c9c9;
 	box-shadow: 0 0 @length-border-shadow 1px fade(@color-border, 30%);
 	z-index: 1;
-}
-
-.content-body {
-	grid-area: content;
-	overflow-y: scroll;
-	padding: 2rem;
 }
 
 #app {
@@ -101,13 +95,17 @@ export default {
 		border: .8rem solid transparent;
 		border-right-color: white;
 	}
+}
+</style>
 
-	& > ul {
-		padding: 0;
-	}
+<style module lang="less">
+@import "../../css/ToBeImport";
+
+.menu {
+	padding: 0;
 }
 
-.tab-item {
+.tabItem {
 	display: block;
 	padding: .6rem;
 
@@ -122,7 +120,14 @@ export default {
 	color: whitesmoke;
 
 	&:hover, &:focus {
-		background-color: rgba(255, 255, 255, 0.1);
+		outline: none;
+		background-color: rgba(255, 255, 255, 0.15);
 	}
+}
+
+.body {
+	grid-area: body;
+	overflow-y: scroll;
+	padding: 2rem;
 }
 </style>

@@ -27,7 +27,10 @@ function textButton(createElement, type, index) {
 		return createElement("span", { attrs: { "class": "active" } }, content);
 	}
 	return createElement("a", {
-		attrs: { "class": "text-link" },
+		attrs: {
+			"class": "text-link",
+			tabIndex: 0,
+		},
 		on: { click: () => this.showPage(index) },
 	}, content);
 }
@@ -125,7 +128,7 @@ export default {
 			return h("div", { attrs: { "class": "button-pager" } }, [btnWrapper, jump]);
 		}
 
-		buttons.unshift(h("span", { staticClass: "total" }, "共" + totalPage + "页"));
+		buttons.unshift(h("span", { staticClass: ".button-pager-total" }, "共" + totalPage + "页"));
 		const btnWrapper = h("div", { staticClass: "buttons" }, buttons);
 		return h("div", { attrs: { "class": "text-pager" } }, [btnWrapper]);
 	},
@@ -159,9 +162,11 @@ export default {
 	justify-content: space-between;
 	align-items: center;
 }
-.total{
+
+.button-pager-total {
 	margin-right: 1rem;
 }
+
 .buttons button {
 	margin: 0 .2rem;
 }
@@ -175,9 +180,9 @@ export default {
 
 .omit {
 	cursor: default;
-	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
+	-webkit-user-select: none;
 	user-select: none;
 }
 
@@ -202,7 +207,7 @@ button + .omit {
 .text-link {
 	padding: 0 .3rem;
 
-	&:hover {
+	&:hover, &:focus {
 		color: @color-second;
 	}
 }

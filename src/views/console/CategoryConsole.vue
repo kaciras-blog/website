@@ -34,7 +34,7 @@
 				v-for="item of children"
 				:key="item.id"
 				v-bind="item"
-				@click.native="goto(item)"/>
+				@click="goto(item)"/>
 
 			<span v-if="!children.length">没有了</span>
 		</div>

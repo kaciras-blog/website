@@ -38,7 +38,7 @@
 					to="/console"
 					class="nav-item">管理
 				</router-link>
-				<div @click="logout" class="nav-item">退出登录</div>
+				<button @click="logout" class="nav-item">退出登录</button>
 			</div>
 
 			<div class="nav-item-group" v-else>
@@ -87,7 +87,7 @@ export default {
 }
 
 #banner {
-	height: 11rem;
+	height: 12rem;
 	margin-bottom: 4rem;
 }
 
