@@ -49,6 +49,7 @@ export default function () {
 		{
 			path: "/page/:index",
 			component: () => import("./views/index/IndexPage"),
+			meta: { title: "首页" },
 		},
 		{
 			path: "/category/:name",
@@ -58,11 +59,13 @@ export default function () {
 			path: "/welcome",
 			naem: "welcome",
 			component: Welcome,
+			meta: { title: "网站导航" },
 		},
 		{
 			path: "/login",
 			name: "login",
 			component: () => import("./views/login/LoginPage"),
+			meta: { title: "登录与注册" },
 		},
 		{
 			path: "/article/:id",
@@ -77,12 +80,14 @@ export default function () {
 			path: "/edit/:id",
 			name: "edit",
 			component: () => import("./views/ArticleEditor"),
+			meta: { title: "文章编辑器" },
 		},
 		{
 			path: "/error/:code",
 			name: "error",
 			component: Error,
 			props: true,
+			meta: { title: "错误" },
 		},
 		{
 			path: "*",

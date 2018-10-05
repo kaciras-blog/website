@@ -34,7 +34,7 @@ export default function () {
 			const user = store.state.user;
 			if (user && user.id === 2)
 				return next();
-			next({path: "/error/404", replace: true});
+			next({ path: "/error/404", replace: true });
 		};
 	}
 	router.addRoutes([coneoleRoute]);
@@ -42,7 +42,7 @@ export default function () {
 	const vue = new Vue({
 		router,
 		store,
-		render: h => h("router-view"),
+		render: h => h("router-view", { attrs: { id: "app" } }),
 	});
 	return { vue, router, store };
 }

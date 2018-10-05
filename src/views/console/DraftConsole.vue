@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<main>
 		<div class="toolbar btn-group">
 			<kx-button class="dangerous" @click="deleteAll"><i class="far fa-trash-alt"></i>全部删除</kx-button>
 		</div>
@@ -15,12 +15,12 @@
 
 			<sk-fading-circle v-if="loading"/>
 		</div>
-	</div>
+	</main>
 </template>
 
 <script>
 import api from "../../api";
-import {deleteOn} from "../../utils";
+import { deleteOn } from "../../utils";
 import DraftConsoleItem from "./DraftConsoleItem";
 
 async function loadDrafts() {

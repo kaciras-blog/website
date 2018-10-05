@@ -1,8 +1,9 @@
 <template>
-	<page-layout view-id="index-page"
-				 class="index-header"
-				 :banner="true"
-				 :footer="true">
+	<page-layout
+		view-id="index-page"
+		class="index-header"
+		:banner="true"
+		:footer="true">
 
 		<div class="article-list">
 			<h1 class="segment">全部文章</h1>

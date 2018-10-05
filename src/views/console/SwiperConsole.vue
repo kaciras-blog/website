@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<main>
 		<div class="toolbar btn-group">
 			<kx-button @click="createNew">添加轮播</kx-button>
 			<kx-button class="primary" @click="submit">应用更改</kx-button>
@@ -26,7 +26,7 @@
 			ref="draggingComponent"
 			:style="dragging.style"
 			:item="dragging.item"/>
-	</div>
+	</main>
 </template>
 
 <script>

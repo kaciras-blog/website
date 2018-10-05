@@ -1,5 +1,5 @@
 <template>
-	<main id="app">
+	<div class="console-page">
 		<nav id="nav-bar" class="light nav-item-group">
 			<router-link  tabindex="1" to="/" class="nav-item">返回首页</router-link>
 		</nav>
@@ -18,7 +18,7 @@
 			</ul>
 		</aside>
 		<component :is="active" :class="$style.body"/>
-	</main>
+	</div>
 </template>
 
 <script>
@@ -50,7 +50,7 @@ export default {
 <style scoped lang="less">
 @import "../../css/ToBeImport";
 
-#app {
+.console-page {
 	height: 100vh;
 
 	display: grid;

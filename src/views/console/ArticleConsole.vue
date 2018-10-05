@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<main>
 		<div class="toolbar btn-group">
 			<kx-button
 				class="primary"
@@ -18,7 +18,7 @@
 			<span v-if="allLoaded && !articles.length">没有找到文章,去写一篇吧~</span>
 			<sk-fading-circle v-if="loading"/>
 		</div>
-	</div>
+	</main>
 </template>
 
 <script>

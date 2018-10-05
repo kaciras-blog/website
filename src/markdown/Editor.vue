@@ -89,7 +89,6 @@
 </template>
 
 <script>
-import Vue from "vue";
 import $ from "jquery";
 import textOps from "./TextOperations";
 import { assignUpdate } from "../utils";
@@ -98,13 +97,8 @@ import api from "../api";
 
 import AddLinkDialog from "./AddLinkDialog.vue";
 import MetadataDialog from "./MetadataDialog.vue";
-import CodingDialog from "./CodingDialog.vue";
 import PublishDialog from "./PublishDialog";
 
-Vue.component(AddLinkDialog.name, AddLinkDialog);
-Vue.component(MetadataDialog.name, MetadataDialog);
-Vue.component(CodingDialog.name, CodingDialog);
-Vue.component(PublishDialog.name, PublishDialog);
 
 /**
  * 按百分比同步滚动，注意原文与预览的对应内容并非一定在对应百分比的位置上。
@@ -173,7 +167,7 @@ export default {
 			}
 		},
 		async addLink() {
-			const res = await this.$dialog.show(AddLinkDialog.name, this.$data);
+			const res = await this.$dialog.show(AddLinkDialog, this.$data);
 			if (res)
 				textOps.addLink.call(this, res.text, res.href);
 		},
@@ -181,10 +175,10 @@ export default {
 			this.$dialog.messageBox("标题222", "3333", "warning");
 		},
 		publish() {
-			this.$dialog.show(PublishDialog.name, this.$data);
+			this.$dialog.show(PublishDialog, this.$data);
 		},
 		async metadataDialog() {
-			const res = await this.$dialog.show(MetadataDialog.name, { metadata: this.metadata });
+			const res = await this.$dialog.show(MetadataDialog, { metadata: this.metadata });
 			if (res)
 				this.metadata = res;
 		},

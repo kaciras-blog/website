@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<main>
 		<div class="buttons">
 			<div class="btn-group">
 				<kx-button
@@ -38,11 +38,11 @@
 
 			<span v-if="!children.length">没有了</span>
 		</div>
-	</div>
+	</main>
 </template>
 
 <script>
-import CategoryView from "../../components/CategoryView";
+import CategoryView from "./CategoryView";
 import CategoryCard from "../../components/CategoryCard";
 import api from "../../api";
 

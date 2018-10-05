@@ -39,7 +39,9 @@
 </template>
 
 <script>
-import api from "../api";
+import api from "../../api";
+import CategoryMoveTypeDialog from "./CategoryMoveTypeDialog";
+import SelectCategoryDialog from "../../components/SelectCategoryDialog";
 
 export default {
 	name: "CategoryView",
@@ -77,8 +79,10 @@ export default {
 			if (this.editable)
 				api.misc.uploadImageFile().then(name => this.item.background = name);
 		},
-		move() {
-			this.$dialog.show("SelectCategoryDialog");
+		async move() {
+			const target = await this.$dialog.show(SelectCategoryDialog);
+			const moveType = await this.$dialog.show(CategoryMoveTypeDialog);
+			api.category.move(this.item.id, target.id, moveType);
 		},
 		remove() {
 			api.category.deleteOne(this.item.id).then(() => this.$emit("removed"));
@@ -89,7 +93,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-@import "../css/ToBeImport";
+@import "../../css/ToBeImport";
 
 .buttons {
 	grid-area: button;
