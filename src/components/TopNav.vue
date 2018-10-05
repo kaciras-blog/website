@@ -54,12 +54,10 @@ import { REMOVE_USER } from "../store/types";
 
 export default {
 	name: "TopNav",
-	data() {
-		return {
-			collapse: false,
-			showMenu: false,
-		};
-	},
+	data: () => ({
+		collapse: false,
+		showMenu: false,
+	}),
 	computed: {
 		...mapState(["user"]),
 	},
@@ -83,7 +81,6 @@ export default {
 	top: 0;
 	height: 3rem;
 	box-shadow: rgba(100, 100, 100, 0.2) 0 0 3px 2px;
-
 }
 
 #banner {

@@ -3,10 +3,12 @@
 		<div class="dimmer" v-show="show" tabindex="-1" @keyup.esc="cancel">
 			<div class="loading">
 				<sk-fading-circle/>
+
 				<span v-if="timeouted">
 					10秒都没加载完，多半是废了，您可以继续等等，或是
 				</span>
 				<span v-else>加载中...</span>
+
 				<a class="highlight" @click="cancel">取消</a>
 			</div>
 		</div>
@@ -69,8 +71,10 @@ export default {
 
 	border-radius: .5rem;
 	text-align: center;
+
 	background-color: #494949;
 	color: white;
+	--fading-circle-color: @color-second;
 }
 
 .highlight {

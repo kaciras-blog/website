@@ -1,7 +1,7 @@
 <!--suppress HtmlUnknownTarget -->
 <template functional v-once>
 	<footer id="bottom-footer">
-		<div class="address">
+		<div :class="$style.info">
 			<p>Copyright &copy; 2017-2018 Kaciras.net All Rights Reserved.</p>
 			<address>Kaciras@outlook.com</address>
 		</div>
@@ -20,10 +20,10 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style module lang="less">
 @import "../css/ToBeImport.less";
 
-#bottom-footer {
+:global(#bottom-footer) {
 	width: 100%;
 	margin-top: 4rem;
 	color: #eee;
@@ -41,16 +41,16 @@ export default {
 		grid-template-columns: 1fr auto auto;
 		justify-items: start;
 	}
+}
 
-	& > .address {
-		grid-column-start: 1;
-		grid-column-end: 3;
-		text-align: center;
+.info{
+	grid-column-start: 1;
+	grid-column-end: 3;
+	text-align: center;
 
-		@media screen and (min-width: @length-screen-mobile) {
-			text-align: start;
-			grid-column-end: 2;
-		}
+	@media screen and (min-width: @length-screen-mobile) {
+		text-align: start;
+		grid-column-end: 2;
 	}
 }
 </style>

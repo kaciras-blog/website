@@ -1,7 +1,7 @@
-<template>
+<template functional>
 	<main id="error-page">
-		<h1 class="err-title">{{title}}</h1>
-		<img class="err-img" :src="image">
+		<h1 class="err-title">{{props.title}}</h1>
+		<img class="err-img" :src="props.image">
 		<div class="err-content"><slot/></div>
 	</main>
 </template>

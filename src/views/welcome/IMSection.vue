@@ -1,5 +1,5 @@
 <template>
-	<section id="im">
+	<section id="im-section">
 		<header>
 			<h1>网页即时通信</h1>
 		</header>
@@ -13,7 +13,7 @@ export default {
 </script>
 
 <style scoped>
-#im {
+#im-section {
 	display: none;
 	padding: 5rem;
 
