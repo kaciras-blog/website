@@ -3,7 +3,7 @@ import Vue from "vue";
 import TransitionsCurtain from "./components/common/TransitionCurtain";
 import { REFRESH_USER } from "./store/types";
 import { CancelToken } from "./utils";
-
+import DialogContainer from "kxdialog/src/Container";
 /*
  * 注册 ServiceWorker 提升加载速度。
  */
@@ -15,6 +15,9 @@ import { CancelToken } from "./utils";
 
 const curtain = new Vue(TransitionsCurtain).$mount();
 document.body.appendChild(curtain.$el);
+
+const dialog = new Vue(DialogContainer).$mount();
+document.body.appendChild(dialog.$el);
 
 Vue.mixin({
 	beforeRouteUpdate(to, from, next) {

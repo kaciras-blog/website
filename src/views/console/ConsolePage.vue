@@ -1,5 +1,5 @@
 <template>
-	<main id="console-page">
+	<main id="app">
 		<nav id="nav-bar" class="light nav-item-group">
 			<router-link  tabindex="1" to="/" class="nav-item">返回首页</router-link>
 		</nav>
@@ -50,7 +50,7 @@ export default {
 <style scoped lang="less">
 @import "../../css/ToBeImport";
 
-#console-page {
+#app {
 	height: 100vh;
 
 	display: grid;
@@ -68,10 +68,6 @@ export default {
 	border-bottom: solid 1px #c9c9c9;
 	box-shadow: 0 0 @length-border-shadow 1px fade(@color-border, 30%);
 	z-index: 1;
-}
-
-#app {
-	height: 100%;
 }
 
 #tabs {

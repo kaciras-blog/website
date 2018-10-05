@@ -1,6 +1,5 @@
 import "./css/Main.less";
 import Vue from "vue";
-import App from "./App.vue";
 import createRouter from "./router";
 import createStore from "./store";
 
@@ -43,7 +42,7 @@ export default function () {
 	const vue = new Vue({
 		router,
 		store,
-		render: h => h(App),
+		render: h => h("router-view"),
 	});
 	return { vue, router, store };
 }

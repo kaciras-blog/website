@@ -1,5 +1,5 @@
 <template>
-	<div id="container">
+	<div id="app">
 		<top-nav/>
 		<div v-if="banner" id="banner"></div>
 		<main :id="viewId"><slot/></main>
