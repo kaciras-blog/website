@@ -24,6 +24,11 @@ export default async context => {
 		.filter(c => c.asyncData)
 		.map(c => c.asyncData(store, router.currentRoute, cancelToken)));
 
+	const title = router.currentRoute.meta.title;
+	if(title) {
+		context.title = title + " - Kaciras的博客";
+	}
+
 	context.state = store.state;
 	return vue;
 };

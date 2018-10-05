@@ -65,13 +65,16 @@ export default {
 	},
 	mixins: [TitleMixin],
 
+	title() {
+		return this.article.title;
+	},
 	/**
 	 * 为了优化SEO，需要在预渲染的文章页面的<head>中加入一些标签。
 	 *
-	 * @return {{title: string, meta: string}}
+	 * @return {string}
 	 */
 	metadata() {
-		const { title, keywords, summary, prev, next } = this.article;
+		const { keywords, summary, prev, next } = this.article;
 		let headers = `
 				<meta name="description" content="${escapeHtml(summary)}">
 				<meta name="keywords" content="${escapeHtml(keywords.join(","))}">`;
@@ -81,7 +84,7 @@ export default {
 		if (next) {
 			headers += `<link rel="next" title="${next.title}" href="${articleLink(next)}">`;
 		}
-		return { title: title + " - Kaciras的博客", meta: headers };
+		return headers;
 	},
 	/**
 	 * 在路由切换前加载数据。

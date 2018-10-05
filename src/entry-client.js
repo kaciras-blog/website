@@ -72,6 +72,8 @@ function initAppAndRouterHook() {
 		await Promise.all(prefetched.map(c => c.asyncData(store, to, cancelToken)));
 
 		cancelToken.complete();
+		if(to.meta.title)
+			document.title = to.meta.title + " - Kaciras的博客";
 		next();
 	}
 
