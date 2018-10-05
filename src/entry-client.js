@@ -4,6 +4,7 @@ import TransitionsCurtain from "./components/common/TransitionCurtain";
 import { REFRESH_USER } from "./store/types";
 import { CancelToken } from "./utils";
 import DialogContainer from "kxdialog/src/Container";
+
 /*
  * 注册 ServiceWorker 提升加载速度。
  */

@@ -222,9 +222,9 @@ _default.session = {
 	 * @param form 一个对象，格式如下：{ name: 用户名, password: 密码, remember: 是否保存登录 }
 	 * @return Promise
 	 */
-	login: form => accountServer.post("/session/user", form),
+	login: form => accountServer.post("/session/account", form),
 
-	logout: () => accountServer.delete("/session/user"),
+	logout: () => accountServer.delete("/session/account"),
 };
 
 _default.account = {
