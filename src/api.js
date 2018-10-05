@@ -50,10 +50,19 @@ if (process.env.NODE_ENV !== "production") {
 	}
 }
 
+// MDZZ，axios不能全局配置拦截？
+function createAxios(config) {
+	const instance = axios.create(config);
+	instance.interceptors.response.use(null, error => {
+		error.code = error.response.status;
+		return Promise.reject(error);
+	});
+	return instance;
+}
 
-const mainServer = axios.create({ baseURL: apiConfig.main });
-const accountServer = axios.create({ baseURL: apiConfig.account });
-const frontService = axios.create({ baseURL: apiConfig.front });
+const mainServer = createAxios({ baseURL: apiConfig.main });
+const accountServer = createAxios({ baseURL: apiConfig.account });
+const frontService = createAxios({ baseURL: apiConfig.front });
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

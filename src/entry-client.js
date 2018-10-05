@@ -109,6 +109,8 @@ function initAppAndRouterHook() {
 			case 302:
 				next(err.location);
 				break;
+			case 404:
+				return next({ path: "/error/404", replace: true });
 			default:
 				console.error(err);
 				return next("/error/500");
