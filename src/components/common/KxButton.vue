@@ -186,7 +186,7 @@ export default {
 
 // 配置各主题色，less还不支运算作为CSS变量值，需要先用变量定义
 .color-mixin(@color) {
-	@color-active: @color - #101010;
+	@color-active: @color - #121212;
 	@color-highlight: lighten(@color, 6%);
 	--background: @color;
 	--background-active: @color-active;

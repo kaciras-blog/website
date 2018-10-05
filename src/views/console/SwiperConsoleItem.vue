@@ -4,14 +4,14 @@
 			<h2 class="compact" @click="item.open = !item.open">{{item.slide.name}}</h2>
 
 			<kx-button
-				class="icon cusp handler"
+				class="icon square handler"
 				title="拖动调整次序"
 				@mousedown.stop="dragStart">
 				<i class="fas fa-arrows-alt"></i>
 			</kx-button>
 
 			<kx-button
-				class="icon cusp dangerous"
+				class="icon square dangerous"
 				title="删除"
 				@click="remove">
 				<i class="fas fa-trash"></i>
