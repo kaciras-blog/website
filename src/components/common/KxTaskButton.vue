@@ -5,7 +5,9 @@
 			   :color="color"
 			   @click="handleClick">
 
-		<slot v-if="running" name="running">
+		<slot
+			v-if="running"
+			name="running">
 			<slot/>
 		</slot>
 		<slot v-else/>

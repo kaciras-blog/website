@@ -6,7 +6,11 @@
 			<img :src="item.cover" class="cover-small">
 		</router-link>
 
-		<router-link :to="item | articleLink" class="title">{{item.title}}</router-link>
+		<router-link
+			:to="item | articleLink"
+			:class="$style.title">
+			{{item.title}}
+		</router-link>
 
 		<span>{{item.summary}}</span>
 
@@ -168,7 +172,7 @@ export default {
 }
 </style>
 
-<style scoped lang="less">
+<style module lang="less">
 .title {
 	font-size: 1.5em;
 	font-weight: 500;

@@ -1,7 +1,9 @@
 <template>
-	<page-layout view-id="login-view"
-				 nav-class="login-header"
-				 :footer="false">
+	<page-layout
+		view-id="login-view"
+		nav-class="login-header"
+		:footer="false">
+
 		<div class="filter-container">
 			<component :is="panel" @switch-panel="switchPanel"/>
 		</div>
@@ -14,12 +16,10 @@ import SignupPanel from "./SignupPanel";
 
 export default {
 	name: "LoginPage",
-	components: {LoginPanel, SignupPanel},
-	data() {
-		return {
-			panel: "loginPanel",
-		};
-	},
+	components: { LoginPanel, SignupPanel },
+	data: () => ({
+		panel: "loginPanel",
+	}),
 	methods: {
 		switchPanel(panel) {
 			this.panel = panel;

@@ -15,19 +15,19 @@ export default {
 	},
 	render(h, ctx) {
 		const { data, children } = ctx;
+		data.attrs = data.attrs || {};
 		const { staticClass, attrs } = data;
 
 		const clazz = ["kx-btn"];
 		if (staticClass) {
 			clazz.push(staticClass);
 		}
-		if (attrs && attrs.class) {
-			clazz.push(attrs.class);
-			delete attrs.class;
+		if (data.class) {
+			clazz.push(data.class);
 		}
-		data.staticClass = clazz.join(" ");
+		data.class = clazz;
 
-		// 上面设置样式，下面处理特殊标签
+		// 处理特殊标签
 		let { tag, route } = ctx.props;
 		if (route) {
 			data.props = data.props || {};
@@ -36,8 +36,7 @@ export default {
 			tag = Vue.component("router-link");
 		}
 		if (tag === "button") {
-			data.attrs = attrs || {};
-			data.attrs.type = "button";
+			attrs.type = "button"; // form
 		}
 		return h(tag, data, children);
 	},

@@ -41,21 +41,19 @@
 import api from "../../api";
 import { errorMessage } from "../../utils";
 import BaseLoginForm from "./BaseLoginForm";
-import {REFRESH_USER} from "../../store/types";
+import { REFRESH_USER } from "../../store/types";
 
 export default {
 	name: "LoginPanel",
 	components: { BaseLoginForm },
-	data() {
-		return {
-			message: "",
-			form: {
-				name: "",
-				password: "",
-				remember: false,
-			},
-		};
-	},
+	data: () => ({
+		message: "",
+		form: {
+			name: "",
+			password: "",
+			remember: false,
+		},
+	}),
 	methods: {
 		async login() {
 			try {

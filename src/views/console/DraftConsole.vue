@@ -1,7 +1,11 @@
 <template>
 	<main>
 		<div class="toolbar btn-group">
-			<kx-button class="dangerous" @click="deleteAll"><i class="far fa-trash-alt"></i>全部删除</kx-button>
+			<kx-button
+				class="dangerous"
+				@click="deleteAll">
+				<i class="far fa-trash-alt"></i>全部删除
+			</kx-button>
 		</div>
 
 		<div class="panel">
@@ -11,7 +15,7 @@
 				class="segment"
 				:value="draft"/>
 
-			<span class="flex center-content minor-text" v-if="!loading && drafts.length===0">空空如也</span>
+			<span v-if="!loading && drafts.length===0" class="minor-text">空空如也</span>
 
 			<sk-fading-circle v-if="loading"/>
 		</div>

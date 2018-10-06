@@ -3,9 +3,9 @@
 		<nav id="nav-bar" class="light nav-item-group">
 			<router-link  tabindex="1" to="/" class="nav-item">返回首页</router-link>
 		</nav>
-		<aside id="tabs" role="tablist">
+		<aside id="tabs">
 			<h1>控制台</h1>
-			<ul :class="$style.menu">
+			<ul :class="$style.menu" role="tablist">
 				<li v-for="link of views"
 					:key="link.name"
 					role="tab"
