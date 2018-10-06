@@ -14,7 +14,11 @@
 				:init-state="initState"
 				:init-next-url="nextUrl">
 
-				<article-preview slot-scope="{ item }" :key="item.id" :item="item"/>
+				<article-preview
+					slot-scope="{ item }"
+					:key="item.id"
+					:item="item"
+					class="segment"/>
 			</scroll-pageing-view>
 		</div>
 

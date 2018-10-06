@@ -103,7 +103,7 @@ hr {
 	}
 	&.dark {
 		color: white;
-		& .nav-item:hover,.nav-item:focus  {
+		& .nav-item:hover, .nav-item:focus {
 			color: white;
 		}
 	}
@@ -176,4 +176,20 @@ hr {
 
 .square {
 	border-radius: 0 !important;
+}
+
+.cram {
+	.full-percent;
+}
+
+.show-mobile {
+	@media screen and (min-width: @length-screen-mobile) {
+		display: none;
+	}
+}
+
+.hide-mobile {
+	@media screen and (max-width: @length-screen-mobile) {
+		display: none;
+	}
 }
