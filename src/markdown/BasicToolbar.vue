@@ -30,14 +30,45 @@
 <script>
 export default {
 	name: "KxMarkdownBasicToolbar",
+	props: {
+		text: {
+			type: String,
+			required: true,
+		},
+		selection: {
+			type: Array,
+			required: true,
+		},
+	},
 	methods: {
+		getSelectedRange(extend) {
+			let [s, e] = this.selection;
+			if (extend) {
+				if (s > 0) {
+					s = this.text.lastIndexOf("\n", s - 1) + 1;
+				}
+				e = this.text.indexOf("\n", e);
+				if (e === -1) e = this.text.length;
+			}
+			return [s, e];
+		},
+		changeTextArea(start, end, text) {
+			const v = this.text;
+			this.$emit("update:text", v.substring(0, start) + text + v.substring(end, v.length));
+		},
+		reselect(start, end) {
+			if (!end) {
+				end = start;
+			}
+			this.$emit("update:selection", [start, end]);
+		},
 		addHeader(level) {
 			const prefix = new Array(level + 1).join("#") + " ";
-			addPrefixToLines.call(this, prefix);
+			this.addPrefixToLines(prefix);
 		},
 		addNewLine(text) {
-			const v = this.content;
-			const index = getSelectedRange.call(this, false)[0];
+			const v = this.text;
+			const index = this.getSelectedRange(false)[0];
 
 			if (index > 0 && v.charAt(index - 1) !== "\n") {
 				text = "\n" + text;
@@ -46,13 +77,12 @@ export default {
 				text += "\n";
 			}
 
-			const nIndex = index + text.length;
-			changeTextArea.call(this, index, index, text);
-			reselect.call(this, nIndex, nIndex);
+			this.changeTextArea(index, index, text);
+			this.reselect(index + text.length);
 		},
 		addPrefixToLines(prefix) {
-			const [selStart, selEnd] = getSelectedRange.call(this, true);
-			const lines = this.content.substring(selStart, selEnd).split("\n");
+			const [selStart, selEnd] = this.getSelectedRange(true);
+			const lines = this.text.substring(selStart, selEnd).split("\n");
 
 			let text = "";
 			for (let line of lines) {
@@ -65,12 +95,12 @@ export default {
 			}
 			text = text.substring(1);
 
-			changeTextArea.call(this, selStart, selEnd, text);
-			reselect.call(this, selStart, selEnd + lines.length);
+			this.changeTextArea(selStart, selEnd, text);
+			this.reselect(selStart, selEnd + lines.length);
 		},
 		switchWrapper(prefix) {
-			const v = this.content;
-			const [selStart, selEnd] = getSelectedRange.apply(this, [false]);
+			const v = this.text;
+			const [selStart, selEnd] = this.getSelectedRange(false);
 			const totalLength = prefix.length + prefix.length;
 
 			let text = v.substring(selStart, selEnd);
@@ -83,8 +113,8 @@ export default {
 				text = prefix + text + prefix;
 			}
 
-			changeTextArea.call(this, selStart, selEnd, text);
-			reselect.call(this, selStart, end);
+			this.changeTextArea(selStart, selEnd, text);
+			this.reselect(selStart, end);
 		},
 	},
 };

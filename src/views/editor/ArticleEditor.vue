@@ -1,12 +1,10 @@
 <template>
-
-		<kx-markdown-edit-window
-			:class="$style.container"
-			:init-text="content">
-
-			<kx-markdown-basic-toolbar slot="toolbar-left"/>
-
-			<template slot="toolbar-right">
+	<div :class="$style.container">
+		<div class="kx-markdown-toolbar">
+			<kx-markdown-basic-toolbar
+				:text.sync="content"
+				:selection.sync="selection"/>
+			<div>
 				<kx-button class="icon green" title="双列视图" @click="viewModel = 0">
 					<i class="fas fa-columns"></i>
 				</kx-button>
@@ -19,9 +17,21 @@
 				<kx-button class="primary icon" title="编辑器设置" @click="showConfigDialog">
 					<i class="fas fa-cog"></i>
 				</kx-button>
-			</template>
+			</div>
+		</div>
 
-		</kx-markdown-edit-window>
+		<kx-markdown-edit-window
+			:text.sync="content"
+			:selection.sync="selection"
+			:view-mode="viewMode"/>
+
+		<div class="kx-markdown-statebar">
+			<div class="kx-markdown-statebar-left">{{selection[0] + " - " + selection[1]}}</div>
+			<div class="kx-markdown-statebar-right">
+				<slot name="statebar-right"/>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script>
@@ -55,8 +65,10 @@ export default {
 			summary: "",
 		},
 		content: "",
+		selection: [0, 0],
+		viewMode: 0,
 	}),
-	methods:{
+	methods: {
 		showConfigDialog() {
 
 		},
@@ -78,9 +90,11 @@ export default {
 
 <style module lang="less">
 .container {
+	display: flex;
+	flex-direction: column;
 	height: 100vh;
-	overflow-x: hidden;
 }
+
 
 .menu {
 	display: flex;
