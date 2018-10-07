@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="kx-markdown">
 		<div class="kx-markdown-toolbar">
 			<div class="kx-markdown-toolbar-left">
 				<slot name="toolbar-left"/>
@@ -21,9 +21,8 @@
 				}"
 				title="编辑区"
 				spellcheck="false"
-				:value="text"
-				@keydown.tab.prevent="inputTab"
-				@input="handleInput"
+				v-model="textarea.value"
+				@keydown.tab.prevent="insertTab"
 				@click="handleSelect"
 				@keydown="handleSelect">
 			</textarea>
@@ -68,10 +67,27 @@ function syncScroll() {
 	setTimeout(() => both.on("scroll", syncScroll), 32); // 最后这个数字越小滚动越平滑
 }
 
+class TextAreaProxy {
+
+	constructor(textarea) {
+		this.textarea = textarea;
+	}
+
+	get selection() {
+		return [this.textarea.selectionStart, this.textarea.selectionEnd];
+	}
+
+	select(start, end) {
+		this.textarea.selectionStart = start;
+		this.textarea.selectionEnd = end;
+		this.textarea.thisbindSelection = [start, end];
+	}
+}
+
 export default {
 	name: "kxMarkdownEditWindow",
 	props: {
-		text: {
+		initText: {
 			type: String,
 			default: "",
 		},
@@ -79,20 +95,26 @@ export default {
 			type: Array,
 			default: () => [0, 0],
 		},
-		viewMode: {
+		initViewMode: {
 			type: Number,
 			default: 0,
 		},
 	},
 	data() {
 		return {
-			test: 0,
+			textarea: {
+				value: this.initText,
+				selectionStart: 0,
+				selectionEnd: 0,
+				bindSelection: [0, 0],
+			},
+			viewMode: this.initViewMode,
 		};
 	},
 	computed: {
 		htmlText() {
 			this.$nextTick(kxMarkdown.afterConvert);
-			return convertor.render(this.text);
+			return convertor.render(this.textarea.value);
 		},
 	},
 	methods: {
@@ -100,12 +122,16 @@ export default {
 		 * 浏览器默认的tab键用于切换选择的元素。
 		 * 在文本框上监听@keydown.tab.prevent="inputTab"，使其能够输入tab字符。
 		 */
-		inputTab() {
-			const [selStart, selEnd] = getSelectedRange.apply(this, [false]);
-			const v = this.content.substring(selStart, selEnd);
-			const selen = selStart + 1 - v.length;
-			changeTextArea.apply(this, [selStart, selEnd, "\t"]);
-			reselect.call(this, selen, selen);
+		insertTab() {
+			const { textarea } = this;
+			const selStart = textarea.selection[0];
+			const selEnd = textarea.selection[1];
+
+			const text = textarea.value;
+			textarea.value = text.substring(0, selStart) + "\t" + text.substring(selEnd, text.length);
+
+			const newEnd = selStart + 1;
+			textarea.selection = [newEnd, newEnd];
 		},
 		handleInput(event) {
 			this.$emit("update:text", event.target.value);
@@ -122,8 +148,18 @@ export default {
 </script>
 
 <style lang="less">
+.kx-markdown {
+	display: flex;
+	flex-direction: column;
+}
+
+.kx-markdown-toolbar {
+	display: flex;
+	justify-content: space-between;
+}
+
 .kx-markdown-main {
-	height: calc(100% - 48px - .8rem);
+	flex: 1;
 }
 
 .text-view {

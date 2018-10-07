@@ -2,9 +2,9 @@
 
 		<kx-markdown-edit-window
 			:class="$style.container"
-			:viewMode="viewMode"
-			:text.sync="content"
-			:selection.sync="selection">
+			:init-text="content">
+
+			<kx-markdown-basic-toolbar slot="toolbar-left"/>
 
 			<template slot="toolbar-right">
 				<kx-button class="icon green" title="双列视图" @click="viewModel = 0">
@@ -16,7 +16,7 @@
 				<kx-button class="icon green" title="Html视图" @click="viewModel = 2">
 					<i class="fas fa-eye"></i>
 				</kx-button>
-				<kx-button class="primary icon" title="编辑器设置">
+				<kx-button class="primary icon" title="编辑器设置" @click="showConfigDialog">
 					<i class="fas fa-cog"></i>
 				</kx-button>
 			</template>
@@ -55,9 +55,12 @@ export default {
 			summary: "",
 		},
 		content: "",
-		selection: [0, 0],
-		viewMode: 0,
 	}),
+	methods:{
+		showConfigDialog() {
+
+		},
+	},
 	created() {
 		const draftId = this.$route.params.id;
 		if (!draftId) {

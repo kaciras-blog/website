@@ -30,16 +30,6 @@
 <script>
 export default {
 	name: "KxMarkdownBasicToolbar",
-	model: {
-		prop: "text",
-		event: "change",
-	},
-	props: {
-		text: {
-			type: String,
-			required: true,
-		},
-	},
 	methods: {
 		addHeader(level) {
 			const prefix = new Array(level + 1).join("#") + " ";
@@ -95,11 +85,7 @@ export default {
 
 			changeTextArea.call(this, selStart, selEnd, text);
 			reselect.call(this, selStart, end);
-		}
+		},
 	},
 };
 </script>
-
-<style scoped>
-
-</style>
