@@ -4,16 +4,9 @@
 			<kx-markdown-basic-toolbar
 				:text.sync="content"
 				:selection.sync="selection"/>
+
 			<div>
-				<kx-button class="icon green" title="双列视图" @click="viewModel = 0">
-					<i class="fas fa-columns"></i>
-				</kx-button>
-				<kx-button class="icon green" title="Markdown视图" @click="viewModel = 1">
-					<i class="far fa-edit"></i>
-				</kx-button>
-				<kx-button class="icon green" title="Html视图" @click="viewModel = 2">
-					<i class="fas fa-eye"></i>
-				</kx-button>
+				<view-mode-toolbar :view-mode.sync="viewMode"/>
 				<kx-button class="primary icon" title="编辑器设置" @click="showConfigDialog">
 					<i class="fas fa-cog"></i>
 				</kx-button>
@@ -41,6 +34,7 @@ import api from "../../api";
 import { assignUpdate } from "../../utils";
 import KxMarkdownStatebar from "../../markdown/Statebar";
 import KxMarkdownConfigToolbar from "../../markdown/ConfigToolbar";
+import ViewModeToolbar from "../../markdown/ViewModeToolbar";
 
 function convertToFront(json, data) {
 	assignUpdate(json, data);
@@ -50,7 +44,7 @@ function convertToFront(json, data) {
 
 export default {
 	name: "ArticleEditorII",
-	components: { KxMarkdownConfigToolbar, KxMarkdownStatebar, KxMarkdownBasicToolbar, KxMarkdownEditWindow },
+	components: { ViewModeToolbar, KxMarkdownConfigToolbar, KxMarkdownStatebar, KxMarkdownBasicToolbar, KxMarkdownEditWindow },
 	data: () => ({
 		archive: {
 			id: null,

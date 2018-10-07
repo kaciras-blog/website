@@ -109,25 +109,24 @@ export default {
 
 .kx-markdown-main {
 	flex: 1;
-	overflow: auto;
+	overflow: hidden;
 }
 
 .text-view {
+	display: inline-block;
 	height: 100%;
 	margin: 0;
-	padding: 10px 20px 0;
+	padding: 1rem 1rem 0;
 
 	word-break: break-all;
 	line-height: 27px;
 	overflow-y: scroll;
+	overflow-x: hidden;
 	background-color: white;
 	border: none;
 	resize: none;
 }
 
-.preview {
-	float: right;
-}
 
 .split {
 	width: 50%;
