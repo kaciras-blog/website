@@ -22,11 +22,10 @@
 				}"
 				title="编辑区"
 				spellcheck="false"
-				v-model="textarea.value"
-				v-selection.focus="textarea.bindSelection"
-				@keydown.tab.prevent="insertTab"
-				@click="handleSelect"
-				@keydown="handleSelect">
+				v-model="value"
+				v-bind-selection.focus="selection"
+				v-on-selection="handleSelect"
+				@keydown.tab.prevent="insertTab">
 			</textarea>
 
 			<article
@@ -93,10 +92,6 @@ export default {
 			type: String,
 			default: "",
 		},
-		selection: {
-			type: Array,
-			default: () => [0, 0],
-		},
 		initViewMode: {
 			type: Number,
 			default: 0,
@@ -104,19 +99,15 @@ export default {
 	},
 	data() {
 		return {
-			textarea: {
-				value: this.initText,
-				selectionStart: 0,
-				selectionEnd: 0,
-				bindSelection: [0, 0],
-			},
+			value: this.initText,
+			selection: [0, 0],
 			viewMode: this.initViewMode,
 		};
 	},
 	computed: {
 		htmlText() {
 			this.$nextTick(kxMarkdown.afterConvert);
-			return convertor.render(this.textarea.value);
+			return convertor.render(this.value);
 		},
 	},
 	methods: {
@@ -135,16 +126,12 @@ export default {
 			const newEnd = selStart + 1;
 			textarea.selection = [newEnd, newEnd];
 		},
-		handleInput(event) {
-			this.$emit("update:text", event.target.value);
-		},
-		handleSelect(event) {
-			const area = event.target;
-			this.$emit("update:selection", [area.selectionStart, area.selectionEnd]);
+		handleSelect(s, e) {
+			this.selection = [s, e];
 		},
 		test() {
-			const [s, e] = this.textarea.bindSelection;
-			this.textarea.bindSelection = [s + 1, e + 1];
+			const [s, e] = this.selection;
+			this.selection = [s + 1, e + 1];
 		},
 	},
 	mounted() {
@@ -166,6 +153,7 @@ export default {
 
 .kx-markdown-main {
 	flex: 1;
+	overflow: auto;
 }
 
 .text-view {

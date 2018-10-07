@@ -93,18 +93,52 @@ export default {
 		});
 		Vue.component("KxMarkdownEditor", () => import("./Editor"));
 
-		Vue.directive("selection", {
+		Vue.directive("bind-selection", {
 			inserted(el, { expression, modifiers }, vnode) {
-				if(!(el instanceof HTMLTextAreaElement || el instanceof HTMLInputElement)) {
-					console.error("v-selection can be used only <textarea> or <input>");
-					return;
-				}
 				const vm = vnode.context;
 				vm.$watch(expression, nv => {
-					el.selectionStart = nv[0];
-					el.selectionEnd = nv[1];
+					const [s, e] = nv;
+					el.selectionStart = s;
+					el.selectionEnd = e;
 					if (modifiers.focus) el.focus();
 				});
+			},
+		});
+
+		Vue.directive("on-selection", {
+			inserted(el, { expression }, vnode) {
+				const vm = vnode.context;
+
+				let oldStart = el.selectionStart;
+				let oldEnd = el.selectionEnd;
+
+				function handleSelect() {
+					const { selectionStart, selectionEnd } = el;
+					if (oldStart !== selectionStart || oldEnd !== selectionEnd) {
+						oldStart = selectionStart;
+						oldEnd = selectionEnd;
+						vm[expression](selectionStart, selectionEnd);
+					}
+				}
+
+				function handleArrowKey(event) {
+					switch (event.key) {
+						case "ArrowUp":
+						case "ArrowDown":
+						case "ArrowLeft":
+						case "ArrowRight":
+						case "Home":
+						case "End":
+						case "PageUp":
+						case "PageDown":
+							handleSelect();
+					}
+				}
+
+				el.addEventListener("click", handleSelect);		// 鼠标点击改变光标位置
+				el.addEventListener("input", handleSelect);		// 增删内容改变光标位置
+				el.addEventListener("keyup", handleArrowKey);	// 移动光标的键按了一次
+				el.addEventListener("keydown", handleArrowKey);	// 移动光标的键按住不放
 			},
 		});
 	},
