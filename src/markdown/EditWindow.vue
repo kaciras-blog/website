@@ -2,7 +2,6 @@
 	<div class="kx-markdown-main">
 		<textarea
 			v-show="viewMode !== 2"
-			id="textarea"
 			ref="textarea"
 			class="text-view"
 			:class="{
@@ -22,7 +21,6 @@
 
 		<article
 			v-show="viewMode !== 1"
-			id="preview"
 			ref="preview"
 			class="text-view preview markdown"
 			:class="{
@@ -80,7 +78,28 @@ export default {
 		},
 	},
 	mounted() {
-		$("#textarea, #preview").on("scroll", syncScroll);
+		const { textarea, preview } = this.$refs;
+		textarea.addEventListener("scroll", syncScroll);
+		preview.addEventListener("scroll", syncScroll);
+
+		/**
+		 * 按百分比同步滚动，注意原文与预览的对应内容并非一定在对应百分比的位置上。
+		 * BUG: Firefox 有一个操蛋的平滑滚动功能
+		 */
+		function syncScroll(event) {
+			let el = textarea;
+			let other = preview;
+
+			if(event.target !== el) {
+				el = preview;
+				other = textarea;
+			}
+
+			el.removeEventListener("scroll", syncScroll);
+			const percentage = el.scrollTop / (el.scrollHeight - el.offsetHeight);
+			other.scrollTop = Math.round(percentage * (other.scrollHeight - other.offsetHeight));
+			setTimeout(() => el.addEventListener("scroll", syncScroll), 10);
+		}
 	},
 };
 </script>
