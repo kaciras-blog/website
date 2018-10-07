@@ -3,6 +3,7 @@
 		<div class="kx-markdown-toolbar">
 			<div class="kx-markdown-toolbar-left">
 				<slot name="toolbar-left"/>
+				<kx-button @click="test">测试</kx-button>
 			</div>
 			<div class="kx-markdown-toolbar-right">
 				<slot name="toolbar-right"/>
@@ -22,6 +23,7 @@
 				title="编辑区"
 				spellcheck="false"
 				v-model="textarea.value"
+				v-selection.focus="textarea.bindSelection"
 				@keydown.tab.prevent="insertTab"
 				@click="handleSelect"
 				@keydown="handleSelect">
@@ -80,7 +82,7 @@ class TextAreaProxy {
 	select(start, end) {
 		this.textarea.selectionStart = start;
 		this.textarea.selectionEnd = end;
-		this.textarea.thisbindSelection = [start, end];
+		this.textarea.bindSelection = [start, end];
 	}
 }
 
@@ -139,6 +141,10 @@ export default {
 		handleSelect(event) {
 			const area = event.target;
 			this.$emit("update:selection", [area.selectionStart, area.selectionEnd]);
+		},
+		test() {
+			const [s, e] = this.textarea.bindSelection;
+			this.textarea.bindSelection = [s + 1, e + 1];
 		},
 	},
 	mounted() {

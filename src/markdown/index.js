@@ -92,6 +92,21 @@ export default {
 			return convertor.render(text);
 		});
 		Vue.component("KxMarkdownEditor", () => import("./Editor"));
+
+		Vue.directive("selection", {
+			inserted(el, { expression, modifiers }, vnode) {
+				if(!(el instanceof HTMLTextAreaElement || el instanceof HTMLInputElement)) {
+					console.error("v-selection can be used only <textarea> or <input>");
+					return;
+				}
+				const vm = vnode.context;
+				vm.$watch(expression, nv => {
+					el.selectionStart = nv[0];
+					el.selectionEnd = nv[1];
+					if (modifiers.focus) el.focus();
+				});
+			},
+		});
 	},
 	afterConvert() {
 		const images = document.querySelectorAll(".markdown img");
