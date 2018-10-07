@@ -36,19 +36,6 @@
 
 <script>
 import kxMarkdown, { convertor } from "./index";
-import $ from "jquery";
-
-
-/**
- * 按百分比同步滚动，注意原文与预览的对应内容并非一定在对应百分比的位置上。
- */
-function syncScroll() {
-	const both = $("#textarea, #preview").not(this).off("scroll");
-	const other = both.get(0);
-	const percentage = this.scrollTop / (this.scrollHeight - this.offsetHeight);
-	other.scrollTop = percentage * (other.scrollHeight - other.offsetHeight);
-	setTimeout(() => both.on("scroll", syncScroll), 32);
-}
 
 
 export default {
@@ -79,15 +66,14 @@ export default {
 		 * 在文本框上监听@keydown.tab.prevent="inputTab"，使其能够输入tab字符。
 		 */
 		insertTab() {
-			const { textarea } = this;
-			const selStart = textarea.selection[0];
-			const selEnd = textarea.selection[1];
+			const selStart = this.selection[0];
+			const selEnd = this.selection[1];
 
-			const text = textarea.value;
-			textarea.value = text.substring(0, selStart) + "\t" + text.substring(selEnd, text.length);
-
+			const v = this.text;
 			const newEnd = selStart + 1;
-			textarea.selection = [newEnd, newEnd];
+
+			this.$emit("update:text", v.substring(0, selStart) + "\t" + v.substring(selEnd, v.length));
+			this.$emit("update:selection", [newEnd, newEnd]);
 		},
 		handleSelect(s, e) {
 			this.$emit("update:selection", [s, e]);
@@ -104,7 +90,7 @@ export default {
 .kx-markdown-toolbar {
 	display: flex;
 	justify-content: space-between;
-	background-color: white;
+	background-color: whitesmoke;
 }
 
 .kx-markdown-main {
@@ -115,18 +101,21 @@ export default {
 .text-view {
 	display: inline-block;
 	height: 100%;
+
 	margin: 0;
 	padding: 1rem 1rem 0;
 
-	word-break: break-all;
-	line-height: 27px;
 	overflow-y: scroll;
 	overflow-x: hidden;
-	background-color: white;
-	border: none;
-	resize: none;
-}
 
+	border: none;
+	background-color: white;
+	resize: none;
+
+	font-size: 1rem;
+	word-break: break-all;
+	line-height: 27px;
+}
 
 .split {
 	width: 50%;

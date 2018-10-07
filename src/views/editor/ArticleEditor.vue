@@ -7,8 +7,15 @@
 
 			<div>
 				<view-mode-toolbar :view-mode.sync="viewMode"/>
-				<kx-button class="primary icon" title="编辑器设置" @click="showConfigDialog">
-					<i class="fas fa-cog"></i>
+
+				<kx-button class="primary icon" title="修改简介" @click="metadataDialog">
+					<i class="far fa-address-card"></i>
+				</kx-button>
+				<kx-button class="primary icon" title="保存" @click="save(true)">
+					<i class="far fa-save"></i>
+				</kx-button>
+				<kx-button class="primary icon" title="发布!" @click="publish">
+					<i class="far fa-paper-plane"></i>
 				</kx-button>
 			</div>
 		</div>
@@ -35,6 +42,17 @@ import { assignUpdate } from "../../utils";
 import KxMarkdownStatebar from "../../markdown/Statebar";
 import KxMarkdownConfigToolbar from "../../markdown/ConfigToolbar";
 import ViewModeToolbar from "../../markdown/ViewModeToolbar";
+import PublishDialog from "./PublishDialog";
+import MetadataDialog from "./MetadataDialog.vue";
+
+
+function convertToTransfer(data) {
+	return Object.assign({
+		id: data.archive.id,
+		articleId: data.archive.articleId,
+		content: data.content,
+	}, data.metadata);
+}
 
 function convertToFront(json, data) {
 	assignUpdate(json, data);
@@ -63,8 +81,20 @@ export default {
 		viewMode: 0,
 	}),
 	methods: {
-		showConfigDialog() {
-
+		save(manually) {
+			const promise = api.draft.save(this.archive.id, convertToTransfer(this.$data));
+			if (manually) {
+				promise.then(() => this.$dialog.messageBox("保存草稿", "保存成功"))
+					.catch(() => this.$dialog.messageBox("保存草稿", "保存失败，请手动备份", "error"));
+			}
+		},
+		publish() {
+			this.$dialog.show(PublishDialog, this.$data);
+		},
+		async metadataDialog() {
+			const res = await this.$dialog.show(MetadataDialog, { metadata: this.metadata });
+			if (res)
+				this.metadata = res;
 		},
 	},
 	created() {
