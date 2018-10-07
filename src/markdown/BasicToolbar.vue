@@ -24,10 +24,15 @@
 		<kx-button class="minor icon" title="列表" @click="addPrefixToLines('* ')">
 			<i class="fas fa-list-ul"></i>
 		</kx-button>
+		<kx-button class="minor icon" title="插入链接" @click="addLink">
+			<i class="fa fa-link"></i>
+		</kx-button>
 	</div>
 </template>
 
 <script>
+import AddLinkDialog from "./AddLinkDialog";
+
 export default {
 	name: "KxMarkdownBasicToolbar",
 	props: {
@@ -115,6 +120,15 @@ export default {
 
 			this.changeTextArea(selStart, selEnd, text);
 			this.reselect(selStart, end);
+		},
+		async addLink() {
+			const res = await this.$dialog.show(AddLinkDialog);
+			if (res) {
+				const selEnd = this.getSelectedRange(false)[1];
+				const str = "[" + res.text + "](" + res.href + ")";
+				this.changeTextArea(selEnd, selEnd, str);
+				this.reselect(selEnd, selEnd + str.length);
+			}
 		},
 	},
 };
