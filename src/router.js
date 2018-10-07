@@ -79,7 +79,7 @@ export default function () {
 		{
 			path: "/edit/:id",
 			name: "edit",
-			component: () => import("./views/ArticleEditor"),
+			component: () => import("./views/editor/ArticleEditor"),
 			meta: { title: "文章编辑器" },
 		},
 		{

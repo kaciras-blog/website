@@ -36,9 +36,9 @@
 </template>
 
 <script>
-import api from "../api";
-import SelectCategoryDialog from "../components/SelectCategoryDialog";
-import { errorMessage } from "../utils";
+import api from "../../api";
+import SelectCategoryDialog from "../../components/SelectCategoryDialog";
+import { errorMessage } from "../../utils";
 
 export default {
 	name: "PublishDialog",
@@ -93,7 +93,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-@import "../css/ToBeImport";
+@import "../../css/ToBeImport";
 
 .body {
 	width: 480px;

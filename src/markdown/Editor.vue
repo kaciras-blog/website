@@ -81,7 +81,7 @@
 				id="preview"
 				ref="preview"
 				class="text-view preview markdown"
-				:class="{ split:viewModel === 0, single:viewModel === 2 }"
+				:class="{ split:viewModel === 0, single:viewModel === PREVIEW_MODE }"
 				v-html="htmlText">
 			</article>
 		</div>
@@ -96,8 +96,8 @@ import kxMarkdown, { convertor } from "./index";
 import api from "../api";
 
 import AddLinkDialog from "./AddLinkDialog.vue";
-import MetadataDialog from "./MetadataDialog.vue";
-import PublishDialog from "./PublishDialog";
+import MetadataDialog from "../views/editor/MetadataDialog.vue";
+import PublishDialog from "../views/editor/PublishDialog";
 
 
 /**
@@ -110,6 +110,10 @@ function syncScroll() {
 	other.scrollTop = percentage * (other.scrollHeight - other.offsetHeight);
 	setTimeout(() => both.on("scroll", syncScroll), 32); // 最后这个数字越小滚动越平滑
 }
+
+const SPLIT_MODE = 0;
+const TEXT_MODE = 1;
+const PREVIEW_MODE = 2;
 
 function convertToFront(json, data) {
 	assignUpdate(json, data);
