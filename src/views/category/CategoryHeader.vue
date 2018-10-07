@@ -1,17 +1,15 @@
 <template>
 	<header :class="$style.container">
 		<img :src="value.cover" :class="$style.head">
-
-		<div :class="$style.name">
-			<h2>{{value.name}}</h2>
-		</div>
+		<h1 :class="$style.name">{{value.name}}</h1>
+		<h3 :class="$style.desc">{{value.description}}</h3>
 
 		<div :class="$style.children">
 			<category-card
 				v-for="ch of value.children"
 				:key="ch.id"
-				:name="ch.name"
-				:cover="ch.cover"/>
+				v-bind="ch"
+				@click="goto(ch.id)"/>
 		</div>
 	</header>
 </template>
@@ -28,6 +26,11 @@ export default {
 			required: true,
 		},
 	},
+	methods: {
+		goto(category) {
+
+		},
+	},
 };
 </script>
 
@@ -35,44 +38,37 @@ export default {
 @import "../../css/ToBeImport.less";
 
 .container {
-	margin-top: -8rem;
+	margin-top: -4rem;
 
 	display: grid;
 	grid-template-rows: 4rem 4rem auto;
-	grid-template-columns: 12% 8rem 1fr;
+	grid-template-columns: 15% 10rem 1fr;
 	grid-template-areas: "____ head name"
 						 "meta head desc"
 						 "parent children children";
+
+	/*background-color: #81d9fa;*/
 }
 
 .head {
 	grid-area: head;
-	.circle(8rem);
+	margin-top: -4rem;
+	.circle(10rem);
 	background-color: white;
-	border: solid 2px white;
+	border: solid 8px white;
 	z-index: 4;
 }
 
 .name {
 	grid-area: name;
-	justify-self: start;
 	position: relative;
-	margin-left: -4rem;
-	padding: .5rem .5rem .5rem 4rem;
+	padding: 1rem 1rem 1rem 1rem;
 
-	color: white;
-	background-color: rgba(0, 0, 0, 0.43);
+	/*background-color: rgba(0, 0, 0, 0.6);*/
+}
 
-	&::after {
-		content: "";
-		display: block;
-		position: absolute;
-		left: 100%;
-		top: 0;
-		bottom: 0;
-		width: 3rem;
-		background: linear-gradient(to right, rgba(0, 0, 0, 0.43), transparent);
-	}
+.desc{
+	grid-area: desc;
 }
 
 .children {

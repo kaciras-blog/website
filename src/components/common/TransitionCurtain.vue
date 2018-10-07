@@ -2,9 +2,13 @@
 	<transition name="fade">
 		<div class="dimmer" v-show="show" tabindex="-1" @keyup.esc="cancel">
 			<div class="loading">
-				<sk-fading-circle/>
+				<sk-fading-circle v-if="!hasError"/>
 
-				<span v-if="timeouted">
+				<div v-if="hasError">
+					<p class="tc-err">加载出错</p>
+					<p>可能是网络连接失败，或者服务器炸了</p>
+				</div>
+				<span v-else-if="timeouted">
 					10秒都没加载完，多半是废了，您可以继续等等，或是
 				</span>
 				<span v-else>加载中...</span>
@@ -27,6 +31,7 @@ export default {
 	data: () => ({
 		show: false,
 		timeouted: false,
+		hasError: false,
 	}),
 	methods: {
 		start() {
@@ -44,6 +49,10 @@ export default {
 			clearTimeout(this.$_timer);
 			this.show = false;
 			this.timeouted = false;
+			this.error = false;
+		},
+		error() {
+			this.hasError = true;
 		},
 		cancel() {
 			this.finish();
@@ -63,6 +72,11 @@ export default {
 	.overlay-fixed;
 	z-index: 1000;
 	background-color: rgba(255, 255, 255, 0.6);
+}
+
+.tc-err {
+	font-size: 1.5em;
+	margin-top: .5em;
 }
 
 .loading {

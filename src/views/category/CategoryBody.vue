@@ -12,7 +12,7 @@ export default {
 
 <style module lang="less">
 .container {
-	background-color: #3db7ef;
+
 	height: 20rem;
 }
 </style>

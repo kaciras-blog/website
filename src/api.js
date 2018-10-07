@@ -54,7 +54,11 @@ if (process.env.NODE_ENV !== "production") {
 function createAxios(config) {
 	const instance = axios.create(config);
 	instance.interceptors.response.use(null, error => {
-		error.code = error.response.status;
+		if(error.response) {
+			error.code = error.response.status;
+		} else {
+			error.code = -1; // 连接失败
+		}
 		return Promise.reject(error);
 	});
 	return instance;

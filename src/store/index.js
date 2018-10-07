@@ -14,7 +14,7 @@ export default function () {
 			[REFRESH_USER]({ commit }) {
 				return api.user.getCurrent()
 					.then(user => commit(SET_USER, user))
-					.catch(err => err.response.status === 404); // ignore no logined.
+					.catch(() => {}); // ignore no logined.
 			},
 			[REMOVE_USER]({ commit }) {
 				return api.session.logout().then(() => commit(SET_USER, null));

@@ -76,6 +76,7 @@ function initAppAndRouterHook() {
 		if (to.meta.title)
 			document.title = to.meta.title + " - Kaciras的博客";
 		next();
+		curtain.finish();
 	}
 
 	/*
@@ -96,8 +97,7 @@ function initAppAndRouterHook() {
 	 */
 	router.beforeResolve((to, from, next) => {
 		prefetch(to, from, next)
-			.catch(err => handleError(err, next))
-			.finally(() => curtain.finish());
+			.catch(err => handleError(err, next));
 	});
 
 
@@ -106,6 +106,9 @@ function initAppAndRouterHook() {
 			return;
 		}
 		switch (err.code) {
+			case -1:
+				curtain.error();
+				break;
 			case 301:
 			case 302:
 				next(err.location);

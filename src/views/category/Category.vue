@@ -29,8 +29,7 @@ const storeModule = {
 export default {
 	name: "CategoryPage",
 	components: {
-		CategoryHeader,
-		CategoryBody,
+		CategoryHeader, CategoryBody,
 	},
 	async asyncData(store, route, cancelToken) {
 		store.registerModule("category", storeModule);
@@ -51,6 +50,6 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="less">
 
 </style>

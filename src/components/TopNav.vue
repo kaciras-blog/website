@@ -109,7 +109,7 @@ export default {
 	padding: 0 1rem;
 	.full-percent;
 
-	background-color: rgba(255, 255, 255, 0.5);
+	background-color: rgba(255, 255, 255, 0.4);
 
 	@media screen {
 		@media (min-width: @length-screen-mobile) {
