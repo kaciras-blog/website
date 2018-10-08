@@ -65,6 +65,9 @@ function initAppAndRouterHook() {
 		});
 		if (!activated.length) return next();
 
+		if (to.meta.title)
+			document.title = to.meta.title + " - Kaciras的博客";
+
 		// 找出所有需要预加载的组件
 		const prefetched = activated.filter(c => c.asyncData && c.prefetch);
 		if (!prefetched.length) return next();
@@ -73,8 +76,6 @@ function initAppAndRouterHook() {
 		await Promise.all(prefetched.map(c => c.asyncData(store, to, cancelToken)));
 
 		cancelToken.complete();
-		if (to.meta.title)
-			document.title = to.meta.title + " - Kaciras的博客";
 		next();
 	}
 

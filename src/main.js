@@ -28,6 +28,7 @@ export default function () {
 	const coneoleRoute = {
 		path: "/console",
 		component: () => import("./views/console/ConsolePage"),
+		meta: { title: "控制台" },
 	};
 	if (process.env.NODE_ENV === "production") {
 		coneoleRoute.beforeEnter = (to, from, next) => {
