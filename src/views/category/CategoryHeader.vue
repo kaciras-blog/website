@@ -43,6 +43,7 @@ export default {
 	display: grid;
 	grid-template-rows: 4rem 4rem auto;
 	grid-template-columns: 15% 10rem 1fr;
+	grid-gap: 1rem;
 	grid-template-areas: "____ head name"
 						 "meta head desc"
 						 "parent children children";
@@ -62,7 +63,7 @@ export default {
 .name {
 	grid-area: name;
 	position: relative;
-	padding: 1rem 1rem 1rem 1rem;
+	padding: 1rem 1rem 1rem 0;
 
 	/*background-color: rgba(0, 0, 0, 0.6);*/
 }

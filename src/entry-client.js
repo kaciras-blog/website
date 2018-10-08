@@ -76,7 +76,6 @@ function initAppAndRouterHook() {
 		if (to.meta.title)
 			document.title = to.meta.title + " - Kaciras的博客";
 		next();
-		curtain.finish();
 	}
 
 	/*
@@ -97,6 +96,7 @@ function initAppAndRouterHook() {
 	 */
 	router.beforeResolve((to, from, next) => {
 		prefetch(to, from, next)
+			.then(() => curtain.finish())
 			.catch(err => handleError(err, next));
 	});
 
@@ -108,17 +108,20 @@ function initAppAndRouterHook() {
 		switch (err.code) {
 			case -1:
 				curtain.error();
-				break;
+				return;
 			case 301:
 			case 302:
 				next(err.location);
 				break;
 			case 404:
-				return next({ path: "/error/404", replace: true });
+				next({ path: "/error/404", replace: true });
+				break;
 			default:
 				console.error(err);
-				return next("/error/500");
+				next("/error/500");
+				break;
 		}
+		curtain.finish();
 	}
 
 	vue.$mount("#app");

@@ -15,6 +15,7 @@ import CategoryHeader from "./CategoryHeader";
 import CategoryBody from "./CategoryBody";
 import api from "../../api";
 import axios from "axios";
+import TitleMixin from "../../title-mixin";
 
 const storeModule = {
 	namespaced: true,
@@ -28,6 +29,7 @@ const storeModule = {
 
 export default {
 	name: "CategoryPage",
+	mixins: [TitleMixin],
 	components: {
 		CategoryHeader, CategoryBody,
 	},
@@ -38,6 +40,9 @@ export default {
 		store.commit("category/setItem", await api.category.getByName(route.params.name, axiosCancelToken.token));
 	},
 	prefetch: true,
+	title() {
+		return this.category.name;
+	},
 	computed: {
 		navStyle() {
 			return { "--background": `url(${this.category.bestBackground || require("../../assets/index-banner.jpg")})` };
