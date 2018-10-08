@@ -1,32 +1,14 @@
 <template>
-	<div>
-		<kx-button class="minor icon" title="标题" @click="addHeader(2)">
-			<i class="fas fa-heading"></i>
-		</kx-button>
-		<kx-button class="minor icon" title="粗体" @click="switchWrapper('**', '**')">
-			<i class="fa fa-bold"></i>
-		</kx-button>
-		<kx-button class="minor icon" title="斜体" @click="switchWrapper('_', '_')">
-			<i class="fa fa-italic"></i>
-		</kx-button>
-		<kx-button class="minor icon" title="删除线" @click="switchWrapper('~~', '~~')">
-			<i class="fa fa-strikethrough"></i>
-		</kx-button>
-		<kx-button class="minor icon" title="行内代码" @click="switchWrapper('`', '`')">
-			<i class="fa fa-code"></i>
-		</kx-button>
-		<kx-button class="minor icon" title="横线" @click="addNewLine('- - -')">
-			<i class="fa fa-minus"></i>
-		</kx-button>
-		<kx-button class="minor icon" title="引用块" @click="addPrefixToLines('>')">
-			<i class="fa fa-quote-left"></i>
-		</kx-button>
-		<kx-button class="minor icon" title="列表" @click="addPrefixToLines('* ')">
-			<i class="fas fa-list-ul"></i>
-		</kx-button>
-		<kx-button class="minor icon" title="插入链接" @click="addLink">
-			<i class="fa fa-link"></i>
-		</kx-button>
+	<div class="el-wrapper">
+		<kx-button title="标题" icon="fas fa-heading" @click="addHeader(2)"/>
+		<kx-button title="粗体" icon="fa fa-bold" @click="switchWrapper('**')"/>
+		<kx-button title="斜体" icon="fa fa-italic" @click="switchWrapper('_')"/>
+		<kx-button title="删除线" icon="fa fa-strikethrough" @click="switchWrapper('~~')"/>
+		<kx-button title="行内代码" icon="fa fa-code" @click="switchWrapper('`')"/>
+		<kx-button title="横线" icon="fa fa-minus" @click="addNewLine('- - -')"/>
+		<kx-button title="引用块" icon="fa fa-quote-left" @click="addPrefixToLines('>')"/>
+		<kx-button title="列表" icon="fas fa-list-ul" @click="addPrefixToLines('* ')"/>
+		<kx-button title="插入链接" icon="fa fa-link" @click="addLink"/>
 	</div>
 </template>
 

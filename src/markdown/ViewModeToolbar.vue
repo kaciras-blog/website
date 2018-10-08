@@ -1,14 +1,8 @@
 <template>
-	<div>
-		<kx-button class="icon green" title="双列视图" @click="splitMode">
-			<i class="fas fa-columns"></i>
-		</kx-button>
-		<kx-button class="icon green" title="Markdown视图" @click="markdownMode">
-			<i class="far fa-edit"></i>
-		</kx-button>
-		<kx-button class="icon green" title="Html视图" @click="htmlMode">
-			<i class="fas fa-eye"></i>
-		</kx-button>
+	<div class="el-wrapper">
+		<kx-button class="info" title="双列视图" icon="fas fa-columns" @click="splitMode"/>
+		<kx-button class="info" title="Markdown视图" icon="far fa-edit" @click="markdownMode"/>
+		<kx-button class="info" title="Html视图" icon="fas fa-eye" @click="htmlMode"/>
 	</div>
 </template>
 

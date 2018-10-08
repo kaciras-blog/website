@@ -10,34 +10,42 @@ export default {
 			type: String,
 			default: "button",
 		},
-		// 设置此属性后将渲染为 router-link,其to属性等于此属性的值
+		// 设置此属性后将渲染为 router-link，其to属性等于此属性的值，其tag属性等于prop中的tag
 		route: String,
+		// 设置此属性后将在按钮的子元素里加上一个图标
+		icon: String,
 	},
 	render(h, ctx) {
-		const { data, children } = ctx;
-		data.attrs = data.attrs || {};
-		const { staticClass, attrs } = data;
+		let { data, children } = ctx;
 
 		const clazz = ["kx-btn"];
-		if (staticClass) {
-			clazz.push(staticClass);
-		}
 		if (data.class) {
 			clazz.push(data.class);
 		}
 		data.class = clazz;
 
-		// 处理特殊标签
-		let { tag, route } = ctx.props;
+		// 按钮样式的路由连接
+		let { tag, route, icon } = ctx.props;
 		if (route) {
 			data.props = data.props || {};
 			data.props.tag = tag;
 			data.props.to = route;
 			tag = Vue.component("router-link");
 		}
+
 		if (tag === "button") {
-			attrs.type = "button"; // form
+			data.attrs = data.attrs || {};
+			data.attrs.type = "button"; // form
 		}
+
+		if (icon) {
+			if (!children) {
+				clazz.push("icon"); // 仅有一个图标，给加一个样式
+			}
+			children = children || [];
+			children.unshift(h("i", { staticClass: icon }));
+		}
+
 		return h(tag, data, children);
 	},
 };
@@ -48,7 +56,7 @@ export default {
 
 @color-button-primary: @color-primary; // 主要
 @color-button-second: #f570c7; // 次要
-@color-button-info: #25cb58; // 信息
+@color-button-info: #29d547; // 信息
 @color-button-dangerous: #ef4c42; // 危险
 
 // 条纹宽度
@@ -56,10 +64,6 @@ export default {
 
 // 园角按钮的圆角半径
 @radius: .25rem;
-
-.square {
-	border-radius: 0 !important;
-}
 
 .kx-btn {
 	display: inline-block;
@@ -121,10 +125,10 @@ export default {
 		}
 	}
 
-	// 图标按钮样式
+	// 图标按钮基本样式
 	&.icon {
+		border-radius: 0;
 		border: none;
-		font-size: 1.3rem;
 		padding: .3rem .8rem;
 	}
 

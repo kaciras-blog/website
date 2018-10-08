@@ -2,60 +2,8 @@ import MarkdownIt from "markdown-it";
 import hljs from "highlight.js";
 import Anchor from "markdown-it-anchor";
 
-/**
- * MarkdownIt真不好用，也没个文档，想改都难，还是从外层搞，有时间自己撸个解析器。
- */
+
 function myPlugin(markdownIt) {
-	// markdownIt.block.ruler.before("paragraph", "detail", (state, startLine, endLine, silent) => {
-	// 	let pos = state.bMarks[startLine] + state.tShift[startLine];
-	// 	let token;
-	// 	const oldParentType = state.parentType;
-	//
-	// 	if (state.src.charAt(pos++) !== "$" || state.src.charAt(pos++) !== "(") {
-	// 		return false;
-	// 	}
-	//
-	// 	const rb = state.skipChars(pos, ')'.charCodeAt(0));
-	// 	if(rb < 0) {
-	// 		return false;
-	// 	}
-	// 	const summary = state.src.slice(pos, rb);
-	// 	pos += rb + 1;
-	// 	if(state.src.charAt(pos++) !== "[") {
-	// 		return false;
-	// 	}
-	//
-	// 	let nextLine = startLine;
-	// 	for (;;) {
-	// 		nextLine++;
-	// 		if (nextLine >= endLine) {
-	// 			return false;
-	// 		}
-	//
-	// 		pos = state.bMarks[nextLine] + state.tShift[nextLine];
-	// 		const max = state.eMarks[nextLine];
-	//
-	// 		if (max - pos >= 2 && state.src.charAt(pos++) === "]" && state.src.charAt(pos++) === "$") {
-	// 			state.line = nextLine + 1;
-	//
-	// 			token          = state.push('details_open', 'details', 1);
-	// 			token.map      = [ startLine, state.line ];
-	//
-	// 			token          = state.push('inline', 'summary', 0);
-	// 			token.content  = summary;
-	//
-	// 			token          = state.push('inline', '', 0);
-	// 			token.content  = state.getLines(startLine + 1, nextLine, state.blkIndent, true);
-	// 			token.map      = [ startLine, state.line ];
-	// 			token.children = [];
-	//
-	// 			token          = state.push('details_close', 'details', -1);
-	//
-	// 			state.parentType = oldParentType;
-	// 			return true;
-	// 		}
-	// 	}
-	// });
 
 	// 给行内代码加个class
 	markdownIt.core.ruler.push("inline_code_class", state => state.tokens
@@ -87,11 +35,7 @@ convertor.use(myPlugin);
 
 export default {
 	install(Vue) {
-		Vue.filter("markdownToHtml", text => {
-			// Vue.$nextTick(afterConvert);
-			return convertor.render(text);
-		});
-		Vue.component("KxMarkdownEditor", () => import("./Editor"));
+		Vue.filter("markdownToHtml", text => convertor.render(text));
 
 		Vue.directive("bind-selection", {
 			inserted(el, { expression, modifiers }, vnode) {
@@ -121,24 +65,10 @@ export default {
 					}
 				}
 
-				function handleArrowKey(event) {
-					switch (event.key) {
-						case "ArrowUp":
-						case "ArrowDown":
-						case "ArrowLeft":
-						case "ArrowRight":
-						case "Home":
-						case "End":
-						case "PageUp":
-						case "PageDown":
-							handleSelect();
-					}
-				}
-
 				el.addEventListener("click", handleSelect);		// 鼠标点击改变光标位置
 				el.addEventListener("input", handleSelect);		// 增删内容改变光标位置
-				el.addEventListener("keyup", handleArrowKey);	// 移动光标的键按了一次
-				el.addEventListener("keydown", handleArrowKey);	// 移动光标的键按住不放
+				el.addEventListener("keyup", handleSelect);		// Home,End,PageUp,PageDown
+				el.addEventListener("keydown", handleSelect);	// 移动光标的键按住不放
 			},
 		});
 	},

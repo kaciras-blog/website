@@ -1,22 +1,15 @@
 <template>
 	<div :class="$style.container">
 		<div class="kx-markdown-toolbar">
-			<kx-markdown-basic-toolbar
-				:text.sync="content"
-				:selection.sync="selection"/>
-
+			<div>
+				<kx-markdown-basic-toolbar :text.sync="content" :selection.sync="selection"/>
+				<kx-button class="minor" title="插入图片" icon="far fa-file-image" @click="addImage"/>
+			</div>
 			<div>
 				<view-mode-toolbar :view-mode.sync="viewMode"/>
-
-				<kx-button class="primary icon" title="修改简介" @click="metadataDialog">
-					<i class="far fa-address-card"></i>
-				</kx-button>
-				<kx-button class="primary icon" title="保存" @click="save(true)">
-					<i class="far fa-save"></i>
-				</kx-button>
-				<kx-button class="primary icon" title="发布!" @click="publish">
-					<i class="far fa-paper-plane"></i>
-				</kx-button>
+				<kx-button class="primary" title="修改简介" icon="far fa-address-card" @click="metadataDialog"/>
+				<kx-button class="primary" title="保存" icon="far fa-save" @click="save(true)"/>
+				<kx-button class="primary" title="发布!" icon="far fa-paper-plane" @click="publish"/>
 			</div>
 		</div>
 
@@ -26,9 +19,11 @@
 			:view-mode="viewMode"/>
 
 		<div class="kx-markdown-statebar">
-			<div class="kx-markdown-statebar-left">{{selection[0] + " - " + selection[1]}}</div>
-			<div class="kx-markdown-statebar-right">
-				<slot name="statebar-right"/>
+			<div>
+
+			</div>
+			<div>
+				<text-state-group :text="content" :selection="selection"/>
 			</div>
 		</div>
 	</div>
@@ -37,13 +32,15 @@
 <script>
 import KxMarkdownEditWindow from "../../markdown/EditWindow";
 import KxMarkdownBasicToolbar from "../../markdown/BasicToolbar";
-import api from "../../api";
-import { assignUpdate } from "../../utils";
-import KxMarkdownStatebar from "../../markdown/Statebar";
+import KxMarkdownStatebar from "../../markdown/TextStateGroup";
+import TextStateGroup from "../../markdown/TextStateGroup";
 import KxMarkdownConfigToolbar from "../../markdown/ConfigToolbar";
 import ViewModeToolbar from "../../markdown/ViewModeToolbar";
+
 import PublishDialog from "./PublishDialog";
-import MetadataDialog from "./MetadataDialog.vue";
+import MetadataDialog from "./MetadataDialog";
+import api from "../../api";
+import { assignUpdate } from "../../utils";
 
 
 function convertToTransfer(data) {
@@ -61,8 +58,15 @@ function convertToFront(json, data) {
 }
 
 export default {
-	name: "ArticleEditorII",
-	components: { ViewModeToolbar, KxMarkdownConfigToolbar, KxMarkdownStatebar, KxMarkdownBasicToolbar, KxMarkdownEditWindow },
+	name: "ArticleEditor",
+	components: {
+		ViewModeToolbar,
+		KxMarkdownConfigToolbar,
+		KxMarkdownStatebar,
+		KxMarkdownBasicToolbar,
+		KxMarkdownEditWindow,
+		TextStateGroup,
+	},
 	data: () => ({
 		archive: {
 			id: null,
@@ -81,6 +85,20 @@ export default {
 		viewMode: 0,
 	}),
 	methods: {
+		async addImage() {
+			const res = await api.misc.uploadImageFile();
+			const [selStart, selEnd] = this.selection;
+			const p = selStart + 2;
+			const v = this.content;
+
+			this.content = v.substring(0, selEnd) + `![](${res})` + v.substring(selEnd);
+			this.selection = [p, p];
+		},
+		async metadataDialog() {
+			const res = await this.$dialog.show(MetadataDialog, { metadata: this.metadata });
+			if (res)
+				this.metadata = res;
+		},
 		save(manually) {
 			const promise = api.draft.save(this.archive.id, convertToTransfer(this.$data));
 			if (manually) {
@@ -90,11 +108,6 @@ export default {
 		},
 		publish() {
 			this.$dialog.show(PublishDialog, this.$data);
-		},
-		async metadataDialog() {
-			const res = await this.$dialog.show(MetadataDialog, { metadata: this.metadata });
-			if (res)
-				this.metadata = res;
 		},
 	},
 	created() {
@@ -118,7 +131,6 @@ export default {
 	flex-direction: column;
 	height: 100vh;
 }
-
 
 .menu {
 	display: flex;

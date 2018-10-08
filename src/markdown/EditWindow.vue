@@ -105,6 +105,7 @@ export default {
 </script>
 
 <style lang="less">
+@import "../css/ToBeImport";
 
 .kx-markdown-toolbar {
 	display: flex;
@@ -122,7 +123,7 @@ export default {
 	height: 100%;
 
 	margin: 0;
-	padding: 1rem 1rem 0;
+	padding: .5rem 1rem 0 1rem;
 
 	overflow-y: scroll;
 	overflow-x: hidden;
@@ -138,20 +139,25 @@ export default {
 
 .split {
 	width: 50%;
-	padding: 10px 20px 0 20px;
 }
 
 .single {
 	display: block;
 	width: 100%;
-	padding: 20px 10% 0 10%;
-}
 
-.hidden {
-	display: none;
+	@media screen and (min-width: @length-screen-mobile) {
+		padding-left: 10%;
+		padding-right: 10%;
+	}
+	@media screen and (min-width: @length-screen-wide) {
+		padding-left: 16%;
+		padding-right: 16%;
+	}
 }
 
 .kx-markdown-statebar {
+	display: flex;
+	justify-content: space-between;
 	padding: .4rem;
 	color: white;
 	background-color: #004fff;

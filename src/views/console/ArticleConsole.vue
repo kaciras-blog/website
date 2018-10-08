@@ -3,8 +3,9 @@
 		<div class="toolbar btn-group">
 			<kx-button
 				class="primary"
+				icon="fa fa-edit"
 				@click="newArticle">
-				<i class="fa fa-edit"></i>新文章
+				新文章
 			</kx-button>
 		</div>
 

@@ -3,8 +3,9 @@
 		<div class="toolbar btn-group">
 			<kx-button
 				class="dangerous"
+				icon="far fa-trash-alt"
 				@click="deleteAll">
-				<i class="far fa-trash-alt"></i>全部删除
+				全部删除
 			</kx-button>
 		</div>
 
