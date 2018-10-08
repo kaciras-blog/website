@@ -30,7 +30,7 @@
 <script>
 import api from "../../api";
 import discuzEditor from "./DiscuzEditor.vue";
-import discussion from "./Discussion.vue";
+import discussion from "./DiscussionItem.vue";
 
 export default {
 	name: "DiscussPanel",

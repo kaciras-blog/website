@@ -5,7 +5,7 @@
 		:banner="true"
 		:footer="true">
 
-		<article-view v-bind="article"/>
+		<article-view :value="article"/>
 
 		<discuss-panel
 			:article-id="article.id"

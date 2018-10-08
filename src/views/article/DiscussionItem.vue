@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<li>
 		<img :src="discusser.head" class="small head">
 		<div class="discuss-main">
 
@@ -58,7 +58,7 @@
 				v-if="replying === value.id"
 				:submit="submitReply"/>
 		</div>
-	</div>
+	</li>
 </template>
 
 <script>

@@ -24,6 +24,7 @@
 
 		<div class="tag-group"
 			 :class="$style.category">
+
 			<router-link
 				v-for="cat in item.cpath"
 				:key="cat.id"
@@ -34,7 +35,8 @@
 		</div>
 
 		<div class="minor-text" :class="$style.meta">
-			<span title="发表于" class="full-time meta">
+			<span title="发表于"
+				  class="hide-mobile full-time meta">
 				<i class="fa fa-edit"></i>
 				<time>{{item.create}}</time>
 			</span>
@@ -46,7 +48,8 @@
 				<time>{{item.update}}</time>
 			</span>
 
-			<span title="最后更新" class="show-mobile meta">
+			<span title="最后更新"
+				  class="show-mobile meta">
 				<i class="far fa-clock"></i>
 				<time>{{item | shortTime}}</time>
 			</span>
@@ -54,6 +57,7 @@
 			<span title="评论数" class="meta">
 				<i class="fas fa-comment-dots"></i>{{item.dcnt}}
 			</span>
+
 			<span title="浏览数" class="meta">
 				<i class="fa fa-eye"></i>{{item.vcnt}}
 			</span>

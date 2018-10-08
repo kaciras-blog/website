@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<ul>
+		<ul class="list">
 			<slot v-for="item of items" :item="item"/>
 		</ul>
 		<scroll-pager

@@ -1,8 +1,16 @@
 <template>
 	<section id="im-section">
-		<header>
+		<div>
 			<h1>网页即时通信</h1>
-		</header>
+
+			<kx-button
+				tag="a"
+				href="//im.kaciras.net"
+				class="second outline">
+				去看看
+			</kx-button>
+		</div>
+
 	</section>
 </template>
 
@@ -14,10 +22,9 @@ export default {
 
 <style scoped>
 #im-section {
-	display: none;
 	padding: 5rem;
 
 	color: white;
-	background-color: #0093ee;
+	background-color: #2272ee;
 }
 </style>

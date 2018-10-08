@@ -1,12 +1,15 @@
 <template>
 	<article>
-		<header class="title segment">
-			<h1>{{title}}</h1>
-			<p><span>发布时间：</span><time>{{create}}</time></p>
-			<p><span>最后更新：</span><time>{{update}}</time></p>
+		<header class="segment" :class="$style.title">
+			<h1>{{value.title}}</h1>
+			<p><span>发布时间：</span><time>{{value.create}}</time></p>
+			<p><span>最后更新：</span><time>{{value.update}}</time></p>
 			<div>
 				<span>关键词：</span>
-				<span v-for="kw in keywords" :key="kw" class="keyword">{{kw}}</span>
+				<span v-for="kw in value.keywords"
+					  :key="kw"
+					  :class="$style.keyword">{{kw}}
+				</span>
 			</div>
 		</header>
 		<div class="markdown segment" v-html="html"></div>
@@ -18,11 +21,13 @@ import KxMarkdown from "../../markdown/index";
 
 export default {
 	name: "ArticleView",
-	props: ["title", "create", "update", "keywords", "content"],
+	props: {
+		value: Object,
+	},
 	computed:{
 		// 过滤器不支持v-html
 		html() {
-			return KxMarkdown.renderHtml(this.content);
+			return KxMarkdown.renderHtml(this.value.content);
 		},
 	},
 	mounted() {
@@ -31,7 +36,7 @@ export default {
 };
 </script>
 
-<style scoped lang="less">
+<style module lang="less">
 @import "../../css/ToBeImport";
 
 .title {

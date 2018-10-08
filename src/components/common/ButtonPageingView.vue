@@ -1,6 +1,8 @@
 <template>
 	<div>
-		<slot v-for="item of items" :item="item"/>
+		<ol class="list">
+			<slot v-for="item of items" :item="item"/>
+		</ol>
 		<button-pager
 			:theme="theme"
 			:total-count="total"
@@ -12,7 +14,6 @@
 
 <script>
 import axios from "axios";
-import { scrollToElementStart, scrollToElementEnd } from "../../utils";
 
 export default {
 	name: "ButtonPageingView",
