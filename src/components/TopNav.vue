@@ -1,20 +1,20 @@
 <!--suppress XmlDuplicatedId -->
 <template>
 	<!-- 小屏幕折叠状态 -->
-	<div id="top-nav" v-if="collapse">
-		<nav class="content">
+	<nav v-if="collapse" id="top-nav">
+		<div class="content">
 			<div></div>
 			<router-link
 				class="logo-kaciras"
 				to="/welcome"
 				title="LOGO，点击回到首页"/>
 			<div class="button" @click="showMenu=true"><i class="fas fa-bars"></i></div>
-		</nav>
-	</div>
+		</div>
+	</nav>
 
 	<!-- 展开状态 -->
-	<div id="top-nav" v-else>
-		<nav :class="$style.content">
+	<nav v-else id="top-nav">
+		<div :class="$style.content">
 
 			<!-- 左边 -->
 			<div class="nav-item-group">
@@ -44,8 +44,8 @@
 			<div class="nav-item-group" v-else>
 				<router-link class="nav-item" to="/login">登录</router-link>
 			</div>
-		</nav>
-	</div>
+		</div>
+	</nav>
 </template>
 
 <script>
@@ -83,12 +83,12 @@ export default {
 	box-shadow: rgba(100, 100, 100, 0.2) 0 0 3px 2px;
 }
 
-#banner {
+.banner {
 	height: 12rem;
 	margin-bottom: 4rem;
 }
 
-#top-nav::before, #banner {
+#top-nav::before, .banner {
 	background: var(--background);
 	background-size: var(--background-size, cover); // 这个属性写一起毛病多
 }

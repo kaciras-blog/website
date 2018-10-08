@@ -1,6 +1,8 @@
 <template>
 	<div>
-		<slot v-for="item of items" :item="item"/>
+		<ul>
+			<slot v-for="item of items" :item="item"/>
+		</ul>
 		<scroll-pager
 			:init-state="initState"
 			:next-page-url="nextPageUrl"
@@ -12,6 +14,7 @@
 export default {
 	name: "ScrollPageingView",
 	props: {
+		wrapper: String,
 		loader: {
 			type: Function, // items, pageSize -> nextUrl
 			required: true,

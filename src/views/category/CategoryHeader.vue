@@ -4,12 +4,20 @@
 		<h1 :class="$style.name">{{value.name}}</h1>
 		<h3 :class="$style.desc">{{value.description}}</h3>
 
+		<div :class="$style.parent">
+			<h3 class="segment">上级分类</h3>
+			<div></div>
+		</div>
+
 		<div :class="$style.children">
-			<category-card
-				v-for="ch of value.children"
-				:key="ch.id"
-				v-bind="ch"
-				@click="goto(ch.id)"/>
+			<h3 class="segment">下级分类</h3>
+			<div>
+				<category-card
+					v-for="ch of value.children"
+					:key="ch.id"
+					v-bind="ch"
+					@click="goto(ch.id)"/>
+			</div>
 		</div>
 	</header>
 </template>
@@ -44,20 +52,19 @@ export default {
 	grid-template-rows: 4rem 4rem auto;
 	grid-template-columns: 15% 10rem 1fr;
 	grid-gap: 1rem;
-	grid-template-areas: "____ head name"
-						 "meta head desc"
-						 "parent children children";
+	grid-template-areas: "____ head name" "meta head desc" "parent __ children";
 
-	/*background-color: #81d9fa;*/
+	border-top: solid 6px #16a9fa;
 }
 
 .head {
 	grid-area: head;
-	margin-top: -4rem;
+	margin-top: -5rem;
 	.circle(10rem);
-	background-color: white;
-	border: solid 8px white;
 	z-index: 4;
+
+	background-color: white;
+	border: solid 6px #16a9fa;
 }
 
 .name {
@@ -68,13 +75,16 @@ export default {
 	/*background-color: rgba(0, 0, 0, 0.6);*/
 }
 
-.desc{
+.desc {
 	grid-area: desc;
+}
+
+.parent {
+	grid-area: parent;
 }
 
 .children {
 	grid-area: children;
-	display: flex;
 	overflow-x: auto;
 }
 </style>

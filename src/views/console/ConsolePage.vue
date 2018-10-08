@@ -1,16 +1,17 @@
 <template>
-	<div class="console-page">
-		<nav id="nav-bar" class="light nav-item-group">
+	<div :class="$style.container">
+		<nav class="light nav-item-group" :class="$style.nav">
 			<router-link  tabindex="1" to="/" class="nav-item">返回首页</router-link>
 		</nav>
-		<aside id="tabs">
+		<aside :class="$style.tabs">
 			<h1>控制台</h1>
 			<ul :class="$style.menu" role="tablist">
 				<li v-for="link of views"
 					:key="link.name"
 					role="tab"
 					tabindex="2"
-					:class="{ active: active === link.name, [$style.tabItem]: true}"
+					:aria-selected="active === link.name"
+					:class="{ [$style.active]: active === link.name, [$style.tabItem]: true}"
 					@click="active = link.name"
 					@keyup.enter="active = link.name">
 					{{link.label}}
@@ -47,10 +48,10 @@ export default {
 };
 </script>
 
-<style scoped lang="less">
+<style module lang="less">
 @import "../../css/ToBeImport";
 
-.console-page {
+.container {
 	height: 100vh;
 
 	display: grid;
@@ -59,7 +60,7 @@ export default {
 	grid-template-rows: 3rem 1fr;
 }
 
-#nav-bar {
+.nav {
 	text-align: right;
 	padding: 0 1rem;
 	min-height: 3rem; // 谷歌的浏览器必须用min-height
@@ -70,7 +71,7 @@ export default {
 	z-index: 1;
 }
 
-#tabs {
+.tabs {
 	padding-top: 1rem;
 	grid-area: menu;
 
@@ -92,10 +93,6 @@ export default {
 		border-right-color: white;
 	}
 }
-</style>
-
-<style module lang="less">
-@import "../../css/ToBeImport";
 
 .menu {
 	padding: 0;

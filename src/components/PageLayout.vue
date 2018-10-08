@@ -5,7 +5,7 @@
 		 v-on="listeners">
 
 		<top-nav/>
-		<div v-if="props.banner" id="banner"></div>
+		<div v-if="props.banner" class="banner" role="banner"></div>
 		<main :id="props.viewId">
 			<slot/>
 		</main>

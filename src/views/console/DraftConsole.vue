@@ -25,7 +25,6 @@
 
 <script>
 import api from "../../api";
-import { deleteOn } from "../../utils";
 import DraftConsoleItem from "./DraftConsoleItem";
 
 async function loadDrafts() {
@@ -58,9 +57,7 @@ export default {
 				this.last = 0;
 			}).catch(() => alert("清空失败!"));
 		},
-		deleteDraft(id) {
-			api.draft.deleteOne(id).then(() => deleteOn(this.drafts, d => d["id"] === id));
-		},
+
 	},
 	data() {
 		return {

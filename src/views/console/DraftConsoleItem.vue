@@ -9,7 +9,7 @@
 
 			<div class="btn-group">
 				<kx-button class="primary outline" :route="'/edit/' + value.id">编辑</kx-button>
-				<kx-button class="dangerous outline" @click="deleteDraft(value.id)">删除</kx-button>
+				<kx-button class="dangerous outline" @click="deleteDraft">删除</kx-button>
 			</div>
 		</div>
 
@@ -26,12 +26,24 @@
 </template>
 
 <script>
+import api from "../../api";
+
 export default {
 	name: "DraftConsoleItem",
 	props: {
 		value: {
 			type: Object,
 			required: true,
+		},
+	},
+	methods: {
+		async deleteDraft() {
+			const accept = await this.$dialog.messageBox("删除草稿", "删除后不可恢复，是否确定？", "warn", true);
+			if (!accept) {
+				return;
+			}
+			await api.draft.deleteOne(this.value.id);
+			this.$emit("removed");
 		},
 	},
 };

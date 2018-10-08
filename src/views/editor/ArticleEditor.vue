@@ -1,6 +1,6 @@
 <template>
 	<div :class="$style.container">
-		<div class="kx-markdown-toolbar">
+		<div class="kx-markdown-toolbar" role="toolbar">
 			<div>
 				<kx-markdown-basic-toolbar :text.sync="content" :selection.sync="selection"/>
 				<kx-button class="minor" title="插入图片" icon="far fa-file-image" @click="addImage"/>

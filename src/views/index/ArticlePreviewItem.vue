@@ -1,5 +1,9 @@
 <template>
-	<div :class="$style.container">
+	<li :class="$style.container">
+		<h2 class="compact" :class="$style.title">
+			<router-link :to="item | articleLink">{{item.title}}</router-link>
+		</h2>
+
 		<router-link
 			:to="item | articleLink"
 			tabindex="-1"
@@ -7,19 +11,15 @@
 			<img :src="item.cover" class="cram">
 		</router-link>
 
-		<router-link
-			:to="item | articleLink"
-			:class="$style.title">
-			{{item.title}}
-		</router-link>
-
-		<span :class="$style.summary">{{item.summary}}</span>
+		<div :class="$style.summary">{{item.summary}}</div>
 
 		<div :class="$style.keywords">
-			关键词：
-			<span v-for="kw in item.keywords"
-				  :key="kw"
-				  :class="$style.keyword">{{kw}}</span>
+			<h4 class="compact inline">关键词：</h4>
+			<ul class="inline">
+				<li v-for="kw in item.keywords"
+					:key="kw"
+					:class="$style.keyword">{{kw}}</li>
+			</ul>
 		</div>
 
 		<div class="tag-group"
@@ -27,7 +27,8 @@
 			<router-link
 				v-for="cat in item.cpath"
 				:key="cat.id"
-				:to="'/category/' + cat.name">
+				:to="'/category/' + cat.name"
+				class="tag-group-item">
 				{{cat.name}}
 			</router-link>
 		</div>
@@ -45,7 +46,7 @@
 				<time>{{item.update}}</time>
 			</span>
 
-			<span title="时间" class="show-mobile meta">
+			<span title="最后更新" class="show-mobile meta">
 				<i class="far fa-clock"></i>
 				<time>{{item | shortTime}}</time>
 			</span>
@@ -57,7 +58,7 @@
 				<i class="fa fa-eye"></i>{{item.vcnt}}
 			</span>
 		</div>
-	</div>
+	</li>
 </template>
 
 <script>
@@ -89,7 +90,7 @@ export default {
 <style module lang="less">
 @import "../../css/ToBeImport.less";
 
-.container{
+.container {
 	display: grid;
 	grid-template-columns: 1fr;
 	grid-gap: 1rem;
@@ -117,6 +118,7 @@ export default {
 }
 
 .keyword {
+	display: inline;
 	margin-left: .3em;
 	margin-right: .3em;
 }

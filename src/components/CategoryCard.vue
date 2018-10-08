@@ -22,6 +22,7 @@ export default {
 
 <style module lang="less">
 .container {
+	display: inline-block;
 	margin: 1rem;
 	padding: 0 1rem 1rem;
 	max-width: 9rem;

@@ -1,12 +1,12 @@
 <template>
 	<page-layout
 		view-id="index-page"
-		class="index-header"
+		:class="$style.navVaribles"
 		:banner="true"
 		:footer="true">
 
-		<div class="article-list">
-			<h1 class="segment">全部文章</h1>
+		<section :class="$style.list">
+			<h1 class="segment" :class="$style.listTitle">全部文章</h1>
 
 			<scroll-pageing-view
 				:loader="loadPage"
@@ -14,13 +14,13 @@
 				:init-state="initState"
 				:init-next-url="nextUrl">
 
-				<article-preview
+				<article-preview-item
 					slot-scope="{ item }"
 					:key="item.id"
 					:item="item"
 					class="segment"/>
 			</scroll-pageing-view>
-		</div>
+		</section>
 
 		<aside-panel/>
 	</page-layout>
@@ -28,7 +28,7 @@
 
 <script>
 import AsidePanel from "./AsidePanel.vue";
-import ArticlePreview from "./ArticlePreview.vue";
+import ArticlePreviewItem from "./ArticlePreviewItem.vue";
 import api from "../../api.js";
 
 /**
@@ -64,10 +64,7 @@ const indexStoreModule = {
 
 export default {
 	name: "IndexPage",
-	components: {
-		ArticlePreview,
-		AsidePanel,
-	},
+	components: { ArticlePreviewItem, AsidePanel },
 	asyncData(store, route) {
 		store.registerModule("index", indexStoreModule);
 		return store.dispatch("index/fetchItem", route);
@@ -107,10 +104,10 @@ export default {
 </script>
 
 <!--suppress CssNoGenericFontName -->
-<style lang="less">
+<style module lang="less">
 @import "../../css/ToBeImport";
 
-#index-page {
+:global(#index-page) {
 	display: flex;
 	align-items: flex-start;
 	min-height: 100vh;
@@ -139,18 +136,19 @@ export default {
 	}
 }
 
-.article-list {
+.list {
 	flex-grow: 1;
+}
 
-	& > h1 {
-		text-align: center;
-		@media screen and (min-width: @length-screen-mobile) {
-			text-align: left;
-		}
+.listTitle {
+	font-size: 1.8rem;
+	text-align: center;
+	@media screen and (min-width: @length-screen-mobile) {
+		text-align: left;
 	}
 }
 
-.index-header {
+.navVaribles {
 	--background: url("../../assets/index-banner.jpg") center 0;
 	--background-size: cover;
 }
