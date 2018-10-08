@@ -90,8 +90,8 @@ export default {
 				await api.category.update(current.id, current);
 				await $dialog.messageBox("修改分类", "修改成功");
 			} else {
-				current.parent = stack.length ? stack[stack.length - 1].id : 0;
-				await api.category.create(current);
+				const parent = stack.length ? stack[stack.length - 1].id : 0;
+				await api.category.create(current, parent);
 				await $dialog.messageBox("新建分类", "添加成功");
 			}
 		},

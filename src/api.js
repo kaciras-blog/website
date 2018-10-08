@@ -54,7 +54,7 @@ if (process.env.NODE_ENV !== "production") {
 function createAxios(config) {
 	const instance = axios.create(config);
 	instance.interceptors.response.use(null, error => {
-		if(error.response) {
+		if (error.response) {
 			error.code = error.response.status;
 		} else {
 			error.code = -1; // 连接失败
@@ -77,8 +77,6 @@ const _default = {};
 
 _default.category = {
 
-	getPath: (id) => mainServer.get(`/categories/${id}/path`).then(r => r.data),
-
 	getChildren: (id) => mainServer.get(`/categories/${id}/children`).then(r => r.data),
 
 	deleteOne: (id) => mainServer.delete("/categories/" + id),
@@ -92,7 +90,9 @@ _default.category = {
 		params: { id, parent, treeMode },
 	}),
 
-	create: data => mainServer.post("/categories/", data),
+	create: (data, parent) => mainServer.post("/categories/", data, {
+		params: { parent },
+	}),
 
 	update: (id, data) => mainServer.put("/categories/" + id, data),
 };
