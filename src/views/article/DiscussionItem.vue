@@ -48,6 +48,7 @@
 
 			<button-pageing-view
 				v-if="value.replyCount>0"
+				ref="replies"
 				theme="text"
 				:init-items="value.replies"
 				initPageSize="5"
@@ -77,7 +78,13 @@ import { mapState } from "vuex";
 
 export default {
 	name: "Discussion",
-	props: ["value", "replying"],
+	props: {
+		value: {
+			type: Object,
+			required: true,
+		},
+		replying: Number,
+	},
 	components: { DisczEditor },
 	computed: {
 		deleteable() {
@@ -95,16 +102,19 @@ export default {
 	methods: {
 		async submitReply(text) {
 			await api.discuss.reply(this.value.id, text);
-
+			this.$refs.replies.switchToLast();
 		},
 		remove() {
-			api.discussion.deleteOne(this.value.id)
-				.then(this.$emit("item-removed", this.value))
+			api.discuss.deleteOne(this.value.id)
+				.then(() => this.$emit("item-removed", this.value))
 				.catch(r => alert("删除失败 " + r.message));
 		},
 		replyThis() {
 			this.$emit("reply", this.value.id);
 		},
+		/**
+		 * 点赞标签被点击时触发，如果用户已经点赞过则撤销点赞，否则增加点赞。
+		 */
 		vote() {
 			const { value } = this;
 			if (value.voted) {
@@ -146,10 +156,6 @@ export default {
 	justify-content: space-between;
 	align-items: baseline;
 	margin-bottom: 2rem;
-}
-
-.tags > *:not(:last-child) {
-	margin-right: 1em;
 }
 
 .clickable {

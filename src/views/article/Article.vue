@@ -194,10 +194,10 @@ export default {
 	& > .outline {
 		margin-top: -1px;
 		padding: 0;
-		width: 2.5rem;
-		height: 2.5rem;
+		width: 2.3rem;
+		height: 2.3rem;
 
-		font-size: 1.5rem;
+		font-size: 1.4rem;
 		background-color: white; // 按钮组边角
 
 		@media screen {
