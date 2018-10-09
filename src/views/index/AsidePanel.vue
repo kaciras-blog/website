@@ -7,13 +7,17 @@
 		<div>
 			<h3 class="padding">浏览排行</h3>
 			<ol v-if="hots"
-				role="listbox"
 				class="rank">
 
+				<!-- 这里要保持<a>元素的链接便于爬虫跟进，不能直接把<router-link>搞成<li> -->
 				<li v-for="article in hots"
-					:key="article.id"
-					role="listitem">
-					<router-link class="item" :to="'/article/' + article.id">{{article.title}}</router-link>
+					:key="article.id">
+
+					<router-link
+						:to="article | articleLink"
+						class="item">
+						{{article.title}}
+					</router-link>
 				</li>
 			</ol>
 			<p class="no-content" v-else>暂无</p>
