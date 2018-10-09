@@ -5,7 +5,7 @@
 		<slot name="state">
 			<sk-fading-circle v-if="state === 'LOADING'"/>
 
-			<span v-else-if="state === 'FAILED'" class="text-warning">
+			<span v-else-if="state === 'FAILED'">
 				加载失败,请<a class="error highlight" @click="loadPage">重试</a>
 			</span>
 
@@ -43,7 +43,7 @@ class LoadTask {
 		}
 	}
 
-	error() {
+	completeWithError() {
 		this.finish(FAILED);
 	}
 

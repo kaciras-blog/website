@@ -12,13 +12,15 @@
 				:loader="loadPage"
 				:init-items="initArticles"
 				:init-state="initState"
-				:init-next-url="nextUrl">
+				:init-next-url="initNextUrl">
 
-				<article-preview-item
-					slot-scope="{ item }"
-					:key="item.id"
-					:item="item"
-					class="segment"/>
+				<ul class="list" slot-scope="{ items }">
+					<article-preview-item
+						v-for="item of items"
+						:key="item.id"
+						:item="item"
+						class="segment"/>
+				</ul>
 			</scroll-pageing-view>
 		</section>
 
@@ -52,11 +54,6 @@ const indexStoreModule = {
 	state: () => ({
 		items: null,
 	}),
-	actions: {
-		fetchItem({ commit }, route) {
-			return api.article.getList(0, route.params.index || 0, 16).then(items => commit("setItems", items));
-		},
-	},
 	mutations: {
 		setItems: (state, items) => state.items = items,
 	},
@@ -65,24 +62,26 @@ const indexStoreModule = {
 export default {
 	name: "IndexPage",
 	components: { ArticlePreviewItem, AsidePanel },
-	asyncData(store, route) {
+	async asyncData(store, route) {
 		store.registerModule("index", indexStoreModule);
-		return store.dispatch("index/fetchItem", route);
+		const items = await api.article.getList(0, route.params.index || 0, 16);
+		store.commit("index/setItems", items);
 	},
 	data() {
 		const data = {
 			category: this.$route.query.category,
 			cpath: null,
 			index: parseInt(this.$route.params.index) || 0,
+
 			initArticles: [],
-			nextUrl: null,
+			initNextUrl: null,
 			initState: "FREE",
 		};
 
 		const store = this.$store.state.index;
 		if (store) {
 			data.initArticles = store.items;
-			data.nextUrl = nextPageUrl(this.$route, store.items.length);
+			data.initNextUrl = nextPageUrl(this.$route, store.items.length);
 			data.initState = store.items.length >= 16 ? "FREE" : "ALL_LOADED";
 		}
 		return data;
@@ -103,7 +102,6 @@ export default {
 };
 </script>
 
-<!--suppress CssNoGenericFontName -->
 <style module lang="less">
 @import "../../css/ToBeImport";
 
