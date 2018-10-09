@@ -1,16 +1,14 @@
 <template>
-	<kx-button :tag="tag"
-			   :class="{ running }"
-			   :type="type"
-			   :color="color"
-			   @click="handleClick">
+	<kx-button
+		:class="{ running }"
+		:tag="tag"
+		@click="handleClick">
 
-		<slot
-			v-if="running"
-			name="running">
+		<slot v-if="running" name="running">
 			<slot/>
 		</slot>
 		<slot v-else/>
+
 	</kx-button>
 </template>
 

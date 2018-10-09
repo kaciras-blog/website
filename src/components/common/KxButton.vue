@@ -17,12 +17,20 @@ export default {
 	},
 	render(h, ctx) {
 		let { data, children } = ctx;
+		data.attrs = data.attrs || {};
+		const { attrs } = data;
 
 		const clazz = ["kx-btn"];
 		if (data.class) {
 			clazz.push(data.class);
 		}
 		data.class = clazz;
+
+		if (tag === "button") {
+			attrs.type = "button"; // form
+		} else {
+			attrs.role = "button"; // ARIA
+		}
 
 		// 按钮样式的路由连接
 		let { tag, route, icon } = ctx.props;
@@ -31,11 +39,6 @@ export default {
 			data.props.tag = tag;
 			data.props.to = route;
 			tag = Vue.component("router-link");
-		}
-
-		if (tag === "button") {
-			data.attrs = data.attrs || {};
-			data.attrs.type = "button"; // form
 		}
 
 		if (icon) {
@@ -88,7 +91,6 @@ export default {
 
 	// 各种伪类下的样式
 	transition: ease-in-out .15s;
-	.focus-ripple-mixin;
 	.psudo-style;
 
 	// 混入主题颜色
@@ -143,9 +145,9 @@ export default {
 		}
 
 		background-image: linear-gradient(-45deg,
-		var(--background-highlight) 25%, transparent 25%,
-		transparent 50%, var(--background-highlight) 50%,
-		var(--background-highlight) 75%, transparent 75%);
+			var(--background-highlight) 25%, transparent 25%,
+			transparent 50%, var(--background-highlight) 50%,
+			var(--background-highlight) 75%, transparent 75%);
 
 		animation: barbershop linear .4s infinite;
 	}
@@ -165,6 +167,7 @@ export default {
 	}
 	&:focus {
 		outline: 0;
+		box-shadow: 0 0 0 .2rem var(--background-glass);
 	}
 }
 
@@ -191,28 +194,12 @@ export default {
 .color-mixin(@color) {
 	@color-active: @color - #121212;
 	@color-highlight: lighten(@color, 6%);
+	@color-glass: fade(@color, 50%);
+
 	--background: @color;
 	--background-active: @color-active;
 	--background-highlight: @color-highlight;
-}
-
-// 聚焦时发出波纹效果
-.focus-ripple-mixin() {
-	@media screen and (min-width: @length-screen-mobile) {
-		&:focus::after {
-			content: "";
-			display: block;
-			position: absolute;
-
-			border-radius: 6px;
-			.margin-abs(-2px);
-			border: solid 4px var(--background);
-
-			pointer-events: none;
-			opacity: 0;
-			animation: button-ripple .4s;
-		}
-	}
+	--background-glass: @color-glass;
 }
 
 @keyframes button-ripple {
