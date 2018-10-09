@@ -31,9 +31,8 @@ export default {
 			default: true,
 		},
 		// 直接代理到下层按钮组件
-		type: String,
 		tag: String,
-		color: String,
+		icon: String,
 	},
 	data: () => ({
 		running: false,

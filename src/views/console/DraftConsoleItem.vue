@@ -2,14 +2,23 @@
 	<div>
 		<div class="draft">
 			<h3 class="title">{{value.title}}</h3>
+
 			<span class="minor-text">
 				<i class="fas fa-pencil-alt"></i>
 				<time>{{value.time}}</time>
 			</span>
 
 			<div class="btn-group">
-				<kx-button class="primary outline" :route="'/edit/' + value.id">编辑</kx-button>
-				<kx-button class="dangerous outline" @click="deleteDraft">删除</kx-button>
+				<kx-button
+					class="primary outline"
+					:route="'/edit/' + value.id">
+					编辑
+				</kx-button>
+				<kx-button
+					class="dangerous outline"
+					@click="deleteDraft">
+					删除
+				</kx-button>
 			</div>
 		</div>
 

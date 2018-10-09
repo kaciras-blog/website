@@ -4,13 +4,15 @@
 			<div class="btn-group">
 				<kx-button
 					:disabled="current === null"
-					@click="gotoTop">
-					<i class="fas fa-arrow-up"></i><span>返回顶层</span>
+					@click="gotoTop"
+					icon="fas fa-arrow-up">
+					返回顶层
 				</kx-button>
 				<kx-button
 					:disabled="current === null"
-					@click="gotoParent">
-					<i class="fa fa-arrow-left"></i><span>回到父级</span>
+					@click="gotoParent"
+					icon="fa fa-arrow-left">
+					回到父级
 				</kx-button>
 			</div>
 
@@ -23,8 +25,8 @@
 
 		<category-view
 			v-if="current"
-			:item="current"
 			:editable="true"
+			:item="current"
 			@change="submit"
 			@removed="gotoParent"/>
 
