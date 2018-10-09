@@ -65,8 +65,10 @@ export default {
 
 .kx-check-box:hover > .check-box-mark,
 .check-box-input:focus + .check-box-mark {
-	@color: fade(@color-primary, 50%);
-	box-shadow: 0 0 0 .25rem @color;
+	&:not(.ckecked) {
+		background-color: rgba(255, 255, 255, 0.3);
+	}
+	border-color: rgba(255, 255, 255, .7);
 }
 
 .check-box-input {
