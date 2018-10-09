@@ -14,8 +14,8 @@
 		<div :class="$style.summary">{{item.summary}}</div>
 
 		<div :class="$style.keywords">
-			<h4 class="compact inline">关键词：</h4>
-			<ul class="inline">
+			<h4 class="inline compact">关键词：</h4>
+			<ul class="inline list">
 				<li v-for="kw in item.keywords"
 					:key="kw"
 					:class="$style.keyword">{{kw}}</li>

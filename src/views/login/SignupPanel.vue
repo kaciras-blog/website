@@ -56,7 +56,7 @@
 import api from "../../api";
 import { errorMessage } from "../../utils";
 import BaseLoginForm from "./BaseLoginForm";
-import {REFRESH_USER} from "../../store/types";
+import { REFRESH_USER } from "../../store/types";
 
 export default {
 	name: "SignupPanel",
@@ -93,7 +93,7 @@ export default {
 		},
 	},
 	mounted() {
-		this.updateCaptcha();
+		this.captcha = api.misc.captchaAddress();
 	},
 };
 </script>

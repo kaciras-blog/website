@@ -1,7 +1,7 @@
 <template>
 	<page-layout
 		view-id="login-view"
-		nav-class="login-header"
+		class="login-header"
 		:footer="false">
 
 		<div class="filter-container">
