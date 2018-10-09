@@ -20,11 +20,11 @@ function contentOf(type, index) {
 
 function textButton(createElement, type, index) {
 	if (type === "OMIT") {
-		return createElement("span", { attrs: { "class": "omit" } }, "...");
+		return createElement("span", { staticClass: "omit" }, "...");
 	}
 	const content = contentOf(type, index);
 	if (type === "CURRENT") {
-		return createElement("span", { attrs: { "class": "active" } }, content);
+		return createElement("span", { staticClass: "active" }, content);
 	}
 	return createElement("a", {
 		attrs: {
@@ -37,11 +37,11 @@ function textButton(createElement, type, index) {
 
 function simpleButton(createElement, type, index) {
 	if (type === "OMIT") {
-		return createElement("span", { attrs: { "class": "omit" } }, "...");
+		return createElement("span", { staticClass: "omit" }, "...");
 	}
 	const content = contentOf(type, index);
 	if (type === "CURRENT") {
-		return createElement(KxButton, { attrs: { "class": "primary" } }, content);
+		return createElement(KxButton, { staticClass: "primary" }, content);
 	}
 	return createElement(KxButton, { on: { click: () => this.showPage(index) } }, content);
 }
@@ -59,7 +59,7 @@ export default {
 		},
 		pageSize: {
 			type: Number,
-			default: 20,
+			required: true,
 		},
 		/**
 		 * 省略起始位置，在当前页面按钮左右omitPos之内
@@ -109,7 +109,7 @@ export default {
 
 		// <input class="jump" @keyup="jump"/>
 		const jumpInput = h("input", {
-			attrs: { "class": "jump" },
+			staticClass: "jump",
 			on: { keyup: this.jump },
 		});
 
@@ -120,17 +120,17 @@ export default {
 		 * </div>
 		 */
 		if (theme === "button") {
-			const jump = h("div", { attrs: { "class": "minor-text" } }, [
+			const jump = h("div", { staticClass: "minor-text" }, [
 				h("span", `共${totalPage}页，`),
-				h("label", { attrs: { "class": "jump-label" } }, ["跳至", jumpInput, "页"]),
+				h("label", { staticClass: "jump-label" }, ["跳至", jumpInput, "页"]),
 			]);
-			const btnWrapper = h("div", { attrs: { "class": "buttons" } }, buttons);
-			return h("div", { attrs: { "class": "button-pager" } }, [btnWrapper, jump]);
+			const btnWrapper = h("div", { staticClass: "buttons" }, buttons);
+			return h("div", { staticClass: "button-pager" }, [btnWrapper, jump]);
 		}
 
 		buttons.unshift(h("span", { staticClass: ".button-pager-total" }, "共" + totalPage + "页"));
 		const btnWrapper = h("div", { staticClass: "buttons" }, buttons);
-		return h("div", { attrs: { "class": "text-pager" } }, [btnWrapper]);
+		return h("div", { staticClass: "text-pager" }, [btnWrapper]);
 	},
 	computed: {
 		current() {

@@ -15,14 +15,16 @@
 			ref="discussions"
 			:loader="loadDiscussions">
 
-			<discussion
-				slot-scope="{ item }"
-				:key="item.id"
-				class="segment"
-				:value="item"
-				:replying="replying"
-				@reply="replying = item.id"
-				@item-removed="refresh"/>
+			<ol class="list" slot-scope="{ items }">
+				<discussion
+					v-for="item of items"
+					:key="item.id"
+					class="segment"
+					:value="item"
+					:replying="replying"
+					@reply="replying = item.id"
+					@item-removed="refresh"/>
+			</ol>
 		</button-pageing-view>
 	</section>
 </template>

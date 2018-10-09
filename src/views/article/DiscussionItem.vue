@@ -1,21 +1,24 @@
 <template>
 	<li>
-		<img :src="discusser.head" class="small head">
-		<div class="discuss-main">
+		<img :src="discusser.head"
+			 class="small head"
+			 :class="$style.head">
 
-			<header class="discuss-header">
+		<div :class="$style.main">
+
+			<header :class="$style.header">
 				<!-- 用户名 -->
-				<span class='name'>{{discusser.name}}</span>
+				<span :class="$style.name">{{discusser.name}}</span>
 				<!-- 右边的楼层号 -->
 				<span v-if="value.parent === 0" class="minor-text">{{value.floor}}楼</span>
 			</header>
 
-			<div class="content">{{value.content}}</div>
+			<div :class="$style.content">{{value.content}}</div>
 
-			<div class="minor-text metas">
+			<div class="minor-text" :class="$style.metas">
 				<div>
 					<span class="meta"
-						  :class="{ clickable: discusser.id > 0, active: value.voted }"
+						  :class="{ [$style.clickable]: discusser.id > 0, active: value.voted }"
 						  :title="value.voted ? '取消点赞' : '点赞'"
 						  @click="vote">
 						<i class="far fa-thumbs-up"></i>
@@ -23,7 +26,8 @@
 					</span>
 
 					<span v-if="value.parent === 0"
-						  class="clickable meta"
+						  class="meta"
+						  :class="$style.clickable"
 						  @click="replyThis">
 						<i class="far fa-comment"></i>
 						回复({{value.replyCount}})
@@ -32,9 +36,11 @@
 
 				<div>
 					<span v-if="deleteable"
-						  class="clickable meta"
-						  @click='remove'>
-						<i class="far fa-trash-alt"></i>删除
+						  class="meta"
+						  :class="$style.clickable"
+						  @click="remove">
+						<i class="far fa-trash-alt"></i>
+						删除
 					</span>
 					<time>{{value.time}}</time>
 				</div>
@@ -44,14 +50,17 @@
 				v-if="value.replyCount>0"
 				theme="text"
 				:init-items="value.replies"
+				initPageSize="5"
 				:init-total-count="value.replyCount"
 				:loader="loadReplies">
 
-				<discussion
-					slot-scope="{ item }"
-					:key="item.id"
-					class="reply"
-					:value="item"/>
+				<ol class="list" slot-scope="{ items }">
+					<discussion
+						v-for="item of items"
+						:key="item.id"
+						:value="item"
+						:class="$style.reply"/>
+				</ol>
 			</button-pageing-view>
 
 			<discz-editor
@@ -115,14 +124,14 @@ export default {
 };
 </script>
 
-<style scoped>
+<style module lang="less">
 .head {
 	display: block;
 	float: left;
 	position: relative;
 }
 
-.discuss-main {
+.main {
 	position: relative;
 	margin-left: 4rem;
 }
@@ -158,7 +167,7 @@ export default {
 	word-wrap: break-word;
 }
 
-.discuss-header {
+.header {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;

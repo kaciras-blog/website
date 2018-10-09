@@ -1,8 +1,6 @@
 <template>
 	<div>
-		<ol class="list">
-			<slot v-for="item of items" :item="item"/>
-		</ol>
+		<slot :items="items"/>
 		<button-pager
 			:theme="theme"
 			:total-count="total"
@@ -32,7 +30,7 @@ export default {
 		},
 		initPageSize: {
 			type: Number,
-			default: 2,
+			default: 20,
 		},
 		initTotalCount: {
 			type: Number,
