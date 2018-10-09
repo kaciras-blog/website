@@ -1,19 +1,5 @@
-<!--suppress XmlDuplicatedId -->
 <template>
-	<!-- 小屏幕折叠状态 -->
-	<nav v-if="collapse" id="top-nav">
-		<div class="content">
-			<div></div>
-			<router-link
-				class="logo-kaciras"
-				to="/welcome"
-				title="LOGO，点击回到首页"/>
-			<div class="button" @click="showMenu=true"><i class="fas fa-bars"></i></div>
-		</div>
-	</nav>
-
-	<!-- 展开状态 -->
-	<nav v-else id="top-nav">
+	<nav id="top-nav">
 		<div :class="$style.content">
 
 			<!-- 左边 -->
@@ -28,21 +14,30 @@
 				<!--</router-link>-->
 			</div>
 
-			<div class="nav-item-group" v-if="user">
+			<div v-if="user" class="nav-item-group">
 				<img :src="user.head"
 					 class="small head"
 					 :class="$style.head"
-					 title="别看了，不支持换头像">
+					 title="就是一个头像而已">
 				<router-link
 					v-if="user.id === 2"
 					to="/console"
-					class="nav-item">管理
+					class="nav-item">
+					管理
 				</router-link>
-				<button @click="logout" class="nav-item">退出登录</button>
+				<button
+					@click="logout"
+					class="nav-item">
+					退出登录
+				</button>
 			</div>
 
-			<div class="nav-item-group" v-else>
-				<router-link class="nav-item" to="/login">登录</router-link>
+			<div v-else class="nav-item-group">
+				<router-link
+					to="/login"
+					class="nav-item">
+					登录
+				</router-link>
 			</div>
 		</div>
 	</nav>
@@ -54,10 +49,6 @@ import { REMOVE_USER } from "../store/types";
 
 export default {
 	name: "TopNav",
-	data: () => ({
-		collapse: false,
-		showMenu: false,
-	}),
 	computed: {
 		...mapState(["user"]),
 	},
