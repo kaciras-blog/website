@@ -27,10 +27,8 @@ module.exports = {
 		assetsRoot: path.resolve(__dirname, '../dist'),
 		publicPath: "/",
 
-		/**
-		 * Source Maps
-		 */
-		productionSourceMap: true,
+		// Source Maps
+		productionSourceMap: false,
 
 		// https://webpack.js.org/configuration/devtool/#production
 		devtool: '#source-map',

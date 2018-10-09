@@ -15,7 +15,9 @@ exports.cssLoaders = function (options) {
 		options: {
 			sourceMap: options.sourceMap,
 			modules: options.modules,
-			localIdentName: "[local]_[hash:base64:8]"
+			localIdentName: process.env.WEBPACK_MODE === "production"
+				? "[hash:base64:8]"
+				: "[local]_[hash:base64:8]"
 		},
 	};
 
@@ -51,6 +53,8 @@ exports.cssLoaders = function (options) {
 exports.styleLoaders = function (options) {
 	const output = [];
 	const loaders = exports.cssLoaders(options);
+
+	// 再生成一个CSS Modules的加载器
 	options.modules = true;
 	const moduleLoaders = exports.cssLoaders(options);
 

@@ -1,9 +1,10 @@
 const path = require('path');
 const chalk = require('chalk');
 const { promisify } = require('util');
+const config = require('../config');
+
 const rimraf = promisify(require('rimraf'));
 const webpack = promisify(require('webpack'));
-const config = require('../config');
 
 /**
  * 因为要构建客户端和预渲染两种环境下的输出，所以写了这个文件来统一构建。
@@ -12,15 +13,18 @@ const config = require('../config');
  * @return {Promise<void>} 指示构建状态
  */
 async function build(mode) {
-	if (mode === "-server") {
-		await invokeWebpack(require('./webpack.server.conf'));
-	} else if (mode === "-both") {
-		await rimraf(path.join(config.build.assetsRoot, "static"));
-		await invokeWebpack(require('./webpack.client.conf'));
-		await invokeWebpack(require('./webpack.server.conf'));
-	} else {
-		await rimraf(path.join(config.build.assetsRoot, "static"));
-		await invokeWebpack(require('./webpack.client.conf'));
+	switch (mode) {
+		case "-server":
+			await invokeWebpack(require('./webpack.server.conf'));
+			break;
+		case "-both":
+			await rimraf(path.join(config.build.assetsRoot, "static"));
+			await invokeWebpack(require('./webpack.client.conf'));
+			await invokeWebpack(require('./webpack.server.conf'));
+			break;
+		default:
+			await rimraf(path.join(config.build.assetsRoot, "static"));
+			await invokeWebpack(require('./webpack.client.conf'));
 	}
 }
 
@@ -31,7 +35,7 @@ async function build(mode) {
  * @return {Promise<void>} 指示构建状态
  */
 async function invokeWebpack(config) {
-	config.mode = "development";
+	config.mode = process.env.WEBPACK_MODE;
 	const stats = await webpack(config);
 
 	process.stdout.write(stats.toString({
@@ -49,4 +53,6 @@ async function invokeWebpack(config) {
 	console.log(chalk.cyan('Build complete.\n'));
 }
 
+// process.env.NODE_ENV 用于构建时，而在配置时则无法使用，故定义这个变量
+process.env.WEBPACK_MODE = "production";
 build(process.argv[2]).catch(console.error);
