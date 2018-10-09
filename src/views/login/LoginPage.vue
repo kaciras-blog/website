@@ -1,18 +1,18 @@
 <template>
 	<page-layout
 		view-id="login-view"
-		class="login-header"
+		class="login-header dark"
 		:footer="false">
 
 		<div class="filter-container">
-			<component :is="panel" @switch-panel="switchPanel"/>
+			<component :is="panel" class="login-form" @switch-panel="switchPanel"/>
 		</div>
 	</page-layout>
 </template>
 
 <script>
-import LoginPanel from "./LoginPanel";
-import SignupPanel from "./SignupPanel";
+import LoginPanel from "./LoginForm";
+import SignupPanel from "./SignupForm";
 
 export default {
 	name: "LoginPage",
@@ -27,30 +27,6 @@ export default {
 	},
 };
 </script>
-
-<style scoped lang="less">
-@import "../../css/ToBeImport";
-
-form {
-	position: relative;
-	color: #fffafa;
-	background-color: rgba(50, 50, 50, 0.3);
-
-	::-webkit-input-placeholder {
-		color: rgba(255, 250, 250, 0.70);
-	}
-	:-ms-input-placeholder {
-		color: rgba(255, 250, 250, 0.70);
-	}
-
-	padding: 1rem 2rem 2rem;
-
-	@media screen and (min-width: @length-screen-mobile) {
-		width: 25rem;
-		padding-top: 2rem;
-	}
-}
-</style>
 
 <style lang="less">
 @import "../../css/ToBeImport";
@@ -75,6 +51,26 @@ form {
 		@media (min-width: @length-screen-wide) {
 			padding: 0 13%;
 		}
+	}
+}
+
+.login-form {
+	position: relative;
+	color: #fffafa;
+	background-color: rgba(50, 50, 50, 0.3);
+
+	::-webkit-input-placeholder {
+		color: rgba(255, 250, 250, 0.70);
+	}
+	:-ms-input-placeholder {
+		color: rgba(255, 250, 250, 0.70);
+	}
+
+	padding: 1rem 2rem 2rem;
+
+	@media screen and (min-width: @length-screen-mobile) {
+		width: 25rem;
+		padding-top: 2rem;
 	}
 }
 

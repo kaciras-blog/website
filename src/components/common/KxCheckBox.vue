@@ -55,6 +55,8 @@ export default {
 </script>
 
 <style lang="less">
+@import "../../css/ToBeImport";
+
 .kx-check-box {
 	display: block;
 	height: 1.6em;
@@ -63,7 +65,8 @@ export default {
 
 .kx-check-box:hover > .check-box-mark,
 .check-box-input:focus + .check-box-mark {
-	background-color: rgba(255, 255, 255, 0.3);
+	@color: fade(@color-primary, 50%);
+	box-shadow: 0 0 0 .25rem @color;
 }
 
 .check-box-input {

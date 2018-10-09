@@ -26,6 +26,8 @@ export default {
 		}
 		data.class = clazz;
 
+
+		let { tag, route, icon } = ctx.props;
 		if (tag === "button") {
 			attrs.type = "button"; // form
 		} else {
@@ -33,7 +35,6 @@ export default {
 		}
 
 		// 按钮样式的路由连接
-		let { tag, route, icon } = ctx.props;
 		if (route) {
 			data.props = data.props || {};
 			data.props.tag = tag;

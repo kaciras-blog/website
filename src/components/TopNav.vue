@@ -74,6 +74,10 @@ export default {
 	box-shadow: rgba(100, 100, 100, 0.2) 0 0 3px 2px;
 }
 
+.dark #top-nav {
+	box-shadow: rgba(0, 0, 0, 0.3) 0 0 3px 2px;
+}
+
 .banner {
 	height: 12rem;
 	margin-bottom: 4rem;
@@ -107,5 +111,9 @@ export default {
 			padding: 0 5%;
 		}
 	}
+}
+
+:global(.dark) .content {
+	background-color: rgba(0, 0, 0, 0.15);
 }
 </style>
