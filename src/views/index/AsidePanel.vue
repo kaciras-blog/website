@@ -20,7 +20,11 @@
 					</router-link>
 				</li>
 			</ol>
-			<p class="no-content" v-else>暂无</p>
+			<p class="no-content" v-else>加载失败</p>
+		</div>
+		<div>
+			<h3 class="padding">其它</h3>
+			<p class="no-content">暂无</p>
 		</div>
 	</aside>
 </template>
@@ -31,12 +35,15 @@ import api from "../../api.js";
 export default {
 	name: "AsidePanel",
 	data() {
-		return {
-			hots: null,
-		};
+		const store = this.$store.state.index;
+		if (store) {
+			return { hots: store.hots };
+		}
+		return { hots: null };
 	},
-	created() {
-		api.recommend.getHotArticles().then(hots => this.hots = hots);
+	beforeMount() {
+		if(!this.hots)
+			api.recommend.getHotArticles().then(hots => this.hots = hots);
 	},
 };
 </script>
@@ -46,6 +53,7 @@ export default {
 	padding-top: .2em;
 	padding-bottom: .2em;
 }
+
 .no-content {
 	text-align: center;
 }

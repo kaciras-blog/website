@@ -52,20 +52,31 @@ function nextPageUrl(route, count) {
 const indexStoreModule = {
 	namespaced: true,
 	state: () => ({
+		hots: null,
 		items: null,
 	}),
+	actions: {
+		fetchItem({ commit }, {start, origin}) {
+			const loadHots = api.recommend.getHotArticles().then(items => commit("setHots", items));
+			const loadList = api.article.getList(0, start || 0, 16).then(items => commit("setItems", items));
+			return Promise.all([loadList, loadHots]);
+		},
+	},
 	mutations: {
 		setItems: (state, items) => state.items = items,
+		setHots: (state, items) => state.hots = items,
 	},
 };
 
 export default {
 	name: "IndexPage",
-	components: { ArticlePreviewItem, AsidePanel },
-	async asyncData(store, route) {
+	components: {
+		ArticlePreviewItem,
+		AsidePanel,
+	},
+	async asyncData(store, route, origin) {
 		store.registerModule("index", indexStoreModule);
-		const items = await api.article.getList(0, route.params.index || 0, 16);
-		store.commit("index/setItems", items);
+		return store.dispatch("index/fetchItem", { start: route.params.index, origin });
 	},
 	data() {
 		const data = {
