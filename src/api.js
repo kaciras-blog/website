@@ -1,9 +1,11 @@
 import axios from "axios";
 import * as utils from "./utils";
 
+const CSRF_COOKIE_NAME = "CSRF-Token";
+const CSRF_HEADER_NAME = "X-CSRF-Token";
 
-axios.defaults.xsrfCookieName = "CSRF-Token";
-axios.defaults.xsrfHeaderName = "X-CSRF-Token";
+axios.defaults.xsrfCookieName = CSRF_COOKIE_NAME;
+axios.defaults.xsrfHeaderName = CSRF_HEADER_NAME;
 axios.defaults.withCredentials = true;
 
 if (process.env.NODE_ENV === "production") {
@@ -99,7 +101,21 @@ _default.category = {
 
 _default.article = {
 
-	get: (id, cancelToken) => mainServer.get("/articles/" + id, { cancelToken }).then(r => r.data),
+	get: (id, cancelToken, origin) => {
+		const config = { cancelToken };
+		if (origin) {
+			config.headers = {};
+
+			const csrf = origin.cookies.get(CSRF_COOKIE_NAME);
+			if (origin.headers.cookie) {
+				config.headers.Cookie = origin.headers.cookie;
+			}
+			if (csrf) {
+				config.headers[CSRF_HEADER_NAME] = csrf;
+			}
+		}
+		return mainServer.get("/articles/" + id, config).then(r => r.data);
+	},
 
 	publish: (data) => mainServer.post("/articles", data).then(r => r.headers["location"]),
 

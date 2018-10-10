@@ -46,10 +46,10 @@ const storeModule = {
 		item: {},
 	}),
 	actions: {
-		fetchItem({ commit }, { id, cancelToken }) {
+		fetchItem({ commit }, { id, cancelToken, origin }) {
 			const asioxCancelToken = axios.CancelToken.source();
 			cancelToken.onCancel(asioxCancelToken.cancel);
-			return api.article.get(id, asioxCancelToken.token).then(item => commit("setItem", item));
+			return api.article.get(id, asioxCancelToken.token, origin).then(item => commit("setItem", item));
 		},
 	},
 	mutations: {
@@ -91,10 +91,11 @@ export default {
 	 *
 	 * @param store 全局状态存储
 	 * @param route 路由信息
-	 * @param cancelToken {CancelToken}
+	 * @param cancelToken {CancelToken} 撤销令牌
+	 * @param origin 原始请求，用于服务端渲染时Cookie，header等穿透。
 	 * @return {Promise<void>} 指示加载状态的Promise
 	 */
-	async asyncData(store, route, cancelToken) {
+	async asyncData(store, route, cancelToken, origin) {
 		const { id, urlTitle } = route.params;
 		const module = store.state.article;
 
@@ -104,7 +105,7 @@ export default {
 
 		store.registerModule("article", storeModule);
 		cancelToken.onCancel(() => store.unregisterModule("article"));
-		await store.dispatch("article/fetchItem", { id, cancelToken });
+		await store.dispatch("article/fetchItem", { id, cancelToken, origin });
 
 		// 检查URL中的标题，不正确则重定向到正确的URL
 		const correctUrlTitle = store.state.article.item.urlTitle;

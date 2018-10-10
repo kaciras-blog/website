@@ -73,7 +73,7 @@ function initAppAndRouterHook() {
 		if (!prefetched.length) return next();
 
 		curtain.start();
-		await Promise.all(prefetched.map(c => c.asyncData(store, to, cancelToken)));
+		await Promise.all(prefetched.map(c => c.asyncData(store, to, cancelToken, null)));
 
 		cancelToken.complete();
 		next();

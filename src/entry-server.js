@@ -11,7 +11,7 @@ function onReadyAsync(router) {
 export default async context => {
 	const { vue, router, store } = createApp();
 
-	router.push(context.url);
+	router.push(context.request.url);
 	await onReadyAsync(router);
 
 	const matched = router.getMatchedComponents();
@@ -22,7 +22,7 @@ export default async context => {
 	// 对所有匹配的路由组件调用 `asyncData()`
 	await Promise.all(matched
 		.filter(c => c.asyncData)
-		.map(c => c.asyncData(store, router.currentRoute, cancelToken)));
+		.map(c => c.asyncData(store, router.currentRoute, cancelToken, context.request)));
 
 	const title = router.currentRoute.meta.title;
 	if(title) {
