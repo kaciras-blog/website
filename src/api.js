@@ -1,15 +1,15 @@
-import axios from "axios";
+import Axios from "axios";
 import * as utils from "./utils";
 
 const CSRF_COOKIE_NAME = "CSRF-Token";
 const CSRF_HEADER_NAME = "X-CSRF-Token";
 
-axios.defaults.xsrfCookieName = CSRF_COOKIE_NAME;
-axios.defaults.xsrfHeaderName = CSRF_HEADER_NAME;
-axios.defaults.withCredentials = true;
+Axios.defaults.xsrfCookieName = CSRF_COOKIE_NAME;
+Axios.defaults.xsrfHeaderName = CSRF_HEADER_NAME;
+Axios.defaults.withCredentials = true;
 
 if (process.env.NODE_ENV === "production") {
-	axios.defaults.timeout = 10000;
+	Axios.defaults.timeout = 10000;
 }
 
 /*
@@ -17,7 +17,7 @@ if (process.env.NODE_ENV === "production") {
  */
 // if (process.env.VUE_ENV === "server") {
 // 	const https = require("https");
-// 	axios.defaults.httpsAgent = new https.Agent({ rejectUnauthorized: false });
+// 	Axios.defaults.httpsAgent = new https.Agent({ rejectUnauthorized: false });
 // }
 
 let apiConfig;
@@ -54,7 +54,7 @@ if (process.env.NODE_ENV !== "production") {
 
 // MDZZ，axios不能全局配置拦截？
 function createAxios(config) {
-	const instance = axios.create(config);
+	const instance = Axios.create(config);
 	instance.interceptors.response.use(null, error => {
 		if (error.response) {
 			error.code = error.response.status;
@@ -74,6 +74,79 @@ const frontService = createAxios({ baseURL: apiConfig.front });
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *							下面是API调用函数
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+class BasicApi {
+
+	get mainServer() {
+		return mainServer;
+	}
+
+	get accountServer() {
+		return accountServer;
+	}
+
+	get frontService() {
+		return frontService;
+	}
+}
+
+function bindProto(axios, origin) {
+	if (!origin) {
+		return axios;
+	}
+	const request = config => {
+		config.headers = config.headers || {};
+		const csrf = origin.cookies.get(CSRF_COOKIE_NAME);
+
+		if (origin.headers.cookie) {
+			config.headers.Cookie = origin.headers.cookie;
+		}
+		// if (csrf) {
+			config.headers[CSRF_HEADER_NAME] = "test";
+		// }
+		return axios.request(config);
+	};
+	return Object.create(axios, { request });
+}
+
+function bindCancelToken(axios, cancelToken) {
+	const request = config => {
+		config.cancelToken = cancelToken;
+		return axios.request(config);
+	};
+	return Object.create(axios, { request });
+}
+
+class ProxiedApi extends BasicApi {
+
+	constructor(wrapper) {
+		super();
+		this.wrapper = wrapper;
+	}
+
+	get mainServer() {
+		return this.wrapper(super.mainServer);
+	}
+}
+
+class ApiMixin {
+
+	constructor(clazz) {
+		this.clazz = clazz;
+	}
+
+	withPrototype(proto) {
+		return new this.clazz(new ProxiedApi(axios => bindProto(axios, proto)));
+	}
+
+	withCancelToken(cancelToken) {
+		return new this.clazz(new ProxiedApi(axios => bindCancelToken(axios, cancelToken)));
+	}
+}
+
+function buildApi(clazz) {
+
+}
 
 const _default = {};
 
@@ -98,6 +171,20 @@ _default.category = {
 
 	update: (id, data) => mainServer.put("/categories/" + id, data),
 };
+
+class ArticleApi extends ApiMixin {
+
+	constructor(services) {
+		super(ArticleApi);
+		this.services = services;
+	}
+
+	get(id) {
+		return this.services.mainServer.get("/articles/" + id).then(r => r.data);
+	}
+}
+
+_default.article2 = new ArticleApi(new BasicApi());
 
 _default.article = {
 
