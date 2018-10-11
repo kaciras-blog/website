@@ -51,7 +51,7 @@
 				ref="replies"
 				theme="text"
 				:init-items="value.replies"
-				initPageSize="5"
+				:init-page-size="5"
 				:init-total-count="value.replyCount"
 				:loader="loadReplies">
 
