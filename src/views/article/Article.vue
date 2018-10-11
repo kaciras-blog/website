@@ -1,6 +1,7 @@
 <template>
 	<page-layout
 		view-id="article-page"
+		class="article-page"
 		:style="navStyle"
 		:banner="true"
 		:footer="true">
@@ -168,6 +169,12 @@ export default {
 				max-width: 75%;
 			}
 		}
+	}
+}
+
+.article-page {
+	@media screen and (min-width: @length-screen-pad) {
+		--background-size: cover;
 	}
 }
 

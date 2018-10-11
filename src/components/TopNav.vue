@@ -85,7 +85,7 @@ export default {
 
 #top-nav::before, .banner {
 	background: var(--background);
-	background-size: var(--background-size, cover); // 这个属性写一起毛病多
+	background-size: var(--background-size); // 这个属性写一起毛病多
 }
 </style>
 

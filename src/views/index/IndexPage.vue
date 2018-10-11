@@ -56,7 +56,7 @@ const indexStoreModule = {
 		items: null,
 	}),
 	actions: {
-		fetchItem({ commit }, {start, origin}) {
+		fetchItem({ commit }, { start, origin }) {
 			const loadHots = api.recommend.getHotArticles().then(items => commit("setHots", items));
 			const loadList = api.article.getList(0, start || 0, 16).then(items => commit("setItems", items));
 			return Promise.all([loadList, loadHots]);
@@ -159,6 +159,9 @@ export default {
 
 .navVaribles {
 	--background: url("../../assets/index-banner.jpg") center 0;
-	--background-size: cover;
+
+	@media screen and (min-width: @length-screen-pad) {
+		--background-size: cover;
+	}
 }
 </style>
