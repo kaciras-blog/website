@@ -37,7 +37,7 @@ import { escapeHtml, scrollToElementStart } from "../../utils";
 import api from "../../api";
 import $ from "jquery";
 import { mapState } from "vuex";
-import articleLink from "../../article-url-mixin";
+import { articleLink } from "../../blog-plugin";
 import axios from "axios";
 
 
