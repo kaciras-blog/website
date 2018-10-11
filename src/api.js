@@ -75,6 +75,41 @@ const frontService = createAxios({ baseURL: apiConfig.front });
  *							下面是API调用函数
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+function bindProto(config, origin) {
+	if (origin) {
+		config.headers = config.headers || {};
+		if (origin.headers.cookie) {
+			config.headers.Cookie = origin.headers.cookie;
+		}
+		// const csrf = origin.cookies.get(CSRF_COOKIE_NAME);
+		// if (csrf) {
+		config.headers[CSRF_HEADER_NAME] = "test";
+		// }
+	}
+}
+
+function bindCancelToken(config, cancelToken) {
+	config.cancelToken = cancelToken;
+}
+
+
+class AxiosProxy {
+
+	constructor(filters) {
+		this.filters = filters;
+	}
+
+	prepare(config) {
+		this.filters.forEach(h => h(config));
+		return config;
+	}
+
+	get(target, name) {
+		return config => target[name](this.prepare(config));
+	}
+}
+
+
 class BasicApi {
 
 	get mainServer() {
@@ -88,103 +123,65 @@ class BasicApi {
 	get frontService() {
 		return frontService;
 	}
-}
 
-function bindProto(axios, origin) {
-	if (!origin) {
-		return axios;
+	withPrototype(proto) {
+		const s = new ProxiedApi();
+		s.withPrototype(proto);
+		const sub = new this.constructor();
+		sub.__proto__.__proto__ = s;
+		return sub;
 	}
-	const request = config => {
-		config.headers = config.headers || {};
-		const csrf = origin.cookies.get(CSRF_COOKIE_NAME);
 
-		if (origin.headers.cookie) {
-			config.headers.Cookie = origin.headers.cookie;
-		}
-		// if (csrf) {
-			config.headers[CSRF_HEADER_NAME] = "test";
-		// }
-		return axios.request(config);
-	};
-	return Object.create(axios, { request });
-}
-
-function bindCancelToken(axios, cancelToken) {
-	const request = config => {
-		config.cancelToken = cancelToken;
-		return axios.request(config);
-	};
-	return Object.create(axios, { request });
+	withCancelToken(cancelToken) {
+		const s = new ProxiedApi();
+		s.withCancelToken(cancelToken);
+		const sub = new this.constructor();
+		sub.__proto__.__proto__ = s;
+		return sub;
+	}
 }
 
 class ProxiedApi extends BasicApi {
 
-	constructor(wrapper) {
+	constructor() {
 		super();
-		this.wrapper = wrapper;
+		this.filters = [];
 	}
 
 	get mainServer() {
-		return this.wrapper(super.mainServer);
+		return new Proxy(super.mainServer, new AxiosProxy(this.filters));
 	}
-}
 
-class ApiMixin {
+	get accountServer() {
+		return accountServer;
+	}
 
-	constructor(clazz) {
-		this.clazz = clazz;
+	get frontService() {
+		return frontService;
 	}
 
 	withPrototype(proto) {
-		return new this.clazz(new ProxiedApi(axios => bindProto(axios, proto)));
+		this.filters.push(config => bindProto(config, proto));
+		return this;
 	}
 
 	withCancelToken(cancelToken) {
-		return new this.clazz(new ProxiedApi(axios => bindCancelToken(axios, cancelToken)));
+		this.filters.push(config => bindCancelToken(config, cancelToken));
+		return this;
 	}
-}
-
-function buildApi(clazz) {
-
 }
 
 const _default = {};
 
-_default.category = {
-
-	getChildren: (id) => mainServer.get(`/categories/${id}/children`).then(r => r.data),
-
-	deleteOne: (id) => mainServer.delete("/categories/" + id),
-
-	getByName: (name, cancelToken) => mainServer.get("/categories/" + name, {
-		cancelToken,
-		headers: { "Identified-By": "name" },
-	}).then(r => r.data),
-
-	move: (id, parent, treeMode) => mainServer.post("/categories/transfer", {
-		params: { id, parent, treeMode },
-	}),
-
-	create: (data, parent) => mainServer.post("/categories/", data, {
-		params: { parent },
-	}),
-
-	update: (id, data) => mainServer.put("/categories/" + id, data),
-};
-
-class ArticleApi extends ApiMixin {
-
-	constructor(services) {
-		super(ArticleApi);
-		this.services = services;
-	}
+class A2 extends BasicApi {
 
 	get(id) {
-		return this.services.mainServer.get("/articles/" + id).then(r => r.data);
+		return this.mainServer.get("/articles/" + id).then(r => r.data);
 	}
 }
 
-_default.article2 = new ArticleApi(new BasicApi());
+
+_default.article2 = new A2();
 
 _default.article = {
 
@@ -221,6 +218,28 @@ _default.article = {
 	deleteOne: (id) => mainServer.put(`/articles/${id}/deletion`, null, { params: { value: true } }),
 
 	changeCategories: (id, cates) => mainServer.put(`/articles/${id}/categories`, cates),
+};
+
+_default.category = {
+
+	getChildren: (id) => mainServer.get(`/categories/${id}/children`).then(r => r.data),
+
+	deleteOne: (id) => mainServer.delete("/categories/" + id),
+
+	getByName: (name, cancelToken) => mainServer.get("/categories/" + name, {
+		cancelToken,
+		headers: { "Identified-By": "name" },
+	}).then(r => r.data),
+
+	move: (id, parent, treeMode) => mainServer.post("/categories/transfer", {
+		params: { id, parent, treeMode },
+	}),
+
+	create: (data, parent) => mainServer.post("/categories/", data, {
+		params: { parent },
+	}),
+
+	update: (id, data) => mainServer.put("/categories/" + id, data),
 };
 
 _default.discuss = {
