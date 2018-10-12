@@ -67,8 +67,8 @@ function createAxios(config) {
 }
 
 const mainServer = createAxios({ baseURL: apiConfig.main });
-const accountServer = createAxios({ baseURL: apiConfig.account });
-const frontService = createAxios({ baseURL: apiConfig.front });
+const securityServer = createAxios({ baseURL: apiConfig.account });
+const webServer = createAxios({ baseURL: apiConfig.front });
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -117,11 +117,11 @@ class BasicApi {
 	}
 
 	get accountServer() {
-		return accountServer;
+		return securityServer;
 	}
 
 	get frontService() {
-		return frontService;
+		return webServer;
 	}
 
 	withPrototype(proto) {
@@ -153,11 +153,11 @@ class ProxiedApi extends BasicApi {
 	}
 
 	get accountServer() {
-		return accountServer;
+		return securityServer;
 	}
 
 	get frontService() {
-		return frontService;
+		return webServer;
 	}
 
 	withPrototype(proto) {
@@ -318,7 +318,7 @@ _default.misc = {
 	uploadImage: (file, progress) => {
 		const data = new FormData();
 		data.append("file", file);
-		return frontService.post("/image", data, {
+		return webServer.post("/image", data, {
 			onUploadProgress: progress,
 		}).then(r => r.headers["location"]);
 	},
@@ -348,9 +348,9 @@ _default.session = {
 	 * @param form 一个对象，格式如下：{ name: 用户名, password: 密码, remember: 是否保存登录 }
 	 * @return Promise
 	 */
-	login: form => accountServer.post("/session/account", form),
+	login: form => securityServer.post("/session/account", form),
 
-	logout: () => accountServer.delete("/session/account"),
+	logout: () => securityServer.delete("/session/account"),
 };
 
 _default.account = {
@@ -364,7 +364,7 @@ _default.account = {
 	 * }
 	 * @return Promise
 	 */
-	signup: (data) => accountServer.post("/accounts", data),
+	signup: (data) => securityServer.post("/accounts", data),
 };
 
 _default.user = {
