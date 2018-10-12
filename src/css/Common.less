@@ -95,6 +95,46 @@ hr {
 	}
 }
 
+.side-buttons {
+	display: flex;
+	flex-direction: column;
+	position: fixed;
+
+	top: 72vh;
+	right: .8rem;
+
+	@media screen {
+		@media (min-width: @length-screen-mobile) {
+			top: 60%;
+			right: 1rem;
+		}
+		@media (min-width: @length-screen-pad) {
+			right: 3%;
+		}
+		@media (min-width: @length-screen-wide) {
+			right: 5%;
+		}
+	}
+
+	& > .outline {
+		margin-top: -1px;
+		padding: 0;
+		width: 2.3rem;
+		height: 2.3rem;
+
+		font-size: 1.4rem;
+		background-color: white; // 按钮组边角
+
+		@media screen {
+			@media (min-width: @length-screen-mobile) {
+				font-size: 1.8rem;
+				width: 3rem;
+				height: 3rem;
+			}
+		}
+	}
+}
+
 // * * * * ** Nav light & dark theme ** * * * *
 
 .light .nav-item{

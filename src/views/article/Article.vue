@@ -1,14 +1,14 @@
 <template>
 	<page-layout
-		view-id="article-page"
-		class="article-page"
+		:class="$style.container"
 		:style="navStyle"
 		:banner="true"
 		:footer="true">
 
-		<article-view :value="article"/>
+		<article-view :class="$style.article" :value="article"/>
 
 		<discuss-panel
+			:class="$style.discussPanel"
 			:article-id="article.id"
 			ref="discssPanel"/>
 
@@ -72,7 +72,7 @@ export default {
 	/**
 	 * 为了优化SEO，需要在预渲染的文章页面的<head>中加入一些标签。
 	 *
-	 * @return {string}
+	 * @return {string} html文本
 	 */
 	metadata() {
 		const { keywords, summary, prev, next } = this.article;
@@ -88,12 +88,12 @@ export default {
 		return headers;
 	},
 	/**
-	 * 在路由切换前加载数据。
+	 * 在路由切换前加载数据，并检查URL是否正确。
 	 *
 	 * @param store 全局状态存储
 	 * @param route 路由信息
 	 * @param cancelToken {CancelToken} 撤销令牌
-	 * @param origin 原始请求，用于服务端渲染时Cookie，header等穿透。
+	 * @param origin 原始请求，用于服务端渲染时Cookie，Header等穿透。
 	 * @return {Promise<void>} 指示加载状态的Promise
 	 */
 	async asyncData(store, route, cancelToken, origin) {
@@ -135,86 +135,43 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style module lang="less">
 @import "../../css/ToBeImport";
 
-#article-page {
-
-	& > article {
-		padding: 0 .8rem;
-		margin: 0 auto;
-
-		@media screen {
-			@media (min-width: @length-screen-mobile) {
-				max-width: 90%;
-			}
-			@media (min-width: @length-screen-pad) {
-				max-width: 78%;
-			}
-			@media (min-width: @length-screen-wide) {
-				max-width: 66%;
-			}
-		}
-	}
-
-	& > .discuss {
-		margin-left: auto;
-		margin-right: auto;
-
-		@media screen {
-			@media (min-width: @length-screen-pad) {
-				max-width: 85%;
-			}
-			@media (min-width: @length-screen-wide) {
-				max-width: 75%;
-			}
-		}
-	}
-}
-
-.article-page {
-	@media screen and (min-width: @length-screen-pad) {
-		--background-size: cover;
-	}
-}
-
-.side-buttons {
-	display: flex;
-	flex-direction: column;
-	position: fixed;
-
-	top: 72vh;
-	right: .8rem;
+.article {
+	padding: 0 .8rem;
+	margin: 0 auto;
 
 	@media screen {
 		@media (min-width: @length-screen-mobile) {
-			top: 60%;
-			right: 1rem;
+			max-width: 90%;
 		}
 		@media (min-width: @length-screen-pad) {
-			right: 3%;
+			max-width: 78%;
 		}
 		@media (min-width: @length-screen-wide) {
-			right: 5%;
+			max-width: 66%;
 		}
 	}
+}
 
-	& > .outline {
-		margin-top: -1px;
-		padding: 0;
-		width: 2.3rem;
-		height: 2.3rem;
+.discussPanel {
+	margin-left: auto;
+	margin-right: auto;
 
-		font-size: 1.4rem;
-		background-color: white; // 按钮组边角
-
-		@media screen {
-			@media (min-width: @length-screen-mobile) {
-				font-size: 1.8rem;
-				width: 3rem;
-				height: 3rem;
-			}
+	@media screen {
+		@media (min-width: @length-screen-pad) {
+			max-width: 85%;
 		}
+		@media (min-width: @length-screen-wide) {
+			max-width: 75%;
+		}
+	}
+}
+
+.container {
+	@media screen and (min-width: @length-screen-pad) {
+		--background-size: cover;
 	}
 }
 </style>
