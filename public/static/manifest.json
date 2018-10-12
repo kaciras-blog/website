@@ -6,7 +6,7 @@
 	"theme_color": "#208CFF",
 	"icons": [
 		{
-			"src": "/static/logo.png",
+			"src": "/static/Logo.png",
 			"sizes": "128x128",
 			"type": "image/png"
 		}
