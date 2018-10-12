@@ -62,7 +62,7 @@ export default {
 			deleteOn(this.drafts, d => d.id === id);
 		},
 	},
-	data:() =>({
+	data:() => ({
 		drafts: [],
 		showHistory: null,
 		allLoaded: false,

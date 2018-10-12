@@ -2,8 +2,8 @@
 	<kx-base-dialog
 		:dimmer-close="dimmerClose"
 		:class="type"
-		closeIcon="true"
-		draggable="true"
+		:closeIcon="true"
+		:draggable="true"
 		@close-button-clicked="cancel"
 		@dimmer-clicked="dimmerClick">
 

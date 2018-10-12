@@ -21,8 +21,4 @@ baseWebpackConfig.module.rules.push({
 	],
 });
 
-baseWebpackConfig.plugins.push(new webpack.DefinePlugin({
-	"process.env.SERVER_SIDE": "false"
-}));
-
 module.exports = baseWebpackConfig;
