@@ -25,13 +25,12 @@
 		<div class="tag-group"
 			 :class="$style.category">
 
-			<router-link
+			<span
 				v-for="cat in item.cpath"
 				:key="cat.id"
-				:to="'/category/' + cat.name"
 				class="tag-group-item">
 				{{cat.name}}
-			</router-link>
+			</span>
 		</div>
 
 		<div class="minor-text" :class="$style.meta">
