@@ -50,7 +50,7 @@ export default {
 	grid-template-areas: "slide header" "others others";
 	grid-gap: 2rem;
 
-	padding: 6rem 5rem 0;
+	padding: 5rem 5rem 0;
 }
 
 .header {

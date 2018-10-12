@@ -25,6 +25,6 @@ export default {
 	padding: 5rem;
 
 	color: white;
-	background-color: #2272ee;
+	background-color: #1244d9;
 }
 </style>
