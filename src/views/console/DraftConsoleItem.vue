@@ -22,15 +22,15 @@
 			</div>
 		</div>
 
-		<div class="history" v-if="showHistory===draft">
-			<div class="history-item" v-for="his in value.histories" :key="his.saveCount">
-				<div>
-					<span><i class="fa fa-save"></i>保存于：{{his.time}}</span>
-					<span><i class="fa fa-pencil"></i>字数：{{his.contentSize}}</span>
-				</div>
-				<kx-button class="primary">编辑</kx-button>
-			</div>
-		</div>
+		<!--<div class="history">-->
+			<!--<div class="history-item" v-for="his in value.histories" :key="his.saveCount">-->
+				<!--<div>-->
+					<!--<span><i class="fa fa-save"></i>保存于：{{his.time}}</span>-->
+					<!--<span><i class="fa fa-pencil"></i>字数：{{his.contentSize}}</span>-->
+				<!--</div>-->
+				<!--<kx-button class="primary">编辑</kx-button>-->
+			<!--</div>-->
+		<!--</div>-->
 	</div>
 </template>
 

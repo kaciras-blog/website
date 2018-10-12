@@ -14,7 +14,8 @@
 				v-for="draft in drafts"
 				:key="draft.id"
 				class="segment"
-				:value="draft"/>
+				:value="draft"
+				@removed="removeItem(draft.id)"/>
 
 			<span v-if="!loading && drafts.length===0" class="minor-text">空空如也</span>
 
@@ -26,26 +27,7 @@
 <script>
 import api from "../../api";
 import DraftConsoleItem from "./DraftConsoleItem";
-
-async function loadDrafts() {
-	if (this.allLoaded) {
-		return;
-	}
-	this.loading = true;
-
-	try {
-		const list = await api.draft.getList(1, 0, 20);
-		if (list.length === 0) {
-			this.allLoaded = true;
-		} else {
-			list.forEach(v => this.drafts.push(v));
-			this.last = list[list.length - 1]["id"];
-		}
-	} catch (e) {
-		alert("加载草稿失败!");
-	}
-	this.loading = false;
-}
+import { deleteOn } from "../../utils";
 
 export default {
 	name: "DraftConsole",
@@ -57,18 +39,39 @@ export default {
 				this.last = 0;
 			}).catch(() => alert("清空失败!"));
 		},
+		async loadDrafts() {
+			if (this.allLoaded) {
+				return;
+			}
+			this.loading = true;
 
+			try {
+				const list = await api.draft.getList(1, 0, 20);
+				if (list.length === 0) {
+					this.allLoaded = true;
+				} else {
+					list.forEach(v => this.drafts.push(v));
+					this.last = list[list.length - 1]["id"];
+				}
+			} catch (e) {
+				alert("加载草稿失败!");
+			}
+			this.loading = false;
+		},
+		removeItem(id) {
+			deleteOn(this.drafts, d => d.id === id);
+		},
 	},
-	data() {
-		return {
-			drafts: [],
-			showHistory: null,
-			allLoaded: false,
-			loading: true,
-			last: 0,
-		};
+	data:() =>({
+		drafts: [],
+		showHistory: null,
+		allLoaded: false,
+		loading: true,
+		last: 0,
+	}),
+	created() {
+		this.loadDrafts();
 	},
-	created: loadDrafts,
 };
 </script>
 
