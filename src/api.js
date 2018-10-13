@@ -12,44 +12,26 @@ if (process.env.NODE_ENV === "production") {
 	axios.defaults.timeout = 10000;
 }
 
-/*
- * 在服务端时关闭证书验证, HTTP2 ?
+/**
+ * 配置不同环境下的服务器地址。
+ *
+ * @return {*} 配置选项
  */
-// if (process.env.VUE_ENV === "server") {
-// 	const https = require("https");
-// 	axios.defaults.httpsAgent = new https.Agent({ rejectUnauthorized: false });
-// }
-
-let apiConfig;
-
-if (process.env.NODE_ENV !== "production") {
-	if (process.env.VUE_ENV === "server") {
-		apiConfig = {
-			main: "http://localhost:2374",
-			account: "http://localhost:26481",
-			front: "http://localhost",
-		};
-	} else {
-		apiConfig = {
-			main: "https://localhost:2375",
-			account: "https://localhost:26480",
-			front: "https://localhost",
-		};
+function defineApiServerConfig() {
+	const local = {
+		main: "https://localhost:2375",
+		account: "https://localhost:26480",
+		front: "https://localhost",
+	};
+	const productionWeb = {
+		main: "https://api.kaciras.net:2375",
+		account: "https://api.kaciras.net:26480",
+		front: "https://blog.kaciras.net",
+	};
+	if (process.env.VUE_ENV === "server" || process.env.NODE_ENV !== "production") {
+		return local; // SSR和本地开发环境都直接走localhost
 	}
-} else {
-	if (process.env.VUE_ENV === "server") {
-		apiConfig = {
-			main: "http://localhost:2374",
-			account: "http://localhost:26481",
-			front: "http://localhost",
-		};
-	} else {
-		apiConfig = {
-			main: "https://api.kaciras.net:2375",
-			account: "https://api.kaciras.net:26480",
-			front: "https://blog.kaciras.net",
-		};
-	}
+	return productionWeb;
 }
 
 // MDZZ，axios不能全局配置拦截？
@@ -66,6 +48,7 @@ function createAxios(config) {
 	return instance;
 }
 
+const apiConfig = defineApiServerConfig();
 const mainServer = createAxios({ baseURL: apiConfig.main });
 const accountServer = createAxios({ baseURL: apiConfig.account });
 const frontService = createAxios({ baseURL: apiConfig.front });
