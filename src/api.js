@@ -34,6 +34,32 @@ function defineApiServerConfig() {
 	return productionWeb;
 }
 
+function request (options, callback) {
+	let host = `https://${options.hostname}`;
+	if (options.port) {
+		host += ":" + options.port;
+	}
+
+	const client = eval("require")("http2").connect(host);
+	const req = client.request({
+		...options.headers,
+		":method": options.method.toUpperCase(),
+		":path": options.path,
+	});
+
+	req.on("response", headers => {
+		req.headers = headers;
+		req.statusCode = headers[":status"];
+		callback(req);
+	});
+	req.on("end", () => client.close());
+	return req;
+}
+
+if (process.env.VUE_ENV === "server") {
+	axios.defaults.transport = { request };
+}
+
 // MDZZ，axios不能全局配置拦截？
 function createAxios(config) {
 	const instance = axios.create(config);
