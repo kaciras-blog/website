@@ -36,41 +36,6 @@ convertor.use(myPlugin);
 export default {
 	install(Vue) {
 		Vue.filter("markdownToHtml", text => convertor.render(text));
-
-		Vue.directive("bind-selection", {
-			inserted(el, { expression, modifiers }, vnode) {
-				const vm = vnode.context;
-				vm.$watch(expression, nv => {
-					const [s, e] = nv;
-					el.selectionStart = s;
-					el.selectionEnd = e;
-					if (modifiers.focus) el.focus();
-				});
-			},
-		});
-
-		Vue.directive("on-selection", {
-			inserted(el, { expression }, vnode) {
-				const vm = vnode.context;
-
-				let oldStart = el.selectionStart;
-				let oldEnd = el.selectionEnd;
-
-				function handleSelect() {
-					const { selectionStart, selectionEnd } = el;
-					if (oldStart !== selectionStart || oldEnd !== selectionEnd) {
-						oldStart = selectionStart;
-						oldEnd = selectionEnd;
-						vm[expression](selectionStart, selectionEnd);
-					}
-				}
-
-				el.addEventListener("click", handleSelect);		// 鼠标点击改变光标位置
-				el.addEventListener("input", handleSelect);		// 增删内容改变光标位置
-				el.addEventListener("keyup", handleSelect);		// Home,End,PageUp,PageDown
-				el.addEventListener("keydown", handleSelect);	// 移动光标的键按住不放
-			},
-		});
 	},
 	afterConvert() {
 		const images = document.querySelectorAll(".markdown img");

@@ -10,12 +10,11 @@
 			}"
 			title="编辑区"
 			spellcheck="false"
-
 			:value="text"
 			@input="$emit('update:text', $event.target.value)"
 
 			v-bind-selection.focus="selection"
-			v-on-selection="handleSelect"
+			v-on-selection-changed="handleSelect"
 			@keydown.tab.prevent="insertTab">
 		</textarea>
 

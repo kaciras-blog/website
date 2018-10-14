@@ -35,6 +35,43 @@ export default function install(Vue) {
 		inserted: el => el.focus(),
 	});
 
+	// 文本选区绑定
+	Vue.directive("bind-selection", {
+		inserted(el, { expression, modifiers }, vnode) {
+			const vm = vnode.context;
+			vm.$watch(expression, nv => {
+				const [s, e] = nv;
+				el.selectionStart = s;
+				el.selectionEnd = e;
+				if (modifiers.focus) el.focus();
+			});
+		},
+	});
+
+	// 文本选区改变监听
+	Vue.directive("on-selection-changed", {
+		inserted(el, { expression }, vnode) {
+			const vm = vnode.context;
+
+			let oldStart = el.selectionStart;
+			let oldEnd = el.selectionEnd;
+
+			function handleSelect() {
+				const { selectionStart, selectionEnd } = el;
+				if (oldStart !== selectionStart || oldEnd !== selectionEnd) {
+					oldStart = selectionStart;
+					oldEnd = selectionEnd;
+					vm[expression](selectionStart, selectionEnd);
+				}
+			}
+
+			el.addEventListener("click", handleSelect);		// 鼠标点击改变光标位置
+			el.addEventListener("input", handleSelect);		// 增删内容改变光标位置
+			el.addEventListener("keyup", handleSelect);		// Home,End,PageUp,PageDown
+			el.addEventListener("keydown", handleSelect);	// 移动光标的键按住不放
+		},
+	});
+
 //	IDE 无法分析自动扫描的引用
 // 	const requireContext = require.context(".", false,  /.vue$/);
 // 	requireContext.keys().forEach(file => {
