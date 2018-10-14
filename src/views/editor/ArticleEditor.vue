@@ -132,15 +132,6 @@ export default {
 	height: 100vh;
 }
 
-.menu {
-	display: flex;
-	/*justify-content: space-around;*/
-
-	& > button {
-		flex: 1 1 0;
-	}
-}
-
 .mainWindow {
 	height: calc(100% - 48px - .8rem);
 }

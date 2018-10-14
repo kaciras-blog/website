@@ -133,6 +133,7 @@ export default {
 		border-radius: 0;
 		border: none;
 		padding: .3rem .8rem;
+		font-size: 1.2rem;
 	}
 
 	// 正在运行的按钮样式，因为需要长时间运行的任务并不一定是加载，所以没用.loading

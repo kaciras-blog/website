@@ -18,7 +18,7 @@
 			<div class="minor-text" :class="$style.metas">
 				<div>
 					<span class="meta"
-						  :class="{ [$style.clickable]: discusser.id > 0, active: value.voted }"
+						  :class="{ [$style.clickable]: discusser.id > 0, [$style.active]: value.voted }"
 						  :title="value.voted ? '取消点赞' : '点赞'"
 						  @click="vote">
 						<i class="far fa-thumbs-up"></i>
