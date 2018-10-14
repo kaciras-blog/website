@@ -194,7 +194,9 @@ _default.draft = {
 		params: { userId, start, count },
 	}).then(r => r.data),
 
-	save: (id, data) => mainServer.post(`/drafts/${id}/histories`, data),
+	saveNewHistory: (id, data) => mainServer.post(`/drafts/${id}/histories`, data),
+
+	save: (id, saveCount, data) => mainServer.put(`/drafts/${id}/histories/${saveCount}`, data),
 
 	deleteOne: (id) => mainServer.delete("/drafts/" + id),
 

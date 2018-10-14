@@ -1,5 +1,5 @@
 <template>
-	<div :class="$style.container">
+	<main :class="$style.container">
 		<div class="kx-markdown-toolbar" role="toolbar">
 			<div>
 				<kx-markdown-basic-toolbar :text.sync="content" :selection.sync="selection"/>
@@ -8,7 +8,7 @@
 			<div>
 				<view-mode-toolbar :view-mode.sync="viewMode"/>
 				<kx-button class="primary" title="修改简介" icon="far fa-address-card" @click="metadataDialog"/>
-				<kx-button class="primary" title="保存" icon="far fa-save" @click="save(true)"/>
+				<kx-button class="primary" title="保存" icon="far fa-save" @click="saveManually"/>
 				<kx-button class="primary" title="发布!" icon="far fa-paper-plane" @click="publish"/>
 			</div>
 		</div>
@@ -20,13 +20,13 @@
 
 		<div class="kx-markdown-statebar">
 			<div>
-
+				<span>上次保存：{{archive.time}}</span>
 			</div>
 			<div>
 				<text-state-group :text="content" :selection="selection"/>
 			</div>
 		</div>
-	</div>
+	</main>
 </template>
 
 <script>
@@ -73,6 +73,7 @@ export default {
 			articleId: null,
 			url: null,
 			saveCount: 0,
+			time: null,
 		},
 		metadata: {
 			title: "",
@@ -99,19 +100,25 @@ export default {
 			if (res)
 				this.metadata = res;
 		},
-		save(manually) {
-			const promise = api.draft.save(this.archive.id, convertToTransfer(this.$data));
-			if (manually) {
-				promise.then(() => this.$dialog.messageBox("保存草稿", "保存成功"))
-					.catch(() => this.$dialog.messageBox("保存草稿", "保存失败，请手动备份", "error"));
+		async saveManually() {
+			const { archive } = this;
+			try{
+				await api.draft.saveNewHistory(archive.id, archive.saveCount, convertToTransfer(this.$data));
+				archive.time = new Date();
+				this.$dialog.messageBox("保存草稿", "保存成功");
+			} catch (e) {
+				this.$dialog.messageBox("保存草稿", "保存失败，请手动备份", "error");
 			}
+		},
+		autoSave() {
+			api.draft.save(this.archive.id, convertToTransfer(this.$data)).then(() => this.archive.time = new Date());
 		},
 		publish() {
 			this.$dialog.show(PublishDialog, this.$data);
 		},
 	},
 	created() {
-		const draftId = this.$route.params.id;
+		const draftId = this.$route.params["id"];
 		if (!draftId) {
 			return; // 必须先创建草稿
 		}
