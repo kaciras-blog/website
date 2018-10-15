@@ -12,13 +12,6 @@ if (process.env.NODE_ENV === "production") {
 	Axios.defaults.timeout = 10000;
 }
 
-/*
- * 在服务端时关闭证书验证, HTTP2 ?
- */
-// if (process.env.VUE_ENV === "server") {
-// 	const https = require("https");
-// 	Axios.defaults.httpsAgent = new https.Agent({ rejectUnauthorized: false });
-// }
 
 let apiConfig;
 
@@ -87,7 +80,7 @@ function NormalResponse(status) {
 }
 
 function bindProto(config, origin) {
-	if (origin && origin.headers) {
+	if (origin) {
 		config.headers = config.headers || {};
 		if (origin.headers.cookie) {
 			config.headers.Cookie = origin.headers.cookie;
@@ -143,10 +136,22 @@ class BasicApi {
 		return proxied;
 	}
 
+	/**
+	 * 设置原请求，发送的请求将使用原请求的Cookie和一些Header以表现出与
+	 * 原请求相同的身份，用于服务端渲染时Cookie穿透。
+	 *
+	 * @param proto 原请求
+	 * @return {*} API集
+	 */
 	withPrototype(proto) {
 		return this.createProxied().withPrototype(proto);
 	}
 
+	/**
+	 * 设置取消令牌，使请求能够取消。
+	 * @param cancelToken { CancelToken } 取消令牌
+	 * @return {*} API集
+	 */
 	withCancelToken(cancelToken) {
 		return this.createProxied().withCancelToken(cancelToken);
 	}
