@@ -57,7 +57,7 @@ export default {
 	methods: {
 		async login() {
 			try {
-				await api.session.login(this.form);
+				await api.security.login(this.form);
 				await this.$store.dispatch(REFRESH_USER);
 				this.$router.push(this.$route.params.return || "/");
 			} catch (e) {

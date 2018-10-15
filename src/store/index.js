@@ -17,7 +17,7 @@ export default function () {
 					.catch(() => {}); // ignore no logined.
 			},
 			[REMOVE_USER]({ commit }) {
-				return api.session.logout().then(() => commit(SET_USER, null));
+				return api.security.logout().then(() => commit(SET_USER, null));
 			},
 		},
 		mutations: {

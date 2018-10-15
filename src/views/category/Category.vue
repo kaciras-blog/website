@@ -33,11 +33,15 @@ export default {
 	components: {
 		CategoryHeader, CategoryBody,
 	},
-	async asyncData(store, route, cancelToken) {
+	asyncData(store, route, cancelToken) {
 		store.registerModule("category", storeModule);
 		const axiosCancelToken = axios.CancelToken.source();
 		cancelToken.onCancel(axiosCancelToken.cancel);
-		store.commit("category/setItem", await api.category.getByName(route.params.name, axiosCancelToken.token));
+
+		api.category
+			.withCancelToken(axiosCancelToken.token)
+			.getByName(route.params.name)
+			.then(items => store.commit("category/setItem", items));
 	},
 	prefetch: true,
 	title() {
