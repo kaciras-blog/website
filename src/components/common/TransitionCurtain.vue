@@ -49,7 +49,7 @@ export default {
 			clearTimeout(this.$_timer);
 			this.show = false;
 			this.timeouted = false;
-			this.error = false;
+			this.hasError = false;
 		},
 		error() {
 			this.hasError = true;
