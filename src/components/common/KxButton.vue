@@ -158,8 +158,8 @@ export default {
 .psudo-style() {
 	&:hover {
 		color: white;
-		background-color: var(--background);
-		border-color: var(--background);
+		background-color: var(--background-highlight);
+		border-color: var(--background-highlight);
 		text-decoration: none; // <a>作为按钮时需要
 	}
 	&:active {
@@ -194,8 +194,8 @@ export default {
 
 // 配置各主题色，less还不支运算作为CSS变量值，需要先用变量定义
 .color-mixin(@color) {
-	@color-active: @color - #121212;
-	@color-highlight: lighten(@color, 6%);
+	@color-active: @color - #101010;
+	@color-highlight: lighten(@color, 5%);
 	@color-glass: fade(@color, 50%);
 
 	--background: @color;
