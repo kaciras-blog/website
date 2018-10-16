@@ -50,7 +50,11 @@ const storeModule = {
 		fetchItem({ commit }, { id, cancelToken, origin }) {
 			const asioxCancelToken = axios.CancelToken.source();
 			cancelToken.onCancel(asioxCancelToken.cancel);
-			return api.article.get(id, asioxCancelToken.token, origin).then(item => commit("setItem", item));
+			return api.article
+				.withPrototype(origin)
+				.withCancelToken(asioxCancelToken.token)
+				.get(id)
+				.then(item => commit("setItem", item));
 		},
 	},
 	mutations: {

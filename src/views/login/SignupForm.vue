@@ -76,7 +76,7 @@ export default {
 	methods: {
 		async signup() {
 			try {
-				await api.account.signup(this.form);
+				await api.user.signup(this.form);
 				await this.$store.dispatch(REFRESH_USER);
 				this.$router.push(this.$route.params.return || "/");
 			} catch(e) {
@@ -87,13 +87,13 @@ export default {
 			this.$emit("switch-panel", "LoginPanel");
 		},
 		updateCaptcha() {
-			this.captcha = api.misc.captchaAddress();
+			this.captcha = api.misc.captchaAddress;
 			this.form.captcha = "";
 			this.$refs.captchaInput.focus();
 		},
 	},
 	mounted() {
-		this.captcha = api.misc.captchaAddress();
+		this.captcha = api.misc.captchaAddress;
 	},
 };
 </script>
