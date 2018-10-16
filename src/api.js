@@ -72,7 +72,7 @@ const webServer = createAxios({ baseURL: apiConfig.front });
  * 服务器正常回复，而不是出现5xx状态码。
  * 加入到Axios的请求选项中：Config.validateStatus。
  *
- * @param status 状态码
+ * @param status {number} 状态码
  * @return {boolean} 是否算作正常回复
  */
 function NormalResponse(status) {
@@ -384,7 +384,8 @@ class MiscApi extends BasicApi {
 }
 
 
-class SecurityApi extends BasicApi {
+class UserApi extends BasicApi {
+
 	/**
 	 * 用户登录，登录成功后会添加相应的Cookie
 	 * @param form 一个对象，格式如下：{ name: 用户名, password: 密码, remember: 是否保存登录 }
@@ -411,10 +412,7 @@ class SecurityApi extends BasicApi {
 	signup(data) {
 		return this.securityServer.post("/accounts", data);
 	}
-}
 
-
-class UserApi extends BasicApi {
 	// 会自动创建用户，需要先登录
 	getCurrent() {
 		return this.mainServer.get("/current-user").then(res => res.data);
@@ -454,7 +452,6 @@ export default {
 	category: new CategoryApi(),
 	discuss: new DiscussApi(),
 	draft: new DraftApi(),
-	security: new SecurityApi(),
 	user: new UserApi(),
 	recommend: new RecommandApi(),
 	misc: new MiscApi(),

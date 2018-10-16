@@ -76,7 +76,7 @@ export default {
 	methods: {
 		async signup() {
 			try {
-				await api.security.signup(this.form);
+				await api.user.signup(this.form);
 				await this.$store.dispatch(REFRESH_USER);
 				this.$router.push(this.$route.params.return || "/");
 			} catch(e) {
