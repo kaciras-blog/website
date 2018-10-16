@@ -146,6 +146,7 @@ export default {
 
 	display: block;
 	margin: 1rem;
+	border-radius: 1rem;
 
 	color: black;
 	border: solid 3px white;

@@ -59,9 +59,10 @@ export default {
 
 .head {
 	grid-area: head;
-	margin-top: -5rem;
-	.circle(10rem);
+	margin-top: -4rem;
 	z-index: 4;
+	.size(10rem, 10rem);
+	border-radius: 1rem;
 
 	background-color: white;
 	border: solid 6px #16a9fa;

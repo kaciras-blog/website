@@ -6,7 +6,6 @@
 
 		<img :src="props.cover"
 			 alt="分类图标"
-			 class="head"
 			 :class="$style.head">
 
 		<h3 class="compact">{{props.name}}</h3>
@@ -21,6 +20,8 @@ export default {
 </script>
 
 <style module lang="less">
+@import "../css/ToBeImport";
+
 .container {
 	display: inline-block;
 	margin: 1rem;
@@ -42,5 +43,7 @@ export default {
 .head {
 	display: block;
 	margin: 1rem;
+	.size(5rem, 5rem);
+	border-radius: 1rem;
 }
 </style>
