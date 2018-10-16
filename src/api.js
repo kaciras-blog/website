@@ -205,6 +205,11 @@ class ProxiedApi extends BasicApi {
 	}
 
 	withCancelToken(cancelToken) {
+		if (cancelToken instanceof utils.CancelToken) {
+			const asioxCancelToken = Axios.CancelToken.source();
+			cancelToken.onCancel(asioxCancelToken.cancel);
+			cancelToken = asioxCancelToken.token;
+		}
 		this.filters.push(config => config.cancelToken = cancelToken);
 		return this;
 	}
@@ -238,6 +243,10 @@ class ArticleApi extends BasicApi {
 				deletion: deletion,
 			},
 		}).then(r => r.data);
+	}
+
+	getHots() {
+		return this.mainServer.get("/recommendation/articles").then(r => r.data);
 	}
 
 	deleteOne(id) {
@@ -456,10 +465,6 @@ class RecommandApi extends BasicApi {
 	constructor() {
 		super();
 		this.swiper = new SwiperApi();
-	}
-
-	getHotArticles() {
-		return this.mainServer.get("/recommendation/articles").then(r => r.data);
 	}
 }
 

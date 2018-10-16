@@ -14,7 +14,6 @@ import { mapState } from "vuex";
 import CategoryHeader from "./CategoryHeader";
 import CategoryBody from "./CategoryBody";
 import api from "../../api";
-import axios from "axios";
 import TitleMixin from "../../title-mixin";
 
 const storeModule = {
@@ -33,13 +32,11 @@ export default {
 	components: {
 		CategoryHeader, CategoryBody,
 	},
-	asyncData(store, route, cancelToken) {
+	asyncData(store, route, cancelToken, protorype) {
 		store.registerModule("category", storeModule);
-		const axiosCancelToken = axios.CancelToken.source();
-		cancelToken.onCancel(axiosCancelToken.cancel);
-
 		api.category
-			.withCancelToken(axiosCancelToken.token)
+			.withCancelToken(cancelToken)
+			.withPrototype(protorype)
 			.getByName(route.params.name)
 			.then(items => store.commit("category/setItem", items));
 	},

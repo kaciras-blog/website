@@ -43,7 +43,7 @@ export default {
 	},
 	beforeMount() {
 		if(!this.hots)
-			api.recommend.getHotArticles().then(hots => this.hots = hots);
+			api.article.getHots().then(hots => this.hots = hots);
 	},
 };
 </script>

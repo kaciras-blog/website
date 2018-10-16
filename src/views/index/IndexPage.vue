@@ -56,9 +56,14 @@ const indexStoreModule = {
 		items: null,
 	}),
 	actions: {
-		fetchItem({ commit }, { start, origin }) {
-			const loadHots = api.recommend.getHotArticles().then(items => commit("setHots", items));
-			const loadList = api.article.getList(0, start || 0, 16).then(items => commit("setItems", items));
+		fetchItem({ commit }, { start,cancelToken, prototype }) {
+			const configuredApi = api.article.withCancelToken(cancelToken).withPrototype(prototype);
+
+			const loadHots = configuredApi.getHots()
+				.then(items => commit("setHots", items));
+			const loadList = configuredApi.getList(0, start || 0, 16)
+				.then(items => commit("setItems", items));
+
 			return Promise.all([loadList, loadHots]);
 		},
 	},
@@ -74,9 +79,9 @@ export default {
 		ArticlePreviewItem,
 		AsidePanel,
 	},
-	async asyncData(store, route, origin) {
+	async asyncData(store, route, cancelToken, prototype) {
 		store.registerModule("index", indexStoreModule);
-		return store.dispatch("index/fetchItem", { start: route.params.index, origin });
+		return store.dispatch("index/fetchItem", { start: route.params.index, cancelToken, prototype });
 	},
 	data() {
 		const data = {

@@ -38,7 +38,6 @@ import api from "../../api";
 import $ from "jquery";
 import { mapState } from "vuex";
 import { articleLink } from "../../blog-plugin";
-import axios from "axios";
 
 
 const storeModule = {
@@ -48,11 +47,9 @@ const storeModule = {
 	}),
 	actions: {
 		fetchItem({ commit }, { id, cancelToken, origin }) {
-			const asioxCancelToken = axios.CancelToken.source();
-			cancelToken.onCancel(asioxCancelToken.cancel);
 			return api.article
+				.withCancelToken(cancelToken)
 				.withPrototype(origin)
-				.withCancelToken(asioxCancelToken.token)
 				.get(id)
 				.then(item => commit("setItem", item));
 		},
@@ -97,10 +94,10 @@ export default {
 	 * @param store 全局状态存储
 	 * @param route 路由信息
 	 * @param cancelToken {CancelToken} 撤销令牌
-	 * @param origin 原始请求，用于服务端渲染时Cookie，Header等穿透。
+	 * @param prototype 原始请求，用于服务端渲染时Cookie，Header等穿透。
 	 * @return {Promise<void>} 指示加载状态的Promise
 	 */
-	async asyncData(store, route, cancelToken, origin) {
+	async asyncData(store, route, cancelToken, prototype) {
 		const { id, urlTitle } = route.params;
 		const module = store.state.article;
 
@@ -110,7 +107,7 @@ export default {
 
 		store.registerModule("article", storeModule);
 		cancelToken.onCancel(() => store.unregisterModule("article"));
-		await store.dispatch("article/fetchItem", { id, cancelToken, origin });
+		await store.dispatch("article/fetchItem", { id, cancelToken, prototype });
 
 		// 检查URL中的标题，不正确则重定向到正确的URL
 		const correctUrlTitle = store.state.article.item.urlTitle;
