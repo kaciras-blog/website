@@ -52,7 +52,11 @@ export default function () {
 			meta: { title: "首页" },
 		},
 		{
-			path: "/category/:name",
+			path: "/category/:id",
+			component: () => import("./views/category/Category"),
+		},
+		{
+			path: "/category/:id/:name",
 			component: () => import("./views/category/Category"),
 		},
 		{

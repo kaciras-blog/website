@@ -16,8 +16,13 @@ export function articleLink({ id, urlTitle }) {
 	return `/article/${id}/${urlTitle}`;
 }
 
+export function categoryLink({ id, name }) {
+	return `/category/${id}/${name}`;
+}
+
 export default function (Vue) {
 	Vue.filter("articleLink", articleLink);
+	Vue.filter("categoryLink", categoryLink);
 
 	Vue.component(TopNav.name, TopNav);
 	Vue.component(PageFooter.name, PageFooter);
