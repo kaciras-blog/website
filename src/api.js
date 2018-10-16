@@ -79,19 +79,13 @@ function NormalResponse(status) {
 	return status >= 0 && status < 500;
 }
 
-function bindProto(config, origin) {
-	if (origin) {
-		config.headers = config.headers || {};
-		if (origin.headers.cookie) {
-			config.headers.Cookie = origin.headers.cookie;
-		}
-		const csrf = origin.cookies.get(CSRF_COOKIE_NAME);
-		if (csrf) {
-			config.headers[CSRF_HEADER_NAME] = "test";
-		}
-	}
-}
 
+/**
+ * 使用ES6代理Axios，以便在请求前修改设置。
+ *
+ * Axios创建实例不能再使用create来扩展，并且用了个wrap函数封装使
+ * 得扩展难以进行，所以才用这种方式，等1.0版本出了再看看能不能用更优雅的方法。
+ */
 class AxiosProxy {
 
 	constructor(filters) {
@@ -176,8 +170,21 @@ class ProxiedApi extends BasicApi {
 		return new Proxy(super.webServer, new AxiosProxy(this.filters));
 	}
 
+	static bindProto(config, proto) {
+		config.headers = config.headers || {};
+		if (proto.headers.cookie) {
+			config.headers.Cookie = proto.headers.cookie;
+		}
+		const csrf = proto.cookies.get(CSRF_COOKIE_NAME);
+		if (csrf) {
+			config.headers[CSRF_HEADER_NAME] = "test";
+		}
+	}
+
 	withPrototype(proto) {
-		this.filters.push(config => bindProto(config, proto));
+		if (proto) {
+			this.filters.push(config => ProxiedApi.bindProto(config, proto));
+		}
 		return this;
 	}
 
