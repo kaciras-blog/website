@@ -159,6 +159,6 @@ export default {
 	justify-content: space-between;
 	padding: .4rem;
 	color: white;
-	background-color: #004fff;
+	background-color: #003ee7;
 }
 </style>

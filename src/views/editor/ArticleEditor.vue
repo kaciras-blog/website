@@ -20,7 +20,8 @@
 
 		<div class="kx-markdown-statebar">
 			<div>
-				<span>上次保存：{{archive.time}}</span>
+				<span v-if="autoSaveError" :class="$style.errMsg">自动保存出错！</span>
+				<span v-else>上次保存：{{archive.time}}</span>
 			</div>
 			<div>
 				<text-state-group :text="content" :selection="selection"/>
@@ -42,6 +43,17 @@ import MetadataDialog from "./MetadataDialog";
 import api from "../../api";
 import { assignUpdate } from "../../utils";
 
+
+class VueMultiWatcher {
+
+	constructor(vm, paths, callback, options) {
+		this.unwatchs = paths.map(path => vm.$watch(path, callback, options));
+	}
+
+	unwatch() {
+		this.unwatchs.forEach(unwatch => unwatch());
+	}
+}
 
 function convertToTransfer(data) {
 	return Object.assign({
@@ -71,7 +83,6 @@ export default {
 		archive: {
 			id: null,
 			articleId: null,
-			url: null,
 			saveCount: 0,
 			time: null,
 		},
@@ -84,6 +95,7 @@ export default {
 		content: "",
 		selection: [0, 0],
 		viewMode: 0,
+		autoSaveError: false,
 	}),
 	methods: {
 		async addImage() {
@@ -102,7 +114,7 @@ export default {
 		},
 		async saveManually() {
 			const { archive } = this;
-			try{
+			try {
 				await api.draft.saveNewHistory(archive.id, archive.saveCount, convertToTransfer(this.$data));
 				archive.time = new Date();
 				this.$dialog.messageBox("保存草稿", "保存成功");
@@ -110,24 +122,40 @@ export default {
 				this.$dialog.messageBox("保存草稿", "保存失败，请手动备份", "error");
 			}
 		},
+		watchChanges() {
+			const watcher = new VueMultiWatcher(this, [
+				"metadata", "content",
+			], () => {
+				setTimeout(this.autoSave, 10 * 1000);
+				watcher.unwatch();
+			});
+		},
 		autoSave() {
-			api.draft.save(this.archive.id, convertToTransfer(this.$data)).then(() => this.archive.time = new Date());
+			const { archive } = this;
+			api.draft.save(archive.id, archive.saveCount, convertToTransfer(this.$data))
+				.then(() => {
+					archive.time = new Date();
+					this.autoSaveError = false;
+					this.watchChanges();
+				})
+				.catch(() => this.autoSaveError = true);
 		},
 		publish() {
 			this.$dialog.show(PublishDialog, this.$data);
 		},
 	},
-	created() {
-		const draftId = this.$route.params["id"];
-		if (!draftId) {
+	async beforeMount() {
+		const id = this.$route.params["id"];
+		if (!id) {
 			return; // 必须先创建草稿
 		}
-		api.draft.get(draftId).then(json => {
-			if (!json.articleId && json.saveCount === 0) {
-				this.metadataDialog();
-			}
-			convertToFront(json, this.$data);
-		});
+		const draft = await api.draft.get(id);
+		convertToFront(draft, this.$data);
+
+		if (!draft.articleId && draft.saveCount === 0) {
+			await this.metadataDialog();
+		}
+		this.watchChanges();
 	},
 };
 </script>
@@ -141,5 +169,10 @@ export default {
 
 .mainWindow {
 	height: calc(100% - 48px - .8rem);
+}
+
+.errMsg {
+	color: #ff6b6b;
+	font-weight: 600;
 }
 </style>
