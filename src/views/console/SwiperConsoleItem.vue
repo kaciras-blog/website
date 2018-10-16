@@ -49,7 +49,7 @@ export default {
 		item: Object,
 		required: true,
 	},
-	methods:{
+	methods: {
 		setPicture() {
 			api.misc.uploadImageFile().then(name => this.item.slide.picture = name);
 		},
@@ -60,7 +60,7 @@ export default {
 			if (!event.touches && event.button !== 0) {
 				return; // 鼠标右键不拖动
 			}
-			this.$emit("drag-started", {event, item: this.item});
+			this.$emit("drag-started", { event, item: this.item });
 		},
 	},
 };
@@ -68,7 +68,6 @@ export default {
 
 <style scoped lang="less">
 @import "../../css/ToBeImport";
-
 
 @main-color: #2f8bff;
 

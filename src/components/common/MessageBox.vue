@@ -11,8 +11,15 @@
 		<pre class="kx-msgbox-body">{{message}}</pre>
 
 		<div slot="footer" class="kx-msgbox-buttons">
-			<kx-button v-if="cancelable" @click="cancel">取消</kx-button>
-			<kx-button @click="ok">确定</kx-button>
+			<kx-button
+				v-if="cancelable"
+				@click="$dialog.close(false)">
+				取消
+			</kx-button>
+			<kx-button
+				@click="$dialog.close(true)">
+				确定
+			</kx-button>
 		</div>
 	</kx-base-dialog>
 </template>
@@ -38,19 +45,14 @@ export default {
 	},
 	computed: {
 		message() {
-			if (typeof(this.content) === "string") {
-				return this.content;
+			const { content } = this;
+			if (typeof(content) === "string") {
+				return content;
 			}
-			return this.content.join("\n");
+			return content.join("\n");
 		},
 	},
 	methods: {
-		ok() {
-			this.$dialog.close(true);
-		},
-		cancel() {
-			this.$dialog.close(false);
-		},
 		dimmerClick() {
 			if (this.dimmerClose) {
 				this.$dialog.close(false);

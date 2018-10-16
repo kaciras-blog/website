@@ -6,7 +6,7 @@
 				:key="i"
 				class="item"
 				:class="{ active: index === i }"
-				@click="handleClick(i)">
+				@click="$emit('click', i)">
 			</li>
 		</ol>
 	</div>
@@ -23,11 +23,6 @@ export default {
 		index: {
 			type: Number,
 			required: true,
-		},
-	},
-	methods: {
-		handleClick(i) {
-			this.$emit("click", i);
 		},
 	},
 };

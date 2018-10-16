@@ -12,7 +12,11 @@
 		</header>
 
 		<sk-fading-circle v-if="loading"/>
-		<kx-carousel v-else :class="$style.carousel" :items="slides">
+		<kx-carousel
+			v-else
+			:class="$style.carousel"
+			:items="slides"
+			:stop-on-hover="true">
 			<swiper-slide slot-scope="{ slide }" :key="slide.tid" :item="slide"/>
 		</kx-carousel>
 
@@ -50,7 +54,7 @@ export default {
 	grid-template-areas: "slide header" "others others";
 	grid-gap: 2rem;
 
-	padding: 5rem 5rem 0;
+	padding: 2rem 5rem 0;
 }
 
 .header {

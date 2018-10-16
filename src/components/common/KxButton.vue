@@ -185,11 +185,11 @@ export default {
 	background-color: transparent;
 	color: var(--background);
 
-	&:hover, &:active {
+	&:hover {
 		color: white;
 		background-color: var(--background);
+		border-color: var(--background);
 	}
-	.psudo-style;
 }
 
 // 配置各主题色，less还不支运算作为CSS变量值，需要先用变量定义

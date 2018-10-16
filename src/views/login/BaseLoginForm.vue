@@ -1,18 +1,11 @@
 <template>
-	<form class="login-form" @keyup.13="ok">
+	<form class="login-form" @keyup.13="$emit('ok')">
 		<slot/>
-		<div class="buttons"><slot name="button"/></div>
+		<div class="buttons">
+			<slot name="button"/>
+		</div>
 	</form>
 </template>
-
-<script>
-export default {
-	name: "BaseLoginForm",
-	methods: {
-		ok() { this.$emit("ok"); },
-	},
-};
-</script>
 
 <style lang="less">
 .login-form {
