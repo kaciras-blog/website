@@ -15,7 +15,6 @@ baseWebpackConfig.module.rules.push({
 		resolve("src"),
 		resolve("test"),
 		resolve("node_modules/webpack-dev-server/client"),
-		resolve("node_modules/kxdialog/src"),
 		resolve("node_modules/markdown-it-anchor"),
 	],
 });
