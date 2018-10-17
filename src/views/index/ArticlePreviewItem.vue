@@ -18,7 +18,8 @@
 			<ul class="inline list">
 				<li v-for="kw in item.keywords"
 					:key="kw"
-					:class="$style.keyword">{{kw}}</li>
+					:class="$style.keyword">{{kw}}
+				</li>
 			</ul>
 		</div>
 
@@ -32,11 +33,11 @@
 				{{cat.name}}
 			</span>
 			<!--<router-link-->
-				<!--v-for="cat in item.cpath"-->
-				<!--:key="cat.id"-->
-				<!--:to="cat | categoryLink"-->
-				<!--class="tag-group-item">-->
-				<!--{{cat.name}}-->
+			<!--v-for="cat in item.cpath"-->
+			<!--:key="cat.id"-->
+			<!--:to="cat | categoryLink"-->
+			<!--class="tag-group-item">-->
+			<!--{{cat.name}}-->
 			<!--</router-link>-->
 		</div>
 
@@ -47,7 +48,7 @@
 				<time>{{item.create}}</time>
 			</span>
 
-			<span v-if="showUpdate(item)"
+			<span v-if="showUpdate"
 				  title="最后更新"
 				  class="hide-mobile meta">
 				<i class="fas fa-sync"></i>
@@ -88,9 +89,9 @@ export default {
 			return time.substring(5);
 		},
 	},
-	methods: {
-		showUpdate(item) {
-			return item["create"] !== item["update"];
+	computed: {
+		showUpdate() {
+			return this.item["create"] !== this.item["update"];
 		},
 	},
 };

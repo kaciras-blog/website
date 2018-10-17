@@ -32,6 +32,13 @@ import { deleteOn } from "../../utils";
 export default {
 	name: "DraftConsole",
 	components: { DraftConsoleItem },
+	data:() => ({
+		drafts: [],
+		showHistory: null,
+		allLoaded: false,
+		last: 0,
+		loading: true,
+	}),
 	methods: {
 		deleteAll() {
 			api.draft.clear().then(() => {
@@ -62,13 +69,6 @@ export default {
 			deleteOn(this.drafts, d => d.id === id);
 		},
 	},
-	data:() => ({
-		drafts: [],
-		showHistory: null,
-		allLoaded: false,
-		loading: true,
-		last: 0,
-	}),
 	created() {
 		this.loadDrafts();
 	},
