@@ -10,6 +10,40 @@ import KxCheckBox from "./KxCheckBox";
 import KxButton from "./KxButton";
 import KxTaskButton from "./KxTaskButton";
 import KxCarousel from "./KxCarousel";
+import KxDialogContainer from "./KxDialogContainer.vue";
+import KxBaseDialog from "./KxBaseDialog.vue";
+import KxContextMenu from "./KxContextMenu.vue";
+
+
+function installKxDialog(Vue) {
+	Vue.component(KxDialogContainer.name, KxDialogContainer);
+	Vue.component(KxBaseDialog.name, KxBaseDialog);
+	Vue.component(KxContextMenu.name, KxContextMenu);
+
+	const eventBus = new Vue();
+
+	Vue.prototype.$dialog = {
+		eventBus,
+		/**
+		 * 弹出一个窗口。
+		 *
+		 * @param component 弹窗组件
+		 * @param data 传递给弹窗的数据
+		 * @return {Promise<*>} 一个Promise，在窗口关闭后完成，使用then函数来获取窗口的返回值
+		 */
+		show(component, data) {
+			return new Promise(resolve => eventBus.$emit("show", { component, data, resolve }));
+		},
+		/**
+		 * 关闭最上层的弹窗，并返回一个结果。
+		 *
+		 * @param data 返回给调用方的结果。
+		 */
+		close(data) {
+			eventBus.$emit("close", data);
+		},
+	};
+}
 
 /**
  * 自动注册目录下的Vue组件。
@@ -29,6 +63,8 @@ export default function install(Vue) {
 	Vue.component(KxButton.name, KxButton);
 	Vue.component(KxTaskButton.name, KxTaskButton);
 	Vue.component(KxCarousel.name, KxCarousel);
+
+	installKxDialog(Vue);
 
 	// 自动聚焦支持 v-autofocus
 	Vue.directive("autofocus", {

@@ -2,7 +2,7 @@ import SelectCategoryDialog from "./components/SelectCategoryDialog";
 import TopNav from "./components/TopNav";
 import PageFooter from "./components/PageFooter";
 import PageLayout from "./components/PageLayout";
-import MessageBox from "./components/common/MessageBox";
+import MessageBox from "./components/common/KxMessageBox";
 
 /**
  * 获取Article对象的完整URL，该URL指向文章页面。
@@ -46,8 +46,8 @@ export default function (Vue) {
 	Vue.prototype.$dialog.messageBox = function (title, content, type, cancelable, dimmerClose) {
 		//使用对象传递的参数
 		if (typeof title === "object") {
-			return this.show(MessageBox.name, title);
+			return this.$dialog.show(MessageBox, title);
 		}
-		return this.show(MessageBox.name, { title, content, type, cancelable, dimmerClose });
+		return this.$dialog.show(MessageBox, { title, content, type, cancelable, dimmerClose });
 	};
 }

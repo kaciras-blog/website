@@ -26,7 +26,7 @@
 
 <script>
 export default {
-	name: "MessageBox",
+	name: "KxMessageBox",
 	props: {
 		title: String,
 		content: [String, Array],

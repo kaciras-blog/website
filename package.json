@@ -15,7 +15,6 @@
 		"axios": "^0.18.0",
 		"highlight.js": "^9.13.0",
 		"jquery": "^3.3.1",
-		"kxdialog": "file:D:/Project/Blog/KxDialog",
 		"markdown-it": "^8.4.2",
 		"markdown-it-anchor": "^5.0.2",
 		"vue": "^2.5.17",

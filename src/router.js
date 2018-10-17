@@ -103,7 +103,7 @@ export default function () {
 
 	// 用来测试的页面
 	if (process.env.NODE_ENV !== "production") {
-		routes.unshift({ path: "/test", component: () => import("./views/Test") });
+		routes.unshift({ path: "/test", component: () => import("./views/test/Test") });
 	}
 
 	return new Router({ mode: "history", scrollBehavior, routes });

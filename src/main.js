@@ -4,7 +4,6 @@ import createRouter from "./router";
 import createStore from "./store";
 
 import CommonComponents from "./components/common";
-import KxDialog from "kxdialog";
 import KxMarkdown from "./markdown";
 import BlogPlugin from "./blog-plugin";
 
@@ -12,7 +11,6 @@ import BlogPlugin from "./blog-plugin";
 Vue.config.productionTip = false;
 
 Vue.use(CommonComponents);
-Vue.use(KxDialog);
 Vue.use(KxMarkdown);
 Vue.use(BlogPlugin);
 
