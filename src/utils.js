@@ -18,10 +18,6 @@ export function escapeHtml(text) {
 	return text.replace(/[&<>"']/g, ch => map[ch]);
 }
 
-export function pageReturn() {
-	const url = getUrlParamater("return");
-	window.location.href = url ? url : "/";
-}
 
 export function scrollToElementStart(element) {
 	if (typeof element === "string") {
@@ -52,27 +48,6 @@ export function errorMessage(object) {
 	return object.message || "未知的错误";
 }
 
-export function showErrorDialog(vm, title) {
-	return function (err) {
-		vm.$dialog.messageBox(title, errorMessage(err), "error", false);
-	};
-}
-
-/**
- * 获取URL中路径的某一片段
- *
- * @param index {int} 位置，负数表示从后往前查找
- * @return {String} 片段的值，找不到则返回null
- */
-export function getUrlPathPart(index) {
-	const path = window.location.pathname.split("/");
-	if (index < 0 && path.length >= -index) {
-		return path[path.length + index]; // index: [-path.length - 1, -1]
-	} else if (index >= 0 && path.length > index) {
-		return path[index]; // index: [0, path.length - 1]
-	}
-	return null;
-}
 
 /**
  * 获取URL中查询参数的值
