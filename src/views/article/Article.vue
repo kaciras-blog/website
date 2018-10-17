@@ -137,7 +137,7 @@ export default {
 </script>
 
 <style module lang="less">
-@import "../../css/ToBeImport";
+@import "../../css/Imports";
 
 .article {
 	padding: 0 .8rem;

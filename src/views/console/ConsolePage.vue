@@ -49,7 +49,7 @@ export default {
 </script>
 
 <style module lang="less">
-@import "../../css/ToBeImport";
+@import "../../css/Imports";
 
 .container {
 	height: 100vh;

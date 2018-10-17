@@ -154,7 +154,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-@import "../../css/ToBeImport";
+@import "../../css/Imports";
 
 .slide {
 	margin: 1.5rem 0;

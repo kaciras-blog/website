@@ -99,7 +99,7 @@ export default {
 
 
 <style module lang="less">
-@import "../../css/ToBeImport.less";
+@import "../../css/Imports.less";
 
 .container {
 	display: grid;

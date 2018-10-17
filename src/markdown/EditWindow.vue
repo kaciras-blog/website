@@ -104,7 +104,7 @@ export default {
 </script>
 
 <style lang="less">
-@import "../css/ToBeImport";
+@import "../css/Imports";
 
 .kx-markdown-toolbar {
 	display: flex;

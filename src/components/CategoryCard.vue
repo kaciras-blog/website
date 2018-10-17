@@ -20,7 +20,7 @@ export default {
 </script>
 
 <style module lang="less">
-@import "../css/ToBeImport";
+@import "../css/Imports";
 
 .container {
 	display: inline-block;

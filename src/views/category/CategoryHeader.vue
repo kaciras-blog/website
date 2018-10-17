@@ -43,7 +43,7 @@ export default {
 </script>
 
 <style module lang="less">
-@import "../../css/ToBeImport.less";
+@import "../../css/Imports.less";
 
 .container {
 	margin-top: -4rem;

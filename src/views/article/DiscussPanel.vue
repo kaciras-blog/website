@@ -72,7 +72,7 @@ export default {
 </script>
 
 <style lang="less">
-@import "../../css/ToBeImport";
+@import "../../css/Imports";
 
 .discuss {
 	margin-top: 3rem;
