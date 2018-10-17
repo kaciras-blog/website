@@ -39,7 +39,7 @@ import api from "../../api.js";
  * @param count 加载的文章数
  * @return {string} 指向下一页的URL，相对路径
  */
-function nextPageUrl(route, count) {
+function nextPageUrl (route, count) {
 	const params = Object.assign({}, route.query);
 	const pairs = [];
 	for (const k of Object.keys(params)) {
@@ -56,7 +56,7 @@ const indexStoreModule = {
 		items: null,
 	}),
 	actions: {
-		fetchItem({ commit }, { start,cancelToken, prototype }) {
+		fetchItem ({ commit }, { start,cancelToken, prototype }) {
 			const configuredApi = api.article.withCancelToken(cancelToken).withPrototype(prototype);
 
 			const loadHots = configuredApi.getHots()
@@ -79,11 +79,11 @@ export default {
 		ArticlePreviewItem,
 		AsidePanel,
 	},
-	async asyncData(store, route, cancelToken, prototype) {
+	async asyncData (store, route, cancelToken, prototype) {
 		store.registerModule("index", indexStoreModule);
 		return store.dispatch("index/fetchItem", { start: route.params.index, cancelToken, prototype });
 	},
-	data() {
+	data () {
 		const data = {
 			category: this.$route.query.category,
 			cpath: null,
@@ -103,14 +103,14 @@ export default {
 		return data;
 	},
 	methods: {
-		async loadPage(items, size) {
+		async loadPage (items, size) {
 			const { $route, category, index } = this;
 			const loaded = await api.article.getList(category, index + items.length, size);
 			items.push.apply(items, loaded);
 			return nextPageUrl($route, items.length);
 		},
 	},
-	destroyed() {
+	destroyed () {
 		if (this.$store.state.index) {
 			this.$store.unregisterModule("index");
 		}

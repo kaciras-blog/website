@@ -9,14 +9,14 @@
 export default {
 	name: "app",
 	methods: {
-		mainDialog() {
+		mainDialog () {
 			this.$dialog.show("lucky-number");
 		},
 		/**
 		 *
 		 * @param event {MouseEvent}
 		 */
-		contextMenu(event) {
+		contextMenu (event) {
 			if (event.button !== 2) {
 				return;
 			}

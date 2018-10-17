@@ -9,7 +9,7 @@ export default {
 	name: "config-dialog",
 	props: ["data"],
 	methods: {
-		ok() {
+		ok () {
 
 		},
 	},

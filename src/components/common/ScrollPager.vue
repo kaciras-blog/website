@@ -31,23 +31,23 @@ const ALL_LOADED = "ALL_LOADED";
 
 class LoadTask {
 
-	constructor(vm) {
+	constructor (vm) {
 		this._finish = false;
 		this._vm = vm;
 	}
 
-	complete(allLoaded = false) {
+	complete (allLoaded = false) {
 		// 可能一次加载后空余高度仍达不到activeHeight，还得继续加载
 		if (!this._vm.tryLoadPage()) {
 			this.finish(allLoaded ? ALL_LOADED : FREE);
 		}
 	}
 
-	completeWithError() {
+	completeWithError () {
 		this.finish(FAILED);
 	}
 
-	finish(state) {
+	finish (state) {
 		if (this._finish) {
 			throw new Error("不能重复设置加载的结果");
 		}
@@ -80,17 +80,17 @@ export default {
 			default: FREE,
 		},
 	},
-	data() {
+	data () {
 		/* free,fail,loading,allLoaded */
 		return { state: this.initState };
 	},
 	computed: {
-		loadable() {
+		loadable () {
 			return [ALL_LOADED, LOADING].indexOf(this.state) < 0;
 		},
 	},
 	methods: {
-		tryLoadPage() {
+		tryLoadPage () {
 			const { state, activeHeight } = this;
 			if (state !== FREE)
 				return;
@@ -102,13 +102,13 @@ export default {
 			}
 			return remain < activeHeight;
 		},
-		loadPage() {
+		loadPage () {
 			if (!this.loadable) return;
 			this.state = LOADING;
 			this.$emit("load-page", new LoadTask(this));
 		},
 	},
-	mounted() {
+	mounted () {
 		if (this.autoLoad)
 			window.addEventListener("scroll", this.tryLoadPage);
 		this.tryLoadPage();

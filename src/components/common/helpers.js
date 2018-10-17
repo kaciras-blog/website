@@ -1,13 +1,13 @@
 export class VueMultiWatcher {
 
-	constructor(vm, paths, callback, options) {
+	constructor (vm, paths, callback, options) {
 		this.vm = vm;
 		this.callback = callback;
 		this.once = options.once;
 		this.unwatchs = paths.map(path => vm.$watch(path, () => this.handleEvent(), options));
 	}
 
-	handleEvent(newVal, oldVal) {
+	handleEvent (newVal, oldVal) {
 		const { vm, once, callback } = this;
 		if (once) {
 			this.unwatch();
@@ -15,7 +15,7 @@ export class VueMultiWatcher {
 		callback.call(vm, newVal, oldVal);
 	}
 
-	unwatch() {
+	unwatch () {
 		this.unwatchs.forEach(unwatch => unwatch());
 	}
 }
@@ -29,7 +29,7 @@ export class VueMultiWatcher {
  * @param onDragging {Function} 回调，在拖动中不断调用
  * @return {Promise} 在拖动结束后resolve
  */
-export function drag(el, startX, startY, onDragging) {
+export function drag (el, startX, startY, onDragging) {
 	const clientRect = el.getBoundingClientRect();
 
 	//按住时窗口的左上角坐标

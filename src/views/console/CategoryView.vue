@@ -57,7 +57,7 @@ export default {
 		parent: Number,
 	},
 	computed: {
-		styleVars() {
+		styleVars () {
 			const { item, editable } = this;
 			const vars = {};
 
@@ -71,20 +71,20 @@ export default {
 		},
 	},
 	methods: {
-		setCover() {
+		setCover () {
 			if (this.editable)
 				api.misc.uploadImageFile().then(name => this.item.cover = name);
 		},
-		setBackground() {
+		setBackground () {
 			if (this.editable)
 				api.misc.uploadImageFile().then(name => this.item.background = name);
 		},
-		async move() {
+		async move () {
 			const target = await this.$dialog.show(SelectCategoryDialog);
 			const moveType = await this.$dialog.show(CategoryMoveTypeDialog);
 			api.category.move(this.item.id, target.id, moveType);
 		},
-		remove() {
+		remove () {
 			api.category.deleteOne(this.item.id).then(() => this.$emit("removed"));
 		},
 	},

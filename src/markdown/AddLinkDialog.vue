@@ -25,14 +25,14 @@
 <script>
 export default {
 	name: "AddLinkDialog",
-	data() {
+	data () {
 		return {
 			text: "",
 			href: "",
 		};
 	},
 	methods: {
-		ok() {
+		ok () {
 			const data = this.$data;
 			if (!data.href) {
 				return this.$dialog.close();
@@ -42,7 +42,7 @@ export default {
 			}
 			this.$dialog.close(data);
 		},
-		cancel() {
+		cancel () {
 			this.$dialog.close();
 		},
 	},

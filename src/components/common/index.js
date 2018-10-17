@@ -15,7 +15,7 @@ import KxBaseDialog from "./KxBaseDialog.vue";
 import KxContextMenu from "./KxContextMenu.vue";
 
 
-function installKxDialog(Vue) {
+function installKxDialog (Vue) {
 	Vue.component(KxDialogContainer.name, KxDialogContainer);
 	Vue.component(KxBaseDialog.name, KxBaseDialog);
 	Vue.component(KxContextMenu.name, KxContextMenu);
@@ -31,7 +31,7 @@ function installKxDialog(Vue) {
 		 * @param data 传递给弹窗的数据
 		 * @return {Promise<*>} 一个Promise，在窗口关闭后完成，使用then函数来获取窗口的返回值
 		 */
-		show(component, data) {
+		show (component, data) {
 			return new Promise(resolve => eventBus.$emit("show", { component, data, resolve }));
 		},
 		/**
@@ -39,7 +39,7 @@ function installKxDialog(Vue) {
 		 *
 		 * @param data 返回给调用方的结果。
 		 */
-		close(data) {
+		close (data) {
 			eventBus.$emit("close", data);
 		},
 	};
@@ -53,7 +53,7 @@ function installKxDialog(Vue) {
  *
  * @param Vue Vue类型，使用Vue.use()来注册该插件
  */
-function install(Vue) {
+function install (Vue) {
 	Vue.component(SkFadingCircle.name, SkFadingCircle);
 	Vue.component(ButtonPager.name, ButtonPager);
 	Vue.component(ScrollPager.name, ScrollPager);
@@ -78,7 +78,7 @@ function install(Vue) {
 
 	// 文本选区绑定
 	Vue.directive("bind-selection", {
-		inserted(el, { expression, modifiers }, vnode) {
+		inserted (el, { expression, modifiers }, vnode) {
 			const vm = vnode.context;
 			vm.$watch(expression, nv => {
 				const [s, e] = nv;
@@ -91,13 +91,13 @@ function install(Vue) {
 
 	// 文本选区改变监听
 	Vue.directive("on-selection-changed", {
-		inserted(el, { expression }, vnode) {
+		inserted (el, { expression }, vnode) {
 			const vm = vnode.context;
 
 			let oldStart = el.selectionStart;
 			let oldEnd = el.selectionEnd;
 
-			function handleSelect() {
+			function handleSelect () {
 				const { selectionStart, selectionEnd } = el;
 				if (oldStart !== selectionStart || oldEnd !== selectionEnd) {
 					oldStart = selectionStart;
@@ -132,4 +132,5 @@ if (GlobalVue) {
 	GlobalVue.use(install);
 }
 
+export * from "./helpers";
 export default install;

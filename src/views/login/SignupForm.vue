@@ -61,7 +61,7 @@ import { REFRESH_USER } from "../../store/types";
 export default {
 	name: "SignupPanel",
 	components: { BaseLoginForm },
-	data() {
+	data () {
 		return {
 			message: "",
 			captcha: null,
@@ -74,7 +74,7 @@ export default {
 		};
 	},
 	methods: {
-		async signup() {
+		async signup () {
 			try {
 				await api.user.signup(this.form);
 				await this.$store.dispatch(REFRESH_USER);
@@ -83,16 +83,16 @@ export default {
 				this.message = errorMessage(e);
 			}
 		},
-		switchPanel() {
+		switchPanel () {
 			this.$emit("switch-panel", "LoginPanel");
 		},
-		updateCaptcha() {
+		updateCaptcha () {
 			this.captcha = api.misc.captchaAddress;
 			this.form.captcha = "";
 			this.$refs.captchaInput.focus();
 		},
 	},
-	mounted() {
+	mounted () {
 		this.captcha = api.misc.captchaAddress;
 	},
 };

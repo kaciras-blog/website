@@ -28,14 +28,14 @@ export default {
 		initNextUrl: String,
 		initState: String,
 	},
-	data() {
+	data () {
 		return {
 			items: this.initItems.slice(), // 复制一份避免影响到父组件的状态
 			nextPageUrl: this.initNextUrl,
 		};
 	},
 	methods: {
-		async loadPage(task) {
+		async loadPage (task) {
 			const { loader, items, pageSize } = this;
 
 			try {

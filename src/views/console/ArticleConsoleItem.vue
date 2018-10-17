@@ -61,15 +61,15 @@ export default {
 		},
 	},
 	methods: {
-		edit() {
+		edit () {
 			api.draft.createFromPost(this.value.id)
 				.then(id => window.location.href = "/edit/" + id)
 				.catch(err => console.log(err));
 		},
-		move() {
+		move () {
 
 		},
-		remove() {
+		remove () {
 			const id = this.value.id;
 			api.article.deleteOne(id)
 				.then(() => deleteOn(this.articles, a => a.id === id))

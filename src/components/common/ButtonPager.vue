@@ -1,7 +1,7 @@
 <script>
 import KxButton from "./KxButton";
 
-function contentOf(type, index) {
+function contentOf (type, index) {
 	switch (type) {
 		case "FIRST":
 			return "首页";
@@ -18,7 +18,7 @@ function contentOf(type, index) {
 	}
 }
 
-function textButton(createElement, type, index) {
+function textButton (createElement, type, index) {
 	if (type === "OMIT") {
 		return createElement("span", { staticClass: "omit" }, "...");
 	}
@@ -35,7 +35,7 @@ function textButton(createElement, type, index) {
 	}, content);
 }
 
-function simpleButton(createElement, type, index) {
+function simpleButton (createElement, type, index) {
 	if (type === "OMIT") {
 		return createElement("span", { staticClass: "omit" }, "...");
 	}
@@ -74,7 +74,7 @@ export default {
 			default: "button", // text
 		},
 	},
-	render(h) {
+	render (h) {
 		const { current, omitPos, totalPage, theme } = this;
 		const buttons = [];
 
@@ -133,21 +133,21 @@ export default {
 		return h("div", { staticClass: "text-pager" }, [btnWrapper]);
 	},
 	computed: {
-		current() {
+		current () {
 			return this.index + 1;
 		},
-		totalPage() {
+		totalPage () {
 			return Math.max(0, Math.floor((this.totalCount - 1) / this.pageSize) + 1);
 		},
 	},
 	methods: {
-		jump(event) {
+		jump (event) {
 			if (event.key === "Enter") {
 				this.$emit("load-page", event.target.value - 1);
 				event.target.value = "";
 			}
 		},
-		showPage(index) {
+		showPage (index) {
 			this.$emit("load-page", index - 1);
 		},
 	},

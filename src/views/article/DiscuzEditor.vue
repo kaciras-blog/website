@@ -50,13 +50,13 @@ export default {
 		content: "",
 	}),
 	computed: {
-		discusser() {
+		discusser () {
 			return this.user || { id: 0, head: "/image/akalin.jpg", name: "(匿名评论)" };
 		},
 		...mapState(["user"]),
 	},
 	methods: {
-		async doSubmit() {
+		async doSubmit () {
 			const { content, submit, $dialog } = this;
 
 			if (!content || /^\s*$/.test(content)) {

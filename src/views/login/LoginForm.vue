@@ -55,7 +55,7 @@ export default {
 		},
 	}),
 	methods: {
-		async login() {
+		async login () {
 			try {
 				await api.user.login(this.form);
 				await this.$store.dispatch(REFRESH_USER);
@@ -64,7 +64,7 @@ export default {
 				this.message = errorMessage(e);
 			}
 		},
-		switchPanel() {
+		switchPanel () {
 			this.$emit("switch-panel", "SignupPanel");
 			// this.$messageBox("别注册了", "个人博客你注册干嘛？\n评论的话匿名的就好")
 		},

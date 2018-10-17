@@ -23,7 +23,7 @@ export default {
 		},
 	},
 	computed: {
-		selected() {
+		selected () {
 			return this.selection[0] !== this.selection[1];
 		},
 	},

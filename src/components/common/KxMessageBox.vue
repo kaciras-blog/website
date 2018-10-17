@@ -44,7 +44,7 @@ export default {
 		},
 	},
 	computed: {
-		message() {
+		message () {
 			const { content } = this;
 			if (typeof(content) === "string") {
 				return content;
@@ -53,7 +53,7 @@ export default {
 		},
 	},
 	methods: {
-		dimmerClick() {
+		dimmerClick () {
 			if (this.dimmerClose) {
 				this.$dialog.close(false);
 			}

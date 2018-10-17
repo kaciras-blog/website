@@ -52,7 +52,7 @@ export default {
 		},
 	},
 	computed: {
-		htmlText() {
+		htmlText () {
 			this.$nextTick(kxMarkdown.afterConvert);
 			return convertor.render(this.text);
 		},
@@ -62,7 +62,7 @@ export default {
 		 * 浏览器默认的tab键用于切换选择的元素。
 		 * 在文本框上监听@keydown.tab.prevent="inputTab"，使其能够输入tab字符。
 		 */
-		insertTab() {
+		insertTab () {
 			const selStart = this.selection[0];
 			const selEnd = this.selection[1];
 
@@ -72,11 +72,11 @@ export default {
 			this.$emit("update:text", v.substring(0, selStart) + "\t" + v.substring(selEnd, v.length));
 			this.$emit("update:selection", [newEnd, newEnd]);
 		},
-		handleSelect(s, e) {
+		handleSelect (s, e) {
 			this.$emit("update:selection", [s, e]);
 		},
 	},
-	mounted() {
+	mounted () {
 		const { textarea, preview } = this.$refs;
 		textarea.addEventListener("scroll", syncScroll);
 		preview.addEventListener("scroll", syncScroll);
@@ -85,7 +85,7 @@ export default {
 		 * 按百分比同步滚动，注意原文与预览的对应内容并非一定在对应百分比的位置上。
 		 * BUG: Firefox 有一个操蛋的平滑滚动功能
 		 */
-		function syncScroll(event) {
+		function syncScroll (event) {
 			let el = textarea;
 			let other = preview;
 

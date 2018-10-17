@@ -45,7 +45,7 @@ import { assignUpdate } from "../../utils";
 import { VueMultiWatcher } from "../../components/common/helpers";
 
 
-function convertToTransfer(data) {
+function convertToTransfer (data) {
 	return Object.assign({
 		id: data.archive.id,
 		articleId: data.archive.articleId,
@@ -53,7 +53,7 @@ function convertToTransfer(data) {
 	}, data.metadata);
 }
 
-function convertToFront(json, data) {
+function convertToFront (json, data) {
 	assignUpdate(json, data);
 	assignUpdate(json, data.archive);
 	assignUpdate(json, data.metadata);
@@ -88,7 +88,7 @@ export default {
 		autoSaveError: false,
 	}),
 	methods: {
-		async addImage() {
+		async addImage () {
 			const res = await api.misc.uploadImageFile();
 			const [selStart, selEnd] = this.selection;
 			const p = selStart + 2;
@@ -97,12 +97,12 @@ export default {
 			this.content = v.substring(0, selEnd) + `![](${res})` + v.substring(selEnd);
 			this.selection = [p, p];
 		},
-		async metadataDialog() {
+		async metadataDialog () {
 			const res = await this.$dialog.show(MetadataDialog, { metadata: this.metadata });
 			if (res)
 				this.metadata = res;
 		},
-		async saveManually() {
+		async saveManually () {
 			const { archive } = this;
 			try {
 				await api.draft.saveNewHistory(archive.id, archive.saveCount, convertToTransfer(this.$data));
@@ -112,11 +112,11 @@ export default {
 				this.$dialog.messageBox("保存草稿", "保存失败，请手动备份", "error");
 			}
 		},
-		watchChanges() {
+		watchChanges () {
 			new VueMultiWatcher(this, ["metadata", "content"],
 				() => setTimeout(this.autoSave, 10 * 60 * 1000), { once: true });
 		},
-		autoSave() {
+		autoSave () {
 			const { archive } = this;
 			api.draft.save(archive.id, archive.saveCount, convertToTransfer(this.$data))
 				.then(() => {
@@ -126,11 +126,11 @@ export default {
 				})
 				.catch(() => this.autoSaveError = true);
 		},
-		publish() {
+		publish () {
 			this.$dialog.show(PublishDialog, this.$data);
 		},
 	},
-	async beforeMount() {
+	async beforeMount () {
 		const id = this.$route.params["id"];
 		if (!id) {
 			return; // 必须先创建草稿

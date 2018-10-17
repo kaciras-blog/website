@@ -4,7 +4,7 @@ import { CancelToken } from "./utils";
 
 const cancelToken = CancelToken.never();
 
-function onReadyAsync(router) {
+function onReadyAsync (router) {
 	return new Promise((resolve, reject) => router.onReady(resolve, reject));
 }
 

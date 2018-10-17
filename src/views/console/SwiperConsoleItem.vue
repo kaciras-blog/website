@@ -50,13 +50,13 @@ export default {
 		required: true,
 	},
 	methods: {
-		setPicture() {
+		setPicture () {
 			api.misc.uploadImageFile().then(name => this.item.slide.picture = name);
 		},
-		remove() {
+		remove () {
 			this.$emit("remove", this.item.tid);
 		},
-		dragStart(event) {
+		dragStart (event) {
 			if (!event.touches && event.button !== 0) {
 				return; // 鼠标右键不拖动
 			}

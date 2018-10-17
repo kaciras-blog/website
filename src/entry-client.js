@@ -18,7 +18,7 @@ document.body.appendChild(curtain.$el);
 
 
 Vue.mixin({
-	beforeRouteUpdate(to, from, next) {
+	beforeRouteUpdate (to, from, next) {
 		const { asyncData } = this.$options;
 		if (asyncData) {
 			asyncData({ store: this.$store, route: to })
@@ -43,12 +43,12 @@ store.dispatch(REFRESH_USER)
  *   3.处理一些异常情况，例如跳转。在出现内部错误时显示错误页面。
  *   4.允许用户取消正在进行的预加载，并中止网络请求。
  */
-function initAppAndRouterHook() {
+function initAppAndRouterHook () {
 
 	let cancelToken = new CancelToken();
 	curtain.$on("canceled", () => cancelToken.cancel());
 
-	async function prefetch(to, from, next) {
+	async function prefetch (to, from, next) {
 		if (cancelToken.canceled) return;
 
 		const matched = router.getMatchedComponents(to);
@@ -99,7 +99,7 @@ function initAppAndRouterHook() {
 	});
 
 
-	function handleError(err, next) {
+	function handleError (err, next) {
 		if (cancelToken.canceled) {
 			return;
 		}

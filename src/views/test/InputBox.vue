@@ -17,14 +17,14 @@
 export default {
 	name: "InputBox",
 	props: ["data"],
-	data() {
+	data () {
 		return Object.assign({
 			name: "",
 			age: "18",
 		}, this.data);
 	},
 	methods: {
-		async ok() {
+		async ok () {
 			let num = parseInt(this.age);
 			if (Number.isNaN(num)) {
 				await this.$dialog.messageBox("输入错误", "您输入的年龄不是数字", "error");

@@ -64,7 +64,7 @@ export default {
 		},
 	}),
 	computed: {
-		optionalStyle() {
+		optionalStyle () {
 			const style = {};
 
 			if (this.position.manual) {
@@ -76,14 +76,14 @@ export default {
 		},
 	},
 	methods: {
-		close() {
+		close () {
 			if (this.defaultClose) {
 				this.$dialog.close();
 			} else {
 				this.$emit("close-button-clicked");
 			}
 		},
-		drag(event) {
+		drag (event) {
 			if (!this.draggable) {
 				return;
 			}

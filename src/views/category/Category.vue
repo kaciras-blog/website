@@ -32,7 +32,7 @@ export default {
 	components: {
 		CategoryHeader, CategoryBody,
 	},
-	asyncData(store, route, cancelToken, protorype) {
+	asyncData (store, route, cancelToken, protorype) {
 		store.registerModule("category", storeModule);
 		api.category
 			.withCancelToken(cancelToken)
@@ -41,16 +41,16 @@ export default {
 			.then(items => store.commit("category/setItem", items));
 	},
 	prefetch: true,
-	title() {
+	title () {
 		return this.category.name;
 	},
 	computed: {
-		navStyle() {
+		navStyle () {
 			return { "--background": `url(${this.category.bestBackground || require("../../assets/index-banner.jpg")})` };
 		},
 		...mapState({ category: state => state.category.item }),
 	},
-	destroyed() {
+	destroyed () {
 		this.$store.unregisterModule("category");
 	},
 };

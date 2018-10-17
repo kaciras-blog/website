@@ -34,14 +34,14 @@ import api from "../../api.js";
 
 export default {
 	name: "AsidePanel",
-	data() {
+	data () {
 		const store = this.$store.state.index;
 		if (store) {
 			return { hots: store.hots };
 		}
 		return { hots: null };
 	},
-	beforeMount() {
+	beforeMount () {
 		if(!this.hots)
 			api.article.getHots().then(hots => this.hots = hots);
 	},

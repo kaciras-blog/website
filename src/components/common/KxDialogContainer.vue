@@ -17,7 +17,7 @@ export default {
 		stack: [], // {id, component, data, callback} 4元组
 		counter: 0,
 	}),
-	created() {
+	created () {
 		this.$dialog.eventBus.$on("show", config => {
 			config.id = ++this.counter;
 			this.stack.push(config);

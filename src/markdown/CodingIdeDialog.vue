@@ -12,7 +12,7 @@
 export default {
 	name: "KxMarkdownIde",
 	methods: {
-		ok() {
+		ok () {
 
 		},
 	},

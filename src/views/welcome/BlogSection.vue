@@ -35,7 +35,7 @@ export default {
 		loading: true,
 		slides: [],
 	}),
-	created() {
+	created () {
 		api.recommend.swiper.get().then(slides => {
 			let counter = 0;
 			slides.forEach(s => s.tid = ++counter);

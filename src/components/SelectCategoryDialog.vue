@@ -75,7 +75,7 @@ export default {
 		stack: [],
 	}),
 	methods: {
-		select(category) {
+		select (category) {
 			if (category.selected) {
 				deleteOn(this.selected, cate => cate.id === category.id);
 				category.selected = false;
@@ -90,33 +90,33 @@ export default {
 				this.$set(category, "selected", true);
 			}
 		},
-		ok() {
+		ok () {
 			const { multiple, selected } = this;
 			this.$dialog.close(multiple ? selected : selected[0]);
 		},
-		cancel() {
+		cancel () {
 			this.$dialog.close();
 		},
-		clear() {
+		clear () {
 			this.selected.forEach(cate => cate.selected = false);
 			this.selected = [];
 		},
-		showChild(category) {
+		showChild (category) {
 			this.stack.push(this.current);
 			this.current = category;
 			api.category.getChildren(category.id).then(res => this.categories = res);
 		},
-		gotoTop() {
+		gotoTop () {
 			this.current = null;
 			api.category.getChildren(0).then(r => this.categories = r);
 		},
-		gotoParent() {
+		gotoParent () {
 			this.current = this.stack.pop();
 			const id = this.current ? this.current.id : 0;
 			api.category.getChildren(id).then(r => this.categories = r);
 		},
 	},
-	created() {
+	created () {
 		api.category.getChildren(0).then(res => this.categories = res);
 	},
 };

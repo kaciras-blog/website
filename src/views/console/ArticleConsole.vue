@@ -29,7 +29,7 @@ import ArticleConsoleItem from "./ArticleConsoleItem";
 export default {
 	name: "ArticleConsole",
 	components: { ArticleConsoleItem },
-	data() {
+	data () {
 		return {
 			loading: true,
 			allLoaded: false,
@@ -37,12 +37,12 @@ export default {
 		};
 	},
 	methods: {
-		newArticle() {
+		newArticle () {
 			api.draft.createNew()
 				.then(id => this.$router.push("/edit/" + id))
 				.catch(err => console.log(err));
 		},
-		loadArticles() {
+		loadArticles () {
 			this.loading = true;
 			const len = this.articles.length;
 
@@ -55,7 +55,7 @@ export default {
 				.catch(err => this.$dialog.messageBox("加载文章失败", "原因：" + err, "error"));
 		},
 	},
-	created() {
+	created () {
 		this.loadArticles();
 	},
 };

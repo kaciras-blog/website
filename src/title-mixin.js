@@ -1,5 +1,5 @@
 const serverTitleMixin = {
-	created() {
+	created () {
 		let { title, metadata } = this.$options;
 
 		if (typeof title === "function") {
@@ -18,7 +18,7 @@ const serverTitleMixin = {
 };
 
 const clientTitleMixin = {
-	beforeMount() {
+	beforeMount () {
 		let { title } = this.$options; // 关键字和描述就不管了
 
 		if (typeof title === "function") {

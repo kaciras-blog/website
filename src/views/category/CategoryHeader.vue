@@ -35,7 +35,7 @@ export default {
 		},
 	},
 	methods: {
-		goto(category) {
+		goto (category) {
 
 		},
 	},

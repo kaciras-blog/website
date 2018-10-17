@@ -26,11 +26,11 @@ export default {
 	},
 	computed:{
 		// 过滤器不支持v-html
-		html() {
+		html () {
 			return KxMarkdown.renderHtml(this.value.content);
 		},
 	},
-	mounted() {
+	mounted () {
 		KxMarkdown.afterConvert();
 	},
 };

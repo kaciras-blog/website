@@ -45,7 +45,7 @@ export default {
 		counter: 0, // 轮播自身不带ID，故这里给他们加一个。
 	}),
 	methods: {
-		createNew() {
+		createNew () {
 			this.slides.unshift({
 				open: true,
 				tid: ++this.counter,
@@ -57,15 +57,15 @@ export default {
 				},
 			});
 		},
-		remove(id) {
+		remove (id) {
 			deleteOn(this.slides, s => s.tid === id);
 		},
-		submit() {
+		submit () {
 			api.recommend.swiper.set(this.slides.map(item => item.slide))
 				.then(() => this.$dialog.messageBox("修改轮播", "修改成功"))
 				.catch(() => alert("失败了"));
 		},
-		drag({ event, item }) {
+		drag ({ event, item }) {
 			const slides = this.slides;
 			const slen = slides.length;
 			let index;
@@ -107,7 +107,7 @@ export default {
 					},
 				};
 
-				function moveTo(i) {
+				function moveTo (i) {
 					if (index === i) return;
 					const hold = slides.splice(index, 1)[0];
 					index = i;
@@ -146,7 +146,7 @@ export default {
 			});
 		},
 	},
-	beforeMount() {
+	beforeMount () {
 		api.recommend.swiper.get().then(slides => slides
 			.forEach(slide => this.slides.push({ slide, open: false, tid: ++this.counter })));
 	},

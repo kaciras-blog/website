@@ -45,7 +45,7 @@ export default {
 		counter: 0,
 	}),
 	methods: {
-		ck() {
+		ck () {
 			return sleep(3000 * 9999);
 		},
 	},

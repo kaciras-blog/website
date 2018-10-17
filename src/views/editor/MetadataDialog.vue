@@ -40,17 +40,17 @@ export default {
 	props: {
 		metadata: Object,
 	},
-	data() {
+	data () {
 		return this.metadata;
 	},
 	methods: {
-		ok() {
+		ok () {
 			this.$dialog.close(this.$data);
 		},
-		cancel() {
+		cancel () {
 			this.$dialog.close();
 		},
-		changeCover() {
+		changeCover () {
 			api.misc.uploadImageFile().then(name => this.cover = name);
 		},
 	},

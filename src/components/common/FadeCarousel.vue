@@ -31,7 +31,7 @@ export default {
 		index: Number,
 		speed: Number,
 	},
-	data() {
+	data () {
 		return {
 			current: this.index,
 			next: 0,
@@ -39,7 +39,7 @@ export default {
 		};
 	},
 	watch: {
-		index(nv, ov) {
+		index (nv, ov) {
 			const startFade = () => {
 				this.$refs.test.offsetHeight;
 				this.scrolling = true;

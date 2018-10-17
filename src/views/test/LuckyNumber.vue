@@ -26,12 +26,12 @@ export default {
 		inputed: false,
 	}),
 	methods: {
-		async inputDialog() {
+		async inputDialog () {
 			const data = await this.$dialog.show(InputBox, this.$data);
 			this.inputed = true;
 			Object.assign(this.$data, data);
 		},
-		luckyNum() {
+		luckyNum () {
 			if (!this.inputed) {
 				return this.$dialog.messageBox("无法计算", "请先随意输入姓名和年龄", "warn");
 			}
@@ -51,7 +51,7 @@ export default {
 				],
 			}).then(this.$dialog.close);
 		},
-		close() {
+		close () {
 			this.$dialog.close();
 		},
 	},

@@ -38,7 +38,7 @@ export default {
 		},
 		theme: String,
 	},
-	data() {
+	data () {
 		return {
 			index: this.start,
 			pageSize: this.initPageSize,
@@ -48,7 +48,7 @@ export default {
 		};
 	},
 	methods: {
-		loadPage(index) {
+		loadPage (index) {
 			const { pageSize, _loading, loader } = this;
 			if (_loading) {
 				_loading.cancel();
@@ -67,26 +67,26 @@ export default {
 				}
 			}).finally(() => this._loading = null);
 		},
-		switchPage(index) {
+		switchPage (index) {
 			this.loadPage(index).then(this.scrollToStart);
 		},
-		refresh() {
+		refresh () {
 			this.loadPage(this.index);
 		},
-		switchToLast() {
+		switchToLast () {
 			const { loadPage, total, pageSize, scrollToEnd } = this;
 			loadPage(Math.floor(total / pageSize)).then(scrollToEnd);
 		},
 		// scroll helper methods
-		scrollToStart() {
+		scrollToStart () {
 			// # 窗口高，楼中楼滚到屏幕顶了？
 			// this.$nextTick(() => scrollToElementStart(this.$el));
 		},
-		scrollToEnd() {
+		scrollToEnd () {
 			// this.$nextTick(() => scrollToElementEnd(this.$el));
 		},
 	},
-	beforeMount() {
+	beforeMount () {
 		if(!this.items.length) {
 			this.refresh();
 		}

@@ -46,7 +46,7 @@ export default {
 		},
 	},
 	methods: {
-		async deleteDraft() {
+		async deleteDraft () {
 			const accept = await this.$dialog.messageBox("删除草稿", "删除后不可恢复，是否确定？", "warn", true);
 			if (!accept) {
 				return;

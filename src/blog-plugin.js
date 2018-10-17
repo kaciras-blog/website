@@ -12,11 +12,11 @@ import MessageBox from "./components/common/KxMessageBox";
  * @param url 在URL中显示的文章名
  * @return {string} URL中的Path部分。
  */
-export function articleLink({ id, urlTitle }) {
+export function articleLink ({ id, urlTitle }) {
 	return `/article/${id}/${urlTitle}`;
 }
 
-export function categoryLink({ id, name }) {
+export function categoryLink ({ id, name }) {
 	return `/category/${id}/${name}`;
 }
 

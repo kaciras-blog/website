@@ -36,7 +36,7 @@ export default {
 		running: false,
 	}),
 	methods: {
-		handleClick() {
+		handleClick () {
 			const { running, waiting, onClick } = this;
 			if (running && waiting) {
 				return;

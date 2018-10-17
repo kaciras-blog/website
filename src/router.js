@@ -17,7 +17,7 @@ Vue.use(Router);
  * @param savedPosition 浏览器的[前进/后退]按钮触发时，上次页面的位置
  * @return {{ x: number, y: number }} 滚动的位置
  */
-function scrollBehavior(to, from, savedPosition) {
+function scrollBehavior (to, from, savedPosition) {
 	if (savedPosition) {
 		return savedPosition;
 	} else {

@@ -7,7 +7,7 @@ import $ from "jquery";
  * @param text {String} 原始文本
  * @return {String} 转义后的文本
  */
-export function escapeHtml(text) {
+export function escapeHtml (text) {
 	const map = {
 		"&": "&amp;",
 		"<": "&lt;",
@@ -19,14 +19,14 @@ export function escapeHtml(text) {
 }
 
 
-export function scrollToElementStart(element) {
+export function scrollToElementStart (element) {
 	if (typeof element === "string") {
 		element = document.getElementById(element);
 	}
 	$("html,body").animate({ scrollTop: element.offsetTop }, 500);
 }
 
-export function scrollToElementEnd(element) {
+export function scrollToElementEnd (element) {
 	if (typeof element === "string") {
 		element = document.getElementById(element);
 	}
@@ -40,7 +40,7 @@ export function scrollToElementEnd(element) {
  * @param object {*} 异常
  * @return {string} 错误信息
  */
-export function errorMessage(object) {
+export function errorMessage (object) {
 	const res = object.response;
 	if (res && res.data && res.data.message) {
 		return res.data.message;
@@ -55,7 +55,7 @@ export function errorMessage(object) {
  * @param name {String} 参数名
  * @return {String} 参数值
  */
-export function getUrlParamater(name) {
+export function getUrlParamater (name) {
 	return new URLSearchParams(window.location.search).get(name);
 }
 
@@ -86,7 +86,7 @@ export const openFile = (multiple = false, accept = "*") => new Promise(resolve 
  * @param predicate 判断函数
  * @return {Array} 被删除的元素
  */
-export function deleteOn(array, predicate) {
+export function deleteOn (array, predicate) {
 	const removed = [];
 	for (let i = array.length - 1; i >= 0; i--) {
 		if (predicate(array[i])) {
@@ -105,7 +105,7 @@ export function deleteOn(array, predicate) {
  * @param dest 目标对象
  * @return {*} 目标对象
  */
-export function assignUpdate(src, dest) {
+export function assignUpdate (src, dest) {
 	for (let k in dest) {
 		if (dest.hasOwnProperty(k) && src.hasOwnProperty(k)) {
 			dest[k] = src[k];
@@ -120,11 +120,11 @@ export function assignUpdate(src, dest) {
  * @param time 时间，毫秒
  * @return {Promise} 在指定的时间后完成的Promise
  */
-export function sleep(time) {
+export function sleep (time) {
 	return new Promise(resolve => setTimeout(resolve, time));
 }
 
-export function limitFrequency(action, duration, returnValue = null) {
+export function limitFrequency (action, duration, returnValue = null) {
 	let last = 0;
 	return function (...args) {
 		const current = new Date().getTime();
@@ -138,28 +138,28 @@ export function limitFrequency(action, duration, returnValue = null) {
 
 export class CancelToken {
 
-	constructor() {
+	constructor () {
 		this.canceled = false;
 		this.completed = false;
 		this.callbacks = [];
 	}
 
-	cancel() {
+	cancel () {
 		if(!this.completed) {
 			this.canceled = true;
 			this.callbacks.forEach(cb => cb());
 		}
 	}
 
-	onCancel(callback) {
+	onCancel (callback) {
 		this.callbacks.push(callback);
 	}
 
-	complete() {
+	complete () {
 		this.completed = true;
 	}
 
-	static never() {
+	static never () {
 		const token = new CancelToken();
 		token.cancel = () => {};
 		token.onCancel = () => {};

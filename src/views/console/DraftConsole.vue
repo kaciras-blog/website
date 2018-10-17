@@ -40,13 +40,13 @@ export default {
 		loading: true,
 	}),
 	methods: {
-		deleteAll() {
+		deleteAll () {
 			api.draft.clear().then(() => {
 				this.drafts.splice(0, this.drafts.length);
 				this.last = 0;
 			}).catch(() => alert("清空失败!"));
 		},
-		async loadDrafts() {
+		async loadDrafts () {
 			if (this.allLoaded) {
 				return;
 			}
@@ -65,11 +65,11 @@ export default {
 			}
 			this.loading = false;
 		},
-		removeItem(id) {
+		removeItem (id) {
 			deleteOn(this.drafts, d => d.id === id);
 		},
 	},
-	created() {
+	created () {
 		this.loadDrafts();
 	},
 };

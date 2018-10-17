@@ -28,7 +28,7 @@ export default {
 		},
 	},
 	methods: {
-		getSelectedRange(extend) {
+		getSelectedRange (extend) {
 			let [s, e] = this.selection;
 			if (extend) {
 				if (s > 0) {
@@ -39,21 +39,21 @@ export default {
 			}
 			return [s, e];
 		},
-		changeTextArea(start, end, text) {
+		changeTextArea (start, end, text) {
 			const v = this.text;
 			this.$emit("update:text", v.substring(0, start) + text + v.substring(end, v.length));
 		},
-		reselect(start, end) {
+		reselect (start, end) {
 			if (!end) {
 				end = start;
 			}
 			this.$emit("update:selection", [start, end]);
 		},
-		addHeader(level) {
+		addHeader (level) {
 			const prefix = new Array(level + 1).join("#") + " ";
 			this.addPrefixToLines(prefix);
 		},
-		addNewLine(text) {
+		addNewLine (text) {
 			const v = this.text;
 			const index = this.getSelectedRange(false)[0];
 
@@ -67,7 +67,7 @@ export default {
 			this.changeTextArea(index, index, text);
 			this.reselect(index + text.length);
 		},
-		addPrefixToLines(prefix) {
+		addPrefixToLines (prefix) {
 			const [selStart, selEnd] = this.getSelectedRange(true);
 			const lines = this.text.substring(selStart, selEnd).split("\n");
 
@@ -85,7 +85,7 @@ export default {
 			this.changeTextArea(selStart, selEnd, text);
 			this.reselect(selStart, selEnd + lines.length);
 		},
-		switchWrapper(prefix) {
+		switchWrapper (prefix) {
 			const v = this.text;
 			const [selStart, selEnd] = this.getSelectedRange(false);
 			const totalLength = prefix.length + prefix.length;
@@ -103,7 +103,7 @@ export default {
 			this.changeTextArea(selStart, selEnd, text);
 			this.reselect(selStart, end);
 		},
-		async addLink() {
+		async addLink () {
 			const res = await this.$dialog.show(AddLinkDialog);
 			if (res) {
 				const selEnd = this.getSelectedRange(false)[1];

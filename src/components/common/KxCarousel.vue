@@ -47,7 +47,7 @@ export default {
 		index: 0,
 	}),
 	methods: {
-		nextSlide() {
+		nextSlide () {
 			const { index, items } = this;
 			if (index === items.length - 1) {
 				this.switchTo(0);
@@ -55,26 +55,26 @@ export default {
 				this.switchTo(index + 1);
 			}
 		},
-		switchTo(i) {
+		switchTo (i) {
 			clearTimeout(this.$_timer);
 			this.index = i;
 			this.startTimer();
 		},
-		handleEnter() {
+		handleEnter () {
 			if(this.stopOnHover) {
 				clearTimeout(this.$_timer);
 			}
 		},
-		handleLeave() {
+		handleLeave () {
 			if(this.stopOnHover) {
 				this.startTimer();
 			}
 		},
-		startTimer() {
+		startTimer () {
 			this.$_timer = setTimeout(() => this.nextSlide(), this.duration + this.animation);
 		},
 	},
-	mounted() {
+	mounted () {
 		this.startTimer();
 	},
 };

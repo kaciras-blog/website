@@ -67,26 +67,26 @@ export default {
 		stack: [],
 	}),
 	methods: {
-		goto(category) {
+		goto (category) {
 			this.stack.push(this.current);
 			this.current = category;
 			api.category.getChildren(category.id).then(r => this.children = r);
 		},
-		gotoTop() {
+		gotoTop () {
 			this.current = null;
 			api.category.getChildren(0).then(r => this.children = r);
 		},
-		gotoParent() {
+		gotoParent () {
 			this.current = this.stack.pop();
 			const id = this.current ? this.current.id : 0;
 			api.category.getChildren(id).then(r => this.children = r);
 		},
-		createNew() {
+		createNew () {
 			this.stack.push(this.current);
 			this.current = Object.assign({}, _default);
 			this.children = [];
 		},
-		async submit() {
+		async submit () {
 			const { current, stack, $dialog } = this;
 			if (current.id) {
 				await api.category.update(current.id, current);
@@ -98,7 +98,7 @@ export default {
 			}
 		},
 	},
-	created() {
+	created () {
 		api.category.getChildren(0).then(r => this.children = r);
 	},
 };

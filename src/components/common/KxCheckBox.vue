@@ -37,17 +37,17 @@ export default {
 	}),
 	computed: {
 		model: {
-			get() {
+			get () {
 				return typeof this.value === "undefined" ? this.selfValue : this.value;
 			},
-			set(value) {
+			set (value) {
 				this.selfValue = value;
 				this.$emit("input", value);
 			},
 		},
 	},
 	methods: {
-		handleChange(event) {
+		handleChange (event) {
 			this.$emit("changed", event.target.checked);
 		},
 	},

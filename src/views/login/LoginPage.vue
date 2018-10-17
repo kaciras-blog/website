@@ -21,7 +21,7 @@ export default {
 		panel: "loginPanel",
 	}),
 	methods: {
-		switchPanel(panel) {
+		switchPanel (panel) {
 			this.panel = panel;
 		},
 	},

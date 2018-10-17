@@ -82,7 +82,7 @@ export default {
 		},
 	},
 	filters: {
-		shortTime(article) {
+		shortTime (article) {
 			const time = article.create !== article.update
 				? article.update
 				: article.create;
@@ -90,7 +90,7 @@ export default {
 		},
 	},
 	computed: {
-		showUpdate() {
+		showUpdate () {
 			return this.item["create"] !== this.item["update"];
 		},
 	},

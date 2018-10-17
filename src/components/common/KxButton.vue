@@ -15,7 +15,7 @@ export default {
 		// 设置此属性后将在按钮的子元素里加上一个图标
 		icon: String,
 	},
-	render(h, ctx) {
+	render (h, ctx) {
 		let { data, children } = ctx;
 		data.attrs = data.attrs || {};
 		const { attrs } = data;

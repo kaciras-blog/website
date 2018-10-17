@@ -3,7 +3,7 @@ import hljs from "highlight.js";
 import Anchor from "markdown-it-anchor";
 
 
-function myPlugin(markdownIt) {
+function myPlugin (markdownIt) {
 
 	// 给行内代码加个class
 	markdownIt.core.ruler.push("inline_code_class", state => state.tokens
@@ -34,17 +34,17 @@ convertor.use(Anchor, {
 convertor.use(myPlugin);
 
 export default {
-	install(Vue) {
+	install (Vue) {
 		Vue.filter("markdownToHtml", text => convertor.render(text));
 	},
-	afterConvert() {
+	afterConvert () {
 		const images = document.querySelectorAll(".markdown img");
 		for (let node of images) {
 			const p = node.parentNode;
 			if (p.childNodes.length === 1) p.classList.add("image-wrapper");
 		}
 	},
-	renderHtml(text) {
+	renderHtml (text) {
 		return convertor.render(text);
 	},
 };

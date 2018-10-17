@@ -12,12 +12,12 @@ export default {
 	data: () => ({
 		loaded: null,
 	}),
-	render(h) {
+	render (h) {
 		if(!this.loaded)
 			return h(SkFadingCircle);
 		return h(this.$slots.default[0], { props: this.loaded });
 	},
-	beforeMount() {
+	beforeMount () {
 		this.loader().then(() => this.loading = false);
 	},
 };

@@ -52,12 +52,12 @@ export default {
 		category: null,
 	}),
 	methods: {
-		selectCategory() {
+		selectCategory () {
 			this.$dialog.show(SelectCategoryDialog.name).then(res => {
 				if(res) this.category = res;
 			});
 		},
-		async accept() {
+		async accept () {
 			const { archive, metadata, content } = this;
 			try {
 				const data = Object.assign({}, metadata);
@@ -85,7 +85,7 @@ export default {
 				this.$dialog.messageBox("发表失败", errorMessage(e), "error");
 			}
 		},
-		cancel() {
+		cancel () {
 			this.$dialog.close(false);
 		},
 	},

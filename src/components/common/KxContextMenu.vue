@@ -15,12 +15,12 @@ export default {
 			opacity: 0,
 		},
 	}),
-	mounted() {
+	mounted () {
 		const rect = this.$el.getBoundingClientRect();
 		const { width, height } = rect;
 		const { clientX, clientY } = this.event;
 
-		function computePosition(mouse, length, limit) {
+		function computePosition (mouse, length, limit) {
 			if (mouse + length < limit) {
 				return mouse;
 			}

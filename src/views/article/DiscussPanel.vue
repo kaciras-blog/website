@@ -48,17 +48,17 @@ export default {
 	}),
 	components: { discuzEditor, discussion },
 	methods: {
-		refresh() {
+		refresh () {
 			this.$refs.discussions.refresh();
 		},
-		loadDiscussions(index, size, cancelToken) {
+		loadDiscussions (index, size, cancelToken) {
 			return api.discuss.getList(this.articleId, index * size, size, cancelToken)
 				.then(res => { this.totalCount = res.total; return res;});
 		},
-		showLast() {
+		showLast () {
 			this.$refs.discussions.switchToLast();
 		},
-		submitDiscussion(text) {
+		submitDiscussion (text) {
 			// 文章以外的评论如何设计API？
 			return api.discuss.add(this.articleId, text);
 		},

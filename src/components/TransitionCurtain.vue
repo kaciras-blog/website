@@ -34,7 +34,7 @@ export default {
 		hasError: false,
 	}),
 	methods: {
-		start() {
+		start () {
 			if (this.show) {
 				return; // 忽略重复调用，下同
 			}
@@ -42,7 +42,7 @@ export default {
 			this.$_timer = setTimeout(() => this.timeouted = true, this.timeout);
 			this.$nextTick(() => this.$el.focus());
 		},
-		finish() {
+		finish () {
 			if (!this.show) {
 				return;
 			}
@@ -51,15 +51,15 @@ export default {
 			this.timeouted = false;
 			this.hasError = false;
 		},
-		error() {
+		error () {
 			this.hasError = true;
 		},
-		cancel() {
+		cancel () {
 			this.finish();
 			this.$emit("canceled");
 		},
 	},
-	destroyed() {
+	destroyed () {
 		clearTimeout(this.$_timer);
 	},
 };

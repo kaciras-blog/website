@@ -15,7 +15,7 @@ export default {
 		},
 	},
 	methods: {
-		change(event) {
+		change (event) {
 			this.$emit("input", event.target.checked);
 		},
 	},

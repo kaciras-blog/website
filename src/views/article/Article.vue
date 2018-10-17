@@ -46,7 +46,7 @@ const storeModule = {
 		item: {},
 	}),
 	actions: {
-		fetchItem({ commit }, { id, cancelToken, origin }) {
+		fetchItem ({ commit }, { id, cancelToken, origin }) {
 			return api.article
 				.withCancelToken(cancelToken)
 				.withPrototype(origin)
@@ -67,7 +67,7 @@ export default {
 	},
 	mixins: [TitleMixin],
 
-	title() {
+	title () {
 		return this.article.title;
 	},
 	/**
@@ -75,7 +75,7 @@ export default {
 	 *
 	 * @return {string} html文本
 	 */
-	metadata() {
+	metadata () {
 		const { keywords, summary, prev, next } = this.article;
 		let headers = `
 				<meta name="description" content="${escapeHtml(summary)}">
@@ -97,7 +97,7 @@ export default {
 	 * @param prototype 原始请求，用于服务端渲染时Cookie，Header等穿透。
 	 * @return {Promise<void>} 指示加载状态的Promise
 	 */
-	async asyncData(store, route, cancelToken, prototype) {
+	async asyncData (store, route, cancelToken, prototype) {
 		const { id, urlTitle } = route.params;
 		const module = store.state.article;
 
@@ -117,20 +117,20 @@ export default {
 	},
 	prefetch: true, // 在客户端是否预加载数据
 	computed: {
-		navStyle() {
+		navStyle () {
 			return { "--background": `url(${this.article.banner || require("../../assets/index-banner.jpg")})` };
 		},
 		...mapState({ article: state => state.article.item }),
 	},
 	methods: {
-		gotodiscuss() {
+		gotodiscuss () {
 			scrollToElementStart(this.$refs["discssPanel"].$el);
 		},
-		gotoTop() {
+		gotoTop () {
 			$("html,body").animate({ scrollTop: 0 }, 300);
 		},
 	},
-	destroyed() {
+	destroyed () {
 		this.$store.unregisterModule("article");
 	},
 };

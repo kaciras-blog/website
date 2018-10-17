@@ -17,7 +17,7 @@ if (process.env.NODE_ENV === "production") {
  *
  * @return {*} 配置选项
  */
-function defineApiServerConfig() {
+function defineApiServerConfig () {
 	const local = {
 		main: "https://localhost:2375",
 		account: "https://localhost:26480",
@@ -61,7 +61,7 @@ if (process.env.VUE_ENV === "server") {
 }
 
 // MDZZ，axios不能全局配置拦截？
-function createAxios(config) {
+function createAxios (config) {
 	const instance = Axios.create(config);
 	instance.interceptors.response.use(null, error => {
 		if (error.response) {
@@ -91,7 +91,7 @@ const webServer = createAxios({ baseURL: apiConfig.front });
  * @param status {number} 状态码
  * @return {boolean} 是否算作正常回复
  */
-function NormalResponse(status) {
+function NormalResponse (status) {
 	return status >= 0 && status < 500;
 }
 
@@ -104,17 +104,17 @@ function NormalResponse(status) {
  */
 class AxiosProxy {
 
-	constructor(filters) {
+	constructor (filters) {
 		this.filters = filters;
 	}
 
-	prepare(config) {
+	prepare (config) {
 		config = config || {};
 		this.filters.forEach(f => f(config));
 		return config;
 	}
 
-	get(target, name) {
+	get (target, name) {
 		if (["delete", "get", "head", "options"].indexOf(name) > 0) {
 			return (url, config) => target[name](url, this.prepare(config));
 		}
@@ -128,19 +128,19 @@ class AxiosProxy {
 
 class BasicApi {
 
-	get mainServer() {
+	get mainServer () {
 		return mainServer;
 	}
 
-	get securityServer() {
+	get securityServer () {
 		return securityServer;
 	}
 
-	get webServer() {
+	get webServer () {
 		return webServer;
 	}
 
-	createProxied() {
+	createProxied () {
 		const proxied = new this.constructor();
 		proxied.__proto__.__proto__ = new ProxiedApi();
 		return proxied;
@@ -153,7 +153,7 @@ class BasicApi {
 	 * @param proto 原请求
 	 * @return {*} API集
 	 */
-	withPrototype(proto) {
+	withPrototype (proto) {
 		return this.createProxied().withPrototype(proto);
 	}
 
@@ -162,31 +162,31 @@ class BasicApi {
 	 * @param cancelToken { CancelToken } 取消令牌
 	 * @return {*} API集
 	 */
-	withCancelToken(cancelToken) {
+	withCancelToken (cancelToken) {
 		return this.createProxied().withCancelToken(cancelToken);
 	}
 }
 
 class ProxiedApi extends BasicApi {
 
-	constructor() {
+	constructor () {
 		super();
 		this.filters = [];
 	}
 
-	get mainServer() {
+	get mainServer () {
 		return new Proxy(super.mainServer, new AxiosProxy(this.filters));
 	}
 
-	get securityServer() {
+	get securityServer () {
 		return new Proxy(super.securityServer, new AxiosProxy(this.filters));
 	}
 
-	get webServer() {
+	get webServer () {
 		return new Proxy(super.webServer, new AxiosProxy(this.filters));
 	}
 
-	static bindProto(config, proto) {
+	static bindProto (config, proto) {
 		config.headers = config.headers || {};
 		if (proto.headers.cookie) {
 			config.headers.Cookie = proto.headers.cookie;
@@ -197,14 +197,14 @@ class ProxiedApi extends BasicApi {
 		}
 	}
 
-	withPrototype(proto) {
+	withPrototype (proto) {
 		if (proto) {
 			this.filters.push(config => ProxiedApi.bindProto(config, proto));
 		}
 		return this;
 	}
 
-	withCancelToken(cancelToken) {
+	withCancelToken (cancelToken) {
 		if (cancelToken instanceof utils.CancelToken) {
 			const asioxCancelToken = Axios.CancelToken.source();
 			cancelToken.onCancel(asioxCancelToken.cancel);
@@ -222,19 +222,19 @@ class ProxiedApi extends BasicApi {
 
 class ArticleApi extends BasicApi {
 
-	get(id) {
+	get (id) {
 		return this.mainServer.get("/articles/" + id).then(r => r.data);
 	}
 
-	publish(data) {
+	publish (data) {
 		return this.mainServer.post("/articles", data).then(r => r.headers["location"]);
 	}
 
-	update(id, data) {
+	update (id, data) {
 		return this.mainServer.put("/articles/" + id, data).then(r => r.headers["location"]);
 	}
 
-	getList(category, start, count, deletion = "FALSE") {
+	getList (category, start, count, deletion = "FALSE") {
 		return this.mainServer.get("/articles", {
 			params: {
 				start: start,
@@ -245,15 +245,15 @@ class ArticleApi extends BasicApi {
 		}).then(r => r.data);
 	}
 
-	getHots() {
+	getHots () {
 		return this.mainServer.get("/recommendation/articles").then(r => r.data);
 	}
 
-	deleteOne(id) {
+	deleteOne (id) {
 		return this.mainServer.put(`/articles/${id}/deletion`, null, { params: { value: true } });
 	}
 
-	changeCategories(id, cates) {
+	changeCategories (id, cates) {
 		return this.mainServer.put(`/articles/${id}/categories`, cates);
 	}
 }
@@ -261,40 +261,40 @@ class ArticleApi extends BasicApi {
 
 class CategoryApi extends BasicApi {
 
-	getChildren(id) {
+	getChildren (id) {
 		return this.mainServer.get(`/categories/${id}/children`).then(r => r.data);
 	}
 
-	deleteOne(id) {
+	deleteOne (id) {
 		return this.mainServer.delete("/categories/" + id);
 	}
 
-	getByName(name) {
+	getByName (name) {
 		return this.mainServer.get("/categories/" + name, {
 			headers: { "Identified-By": "name" },
 		}).then(r => r.data);
 	}
 
-	move(id, parent, treeMode) {
+	move (id, parent, treeMode) {
 		return this.mainServer.post("/categories/transfer", { params: { id, parent, treeMode } });
 	}
 
-	create(data, parent) {
+	create (data, parent) {
 		return this.mainServer.post("/categories/", data, { params: { parent } });
 	}
 
-	update(id, data) {
+	update (id, data) {
 		return this.mainServer.put("/categories/" + id, data);
 	}
 }
 
 class DiscussApi extends BasicApi {
 
-	add(objectId, content) {
+	add (objectId, content) {
 		return this.mainServer.post("/discussions", { objectId, type: 0, content });
 	}
 
-	getList(objectId, start, count, cancelToken = null) {
+	getList (objectId, start, count, cancelToken = null) {
 		return this.mainServer.get("/discussions", {
 			cancelToken,
 			params: { objectId, type: 0, start, count },
@@ -309,7 +309,7 @@ class DiscussApi extends BasicApi {
 	 * @param count {int} 每页数量
 	 * @return Promise<?> 回复列表
 	 */
-	getReplies(discuz, index, count) {
+	getReplies (discuz, index, count) {
 		return this.mainServer.get(`/discussions/${discuz}/replies`, {
 			params: { start: index * count, count },
 		}).then(r => r.data);
@@ -322,21 +322,21 @@ class DiscussApi extends BasicApi {
 	 * @param content {String} 内容
 	 * @return Promise
 	 */
-	reply(discuz, content) {
+	reply (discuz, content) {
 		return this.mainServer.post(`/discussions/${discuz}/replies`, content, {
 			headers: { "Content-Type": "text/plain;charset=UTF-8" },
 		});
 	}
 
-	deleteOne(id) {
+	deleteOne (id) {
 		return this.mainServer.delete("/discussions/" + id);
 	}
 
-	voteUp(id) {
+	voteUp (id) {
 		return this.mainServer.post(`/discussions/${id}/votes`);
 	}
 
-	revokeVote(id) {
+	revokeVote (id) {
 		return this.mainServer.delete(`/discussions/${id}/votes`);
 	}
 }
@@ -344,37 +344,37 @@ class DiscussApi extends BasicApi {
 
 class DraftApi extends BasicApi {
 
-	get(id) {
+	get (id) {
 		return this.mainServer.get("/drafts/" + id).then(r => r.data);
 	}
 
-	getList(userId, start, count) {
+	getList (userId, start, count) {
 		return this.mainServer.get("/drafts", {
 			params: { userId, start, count },
 		}).then(r => r.data);
 	}
 
-	save(id, saveCount, data) {
+	save (id, saveCount, data) {
 		return this.mainServer.put(`/drafts/${id}/histories/${saveCount}`, data);
 	}
 
-	saveNewHistory(id, data) {
+	saveNewHistory (id, data) {
 		return this.mainServer.post(`/drafts/${id}/histories`, data);
 	}
 
-	deleteOne(id) {
+	deleteOne (id) {
 		return this.mainServer.delete("/drafts/" + id);
 	}
 
-	clear() {
+	clear () {
 		return this.mainServer.delete("/drafts");
 	}
 
-	createNew() {
+	createNew () {
 		return this.mainServer.post("/drafts").then(resp => resp.headers["location"].substring("/drafts/".length));
 	}
 
-	createFromPost(article) {
+	createFromPost (article) {
 		return this.mainServer.post("/drafts", null, {
 			params: { article },
 		}).then(resp => resp.headers["location"].substring("/drafts/".length));
@@ -389,7 +389,7 @@ class MiscApi extends BasicApi {
 	 * @param progress 进度回调
 	 * @returns Promise<String>
 	 */
-	uploadImage(file, progress) {
+	uploadImage (file, progress) {
 		const data = new FormData();
 		data.append("file", file);
 		return this.webServer.post("/image", data, {
@@ -403,7 +403,7 @@ class MiscApi extends BasicApi {
 	 *
 	 * @returns Promise<String> 保存的图片文件名
 	 */
-	async uploadImageFile() {
+	async uploadImageFile () {
 		const files = await utils.openFile(false, "image/*");
 		return await this.uploadImage(files[0]);
 	}
@@ -414,7 +414,7 @@ class MiscApi extends BasicApi {
 	 *
 	 * @return {string} 验证码URL
 	 */
-	get captchaAddress() {
+	get captchaAddress () {
 		return apiConfig.account + "/captcha?r=" + Math.random();
 	}
 }
@@ -427,11 +427,11 @@ class UserApi extends BasicApi {
 	 * @param form 一个对象，格式如下：{ name: 用户名, password: 密码, remember: 是否保存登录 }
 	 * @return Promise
 	 */
-	login(form) {
+	login (form) {
 		return this.securityServer.post("/session/account", form);
 	}
 
-	logout() {
+	logout () {
 		return this.securityServer.delete("/session/account");
 	}
 
@@ -445,16 +445,16 @@ class UserApi extends BasicApi {
 	 * }
 	 * @return Promise
 	 */
-	signup(data) {
+	signup (data) {
 		return this.securityServer.post("/accounts", data);
 	}
 
 	// 会自动创建用户，需要先登录
-	getCurrent() {
+	getCurrent () {
 		return this.mainServer.get("/current-user").then(res => res.data);
 	}
 
-	get(id) {
+	get (id) {
 		return this.mainServer.get("/users/" + id);
 	}
 }
@@ -462,7 +462,7 @@ class UserApi extends BasicApi {
 
 class RecommandApi extends BasicApi {
 
-	constructor() {
+	constructor () {
 		super();
 		this.swiper = new SwiperApi();
 	}
@@ -470,11 +470,11 @@ class RecommandApi extends BasicApi {
 
 class SwiperApi extends BasicApi {
 
-	get() {
+	get () {
 		return this.mainServer.get("/recommendation/swiper").then(r => r.data);
 	}
 
-	set(list) {
+	set (list) {
 		return this.mainServer.put("/recommendation/swiper", list);
 	}
 }

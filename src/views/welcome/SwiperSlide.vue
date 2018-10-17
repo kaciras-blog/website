@@ -22,7 +22,7 @@ export default {
 		},
 	},
 	computed: {
-		isAbsoluteLink() {
+		isAbsoluteLink () {
 			return /^(?:https?:|\/\/)/.test(this.item.link);
 		},
 	},

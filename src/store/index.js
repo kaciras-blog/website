@@ -11,12 +11,12 @@ export default function () {
 			user: null,	 // 当前登录的用户，没登录为null
 		},
 		actions: {
-			[REFRESH_USER]({ commit }) {
+			[REFRESH_USER] ({ commit }) {
 				return api.user.getCurrent()
 					.then(user => commit(SET_USER, user))
 					.catch(() => {}); // ignore no logined.
 			},
-			[REMOVE_USER]({ commit }) {
+			[REMOVE_USER] ({ commit }) {
 				return api.user.logout().then(() => commit(SET_USER, null));
 			},
 		},
