@@ -43,6 +43,9 @@ function installKxDialog(Vue) {
 			eventBus.$emit("close", data);
 		},
 	};
+
+	const dialog = new Vue(KxDialogContainer).$mount();
+	document.body.appendChild(dialog.$el);
 }
 
 /**
@@ -64,7 +67,9 @@ export default function install(Vue) {
 	Vue.component(KxTaskButton.name, KxTaskButton);
 	Vue.component(KxCarousel.name, KxCarousel);
 
-	installKxDialog(Vue);
+	if(typeof window !== "undefined") {
+		installKxDialog(Vue);
+	}
 
 	// 自动聚焦支持 v-autofocus
 	Vue.directive("autofocus", {
