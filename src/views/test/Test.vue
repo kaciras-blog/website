@@ -34,13 +34,10 @@
 </template>
 
 <script>
-import KxButton from "../../components/common/KxButton";
 import { sleep } from "../../utils";
-import KxTaskButton from "../../components/common/KxTaskButton";
 
 export default {
 	name: "Test",
-	components: { KxTaskButton, KxButton },
 	data: () => ({
 		counter: 0,
 	}),

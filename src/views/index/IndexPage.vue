@@ -56,7 +56,7 @@ const indexStoreModule = {
 		items: null,
 	}),
 	actions: {
-		fetchItem ({ commit }, { start,cancelToken, prototype }) {
+		fetchItem ({ commit }, { start, cancelToken, prototype }) {
 			const configuredApi = api.article.withCancelToken(cancelToken).withPrototype(prototype);
 
 			const loadHots = configuredApi.getHots()

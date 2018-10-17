@@ -1,4 +1,5 @@
 import Axios from "axios";
+import * as KxUI from "kx-ui";
 import * as utils from "./utils";
 
 const CSRF_COOKIE_NAME = "CSRF-Token";
@@ -205,7 +206,7 @@ class ProxiedApi extends BasicApi {
 	}
 
 	withCancelToken (cancelToken) {
-		if (cancelToken instanceof utils.CancelToken) {
+		if (cancelToken instanceof KxUI.CancelToken) {
 			const asioxCancelToken = Axios.CancelToken.source();
 			cancelToken.onCancel(asioxCancelToken.cancel);
 			cancelToken = asioxCancelToken.token;
@@ -294,11 +295,9 @@ class DiscussApi extends BasicApi {
 		return this.mainServer.post("/discussions", { objectId, type: 0, content });
 	}
 
-	getList (objectId, start, count, cancelToken = null) {
-		return this.mainServer.get("/discussions", {
-			cancelToken,
-			params: { objectId, type: 0, start, count },
-		}).then(r => r.data);
+	getList (objectId, start, count) {
+		return this.mainServer.get("/discussions", { params: { objectId, type: 0, start, count } })
+			.then(r => r.data);
 	}
 
 	/**

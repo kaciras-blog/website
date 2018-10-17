@@ -52,8 +52,13 @@ export default {
 			this.$refs.discussions.refresh();
 		},
 		loadDiscussions (index, size, cancelToken) {
-			return api.discuss.getList(this.articleId, index * size, size, cancelToken)
-				.then(res => { this.totalCount = res.total; return res;});
+			return api.discuss
+				.withCancelToken(cancelToken)
+				.getList(this.articleId, index * size, size)
+				.then(res => {
+					this.totalCount = res.total;
+					return res;
+				});
 		},
 		showLast () {
 			this.$refs.discussions.switchToLast();

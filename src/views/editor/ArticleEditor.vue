@@ -42,7 +42,7 @@ import PublishDialog from "./PublishDialog";
 import MetadataDialog from "./MetadataDialog";
 import api from "../../api";
 import { assignUpdate } from "../../utils";
-import { VueMultiWatcher } from "../../components/common";
+import { VueMultiWatcher } from "kx-ui";
 
 
 function convertToTransfer (data) {

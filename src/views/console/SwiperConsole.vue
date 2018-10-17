@@ -32,7 +32,7 @@
 <script>
 import api from "../../api";
 import { deleteOn } from "../../utils";
-import { drag } from "../../components/common";
+import { drag } from "kx-ui";
 import SwiperConsoleItem from "./SwiperConsoleItem";
 
 
