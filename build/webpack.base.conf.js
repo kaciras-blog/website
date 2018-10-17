@@ -1,16 +1,17 @@
-const path = require('path');
-const config = require('../config');
-const vueLoaderConfig = require('../config/vue-loader');
-const VueLoaderPlugin = require('vue-loader/lib/plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const { assetsPath, resolve } = require('./utils');
+const path = require("path");
+const webpack = require("webpack");
+const vueLoaderConfig = require("../config/vue-loader");
+const VueLoaderPlugin = require("vue-loader/lib/plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
+const { assetsPath, resolve } = require("./utils");
+const config = require("../config");
 
 
 const createLintingRule = () => ({
 	test: /\.(js|vue)$/,
-	loader: 'eslint-loader',
-	enforce: 'pre',
-	include: [resolve('src'), resolve('test')],
+	loader: "eslint-loader",
+	enforce: "pre",
+	include: [resolve("src"), resolve("test")],
 	options: {
 		formatter: require("eslint-friendly-formatter"),
 		emitWarning: !config.dev.showEslintErrorsInOverlay,
@@ -18,61 +19,62 @@ const createLintingRule = () => ({
 });
 
 module.exports = {
-	context: path.resolve(__dirname, '../'),
+	context: path.resolve(__dirname, "../"),
 	output: {
 		path: config.build.assetsRoot,
-		filename: 'static/js/[name].js',
+		filename: "static/js/[name].js",
 		publicPath: config.build.publicPath,
 	},
 	resolve: {
-		extensions: ['.js', '.vue', '.json'],
+		extensions: [".js", "jsx", ".vue", ".json"],
 		alias: {
-			'vue$': 'vue/dist/vue.runtime.esm.js',
+			"vue$": "vue/dist/vue.runtime.esm.js",
 			// "jquery": "jquery/dist/jquery.slim.js",
-			'@': resolve('src'),
+			"@": resolve("src"),
 		},
 		symlinks: false,
 	},
 	plugins: [
 		new CopyWebpackPlugin([
 			{
-				from: path.resolve(__dirname, '../public'),
+				from: path.resolve(__dirname, "../public"),
 				to: ".",
-				ignore: ['index.html'],
+				ignore: ["index.html"],
 			}]
 		),
 		new VueLoaderPlugin(),
+		new webpack.NoEmitOnErrorsPlugin(),
 	],
 	module: {
 		rules: [
 			...(config.dev.useEslint ? [createLintingRule()] : []),
 			{
 				test: /\.vue$/,
-				loader: 'vue-loader',
+				loader: "vue-loader",
 				options: vueLoaderConfig,
 			},
 			{
 				test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-				loader: 'url-loader',
+				loader: "url-loader",
 				options: {
 					limit: 10000,
-					name: assetsPath('img/[name].[hash:7].[ext]'),
+					name: assetsPath("img/[name].[hash:7].[ext]"),
 				},
 			},
 			{
 				test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
-				loader: 'url-loader',
+				loader: "url-loader",
 				options: {
 					limit: 10000,
-					name: assetsPath('media/[name].[hash:7].[ext]'),
+					name: assetsPath("media/[name].[hash:7].[ext]"),
 				},
 			},
 			{
 				test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-				loader: 'url-loader',
+				loader: "url-loader",
 				options: {
 					limit: 10000,
-					name: assetsPath('fonts/[name].[hash:7].[ext]'),
+					name: assetsPath("fonts/[name].[hash:7].[ext]"),
 				},
 			},
 		],
@@ -84,10 +86,10 @@ module.exports = {
 
 		// prevent webpack from injecting mocks to Node native modules
 		// that does not make sense for the client
-		dgram: 'empty',
-		fs: 'empty',
-		net: 'empty',
-		tls: 'empty',
-		child_process: 'empty',
+		dgram: "empty",
+		fs: "empty",
+		net: "empty",
+		tls: "empty",
+		child_process: "empty",
 	},
 };

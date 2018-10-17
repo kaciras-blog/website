@@ -1,19 +1,19 @@
-const merge = require('webpack-merge');
-const nodeExternals = require('webpack-node-externals');
-const baseConfig = require('./webpack.base.conf');
-const VueSSRServerPlugin = require('vue-server-renderer/server-plugin');
-const utils = require('./utils');
-const config = require('../config');
+const merge = require("webpack-merge");
+const nodeExternals = require("webpack-node-externals");
+const baseConfig = require("./webpack.base.conf");
+const VueSSRServerPlugin = require("vue-server-renderer/server-plugin");
+const utils = require("./utils");
+const config = require("../config");
 const webpack = require("webpack");
 
 
 module.exports = merge(baseConfig, {
 	entry: "./src/entry-server.js",
-	target: 'node',
-	devtool: 'source-map',
+	target: "node",
+	devtool: "source-map",
 	output: {
 		filename: "server-bundle.js",
-		libraryTarget: 'commonjs2',
+		libraryTarget: "commonjs2",
 	},
 
 	module: {
@@ -35,7 +35,7 @@ module.exports = merge(baseConfig, {
 	// 默认文件名为 `vue-ssr-server-bundle.json`
 	plugins: [
 		new webpack.DefinePlugin({
-			"process.env.VUE_ENV": "'server'"
+			"process.env.VUE_ENV": "'server'",
 		}),
 		new VueSSRServerPlugin(),
 	],

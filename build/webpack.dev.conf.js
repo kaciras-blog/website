@@ -1,8 +1,8 @@
-const utils = require('./utils');
-const config = require('../config');
-const merge = require('webpack-merge');
-const baseWebpackConfig = require('./webpack.polyfill.conf');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const utils = require("./utils");
+const config = require("../config");
+const merge = require("webpack-merge");
+const baseWebpackConfig = require("./webpack.polyfill.conf");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
 
 const devWebpackConfig = merge(baseWebpackConfig, {
@@ -15,17 +15,17 @@ const devWebpackConfig = merge(baseWebpackConfig, {
 
 	// these devServer options should be customized in /config/index.js
 	devServer: {
-		clientLogLevel: 'error',
+		clientLogLevel: "error",
 		compress: false,
 		publicPath: "/",
 		index: "index.html",
 		historyApiFallback: {
-			rewrites: [{ from: /.*/, to: '/' }],
+			rewrites: [{ from: /.*/, to: "/" }],
 		},
 		inline: true,
 		hot: true,
 		contentBase: false, // since we use CopyWebpackPlugin.
-		host: 'localhost',
+		host: "localhost",
 		port: 8080,
 		open: false,
 		overlay: false,
@@ -43,8 +43,8 @@ const devWebpackConfig = merge(baseWebpackConfig, {
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
-			filename: 'index.html',
-			template: 'public/index.html',
+			filename: "index.html",
+			template: "public/index.html",
 			inject: true,
 		}),
 		new webpack.HotModuleReplacementPlugin(),

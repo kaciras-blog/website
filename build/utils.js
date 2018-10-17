@@ -1,33 +1,33 @@
-const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const path = require("path");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-exports.resolve = dir => path.join(__dirname, '..', dir);
+exports.resolve = dir => path.join(__dirname, "..", dir);
 
 exports.assetsPath = function (_path) {
-	return path.posix.join('static', _path);
+	return path.posix.join("static", _path);
 };
 
 exports.cssLoaders = function (options) {
 	options = options || {};
 
 	const cssLoader = {
-		loader: 'css-loader',
+		loader: "css-loader",
 		options: {
 			sourceMap: options.sourceMap,
 			modules: options.modules,
 			localIdentName: process.env.WEBPACK_MODE === "production"
 				? "[hash:base64:8]"
-				: "[local]_[hash:base64:8]"
+				: "[local]_[hash:base64:8]",
 		},
 	};
 
 	// generate loader string to be used with extract text plugin
-	function generateLoaders(loader, loaderOptions) {
+	function generateLoaders (loader, loaderOptions) {
 		const loaders = [cssLoader];
 
 		if (loader) {
 			loaders.push({
-				loader: loader + '-loader',
+				loader: loader + "-loader",
 				options: Object.assign({}, loaderOptions, {
 					sourceMap: options.sourceMap,
 				}),
@@ -39,13 +39,13 @@ exports.cssLoaders = function (options) {
 		if (options.extract) {
 			return [MiniCssExtractPlugin.loader].concat(loaders);
 		} else {
-			return ['vue-style-loader'].concat(loaders);
+			return ["vue-style-loader"].concat(loaders);
 		}
 	}
 
 	return {
 		css: generateLoaders(),
-		less: generateLoaders('less'),
+		less: generateLoaders("less"),
 	};
 };
 
@@ -60,16 +60,16 @@ exports.styleLoaders = function (options) {
 
 	for (const extension in loaders) {
 		output.push({
-			test: new RegExp('\\.' + extension + '$'),
+			test: new RegExp("\\." + extension + "$"),
 			oneOf: [
 				{
 					resourceQuery: /module/,
-					use: moduleLoaders[extension]
+					use: moduleLoaders[extension],
 				},
 				{
-					use: loaders[extension]
-				}
-			]
+					use: loaders[extension],
+				},
+			],
 		});
 	}
 
