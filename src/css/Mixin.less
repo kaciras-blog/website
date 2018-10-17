@@ -3,10 +3,10 @@
  * https://blog.csdn.net/boyit0/article/details/78802385
  */
 
-// 盒子宽高
-.size(@w, @h) {
-	width: @w;
-	height: @h;
+// 指定边长的正方形盒子
+.size(@size) {
+	width: @size;
+	height: @size;
 }
 
 .margin-abs(@margin) {
@@ -31,7 +31,8 @@
 
 // 居中, 确定尺寸
 .center-absolute(@w, @h) {
-	.size(@w, @h);
+	width: @w;
+	height: @h;
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -40,7 +41,7 @@
 }
 
 .full-percent() {
-	.size(100%, 100%);
+	.size(100%);
 }
 
 .full-vertex() {

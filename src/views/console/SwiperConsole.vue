@@ -32,7 +32,7 @@
 <script>
 import api from "../../api";
 import { deleteOn } from "../../utils";
-import { drag } from "../../components/common/helpers";
+import { drag } from "../../components/common";
 import SwiperConsoleItem from "./SwiperConsoleItem";
 
 

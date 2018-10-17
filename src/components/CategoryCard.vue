@@ -43,7 +43,7 @@ export default {
 .head {
 	display: block;
 	margin: 1rem;
-	.size(5rem, 5rem);
+	.size(5rem);
 	border-radius: 1rem;
 }
 </style>

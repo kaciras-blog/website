@@ -61,7 +61,7 @@ export default {
 	grid-area: head;
 	margin-top: -4rem;
 	z-index: 4;
-	.size(10rem, 10rem);
+	.size(10rem);
 	border-radius: 1rem;
 
 	background-color: white;

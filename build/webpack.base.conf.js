@@ -54,19 +54,26 @@ module.exports = {
 				options: vueLoaderConfig,
 			},
 			{
-				test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+				test: /\.(png|jpe?g|gif|webp)(\?.*)?$/,
 				loader: "url-loader",
 				options: {
 					limit: 10000,
-					name: assetsPath("img/[name].[hash:7].[ext]"),
+					name: assetsPath("img/[name].[hash:8].[ext]"),
 				},
+			},
+			{
+				test: /\.(svg)(\?.*)?$/,
+				loader: 'file-loader',
+				options: {
+					name: assetsPath('img/[name].[hash:8].[ext]'),
+				}
 			},
 			{
 				test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
 				loader: "url-loader",
 				options: {
 					limit: 10000,
-					name: assetsPath("media/[name].[hash:7].[ext]"),
+					name: assetsPath("media/[name].[hash:8].[ext]"),
 				},
 			},
 			{
@@ -74,7 +81,7 @@ module.exports = {
 				loader: "url-loader",
 				options: {
 					limit: 10000,
-					name: assetsPath("fonts/[name].[hash:7].[ext]"),
+					name: assetsPath("fonts/[name].[hash:8].[ext]"),
 				},
 			},
 		],
