@@ -110,17 +110,17 @@ export default {
 			};
 
 			const onUp = event => {
-				document.removeEventListener('mousemove', onMove);
-				document.removeEventListener('touchmove', onMove);
-				document.removeEventListener('mouseup', onUp);
-				document.removeEventListener('touchend', onUp);
+				document.removeEventListener("mousemove", onMove);
+				document.removeEventListener("touchmove", onMove);
+				document.removeEventListener("mouseup", onUp);
+				document.removeEventListener("touchend", onUp);
 				event.preventDefault();
 			};
 
-			document.addEventListener('mousemove', onMove);
-			document.addEventListener('touchmove', onMove);
-			document.addEventListener('mouseup', onUp);
-			document.addEventListener('touchend', onUp);
+			document.addEventListener("mousemove", onMove);
+			document.addEventListener("touchmove", onMove);
+			document.addEventListener("mouseup", onUp);
+			document.addEventListener("touchend", onUp);
 			downEvent.preventDefault();
 		},
 	},

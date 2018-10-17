@@ -7,7 +7,7 @@
 
 <script>
 export default {
-	name: 'app',
+	name: "app",
 	methods: {
 		mainDialog() {
 			this.$dialog.show("lucky-number");

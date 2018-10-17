@@ -3,7 +3,7 @@ import ScrollPager from "./ScrollPager";
 import SkFadingCircle from "./SkFadingCircle";
 import Swiper from "./FadeCarousel";
 import ToggleButton from "./ToggleButton";
-import TransitionCurtain from "./TransitionCurtain";
+import TransitionCurtain from "../TransitionCurtain";
 import ScrollPageingView from "./ScrollPageingView";
 import ButtonPageingView from "./ButtonPageingView";
 import KxCheckBox from "./KxCheckBox";
@@ -53,7 +53,7 @@ function installKxDialog(Vue) {
  *
  * @param Vue Vue类型，使用Vue.use()来注册该插件
  */
-export default function install(Vue) {
+function install(Vue) {
 	Vue.component(SkFadingCircle.name, SkFadingCircle);
 	Vue.component(ButtonPager.name, ButtonPager);
 	Vue.component(ScrollPager.name, ScrollPager);
@@ -67,7 +67,7 @@ export default function install(Vue) {
 	Vue.component(KxTaskButton.name, KxTaskButton);
 	Vue.component(KxCarousel.name, KxCarousel);
 
-	if(typeof window !== "undefined") {
+	if (typeof window !== "undefined") {
 		installKxDialog(Vue);
 	}
 
@@ -120,3 +120,16 @@ export default function install(Vue) {
 // 		Vue.component(component.name, component);
 // 	});
 }
+
+// Auto-install
+let GlobalVue = null;
+if (typeof window !== "undefined") {
+	GlobalVue = window.Vue;
+} else if (typeof global !== "undefined") {
+	GlobalVue = global.Vue;
+}
+if (GlobalVue) {
+	GlobalVue.use(install);
+}
+
+export default install;
