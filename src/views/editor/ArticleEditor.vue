@@ -42,18 +42,8 @@ import PublishDialog from "./PublishDialog";
 import MetadataDialog from "./MetadataDialog";
 import api from "../../api";
 import { assignUpdate } from "../../utils";
+import { VueMultiWatcher } from "../../components/common/helpers";
 
-
-class VueMultiWatcher {
-
-	constructor(vm, paths, callback, options) {
-		this.unwatchs = paths.map(path => vm.$watch(path, callback, options));
-	}
-
-	unwatch() {
-		this.unwatchs.forEach(unwatch => unwatch());
-	}
-}
 
 function convertToTransfer(data) {
 	return Object.assign({
@@ -123,12 +113,8 @@ export default {
 			}
 		},
 		watchChanges() {
-			const watcher = new VueMultiWatcher(this, [
-				"metadata", "content",
-			], () => {
-				setTimeout(this.autoSave, 10 * 1000);
-				watcher.unwatch();
-			});
+			new VueMultiWatcher(this, ["metadata", "content"],
+				() => setTimeout(this.autoSave, 10 * 60 * 1000), { once: true });
 		},
 		autoSave() {
 			const { archive } = this;

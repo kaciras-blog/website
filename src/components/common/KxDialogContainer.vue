@@ -14,7 +14,7 @@
 export default {
 	name: "KxDialogContainer",
 	data: () => ({
-		stack: [], // {id,name,data,callback} 4元组
+		stack: [], // {id, component, data, callback} 4元组
 		counter: 0,
 	}),
 	created() {

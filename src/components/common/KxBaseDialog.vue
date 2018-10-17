@@ -2,36 +2,41 @@
 使用注意：footer插槽最好是一个元素，多个就用容器包起来
 -->
 <template>
-<transition name="fade">
-	<div class="kx-dialog-dimmer"
-		 @click.self="dimmerClick">
+	<transition name="fade">
+		<div class="kx-dialog-dimmer"
+			 @click.self="$emit('dimmer-clicked')">
 
-		<div class="kx-dialog"
-			 ref="panel"
-			 :style="optionalStyle"
-			 role="dialog"
-			 aria-modal="true">
+			<div class="kx-dialog"
+				 ref="panel"
+				 :style="optionalStyle"
+				 role="dialog"
+				 aria-modal="true">
 
-			<header class="kx-dialog-header"
-					@mousedown="drag">
+				<header class="kx-dialog-header"
+						@mousedown="drag">
 
-				<slot name="title"/>
-				<div title="关闭"
-					 class="kx-dialog-close"
-					 v-if="closeIcon"
-					 @mousedown.stop
-					 @click="close">X
+					<slot name="title"/>
+					<div title="关闭"
+						 class="kx-dialog-close"
+						 v-if="closeIcon"
+						 @mousedown.stop
+						 @click="close">X
+					</div>
+				</header>
+
+				<div class="kx-dialog-body">
+					<slot/>
 				</div>
-			</header>
-
-			<div class="kx-dialog-body"><slot/></div>
-			<slot name="footer"/>
+				<slot name="footer"/>
+			</div>
 		</div>
-	</div>
-</transition>
+	</transition>
 </template>
 
 <script>
+import { drag } from "./helpers";
+
+
 export default {
 	name: "KxBaseDialog",
 	props: {
@@ -51,15 +56,13 @@ export default {
 			default: false,
 		},
 	},
-	data() {
-		return {
-			position: {
-				X: 0,
-				Y: 0,
-				manual: false,
-			},
-		};
-	},
+	data: () => ({
+		position: {
+			X: 0,
+			Y: 0,
+			manual: false,
+		},
+	}),
 	computed: {
 		optionalStyle() {
 			const style = {};
@@ -73,9 +76,6 @@ export default {
 		},
 	},
 	methods: {
-		dimmerClick() {
-			this.$emit("dimmer-clicked");
-		},
 		close() {
 			if (this.defaultClose) {
 				this.$dialog.close();
@@ -83,45 +83,19 @@ export default {
 				this.$emit("close-button-clicked");
 			}
 		},
-		drag(downEvent) {
+		drag(event) {
 			if (!this.draggable) {
 				return;
 			}
-			if (!downEvent.touches && downEvent.button !== 0) {
+			if (!event.touches && event.button !== 0) {
 				return; //鼠标右键不拖动
 			}
-			const clientRect = this.$refs.panel.getBoundingClientRect();
 			this.position.manual = true;
 
-			//按住时窗口的左上角坐标
-			const originX = this.position.X = clientRect.left;
-			const originY = this.position.Y = clientRect.top;
-
-			//按住时鼠标的坐标
-			const startX = downEvent.clientX;
-			const startY = downEvent.clientY;
-
-			const onMove = event => {
-				const {clientX, clientY} = event.touches && event.touches.length > 0
-					? event.touches[0] : event;
-				this.position.X = originX + clientX - startX;
-				this.position.Y = originY + clientY - startY;
-				event.preventDefault();
-			};
-
-			const onUp = event => {
-				document.removeEventListener("mousemove", onMove);
-				document.removeEventListener("touchmove", onMove);
-				document.removeEventListener("mouseup", onUp);
-				document.removeEventListener("touchend", onUp);
-				event.preventDefault();
-			};
-
-			document.addEventListener("mousemove", onMove);
-			document.addEventListener("touchmove", onMove);
-			document.addEventListener("mouseup", onUp);
-			document.addEventListener("touchend", onUp);
-			downEvent.preventDefault();
+			drag(this.$refs.panel, event.clientX, event.clientY, (x, y) => {
+				this.position.X = x;
+				this.position.Y = y;
+			});
 		},
 	},
 };
