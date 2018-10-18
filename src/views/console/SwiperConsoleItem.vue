@@ -67,7 +67,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-@import "../../css/ToBeImport";
+@import "../../css/Imports";
 
 @main-color: #2f8bff;
 

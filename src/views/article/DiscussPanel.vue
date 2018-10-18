@@ -55,7 +55,10 @@ export default {
 			return api.discuss
 				.withCancelToken(cancelToken)
 				.getList(this.articleId, index * size, size)
-				.then(res => { this.totalCount = res.total; return res;});
+				.then(res => {
+					this.totalCount = res.total;
+					return res;
+				});
 		},
 		showLast () {
 			this.$refs.discussions.switchToLast();
@@ -69,7 +72,7 @@ export default {
 </script>
 
 <style lang="less">
-@import "../../css/ToBeImport";
+@import "../../css/Imports";
 
 .discuss {
 	margin-top: 3rem;

@@ -2,7 +2,7 @@ import createApp from "./main";
 import Vue from "vue";
 import TransitionsCurtain from "./components/TransitionCurtain";
 import { REFRESH_USER } from "./store/types";
-import { CancelToken } from "./utils";
+import { CancelToken } from "kx-ui";
 
 /*
  * 注册 ServiceWorker 提升加载速度。

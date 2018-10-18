@@ -3,14 +3,14 @@ import Vue from "vue";
 import createRouter from "./router";
 import createStore from "./store";
 
-import CommonComponents from "./components/common";
+import KxUI from "kx-ui";
 import KxMarkdown from "./markdown";
 import BlogPlugin from "./blog-plugin";
 
 
 Vue.config.productionTip = false;
 
-Vue.use(CommonComponents);
+Vue.use(KxUI);
 Vue.use(KxMarkdown);
 Vue.use(BlogPlugin);
 

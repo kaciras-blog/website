@@ -23,7 +23,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-@import "../../css/ToBeImport";
+@import "../../css/Imports";
 
 span.red {
 	color: #f40000;

@@ -64,7 +64,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-@import "../../css/ToBeImport";
+@import "../../css/Imports";
 
 .toolbar {
 	margin-bottom: 1rem;

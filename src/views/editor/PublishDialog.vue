@@ -93,7 +93,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-@import "../../css/ToBeImport";
+@import "../../css/Imports";
 
 .body {
 	width: 480px;

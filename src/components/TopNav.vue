@@ -59,7 +59,7 @@ export default {
 </script>
 
 <style lang="less">
-@import "../css/ToBeImport.less";
+@import "../css/Imports.less";
 
 #top-nav {
 	.glass;
@@ -90,7 +90,7 @@ export default {
 </style>
 
 <style module lang="less">
-@import "../css/ToBeImport.less";
+@import "../css/Imports.less";
 
 .head {
 	margin: 0 .5rem;

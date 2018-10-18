@@ -32,7 +32,7 @@
 <script>
 import api from "../../api";
 import { deleteOn } from "../../utils";
-import { drag } from "../../components/common";
+import { drag } from "kx-ui";
 import SwiperConsoleItem from "./SwiperConsoleItem";
 
 
@@ -154,7 +154,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-@import "../../css/ToBeImport";
+@import "../../css/Imports";
 
 .slide {
 	margin: 1.5rem 0;

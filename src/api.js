@@ -1,5 +1,5 @@
 import Axios from "axios";
-import * as utils from "./utils";
+import * as KxUI from "kx-ui";
 
 const CSRF_COOKIE_NAME = "CSRF-Token";
 const CSRF_HEADER_NAME = "X-CSRF-Token";
@@ -205,7 +205,7 @@ class ProxiedApi extends BasicApi {
 	}
 
 	withCancelToken (cancelToken) {
-		if (cancelToken instanceof utils.CancelToken) {
+		if (cancelToken instanceof KxUI.CancelToken) {
 			const asioxCancelToken = Axios.CancelToken.source();
 			cancelToken.onCancel(asioxCancelToken.cancel);
 			cancelToken = asioxCancelToken.token;
@@ -408,7 +408,7 @@ class MiscApi extends BasicApi {
 	 * @returns Promise<String> 保存的图片文件名
 	 */
 	async uploadImageFile () {
-		const files = await utils.openFile(false, "image/*");
+		const files = await KxUI.openFile(false, "image/*");
 		return await this.uploadImage(files[0]);
 	}
 

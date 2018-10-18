@@ -29,7 +29,7 @@ export default {
 </script>
 
 <style lang="less">
-@import "../../css/ToBeImport";
+@import "../../css/Imports";
 
 #login-view {
 	width: 100%;

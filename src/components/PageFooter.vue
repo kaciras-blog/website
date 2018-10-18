@@ -21,7 +21,7 @@ export default {
 </script>
 
 <style module lang="less">
-@import "../css/ToBeImport.less";
+@import "../css/Imports.less";
 
 :global(#bottom-footer) {
 	width: 100%;
