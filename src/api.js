@@ -242,7 +242,7 @@ class ArticleApi extends BasicApi {
 	 *   deletion,
 	 *   recursive,
 	 * @param params
-	 * @return {*|PromiseLike<T | never>|Promise<T | never>}
+	 * @return {Promise<Array>}
 	 */
 	getList (params) {
 		params = Object.assign({
@@ -300,11 +300,9 @@ class DiscussApi extends BasicApi {
 		return this.mainServer.post("/discussions", { objectId, type: 0, content });
 	}
 
-	getList (objectId, start, count, cancelToken = null) {
-		return this.mainServer.get("/discussions", {
-			cancelToken,
-			params: { objectId, type: 0, start, count },
-		}).then(r => r.data);
+	getList (objectId, start, count) {
+		return this.mainServer.get("/discussions",
+			{ params: { objectId, type: 0, start, count } }).then(r => r.data);
 	}
 
 	/**

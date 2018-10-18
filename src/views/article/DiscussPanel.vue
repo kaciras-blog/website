@@ -52,7 +52,9 @@ export default {
 			this.$refs.discussions.refresh();
 		},
 		loadDiscussions (index, size, cancelToken) {
-			return api.discuss.getList(this.articleId, index * size, size, cancelToken)
+			return api.discuss
+				.withCancelToken(cancelToken)
+				.getList(this.articleId, index * size, size)
 				.then(res => { this.totalCount = res.total; return res;});
 		},
 		showLast () {
