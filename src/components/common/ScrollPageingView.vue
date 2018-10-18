@@ -40,7 +40,12 @@ export default {
 
 			try {
 				const oldLength = items.length;
-				this.nextPageUrl = await loader(items, pageSize);
+				const nextUrl = await loader(items, pageSize);
+
+				// ignore non-string value
+				if (typeof nextUrl === "string") {
+					this.nextPageUrl = nextUrl;
+				}
 				task.complete(items.length - oldLength < pageSize);
 			} catch (err) {
 				task.completeWithError(err);

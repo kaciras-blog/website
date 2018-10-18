@@ -2,7 +2,8 @@
 	<page-layout
 		view-id="category"
 		:style="navStyle"
-		:banner="true">
+		:banner="true"
+		:footer="true">
 
 		<category-header :value="category"/>
 		<category-body/>
@@ -37,7 +38,7 @@ export default {
 		api.category
 			.withCancelToken(cancelToken)
 			.withPrototype(protorype)
-			.getByName(route.params.name)
+			.get(route.params.id)
 			.then(items => store.commit("category/setItem", items));
 	},
 	prefetch: true,

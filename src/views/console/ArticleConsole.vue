@@ -44,15 +44,17 @@ export default {
 		},
 		loadArticles () {
 			this.loading = true;
-			const len = this.articles.length;
 
-			api.article.getList(0, len === 0 ? 0 : this.articles[len - 1]["id"], 10, "ALL")
-				.then(r => {
-					this.articles = r;
-					this.allLoaded = r.length === 0;
-					this.loading = false;
-				})
-				.catch(err => this.$dialog.messageBox("加载文章失败", "原因：" + err, "error"));
+			api.article.getList({
+				start: this.articles.length,
+				deletion: "ALL",
+			}).then(r => {
+				this.articles = r;
+				this.allLoaded = r.length === 0;
+				this.loading = false;
+			}).catch(err => {
+				this.$dialog.messageBox("加载文章失败", "原因：" + err, "error");
+			});
 		},
 	},
 	created () {

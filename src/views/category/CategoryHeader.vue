@@ -55,6 +55,16 @@ export default {
 	grid-template-areas: "____ head name" "meta head desc" "parent __ children";
 
 	border-top: solid 6px #16a9fa;
+
+	&::after {
+		content: "";
+		position: absolute;
+
+		left: calc(15% + 6rem);
+		width: 6px;
+		height: 100%;
+		background-color: #007aff;
+	}
 }
 
 .head {

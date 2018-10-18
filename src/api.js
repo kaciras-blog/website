@@ -234,15 +234,23 @@ class ArticleApi extends BasicApi {
 		return this.mainServer.put("/articles/" + id, data).then(r => r.headers["location"]);
 	}
 
-	getList (category, start, count, deletion = "FALSE") {
-		return this.mainServer.get("/articles", {
-			params: {
-				start: start,
-				category: category,
-				count: count,
-				deletion: deletion,
-			},
-		}).then(r => r.data);
+	/**
+	 * params:
+	 *   start
+	 *   count
+	 *   category,
+	 *   deletion,
+	 *   recursive,
+	 * @param params
+	 * @return {*|PromiseLike<T | never>|Promise<T | never>}
+	 */
+	getList (params) {
+		params = Object.assign({
+			start: 0,
+			count: 20,
+			deletion: "FALSE",
+		}, params);
+		return this.mainServer.get("/articles", { params }).then(r => r.data);
 	}
 
 	getHots () {
@@ -269,10 +277,8 @@ class CategoryApi extends BasicApi {
 		return this.mainServer.delete("/categories/" + id);
 	}
 
-	getByName (name) {
-		return this.mainServer.get("/categories/" + name, {
-			headers: { "Identified-By": "name" },
-		}).then(r => r.data);
+	get (id) {
+		return this.mainServer.get("/categories/" + id).then(r => r.data);
 	}
 
 	move (id, parent, treeMode) {

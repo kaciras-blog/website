@@ -56,12 +56,12 @@ const indexStoreModule = {
 		items: null,
 	}),
 	actions: {
-		fetchItem ({ commit }, { start,cancelToken, prototype }) {
+		fetchItem ({ commit }, { start, cancelToken, prototype }) {
 			const configuredApi = api.article.withCancelToken(cancelToken).withPrototype(prototype);
 
 			const loadHots = configuredApi.getHots()
 				.then(items => commit("setHots", items));
-			const loadList = configuredApi.getList(0, start || 0, 16)
+			const loadList = configuredApi.getList({ start, count: 16 })
 				.then(items => commit("setItems", items));
 
 			return Promise.all([loadList, loadHots]);
@@ -85,7 +85,6 @@ export default {
 	},
 	data () {
 		const data = {
-			category: this.$route.query.category,
 			cpath: null,
 			index: parseInt(this.$route.params.index) || 0,
 
@@ -104,8 +103,11 @@ export default {
 	},
 	methods: {
 		async loadPage (items, size) {
-			const { $route, category, index } = this;
-			const loaded = await api.article.getList(category, index + items.length, size);
+			const { $route, index } = this;
+			const loaded = await api.article.getList({
+				start: index + items.length,
+				count: size,
+			});
 			items.push.apply(items, loaded);
 			return nextPageUrl($route, items.length);
 		},
