@@ -1,6 +1,5 @@
 import Axios from "axios";
 import * as KxUI from "kx-ui";
-import * as utils from "./utils";
 
 const CSRF_COOKIE_NAME = "CSRF-Token";
 const CSRF_HEADER_NAME = "X-CSRF-Token";
@@ -403,7 +402,7 @@ class MiscApi extends BasicApi {
 	 * @returns Promise<String> 保存的图片文件名
 	 */
 	async uploadImageFile () {
-		const files = await utils.openFile(false, "image/*");
+		const files = await KxUI.openFile(false, "image/*");
 		return await this.uploadImage(files[0]);
 	}
 

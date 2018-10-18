@@ -61,25 +61,6 @@ export function getUrlParamater (name) {
 
 
 /**
- * 弹出文件选择框。
- *
- * @param multiple {boolean} 是否多选
- * @param accept {String} 文件类型
- * @return {Promise<File[]>} 一个Promise，将在用户点击确定时完成
- */
-export const openFile = (multiple = false, accept = "*") => new Promise(resolve => {
-	const input = document.createElement("input");
-	input.setAttribute("type", "file");
-	input.setAttribute("accept", accept);
-	if (multiple) {
-		input.setAttribute("multiple", "");
-	}
-	input.addEventListener("change", event => resolve(event.target.files));
-	input.click();
-});
-
-
-/**
  * 删除并返回数组中符合条件的元素，删除使用splice()函数，能够触发Vue的更新。
  *
  * @param array 数组
@@ -112,16 +93,6 @@ export function assignUpdate (src, dest) {
 		}
 	}
 	return dest;
-}
-
-/**
- * 返回一个Promise，在指定的时间后完成，多用于模拟耗时的操作。
- *
- * @param time 时间，毫秒
- * @return {Promise} 在指定的时间后完成的Promise
- */
-export function sleep (time) {
-	return new Promise(resolve => setTimeout(resolve, time));
 }
 
 export function limitFrequency (action, duration, returnValue = null) {
