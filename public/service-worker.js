@@ -9,7 +9,7 @@ self.addEventListener("fetch", event => {
 	const request = event.request;
 	const url = new URL(request.url);
 
-	if(regex.test(url.pathname)) {
+	if (regex.test(url.pathname)) {
 		event.respondWith(fetchWithCache(request));
 	}
 });
@@ -20,7 +20,7 @@ self.addEventListener("fetch", event => {
  * @param request 请求对象
  * @return {Promise<Response>} 返回相应的Promise
  */
-async function fetchWithCache(request) {
+async function fetchWithCache (request) {
 	// 如果请求的资源已被缓存，则直接返回
 	const cached = await caches.match(request);
 	if (cached) return cached;

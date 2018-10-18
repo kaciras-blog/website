@@ -12,16 +12,16 @@ export default function () {
 		},
 		actions: {
 			[REFRESH_USER] ({ commit }) {
-				return api.user.getCurrent()
-					.then(user => commit(SET_USER, user))
-					.catch(() => {}); // ignore no logined.
+				return api.user.getCurrent().then(user => commit(SET_USER, user));
 			},
 			[REMOVE_USER] ({ commit }) {
 				return api.user.logout().then(() => commit(SET_USER, null));
 			},
 		},
 		mutations: {
-			[SET_USER]: (state, info) => state.user = info,
+			[SET_USER] (state, info) {
+				if (info) state.user = info;
+			},
 		},
 	});
 }
