@@ -13,12 +13,14 @@ import KxCarousel from "./KxCarousel";
 import KxDialogContainer from "./KxDialogContainer.vue";
 import KxBaseDialog from "./KxBaseDialog.vue";
 import KxContextMenu from "./KxContextMenu.vue";
+import MessageBox from "./KxMessageBox";
 
 
 function installKxDialog (Vue) {
 	Vue.component(KxDialogContainer.name, KxDialogContainer);
 	Vue.component(KxBaseDialog.name, KxBaseDialog);
 	Vue.component(KxContextMenu.name, KxContextMenu);
+	Vue.component(MessageBox.name, MessageBox);
 
 	const eventBus = new Vue();
 
@@ -41,6 +43,26 @@ function installKxDialog (Vue) {
 		 */
 		close (data) {
 			eventBus.$emit("close", data);
+		},
+		/**
+		 * 弹出一个简单的消息对话框。
+		 *
+		 * @param title 消息框的标题，或者一个对象包含了所有参数，如果使用了对象那么
+		 *                 后面的参数将无效。
+		 * @param content    消息框的内容
+		 * @param type 类型，error、warn 或 info（默认）
+		 * @param cancelable 是否显示取消按钮和右上角的关闭
+		 * @param dimmerClose 点击遮罩是否关闭窗口
+		 *
+		 * @return Promise<Boolean> 一个Promise，指示了窗口的状态和用户操作的结果，如果接受了true说
+		 *                             明用户点击了确定，false则点击了取消、遮罩或关闭按钮。
+		 */
+		messageBox (title, content, type, cancelable, dimmerClose) {
+			//使用对象传递的参数
+			if (typeof title === "object") {
+				return this.$dialog.show(MessageBox, title);
+			}
+			return this.$dialog.show(MessageBox, { title, content, type, cancelable, dimmerClose });
 		},
 	};
 
