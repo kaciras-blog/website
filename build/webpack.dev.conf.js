@@ -5,7 +5,7 @@ const baseWebpackConfig = require("./webpack.polyfill.conf");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
 
-const devWebpackConfig = merge(baseWebpackConfig, {
+module.exports = merge(baseWebpackConfig, {
 	mode: "development",
 	module: {
 		rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap, usePostCSS: true }),
@@ -50,5 +50,3 @@ const devWebpackConfig = merge(baseWebpackConfig, {
 		new webpack.HotModuleReplacementPlugin(),
 	],
 });
-
-module.exports = devWebpackConfig;

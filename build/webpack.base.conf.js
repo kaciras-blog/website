@@ -25,7 +25,7 @@ module.exports = {
 		publicPath: config.build.publicPath,
 	},
 	resolve: {
-		extensions: [".js", "jsx", ".vue", ".json"],
+		extensions: [".js", ".jsx", ".vue", ".json"],
 		alias: {
 			"vue$": "vue/dist/vue.runtime.esm.js",
 			// "jquery": "jquery/dist/jquery.slim.js",
@@ -36,7 +36,7 @@ module.exports = {
 	plugins: [
 		new CopyWebpackPlugin([
 			{
-				from: path.resolve(__dirname, "../public"),
+				from: resolve("public"),
 				to: ".",
 				ignore: ["index.html"],
 			}]
