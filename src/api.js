@@ -232,7 +232,9 @@ class BasicApiSet {
 class ArticleApi extends BasicApiSet {
 
 	get (id) {
-		return this.mainServer.get("/articles/" + id).then(r => r.data);
+		return this.mainServer.get("/articles/" + id, {
+			params: { rv: true }, // rv: incresment view count
+		}).then(r => r.data);
 	}
 
 	publish (data) {
