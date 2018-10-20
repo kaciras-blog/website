@@ -27,7 +27,7 @@ module.exports = merge(baseConfig, {
 	// 外置化应用程序依赖模块。可以使服务器构建速度更快，
 	// 并生成较小的 bundle 文件。
 	externals: nodeExternals({
-		whitelist: [/\.css$/, /\.less$/, /\.vue$/, /kxdialog/],
+		whitelist: [/\.css$/, /\.less$/, /\.vue$/, /kx-ui/],
 	}),
 
 	// 这是将服务器的整个输出

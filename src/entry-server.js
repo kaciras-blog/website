@@ -1,5 +1,5 @@
 import createApp from "./main";
-import { CancelToken } from "./utils";
+import { CancelToken } from "kx-ui";
 
 
 const cancelToken = CancelToken.never();

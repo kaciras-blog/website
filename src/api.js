@@ -464,7 +464,7 @@ class UserApi extends BasicApiSet {
 
 	// 会自动创建用户，需要先登录
 	getCurrent () {
-		return this.mainServer.get("/current-user", { validateStatus: NormalResponse }).then(res => res.data);
+		return this.mainServer.get("/current-user", { validateStatus: NormalResponse });
 	}
 
 	get (id) {

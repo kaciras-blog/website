@@ -11,8 +11,11 @@ export default function () {
 			user: null,	 // 当前登录的用户，没登录为null
 		},
 		actions: {
-			[REFRESH_USER] ({ commit }) {
-				return api.user.getCurrent().then(user => commit(SET_USER, user));
+			async [REFRESH_USER] ({ commit }) {
+				const res = await api.user.getCurrent();
+				if (res.status < 300) {
+					commit(SET_USER, res.data);
+				}
 			},
 			[REMOVE_USER] ({ commit }) {
 				return api.user.logout().then(() => commit(SET_USER, null));
