@@ -19,6 +19,7 @@
 		</textarea>
 
 		<article
+			v-if="renderMode === 'MD'"
 			v-show="viewMode !== 1"
 			ref="preview"
 			class="text-view preview markdown"
@@ -28,6 +29,15 @@
 			}"
 			v-html="htmlText">
 		</article>
+		<pre
+			v-else-if="renderMode === 'PLAIN'"
+			v-show="viewMode !== 1"
+			ref="preview"
+			class="text-view preview markdown"
+			:class="{
+				split:viewMode === 0,
+				single:viewMode === 2
+			}">{{text}}</pre>
 	</div>
 </template>
 
@@ -49,6 +59,10 @@ export default {
 		viewMode: {
 			type: Number,
 			default: 0,
+		},
+		renderMode: {
+			type: String,
+			default: "MD",
 		},
 	},
 	computed: {
