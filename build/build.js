@@ -1,7 +1,7 @@
 const path = require("path");
 const chalk = require("chalk");
 const { promisify } = require("util");
-const config = require("../config");
+const config = require("./config");
 
 const rimraf = promisify(require("rimraf"));
 const webpack = promisify(require("webpack"));
@@ -54,5 +54,5 @@ async function invokeWebpack (config) {
 }
 
 // process.env.NODE_ENV 用于构建时，而在配置时则无法使用，故定义这个变量
-process.env.WEBPACK_MODE = "development";
+process.env.WEBPACK_MODE = "production";
 build(process.argv[2]).catch(console.error);

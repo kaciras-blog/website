@@ -1,10 +1,9 @@
 const path = require("path");
 const webpack = require("webpack");
-const vueLoaderConfig = require("../config/vue-loader");
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const { assetsPath, resolve } = require("./utils");
-const config = require("../config");
+const config = require("./config");
 
 
 const createLintingRule = () => ({
@@ -51,7 +50,7 @@ module.exports = {
 			{
 				test: /\.vue$/,
 				loader: "vue-loader",
-				options: vueLoaderConfig,
+				options: config.vueLoader,
 			},
 			{
 				test: /\.(png|jpe?g|gif|webp)(\?.*)?$/,
@@ -87,12 +86,7 @@ module.exports = {
 		],
 	},
 	node: {
-		// prevent webpack from injecting useless setImmediate polyfill because Vue
-		// source contains it (although only uses it if it's native).
 		setImmediate: false,
-
-		// prevent webpack from injecting mocks to Node native modules
-		// that does not make sense for the client
 		dgram: "empty",
 		fs: "empty",
 		net: "empty",

@@ -3,7 +3,7 @@ const nodeExternals = require("webpack-node-externals");
 const baseConfig = require("./webpack.base.conf");
 const VueSSRServerPlugin = require("vue-server-renderer/server-plugin");
 const utils = require("./utils");
-const config = require("../config");
+const config = require("./config");
 const webpack = require("webpack");
 
 

@@ -1,6 +1,6 @@
 // Template version: 1.3.1
 // see http://vuejs-templates.github.io/webpack for documentation.
-
+const utils = require('./utils');
 const path = require('path');
 
 module.exports = {
@@ -16,9 +16,6 @@ module.exports = {
 		showEslintErrorsInOverlay: false,
 
 		devtool: 'cheap-module-eval-source-map',
-
-		// If you have problems debugging vue-files in devtools, set this to false - it *may* help
-		cacheBusting: true,
 		cssSourceMap: true
 	},
 
@@ -38,5 +35,25 @@ module.exports = {
 		// `npm run build --report`
 		// Set to `true` or `false` to always turn it on or off
 		bundleAnalyzerReport: process.env.npm_config_report
+	},
+
+	vueLoader: {
+		loaders: utils.cssLoaders({
+			sourceMap: true,
+			extract: true,
+		}),
+		transformToRequire: {
+			video: ['src', 'poster'],
+			source: 'src',
+			img: 'src',
+			image: 'xlink:href'
+		},
+		compilerOptions:{
+			preserveWhitespace: false,
+		},
+		cssSourceMap: true,
+
+		// If you have problems debugging vue-files in devtools, set this to false - it *may* help
+		cacheBusting: true,
 	}
 };
