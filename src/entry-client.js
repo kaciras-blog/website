@@ -19,8 +19,8 @@ document.body.appendChild(curtain.$el);
 
 Vue.mixin({
 	beforeRouteUpdate (to, from, next) {
-		const { asyncData } = this.$options;
-		if (asyncData) {
+		const { asyncData, prefetch } = this.$options;
+		if (prefetch && asyncData) {
 			asyncData(this.$store, to, null, null)
 				.then(next)
 				.catch(console.error);

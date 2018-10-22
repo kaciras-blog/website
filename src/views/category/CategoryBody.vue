@@ -1,5 +1,6 @@
 <template>
 	<section :class="$style.container">
+		<h1 :class="$style.title">文章列表</h1>
 		<scroll-pageing-view :loader="load">
 
 			<ul slot-scope="{ items }"
@@ -38,6 +39,8 @@ export default {
 
 <style module lang="less">
 .container {
+	margin: 0 auto;
+	max-width: 75%;
 	/*&::after {*/
 		/*content: "";*/
 		/*position: absolute;*/
@@ -48,5 +51,9 @@ export default {
 		/*height: 100%;*/
 		/*background-color: #007aff;*/
 	/*}*/
+}
+
+.title{
+	font-size: 2em;
 }
 </style>

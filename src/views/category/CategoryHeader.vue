@@ -2,7 +2,7 @@
 	<header :class="$style.container">
 		<img :src="value.cover" :class="$style.head">
 		<h1 :class="$style.name">{{value.name}}</h1>
-		<h3 :class="$style.desc">{{value.description}}</h3>
+		<span :class="$style.desc">{{value.description}}</span>
 
 
 	</header>
@@ -56,5 +56,6 @@ export default {
 
 .desc {
 	grid-area: desc;
+	font-size: 1.1em;
 }
 </style>

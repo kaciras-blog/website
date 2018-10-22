@@ -6,8 +6,12 @@
 		:footer="true">
 
 		<category-header :value="category"/>
-		<family-section v-bind="category"/>
-		<category-body/>
+		<family-section
+			:parent="category.parent"
+			:children="category.children"/>
+
+		<!-- 设置key在路由改变时清除加载的文章 -->
+		<category-body :key="$route.params.id"/>
 	</page-layout>
 </template>
 
@@ -34,7 +38,8 @@ export default {
 	mixins: [TitleMixin],
 	components: {
 		FamilySection,
-		CategoryHeader, CategoryBody,
+		CategoryHeader,
+		CategoryBody,
 	},
 	asyncData (store, route, cancelToken, protorype) {
 		store.registerModule("category", storeModule);
@@ -55,7 +60,7 @@ export default {
 		...mapState({ category: state => state.category.item }),
 	},
 	destroyed () {
-		this.$store.unregisterModule("category");
+		// this.$store.unregisterModule("category");
 	},
 };
 </script>

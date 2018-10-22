@@ -1,21 +1,25 @@
 <template>
-	<section id="family">
-		<div :class="$style.parent">
-			<h3 class="segment">上级分类</h3>
-			<category-card
-				v-bind="parent"
-				@click="goto(parent.id)"/>
-		</div>
+	<section class="segment" :class="$style.container">
+		<!--<div :class="$style.parent">-->
+		<!--<h2>上级分类</h2>-->
+		<!--<category-card-->
+		<!--v-if="parent"-->
+		<!--v-bind="parent"-->
+		<!--@click="goto(parent.id)"/>-->
+
+		<!--<span v-else :class="$style.ccard">没有</span>-->
+		<!--</div>-->
 
 		<div :class="$style.children">
-			<h3 class="segment">下级分类</h3>
-			<div>
+			<h2 class="compact">下级分类</h2>
+			<div v-if="children.length">
 				<category-card
 					v-for="ch of children"
 					:key="ch.id"
 					v-bind="ch"
-					@click="goto(ch.id)"/>
+					@click="goto(ch)"/>
 			</div>
+			<div v-else :class="$style.holder">已经是最底层的分类了</div>
 		</div>
 	</section>
 </template>
@@ -32,15 +36,25 @@ export default {
 	},
 	methods: {
 		goto (category) {
-
+			this.$router.push(`/category/${category.id}/${category.name}`);
 		},
 	},
 };
 </script>
 
 <style module lang="less">
-:global(#family) {
+@import "../../css/Imports";
 
+.container {
+	/*display: flex;*/
+	margin: 1rem auto 0 auto;
+	padding: 0 !important;
+	max-width: 90%;
+}
+
+.ccard {
+	display: block;
+	.size(5rem);
 }
 
 .parent {
@@ -48,7 +62,13 @@ export default {
 }
 
 .children {
-	display: inline-block;
+	/*display: inline-block;*/
 	overflow-x: auto;
+}
+
+.holder {
+	color: @color-text-minor;
+	padding: 4rem 0;
+	text-align: center;
 }
 </style>
