@@ -21,7 +21,7 @@ Vue.mixin({
 	beforeRouteUpdate (to, from, next) {
 		const { asyncData } = this.$options;
 		if (asyncData) {
-			asyncData({ store: this.$store, route: to })
+			asyncData(this.$store, to, null, null)
 				.then(next)
 				.catch(console.error);
 		} else {

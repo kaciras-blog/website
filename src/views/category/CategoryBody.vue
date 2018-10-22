@@ -38,6 +38,15 @@ export default {
 
 <style module lang="less">
 .container {
+	/*&::after {*/
+		/*content: "";*/
+		/*position: absolute;*/
 
+		/*top: 0;*/
+		/*left: calc(15% + 6rem);*/
+		/*width: 6px;*/
+		/*height: 100%;*/
+		/*background-color: #007aff;*/
+	/*}*/
 }
 </style>

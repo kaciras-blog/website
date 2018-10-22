@@ -189,6 +189,9 @@ class BasicApiSet {
 			}
 
 			withCancelToken (cancelToken) {
+				if(!cancelToken) {
+					return this;
+				}
 				if (cancelToken instanceof KxUI.CancelToken) {
 					const asioxCancelToken = Axios.CancelToken.source();
 					cancelToken.onCancel(asioxCancelToken.cancel);

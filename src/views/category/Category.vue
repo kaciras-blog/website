@@ -6,6 +6,7 @@
 		:footer="true">
 
 		<category-header :value="category"/>
+		<family-section v-bind="category"/>
 		<category-body/>
 	</page-layout>
 </template>
@@ -16,6 +17,7 @@ import CategoryHeader from "./CategoryHeader";
 import CategoryBody from "./CategoryBody";
 import api from "../../api";
 import TitleMixin from "../../title-mixin";
+import FamilySection from "./FamilySection";
 
 const storeModule = {
 	namespaced: true,
@@ -31,11 +33,12 @@ export default {
 	name: "CategoryPage",
 	mixins: [TitleMixin],
 	components: {
+		FamilySection,
 		CategoryHeader, CategoryBody,
 	},
 	asyncData (store, route, cancelToken, protorype) {
 		store.registerModule("category", storeModule);
-		api.category
+		return api.category
 			.withCancelToken(cancelToken)
 			.withPrototype(protorype)
 			.get(route.params.id)
@@ -58,5 +61,7 @@ export default {
 </script>
 
 <style lang="less">
+#category{
 
+}
 </style>
