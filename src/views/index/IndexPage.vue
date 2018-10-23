@@ -9,6 +9,7 @@
 			<h1 class="segment" :class="$style.listTitle">全部文章</h1>
 
 			<scroll-pageing-view
+				:next-link-enabled="true"
 				:loader="loadPage"
 				:init-items="initArticles"
 				:init-state="initState"

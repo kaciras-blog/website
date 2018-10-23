@@ -3,8 +3,6 @@
 		<img :src="value.cover" :class="$style.head">
 		<h1 :class="$style.name">{{value.name}}</h1>
 		<span :class="$style.desc">{{value.description}}</span>
-
-
 	</header>
 </template>
 
@@ -50,8 +48,6 @@ export default {
 	grid-area: name;
 	position: relative;
 	padding: 1rem 1rem 1rem 0;
-
-	/*background-color: rgba(0, 0, 0, 0.6);*/
 }
 
 .desc {

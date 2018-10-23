@@ -55,7 +55,10 @@ export default {
 	},
 	computed: {
 		navStyle () {
-			return { "--background": `url(${this.category.bestBackground || require("../../assets/index-banner.jpg")})` };
+			const banner = this.category.banner;
+			return {
+				"--background": `url(${(banner && banner.image) || })`,
+			};
 		},
 		...mapState({ category: state => state.category.item }),
 	},
@@ -66,7 +69,7 @@ export default {
 </script>
 
 <style lang="less">
-#category{
+#category {
 
 }
 </style>
