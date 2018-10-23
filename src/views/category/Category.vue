@@ -1,7 +1,8 @@
 <template>
 	<page-layout
 		view-id="category"
-		:style="navStyle"
+		:nav-class="navClass"
+		:nav-style="navStyle"
 		:banner="true"
 		:footer="true">
 
@@ -56,9 +57,22 @@ export default {
 	computed: {
 		navStyle () {
 			const banner = this.category.banner;
-			return {
-				"--background": `url(${(banner && banner.image) || })`,
-			};
+			if (!banner) {
+				return null;
+			}
+			return { "--background": `url(${banner.image})` };
+		},
+		navClass () {
+			const banner = this.category.banner;
+			if (!banner) {
+				return "default-banner";
+			}
+			if (banner.theme === 1) {
+				return "light";
+			} else if (banner.theme === 2) {
+				return "dark";
+			}
+			return null;
 		},
 		...mapState({ category: state => state.category.item }),
 	},

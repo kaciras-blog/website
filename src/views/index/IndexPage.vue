@@ -1,7 +1,7 @@
 <template>
 	<page-layout
 		view-id="index-page"
-		:class="$style.navVaribles"
+		nav-class="default-banner"
 		:banner="true"
 		:footer="true">
 
@@ -162,14 +162,6 @@ export default {
 	text-align: center;
 	@media screen and (min-width: @length-screen-mobile) {
 		text-align: left;
-	}
-}
-
-.navVaribles {
-	--background: url("../../assets/index-banner.jpg") center 0;
-
-	@media screen and (min-width: @length-screen-pad) {
-		--background-size: cover;
 	}
 }
 </style>

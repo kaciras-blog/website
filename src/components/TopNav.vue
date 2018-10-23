@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<top-nav-wide/>
-		<div v-if="props.showBanner" class="banner" role="banner"></div>
+		<div v-if="banner" class="banner" role="banner"></div>
 	</div>
 </template>
 
@@ -12,17 +12,9 @@ export default {
 	name: "TopNav",
 	components: { TopNavWide },
 	props: {
-		theme: [Number, String],
-		showBanner: {
+		banner: {
 			type: Boolean,
 			default: false,
-		},
-		banner: {
-			type: Object,
-			default: () => ({
-				theme: 0,
-				image: require("../assets/index-banner.jpg"),
-			}),
 		},
 	},
 };
@@ -45,7 +37,7 @@ export default {
 }
 
 .dark #top-nav {
-	box-shadow: rgba(0, 0, 0, 0.3) 0 0 3px 2px;
+	box-shadow: rgba(0, 0, 0, 0.4) 0 0 4px 2px;
 }
 
 .banner {
@@ -57,33 +49,12 @@ export default {
 	background: var(--background);
 	background-size: var(--background-size); // 这个属性写一起毛病多
 }
-</style>
 
-<style module lang="less">
-@import "../css/Imports.less";
+.default-banner {
+	--background: url("../assets/index-banner.jpg") center 0;
 
-.head {
-	margin: 0 .5rem;
-}
-
-.content {
-	position: relative;
-	display: flex;
-	justify-content: space-between;
-
-	padding: 0 1rem;
-	.full-percent;
-
-	background-color: rgba(255, 255, 255, 0.4);
-
-	@media screen {
-		@media (min-width: @length-screen-mobile) {
-			padding: 0 5%;
-		}
+	@media screen and (min-width: @length-screen-pad) {
+		--background-size: cover;
 	}
-}
-
-:global(.dark) .content {
-	background-color: rgba(0, 0, 0, 0.15);
 }
 </style>

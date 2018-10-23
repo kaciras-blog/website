@@ -58,6 +58,31 @@ export default {
 };
 </script>
 
-<style scoped>
+<style module lang="less">
+@import "../css/Imports.less";
 
+.head {
+	margin: 0 .5rem;
+}
+
+.content {
+	position: relative;
+	display: flex;
+	justify-content: space-between;
+
+	padding: 0 1rem;
+	.full-percent;
+
+	background-color: rgba(255, 255, 255, 0.4);
+
+	@media screen {
+		@media (min-width: @length-screen-mobile) {
+			padding: 0 5%;
+		}
+	}
+}
+
+:global(.dark) .content {
+	background-color: rgba(255, 255, 255, .1);
+}
 </style>
