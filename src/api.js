@@ -189,7 +189,7 @@ class BasicApiSet {
 			}
 
 			withCancelToken (cancelToken) {
-				if(!cancelToken) {
+				if (!cancelToken) {
 					return this;
 				}
 				if (cancelToken instanceof KxUI.CancelToken) {
@@ -271,12 +271,16 @@ class ArticleApi extends BasicApiSet {
 		return this.mainServer.get("/recommendation/articles").then(r => r.data);
 	}
 
-	deleteOne (id) {
-		return this.mainServer.put(`/articles/${id}/deletion`, null, { params: { value: true } });
+	remove (id) {
+		return this.mainServer.patch(`/articles/${id}`, { deletion: true });
 	}
 
-	changeCategories (id, cates) {
-		return this.mainServer.put(`/articles/${id}/categories`, cates);
+	restore (id) {
+		return this.mainServer.patch(`/articles/${id}`, { deletion: false });
+	}
+
+	changeCategories (id, category) {
+		return this.mainServer.patch(`/articles/${id}`, { category });
 	}
 }
 
@@ -362,14 +366,26 @@ class DiscussApi extends BasicApiSet {
 
 class DraftApi extends BasicApiSet {
 
-	get (id) {
-		return this.mainServer.get("/drafts/" + id).then(r => r.data);
+	createNew () {
+		return this.mainServer.post("/drafts").then(resp => resp.headers["location"].substring("/drafts/".length));
+	}
+
+	fromArticle (article) {
+		return this.mainServer.post("/drafts", null, {
+			params: { article },
+		}).then(resp => resp.headers["location"].substring("/drafts/".length));
 	}
 
 	getList (userId, start, count) {
-		return this.mainServer.get("/drafts", {
-			params: { userId, start, count },
-		}).then(r => r.data);
+		return this.mainServer.get("/drafts", { params: { userId, start, count } }).then(r => r.data);
+	}
+
+	get (id) {
+		return this.mainServer.get(`/drafts/${id}`).then(r => r.data);
+	}
+
+	getHistory (id, saveCount) {
+		return this.mainServer.get(`/drafts/${id}/histories/${saveCount}`).then(r => r.data);
 	}
 
 	save (id, saveCount, data) {
@@ -380,22 +396,14 @@ class DraftApi extends BasicApiSet {
 		return this.mainServer.post(`/drafts/${id}/histories`, data);
 	}
 
-	deleteOne (id) {
+	/** 删除一个草稿 */
+	remove (id) {
 		return this.mainServer.delete("/drafts/" + id);
 	}
 
+	/** 清空所有草稿 */
 	clear () {
 		return this.mainServer.delete("/drafts");
-	}
-
-	createNew () {
-		return this.mainServer.post("/drafts").then(resp => resp.headers["location"].substring("/drafts/".length));
-	}
-
-	createFromPost (article) {
-		return this.mainServer.post("/drafts", null, {
-			params: { article },
-		}).then(resp => resp.headers["location"].substring("/drafts/".length));
 	}
 }
 

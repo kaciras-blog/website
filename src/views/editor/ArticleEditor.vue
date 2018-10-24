@@ -21,7 +21,7 @@
 		<div class="kx-markdown-statebar">
 			<div>
 				<span v-if="autoSaveError" :class="$style.errMsg">自动保存出错！</span>
-				<span v-else>上次保存：{{archive.time}}</span>
+				<span v-else>上次保存：{{archive.saveTime}}</span>
 			</div>
 			<div>
 				<text-state-group :text="content" :selection="selection"/>
@@ -53,11 +53,6 @@ function convertToTransfer (data) {
 	}, data.metadata);
 }
 
-function convertToFront (json, data) {
-	assignUpdate(json, data);
-	assignUpdate(json, data.archive);
-	assignUpdate(json, data.metadata);
-}
 
 export default {
 	name: "ArticleEditor",
@@ -74,7 +69,7 @@ export default {
 			id: null,
 			articleId: null,
 			saveCount: 0,
-			time: null,
+			saveTime: null,
 		},
 		metadata: {
 			title: "",
@@ -105,8 +100,8 @@ export default {
 		async saveManually () {
 			const { archive } = this;
 			try {
-				await api.draft.saveNewHistory(archive.id, archive.saveCount, convertToTransfer(this.$data));
-				archive.time = new Date();
+				await api.draft.saveNewHistory(archive.id, convertToTransfer(this.$data));
+				archive.saveTime = new Date();
 				this.$dialog.messageBox("保存草稿", "保存成功");
 			} catch (e) {
 				this.$dialog.messageBox("保存草稿", "保存失败，请手动备份", "error");
@@ -114,13 +109,13 @@ export default {
 		},
 		watchChanges () {
 			new VueMultiWatcher(this, ["metadata", "content"],
-				() => setTimeout(this.autoSave, 10 * 60 * 1000), { once: true });
+				() => setTimeout(this.autoSave, 10 *  1000), { once: true });
 		},
 		autoSave () {
 			const { archive } = this;
 			api.draft.save(archive.id, archive.saveCount, convertToTransfer(this.$data))
 				.then(() => {
-					archive.time = new Date();
+					archive.saveTime = new Date();
 					this.autoSaveError = false;
 					this.watchChanges();
 				})
@@ -129,6 +124,15 @@ export default {
 		publish () {
 			this.$dialog.show(PublishDialog, this.$data);
 		},
+		async loadHistory (saveCount) {
+			const { archive } = this;
+			const history = await api.draft.getHistory(archive.id, saveCount);
+
+			assignUpdate(history, this.metadata);
+			archive.saveTime = history.time;
+			archive.saveCount = history.saveCount;
+			this.content = history.content;
+		},
 	},
 	async beforeMount () {
 		const id = this.$route.params["id"];
@@ -136,7 +140,9 @@ export default {
 			return; // 必须先创建草稿
 		}
 		const draft = await api.draft.get(id);
-		convertToFront(draft, this.$data);
+		assignUpdate(draft, this.archive);
+
+		await this.loadHistory(draft.lastSaveCount);
 
 		if (!draft.articleId && draft.saveCount === 0) {
 			await this.metadataDialog();

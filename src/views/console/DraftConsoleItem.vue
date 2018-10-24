@@ -5,7 +5,7 @@
 
 			<span class="minor-text">
 				<i class="fas fa-pencil-alt"></i>
-				<time>{{value.time}}</time>
+				<time>{{value.updateTime}}</time>
 			</span>
 
 			<div class="btn-group">
@@ -51,7 +51,7 @@ export default {
 			if (!accept) {
 				return;
 			}
-			await api.draft.deleteOne(this.value.id);
+			await api.draft.remove(this.value.id);
 			this.$emit("removed");
 		},
 	},
