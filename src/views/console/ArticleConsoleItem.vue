@@ -50,7 +50,7 @@
 
 <script>
 import api from "../../api";
-import { deleteOn, errorMessage } from "../../utils";
+import { errorMessage } from "../../utils";
 
 export default {
 	name: "ArticleConsoleItem",
@@ -62,7 +62,7 @@ export default {
 	},
 	methods: {
 		edit () {
-			api.draft.createFromPost(this.value.id)
+			api.draft.fromArticle(this.value.id)
 				.then(id => window.location.href = "/edit/" + id)
 				.catch(err => console.log(err));
 		},
@@ -71,8 +71,8 @@ export default {
 		},
 		remove () {
 			const id = this.value.id;
-			api.article.deleteOne(id)
-				.then(() => deleteOn(this.articles, a => a.id === id))
+			api.article.remove(id)
+				.then(() => this.value.deleted = true)
 				.catch(err => this.$dialog.messageBox("删除文章", errorMessage(err), "error"));
 		},
 	},

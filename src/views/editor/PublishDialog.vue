@@ -19,9 +19,7 @@
 			</div>
 
 			<label>
-				<span class="minor-text">
-					文章的URL，发表后不能修改，尽量使用英文，默认与标题相同
-				</span>
+				文章的URL，发表后不能修改，尽量使用英文，默认与标题相同
 				<input title="URL，尽量用英文"
 					   v-model="url"
 					   :placeholder="metadata.title"/>
@@ -29,7 +27,7 @@
 		</div>
 
 		<div slot="footer" class="footer btn-group">
-			<kx-button :on-click="cancel">取消</kx-button>
+			<kx-button @click="cancel">取消</kx-button>
 			<kx-task-button class="primary" :on-click="accept">确定</kx-task-button>
 		</div>
 	</kx-base-dialog>
