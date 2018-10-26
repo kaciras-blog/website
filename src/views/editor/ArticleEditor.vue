@@ -109,7 +109,7 @@ export default {
 		},
 		watchChanges () {
 			new VueMultiWatcher(this, ["metadata", "content"],
-				() => setTimeout(this.autoSave, 10 *  1000), { once: true });
+				() => setTimeout(this.autoSave, 10 * 60 * 1000), { once: true });
 		},
 		autoSave () {
 			const { archive } = this;

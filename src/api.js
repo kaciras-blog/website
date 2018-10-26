@@ -150,7 +150,7 @@ class BasicApiSet {
 	 */
 	createProxied () {
 
-		//为了覆写 BasicApiSet 中的相关方法，动态生成代理类继承基础API类。
+		// 动态生成代理类继承基础API类，覆盖 BasicApiSet 中的相应方法。
 		class ProxiedApiSet extends this.constructor {
 
 			constructor () {
@@ -350,8 +350,12 @@ class DiscussApi extends BasicApiSet {
 		});
 	}
 
-	deleteOne (id) {
-		return this.mainServer.delete("/discussions/" + id);
+	remove (id) {
+		return this.mainServer.patch(`/discussions/${id}`, { deletion: true });
+	}
+
+	restore (id) {
+		return this.mainServer.patch(`/discussions/${id}`, { deletion: false });
 	}
 
 	voteUp (id) {
@@ -388,12 +392,12 @@ class DraftApi extends BasicApiSet {
 		return this.mainServer.get(`/drafts/${id}/histories/${saveCount}`).then(r => r.data);
 	}
 
-	save (id, saveCount, data) {
-		return this.mainServer.put(`/drafts/${id}/histories/${saveCount}`, data);
-	}
-
 	saveNewHistory (id, data) {
 		return this.mainServer.post(`/drafts/${id}/histories`, data);
+	}
+
+	save (id, saveCount, data) {
+		return this.mainServer.put(`/drafts/${id}/histories/${saveCount}`, data);
 	}
 
 	/** 删除一个草稿 */

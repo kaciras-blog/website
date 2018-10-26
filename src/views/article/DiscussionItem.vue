@@ -105,7 +105,7 @@ export default {
 			this.$refs.replies.switchToLast();
 		},
 		remove () {
-			api.discuss.deleteOne(this.value.id)
+			api.discuss.remove(this.value.id)
 				.then(() => this.$emit("item-removed", this.value))
 				.catch(r => alert("删除失败 " + r.message));
 		},
