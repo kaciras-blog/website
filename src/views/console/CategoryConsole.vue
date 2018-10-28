@@ -116,8 +116,7 @@ export default {
 .children-title {
 	font-size: 1.5rem;
 	width: 100%;
-	margin: 1rem 0;
-	padding: 0 1rem 1rem;
+	padding-bottom: 1rem;
 	border-bottom: solid 1px @color-border;
 }
 

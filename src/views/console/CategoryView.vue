@@ -1,39 +1,53 @@
 <template>
-	<div class="info-container"
-		 @click.self="setBackground"
-		 :style="styleVars"
-		 :title="editable ? '点击换背景' : null">
+	<div :class="$style.container">
+		<div :class="$style.infoSection"
+			 @click.self="setBackground"
+			 :style="styleVars"
+			 :title="editable ? '点击换背景' : null">
 
-		<div class="info">
-			<img class="head"
-				 :src="item.cover"
-				 :title="editable ? '点击换头像' : null"
-				 alt="分类图标"
-				 @click="setCover">
+			<div :class="$style.infoPanel">
+				<img class="head"
+					 :class="$style.head"
+					 :src="item.cover"
+					 :title="editable ? '点击换头像' : null"
+					 alt="分类图标"
+					 @click="setCover">
 
-			<input v-if="editable"
-				   class="name"
-				   title="名称"
-				   v-model="item.name">
-			<span v-else
-				  class="name">
-				{{item.name}}
-			</span>
+				<input v-if="editable"
+					   :class="$style.name"
+					   title="名称"
+					   v-model="item.name">
+				<span v-else
+					  :class="$style.name">
+					{{item.name}}
+				</span>
 
-			<textarea
-				v-if="editable"
-				title="描述"
-				class="desc"
-				v-model="item.description">
-			</textarea>
+				<textarea
+					v-if="editable"
+					title="描述"
+					:class="$style.desc"
+					v-model="item.description">
+				</textarea>
+				<span v-else
+					  :class="$style.desc">
+					{{item.description}}
+				</span>
 
-			<span v-else class="desc">{{item.description}}</span>
-
-			<div class="buttons" v-if="editable">
-				<kx-button class="primary outline" @click="$emit('change')">应用更改</kx-button>
-				<kx-button class="primary outline" @click="move">移动</kx-button>
-				<kx-button class="dangerous outline" @click="remove">删除</kx-button>
+				<div :class="$style.buttons" v-if="editable">
+					<kx-button class="primary outline" @click="$emit('change')">应用更改</kx-button>
+					<kx-button class="primary outline" @click="move">移动</kx-button>
+					<kx-button class="dangerous outline" @click="remove">删除</kx-button>
+				</div>
 			</div>
+		</div>
+
+		<div v-if="editable" :class="$style.optionSection">
+			<h3>导航栏背景色：</h3>
+			<kx-radio-box-group name="theme" v-model="item.theme">
+				<kx-radio-box :value="0">默认</kx-radio-box>
+				<kx-radio-box :value="1">明亮背景</kx-radio-box>
+				<kx-radio-box :value="2">暗色背景</kx-radio-box>
+			</kx-radio-box-group>
 		</div>
 	</div>
 </template>
@@ -64,7 +78,7 @@ export default {
 			if (editable) {
 				vars["--cursor"] = "pointer";
 			}
-			if(item.background) {
+			if (item.background) {
 				vars["--background"] = `url(${item.background})`;
 			}
 			return vars;
@@ -88,31 +102,28 @@ export default {
 			api.category.deleteOne(this.item.id).then(() => this.$emit("removed"));
 		},
 	},
-
 };
 </script>
 
-<style scoped lang="less">
+<style module lang="less">
 @import "../../css/Imports";
 
-.buttons {
-	grid-area: button;
-	display: flex;
-	flex-direction: column;
-
-	& > button:not(:last-of-type) {
-		margin-bottom: .5rem;
-	}
+.container {
+	margin-bottom: 2rem;
 }
 
-.info-container {
+.infoSection {
 	background-image: var(--background);
 	background-size: cover;
 	padding: 2.5rem;
 	cursor: var(--cursor);
 }
 
-.info {
+.optionSection {
+	margin-top: 1rem;
+}
+
+.infoPanel {
 	display: grid;
 	grid-gap: 1rem;
 
@@ -186,4 +197,13 @@ export default {
 	}
 }
 
+.buttons {
+	grid-area: button;
+	display: flex;
+	flex-direction: column;
+
+	& > button:not(:last-of-type) {
+		margin-bottom: .5rem;
+	}
+}
 </style>
