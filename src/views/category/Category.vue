@@ -43,7 +43,9 @@ export default {
 		CategoryBody,
 	},
 	asyncData (store, route, cancelToken, protorype) {
-		store.registerModule("category", storeModule);
+		if(!store.state.category) {
+			store.registerModule("category", storeModule);
+		}
 		return api.category
 			.withCancelToken(cancelToken)
 			.withPrototype(protorype)
@@ -77,7 +79,7 @@ export default {
 		...mapState({ category: state => state.category.item }),
 	},
 	destroyed () {
-		// this.$store.unregisterModule("category");
+		this.$store.unregisterModule("category");
 	},
 };
 </script>
