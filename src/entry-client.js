@@ -21,7 +21,7 @@ Vue.mixin({
 	beforeRouteUpdate (to, from, next) {
 		const { asyncData, prefetch } = this.$options;
 		if (prefetch && asyncData) {
-			asyncData(this.$store, to, null, null)
+			asyncData({ store: this.$store, route: to })
 				.then(next)
 				.catch(console.error);
 		} else {
@@ -70,7 +70,7 @@ function initAppAndRouterHook () {
 		if (!prefetched.length) return next();
 
 		curtain.start();
-		await Promise.all(prefetched.map(c => c.asyncData(store, to, cancelToken, null)));
+		await Promise.all(prefetched.map(c => c.asyncData({ store, route: to, cancelToken })));
 
 		cancelToken.complete();
 		next();

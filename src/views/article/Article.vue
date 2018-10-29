@@ -97,7 +97,7 @@ export default {
 	 * @param prototype 原始请求，用于服务端渲染时Cookie，Header等穿透。
 	 * @return {Promise<void>} 指示加载状态的Promise
 	 */
-	async asyncData (store, route, cancelToken, prototype) {
+	async asyncData ({ store, route, cancelToken, prototype }) {
 		const { id, urlTitle } = route.params;
 		const module = store.state.article;
 

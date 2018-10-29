@@ -80,7 +80,7 @@ export default {
 		ArticlePreviewItem,
 		AsidePanel,
 	},
-	async asyncData (store, route, cancelToken, prototype) {
+	async asyncData ({ store, route, cancelToken, prototype }) {
 		store.registerModule("index", indexStoreModule);
 		return store.dispatch("index/fetchItem", { start: route.params.index, cancelToken, prototype });
 	},

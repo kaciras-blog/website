@@ -42,8 +42,8 @@ export default {
 		CategoryHeader,
 		CategoryBody,
 	},
-	asyncData (store, route, cancelToken, protorype) {
-		if(!store.state.category) {
+	asyncData ({ store, route, cancelToken, protorype }) {
+		if (!store.state.category) {
 			store.registerModule("category", storeModule);
 		}
 		return api.category
