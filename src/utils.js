@@ -1,5 +1,3 @@
-// import Velocity from "velocity-animate";
-import $ from "jquery";
 
 /**
  * 转义HTML文本中的特殊字符
@@ -18,21 +16,6 @@ export function escapeHtml (text) {
 	return text.replace(/[&<>"']/g, ch => map[ch]);
 }
 
-
-export function scrollToElementStart (element) {
-	if (typeof element === "string") {
-		element = document.getElementById(element);
-	}
-	$("html,body").animate({ scrollTop: element.offsetTop }, 500);
-}
-
-export function scrollToElementEnd (element) {
-	if (typeof element === "string") {
-		element = document.getElementById(element);
-	}
-	$("html,body").animate({ scrollTop: element.offsetTop + element.clientHeight }, 500);
-	// Velocity(document.getElementsByTagName("html")[0], {scrollTop: element.offsetTop + element.clientHeight}, 200);
-}
 
 /**
  * 从Axios的错误原因对象中提取错误信息。

@@ -22,7 +22,7 @@
 					class="segment"
 					:value="item"
 					:replying="replying"
-					@reply="replying = item.id"
+					@reply="handleReplyStart"
 					@item-removed="refresh"/>
 			</ol>
 		</button-pageing-view>
@@ -43,7 +43,7 @@ export default {
 		},
 	},
 	data:()  => ({
-		replying: 0,
+		replying: null,
 		totalCount: 0,
 	}),
 	components: { discuzEditor, discussion },
@@ -66,6 +66,9 @@ export default {
 		submitDiscussion (text) {
 			// 文章以外的评论如何设计API？
 			return api.discuss.add(this.articleId, text);
+		},
+		handleReplyStart (id) {
+			this.replying = id;
 		},
 	},
 };

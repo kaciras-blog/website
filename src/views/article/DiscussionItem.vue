@@ -103,6 +103,7 @@ export default {
 		async submitReply (text) {
 			await api.discuss.reply(this.value.id, text);
 			this.$refs.replies.switchToLast();
+			this.$emit("reply", null);
 		},
 		remove () {
 			api.discuss.remove(this.value.id)

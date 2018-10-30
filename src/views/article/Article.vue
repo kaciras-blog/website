@@ -33,11 +33,12 @@
 import DiscussPanel from "./DiscussPanel";
 import ArticleView from "./ArticleView";
 import TitleMixin from "../../title-mixin";
-import { escapeHtml, scrollToElementStart } from "../../utils";
+import { escapeHtml } from "../../utils";
 import api from "../../api";
 import $ from "jquery";
 import { mapState } from "vuex";
 import { articleLink } from "../../blog-plugin";
+import { scrollToElementStart } from "kx-ui";
 
 
 const storeModule = {
