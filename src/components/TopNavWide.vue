@@ -60,6 +60,7 @@ export default {
 @import "../css/Imports.less";
 
 .head {
+	vertical-align: top;
 	margin: 0 .5rem;
 }
 
@@ -67,8 +68,6 @@ export default {
 	position: relative;
 	display: flex;
 	justify-content: space-between;
-
-	padding: 0 1rem;
 	.full-percent;
 
 	background-color: rgba(255, 255, 255, .4);
