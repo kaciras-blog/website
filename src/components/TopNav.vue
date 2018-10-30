@@ -1,7 +1,7 @@
 <template>
-	<div>
-		<top-nav-wide/>
-		<div v-if="banner" class="banner" role="banner"></div>
+	<div :class="$style.container">
+		<div :class="$style.navWrapper"><top-nav-wide/></div>
+		<div v-if="banner" :class="$style.banner" role="banner"></div>
 	</div>
 </template>
 
@@ -20,10 +20,14 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style module lang="less">
 @import "../css/Imports.less";
 
-#top-nav {
+.container {
+	margin-bottom: 4rem;
+}
+
+.navWrapper {
 	.glass;
 	.glass.blur(4px);
 
@@ -33,28 +37,26 @@ export default {
 	right: 0;
 	top: 0;
 	height: 3rem;
-	box-shadow: rgba(100, 100, 100, 0.2) 0 0 3px 2px;
-}
 
-.dark #top-nav {
-	box-shadow: rgba(0, 0, 0, 0.4) 0 0 4px 2px;
+	box-shadow: rgba(0, 0, 0, .2) 0 0 4px 2px;
 }
 
 .banner {
 	height: 12rem;
-	margin-bottom: 4rem;
 }
 
-#top-nav::before, .banner {
-	background: var(--background);
+// 使用变量设置背景图，只要在外层元素设置即可
+.navWrapper::before,
+.banner {
+	background: var(--background, url("../assets/index-banner.jpg") center 0);
 	background-size: var(--background-size); // 这个属性写一起毛病多
-}
-
-.default-banner {
-	--background: url("../assets/index-banner.jpg") center 0;
 
 	@media screen and (min-width: @length-screen-pad) {
-		--background-size: cover;
+		background-size: var(--background-size, cover);
 	}
+}
+
+:global(.dark) .navWrapper {
+	box-shadow: rgba(0, 0, 0, .5) 0 0 4px 2px;
 }
 </style>

@@ -1,44 +1,42 @@
 <template>
-	<nav id="top-nav">
-		<div :class="$style.content">
+	<nav :class="$style.container">
 
-			<!-- 左边 -->
-			<div class="nav-item-group">
-				<router-link
-					class="logo-kaciras"
-					to="/"
-					title="LOGO，点击回到首页"/>
-				<!--<router-link-->
-				<!--to="/"-->
-				<!--class="nav-item">博客-->
-				<!--</router-link>-->
-			</div>
+		<!-- 左边 -->
+		<div class="nav-item-group">
+			<router-link
+				class="logo-kaciras"
+				to="/"
+				title="LOGO，点击回到首页"/>
+			<!--<router-link-->
+			<!--to="/"-->
+			<!--class="nav-item">博客-->
+			<!--</router-link>-->
+		</div>
 
-			<div v-if="user" class="nav-item-group">
-				<img :src="user.head"
-					 class="small head"
-					 :class="$style.head"
-					 title="就是一个头像而已">
-				<router-link
-					v-if="user.id === 2"
-					to="/console"
-					class="nav-item">
-					管理
-				</router-link>
-				<button
-					@click="logout"
-					class="nav-item">
-					退出登录
-				</button>
-			</div>
+		<div v-if="user" class="nav-item-group">
+			<img :src="user.head"
+				 class="small head"
+				 :class="$style.head"
+				 title="就是一个头像而已">
+			<router-link
+				v-if="user.id === 2"
+				to="/console"
+				class="nav-item">
+				管理
+			</router-link>
+			<button
+				@click="logout"
+				class="nav-item">
+				退出登录
+			</button>
+		</div>
 
-			<div v-else class="nav-item-group">
-				<router-link
-					to="/login"
-					class="nav-item">
-					登录
-				</router-link>
-			</div>
+		<div v-else class="nav-item-group">
+			<router-link
+				to="/login"
+				class="nav-item">
+				登录
+			</router-link>
 		</div>
 	</nav>
 </template>
@@ -65,7 +63,7 @@ export default {
 	margin: 0 .5rem;
 }
 
-.content {
+.container {
 	position: relative;
 	display: flex;
 	justify-content: space-between;
@@ -73,7 +71,7 @@ export default {
 	padding: 0 1rem;
 	.full-percent;
 
-	background-color: rgba(255, 255, 255, 0.4);
+	background-color: rgba(255, 255, 255, .4);
 
 	@media screen {
 		@media (min-width: @length-screen-mobile) {
@@ -82,7 +80,7 @@ export default {
 	}
 }
 
-:global(.dark) .content {
+:global(.dark) .container {
 	background-color: rgba(255, 255, 255, .1);
 }
 </style>
