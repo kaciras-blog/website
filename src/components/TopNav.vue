@@ -1,5 +1,5 @@
 <template>
-	<div :class="$style.container">
+	<div>
 		<div :class="$style.navWrapper"><top-nav-wide/></div>
 		<div v-if="banner" :class="$style.banner" role="banner"></div>
 	</div>
@@ -23,10 +23,6 @@ export default {
 <style module lang="less">
 @import "../css/Imports.less";
 
-.container {
-	margin-bottom: 4rem;
-}
-
 .navWrapper {
 	.glass;
 	.glass.blur(4px);
@@ -43,6 +39,7 @@ export default {
 
 .banner {
 	height: 12rem;
+	margin-bottom: 4rem;
 }
 
 // 使用变量设置背景图，只要在外层元素设置即可
