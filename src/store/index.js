@@ -23,7 +23,7 @@ export default function () {
 		},
 		mutations: {
 			[SET_USER] (state, info) {
-				if (info) state.user = info;
+				state.user = info;
 			},
 		},
 	});

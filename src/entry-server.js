@@ -1,4 +1,5 @@
 import createApp from "./main";
+import { CancelToken } from "kx-ui";
 
 
 function onReadyAsync (router) {
@@ -22,6 +23,7 @@ export default async context => {
 		.map(c => c.asyncData({
 			store,
 			route: router.currentRoute,
+			cancelToken: CancelToken.never(),
 			protorype: context.request,
 		})));
 
