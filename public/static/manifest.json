@@ -1,14 +1,14 @@
 {
 	"name": "Kaciras的博客",
-	"start_url": "/",
-	"display": "standalone",
-	"background_color": "#fff",
-	"theme_color": "#208CFF",
 	"icons": [
 		{
 			"src": "/static/Logo.png",
 			"sizes": "128x128",
 			"type": "image/png"
 		}
-	]
+	],
+	"start_url": "/",
+	"display": "standalone",
+	"background_color": "#FFFFFF",
+	"theme_color": "#208CFF"
 }
