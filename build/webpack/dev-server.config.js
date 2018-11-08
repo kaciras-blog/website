@@ -1,14 +1,14 @@
-const utils = require("./utils");
-const config = require("./config");
+const { styleLoaders, resolve } = require("../utils");
+const config = require("../config");
 const merge = require("webpack-merge");
-const baseWebpackConfig = require("./webpack.polyfill.conf");
+const baseWebpackConfig = require("./polyfill.config");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
 
 module.exports = merge(baseWebpackConfig, {
 	mode: "development",
 	module: {
-		rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap, usePostCSS: true }),
+		rules: styleLoaders({ sourceMap: config.dev.cssSourceMap, usePostCSS: true }),
 	},
 	// cheap-module-eval-source-map is faster for development
 	devtool: config.dev.devtool,
@@ -44,7 +44,7 @@ module.exports = merge(baseWebpackConfig, {
 	plugins: [
 		new HtmlWebpackPlugin({
 			filename: "index.html",
-			template: "public/index.html",
+			template: resolve("public/index.html"),
 			inject: true,
 		}),
 		new webpack.HotModuleReplacementPlugin(),

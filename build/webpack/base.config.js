@@ -1,9 +1,15 @@
+/*
+ * Vue 2.0 的模板，来自 https://github.com/vuejs-templates/webpack
+ *
+ * Vue-Cli 3.0 之后内置webpack的配置，Github上的项目也停止更新了。
+ * 本项目预计在 Vue 3.0 正式发布之后也转为基于cli的构建配置。
+ */
 const path = require("path");
 const webpack = require("webpack");
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
-const { assetsPath, resolve } = require("./utils");
-const config = require("./config");
+const { assetsPath, resolve } = require("../utils");
+const config = require("../config");
 const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 
 
@@ -43,7 +49,7 @@ module.exports = {
 			}]
 		),
 		new ServiceWorkerWebpackPlugin({
-			entry: resolve('src/service-worker.js'),
+			entry: resolve('src/service-worker/index.js'),
 			filename: "service-worker.js"
 		}),
 		new VueLoaderPlugin(),

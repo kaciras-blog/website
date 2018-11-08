@@ -1,5 +1,5 @@
-const baseWebpackConfig = require("./webpack.base.conf");
-const { resolve } = require("./utils");
+const baseWebpackConfig = require("./base.config");
+const { resolve } = require("../utils");
 
 
 // polyfill要放在项目入口之前

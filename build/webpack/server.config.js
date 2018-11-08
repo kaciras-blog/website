@@ -1,14 +1,14 @@
 const merge = require("webpack-merge");
 const nodeExternals = require("webpack-node-externals");
-const baseConfig = require("./webpack.base.conf");
+const baseConfig = require("./base.config");
 const VueSSRServerPlugin = require("vue-server-renderer/server-plugin");
-const utils = require("./utils");
-const config = require("./config");
+const { styleLoaders, resolve } = require("../utils");
+const config = require("../config");
 const webpack = require("webpack");
 
 
 module.exports = merge(baseConfig, {
-	entry: "./src/entry-server.js",
+	entry: resolve("/src/entry-server.js"),
 	target: "node",
 	devtool: "source-map",
 	output: {
@@ -17,7 +17,7 @@ module.exports = merge(baseConfig, {
 	},
 
 	module: {
-		rules: utils.styleLoaders({
+		rules: styleLoaders({
 			sourceMap: config.build.productionSourceMap,
 			extract: false,
 		}),

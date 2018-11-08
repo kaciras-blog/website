@@ -1,8 +1,8 @@
-const utils = require("./utils");
+const utils = require("../utils");
 const webpack = require("webpack");
-const config = require("./config");
+const config = require("../config");
 const merge = require("webpack-merge");
-const baseWebpackConfig = require("./webpack.polyfill.conf");
+const baseWebpackConfig = require("./polyfill.config");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSPlugin = require("optimize-css-assets-webpack-plugin");
@@ -48,7 +48,7 @@ const webpackConfig = merge(baseWebpackConfig, {
 		}),
 		new HtmlWebpackPlugin({
 			filename: config.build.index,
-			template: "public/index.html",
+			template: utils.resolve("public/index.html"),
 			inject: true,
 			chunksSortMode: "dependency", // necessary to consistently work with multiple chunks via CommonsChunkPlugin
 		}),

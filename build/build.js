@@ -15,16 +15,16 @@ const webpack = promisify(require("webpack"));
 async function build (mode) {
 	switch (mode) {
 		case "-server":
-			await invokeWebpack(require("./webpack.server.conf"));
+			await invokeWebpack(require("./webpack/server.config"));
 			break;
 		case "-both":
 			await rimraf(path.join(config.build.assetsRoot, "static"));
-			await invokeWebpack(require("./webpack.client.conf"));
-			await invokeWebpack(require("./webpack.server.conf"));
+			await invokeWebpack(require("./webpack/client.config"));
+			await invokeWebpack(require("./webpack/server.config"));
 			break;
 		default:
 			await rimraf(path.join(config.build.assetsRoot, "static"));
-			await invokeWebpack(require("./webpack.client.conf"));
+			await invokeWebpack(require("./webpack/client.config"));
 	}
 }
 
