@@ -3,12 +3,13 @@ import Vue from "vue";
 import TransitionsCurtain from "./components/TransitionCurtain";
 import { REFRESH_USER } from "./store/types";
 import { CancelToken } from "kx-ui";
+import runtime from "serviceworker-webpack-plugin/lib/runtime";
 
 /*
  * 注册 ServiceWorker 提升加载速度。
  */
 if ("serviceWorker" in navigator) {
-	navigator.serviceWorker.register("/service-worker.js", { scope: "/" })
+	runtime.register()
 		.then(() => console.log("Service worker registered successfully."))
 		.catch(() => console.error("Service worker failed to register."));
 }

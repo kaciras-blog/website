@@ -4,6 +4,7 @@ const VueLoaderPlugin = require("vue-loader/lib/plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const { assetsPath, resolve } = require("./utils");
 const config = require("./config");
+const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 
 
 const createLintingRule = () => ({
@@ -41,6 +42,10 @@ module.exports = {
 				ignore: ["index.html"],
 			}]
 		),
+		new ServiceWorkerWebpackPlugin({
+			entry: resolve('src/service-worker.js'),
+			filename: "service-worker.js"
+		}),
 		new VueLoaderPlugin(),
 		new webpack.NoEmitOnErrorsPlugin(),
 	],
