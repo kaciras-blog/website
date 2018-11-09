@@ -5,14 +5,13 @@ const path = require('path');
 
 module.exports = {
 	dev: {
-		autoOpenBrowser: false,
-		errorOverlay: true,
-		notifyOnErrors: true,
-		poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
+		// 一些特殊的文件系统，如网络文件需要使用poll方式监听更改
+		poll: false,
 
-		useEslint: true,
-		// If true, eslint errors and warnings will also be shown in the error overlay
-		// in the browser.
+		// Eslint 有IDE支持，就不再webpack里检查了
+		useEslint: false,
+
+		// If true, eslint errors and warnings will also be shown in the error overlay in the browser.
 		showEslintErrorsInOverlay: false,
 
 		devtool: 'cheap-module-eval-source-map',

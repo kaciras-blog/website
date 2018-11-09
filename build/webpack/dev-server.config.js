@@ -8,7 +8,7 @@ const webpack = require("webpack");
 module.exports = merge(baseWebpackConfig, {
 	mode: "development",
 	module: {
-		rules: styleLoaders({ sourceMap: config.dev.cssSourceMap, usePostCSS: true }),
+		rules: styleLoaders({ usePostCSS: true }),
 	},
 	// cheap-module-eval-source-map is faster for development
 	devtool: config.dev.devtool,

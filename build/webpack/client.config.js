@@ -9,60 +9,58 @@ const OptimizeCSSPlugin = require("optimize-css-assets-webpack-plugin");
 const VueSSRClientPlugin = require("vue-server-renderer/client-plugin");
 
 
-module.exports = function (env, argv) {
-	const webpackConfig = merge(baseWebpackConfig, {
-		module: {
-			rules: utils.styleLoaders({ sourceMap: config.build.productionSourceMap, extract: true }),
-		},
-		devtool: (env.mode === "development" || config.build.productionSourceMap)
-			? config.build.devtool : false,
-		output: {
-			filename: utils.assetsPath("js/[name].[chunkhash].js"),
-			chunkFilename: utils.assetsPath("js/[id].[chunkhash].js"),
-		},
-		optimization: {
-			splitChunks: {
-				cacheGroups: {
-					vendor: {
-						name: "vendors",
-						test: /[\\/]node_modules[\\/]/,
-						priority: -10,
-						chunks: "all",
-					},
-					async: {
-						name: "async",
-						chunks: "async",
-						minChunks: 3,
-					},
+const webpackConfig = merge(baseWebpackConfig, {
+	module: {
+		rules: utils.styleLoaders({ sourceMap: config.build.productionSourceMap, extract: true }),
+	},
+	devtool: (process.env.WEBPACK_MODE === "development" || config.build.productionSourceMap)
+		? config.build.devtool : false,
+	output: {
+		filename: utils.assetsPath("js/[name].[chunkhash].js"),
+		chunkFilename: utils.assetsPath("js/[id].[chunkhash].js"),
+	},
+	optimization: {
+		splitChunks: {
+			cacheGroups: {
+				vendor: {
+					name: "vendors",
+					test: /[\\/]node_modules[\\/]/,
+					priority: -10,
+					chunks: "all",
+				},
+				async: {
+					name: "async",
+					chunks: "async",
+					minChunks: 3,
 				},
 			},
-			runtimeChunk: {
-				name: "manifest",
-			},
 		},
-		plugins: [
-			new MiniCssExtractPlugin({
-				filename: utils.assetsPath("css/[name].[hash].css"),
-				allChunks: true,
-			}),
-			new OptimizeCSSPlugin({
-				cssProcessorOptions: { map: { inline: false } },
-			}),
-			new HtmlWebpackPlugin({
-				filename: config.build.index,
-				template: utils.resolve("public/index.html"),
-				inject: true,
-				chunksSortMode: "dependency", // necessary to consistently work with multiple chunks via CommonsChunkPlugin
-			}),
-			new webpack.HashedModuleIdsPlugin(),
-			new VueSSRClientPlugin(), // 生成 `vue-ssr-client-manifest.json`。
-		],
-	});
+		runtimeChunk: {
+			name: "manifest",
+		},
+	},
+	plugins: [
+		new MiniCssExtractPlugin({
+			filename: utils.assetsPath("css/[name].[hash].css"),
+			allChunks: true,
+		}),
+		new OptimizeCSSPlugin({
+			cssProcessorOptions: { map: { inline: false } },
+		}),
+		new HtmlWebpackPlugin({
+			filename: config.build.index,
+			template: utils.resolve("public/index.html"),
+			inject: true,
+			chunksSortMode: "dependency",
+		}),
+		new webpack.HashedModuleIdsPlugin(),
+		new VueSSRClientPlugin(),
+	],
+});
 
-	if (config.build.bundleAnalyzerReport) {
-		const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
-		webpackConfig.plugins.push(new BundleAnalyzerPlugin());
-	}
+if (config.build.bundleAnalyzerReport) {
+	const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+	webpackConfig.plugins.push(new BundleAnalyzerPlugin());
+}
 
-	return webpackConfig;
-};
+module.exports = webpackConfig;
