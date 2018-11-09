@@ -18,6 +18,12 @@ baseWebpackConfig.module.rules.push({
 		resolve("node_modules/kx-ui/src"),
 		resolve("node_modules/markdown-it-anchor"),
 	],
+	exclude: [
+		resolve("src/service-worker"),
+	],
+	options: {
+		cacheDirectory: true,
+	}
 });
 
 module.exports = baseWebpackConfig;
