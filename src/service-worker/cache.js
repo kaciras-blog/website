@@ -1,3 +1,9 @@
+import { AsyncDB } from "./idb-async";
+
+const EXPRIATION_STORE_NAME = "cache-expiration";
+const URL_KEY = "url";
+const TIMESTAMP_KEY = "time";
+
 export const cacheNames = new Set();
 
 export class ManagedCache {
@@ -10,6 +16,15 @@ export class ManagedCache {
 
 		this.name = name;
 		this.maxSize = maxSize;
+
+		this.db = new AsyncDB(name, 2);
+		this.db.open(e => ManagedCache.updateExpireStore(e));
+	}
+
+	static updateExpireStore (event) {
+		const db = event.target.result;
+		db.createObjectStore(EXPRIATION_STORE_NAME)
+			.createIndex(TIMESTAMP_KEY, TIMESTAMP_KEY, { unique: false });
 	}
 
 	put (request, response) {
@@ -35,6 +50,10 @@ class AbstractFetchHandler {
 
 	constructor (cache) {
 		this.cache = cache;
+	}
+
+	async addToCache (request, response) {
+		this.cache.db.withCursor(EXPRIATION_STORE_NAME, { index: TIMESTAMP_KEY })
 	}
 
 	async fetchAndCache (request) {
