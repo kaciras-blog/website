@@ -3,7 +3,7 @@
 		<div :class="$style.navWrapper">
 			<top-nav-wide/>
 		</div>
-		<div v-if="banner" :class="$style.banner" role="banner"></div>
+		<div v-if="showBanner" :class="$style.banner" role="banner"></div>
 	</div>
 </template>
 

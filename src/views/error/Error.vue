@@ -1,11 +1,10 @@
 <template>
-	<page-layout view-id="error-page">
+	<page-layout class="error-page-container" view-id="error-page">
 		<error-content v-if="code === '400'"
 					   title="400 Bad Request"
 					   image="/static/img/error-other.png">
 			<p>如果正常操作跳到本页，快叫作者起床<span class="red">改BUG!!!</span></p>
 			<p>如果您是自己输入的地址栏信息，看看有没有写错</p>
-			<p>如果要尝试攻击本网站，还请换种参数或姿势</p>
 		</error-content>
 
 		<error-content v-else-if="code === '404' || code === '410'"
@@ -43,10 +42,23 @@ export default {
 </script>
 
 <style lang="less">
-#error-page{
+.red {
+	color: #f40000;
+}
+
+.error-page-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	min-height: 100vh;
+}
+
+#error-page {
+	flex: 1;
+
 	margin-top: 5rem;
 	@media screen and (min-width: 768px) {
-		margin-top: 10rem;
+		margin-top: 8rem;
 	}
 }
 </style>

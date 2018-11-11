@@ -25,10 +25,6 @@ export default {
 <style scoped lang="less">
 @import "../../css/Imports";
 
-span.red {
-	color: #f40000;
-}
-
 .err-title {
 	color: #2f91ff;
 	grid-area: title;
@@ -37,11 +33,16 @@ span.red {
 
 .err-img {
 	grid-area: image;
-	.full-percent;
+	.size(16rem);
+
+	@media screen and (min-width: @length-screen-mobile) {
+		.full-percent;
+	}
 }
 
 .err-content {
 	grid-area: content;
+	text-align: center;
 }
 
 #error-page {

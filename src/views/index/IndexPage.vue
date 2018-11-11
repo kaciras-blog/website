@@ -85,7 +85,7 @@ export default {
 	},
 	data () {
 		const data = {
-			category: null,
+			category: {},
 			index: parseInt(this.$route.params.index) || 0,
 
 			initArticles: [],
