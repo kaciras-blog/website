@@ -1,6 +1,6 @@
 <template>
 	<main>
-		<div class="buttons">
+		<div :class="$style.buttons">
 			<div class="btn-group">
 				<kx-button
 					:disabled="current === null"
@@ -27,11 +27,11 @@
 			v-if="current"
 			:editable="true"
 			:item="current"
-			@change="submit"
-			@removed="gotoParent"/>
+			@removed="gotoParent"
+			@change="submit"/>
 
-		<div class="children-title" v-if="current">下级分类</div>
-		<div class="cards">
+		<div :class="$style.childrenTitle" v-if="current">下级分类</div>
+		<div :class="$style.cards">
 			<category-card
 				v-for="item of children"
 				:key="item.id"
@@ -98,13 +98,14 @@ export default {
 			}
 		},
 	},
-	created () {
-		api.category.getChildren(0).then(r => this.children = r);
+	async created () {
+		this.current = await api.category.get(0);
+		this.children = this.current.children;
 	},
 };
 </script>
 
-<style scoped lang="less">
+<style module lang="less">
 @import "../../css/Imports";
 
 .buttons {
@@ -113,7 +114,7 @@ export default {
 	justify-content: space-between;
 }
 
-.children-title {
+.childrenTitle {
 	font-size: 1.5rem;
 	width: 100%;
 	padding-bottom: 1rem;

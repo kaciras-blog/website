@@ -1,9 +1,8 @@
 <template>
 	<page-layout
 		:class="$style.container"
-		:style="navStyle"
-		:banner="true"
-		:footer="true">
+		:show-banner="true"
+		:banner="article.banner">
 
 		<article-view :class="$style.article" :value="article"/>
 
@@ -118,9 +117,6 @@ export default {
 	},
 	prefetch: true, // 在客户端是否预加载数据
 	computed: {
-		navStyle () {
-			return { "--background": `url(${this.article.banner || require("../../assets/index-banner.jpg")})` };
-		},
 		...mapState({ article: state => state.article.item }),
 	},
 	methods: {

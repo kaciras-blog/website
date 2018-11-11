@@ -1,9 +1,8 @@
 <template>
 	<page-layout
 		view-id="index-page"
-		nav-class="default-banner"
-		:banner="true"
-		:footer="true">
+		:show-banner="true"
+		:banner="category.banner">
 
 		<section :class="$style.list">
 			<h1 class="segment" :class="$style.listTitle">全部文章</h1>
@@ -86,7 +85,7 @@ export default {
 	},
 	data () {
 		const data = {
-			cpath: null,
+			category: null,
 			index: parseInt(this.$route.params.index) || 0,
 
 			initArticles: [],
@@ -94,6 +93,7 @@ export default {
 			initState: "FREE",
 		};
 
+		// 预加载的文章只是第一页，后续还会加载更多所以放入data而不是计算属性。
 		const store = this.$store.state.index;
 		if (store) {
 			data.initArticles = store.items;
@@ -112,6 +112,9 @@ export default {
 			items.push.apply(items, loaded);
 			return nextPageUrl($route, items.length);
 		},
+	},
+	async beforeMount () {
+		this.category = await api.category.get(0);
 	},
 	destroyed () {
 		if (this.$store.state.index) {

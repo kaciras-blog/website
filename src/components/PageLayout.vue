@@ -5,6 +5,7 @@
 		 v-on="listeners">
 
 		<top-nav :banner="props.banner"
+				 :show-banner="props.showBanner"
 				 :class="props.navClass"
 				 :style="props.navStyle"/>
 
@@ -17,7 +18,17 @@
 
 <script>
 export default {
-	props: ["footer", "viewId", "banner", "navClass", "navStyle"],
+	props: {
+		footer: {
+			type: Boolean,
+			default: true,
+		},
+		viewId: {},
+		showBanner: {},
+		banner: {},
+		navClass: {},
+		navStyle: {},
+	},
 	name: "PageLayout",
 };
 </script>

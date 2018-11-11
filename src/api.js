@@ -295,8 +295,8 @@ class CategoryApi extends BasicApiSet {
 		return this.mainServer.delete("/categories/" + id);
 	}
 
-	get (id) {
-		return this.mainServer.get("/categories/" + id).then(r => r.data);
+	get (id, aggregate) {
+		return this.mainServer.get("/categories/" + id, { params: { aggregate }}).then(r => r.data);
 	}
 
 	move (id, parent, treeMode) {

@@ -1,6 +1,8 @@
 <template>
-	<div>
-		<div :class="$style.navWrapper"><top-nav-wide/></div>
+	<div :style="navStyle" :class="navClass">
+		<div :class="$style.navWrapper">
+			<top-nav-wide/>
+		</div>
 		<div v-if="banner" :class="$style.banner" role="banner"></div>
 	</div>
 </template>
@@ -12,9 +14,36 @@ export default {
 	name: "TopNav",
 	components: { TopNavWide },
 	props: {
-		banner: {
+		showBanner: {
 			type: Boolean,
 			default: false,
+		},
+		banner: {
+			type: Object,
+			required: false,
+		},
+	},
+	computed: {
+		navStyle () {
+			const { banner } = this;
+			if (banner) {
+				return { "--background": `url(${banner.image})` };
+			}
+			return null;
+		},
+		navClass () {
+			const { banner } = this;
+			if (!banner) {
+				return "default-banner";
+			}
+			switch (banner.theme) {
+				case 1:
+					return "light";
+				case 2:
+					return "dark";
+				default:
+					return null;
+			}
 		},
 	},
 };
@@ -45,7 +74,7 @@ export default {
 // 使用变量设置背景图，只要在外层元素设置即可
 .navWrapper::before,
 .banner {
-	background: var(--background, url("../assets/index-banner.jpg") center 0);
+	background: var(--background);
 	background-size: var(--background-size); // 这个属性写一起毛病多
 
 	@media screen and (min-width: @length-screen-pad) {

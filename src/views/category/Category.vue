@@ -1,10 +1,8 @@
 <template>
 	<page-layout
 		view-id="category"
-		:nav-class="navClass"
-		:nav-style="navStyle"
-		:banner="true"
-		:footer="true">
+		:show-banner="true"
+		:banner="category.banner">
 
 		<category-header :value="category"/>
 		<family-section
@@ -49,7 +47,7 @@ export default {
 		return api.category
 			.withCancelToken(cancelToken)
 			.withPrototype(protorype)
-			.get(route.params.id)
+			.get(route.params.id, true)
 			.then(items => store.commit("category/setItem", items));
 	},
 	prefetch: true,
@@ -57,25 +55,6 @@ export default {
 		return this.category.name;
 	},
 	computed: {
-		navStyle () {
-			const banner = this.category.banner;
-			if (!banner) {
-				return null;
-			}
-			return { "--background": `url(${banner.image})` };
-		},
-		navClass () {
-			const banner = this.category.banner;
-			if (!banner) {
-				return "default-banner";
-			}
-			if (banner.theme === 1) {
-				return "light";
-			} else if (banner.theme === 2) {
-				return "dark";
-			}
-			return null;
-		},
 		...mapState({ category: state => state.category.item }),
 	},
 	destroyed () {
