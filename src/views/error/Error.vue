@@ -8,7 +8,7 @@
 			<p>如果要尝试攻击本网站，还请换种参数或姿势</p>
 		</error-content>
 
-		<error-content v-else-if="code === '404'"
+		<error-content v-else-if="code === '404' || code === '410'"
 					   title="404 Not Found"
 					   image="/static/img/baotou.jpg">
 			<p>你所寻找的Loli<span class="red">不存在</span>！！</p>
@@ -42,8 +42,11 @@ export default {
 };
 </script>
 
-<style>
+<style lang="less">
 #error-page{
-	margin-top: 8rem;
+	margin-top: 5rem;
+	@media screen and (min-width: 768px) {
+		margin-top: 10rem;
+	}
 }
 </style>
