@@ -42,7 +42,7 @@ export class AsyncDB {
 		range = range || null;
 		direction = direction || "next";
 
-		this.withTransaction(storeName, "readonly", tx => {
+		return this.withTransaction(storeName, "readonly", tx => {
 			let store = tx.objectStore(storeName);
 			store = index ? store.index(index) : store;
 
@@ -51,6 +51,10 @@ export class AsyncDB {
 				if (cursor) callback(cursor);
 			};
 		});
+	}
+
+	count (storeName) {
+		return this.withTransaction(storeName, "readonly", tx => tx.objectStore(storeName).count());
 	}
 
 	add (storeName, value) {

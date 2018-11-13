@@ -8,7 +8,7 @@ export const cacheNames = new Set();
 
 export class ManagedCache {
 
-	constructor (name, maxSize = null) {
+	constructor (name, maxSize = null, maxAge = null) {
 		if (cacheNames.has(name)) {
 			throw new Error(`ManagedCache ${name} already exists.`);
 		}
@@ -16,6 +16,7 @@ export class ManagedCache {
 
 		this.name = name;
 		this.maxSize = maxSize;
+		this.maxAge = maxAge;
 
 		this.db = new AsyncDB(name, 2);
 		this.db.open(e => ManagedCache.updateExpireStore(e));
@@ -23,13 +24,31 @@ export class ManagedCache {
 
 	static updateExpireStore (event) {
 		const db = event.target.result;
-		db.createObjectStore(EXPRIATION_STORE_NAME)
+		db.createObjectStore(EXPRIATION_STORE_NAME, { keyPath: URL_KEY })
 			.createIndex(TIMESTAMP_KEY, TIMESTAMP_KEY, { unique: false });
 	}
 
-	put (request, response) {
-		response = response.clone();
-		return caches.open(this.name).then(cache => cache.put(request, response));
+	async put (request, response) {
+		let { name, maxSize, maxAge, db } = this;
+		const cache = await caches.open(name);
+
+		maxSize = maxSize || Number.MAX_SAFE_INTEGER;
+		const timePeriod = maxAge ? Date.now() - maxAge * 1000 : 0;
+		let count = 0;
+
+		await db.withCursor(EXPRIATION_STORE_NAME, { index: TIMESTAMP_KEY }, async cursor => {
+			const value = cursor.value;
+
+			if (count < maxSize && value[TIMESTAMP_KEY] > timePeriod) {
+				count++;
+			} else {
+				await db.delete(value.url);
+				await cache.delete(value.url);
+			}
+			cursor.continue();
+		});
+
+		return cache.then(cache => cache.put(request, response.clone()));
 	}
 
 	networkFirst () {
@@ -50,10 +69,6 @@ class AbstractFetchHandler {
 
 	constructor (cache) {
 		this.cache = cache;
-	}
-
-	async addToCache (request, response) {
-		this.cache.db.withCursor(EXPRIATION_STORE_NAME, { index: TIMESTAMP_KEY })
 	}
 
 	async fetchAndCache (request) {
