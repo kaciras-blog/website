@@ -1,10 +1,13 @@
-import { cacheNames, CacheProxyServer, ManagedCache } from "./cache";
+import { cacheNames, CacheProxyServer, ManagedCache, RegexRoute } from "./cache";
 
-const STATIC_CACHE_NAME = "StaticFiles-V1";
-
+const STATIC_CACHE_NAME = "StaticFiles";
 const proxyServer = new CacheProxyServer();
+
 const staticCache = new ManagedCache(STATIC_CACHE_NAME); // add STATIC_CACHE_NAME to cacheNames
-proxyServer.addRoute(new RegExp("^/static/"), staticCache.cacheFirst());
+proxyServer.addRoute(new RegexRoute("/static/", staticCache.cacheFirst()));
+
+const ApiCache = new ManagedCache("API", 256, 7 * 24 * 60 * 60);
+// proxyServer.addRoute(new RegexRoute("//api.kaciras.net/", ApiCache.networkFirst()));
 
 
 self.addEventListener("install", event => {
@@ -21,11 +24,17 @@ self.addEventListener("install", event => {
 });
 
 self.addEventListener("activate", event => {
-	console.log("[ServiceWorker]: Activate");
+	console.log("[ServiceWorker]: Activate!!!");
 
-	// 删除当前版本用不到的缓存
-	event.waitUntil(caches.keys().then(keys =>
-		Promise.all(keys.filter(k => !cacheNames.has(k)).map(k => caches.delete(k)))));
+	// 删除当前版本用不到的缓存，并启用导航预载
+	event.waitUntil(async () => {
+		const keys = await caches.keys().filter(k => !cacheNames.has(k));
+		await Promise.all(keys.map(k => caches.delete(k)));
+
+		if (self.registration.navigationPreload) {
+			await self.registration.navigationPreload.enable();
+		}
+	});
 
 	return self.clients.claim();
 });

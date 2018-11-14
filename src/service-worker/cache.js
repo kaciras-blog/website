@@ -71,12 +71,29 @@ class AbstractFetchHandler {
 		this.cache = cache;
 	}
 
-	async fetchAndCache (request) {
-		const response = await fetch(request, { cache: "no-store" });
+	async fetchAndCache (event) {
+		const { request, preloadResponse } = event;
+
+		const response = preloadResponse
+			|| await fetch(request, { cache: "no-store" });
+
 		if (response.status >= 200 && response.status < 400) {
 			this.cache.put(request, response);
 		}
 		return response;
+	}
+
+	/**
+	 * @abstract
+	 * @param request {Request}
+	 * @return {Promise<Response>}
+	 */
+	async handle (request) {
+		throw new Error("Not Impleted");
+	}
+
+	handleFetch (event) {
+		event.respondWith(this.handle(event.request));
 	}
 }
 
@@ -130,6 +147,7 @@ class CacheFirstHandler extends AbstractFetchHandler {
 	}
 }
 
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 export class CacheProxyServer {
 
@@ -137,8 +155,14 @@ export class CacheProxyServer {
 		this.routes = [];
 	}
 
-	addRoute (pattern, handler) {
-		this.routes.push({ pattern, handler });
+	/**
+	 * 添加一个路由，注意没有删除方法，先添加的优先匹配。
+	 *
+	 * @param route {RegexRoute} 路由对象
+	 * @return {CacheProxyServer} 链式调用返回自己
+	 */
+	addRoute (route) {
+		this.routes.push(route);
 		return this;
 	}
 
@@ -148,22 +172,51 @@ export class CacheProxyServer {
 		if (request.method !== "GET") {
 			return;
 		}
-		const url = new URL(request.url);
-
 		let matchedRoute;
 		for (const route of this.routes) {
-			if (route.pattern.test(url.pathname)) {
+			if (route.match(request)) {
 				matchedRoute = route;
 				break;
 			}
 		}
 
 		if (matchedRoute) {
-			event.respondWith(matchedRoute.handler.handle(request));
+			matchedRoute.handler.handle(event);
 		}
 	}
 
 	fetchHandler () {
 		return event => this.handleFetchEvent(event);
+	}
+}
+
+export class RegexRoute {
+
+	constructor (pattern, handler, blacklist = []) {
+		if (typeof pattern === "string") {
+			pattern = new RegExp(pattern).compile();
+		}
+		this.pattern = pattern;
+		this.handler = handler;
+		this.blacklist = blacklist;
+	}
+
+	match (request) {
+		const { pattern, blacklist } = this;
+		const url = new URL(request.url);
+		if (!pattern.test(url)) {
+			return false;
+		}
+		return blacklist.every(v => !v.test(url));
+	}
+}
+
+export class NavigateRoute extends RegexRoute {
+
+	match (request) {
+		if (request.mode !== "navigate") {
+			return false;
+		}
+		return super.match(request);
 	}
 }
