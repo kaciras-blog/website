@@ -16,8 +16,8 @@ const webpackConfig = merge(baseWebpackConfig, {
 	devtool: (process.env.WEBPACK_MODE === "development" || config.build.productionSourceMap)
 		? config.build.devtool : false,
 	output: {
-		filename: utils.assetsPath("js/[name].[chunkhash].js"),
-		chunkFilename: utils.assetsPath("js/[id].[chunkhash].js"),
+		filename: utils.assetsPath("js/[name].[hash].js"),
+		chunkFilename: utils.assetsPath("js/[id].[hash].js"),
 	},
 	optimization: {
 		splitChunks: {

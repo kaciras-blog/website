@@ -14,7 +14,7 @@ baseWebpackConfig.module.rules.push({
 	include: [
 		resolve("src"),
 		resolve("test"),
-		resolve("node_modules/webpack-dev-server/client"),
+		resolve("node_modules/webpack-hot-client/client"),
 		resolve("node_modules/kx-ui/src"),
 		resolve("node_modules/markdown-it-anchor"),
 	],
