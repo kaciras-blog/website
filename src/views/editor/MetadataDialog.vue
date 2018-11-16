@@ -1,31 +1,32 @@
 <template>
 	<kx-base-dialog @close-button-clicked="ok">
-		<h2 class="compact" slot="title">编辑描述信息</h2>
+		<h2 :class="$style.compact" slot="title">编辑描述信息</h2>
 
-		<div class="content">
-			<img class="cover"
+		<div :class="$style.content">
+			<img :class="$style.cover"
 				 :src="cover"
 				 alt="封面"
 				 @click="changeCover"/>
 
 			<input title="标题"
-				   class="title"
+				   :class="$style.title"
 				   v-model="title"
 				   placeholder="标题最多50个字"/>
 
 			<textarea
-				class="summary input"
+				:class="$style.summary"
+				class="input"
 				v-model="summary"
 				placeholder="摘要，别写太多">
 			</textarea>
 
 			<input title="关键字"
-				   class="keywords"
+				   :class="$style.keywords"
 				   v-model="keywords"
 				   placeholder="关键字,空格隔开"/>
 		</div>
 
-		<div class="footer btn-group" slot="footer">
+		<div :class="$style.footer" class="btn-group" slot="footer">
 			<kx-button @click="cancel">取消</kx-button>
 			<kx-button class="primary" @click="ok">确定</kx-button>
 		</div>
@@ -57,7 +58,7 @@ export default {
 };
 </script>
 
-<style scoped lang="less">
+<style module lang="less">
 .content {
 	width: 680px;
 	display: grid;

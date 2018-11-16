@@ -2,18 +2,19 @@
 	<kx-base-dialog :draggable="true">
 		<h3 slot="title">{{ archive.articleId ? "更新文章": "发表文章" }}</h3>
 
-		<div class="body">
+		<div :class="$style.body">
 
-			<div class="category segment">
+			<div :class="$style.category" class="segment">
 				<span class="label">发表到：</span>
 
-				<div class="selected" v-if="category">
+				<div v-if="category" :class="$style.selected">
+
 					<img class="small head"
 						 :src="category.cover"
 						 alt="分类图标">
 					<h3 class="compact">{{category.name}}</h3>
 				</div>
-				<div class="selected" v-else></div>
+				<div v-else :class="$style.selected"></div>
 
 				<kx-button @click="selectCategory">选择分类</kx-button>
 			</div>
@@ -21,12 +22,13 @@
 			<label>
 				文章的URL，发表后不能修改，尽量使用英文，默认与标题相同
 				<input title="URL，尽量用英文"
+					   :class="$style.input"
 					   v-model="url"
 					   :placeholder="metadata.title"/>
 			</label>
 		</div>
 
-		<div slot="footer" class="footer btn-group">
+		<div slot="footer" class="btn-group" :class="$style.footer">
 			<kx-button @click="cancel">取消</kx-button>
 			<kx-task-button class="primary" :on-click="accept">确定</kx-task-button>
 		</div>
@@ -90,7 +92,7 @@ export default {
 };
 </script>
 
-<style scoped lang="less">
+<style module lang="less">
 @import "../../css/Imports";
 
 .body {
@@ -119,7 +121,7 @@ export default {
 	}
 }
 
-input {
+.input {
 	margin-top: .4rem;
 	width: 100%;
 }

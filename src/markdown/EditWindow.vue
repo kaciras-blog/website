@@ -120,12 +120,6 @@ export default {
 <style lang="less">
 @import "../css/Imports";
 
-.kx-markdown-toolbar {
-	display: flex;
-	justify-content: space-between;
-	background-color: whitesmoke;
-}
-
 .kx-markdown-main {
 	flex: 1;
 	overflow: hidden;

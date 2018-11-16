@@ -1,6 +1,6 @@
 <template>
 	<main :class="$style.container">
-		<div class="kx-markdown-toolbar" role="toolbar">
+		<div :class="$style.toolbar" role="toolbar">
 			<div>
 				<kx-markdown-basic-toolbar :text.sync="content" :selection.sync="selection"/>
 				<kx-button class="minor" title="插入图片" icon="far fa-file-image" @click="addImage"/>
@@ -18,7 +18,7 @@
 			:selection.sync="selection"
 			:view-mode="viewMode"/>
 
-		<div class="kx-markdown-statebar">
+		<div :class="$style.statebar">
 			<div>
 				<span v-if="autoSaveError" :class="$style.errMsg">自动保存出错！</span>
 				<span v-else>上次保存：{{archive.saveTime}}</span>
@@ -33,7 +33,6 @@
 <script>
 import KxMarkdownEditWindow from "../../markdown/EditWindow";
 import KxMarkdownBasicToolbar from "../../markdown/BasicToolbar";
-import KxMarkdownStatebar from "../../markdown/TextStateGroup";
 import TextStateGroup from "../../markdown/TextStateGroup";
 import KxMarkdownConfigToolbar from "../../markdown/ConfigToolbar";
 import ViewModeToolbar from "../../markdown/ViewModeToolbar";
@@ -59,7 +58,6 @@ export default {
 	components: {
 		ViewModeToolbar,
 		KxMarkdownConfigToolbar,
-		KxMarkdownStatebar,
 		KxMarkdownBasicToolbar,
 		KxMarkdownEditWindow,
 		TextStateGroup,
@@ -166,5 +164,19 @@ export default {
 .errMsg {
 	color: #ff6b6b;
 	font-weight: 600;
+}
+
+.toolbar {
+	display: flex;
+	justify-content: space-between;
+	background-color: whitesmoke;
+}
+
+.statebar {
+	display: flex;
+	justify-content: space-between;
+	padding: .4rem;
+	color: white;
+	background-color: #003ee7;
 }
 </style>
