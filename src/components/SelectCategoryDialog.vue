@@ -2,13 +2,16 @@
 	<kx-base-dialog class="category-selector">
 		<h3 slot="title">选择分类</h3>
 
-		<div class="buttons">
+		<div :class="$style.buttons">
 			<template v-if="current">
 				<h3 class="compact minor-text">当前分类：</h3>
-				<img class="small head" :src="current.cover" alt="分类图标">
-				<span class="name">{{current.name}}</span>
+				<img class="small head"
+					 :class="$style.head"
+					 :src="current.cover"
+					 alt="分类图标">
+				<span :class="$style.name">{{current.name}}</span>
 			</template>
-			<div v-else class="hold"></div>
+			<div v-else :class="$style.hold"></div>
 
 			<div class="btn-group">
 				<kx-button
@@ -24,26 +27,36 @@
 			</div>
 		</div>
 
-		<div class="cards">
+		<div :class="$style.cards">
 			<div v-for="cate of categories"
 				 :key="cate.id"
-				 class="category"
-				 :class="{ selected: cate.selected }">
+				 :class="{ [$style.category]: true, selected: cate.selected }"
+				 @click="showChild(cate)">
 
 				<kx-check-box
 					:value="cate.selected"
+					@click.native.stop
 					@changed="select(cate)"/>
 
-				<div @click="showChild(cate)">
-					<img class="head" :src="cate.cover" alt="分类图标">
-					<h3 class="name">{{cate.name}}</h3>
+				<div :class="$style.categoryWrapper">
+					<img class="head"
+						 :class="$style.head"
+						 :src="cate.cover"
+						 alt="分类图标">
+					<h3 :class="$style.name">{{cate.name}}</h3>
 				</div>
 			</div>
 		</div>
 
-		<div slot="footer" class="footer">
-			<div v-if="multiple" class="tip">已选择：{{ selected.length }} 个分类</div>
-			<div v-else class="tip">已选择：{{ selected.length ? selected[0].name : '' }}</div>
+		<div slot="footer" :class="$style.footer">
+			<div v-if="multiple"
+				 :class="$style.tip">
+				已选择：{{ selected.length }} 个分类
+			</div>
+			<div v-else
+				 :class="$style.tip">
+				已选择：{{ selected.length ? selected[0].name : '' }}
+			</div>
 
 			<div class="btn-group">
 				<kx-button class="second" @click="clear">清空选择</kx-button>
@@ -122,13 +135,7 @@ export default {
 };
 </script>
 
-<style lang="less">
-.category-selector .kx-dialog-body {
-	/*padding: 0;*/
-}
-</style>
-
-<style scoped lang="less">
+<style module lang="less">
 @import "../css/Imports";
 
 .cards {
@@ -156,20 +163,27 @@ export default {
 	width: 9rem;
 
 	.click-item;
-	text-align: center;
 	border: solid 1px #d7d7d7;
 
 	&.selected {
 		border-color: @color-primary;
 	}
 
-	& /deep/ .check-box-mark {
+	& :global(.check-box-mark) {
 		.extend-click(1rem, 0, 0, 1rem);
 		float: right;
 		border-radius: 0;
 		border-top-width: 0;
 		border-right-width: 0;
 	}
+
+	& :global(.kx-check-box) {
+		display: block;
+	}
+}
+
+.categoryWrapper {
+	text-align: center;
 }
 
 .tip {
