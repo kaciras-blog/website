@@ -36,7 +36,7 @@ export default {
 	height: 100vh;
 
 	background-size: cover;
-	background-image: url("../../assets/login-bkg.jpg");
+	background-image: url("../../assets/img/login-bkg.jpg");
 
 	@media screen {
 		@media (min-width: @length-screen-mobile) {
@@ -79,7 +79,7 @@ export default {
 		color: white;
 		background-color: rgba(50, 50, 50, 0.3) !important;
 	}
-	--background: url("../../assets/login-bkg.jpg") fixed;
+	--background: url("../../assets/img/login-bkg.jpg") fixed;
 	--background-size: cover;
 }
 
@@ -91,7 +91,7 @@ export default {
 	box-shadow: rgba(0, 0, 0, .6) 0 0 4px 3px;
 
 	&::before {
-		background: url("../../assets/login-bkg.jpg") fixed;
+		background: url("../../assets/img/login-bkg.jpg") fixed;
 		background-size: cover;
 	}
 	@media screen and (min-width: @length-screen-mobile) {
