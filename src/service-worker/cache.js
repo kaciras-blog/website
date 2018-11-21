@@ -18,10 +18,19 @@ export class ManagedCache {
 		this.maxSize = maxSize;
 		this.maxAge = maxAge;
 
-		this.db = new AsyncDB(name, 2);
+		this.db = new AsyncDB(name, 1);
 		this.db.open(e => ManagedCache.updateExpireStore(e));
 	}
 
+	/**
+	 * 如果数据库结构有变动则需要升级版本号，并在这个方法里创建新结构。
+	 *
+	 * 如果你需要修改一个已存在的对象仓库（例如要修改 keyPath），你必须先删除
+	 * 原先的对象仓库然后使用新的设置创建。（注意，这样会丢失对象仓库里的数据，
+	 * 如果你需要保存这些信息，你要在数据库版本更新前读取出来并保存在别处）。
+	 *
+	 * @param event {IDBVersionChangeEvent} 升级事件
+	 */
 	static updateExpireStore (event) {
 		const db = event.target.result;
 		db.createObjectStore(EXPRIATION_STORE_NAME, { keyPath: URL_KEY })
@@ -59,8 +68,12 @@ export class ManagedCache {
 		return new CacheFirstHandler(this);
 	}
 
-	staleWhileRevalidate () {
-		return new StaleWhileRevalidateHandler(this);
+	staleWhileRevalidate (channelName) {
+		let channel = null;
+		if ("BroadcastChannel" in self) {
+			channel = new BroadcastChannel(channelName);
+		}
+		return new StaleWhileRevalidateHandler(this, channel);
 	}
 }
 
@@ -120,13 +133,37 @@ class NetworkFirstHandler extends AbstractFetchHandler {
  */
 class StaleWhileRevalidateHandler extends AbstractFetchHandler {
 
+	constructor (name, channel) {
+		super(name);
+		this.channel = channel;
+	}
+
 	async handle (request) {
 		const cached = await caches.match(request);
 		if (cached) {
-			this.fetchAndCache(request);
+			this.fetchAndCache(request).then(newResp => this.boradcastUpdate(cached, newResp));
 			return cached;
 		}
 		return await this.fetchAndCache(request);
+	}
+
+	boradcastUpdate (cached, newResp) {
+		const { channel, name } = this;
+		if (!channel) {
+			return;
+		}
+		const same = ["content-length", "etag", "last-modified"].every(header => {
+			return cached.headers.has(header) === newResp.headers.has(header)
+				&& cached.headers.get(header) === newResp.headers.get(header);
+		});
+		if (same) {
+			return;
+		}
+		channel.postMessage({
+			type: "CACHE_UPDATE",
+			cacheName: name,
+			updatedUrl: newResp.url,
+		});
 	}
 }
 
