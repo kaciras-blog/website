@@ -24,9 +24,9 @@ module.exports = merge(baseConfig, {
 	},
 
 	// 外置化应用程序依赖模块。可以使服务器构建速度更快，并生成较小的 bundle 文件。
-	externals: nodeExternals({
-		whitelist: [/\.css$/, /\.less$/, /\.vue$/, /kx-ui/],
-	}),
+	// externals: nodeExternals({
+	// 	whitelist: [/\.css$/, /\.less$/, /\.vue$/, /kx-ui/],
+	// }),
 
 	plugins: [
 		new webpack.DefinePlugin({ "process.env.VUE_ENV": "'server'" }),
