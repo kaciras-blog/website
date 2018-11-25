@@ -69,7 +69,7 @@ export default {
 			deleteOn(this.drafts, d => d.id === id);
 		},
 	},
-	created () {
+	beforeMount () {
 		this.loadDrafts();
 	},
 };

@@ -85,7 +85,7 @@ export default {
 				 * 不断检测被拖动元素位置与其他元素是否进入其他元素的置换范围，不断调整 slides
 				 * 数组。
 				 *
-				 * 下面第一行Vue有BUG，不能使用组件的.$el，否则getBoundingClientRect()返回值是错的。
+				 * 下面第一行Vue有BUG，不能使用组件的.$el，否则getBoundingClientRect()返回值是旧的。
 				 */
 				const el = document.querySelectorAll(".slide")[index];
 				const container = this.$refs.container.getBoundingClientRect();

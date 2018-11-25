@@ -52,12 +52,6 @@ const webpackConfig = merge(baseWebpackConfig, {
 		new OptimizeCSSPlugin({
 			cssProcessorOptions: { map: { inline: false } },
 		}),
-		new HtmlWebpackPlugin({
-			filename: config.build.index,
-			template: utils.resolve("public/index.html"),
-			inject: true,
-			chunksSortMode: "dependency",
-		}),
 		new webpack.HashedModuleIdsPlugin(),
 		new VueSSRClientPlugin(),
 	],

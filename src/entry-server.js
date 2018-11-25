@@ -1,5 +1,6 @@
 import createApp from "./main";
 import { CancelToken } from "kx-ui";
+import Vue from "vue";
 
 
 function onReadyAsync (router) {
@@ -7,6 +8,9 @@ function onReadyAsync (router) {
 }
 
 export default async context => {
+	if (context.shellOnly || /^\/edit\//.test(context.request.url)) {
+		return new Vue({ render: h => h("div", { attrs: { id: "app" } }) });
+	}
 	const { vue, router, store } = createApp();
 
 	router.push(context.request.url);

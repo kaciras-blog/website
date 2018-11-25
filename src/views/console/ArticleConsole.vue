@@ -57,7 +57,7 @@ export default {
 			});
 		},
 	},
-	created () {
+	beforeMount () {
 		this.loadArticles();
 	},
 };

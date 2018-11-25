@@ -3,6 +3,7 @@ const chalk = require("chalk");
 const { promisify } = require("util");
 const config = require("./config");
 
+
 // 这俩都符合promisify的函数参数
 const rimraf = promisify(require("rimraf"));
 const webpack = promisify(require("webpack"));
@@ -36,7 +37,9 @@ async function build (mode) {
  * @return {Promise<void>} 指示构建状态
  */
 async function invokeWebpack (config) {
-	config.mode = process.env.WEBPACK_MODE;
+	if(process.env.WEBPACK_MODE) {
+		config.mode = process.env.WEBPACK_MODE;
+	}
 	const stats = await webpack(config);
 
 	process.stdout.write(stats.toString({

@@ -98,7 +98,7 @@ export default {
 			}
 		},
 	},
-	async created () {
+	async beforeMount () {
 		this.current = await api.category.get(0);
 		this.children = this.current.children;
 	},

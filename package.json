@@ -23,8 +23,8 @@
 		"vuex": "^3.0.1"
 	},
 	"devDependencies": {
-		"kx-ui": "file:D:/Project/KxUI",
-		"web-server": "file:../WebServer",
+		"kx-ui": "D:/Project/KxUI",
+		"web-server": "../WebServer",
 		"webpack-node-externals": "^1.7.2",
 		"@babel/core": "^7.1.6",
 		"@babel/plugin-proposal-class-properties": "^7.1.0",
