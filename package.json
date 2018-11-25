@@ -19,7 +19,7 @@
 		"markdown-it-anchor": "^5.0.2",
 		"serviceworker-webpack-plugin": "^1.0.1",
 		"vue": "^2.5.17",
-		"vue-router": "^3.0.1",
+		"vue-router": "^3.0.2",
 		"vuex": "^3.0.1"
 	},
 	"devDependencies": {
@@ -58,7 +58,7 @@
 		"less": "^3.8.1",
 		"less-loader": "^4.1.0",
 		"less-plugin-clean-css": "^1.5.1",
-		"mini-css-extract-plugin": "^0.4.4",
+		"mini-css-extract-plugin": "^0.4.5",
 		"optimize-css-assets-webpack-plugin": "^5.0.1",
 		"rimraf": "latest",
 		"url-loader": "^1.1.2",

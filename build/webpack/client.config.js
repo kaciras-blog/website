@@ -7,6 +7,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSPlugin = require("optimize-css-assets-webpack-plugin");
 const VueSSRClientPlugin = require("vue-server-renderer/client-plugin");
+const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 
 
 const webpackConfig = merge(baseWebpackConfig, {
@@ -40,6 +41,10 @@ const webpackConfig = merge(baseWebpackConfig, {
 		},
 	},
 	plugins: [
+		new ServiceWorkerWebpackPlugin({
+			entry: utils.resolve('src/service-worker/index.js'),
+			filename: "service-worker.js"
+		}),
 		new MiniCssExtractPlugin({
 			filename: utils.assetsPath("css/[name].[hash].css"),
 			allChunks: true,

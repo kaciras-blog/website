@@ -10,7 +10,6 @@ const VueLoaderPlugin = require("vue-loader/lib/plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const { assetsPath, resolve } = require("../utils");
 const config = require("../config");
-const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
 
 
 const createLintingRule = () => ({
@@ -26,7 +25,7 @@ const createLintingRule = () => ({
 
 module.exports = {
 	mode: "development",
-	context: path.resolve(__dirname, "../"),
+	context: path.resolve(__dirname, "../.."),
 	output: {
 		path: config.build.assetsRoot,
 		filename: "static/js/[name].js",
@@ -36,7 +35,6 @@ module.exports = {
 		extensions: [".js", ".jsx", ".vue", ".json"],
 		alias: {
 			"vue$": "vue/dist/vue.runtime.esm.js",
-			// "jquery": "jquery/dist/jquery.slim.js",
 			"@": resolve("src"),
 		},
 		symlinks: false,
@@ -49,10 +47,6 @@ module.exports = {
 				ignore: ["index.html"],
 			}]
 		),
-		new ServiceWorkerWebpackPlugin({
-			entry: resolve('src/service-worker/index.js'),
-			filename: "service-worker.js"
-		}),
 		new VueLoaderPlugin(),
 		new webpack.NoEmitOnErrorsPlugin(),
 	],

@@ -28,14 +28,10 @@ module.exports = merge(baseConfig, {
 		whitelist: [/\.css$/, /\.less$/, /\.vue$/, /kx-ui/],
 	}),
 
-
 	plugins: [
-		new webpack.DefinePlugin({
-			"process.env.VUE_ENV": "'server'",
-		}),
+		new webpack.DefinePlugin({ "process.env.VUE_ENV": "'server'" }),
 
-		// 这是将服务器的整个输出构建为单个 JSON 文件的插件。
-		// 默认文件名为 `vue-ssr-server-bundle.json`
+		// 这是将服务器的整个输出构建为单个 JSON 文件的插件，默认文件名为 `vue-ssr-server-bundle.json`
 		new VueSSRServerPlugin(),
 	],
 });
