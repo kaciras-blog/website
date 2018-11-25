@@ -117,9 +117,10 @@ export default {
 		this.category = await api.category.get(0);
 	},
 	destroyed () {
-		if (this.$store.state.index) {
-			this.$store.unregisterModule("index");
-		}
+		/* 客户端不预取，所以没再注册？ */
+		// if (this.$store.state.index) {
+		// 	this.$store.unregisterModule("index");
+		// }
 	},
 };
 </script>

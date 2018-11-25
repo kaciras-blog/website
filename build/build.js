@@ -58,6 +58,6 @@ async function invokeWebpack (config) {
 }
 
 // process.env.NODE_ENV 用于构建时，而在配置时则无法使用，故定义这个变量
-// process.env.WEBPACK_MODE = "production";
+process.env.WEBPACK_MODE = "production";
 
 build(process.argv[2]).catch(console.error);
