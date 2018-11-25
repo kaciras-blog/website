@@ -79,28 +79,28 @@ export default {
 	height: 100%;
 	color: #DDD;
 	text-align: center;
-
-	& .active::after {
-		content: "";
-		position: absolute;
-		top: 50%;
-		right: 0;
-		margin-top: -.8rem;
-
-		width: 0;
-		height: 0;
-		border: .8rem solid transparent;
-		border-right-color: white;
-	}
 }
 
 .menu {
 	padding: 0;
 }
 
+.left-triangle(@size) {
+	position: absolute;
+	top: 50%;
+	right: 0;
+	margin-top: -@size;
+
+	width: 0;
+	height: 0;
+	border: @size solid transparent;
+	border-right-color: white;
+}
+
 .tabItem {
 	display: block;
-	padding: .6rem;
+	padding-top: .8rem;
+	padding-bottom: .8rem;
 
 	list-style: none;
 	transform: rotateZ(0);
@@ -115,6 +115,11 @@ export default {
 	&:hover, &:focus {
 		outline: none;
 		background-color: rgba(255, 255, 255, 0.15);
+	}
+
+	&.active::after {
+		content: "";
+		.left-triangle(.8rem);
 	}
 }
 
