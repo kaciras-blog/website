@@ -1,14 +1,17 @@
 const baseWebpackConfig = require("./base.config");
 const { resolve } = require("../utils");
+const merge = require("webpack-merge");
 
 
-// polyfill要放在项目入口之前
-baseWebpackConfig.entry = [
-	"@babel/polyfill",
+// 复制一份避免污染全局，也可以直接合并两个配置
+const configCopy = merge(baseWebpackConfig, {});
+
+configCopy.entry = [
+	"@babel/polyfill", // polyfill要放在项目入口之前
 	resolve("src/entry-client.js"),
 ];
 
-baseWebpackConfig.module.rules.push({
+configCopy.module.rules.push({
 	test: /\.js$/,
 	loader: "babel-loader",
 	include: [
@@ -26,4 +29,4 @@ baseWebpackConfig.module.rules.push({
 	}
 });
 
-module.exports = baseWebpackConfig;
+module.exports = configCopy;
