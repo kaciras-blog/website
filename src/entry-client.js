@@ -113,10 +113,8 @@ function initAppAndRouterHook () {
 				next(err.location);
 				break;
 			case 404:
-				next({ path: "/error/404", replace: true });
-				break;
 			case 410:
-				next({ path: "/error/410", replace: true });
+				next({ path: "/error/" + err.code, replace: true });
 				break;
 			default:
 				console.error(err);

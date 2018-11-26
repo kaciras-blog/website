@@ -18,22 +18,34 @@ export default async context => {
 
 	const matched = router.getMatchedComponents();
 	if (!matched.length) {
-		throw { code: 404 };
+		router.push("/error/" + 404);
 	}
 
 	// 对所有匹配的路由组件调用 `asyncData()`
-	await Promise.all(matched
-		.filter(c => c.asyncData)
-		.map(c => c.asyncData({
-			store,
-			route: router.currentRoute,
-			cancelToken: CancelToken.never(),
-			protorype: context.request,
-		})));
+	try {
+		await Promise.all(matched
+			.filter(c => c.asyncData)
+			.map(c => c.asyncData({
+				store,
+				route: router.currentRoute,
+				cancelToken: CancelToken.never(),
+				protorype: context.request,
+			})));
+	} catch (e) {
+		switch (e.code) {
+			case 404:
+			case 410:
+				router.push("/error/" + e.code);
+				break;
+			default:
+				throw e;
+		}
+	}
 
 	const title = router.currentRoute.meta.title;
 	if (title) {
 		context.title = title + " - Kaciras的博客";
+		context.meta = "<meta name='description' content='Kaciras个人博客，热衷于计算机技术'>";
 	}
 
 	context.state = store.state;
