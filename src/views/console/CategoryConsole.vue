@@ -88,7 +88,8 @@ export default {
 		},
 		async submit () {
 			const { current, stack, $dialog } = this;
-			if (current.id) {
+
+			if (typeof current.id === "number") {
 				await api.category.update(current.id, current);
 				await $dialog.messageBox("修改分类", "修改成功");
 			} else {

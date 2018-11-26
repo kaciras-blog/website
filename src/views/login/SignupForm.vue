@@ -21,9 +21,10 @@
 			type="email"
 			placeholder="不填也行">
 
-		<label>验证码:</label>
+		<label for="captcha">验证码:</label>
 		<div class="captcha">
 			<input
+				id="captcha"
 				class="input-captcha"
 				title="验证码"
 				ref="captchaInput"
@@ -31,6 +32,7 @@
 				required>
 
 			<img :src="captcha"
+				 alt="验证码"
 				 title="点击换一张"
 				 @click="updateCaptcha">
 		</div>

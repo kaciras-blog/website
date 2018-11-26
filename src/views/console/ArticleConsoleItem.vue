@@ -1,6 +1,6 @@
 <template>
 	<div class="article">
-		<img class="cover" :src="value.cover" alt="文章封面">
+		<img class="cover" :src="value.cover" alt="封面">
 
 		<div>
 			<span class="red note" v-if="value.deleted">已删除</span>

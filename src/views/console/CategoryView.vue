@@ -10,7 +10,7 @@
 					 :class="$style.head"
 					 :src="item.cover"
 					 :title="editable ? '点击换头像' : null"
-					 alt="分类图标"
+					 alt="图标"
 					 @click="setCover">
 
 				<input v-if="editable"

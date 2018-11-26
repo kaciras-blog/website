@@ -8,7 +8,7 @@
 			:to="item | articleLink"
 			tabindex="-1"
 			:class="$style.cover">
-			<img :src="item.cover" class="cram">
+			<img :src="item.cover" class="cram" alt="封面">
 		</router-link>
 
 		<div :class="$style.summary">{{item.summary}}</div>
