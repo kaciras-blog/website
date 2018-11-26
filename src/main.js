@@ -28,14 +28,12 @@ export default function () {
 		component: () => import("./views/console/ConsolePage"),
 		meta: { title: "控制台" },
 	};
-	if (process.env.NODE_ENV === "production") {
-		coneoleRoute.beforeEnter = (to, from, next) => {
-			const user = store.state.user;
-			if (user && user.id === 2)
-				return next();
-			next({ path: "/error/404", replace: true });
-		};
-	}
+	coneoleRoute.beforeEnter = (to, from, next) => {
+		const user = store.state.user;
+		if (user && user.id === 2)
+			return next();
+		next({ path: "/error/404", replace: true });
+	};
 	router.addRoutes([coneoleRoute]);
 
 	const vue = new Vue({

@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import api from "../api";
 import { REFRESH_USER, REMOVE_USER, SET_USER } from "./types";
 
+
 Vue.use(Vuex);
 
 export default function () {
@@ -22,9 +23,7 @@ export default function () {
 			},
 		},
 		mutations: {
-			[SET_USER] (state, info) {
-				state.user = info;
-			},
+			[SET_USER]: (state, info) => state.user = info,
 		},
 	});
 }
