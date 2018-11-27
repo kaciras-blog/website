@@ -4,7 +4,7 @@ const EXPRIATION_STORE_NAME = "cache-expiration";
 const URL_KEY = "url";
 const TIMESTAMP_KEY = "time";
 
-export const cacheNames = new Set();
+export const cacheNames = new Set<string>();
 
 export class ManagedCache {
 
@@ -13,7 +13,7 @@ export class ManagedCache {
 	readonly maxAge: number;
 	readonly db: AsyncDB;
 
-	constructor (name, maxSize = null, maxAge = null) {
+	constructor(name, maxSize = null, maxAge = null) {
 		if (cacheNames.has(name)) {
 			throw new Error(`ManagedCache ${name} already exists.`);
 		}
@@ -36,13 +36,13 @@ export class ManagedCache {
 	 *
 	 * @param event {IDBVersionChangeEvent} 升级事件
 	 */
-	static updateExpireStore (event) {
+	static updateExpireStore(event) {
 		const db = event.target.result;
 		db.createObjectStore(EXPRIATION_STORE_NAME, { keyPath: URL_KEY })
 			.createIndex(TIMESTAMP_KEY, TIMESTAMP_KEY, { unique: false });
 	}
 
-	async put (request, response) {
+	async put(request: Request, response: Response) {
 		let { name, maxSize, maxAge, db } = this;
 		const cache = await caches.open(name);
 
@@ -62,20 +62,20 @@ export class ManagedCache {
 			cursor.continue();
 		});
 
-		return cache.put(request, response.clone());
+		return await cache.put(request, response.clone());
 	}
 
-	networkFirst () {
+	networkFirst() {
 		return new NetworkFirstHandler(this);
 	}
 
-	cacheFirst () {
+	cacheFirst() {
 		return new CacheFirstHandler(this);
 	}
 
-	staleWhileRevalidate (channelName) {
+	staleWhileRevalidate(channelName?: string) {
 		let channel = null;
-		if ("BroadcastChannel" in self) {
+		if (channelName && "BroadcastChannel" in self) {
 			channel = new BroadcastChannel(channelName);
 		}
 		return new StaleWhileRevalidateHandler(this, channel);
@@ -83,31 +83,30 @@ export class ManagedCache {
 }
 
 
-class AbstractFetchHandler {
+abstract class AbstractFetchHandler {
 
 	protected readonly cache: ManagedCache;
 
-	constructor (cache) {
+	constructor(cache) {
 		this.cache = cache;
 	}
 
-	async fetchAndCache (event) {
+	async fetchAndCache(event: FetchEvent) {
 		const { request, preloadResponse } = event;
 
 		let response = preloadResponse && await preloadResponse;
-		if (!response) {
-			response = await fetch(request, { cache: "no-store" });
+		if (response) {
+			return response; // Shell 依赖于预加载缓存
 		}
 
+		response = await fetch(request, { cache: "no-store" });
 		if (response.status >= 200 && response.status < 400) {
-			this.cache.put(request, response);
+			await this.cache.put(request, response);
 		}
 		return response;
 	}
 
-	async handle (event: FetchEvent) {
-		throw new Error("Not Impleted");
-	}
+	abstract async handle(event: FetchEvent);
 }
 
 /**
@@ -115,7 +114,7 @@ class AbstractFetchHandler {
  */
 class NetworkFirstHandler extends AbstractFetchHandler {
 
-	async handle (event) {
+	async handle(event) {
 		try {
 			return await this.fetchAndCache(event);
 		} catch (err) {
@@ -135,12 +134,12 @@ class StaleWhileRevalidateHandler extends AbstractFetchHandler {
 
 	private readonly channel?: BroadcastChannel;
 
-	constructor (cache, channel) {
+	constructor(cache, channel) {
 		super(cache);
 		this.channel = channel;
 	}
 
-	async handle (event) {
+	async handle(event) {
 		const cached = await caches.match(event.request);
 		if (cached) {
 			this.fetchAndCache(event).then(newResp => this.boradcastUpdate(cached, newResp));
@@ -149,7 +148,7 @@ class StaleWhileRevalidateHandler extends AbstractFetchHandler {
 		return await this.fetchAndCache(event);
 	}
 
-	boradcastUpdate (cached, newResp) {
+	boradcastUpdate(cached, newResp) {
 		const { channel, cache } = this;
 		if (!channel) {
 			return;
@@ -175,7 +174,7 @@ class StaleWhileRevalidateHandler extends AbstractFetchHandler {
  */
 class CacheFirstHandler extends AbstractFetchHandler {
 
-	async handle (event) {
+	async handle(event) {
 		// 如果请求的资源已被缓存，则直接返回
 		const cached = await caches.match(event.request);
 		if (cached) {
@@ -192,22 +191,22 @@ export class CacheProxyServer {
 
 	private readonly routes: RegexRoute[];
 
-	constructor () {
+	constructor() {
 		this.routes = [];
 	}
 
 	/**
 	 * 添加一个路由，注意没有删除方法，先添加的优先匹配。
 	 *
-	 * @param route {RegexRoute} 路由对象
-	 * @return {CacheProxyServer} 链式调用返回自己
+	 * @param route 路由对象
+	 * @return 链式调用返回自己
 	 */
-	addRoute (route) {
+	addRoute(route: RegexRoute) {
 		this.routes.push(route);
 		return this;
 	}
 
-	handleFetchEvent (event) {
+	handleFetchEvent(event: FetchEvent) {
 		const { request } = event;
 
 		if (request.method !== "GET") {
@@ -226,7 +225,7 @@ export class CacheProxyServer {
 		}
 	}
 
-	fetchHandler () {
+	fetchHandler() {
 		return event => this.handleFetchEvent(event);
 	}
 }
@@ -237,7 +236,7 @@ export class RegexRoute {
 	private handler: AbstractFetchHandler;
 	private blacklist: RegExp[];
 
-	constructor (pattern, handler, blacklist = []) {
+	constructor(pattern, handler, blacklist = []) {
 		if (typeof pattern === "string") {
 			pattern = new RegExp(pattern);
 		}
@@ -246,7 +245,7 @@ export class RegexRoute {
 		this.blacklist = blacklist;
 	}
 
-	match (request) {
+	match(request: Request) {
 		const { pattern, blacklist } = this;
 		if (!pattern.test(request.url)) {
 			return false;
@@ -257,7 +256,7 @@ export class RegexRoute {
 
 export class NavigateRoute extends RegexRoute {
 
-	match (request) {
+	match(request) {
 		if (request.mode !== "navigate") {
 			return false;
 		}

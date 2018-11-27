@@ -39,7 +39,7 @@ const proxyServer = new CacheProxyServer();
 
 const staticCache = new ManagedCache(STATIC_CACHE_NAME); // add STATIC_CACHE_NAME to cacheNames
 proxyServer.addRoute(new RegexRoute("/static/", staticCache.cacheFirst()));
-proxyServer.addRoute(new RegexRoute("/", staticCache.networkFirst()));
+proxyServer.addRoute(new RegexRoute("/$", staticCache.networkFirst()));
 
 // const ApiCache = new ManagedCache("API", 256, 7 * 24 * 60 * 60);
 // proxyServer.addRoute(new RegexRoute("//api.kaciras.net/", ApiCache.staleWhileRevalidate()));
