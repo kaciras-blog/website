@@ -45,7 +45,7 @@ async function invokeWebpack (config) {
 	process.stdout.write(stats.toString({
 		colors: true,
 		modules: false,
-		children: false, // Setting this to true will make TypeScript errors show up during build.
+		children: true, // Setting this to true will make TypeScript errors show up during build.
 		chunks: false,
 		chunkModules: false,
 	}) + "\n\n");

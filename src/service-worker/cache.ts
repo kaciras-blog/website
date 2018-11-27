@@ -8,6 +8,11 @@ export const cacheNames = new Set();
 
 export class ManagedCache {
 
+	readonly name: string;
+	readonly maxSize: number;
+	readonly maxAge: number;
+	readonly db: AsyncDB;
+
 	constructor (name, maxSize = null, maxAge = null) {
 		if (cacheNames.has(name)) {
 			throw new Error(`ManagedCache ${name} already exists.`);
@@ -51,13 +56,13 @@ export class ManagedCache {
 			if (count < maxSize && value[TIMESTAMP_KEY] > timePeriod) {
 				count++;
 			} else {
-				await db.delete(value.url);
+				await db.delete(EXPRIATION_STORE_NAME, value.url);
 				await cache.delete(value.url);
 			}
 			cursor.continue();
 		});
 
-		return cache.then(cache => cache.put(request, response.clone()));
+		return cache.put(request, response.clone());
 	}
 
 	networkFirst () {
@@ -80,6 +85,8 @@ export class ManagedCache {
 
 class AbstractFetchHandler {
 
+	protected readonly cache: ManagedCache;
+
 	constructor (cache) {
 		this.cache = cache;
 	}
@@ -87,8 +94,10 @@ class AbstractFetchHandler {
 	async fetchAndCache (event) {
 		const { request, preloadResponse } = event;
 
-		const response = preloadResponse
-			|| await fetch(request, { cache: "no-store" });
+		let response = preloadResponse && await preloadResponse;
+		if (!response) {
+			response = await fetch(request, { cache: "no-store" });
+		}
 
 		if (response.status >= 200 && response.status < 400) {
 			this.cache.put(request, response);
@@ -96,17 +105,8 @@ class AbstractFetchHandler {
 		return response;
 	}
 
-	/**
-	 * @abstract
-	 * @param request {Request}
-	 * @return {Promise<Response>}
-	 */
-	async handle (request) {
+	async handle (event: FetchEvent) {
 		throw new Error("Not Impleted");
-	}
-
-	handleFetch (event) {
-		event.respondWith(this.handle(event.request));
 	}
 }
 
@@ -115,11 +115,11 @@ class AbstractFetchHandler {
  */
 class NetworkFirstHandler extends AbstractFetchHandler {
 
-	async handle (request) {
+	async handle (event) {
 		try {
-			return await this.fetchAndCache(request);
+			return await this.fetchAndCache(event);
 		} catch (err) {
-			const cached = await caches.match(request);
+			const cached = await caches.match(event.request);
 			if (cached) {
 				return cached;
 			}
@@ -133,22 +133,24 @@ class NetworkFirstHandler extends AbstractFetchHandler {
  */
 class StaleWhileRevalidateHandler extends AbstractFetchHandler {
 
-	constructor (name, channel) {
-		super(name);
+	private readonly channel?: BroadcastChannel;
+
+	constructor (cache, channel) {
+		super(cache);
 		this.channel = channel;
 	}
 
-	async handle (request) {
-		const cached = await caches.match(request);
+	async handle (event) {
+		const cached = await caches.match(event.request);
 		if (cached) {
-			this.fetchAndCache(request).then(newResp => this.boradcastUpdate(cached, newResp));
+			this.fetchAndCache(event).then(newResp => this.boradcastUpdate(cached, newResp));
 			return cached;
 		}
-		return await this.fetchAndCache(request);
+		return await this.fetchAndCache(event);
 	}
 
 	boradcastUpdate (cached, newResp) {
-		const { channel, name } = this;
+		const { channel, cache } = this;
 		if (!channel) {
 			return;
 		}
@@ -161,7 +163,7 @@ class StaleWhileRevalidateHandler extends AbstractFetchHandler {
 		}
 		channel.postMessage({
 			type: "CACHE_UPDATE",
-			cacheName: name,
+			cacheName: cache.name,
 			updatedUrl: newResp.url,
 		});
 	}
@@ -173,20 +175,22 @@ class StaleWhileRevalidateHandler extends AbstractFetchHandler {
  */
 class CacheFirstHandler extends AbstractFetchHandler {
 
-	async handle (request) {
+	async handle (event) {
 		// 如果请求的资源已被缓存，则直接返回
-		const cached = await caches.match(request);
+		const cached = await caches.match(event.request);
 		if (cached) {
 			return cached;
 		}
 		// 没有，则发起请求并缓存结果
-		return await this.fetchAndCache(request);
+		return await this.fetchAndCache(event);
 	}
 }
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 export class CacheProxyServer {
+
+	private readonly routes: RegexRoute[];
 
 	constructor () {
 		this.routes = [];
@@ -218,7 +222,7 @@ export class CacheProxyServer {
 		}
 
 		if (matchedRoute) {
-			matchedRoute.handler.handle(event);
+			event.respondWith(matchedRoute.handler.handle(event));
 		}
 	}
 
@@ -229,9 +233,13 @@ export class CacheProxyServer {
 
 export class RegexRoute {
 
+	private pattern: RegExp;
+	private handler: AbstractFetchHandler;
+	private blacklist: RegExp[];
+
 	constructor (pattern, handler, blacklist = []) {
 		if (typeof pattern === "string") {
-			pattern = new RegExp(pattern).compile();
+			pattern = new RegExp(pattern);
 		}
 		this.pattern = pattern;
 		this.handler = handler;
@@ -240,11 +248,10 @@ export class RegexRoute {
 
 	match (request) {
 		const { pattern, blacklist } = this;
-		const url = new URL(request.url);
-		if (!pattern.test(url)) {
+		if (!pattern.test(request.url)) {
 			return false;
 		}
-		return blacklist.every(v => !v.test(url));
+		return blacklist.every(v => !v.test(request.url));
 	}
 }
 

@@ -1,19 +1,33 @@
+interface CursorOptions {
+	index?: string;
+	range?: IDBKeyRange;
+	direction?: IDBCursorDirection
+}
+
+type TransactionCallback = (tx: IDBTransaction, done: (value: any) => void, abort: () => void) => any;
+
+
 export class AsyncDB {
 
-	constructor (name, version) {
+	readonly name: string;
+	readonly version?: number;
+
+	private db: IDBDatabase;
+
+	constructor(name, version) {
 		this.name = name;
 		this.version = version;
 		this.db = null;
 	}
 
-	open (onUpgrade, onVersionChange) {
+	open(onUpgrade?, onVersionChange?) {
 		if (this.db) {
 			return Promise.resolve();
 		}
 		return new Promise((resolve, reject) => {
 			const request = indexedDB.open(this.name, this.version);
 			request.onupgradeneeded = onUpgrade;
-			request.onsuccess = event => {
+			request.onsuccess = (event: any) => {
 				resolve();
 				this.db = event.target.result;
 				this.db.onversionchange = onVersionChange;
@@ -22,14 +36,14 @@ export class AsyncDB {
 		});
 	}
 
-	withTransaction (storeNames, type, callback) {
-		if (!(storeNames instanceof Array)) {
-			storeNames = [storeNames];
-		}
+	withTransaction(storeNames: string | string[],
+					type: IDBTransactionMode,
+					callback: TransactionCallback) {
+
 		return new Promise((resolve, reject) => {
 			const tx = this.db.transaction(storeNames, type);
-			tx.onerror = event => reject(event.target.error);
-			tx.onabort = event => reject(event.target.error);
+			tx.onerror = (event: any) => reject(event.target.error);
+			tx.onabort = (event: any) => reject(event.target.error);
 			tx.oncomplete = () => resolve();
 
 			const abort = () => tx.abort();
@@ -38,30 +52,30 @@ export class AsyncDB {
 		});
 	}
 
-	withCursor (storeName, { index, range, direction }, callback) {
+	withCursor(storeName: string, { index, range, direction }: CursorOptions, callback) {
 		range = range || null;
 		direction = direction || "next";
 
 		return this.withTransaction(storeName, "readonly", tx => {
-			let store = tx.objectStore(storeName);
-			store = index ? store.index(index) : store;
+			const store = tx.objectStore(storeName);
+			const cursorable = index ? store.index(index) : store;
 
-			store.openCursor(range, direction).onsuccess = event => {
+			cursorable.openCursor(range, direction).onsuccess = (event: any) => {
 				const cursor = event.target.result;
 				if (cursor) callback(cursor);
 			};
 		});
 	}
 
-	count (storeName) {
+	count(storeName) {
 		return this.withTransaction(storeName, "readonly", tx => tx.objectStore(storeName).count());
 	}
 
-	add (storeName, value) {
+	add(storeName, value) {
 		return this.withTransaction(storeName, "readwrite", tx => tx.objectStore(storeName).add(value));
 	}
 
-	delete (storeName, key) {
+	delete(storeName, key) {
 		return this.withTransaction(storeName, "readwrite", tx => tx.objectStore(storeName).delete(key));
 	}
 }

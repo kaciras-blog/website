@@ -1,0 +1,19 @@
+{
+	"compilerOptions": {
+		"target": "esnext",
+		"module": "esnext",
+		"moduleResolution": "node",
+
+		"strict": false,
+		"allowJs": true,
+		"skipLibCheck": false,
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"forceConsistentCasingInFileNames": true,
+		"resolveJsonModule": true,
+
+		"jsx": "preserve",
+		"sourceMap": true
+	},
+	"include": ["./src/**/*"]
+}

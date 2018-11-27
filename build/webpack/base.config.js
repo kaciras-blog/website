@@ -7,7 +7,6 @@
 const path = require("path");
 const webpack = require("webpack");
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
 const { assetsPath, resolve } = require("../utils");
 const config = require("../config");
 
@@ -32,7 +31,7 @@ module.exports = {
 		publicPath: config.build.publicPath,
 	},
 	resolve: {
-		extensions: [".js", ".jsx", ".vue", ".json"],
+		extensions: [".js", ".ts", ".tsx", ".vue", ".json"],
 		alias: {
 			"vue$": "vue/dist/vue.runtime.esm.js",
 			"@": resolve("src"),
@@ -40,19 +39,17 @@ module.exports = {
 		symlinks: false,
 	},
 	plugins: [
-		new CopyWebpackPlugin([
-			{
-				from: resolve("public"),
-				to: ".",
-				ignore: ["index.html"],
-			}]
-		),
 		new VueLoaderPlugin(),
 		new webpack.NoEmitOnErrorsPlugin(),
 	],
 	module: {
 		rules: [
 			...(config.dev.useEslint ? [createLintingRule()] : []),
+			{
+				test: /\.tsx?$/,
+				use: 'ts-loader',
+				exclude: /node_modules/
+			},
 			{
 				test: /\.vue$/,
 				loader: "vue-loader",
@@ -98,5 +95,8 @@ module.exports = {
 		net: "empty",
 		tls: "empty",
 		child_process: "empty",
+	},
+	performance: {
+		hints: false
 	},
 };
