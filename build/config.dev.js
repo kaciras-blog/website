@@ -1,5 +1,4 @@
 const path = require("path");
-const utils = require("./utils");
 
 
 module.exports = {
@@ -12,21 +11,17 @@ module.exports = {
 	client: {
 		useBabel: true,
 		parallel: false,
-		devtool: "#source-map",
+		devtool: "cheap-module-eval-source-map",
 		cssSourceMap: true,
 	},
 
 	server: {
-		devtool: "cheap-module-eval-source-map",
+		devtool: "source-map", // 服务端没有eval模式
 		cssSourceMap: false,
 	},
 
 	vueLoader: {
-		loaders: utils.cssLoaders({
-			sourceMap: true,
-			extract: true,
-		}),
-		transformToRequire: {
+		transformAssetUrls: {
 			video: ["src", "poster"],
 			source: "src",
 			img: "src",
@@ -35,7 +30,6 @@ module.exports = {
 		compilerOptions: {
 			preserveWhitespace: false,
 		},
-		cssSourceMap: true,
 
 		// If you have problems debugging vue-files in devtools, set this to false - it *may* help
 		cacheBusting: true,

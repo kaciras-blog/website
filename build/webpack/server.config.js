@@ -19,12 +19,12 @@ module.exports = (options) => {
 		},
 
 		module: {
-			rules: styleLoaders({ sourceMap: options.cssSourceMap, extract: false }),
+			rules: styleLoaders({ ...options, extract: false }),
 		},
 
 		// 外置化应用程序依赖模块，可以使服务器构建速度更快，并生成较小的 bundle 文件。
 		externals: nodeExternals({
-			whitelist: [/\.css$/, /\.less$/, /\.vue$/, /kx-ui/],
+			whitelist: [/\.css$/, /\?vue&type=style/, /\.less$/, /\.vue$/, /kx-ui/],
 		}),
 
 		plugins: [

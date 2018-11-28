@@ -6,7 +6,7 @@
 	"private": true,
 	"scripts": {
 		"tsc": "tsc",
-		"dev": "web-server -dev build/webpack",
+		"dev": "web-server -dev build",
 		"lint": "eslint --fix --ext .js,.vue src",
 		"build": "node build/build.js -both"
 	},

@@ -43,7 +43,7 @@ module.exports = (options) => {
 	const config = {
 		entry: [utils.resolve("src/entry-client.js")],
 		module: {
-			rules: utils.styleLoaders({ sourceMap: options.cssSourceMap, extract: true }),
+			rules: utils.styleLoaders({ ...options, extract: true }),
 		},
 		devtool: options.devtool,
 		optimization: {
@@ -58,7 +58,9 @@ module.exports = (options) => {
 					async: {
 						name: "async",
 						chunks: "async",
+						priority: -20,
 						minChunks: 2,
+						reuseExistingChunk: true, // ?
 					},
 				},
 			},

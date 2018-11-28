@@ -8,14 +8,12 @@ exports.assetsPath = function (_path) {
 };
 
 exports.cssLoaders = function (options) {
-	options = options || {};
-
 	const cssLoader = {
 		loader: "css-loader",
 		options: {
-			sourceMap: options.sourceMap,
+			sourceMap: options.cssSourceMap,
 			modules: options.modules,
-			localIdentName: process.env.WEBPACK_MODE === "production"
+			localIdentName: options.mode === "production"
 				? "[hash:base64:8]"
 				: "[local]_[hash:base64:8]",
 		},
@@ -29,7 +27,7 @@ exports.cssLoaders = function (options) {
 			loaders.push({
 				loader: loader + "-loader",
 				options: Object.assign({}, loaderOptions, {
-					sourceMap: options.sourceMap,
+					sourceMap: options.cssSourceMap,
 				}),
 			});
 		}
@@ -49,7 +47,6 @@ exports.cssLoaders = function (options) {
 	};
 };
 
-// Generate loaders for standalone style files (outside of .vue)
 exports.styleLoaders = function (options) {
 	const output = [];
 	const loaders = exports.cssLoaders(options);
@@ -74,8 +71,4 @@ exports.styleLoaders = function (options) {
 	}
 
 	return output;
-};
-
-exports.processOptions = (options) => {
-
 };
