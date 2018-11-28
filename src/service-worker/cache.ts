@@ -6,6 +6,9 @@ const TIMESTAMP_KEY = "time";
 
 export const cacheNames = new Set<string>();
 
+/**
+ * 对缓存的封装，增加了过期功能。
+ */
 export class ManagedCache {
 
 	readonly name: string;
@@ -162,14 +165,13 @@ class StaleWhileRevalidateHandler extends AbstractFetchHandler {
 			return cached.headers.has(header) === newResp.headers.has(header)
 				&& cached.headers.get(header) === newResp.headers.get(header);
 		});
-		if (same) {
-			return;
+		if (!same) {
+			channel.postMessage({
+				type: "CACHE_UPDATE",
+				cacheName: cache.name,
+				updatedUrl: newResp.url,
+			});
 		}
-		channel.postMessage({
-			type: "CACHE_UPDATE",
-			cacheName: cache.name,
-			updatedUrl: newResp.url,
-		});
 	}
 }
 
@@ -231,6 +233,9 @@ export class CacheProxyServer {
 		event.respondWith(matchedRoute.handler.handle(event));
 	}
 
+	/**
+	 * 注册抓取事件，这个方法只能在最外层调用。
+	 */
 	addFetchListener() {
 		self.addEventListener('fetch', (event: FetchEvent) => this.handleFetchEvent(event));
 	}
@@ -242,7 +247,7 @@ export class RegexRoute {
 	private handler: AbstractFetchHandler;
 	private blacklist: RegExp[];
 
-	constructor(pattern: string | RegExp, handler: AbstractFetchHandler, blacklist = []) {
+	constructor(pattern: string | RegExp, handler: AbstractFetchHandler, blacklist: RegExp[] = []) {
 		if (typeof pattern === "string") {
 			pattern = new RegExp(pattern);
 		}

@@ -1,6 +1,6 @@
 interface CursorOptions {
 	index?: string;
-	range?: IDBKeyRange; // IE errors if range === `undefined`.
+	range?: IDBKeyRange;
 	direction?: IDBCursorDirection
 }
 
@@ -8,6 +8,7 @@ interface CursorOptions {
 type TransactionCallback = (tx: IDBTransaction, done: (value: any) => void, abort: () => void) => void;
 type CursorCallback = (cursor: IDBCursorWithValue) => void;
 
+/** 两个事件的处理函数，比较长就搞个别名 */
 type IDBUpdateHandler = (this: IDBOpenDBRequest, ev: IDBVersionChangeEvent) => any | null;
 type IDBonVersionChangeHandler = ((this: IDBDatabase, ev: IDBVersionChangeEvent) => any) | null;
 
@@ -56,7 +57,11 @@ export class AsyncDB {
 		});
 	}
 
-	withCursor(storeName: string, { index, range = null, direction }: CursorOptions,
+	withCursor(storeName: string, {
+				   index,
+				   range = null,  // IE errors if range === `undefined`.
+				   direction
+			   }: CursorOptions,
 			   callback: CursorCallback) {
 
 		return this.withTransaction(storeName, "readonly", tx => {

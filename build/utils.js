@@ -1,11 +1,13 @@
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
+/**
+ * 获取相对于项目目录的绝对路径。
+ *
+ * @param dir {string} 相对路径
+ * @return {string} 绝对路径
+ */
 exports.resolve = dir => path.join(__dirname, "..", dir);
-
-exports.assetsPath = function (_path) {
-	return path.posix.join("static", _path);
-};
 
 exports.cssLoaders = function (options) {
 	const cssLoader = {

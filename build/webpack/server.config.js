@@ -3,14 +3,14 @@ const merge = require("webpack-merge");
 const nodeExternals = require("webpack-node-externals");
 const VueSSRServerPlugin = require("vue-server-renderer/server-plugin");
 const baseConfig = require("./base.config");
-const { styleLoaders, resolve } = require("../utils");
+const { styleLoaders } = require("../utils");
 
 
 module.exports = (options) => {
 	Object.assign({}, options, options.server);
 
 	return merge(baseConfig(options), {
-		entry: resolve("/src/entry-server.js"),
+		entry: "./src/entry-server.js",
 		target: "node",
 		devtool: "source-map", // SourceMap 也会打包进bundle里
 		output: {

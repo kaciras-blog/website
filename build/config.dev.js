@@ -3,14 +3,17 @@ const path = require("path");
 
 module.exports = {
 	mode: "development",
-	outputPath: path.resolve(__dirname, "../dist"),
-	publicPath: "/",
-	useEslint: false,
+
+	outputPath: path.resolve(__dirname, "../dist"),	// webpack的输出目录
+	publicPath: "/",	// 公共资源的URL前缀，可以设为外部服务器等
+	assetsDirectory: "static",	// 公共资源输出目录，是outputPath的子目录
+
+	useEslint: false, // 在构建时用EsLint检查
 	bundleAnalyzerReport: process.env.npm_config_report,
 
 	client: {
 		useBabel: true,
-		parallel: false,
+		parallel: false, // 多线程编译JS文件
 		devtool: "cheap-module-eval-source-map",
 		cssSourceMap: true,
 	},

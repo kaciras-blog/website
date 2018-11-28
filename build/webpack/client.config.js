@@ -1,5 +1,6 @@
 const webpack = require("webpack");
 const merge = require("webpack-merge");
+const path = require("path");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const ServiceWorkerWebpackPlugin = require("serviceworker-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -39,9 +40,10 @@ const setupBabel = (webpackConfig, options) => {
 
 module.exports = (options) => {
 	Object.assign({}, options, options.client);
+	const assetsPath = (path_) => path.posix.join(options.assetsDirectory, path_);
 
 	const config = {
-		entry: [utils.resolve("src/entry-client.js")],
+		entry: ["./src/entry-client.js"],
 		module: {
 			rules: utils.styleLoaders({ ...options, extract: true }),
 		},
@@ -71,18 +73,18 @@ module.exports = (options) => {
 		plugins: [
 			new CopyWebpackPlugin([
 				{
-					from: utils.resolve("public"),
+					from: "./public",
 					to: ".",
 					ignore: ["index.html"],
 				}]
 			),
 			new ServiceWorkerWebpackPlugin({
-				entry: utils.resolve("src/service-worker/index.ts"),
+				entry: "./src/service-worker/index.ts",
 				includes: ["static/**/*"],
 				excludes: ["**/.*", "**/*.map", "static/icons/*"],
 			}),
 			new MiniCssExtractPlugin({
-				filename: utils.assetsPath("css/[name].[hash].css"),
+				filename: assetsPath("css/[name].[hash].css"),
 				allChunks: true,
 			}),
 			new OptimizeCSSPlugin({
@@ -93,10 +95,11 @@ module.exports = (options) => {
 		],
 	};
 
+	/** 默认文件名不带hash，生产模式带上以便区分不同版本的文件 */
 	if (options.mode === "production") {
 		config.output = {
-			filename: utils.assetsPath("js/[name].[contenthash:8].js"),
-			chunkFilename: utils.assetsPath("js/[name].[contenthash:8].js"),
+			filename: assetsPath("js/[name].[contenthash:8].js"),
+			chunkFilename: assetsPath("js/[name].[contenthash:8].js"),
 		};
 	}
 

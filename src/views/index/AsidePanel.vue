@@ -1,11 +1,11 @@
 <template>
 	<aside class="panel">
 		<div>
-			<h3 class="padding">置顶</h3>
-			<p class="no-content">暂无</p>
+			<h3 class="padding" :class="$style.padding">置顶</h3>
+			<p :class="$style.noContent">暂无</p>
 		</div>
 		<div>
-			<h3 class="padding">浏览排行</h3>
+			<h3 class="padding" :class="$style.padding">浏览排行</h3>
 			<ol v-if="hots"
 				class="rank">
 
@@ -20,11 +20,11 @@
 					</router-link>
 				</li>
 			</ol>
-			<p class="no-content" v-else>加载失败</p>
+			<p :class="$style.noContent" v-else>加载失败</p>
 		</div>
 		<div>
-			<h3 class="padding">其它</h3>
-			<p class="no-content">暂无</p>
+			<h3 class="padding" :class="$style.padding">其它</h3>
+			<p :class="$style.noContent">暂无</p>
 		</div>
 	</aside>
 </template>
@@ -42,19 +42,19 @@ export default {
 		return { hots: null };
 	},
 	beforeMount () {
-		if(!this.hots)
+		if (!this.hots)
 			api.article.getHots().then(hots => this.hots = hots);
 	},
 };
 </script>
 
-<style lang="less">
+<style module lang="less">
 .padding {
 	padding-top: .2em;
 	padding-bottom: .2em;
 }
 
-.no-content {
+.noContent {
 	text-align: center;
 }
 </style>

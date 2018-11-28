@@ -2,8 +2,8 @@ declare const self: ServiceWorkerGlobalScope;
 
 import { cacheNames, CacheProxyServer, ManagedCache, RegexRoute } from "./cache";
 
-// ServiceWorkerWebpackPlugin 自动生成此字段，其中包含静态资源列表 .
-declare var serviceWorkerOption: {
+// ServiceWorkerWebpackPlugin 自动生成，其中包含静态资源列表 .
+declare const serviceWorkerOption: {
 	assets: string[];
 };
 
@@ -41,7 +41,7 @@ proxyServer.addFetchListener();
 
 
 async function initUserCode() {
-	const staticCache = await ManagedCache.create(STATIC_CACHE_NAME); // add STATIC_CACHE_NAME to cacheNames
+	const staticCache = await ManagedCache.create(STATIC_CACHE_NAME);
 
 	proxyServer.addRoute(new RegexRoute("/static/", staticCache.cacheFirst()));
 	proxyServer.addRoute(new RegexRoute("/$", staticCache.networkFirst()));
@@ -53,6 +53,14 @@ async function initUserCode() {
 	// proxyServer.addRoute(new RegexRoute("//api.kaciras.net/", ApiCache.staleWhileRevalidate()));
 }
 
+/**
+ * 安装事件，当新的 ServiceWorker 加载后将会调用，此时可能还有之前旧的ServiceWorker在运行。
+ *
+ * 在这个事件里应当做一些没有副作用的初始化工作，比如初始化缓存机制等，但是不要做会影响
+ * 其他ServiceWorker的事，比如清理旧缓存。
+ *
+ * 有副作用的代码应当在 activate 事件里执行。
+ */
 self.addEventListener("install", (event: ExtendableEvent) => {
 	const { assets } = serviceWorkerOption;
 
@@ -66,6 +74,11 @@ self.addEventListener("install", (event: ExtendableEvent) => {
 	return self.skipWaiting();
 });
 
+/**
+ * 激活事件，这个事件触发时表明当前ServiceWorker已经被使用，而其他的ServiceWorker则没有。
+ *
+ * 在这个事件里应当清理旧版的缓存。
+ */
 self.addEventListener("activate", (event: ExtendableEvent) => {
 	console.log("[ServiceWorker]: Activate!");
 
@@ -73,11 +86,11 @@ self.addEventListener("activate", (event: ExtendableEvent) => {
 	const init = async () => {
 		const keys = (await caches.keys()).filter(k => !cacheNames.has(k));
 		await Promise.all(keys.map(k => caches.delete(k)));
-
-		if (self.registration.navigationPreload) {
-			await self.registration.navigationPreload.enable();
-		}
 	};
+
+	if (self.registration.navigationPreload) {
+		event.waitUntil(self.registration.navigationPreload.enable());
+	}
 
 	event.waitUntil(init());
 	return self.clients.claim();
