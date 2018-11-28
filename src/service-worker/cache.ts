@@ -9,11 +9,11 @@ export const cacheNames = new Set<string>();
 export class ManagedCache {
 
 	readonly name: string;
-	readonly maxSize: number;
-	readonly maxAge: number;
+	readonly maxSize?: number;
+	readonly maxAge?: number;
 	readonly db: AsyncDB;
 
-	constructor(name, maxSize = null, maxAge = null) {
+	private constructor(name: string, maxSize?: number, maxAge?: number) {
 		if (cacheNames.has(name)) {
 			throw new Error(`ManagedCache ${name} already exists.`);
 		}
@@ -24,7 +24,6 @@ export class ManagedCache {
 		this.maxAge = maxAge;
 
 		this.db = new AsyncDB(name, 1);
-		this.db.open(e => ManagedCache.updateExpireStore(e));
 	}
 
 	/**
@@ -36,13 +35,13 @@ export class ManagedCache {
 	 *
 	 * @param event {IDBVersionChangeEvent} 升级事件
 	 */
-	static updateExpireStore(event) {
+	private static updateExpireStore(event: any) {
 		const db = event.target.result;
 		db.createObjectStore(EXPRIATION_STORE_NAME, { keyPath: URL_KEY })
 			.createIndex(TIMESTAMP_KEY, TIMESTAMP_KEY, { unique: false });
 	}
 
-	async put(request: Request, response: Response) {
+	async put(request: RequestInfo, response: Response) {
 		let { name, maxSize, maxAge, db } = this;
 		const cache = await caches.open(name);
 
@@ -80,6 +79,12 @@ export class ManagedCache {
 		}
 		return new StaleWhileRevalidateHandler(this, channel);
 	}
+
+	static async create(name: string, maxSize = undefined, maxAge = undefined) {
+		const cache = new ManagedCache(name, maxSize, maxAge);
+		await cache.db.open(e => ManagedCache.updateExpireStore(e));
+		return cache;
+	}
 }
 
 
@@ -87,11 +92,11 @@ abstract class AbstractFetchHandler {
 
 	protected readonly cache: ManagedCache;
 
-	constructor(cache) {
+	constructor(cache: ManagedCache) {
 		this.cache = cache;
 	}
 
-	async fetchAndCache(event: FetchEvent) {
+	protected async fetchAndCache(event: FetchEvent) {
 		const { request, preloadResponse } = event;
 
 		let response = preloadResponse && await preloadResponse;
@@ -106,7 +111,7 @@ abstract class AbstractFetchHandler {
 		return response;
 	}
 
-	abstract async handle(event: FetchEvent);
+	abstract async handle(event: FetchEvent): Promise<void>;
 }
 
 /**
@@ -114,7 +119,7 @@ abstract class AbstractFetchHandler {
  */
 class NetworkFirstHandler extends AbstractFetchHandler {
 
-	async handle(event) {
+	async handle(event: FetchEvent) {
 		try {
 			return await this.fetchAndCache(event);
 		} catch (err) {
@@ -134,12 +139,12 @@ class StaleWhileRevalidateHandler extends AbstractFetchHandler {
 
 	private readonly channel?: BroadcastChannel;
 
-	constructor(cache, channel) {
+	constructor(cache: ManagedCache, channel?: BroadcastChannel) {
 		super(cache);
 		this.channel = channel;
 	}
 
-	async handle(event) {
+	async handle(event: FetchEvent) {
 		const cached = await caches.match(event.request);
 		if (cached) {
 			this.fetchAndCache(event).then(newResp => this.boradcastUpdate(cached, newResp));
@@ -148,7 +153,7 @@ class StaleWhileRevalidateHandler extends AbstractFetchHandler {
 		return await this.fetchAndCache(event);
 	}
 
-	boradcastUpdate(cached, newResp) {
+	boradcastUpdate(cached: Response, newResp: Response) {
 		const { channel, cache } = this;
 		if (!channel) {
 			return;
@@ -174,7 +179,7 @@ class StaleWhileRevalidateHandler extends AbstractFetchHandler {
  */
 class CacheFirstHandler extends AbstractFetchHandler {
 
-	async handle(event) {
+	async handle(event: FetchEvent) {
 		// 如果请求的资源已被缓存，则直接返回
 		const cached = await caches.match(event.request);
 		if (cached) {
@@ -206,7 +211,7 @@ export class CacheProxyServer {
 		return this;
 	}
 
-	handleFetchEvent(event: FetchEvent) {
+	private handleFetchEvent(event: FetchEvent) {
 		const { request } = event;
 
 		if (request.method !== "GET") {
@@ -220,13 +225,14 @@ export class CacheProxyServer {
 			}
 		}
 
-		if (matchedRoute) {
-			event.respondWith(matchedRoute.handler.handle(event));
+		if (!matchedRoute) {
+			return;
 		}
+		event.respondWith(matchedRoute.handler.handle(event));
 	}
 
-	fetchHandler() {
-		return event => this.handleFetchEvent(event);
+	addFetchListener() {
+		self.addEventListener('fetch', (event: FetchEvent) => this.handleFetchEvent(event));
 	}
 }
 
@@ -236,7 +242,7 @@ export class RegexRoute {
 	private handler: AbstractFetchHandler;
 	private blacklist: RegExp[];
 
-	constructor(pattern, handler, blacklist = []) {
+	constructor(pattern: string | RegExp, handler: AbstractFetchHandler, blacklist = []) {
 		if (typeof pattern === "string") {
 			pattern = new RegExp(pattern);
 		}
@@ -256,7 +262,7 @@ export class RegexRoute {
 
 export class NavigateRoute extends RegexRoute {
 
-	match(request) {
+	match(request: Request) {
 		if (request.mode !== "navigate") {
 			return false;
 		}

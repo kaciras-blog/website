@@ -1,10 +1,15 @@
 interface CursorOptions {
 	index?: string;
-	range?: IDBKeyRange;
+	range?: IDBKeyRange; // IE errors if range === `undefined`.
 	direction?: IDBCursorDirection
 }
 
-type TransactionCallback = (tx: IDBTransaction, done: (value: any) => void, abort: () => void) => any;
+/** 事务和游标的回调 */
+type TransactionCallback = (tx: IDBTransaction, done: (value: any) => void, abort: () => void) => void;
+type CursorCallback = (cursor: IDBCursorWithValue) => void;
+
+type IDBUpdateHandler = (this: IDBOpenDBRequest, ev: IDBVersionChangeEvent) => any | null;
+type IDBonVersionChangeHandler = ((this: IDBDatabase, ev: IDBVersionChangeEvent) => any) | null;
 
 
 export class AsyncDB {
@@ -12,15 +17,14 @@ export class AsyncDB {
 	readonly name: string;
 	readonly version?: number;
 
-	private db: IDBDatabase;
+	private db?: IDBDatabase;
 
-	constructor(name, version) {
+	constructor(name: string, version?: number) {
 		this.name = name;
 		this.version = version;
-		this.db = null;
 	}
 
-	open(onUpgrade?, onVersionChange?) {
+	open(onUpgrade: IDBUpdateHandler, onVersionChange: IDBonVersionChangeHandler = null) {
 		if (this.db) {
 			return Promise.resolve();
 		}
@@ -47,14 +51,13 @@ export class AsyncDB {
 			tx.oncomplete = () => resolve();
 
 			const abort = () => tx.abort();
-			const done = value => resolve(value);
+			const done = (value: any) => resolve(value);
 			callback(tx, done, abort);
 		});
 	}
 
-	withCursor(storeName: string, { index, range, direction }: CursorOptions, callback) {
-		range = range || null;
-		direction = direction || "next";
+	withCursor(storeName: string, { index, range = null, direction }: CursorOptions,
+			   callback: CursorCallback) {
 
 		return this.withTransaction(storeName, "readonly", tx => {
 			const store = tx.objectStore(storeName);
@@ -67,15 +70,15 @@ export class AsyncDB {
 		});
 	}
 
-	count(storeName) {
+	count(storeName: string) {
 		return this.withTransaction(storeName, "readonly", tx => tx.objectStore(storeName).count());
 	}
 
-	add(storeName, value) {
+	add(storeName: string, value: any) {
 		return this.withTransaction(storeName, "readwrite", tx => tx.objectStore(storeName).add(value));
 	}
 
-	delete(storeName, key) {
+	delete(storeName: string, key: any) {
 		return this.withTransaction(storeName, "readwrite", tx => tx.objectStore(storeName).delete(key));
 	}
 }
