@@ -37,10 +37,7 @@ async function build (mode) {
  * @return {Promise<void>} 指示构建状态
  */
 async function invokeWebpack (config) {
-	if(process.env.WEBPACK_MODE) {
-		config.mode = process.env.WEBPACK_MODE;
-	}
-	const stats = await webpack(config);
+	const stats = await webpack(config(options));
 
 	process.stdout.write(stats.toString({
 		colors: true,
@@ -57,7 +54,7 @@ async function invokeWebpack (config) {
 	console.log(chalk.cyan("Build complete.\n"));
 }
 
-// process.env.NODE_ENV 用于构建时，而在配置时则无法使用，故定义这个变量
-process.env.WEBPACK_MODE = "production";
+const options = require("./config.dev");
+// const options = require("./config.prod.dev");
 
 build(process.argv[2]).catch(console.error);

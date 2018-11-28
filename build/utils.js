@@ -75,3 +75,7 @@ exports.styleLoaders = function (options) {
 
 	return output;
 };
+
+exports.processOptions = (options) => {
+
+};
