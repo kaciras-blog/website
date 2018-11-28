@@ -1,7 +1,6 @@
 const path = require("path");
 const chalk = require("chalk");
 const { promisify } = require("util");
-const config = require("./config");
 
 
 // 这俩都符合promisify的函数参数
@@ -20,12 +19,12 @@ async function build (mode) {
 			await invokeWebpack(require("./webpack/server.config"));
 			break;
 		case "-both":
-			await rimraf(path.join(config.build.assetsRoot, "static"));
+			await rimraf(path.join(options.outputPath, "static"));
 			await invokeWebpack(require("./webpack/client.config"));
 			await invokeWebpack(require("./webpack/server.config"));
 			break;
 		default:
-			await rimraf(path.join(config.build.assetsRoot, "static"));
+			await rimraf(path.join(options.outputPath, "static"));
 			await invokeWebpack(require("./webpack/client.config"));
 	}
 }
@@ -54,7 +53,7 @@ async function invokeWebpack (config) {
 	console.log(chalk.cyan("Build complete.\n"));
 }
 
-const options = require("./config.dev");
-// const options = require("./config.prod.dev");
+// const options = require("./config.dev");
+const options = require("./config.prod");
 
 build(process.argv[2]).catch(console.error);

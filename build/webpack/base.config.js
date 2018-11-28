@@ -7,6 +7,7 @@
 const path = require("path");
 const webpack = require("webpack");
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
+const hash = require('hash-sum');
 const { assetsPath, resolve } = require("../utils");
 
 
@@ -20,6 +21,22 @@ const createLintingRule = (emitWarning) => ({
 		emitWarning,
 	},
 });
+
+/**
+ * 生成一个标识字符串，当 cache-loader 使用默认的读写选项时，这个字符串将
+ * 参与缓存 hash 值的计算。
+ *
+ * @param options 选项
+ */
+const vueCacheIdenifier = (options) => {
+	const varibles = {
+		'cache-loader': require('cache-loader/package.json').version,
+		'vue-loader': require('vue-loader/package.json').version,
+		'vue-template-compiler': require('vue-template-compiler/package.json').version,
+		"mode": options.mode,
+	};
+	return hash(varibles);
+};
 
 module.exports = (options) => {
 	return {
@@ -40,7 +57,7 @@ module.exports = (options) => {
 				".vue", ".json",// Others
 			],
 			alias: {
-				"vue$": "vue/dist/vue.runtime.esm.js",
+				vue$: "vue/dist/vue.runtime.esm.js",
 				"@": resolve("src"),
 			},
 			symlinks: false,
@@ -48,6 +65,7 @@ module.exports = (options) => {
 		plugins: [
 			new VueLoaderPlugin(),
 			new webpack.NoEmitOnErrorsPlugin(),
+			// new webpack.NamedChunksPlugin(),
 		],
 		module: {
 			rules: [
@@ -60,7 +78,11 @@ module.exports = (options) => {
 				{
 					test: /\.vue$/,
 					loader: "vue-loader",
-					options: options.vueLoader,
+					options: {
+						...options.vueLoader,
+						cacheDirectory: resolve("node_modules/.cache/vue-loader"),
+						cacheIdentifier: vueCacheIdenifier(options),
+					},
 				},
 				{
 					test: /\.(png|jpe?g|gif|webp)(\?.*)?$/,
@@ -97,7 +119,11 @@ module.exports = (options) => {
 		},
 		node: {
 			setImmediate: false,
+
+			// [Vue-Cli] process is injected via DefinePlugin, although some
+			// 3rd party libraries may require a mock to work properly (#934)
 			process: "mock",
+
 			dgram: "empty",
 			fs: "empty",
 			net: "empty",

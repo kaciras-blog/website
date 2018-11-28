@@ -9,12 +9,21 @@ const baseWebpackConfig = require("./base.config");
 const utils = require("../utils");
 
 
-const setupBabel = (webpackConfig) => {
+const setupBabel = (webpackConfig, options) => {
 	webpackConfig.entry.unshift("@babel/polyfill");
+
+	const loaders = [{
+		loader: "babel-loader",
+		options: { cacheDirectory: true },
+	}];
+
+	if (options.parallel) {
+		loaders.unshift({ loader: "thread-loader" });
+	}
 
 	webpackConfig.module.rules.push({
 		test: /\.jsx?$/,
-		loader: "babel-loader",
+		use: loaders,
 		include: [
 			resolve("src"),
 			resolve("test"),
@@ -25,21 +34,18 @@ const setupBabel = (webpackConfig) => {
 		exclude: [
 			resolve("src/service-worker"),
 		],
-		options: { cacheDirectory: true },
 	});
 };
 
 module.exports = (options) => {
-	const webpackConfig = merge(baseWebpackConfig(options), {
+	Object.assign({}, options, options.client);
+
+	const config = {
 		entry: [utils.resolve("src/entry-client.js")],
 		module: {
 			rules: utils.styleLoaders({ sourceMap: options.cssSourceMap, extract: true }),
 		},
 		devtool: options.devtool,
-		output: {
-			filename: utils.assetsPath("js/[name].[hash].js"),
-			chunkFilename: utils.assetsPath("js/[id].[hash].js"),
-		},
 		optimization: {
 			splitChunks: {
 				cacheGroups: {
@@ -47,12 +53,12 @@ module.exports = (options) => {
 						name: "vendors",
 						test: /[\\/]node_modules[\\/]/,
 						priority: -10,
-						chunks: "all",
+						chunks: "initial",
 					},
 					async: {
 						name: "async",
 						chunks: "async",
-						minChunks: 3,
+						minChunks: 2,
 					},
 				},
 			},
@@ -83,16 +89,23 @@ module.exports = (options) => {
 			new webpack.HashedModuleIdsPlugin(),
 			new VueSSRClientPlugin(),
 		],
-	});
+	};
+
+	if (options.mode === "production") {
+		config.output = {
+			filename: utils.assetsPath("js/[name].[contenthash:8].js"),
+			chunkFilename: utils.assetsPath("js/[name].[contenthash:8].js"),
+		};
+	}
 
 	if (options.useBabel) {
-		setupBabel(webpackConfig);
+		setupBabel(config);
 	}
 
 	if (options.bundleAnalyzerReport) {
 		const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
-		webpackConfig.plugins.push(new BundleAnalyzerPlugin());
+		config.plugins.push(new BundleAnalyzerPlugin());
 	}
 
-	return webpackConfig;
+	return merge(baseWebpackConfig(options), config);
 };

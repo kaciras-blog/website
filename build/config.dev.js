@@ -11,6 +11,7 @@ module.exports = {
 
 	client: {
 		useBabel: true,
+		parallel: false,
 		devtool: "#source-map",
 		cssSourceMap: true,
 	},
