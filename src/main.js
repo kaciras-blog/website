@@ -1,4 +1,3 @@
-import "./css/Main.less";
 import Vue from "vue";
 import createRouter from "./router";
 import createStore from "./store";
@@ -6,6 +5,7 @@ import createStore from "./store";
 import KxUI from "kx-ui";
 import KxMarkdown from "./markdown";
 import BlogPlugin from "./blog-plugin";
+import "./css/Main.less";
 
 
 Vue.config.productionTip = false;
