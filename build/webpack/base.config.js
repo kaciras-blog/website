@@ -38,7 +38,8 @@ const vueCacheIdenifier = (options) => {
 	return hash(varibles);
 };
 
-module.exports = (options) => {
+// side: "client" or "server"
+module.exports = (options, side) => {
 
 	// 这里的 path 一定要用 posix 的斜杠，与URL中的斜杠一致
 	const assetsPath = (path_) => path.posix.join(options.assetsDirectory, path_);
@@ -82,7 +83,7 @@ module.exports = (options) => {
 					loader: "vue-loader",
 					options: {
 						...options.vueLoader,
-						cacheDirectory: resolve("node_modules/.cache/vue-loader"),
+						cacheDirectory: resolve("node_modules/.cache/vue-loader-" + side),
 						cacheIdentifier: vueCacheIdenifier(options),
 					},
 				},

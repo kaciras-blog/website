@@ -9,7 +9,7 @@ const { styleLoaders } = require("../utils");
 module.exports = (options) => {
 	Object.assign({}, options, options.server);
 
-	return merge(baseConfig(options), {
+	return merge(baseConfig(options, "server"), {
 		entry: "./src/entry-server.js",
 		target: "node",
 		devtool: "source-map", // SourceMap 也会打包进bundle里

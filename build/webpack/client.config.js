@@ -112,5 +112,5 @@ module.exports = (options) => {
 		config.plugins.push(new BundleAnalyzerPlugin());
 	}
 
-	return merge(baseWebpackConfig(options), config);
+	return merge(baseWebpackConfig(options, "client"), config);
 };
