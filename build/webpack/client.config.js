@@ -7,7 +7,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSPlugin = require("optimize-css-assets-webpack-plugin");
 const VueSSRClientPlugin = require("vue-server-renderer/client-plugin");
 const baseWebpackConfig = require("./base.config");
-const utils = require("../utils");
+const { resolve, styleLoaders } = require("../utils");
 
 
 const setupBabel = (webpackConfig, options) => {
@@ -29,11 +29,13 @@ const setupBabel = (webpackConfig, options) => {
 		test: /\.(mjs|jsx?)$/,
 		use: loaders,
 		include: [
-			resolve("src"),
-			resolve("test"),
-			resolve("node_modules/webpack-hot-client/client"),
 			resolve("node_modules/kx-ui/src"),
 			resolve("node_modules/markdown-it-anchor"),
+			resolve("src"),
+			resolve("test"),
+
+			resolve("node_modules/webpack-hot-middleware/client"),
+			resolve("node_modules/webpack-hot-client/client"),
 		],
 		exclude: [
 			resolve("src/service-worker"),
@@ -42,13 +44,13 @@ const setupBabel = (webpackConfig, options) => {
 };
 
 module.exports = (options) => {
-	Object.assign({}, options, options.client);
+	options = Object.assign({}, options, options.client);
 	const assetsPath = (path_) => path.posix.join(options.assetsDirectory, path_);
 
 	const config = {
 		entry: ["./src/entry-client.js"],
 		module: {
-			rules: utils.styleLoaders({ ...options, extract: true }),
+			rules: styleLoaders({ ...options, extract: true }),
 		},
 		devtool: options.devtool,
 		optimization: {
@@ -107,7 +109,7 @@ module.exports = (options) => {
 	}
 
 	if (options.useBabel) {
-		setupBabel(config);
+		setupBabel(config, options);
 	}
 
 	if (options.bundleAnalyzerReport) {

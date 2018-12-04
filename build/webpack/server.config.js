@@ -7,7 +7,7 @@ const { styleLoaders } = require("../utils");
 
 
 module.exports = (options) => {
-	Object.assign({}, options, options.server);
+	options = Object.assign({}, options, options.server);
 
 	return merge(baseConfig(options, "server"), {
 		entry: "./src/entry-server.js",
