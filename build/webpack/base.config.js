@@ -7,6 +7,7 @@
 const path = require("path");
 const webpack = require("webpack");
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
+const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const hash = require("hash-sum");
 const { resolve } = require("../utils");
 
@@ -69,6 +70,7 @@ module.exports = (options, side) => {
 		plugins: [
 			new VueLoaderPlugin(),
 			new webpack.NoEmitOnErrorsPlugin(),
+			new CaseSensitivePathsPlugin(),
 		],
 		module: {
 			rules: [
@@ -133,6 +135,6 @@ module.exports = (options, side) => {
 			tls: "empty",
 			child_process: "empty",
 		},
-		performance: { hints: false },
+		performance: false, // 不提示资源过大等没啥用的信息
 	};
 };

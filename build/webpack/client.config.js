@@ -15,7 +15,10 @@ const setupBabel = (webpackConfig, options) => {
 
 	const loaders = [{
 		loader: "babel-loader",
-		options: { cacheDirectory: true },
+		options: {
+			cacheDirectory: true,
+			cacheCompression: false,
+		},
 	}];
 
 	if (options.parallel) {
@@ -23,7 +26,7 @@ const setupBabel = (webpackConfig, options) => {
 	}
 
 	webpackConfig.module.rules.push({
-		test: /\.jsx?$/,
+		test: /\.(mjs|jsx?)$/,
 		use: loaders,
 		include: [
 			resolve("src"),

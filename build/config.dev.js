@@ -1,7 +1,7 @@
 const path = require("path");
 
 
-module.exports = {
+const webpack = {
 	mode: "development",
 
 	outputPath: path.resolve(__dirname, "../dist"),	// webpack的输出目录
@@ -12,6 +12,7 @@ module.exports = {
 	bundleAnalyzerReport: process.env.npm_config_report,
 
 	client: {
+		file: path.resolve(__dirname, "webpack/client.config"),
 		useBabel: true,
 		parallel: false, // 多线程编译JS文件
 		devtool: "cheap-module-eval-source-map",
@@ -19,6 +20,7 @@ module.exports = {
 	},
 
 	server: {
+		file: path.resolve(__dirname, "webpack/server.config"),
 		devtool: "source-map", // 服务端没有eval模式
 		cssSourceMap: false,
 	},
@@ -38,3 +40,34 @@ module.exports = {
 		cacheBusting: true,
 	},
 };
+
+const server = {
+	logLevel: "info",
+	fileLog: false,
+
+	port: 80,
+	httpsPort: 443,
+	tls: true,
+	certificate: "D:/Coding/Utils/dev.pem",
+	privatekey: "D:/Coding/Utils/dev.pvk",
+	redirectHttp: true,
+};
+
+const dev = {
+	useHotClient: false,
+	slient: false,
+};
+
+const blog = {
+	imageRoot: "G:/备份/blog.kaciras.net/image",
+	apiServer: "https://localhost:2375",
+	cors: {
+		maxAge: 864000,
+		exposeHeaders: ["Location"],
+		allowHeaders: ["X-CSRF-Token", "X-Requested-With", "Content-Type"],
+		credentials: true,
+	},
+	cacheMaxAge: 12 * 30 * 86400 * 1000,
+};
+
+module.exports = { webpack, server, dev, blog };

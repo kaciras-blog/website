@@ -1,9 +1,9 @@
 const base = require("./config.dev");
 
-base.mode = "production";
+base.webpack.mode = "production";
 
-base.client.devtool = false;
-base.client.cssSourceMap = false;
-base.server.devtool = false;
+base.webpack.client.devtool = false;
+base.webpack.client.cssSourceMap = false;
+base.webpack.server.devtool = false;
 
 module.exports = base;
