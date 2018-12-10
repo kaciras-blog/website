@@ -5,23 +5,11 @@
  * 本项目预计在 Vue 3.0 正式发布之后也转为基于cli的构建配置。
  */
 const path = require("path");
-const webpack = require("webpack");
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const hash = require("hash-sum");
 const { resolve } = require("../utils");
 
-
-const createLintingRule = () => ({
-	test: /\.(js|vue)$/,
-	loader: "eslint-loader",
-	enforce: "pre",
-	include: [resolve("src"), resolve("test")],
-	options: {
-		formatter: require("eslint-friendly-formatter"),
-		emitWarning: false,
-	},
-});
 
 /**
  * 生成一个标识字符串，当 cache-loader 使用默认的读写选项时，这个字符串将
@@ -69,12 +57,13 @@ module.exports = (options, side) => {
 		},
 		plugins: [
 			new VueLoaderPlugin(),
-			new webpack.NoEmitOnErrorsPlugin(),
 			new CaseSensitivePathsPlugin(),
 		],
+		optimization: {
+			noEmitOnErrors: true,
+		},
 		module: {
 			rules: [
-				...(options.useEslint ? [createLintingRule()] : []),
 				{
 					test: /\.tsx?$/,
 					use: "ts-loader",

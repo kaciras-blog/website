@@ -8,7 +8,6 @@ const webpack = {
 	publicPath: "/",	// 公共资源的URL前缀，可以设为外部服务器等
 	assetsDirectory: "static",	// 公共资源输出目录，是outputPath的子目录
 
-	useEslint: false, // 在构建时用EsLint检查
 	bundleAnalyzerReport: process.env.npm_config_report,
 
 	client: {
@@ -42,9 +41,6 @@ const webpack = {
 };
 
 const server = {
-	logLevel: "info",
-	fileLog: false,
-
 	port: 80,
 	httpsPort: 443,
 	tls: true,
