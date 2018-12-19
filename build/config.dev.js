@@ -11,15 +11,13 @@ const webpack = {
 	bundleAnalyzerReport: process.env.npm_config_report,
 
 	client: {
-		file: path.resolve(__dirname, "webpack/client.config"),
-		useBabel: true,
+		useBabel: false,
 		parallel: false, // 多线程编译JS文件
 		devtool: "cheap-module-eval-source-map",
 		cssSourceMap: true,
 	},
 
 	server: {
-		file: path.resolve(__dirname, "webpack/server.config"),
 		devtool: "source-map", // 服务端没有eval模式
 		cssSourceMap: false,
 	},
