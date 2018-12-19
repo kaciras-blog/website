@@ -11,7 +11,7 @@ const webpack = {
 	bundleAnalyzerReport: process.env.npm_config_report,
 
 	client: {
-		useBabel: false,
+		useBabel: true,
 		parallel: false, // 多线程编译JS文件
 		devtool: "cheap-module-eval-source-map",
 		cssSourceMap: true,
