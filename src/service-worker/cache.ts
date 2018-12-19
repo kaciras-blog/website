@@ -1,3 +1,5 @@
+declare const self: ServiceWorkerGlobalScope;
+
 import { AsyncDB } from "./idb-async";
 
 const EXPRIATION_STORE_NAME = "cache-expiration";
@@ -45,17 +47,17 @@ export class ManagedCache {
 	}
 
 	async put(request: RequestInfo, response: Response) {
-		let { name, maxSize, maxAge, db } = this;
+		const { name, maxSize, maxAge, db } = this;
 		const cache = await caches.open(name);
 
-		maxSize = maxSize || Number.MAX_SAFE_INTEGER;
+		const sizeLimit = maxSize || Number.MAX_SAFE_INTEGER;
 		const timePeriod = maxAge ? Date.now() - maxAge * 1000 : 0;
 		let count = 0;
 
 		await db.withCursor(EXPRIATION_STORE_NAME, { index: TIMESTAMP_KEY }, async cursor => {
 			const value = cursor.value;
 
-			if (count < maxSize && value[TIMESTAMP_KEY] > timePeriod) {
+			if (count < sizeLimit && value[TIMESTAMP_KEY] > timePeriod) {
 				count++;
 			} else {
 				await db.delete(EXPRIATION_STORE_NAME, value.url);
@@ -76,7 +78,7 @@ export class ManagedCache {
 	}
 
 	staleWhileRevalidate(channelName?: string) {
-		let channel = null;
+		let channel;
 		if (channelName && "BroadcastChannel" in self) {
 			channel = new BroadcastChannel(channelName);
 		}
@@ -114,7 +116,7 @@ abstract class AbstractFetchHandler {
 		return response;
 	}
 
-	abstract async handle(event: FetchEvent): Promise<void>;
+	abstract async handle(event: FetchEvent): Promise<Response>;
 }
 
 /**
@@ -244,8 +246,9 @@ export class CacheProxyServer {
 export class RegexRoute {
 
 	private pattern: RegExp;
-	private handler: AbstractFetchHandler;
 	private blacklist: RegExp[];
+
+	handler: AbstractFetchHandler;
 
 	constructor(pattern: string | RegExp, handler: AbstractFetchHandler, blacklist: RegExp[] = []) {
 		if (typeof pattern === "string") {

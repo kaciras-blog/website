@@ -18,7 +18,7 @@ export class AsyncDB {
 	readonly name: string;
 	readonly version?: number;
 
-	private db?: IDBDatabase;
+	private db!: IDBDatabase;
 
 	constructor(name: string, version?: number) {
 		this.name = name;
@@ -57,13 +57,7 @@ export class AsyncDB {
 		});
 	}
 
-	withCursor(storeName: string, {
-				   index,
-				   range = null,  // IE errors if range === `undefined`.
-				   direction
-			   }: CursorOptions,
-			   callback: CursorCallback) {
-
+	withCursor(storeName: string, { index, range, direction }: CursorOptions, callback: CursorCallback) {
 		return this.withTransaction(storeName, "readonly", tx => {
 			const store = tx.objectStore(storeName);
 			const cursorable = index ? store.index(index) : store;
