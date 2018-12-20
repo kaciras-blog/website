@@ -5,8 +5,6 @@
 		"moduleResolution": "node",
 
 		"strict": true,
-		"allowJs": true,
-		"skipLibCheck": false,
 		"esModuleInterop": true,
 		"allowSyntheticDefaultImports": true,
 		"forceConsistentCasingInFileNames": true,
