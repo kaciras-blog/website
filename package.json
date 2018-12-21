@@ -21,6 +21,8 @@
 		"vuex": "^3.0.1"
 	},
 	"devDependencies": {
+		"web-server": "../WebServer",
+		"kx-ui": "../../KxUI",
 		"babel-eslint": "^10.0.1",
 		"chalk": "^2.4.1",
 		"eslint": "^5.10.0",

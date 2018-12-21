@@ -18,6 +18,7 @@ const webpack = {
 	},
 
 	server: {
+		template: "public/index.template.html",
 		devtool: "source-map", // 服务端没有eval模式
 		cssSourceMap: false,
 	},
