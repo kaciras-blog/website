@@ -29,9 +29,9 @@
 </template>
 
 <script>
-import AsidePanel from "./AsidePanel.vue";
-import ArticlePreviewItem from "./ArticlePreviewItem.vue";
-import api from "../../api.js";
+import AsidePanel from "./AsidePanel";
+import ArticlePreviewItem from "./ArticlePreviewItem";
+import api from "../../api";
 
 /**
  * 根据路由和当前加载的文章数来构造下一页的URL。

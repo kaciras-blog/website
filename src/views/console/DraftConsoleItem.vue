@@ -1,11 +1,11 @@
 <template>
 	<div>
-		<div class="draft">
-			<h3 class="title">{{value.title}}</h3>
+		<div :class="$style.draft">
+			<h3 :class="$style.title">{{value.title}}</h3>
 
 			<span class="minor-text">
 				<i class="fas fa-pencil-alt"></i>
-				<time>{{value.updateTime}}</time>
+				<time :class="$style.time">{{value.updateTime}}</time>
 			</span>
 
 			<div class="btn-group">
@@ -58,7 +58,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style module>
 .draft {
 	display: flex;
 	align-items: center;
@@ -80,7 +80,7 @@ export default {
 	align-items: center;
 }
 
-time {
+.time {
 	margin: 0  1em 0 .5em;
 }
 </style>

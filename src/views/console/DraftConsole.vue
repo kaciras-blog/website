@@ -1,6 +1,8 @@
 <template>
 	<main>
-		<div class="toolbar btn-group">
+		<div class="btn-group"
+			 :class="$style.toolbar">
+
 			<kx-button
 				class="dangerous"
 				icon="far fa-trash-alt"
@@ -75,33 +77,8 @@ export default {
 };
 </script>
 
-<style scoped>
-.draft {
-	display: flex;
-	align-items: center;
-}
-.title {
-	flex: 1;
-	margin: 0;
-}
-
-.history {
-	color: #c3c3c3;
-	background-color: #3a3a3a;
-	box-shadow: #0a0a0a 0 0 1px 1px inset;
-}
-
-.history-item {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-}
-
+<style module>
 .toolbar {
 	margin-bottom: 1rem;
-}
-
-time {
-	margin: 0  1em 0 .5em;
 }
 </style>
