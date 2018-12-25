@@ -145,7 +145,7 @@ export default {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
-	align-items: start;
+	align-items: flex-start; // [PostCss] start value has mixed support, consider using flex-start instead
 	overflow: auto;
 }
 
