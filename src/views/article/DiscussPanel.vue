@@ -12,6 +12,7 @@
 		</div>
 
 		<button-pageing-view
+			:show-top-buttons="true"
 			ref="discussions"
 			:loader="loadDiscussions">
 

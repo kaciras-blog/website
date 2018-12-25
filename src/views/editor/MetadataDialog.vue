@@ -1,6 +1,6 @@
 <template>
 	<kx-base-dialog @close-button-clicked="ok">
-		<h2 :class="$style.compact" slot="title">编辑描述信息</h2>
+		<h3 :class="$style.compact" slot="title">编辑描述信息</h3>
 
 		<div :class="$style.content">
 			<img :class="$style.cover"
