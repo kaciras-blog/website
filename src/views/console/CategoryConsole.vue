@@ -3,13 +3,13 @@
 		<div :class="$style.buttons">
 			<div class="btn-group">
 				<kx-button
-					:disabled="current === null"
+					:disabled="!stack.length"
 					@click="gotoTop"
 					icon="fas fa-arrow-up">
 					返回顶层
 				</kx-button>
 				<kx-button
-					:disabled="current === null"
+					:disabled="!stack.length"
 					@click="gotoParent"
 					icon="fa fa-arrow-left">
 					回到父级
@@ -52,6 +52,7 @@ const _default = {
 	name: "新建分类",
 	cover: "/image/category-default.png",
 	description: "没有",
+	theme: 0,
 	background: null,
 };
 
@@ -73,7 +74,8 @@ export default {
 			api.category.getChildren(category.id).then(r => this.children = r);
 		},
 		gotoTop () {
-			this.current = null;
+			this.current = this.stack[0];
+			this.stack.splice(0);
 			api.category.getChildren(0).then(r => this.children = r);
 		},
 		gotoParent () {
