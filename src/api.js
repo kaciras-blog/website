@@ -170,21 +170,20 @@ class BasicApiSet {
 				return new Proxy(super.webServer, new AxiosProxy(this.filters));
 			}
 
-			static bindProto (config, proto) {
-				config.headers = config.headers || {};
-				if (proto.headers.cookie) {
-					config.headers.Cookie = proto.headers.cookie;
-				}
-				const csrf = proto.cookies.get(CSRF_COOKIE_NAME);
-				if (csrf) {
-					config.headers[CSRF_HEADER_NAME] = "test";
-				}
-			}
-
 			withPrototype (proto) {
-				if (proto) {
-					this.filters.push(config => ProxiedApiSet.bindProto(config, proto));
+				if (!proto) {
+					return this;
 				}
+				this.filters.push(config => {
+					config.headers = config.headers || {};
+					if (proto.headers.cookie) {
+						config.headers.Cookie = proto.headers.cookie;
+					}
+					const csrf = proto.cookies.get(CSRF_COOKIE_NAME);
+					if (csrf) {
+						config.headers[CSRF_HEADER_NAME] = csrf;
+					}
+				});
 				return this;
 			}
 
