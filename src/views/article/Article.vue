@@ -49,10 +49,10 @@ const storeModule = {
 	}),
 	actions: {
 		fetchItem ({ commit }, { id, cancelToken, origin }) {
-			return api.article
-				.withCancelToken(cancelToken)
+			return api
 				.withPrototype(origin)
-				.get(id)
+				.withCancelToken(cancelToken)
+				.article.get(id)
 				.then(item => commit("setItem", item));
 		},
 	},

@@ -68,13 +68,11 @@
 </template>
 
 <script>
-import CategoryCard from "./CategoryCard";
 import api from "../api";
 import { deleteOn } from "../utils";
 
 export default {
 	name: "SelectCategoryDialog",
-	components: { CategoryCard },
 	props: {
 		multiple: {
 			type: Boolean,

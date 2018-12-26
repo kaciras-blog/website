@@ -57,11 +57,11 @@ const indexStoreModule = {
 	}),
 	actions: {
 		fetchItem ({ commit }, { start, cancelToken, prototype }) {
-			const configuredApi = api.article.withCancelToken(cancelToken).withPrototype(prototype);
+			const configuredApi = api.withCancelToken(cancelToken).withPrototype(prototype);
 
-			const loadHots = configuredApi.getHots()
+			const loadHots = configuredApi.article.getHots()
 				.then(items => commit("setHots", items));
-			const loadList = configuredApi.getList({ start, count: 16 })
+			const loadList = configuredApi.article.getList({ start, count: 16 })
 				.then(items => commit("setItems", items));
 
 			return Promise.all([loadList, loadHots]);

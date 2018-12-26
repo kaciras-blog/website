@@ -29,7 +29,7 @@ export default async context => {
 				store,
 				route: router.currentRoute,
 				cancelToken: CancelToken.never(),
-				protorype: context.request,
+				prototype: context.request,
 			})));
 	} catch (e) {
 		switch (e.code) {

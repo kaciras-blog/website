@@ -44,9 +44,10 @@ export default {
 		if (!store.state.category) {
 			store.registerModule("category", storeModule);
 		}
-		return api.category
+		return api
 			.withCancelToken(cancelToken)
 			.withPrototype(protorype)
+			.category
 			.get(route.params.id, true)
 			.then(items => store.commit("category/setItem", items));
 	},

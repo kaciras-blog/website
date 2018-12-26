@@ -53,8 +53,9 @@ export default {
 			this.$refs.discussions.refresh();
 		},
 		loadDiscussions (index, size, cancelToken) {
-			return api.discuss
+			return api
 				.withCancelToken(cancelToken)
+				.discuss
 				.getList(this.articleId, index * size, size)
 				.then(res => {
 					this.totalCount = res.total;

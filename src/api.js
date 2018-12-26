@@ -1,5 +1,5 @@
 import Axios from "axios";
-import * as KxUI from "kx-ui";
+import * as KxUI from "kx-ui/src/helpers";
 
 const CSRF_COOKIE_NAME = "CSRF-Token";
 const CSRF_HEADER_NAME = "X-CSRF-Token";
@@ -125,94 +125,29 @@ class AxiosProxy {
 	}
 }
 
-
 class BasicApiSet {
 
-	// noinspection JSMethodCanBeStatic
 	get mainServer () {
 		return mainServer;
 	}
 
-	// noinspection JSMethodCanBeStatic
 	get securityServer () {
 		return securityServer;
 	}
 
-	// noinspection JSMethodCanBeStatic
 	get webServer () {
 		return webServer;
 	}
 
 	/**
-	 * 创建代理API集，以便获取到代理后的Axios。
-	 *
-	 * @return {ProxiedApiSet}
-	 */
-	createProxied () {
-
-		// 动态生成代理类继承基础API类，覆盖 BasicApiSet 中的相应方法。
-		class ProxiedApiSet extends this.constructor {
-
-			constructor () {
-				super();
-				this.filters = [];
-			}
-
-			get mainServer () {
-				return new Proxy(super.mainServer, new AxiosProxy(this.filters));
-			}
-
-			get securityServer () {
-				return new Proxy(super.securityServer, new AxiosProxy(this.filters));
-			}
-
-			get webServer () {
-				return new Proxy(super.webServer, new AxiosProxy(this.filters));
-			}
-
-			withPrototype (proto) {
-				if (!proto) {
-					return this;
-				}
-				this.filters.push(config => {
-					config.headers = config.headers || {};
-					if (proto.headers.cookie) {
-						config.headers.Cookie = proto.headers.cookie;
-					}
-					const csrf = proto.cookies.get(CSRF_COOKIE_NAME);
-					if (csrf) {
-						config.headers[CSRF_HEADER_NAME] = csrf;
-					}
-				});
-				return this;
-			}
-
-			withCancelToken (cancelToken) {
-				if (!cancelToken) {
-					return this;
-				}
-				if (cancelToken instanceof KxUI.CancelToken) {
-					const asioxCancelToken = Axios.CancelToken.source();
-					cancelToken.onCancel(asioxCancelToken.cancel);
-					cancelToken = asioxCancelToken.token;
-				}
-				this.filters.push(config => config.cancelToken = cancelToken);
-				return this;
-			}
-		}
-
-		return new ProxiedApiSet();
-	}
-
-	/**
-	 * 设置原请求，发送的请求将使用原请求的Cookie和一些Header以表现出与
-	 * 原请求相同的身份，用于服务端渲染时Cookie穿透。
+	 * 设置原请求，发送的请求将使用原请求的 Cookie 和一些 Header 以表现出与原请求相同的身份。
+	 * 该方法仅用于服务端渲染，在浏览器中无效。
 	 *
 	 * @param proto 原请求
 	 * @return {*} API集
 	 */
 	withPrototype (proto) {
-		return this.createProxied().withPrototype(proto);
+		return new ProxiedApiSet().withPrototype(proto);
 	}
 
 	/**
@@ -222,7 +157,94 @@ class BasicApiSet {
 	 * @return {*} API集
 	 */
 	withCancelToken (cancelToken) {
-		return this.createProxied().withCancelToken(cancelToken);
+		return new ProxiedApiSet().withCancelToken(cancelToken);
+	}
+
+	get article () {
+		return new ArticleApi(this);
+	}
+
+	get category () {
+		return new CategoryApi(this);
+	}
+
+	get discuss () {
+		return new DiscussApi(this);
+	}
+
+	get draft () {
+		return new DraftApi(this);
+	}
+
+	get user () {
+		return new UserApi(this);
+	}
+
+	get recommend () {
+		return new RecommandApi(this);
+	}
+
+	get misc () {
+		return new MiscApi(this);
+	}
+}
+
+class ProxiedApiSet extends BasicApiSet {
+
+	constructor () {
+		super();
+		this.filters = [];
+	}
+
+	get mainServer () {
+		return new Proxy(super.mainServer, new AxiosProxy(this.filters));
+	}
+
+	get securityServer () {
+		return new Proxy(super.securityServer, new AxiosProxy(this.filters));
+	}
+
+	get webServer () {
+		return new Proxy(super.webServer, new AxiosProxy(this.filters));
+	}
+
+	withPrototype (proto) {
+		if (!proto) {
+			return this;
+		}
+		this.filters.push(config => {
+			config.headers = config.headers || {};
+			if (proto.headers.cookie) {
+				config.headers.Cookie = proto.headers.cookie;
+			}
+			const csrf = proto.cookies.get(CSRF_COOKIE_NAME);
+			if (csrf) {
+				config.headers[CSRF_HEADER_NAME] = csrf;
+			}
+		});
+		return this;
+	}
+
+	withCancelToken (cancelToken) {
+		if (!cancelToken) {
+			return this;
+		}
+		if (cancelToken instanceof KxUI.CancelToken) {
+			const asioxCancelToken = Axios.CancelToken.source();
+			cancelToken.onCancel(asioxCancelToken.cancel);
+			cancelToken = asioxCancelToken.token;
+		}
+		this.filters.push(config => config.cancelToken = cancelToken);
+		return this;
+	}
+}
+
+class AbstractApi {
+
+	constructor (apiSet) {
+		this.mainServer = apiSet.mainServer;
+		this.securityServer = apiSet.securityServer;
+		this.webServer = apiSet.webServer;
 	}
 }
 
@@ -231,7 +253,7 @@ class BasicApiSet {
  *								API实现
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-class ArticleApi extends BasicApiSet {
+class ArticleApi extends AbstractApi {
 
 	get (id) {
 		return this.mainServer.get("/articles/" + id, {
@@ -284,7 +306,7 @@ class ArticleApi extends BasicApiSet {
 }
 
 
-class CategoryApi extends BasicApiSet {
+class CategoryApi extends AbstractApi {
 
 	getChildren (id) {
 		return this.mainServer.get(`/categories/${id}/children`).then(r => r.data);
@@ -295,7 +317,7 @@ class CategoryApi extends BasicApiSet {
 	}
 
 	get (id, aggregate) {
-		return this.mainServer.get("/categories/" + id, { params: { aggregate }}).then(r => r.data);
+		return this.mainServer.get("/categories/" + id, { params: { aggregate } }).then(r => r.data);
 	}
 
 	move (id, parent, treeMode) {
@@ -311,7 +333,7 @@ class CategoryApi extends BasicApiSet {
 	}
 }
 
-class DiscussApi extends BasicApiSet {
+class DiscussApi extends AbstractApi {
 
 	add (objectId, content) {
 		return this.mainServer.post("/discussions", { objectId, type: 0, content });
@@ -367,7 +389,7 @@ class DiscussApi extends BasicApiSet {
 }
 
 
-class DraftApi extends BasicApiSet {
+class DraftApi extends AbstractApi {
 
 	createNew () {
 		return this.mainServer.post("/drafts").then(resp => resp.headers["location"].substring("/drafts/".length));
@@ -411,7 +433,7 @@ class DraftApi extends BasicApiSet {
 }
 
 
-class MiscApi extends BasicApiSet {
+class MiscApi extends AbstractApi {
 	/**
 	 *
 	 * @param file 文件
@@ -449,7 +471,7 @@ class MiscApi extends BasicApiSet {
 }
 
 
-class UserApi extends BasicApiSet {
+class UserApi extends AbstractApi {
 
 	/**
 	 * 用户登录，登录成功后会添加相应的Cookie
@@ -489,7 +511,7 @@ class UserApi extends BasicApiSet {
 }
 
 
-class RecommandApi extends BasicApiSet {
+class RecommandApi extends AbstractApi {
 
 	constructor () {
 		super();
@@ -497,7 +519,7 @@ class RecommandApi extends BasicApiSet {
 	}
 }
 
-class SwiperApi extends BasicApiSet {
+class SwiperApi extends AbstractApi {
 
 	get () {
 		return this.mainServer.get("/recommendation/swiper").then(r => r.data);
@@ -508,12 +530,4 @@ class SwiperApi extends BasicApiSet {
 	}
 }
 
-export default {
-	article: new ArticleApi(),
-	category: new CategoryApi(),
-	discuss: new DiscussApi(),
-	draft: new DraftApi(),
-	user: new UserApi(),
-	recommend: new RecommandApi(),
-	misc: new MiscApi(),
-};
+export default new BasicApiSet();

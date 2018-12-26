@@ -129,8 +129,9 @@ export default {
 			}
 		},
 		loadReplies (index, size, cancelToken) {
-			return api.discuss
+			return api
 				.withCancelToken(cancelToken)
+				.discuss
 				.getReplies(this.value.id, index, size);
 		},
 	},
