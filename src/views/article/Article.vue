@@ -4,7 +4,8 @@
 		:show-banner="true"
 		:banner="article.banner">
 
-		<article-view :class="$style.article" :value="article"/>
+		<article-view :class="$style.article" :value="article" @enlarge-image="enlargeImage"/>
+		<image-viewer ref="imageViewer"/>
 
 		<discuss-panel
 			:class="$style.discussPanel"
@@ -38,6 +39,7 @@ import $ from "jquery";
 import { mapState } from "vuex";
 import { articleLink } from "../../blog-plugin";
 import { scrollToElementStart } from "kx-ui";
+import ImageViewer from "./ImageViewer";
 
 
 const storeModule = {
@@ -62,6 +64,7 @@ const storeModule = {
 export default {
 	name: "Article",
 	components: {
+		ImageViewer,
 		DiscussPanel,
 		ArticleView,
 	},
@@ -125,6 +128,9 @@ export default {
 		},
 		gotoTop () {
 			$("html,body").animate({ scrollTop: 0 }, 300);
+		},
+		enlargeImage (el) {
+			this.$refs.imageViewer.show(el);
 		},
 	},
 	destroyed () {

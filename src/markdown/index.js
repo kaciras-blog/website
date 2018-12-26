@@ -39,9 +39,12 @@ export default {
 	},
 	afterConvert () {
 		const images = document.querySelectorAll(".markdown img");
-		for (let node of images) {
+		for (const node of images) {
 			const p = node.parentNode;
-			if (p.childNodes.length === 1) p.classList.add("image-wrapper");
+			if (p.childNodes.length === 1) {
+				p.classList.add("image-wrapper");
+				node.addEventListener("click", e => this.$emit("enlarge-image", e.target));
+			}
 		}
 	},
 	renderHtml (text) {

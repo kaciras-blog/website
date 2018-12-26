@@ -31,7 +31,7 @@ export default {
 		},
 	},
 	mounted () {
-		KxMarkdown.afterConvert();
+		KxMarkdown.afterConvert.call(this);
 	},
 };
 </script>
