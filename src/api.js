@@ -75,13 +75,16 @@ function createAxios (config) {
 }
 
 const apiConfig = defineApiServerConfig();
-const mainServer = createAxios({ baseURL: apiConfig.main });
-const securityServer = createAxios({ baseURL: apiConfig.account });
-const webServer = createAxios({ baseURL: apiConfig.front });
+
+const apiSet = {
+	mainServer: createAxios({ baseURL: apiConfig.main }),
+	securityServer: createAxios({ baseURL: apiConfig.account }),
+	webServer: createAxios({ baseURL: apiConfig.front }),
+};
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- *							下面是API调用函数
+ *						API工厂类，实现各种 withXXX()
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**
@@ -95,6 +98,78 @@ function NormalResponse (status) {
 	return status >= 0 && status < 500;
 }
 
+export class BasicApiFactory {
+
+	constructor (axiosSet) {
+		this.axiosSet = axiosSet;
+	}
+
+	/**
+	 * 设置原请求，发送的请求将使用原请求的 Cookie 和一些 Header 以表现出与原请求相同的身份。
+	 * 该方法仅用于服务端渲染，在浏览器中无效。
+	 *
+	 * @param proto 原请求
+	 * @return {*} API集
+	 */
+	withPrototype (proto) {
+		return new ProxiedApiFactory(this.axiosSet).withPrototype(proto);
+	}
+
+	/**
+	 * 设置取消令牌，使请求能够取消。
+	 *
+	 * @param cancelToken { CancelToken } 取消令牌
+	 * @return {*} API集
+	 */
+	withCancelToken (cancelToken) {
+		return new ProxiedApiFactory(this.axiosSet).withCancelToken(cancelToken);
+	}
+
+	// protected
+	createApiInstance (clazz) {
+		return new clazz(this.axiosSet);
+	}
+
+	get article () {
+		return this.createApiInstance(ArticleApi);
+	}
+
+	get category () {
+		return this.createApiInstance(CategoryApi);
+	}
+
+	get discuss () {
+		return this.createApiInstance(DiscussApi);
+	}
+
+	get draft () {
+		return this.createApiInstance(DraftApi);
+	}
+
+	get user () {
+		return this.createApiInstance(UserApi);
+	}
+
+	get recommend () {
+		return this.createApiInstance(RecommandApi);
+	}
+
+	get misc () {
+		return this.createApiInstance(MiscApi);
+	}
+}
+
+
+class AxiosSetProxy {
+
+	constructor (filters) {
+		this.filters = filters;
+	}
+
+	get (target, name) {
+		return new Proxy(target[name], new AxiosProxy(this.filters));
+	}
+}
 
 /**
  * 使用ES6代理Axios，以便在请求前修改设置。
@@ -125,87 +200,15 @@ class AxiosProxy {
 	}
 }
 
-class BasicApiSet {
+class ProxiedApiFactory extends BasicApiFactory {
 
-	get mainServer () {
-		return mainServer;
-	}
-
-	get securityServer () {
-		return securityServer;
-	}
-
-	get webServer () {
-		return webServer;
-	}
-
-	/**
-	 * 设置原请求，发送的请求将使用原请求的 Cookie 和一些 Header 以表现出与原请求相同的身份。
-	 * 该方法仅用于服务端渲染，在浏览器中无效。
-	 *
-	 * @param proto 原请求
-	 * @return {*} API集
-	 */
-	withPrototype (proto) {
-		return new ProxiedApiSet().withPrototype(proto);
-	}
-
-	/**
-	 * 设置取消令牌，使请求能够取消。
-	 *
-	 * @param cancelToken { CancelToken } 取消令牌
-	 * @return {*} API集
-	 */
-	withCancelToken (cancelToken) {
-		return new ProxiedApiSet().withCancelToken(cancelToken);
-	}
-
-	get article () {
-		return new ArticleApi(this);
-	}
-
-	get category () {
-		return new CategoryApi(this);
-	}
-
-	get discuss () {
-		return new DiscussApi(this);
-	}
-
-	get draft () {
-		return new DraftApi(this);
-	}
-
-	get user () {
-		return new UserApi(this);
-	}
-
-	get recommend () {
-		return new RecommandApi(this);
-	}
-
-	get misc () {
-		return new MiscApi(this);
-	}
-}
-
-class ProxiedApiSet extends BasicApiSet {
-
-	constructor () {
-		super();
+	constructor (axiosSet) {
+		super(axiosSet);
 		this.filters = [];
 	}
 
-	get mainServer () {
-		return new Proxy(super.mainServer, new AxiosProxy(this.filters));
-	}
-
-	get securityServer () {
-		return new Proxy(super.securityServer, new AxiosProxy(this.filters));
-	}
-
-	get webServer () {
-		return new Proxy(super.webServer, new AxiosProxy(this.filters));
+	createApiInstance (clazz) {
+		return new clazz(new Proxy(this.axiosSet, new AxiosSetProxy(this.filters)));
 	}
 
 	withPrototype (proto) {
@@ -239,19 +242,29 @@ class ProxiedApiSet extends BasicApiSet {
 	}
 }
 
-class AbstractApi {
-
-	constructor (apiSet) {
-		this.mainServer = apiSet.mainServer;
-		this.securityServer = apiSet.securityServer;
-		this.webServer = apiSet.webServer;
-	}
-}
-
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *								API实现
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+class AbstractApi {
+
+	constructor (axiosSet) {
+		this.axiosSet = axiosSet;
+	}
+
+	get mainServer () {
+		return this.axiosSet.mainServer;
+	}
+
+	get securityServer () {
+		return this.axiosSet.securityServer;
+	}
+
+	get webServer () {
+		return this.axiosSet.webServer;
+	}
+}
 
 class ArticleApi extends AbstractApi {
 
@@ -513,9 +526,8 @@ class UserApi extends AbstractApi {
 
 class RecommandApi extends AbstractApi {
 
-	constructor () {
-		super();
-		this.swiper = new SwiperApi();
+	get swiper () {
+		return new SwiperApi(this.axiosSet);
 	}
 }
 
@@ -530,4 +542,4 @@ class SwiperApi extends AbstractApi {
 	}
 }
 
-export default new BasicApiSet();
+export default new BasicApiFactory(apiSet);

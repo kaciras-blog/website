@@ -5,6 +5,7 @@ module.exports = {
 	},
 	"extends": [
 		"plugin:vue/essential",
+		"plugin:jest/recommended",
 		"eslint:recommended"
 	],
 	rules: {
