@@ -150,9 +150,7 @@ export default {
 .footer {
 	display: flex;
 	justify-content: space-between;
-
 	padding: 1rem;
-
 	border-top: solid 1px #d7d7d7;
 }
 

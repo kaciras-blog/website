@@ -1,5 +1,8 @@
 <template>
-	<kx-base-dialog :closeIcon="true" @close-button-clicked="cancel">
+	<kx-base-dialog
+		:closeIcon="true"
+		@close-button-clicked="cancel">
+
 		<h3 slot="title">添加链接</h3>
 
 		<form :class="$style.form"

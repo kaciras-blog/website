@@ -6,6 +6,7 @@
 		已禁止匿名评论,请先
 		<router-link class='highlight' to='/login'>登录</router-link>
 	</div>
+
 	<div class="discuss-editor" v-else>
 		<div>
 			<img class='small head'

@@ -4,7 +4,11 @@
 		:show-banner="true"
 		:banner="article.banner">
 
-		<article-view :class="$style.article" :value="article" @enlarge-image="enlargeImage"/>
+		<article-view
+			:class="$style.article"
+			:value="article"
+			@enlarge-image="enlargeImage"/>
+
 		<image-viewer ref="imageViewer"/>
 
 		<discuss-panel
@@ -143,8 +147,8 @@ export default {
 @import "../../css/Imports";
 
 .article {
-	padding: 0 .8rem;
 	margin: 0 auto;
+	padding: 0 .8rem;
 
 	@media screen {
 		@media (min-width: @length-screen-mobile) {

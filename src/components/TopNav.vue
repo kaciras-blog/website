@@ -1,6 +1,6 @@
 <template>
 	<div :style="navStyle" :class="navClass">
-		<div :class="$style.navWrapper">
+		<div :class="$style.filterContainer">
 			<top-nav-wide/>
 		</div>
 		<div v-if="showBanner" :class="$style.banner" role="banner"></div>
@@ -52,7 +52,7 @@ export default {
 <style module lang="less">
 @import "../css/Imports.less";
 
-.navWrapper {
+.filterContainer {
 	.glass;
 	.glass.blur(4px);
 
@@ -72,7 +72,7 @@ export default {
 }
 
 // 使用变量设置背景图，只要在外层元素设置即可
-.navWrapper::before,
+.filterContainer::before,
 .banner {
 	background: var(--background);
 	background-size: var(--background-size); // 这个属性写一起毛病多

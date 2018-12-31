@@ -1,11 +1,15 @@
 <template>
 	<transition name="fade">
-		<div class="dimmer" v-show="show" tabindex="-1" @keyup.esc="cancel">
-			<div class="loading">
+		<div v-show="show"
+			 :class="$style.dimmer"
+			 tabindex="-1"
+			 @keyup.esc="cancel">
+
+			<div :class="$style.loading">
 				<sk-fading-circle v-if="!hasError"/>
 
 				<div v-if="hasError">
-					<p class="tc-err">加载出错</p>
+					<p :class="$style.networkError">加载出错</p>
 					<p>可能是网络连接失败，或者服务器炸了</p>
 				</div>
 				<span v-else-if="timeouted">
@@ -13,7 +17,7 @@
 				</span>
 				<span v-else>加载中...</span>
 
-				<a class="highlight" @click="cancel">取消</a>
+				<a :class="$style.highlight" @click="cancel">取消</a>
 			</div>
 		</div>
 	</transition>
@@ -65,7 +69,7 @@ export default {
 };
 </script>
 
-<style scoped lang="less">
+<style module lang="less">
 @import "../css/Imports";
 
 .dimmer {
@@ -74,7 +78,7 @@ export default {
 	background-color: rgba(255, 255, 255, 0.6);
 }
 
-.tc-err {
+.networkError {
 	font-size: 1.5em;
 	margin-top: .5em;
 }
@@ -88,6 +92,7 @@ export default {
 
 	background-color: #494949;
 	color: white;
+
 	--fading-circle-color: @color-second;
 }
 

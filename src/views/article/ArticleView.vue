@@ -1,9 +1,13 @@
 <template>
 	<article>
-		<header class="segment" :class="$style.title">
-			<h1>{{value.title}}</h1>
-			<p><span>发布时间：</span><time>{{value.create}}</time></p>
-			<p><span>最后更新：</span><time>{{value.update}}</time></p>
+		<header class="segment" :class="$style.header">
+			<h1 :class="$style.title">{{value.title}}</h1>
+			<p><span>发布时间：</span>
+				<time>{{value.create}}</time>
+			</p>
+			<p><span>最后更新：</span>
+				<time>{{value.update}}</time>
+			</p>
 			<div>
 				<span>关键词：</span>
 				<span v-for="kw in value.keywords"
@@ -24,7 +28,7 @@ export default {
 	props: {
 		value: Object,
 	},
-	computed:{
+	computed: {
 		// 过滤器不支持v-html
 		html () {
 			return KxMarkdown.renderHtml(this.value.content);
@@ -39,11 +43,12 @@ export default {
 <style module lang="less">
 @import "../../css/Imports";
 
-.title {
+.header {
 	text-align: center;
-	& > h1 {
-		font-size: 2rem;
-	}
+}
+
+.title {
+	font-size: 2rem;
 }
 
 .keyword {

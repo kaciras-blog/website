@@ -1,10 +1,11 @@
 <template>
-	<section class="discuss panel">
+	<section class="panel" :class="$style.container">
 
-		<header>
-			<h2>评论区</h2>
-			<span id="discuss-num">{{totalCount}}条</span>
+		<header :class="$style.header">
+			<h2 :class="$style.title">评论区</h2>
+			<span :class="$style.totalCount">{{totalCount}}条</span>
 		</header>
+
 		<hr>
 
 		<div class="segment">
@@ -76,28 +77,25 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style module lang="less">
 @import "../../css/Imports";
 
-.discuss {
+.container {
 	margin-top: 3rem;
 	padding: 2rem .5rem;
 
 	@media (min-width: @length-screen-mobile) {  padding: 2rem;  }
-
-	& > header {
-		font-size: initial;
-		& > h2 {
-			display: inline-block;
-		}
-	}
 }
 
-.round {
-	border-radius: .4rem;
+.header {
+	font-size: initial;
 }
 
-#discuss-num {
+.title{
+	display: inline-block;
+}
+
+.totalCount {
 	float: right;
 }
 </style>
