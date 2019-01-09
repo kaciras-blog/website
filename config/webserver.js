@@ -1,6 +1,5 @@
 const path = require("path");
 
-
 const webpack = {
 	mode: "development",
 
@@ -54,8 +53,9 @@ const dev = {
 };
 
 const blog = {
+	staticRoot: webpack.outputPath,
 	imageRoot: "G:/备份/blog.kaciras.net/image",
-	apiServer: "https://localhost:2375",
+	serverAddress: "https://localhost:2375",
 	cors: {
 		maxAge: 864000,
 		exposeHeaders: ["Location"],
