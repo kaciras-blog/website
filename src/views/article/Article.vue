@@ -39,12 +39,10 @@ import ArticleView from "./ArticleView";
 import TitleMixin from "../../title-mixin";
 import { escapeHtml } from "../../utils";
 import api from "../../api";
-import $ from "jquery";
 import { mapState } from "vuex";
 import { articleLink } from "../../blog-plugin";
 import { scrollToElementStart } from "kx-ui";
 import ImageViewer from "./ImageViewer";
-
 
 const storeModule = {
 	namespaced: true,
@@ -128,10 +126,10 @@ export default {
 	},
 	methods: {
 		gotodiscuss () {
-			scrollToElementStart(this.$refs["discssPanel"].$el);
+			scrollToElementStart(this.$refs.discssPanel.$el);
 		},
 		gotoTop () {
-			$("html,body").animate({ scrollTop: 0 }, 300);
+			scrollToElementStart(document.documentElement);
 		},
 		enlargeImage (el) {
 			this.$refs.imageViewer.show(el);
