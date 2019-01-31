@@ -2,10 +2,17 @@ module.exports = function (api) {
 	api.cache(true);
 
 	const presets = [
-		"@babel/preset-env"
+		[
+			"@babel/preset-env",
+			{ useBuiltIns: "usage" },
+		],
 	];
+
 	const plugins = [
-		"@babel/plugin-transform-runtime",
+		[
+			"@babel/plugin-transform-runtime",
+			{ regenerator: false },
+		],
 		"@babel/plugin-syntax-dynamic-import",
 		"@babel/plugin-syntax-import-meta",
 		"@babel/plugin-proposal-class-properties",
