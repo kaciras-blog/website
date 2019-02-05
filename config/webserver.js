@@ -63,7 +63,6 @@ const blog = {
 		allowHeaders: ["X-CSRF-Token", "X-Requested-With", "Content-Type"],
 		credentials: true,
 	},
-	cacheMaxAge: 12 * 30 * 86400 * 1000,
 };
 
 module.exports = { webpack, server, dev, blog };

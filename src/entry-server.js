@@ -51,4 +51,3 @@ export default async context => {
 	context.state = store.state;
 	return vue;
 };
-
