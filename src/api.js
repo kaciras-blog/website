@@ -326,7 +326,11 @@ class CategoryApi extends AbstractApi {
 	}
 
 	deleteOne (id) {
-		return this.mainServer.delete("/categories/" + id);
+		return this.mainServer.delete("/categories/" + id, { params: { tree: false } });
+	}
+
+	deleteTree (id) {
+		return this.mainServer.delete("/categories/" + id, { params: { tree: true } });
 	}
 
 	get (id, aggregate) {
