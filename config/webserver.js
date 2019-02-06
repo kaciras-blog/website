@@ -30,8 +30,7 @@ const webpack = {
 			image: "xlink:href",
 		},
 		compilerOptions: {
-			preserveWhitespace: false,
-			// whitespace: "condense",
+			whitespace: "condense",
 		},
 
 		// If you have problems debugging vue-files in devtools, set this to false - it *may* help
