@@ -8,12 +8,12 @@ function onReadyAsync (router) {
 }
 
 export default async context => {
-	if (context.shellOnly || /^\/edit\//.test(context.request.url)) {
+	if (context.shellOnly || /^\/edit\//.test(context.url)) {
 		return new Vue({ render: h => h("div", { attrs: { id: "app" } }) });
 	}
 	const { vue, router, store } = createApp();
 
-	router.push(context.request.url);
+	router.push(context.url);
 	await onReadyAsync(router);
 
 	const matched = router.getMatchedComponents();
