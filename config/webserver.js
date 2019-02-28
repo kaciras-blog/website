@@ -39,8 +39,6 @@ const webpack = {
 };
 
 const server = {
-	port: 80,
-	httpsPort: 443,
 	tls: true,
 	certificate: "D:/Coding/Utils/dev.pem",
 	privatekey: "D:/Coding/Utils/dev.pvk",
