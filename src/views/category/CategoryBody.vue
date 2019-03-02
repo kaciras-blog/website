@@ -1,17 +1,17 @@
 <template>
 	<section :class="$style.container">
 		<h1 :class="$style.title">文章列表</h1>
+
 		<scroll-pageing-view :loader="load">
-
-			<ul slot-scope="{ items }"
-				class="list">
-
-				<article-preview-item
-					v-for="item of items"
-					:key="item.id"
-					:item="item"
-					class="segment"/>
-			</ul>
+			<template v-slot="{ items }">
+				<ul class="list">
+					<article-preview-item
+						v-for="item of items"
+						:key="item.id"
+						:item="item"
+						class="segment"/>
+				</ul>
+			</template>
 		</scroll-pageing-view>
 	</section>
 </template>
@@ -42,18 +42,18 @@ export default {
 	margin: 0 auto;
 	max-width: 75%;
 	/*&::after {*/
-		/*content: "";*/
-		/*position: absolute;*/
+	/*content: "";*/
+	/*position: absolute;*/
 
-		/*top: 0;*/
-		/*left: calc(15% + 6rem);*/
-		/*width: 6px;*/
-		/*height: 100%;*/
-		/*background-color: #007aff;*/
+	/*top: 0;*/
+	/*left: calc(15% + 6rem);*/
+	/*width: 6px;*/
+	/*height: 100%;*/
+	/*background-color: #007aff;*/
 	/*}*/
 }
 
-.title{
+.title {
 	font-size: 2em;
 }
 </style>

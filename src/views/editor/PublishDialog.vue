@@ -1,9 +1,10 @@
 <template>
 	<kx-base-dialog :draggable="true">
-		<h3 slot="title">{{ archive.articleId ? "更新文章": "发表文章" }}</h3>
+		<template v-slot:title>
+			<h3>{{ archive.articleId ? "更新文章": "发表文章" }}</h3>
+		</template>
 
 		<div :class="$style.body">
-
 			<div :class="$style.category" class="segment">
 				<span class="label">发表到：</span>
 
@@ -28,10 +29,12 @@
 			</label>
 		</div>
 
-		<div slot="footer" class="btn-group" :class="$style.footer">
-			<kx-button @click="cancel">取消</kx-button>
-			<kx-task-button class="primary" :on-click="accept">确定</kx-task-button>
-		</div>
+		<template v-slot:footer>
+			<div class="btn-group" :class="$style.footer">
+				<kx-button @click="cancel">取消</kx-button>
+				<kx-task-button class="primary" :on-click="accept">确定</kx-task-button>
+			</div>
+		</template>
 	</kx-base-dialog>
 </template>
 

@@ -12,12 +12,13 @@
 		</header>
 
 		<sk-fading-circle v-if="loading"/>
-		<kx-carousel
-			v-else
+
+		<kx-carousel v-else
 			:class="$style.carousel"
 			:items="slides"
-			:stop-on-hover="true">
-			<swiper-slide slot-scope="{ slide }" :key="slide.tid" :item="slide"/>
+			:stop-on-hover="true"
+		>
+			<swiper-slide v-slot="{ slide }" :key="slide.tid" :item="slide"/>
 		</kx-carousel>
 
 		<div :class="$style.others"></div>

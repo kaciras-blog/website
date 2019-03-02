@@ -15,18 +15,20 @@
 		<button-pageing-view
 			:show-top-buttons="true"
 			ref="discussions"
-			:loader="loadDiscussions">
-
-			<ol class="list" slot-scope="{ items }">
-				<discussion
-					v-for="item of items"
-					:key="item.id"
-					class="segment"
-					:value="item"
-					:replying="replying"
-					@reply="handleReplyStart"
-					@item-removed="refresh"/>
-			</ol>
+			:loader="loadDiscussions"
+		>
+			<template v-slot="{ items }">
+				<ol class="list">
+					<discussion
+						v-for="item of items"
+						:key="item.id"
+						class="segment"
+						:value="item"
+						:replying="replying"
+						@reply="handleReplyStart"
+						@item-removed="refresh"/>
+				</ol>
+			</template>
 		</button-pageing-view>
 	</section>
 </template>
@@ -44,7 +46,7 @@ export default {
 			required: true,
 		},
 	},
-	data:()  => ({
+	data: () => ({
 		replying: null,
 		totalCount: 0,
 	}),
@@ -84,14 +86,16 @@ export default {
 	margin-top: 3rem;
 	padding: 2rem .5rem;
 
-	@media (min-width: @length-screen-mobile) {  padding: 2rem;  }
+	@media (min-width: @length-screen-mobile) {
+		padding: 2rem;
+	}
 }
 
 .header {
 	font-size: initial;
 }
 
-.title{
+.title {
 	display: inline-block;
 }
 

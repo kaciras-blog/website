@@ -1,10 +1,9 @@
 <template>
 	<div>
-		<span slot="title">代码编辑器</span>
-
-		<div>
-			TODO: 不好搞啊
-		</div>
+		<template v-slot:title>
+			<span>代码编辑器</span>
+		</template>
+		<div>TODO: 不好搞啊</div>
 	</div>
 </template>
 

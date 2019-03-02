@@ -1,6 +1,8 @@
 <template>
 	<kx-base-dialog @close-button-clicked="ok">
-		<h3 :class="$style.compact" slot="title">编辑描述信息</h3>
+		<template #title>
+			<h3 :class="$style.compact">编辑描述信息</h3>
+		</template>
 
 		<div :class="$style.content">
 			<img :class="$style.cover"
@@ -26,10 +28,12 @@
 				   placeholder="关键字,空格隔开"/>
 		</div>
 
-		<div :class="$style.footer" class="btn-group" slot="footer">
-			<kx-button @click="cancel">取消</kx-button>
-			<kx-button class="primary" @click="ok">确定</kx-button>
-		</div>
+		<template v-slot:footer>
+			<div :class="$style.footer" class="btn-group">
+				<kx-button @click="cancel">取消</kx-button>
+				<kx-button class="primary" @click="ok">确定</kx-button>
+			</div>
+		</template>
 	</kx-base-dialog>
 </template>
 

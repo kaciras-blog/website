@@ -14,16 +14,17 @@
 				:init-state="initState"
 				:init-next-url="initNextUrl">
 
-				<ul class="list" slot-scope="{ items }">
-					<article-preview-item
-						v-for="item of items"
-						:key="item.id"
-						:item="item"
-						class="segment"/>
-				</ul>
+				<template v-slot="{ items }">
+					<ul class="list">
+						<article-preview-item
+							v-for="item of items"
+							:key="item.id"
+							:item="item"
+							class="segment"/>
+					</ul>
+				</template>
 			</scroll-pageing-view>
 		</section>
-
 		<aside-panel/>
 	</page-layout>
 </template>

@@ -41,13 +41,11 @@
 
 		<div class="buttons">
 			<kx-task-button
-				slot="button"
 				class="primary outline"
 				:on-click="signup">
 				确定
 			</kx-task-button>
 			<kx-button
-				slot="button"
 				class="second outline"
 				@click="switchPanel">
 				登录

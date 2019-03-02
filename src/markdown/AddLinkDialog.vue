@@ -1,9 +1,9 @@
 <template>
-	<kx-base-dialog
-		:closeIcon="true"
-		@close-button-clicked="cancel">
+	<kx-base-dialog :closeIcon="true" @close-button-clicked="cancel">
 
-		<h3 slot="title">添加链接</h3>
+		<template v-slot:title>
+			<h3>添加链接</h3>
+		</template>
 
 		<form :class="$style.form"
 			  @keyup.13="ok"
@@ -24,9 +24,11 @@
 				   :placeholder="href"/>
 		</form>
 
-		<div :class="$style.footer" slot="footer">
-			<kx-button :class="$style.button" class="primary" @click="ok">确定</kx-button>
-		</div>
+		<template v-slot:footer>
+			<div :class="$style.footer">
+				<kx-button :class="$style.button" class="primary" @click="ok">确定</kx-button>
+			</div>
+		</template>
 	</kx-base-dialog>
 </template>
 

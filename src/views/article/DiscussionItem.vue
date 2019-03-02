@@ -53,15 +53,17 @@
 				:init-items="value.replies"
 				:init-page-size="5"
 				:init-total-count="value.replyCount"
-				:loader="loadReplies">
-
-				<ol class="list" slot-scope="{ items }">
+				:loader="loadReplies"
+			>
+				<template v-scope="{ items }">
+				<ol class="list">
 					<discussion
 						v-for="item of items"
 						:key="item.id"
 						:value="item"
 						:class="$style.reply"/>
 				</ol>
+				</template>
 			</button-pageing-view>
 
 			<discz-editor

@@ -1,6 +1,9 @@
 <template>
 	<kx-base-dialog class="category-selector">
-		<h3 slot="title">选择分类</h3>
+
+		<template v-slot:title>
+			<h3>选择分类</h3>
+		</template>
 
 		<div :class="$style.buttons">
 			<template v-if="current">
@@ -48,22 +51,25 @@
 			</div>
 		</div>
 
-		<div slot="footer" :class="$style.footer">
-			<div v-if="multiple"
-				 :class="$style.tip">
-				已选择：{{ selected.length }} 个分类
-			</div>
-			<div v-else
-				 :class="$style.tip">
-				已选择：{{ selected.length ? selected[0].name : '' }}
-			</div>
+		<template v-slot:footer>
+			<div :class="$style.footer">
+				<div v-if="multiple"
+					 :class="$style.tip">
+					已选择：{{ selected.length }} 个分类
+				</div>
+				<div v-else
+					 :class="$style.tip">
+					已选择：{{ selected.length ? selected[0].name : '' }}
+				</div>
 
-			<div class="btn-group">
-				<kx-button class="second" @click="clear">清空选择</kx-button>
-				<kx-button @click="cancel">取消</kx-button>
-				<kx-button class="primary" @click="ok">确定</kx-button>
+				<div class="btn-group">
+					<kx-button class="second" @click="clear">清空选择</kx-button>
+					<kx-button @click="cancel">取消</kx-button>
+					<kx-button class="primary" @click="ok">确定</kx-button>
+				</div>
 			</div>
-		</div>
+		</template>
+
 	</kx-base-dialog>
 </template>
 
@@ -201,6 +207,7 @@ export default {
 	& > .name {
 		flex: 1;
 	}
+
 	& > .head {
 		margin: 0 .5rem;
 	}
