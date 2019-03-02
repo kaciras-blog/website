@@ -4,9 +4,10 @@
 		nav-class="login-header"
 		:footer="false">
 
-		<div class="filter-container">
-			<component :is="panel" class="login-form" @switch-panel="switchPanel"/>
+		<div :class="$style.pictureBox">
+			<img :class="$style.picture" src="../../assets/img/LoginPicture.jpg" alt="占位置的图片。。。">
 		</div>
+		<component :is="panel" :class="$style.formPanel" @switch-panel="switchPanel"/>
 	</page-layout>
 </template>
 
@@ -16,7 +17,9 @@ import SignupPanel from "./SignupForm";
 
 export default {
 	name: "LoginPage",
-	components: { LoginPanel, SignupPanel },
+	components: {
+		LoginPanel, SignupPanel,
+	},
 	data: () => ({
 		panel: "loginPanel",
 	}),
@@ -28,74 +31,53 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style module lang="less">
 @import "../../css/Imports";
 
-#login-view {
-	width: 100%;
-	height: 100vh;
+:global(#login-view) {
+	display: flex;
+	max-width: 980px;
 
-	background-size: cover;
-	background-image: url("../../assets/img/login-bkg.jpg");
+	margin: 0 auto;
+	padding-top: 8rem;
 
-	@media screen {
-		@media (min-width: @length-screen-mobile) {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-		}
-		@media (min-width: @length-screen-pad) {
-			justify-content: flex-end;
-			padding: 0 10%;
-		}
-		@media (min-width: @length-screen-wide) {
-			padding: 0 13%;
-		}
-	}
+	align-items: flex-start;
 }
 
-.login-form {
-	position: relative;
-	color: #fffafa;
-	background-color: rgba(50, 50, 50, 0.3);
-
-	::-webkit-input-placeholder {
-		color: rgba(255, 250, 250, 0.70);
-	}
-	:-ms-input-placeholder {
-		color: rgba(255, 250, 250, 0.70);
-	}
-
-	padding: 1rem 2rem 2rem;
-
-	@media screen and (min-width: @length-screen-mobile) {
-		width: 25rem;
-		padding-top: 2rem;
-	}
-}
-
-.login-header {
+:global(.login-header) {
 	& .content {
 		color: white;
 		background-color: rgba(50, 50, 50, 0.3) !important;
 	}
-	--background: url("../../assets/img/login-bkg.jpg") fixed;
-	--background-size: cover;
 }
 
-.filter-container {
-	.glass;
-	.glass.blur(4px);
+.pictureBox {
+	position: relative;
+	width: 50%;
 
-	margin-top: 3rem;
-	box-shadow: rgba(0, 0, 0, .6) 0 0 4px 3px;
+	@media (max-width: @length-screen-mobile) {
+		display: none;
+	}
 
-	&::before {
-		background: url("../../assets/img/login-bkg.jpg") fixed;
-		background-size: cover;
+	&::after {
+		content: "";
+		position: absolute;
+		top: -2rem;
+		bottom: 0;
+		right: 0;
+		width: 1px;
+
+		background-image: -webkit-linear-gradient(top, #fff, #d5d5d5 10%, #d5d5d5 90%, #fff 100%);
 	}
-	@media screen and (min-width: @length-screen-mobile) {
-		margin-top: 0;
-	}
+}
+
+.picture {
+	max-width: 100%;
+}
+
+.formPanel {
+	float: right;
+	width: 20rem;
+	margin: 0 auto;
 }
 </style>

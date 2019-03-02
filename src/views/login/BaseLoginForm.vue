@@ -1,10 +1,5 @@
 <template functional>
-	<form class="login-form" @keyup.13="listeners.ok">
-		<slot/>
-		<div class="buttons">
-			<slot name="button"/>
-		</div>
-	</form>
+	<form class="login-form" @keyup.13="listeners.ok"><slot/></form>
 </template>
 
 <style lang="less">

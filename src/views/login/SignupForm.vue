@@ -39,18 +39,20 @@
 
 		<span class="text-warning center">{{message}}</span>
 
-		<kx-task-button
-			slot="button"
-			class="primary outline"
-			:on-click="signup">
-			确定
-		</kx-task-button>
-		<kx-button
-			slot="button"
-			class="second outline"
-			@click="switchPanel">
-			登录
-		</kx-button>
+		<div class="buttons">
+			<kx-task-button
+				slot="button"
+				class="primary outline"
+				:on-click="signup">
+				确定
+			</kx-task-button>
+			<kx-button
+				slot="button"
+				class="second outline"
+				@click="switchPanel">
+				登录
+			</kx-button>
+		</div>
 	</base-login-form>
 </template>
 
@@ -81,7 +83,7 @@ export default {
 				await api.user.signup(this.form);
 				await this.$store.dispatch(REFRESH_USER);
 				this.$router.push(this.$route.params.return || "/");
-			} catch(e) {
+			} catch (e) {
 				this.message = errorMessage(e);
 			}
 		},
