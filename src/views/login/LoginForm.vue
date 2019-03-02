@@ -74,14 +74,16 @@ export default {
 			}
 		},
 		switchPanel () {
-			this.$emit("switch-panel", "SignupPanel");
-			// this.$dialog.messageBox("别注册了", "个人博客你注册干嘛？\n建议使用第三方登录");
+			// this.$emit("switch-panel", "SignupPanel");
+			this.$dialog.messageBox("别注册了", "个人博客你注册干嘛？\n建议使用第三方登录");
 		},
 	},
 };
 </script>
 
 <style module lang="less">
+@import "../../css/Imports";
+
 .separtor {
 	position: relative;
 	color: #747474;
@@ -90,17 +92,13 @@ export default {
 	&::before, &::after {
 		content: "";
 		position: absolute;
-		background-color: #a4a4a4;
+		background-color: @color-border;
 		height: 1px;
 		top: 50%;
-		width: 35%;
+		width: 30%;
 	}
 
-	&::before {
-		right: 0;
-	}
-	&::after {
-		left: 0;
-	}
+	&::before { right: 0; }
+	&::after { left: 0; }
 }
 </style>

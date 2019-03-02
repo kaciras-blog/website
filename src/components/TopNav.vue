@@ -63,7 +63,7 @@ export default {
 	top: 0;
 	height: 3rem;
 
-	box-shadow: rgba(0, 0, 0, .2) 0 0 4px 2px;
+	box-shadow: rgba(0, 0, 0, .2) 0 0 3px 1px;
 }
 
 .banner {
@@ -83,6 +83,6 @@ export default {
 }
 
 :global(.dark) .navWrapper {
-	box-shadow: rgba(0, 0, 0, .5) 0 0 4px 2px;
+	box-shadow: rgba(0, 0, 0, .5) 0 0 3px 1px;
 }
 </style>
