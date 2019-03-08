@@ -24,10 +24,11 @@ export default {
 			type: String,
 			required: true,
 		},
+		returnUri: String,
 	},
 	computed: {
 		href () {
-			return "https://localhost:2375/connect/" + this.endpoint;
+			return `https://localhost:2375/connect/${this.endpoint}?ret=${this.returnUri}`;
 		},
 		image () {
 			return `/static/icons/${this.icon}`;

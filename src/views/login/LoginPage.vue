@@ -7,7 +7,10 @@
 		<div :class="$style.pictureBox">
 			<img :class="$style.picture" src="../../assets/img/LoginPicture.jpg" alt="占位置的图片。。。">
 		</div>
-		<component :is="panel" :class="$style.formPanel" @switch-panel="switchPanel"/>
+		<component :is="activePanel"
+				   :class="$style.formPanel"
+				   :return-uri="returnUri"
+				   @switch-panel="switchPanel"/>
 	</page-layout>
 </template>
 
@@ -21,12 +24,20 @@ export default {
 		LoginPanel, SignupPanel,
 	},
 	data: () => ({
-		panel: "loginPanel",
+		activePanel: "loginPanel",
+		returnUri: "/",
 	}),
 	methods: {
 		switchPanel (panel) {
-			this.panel = panel;
+			this.activePanel = panel;
 		},
+	},
+	beforeRouteEnter (to, from, next) {
+		let returnUri = from.fullPath;
+		if (returnUri.startsWith("/login")) {
+			console.log("踩踩踩踩踩");
+		}
+		next(vm => vm.returnUri = returnUri);
 	},
 };
 </script>

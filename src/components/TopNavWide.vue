@@ -13,7 +13,7 @@
 			<!--</router-link>-->
 		</div>
 
-		<div v-if="user" class="nav-item-group">
+		<div v-if="user && user.id > 0" class="nav-item-group">
 			<img :src="user.head"
 				 class="small head"
 				 :class="$style.head"

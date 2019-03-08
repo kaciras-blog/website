@@ -62,7 +62,12 @@ import { REFRESH_USER } from "../../store/types";
 
 export default {
 	name: "SignupPanel",
-	components: { BaseLoginForm },
+	components: {
+		BaseLoginForm,
+	},
+	props: {
+		returnUri: String,
+	},
 	data () {
 		return {
 			message: "",
@@ -80,7 +85,7 @@ export default {
 			try {
 				await api.user.signup(this.form);
 				await this.$store.dispatch(REFRESH_USER);
-				this.$router.push(this.$route.params.return || "/");
+				this.$router.push(this.returnUri);
 			} catch (e) {
 				this.message = errorMessage(e);
 			}

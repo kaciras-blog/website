@@ -20,12 +20,10 @@ if (process.env.NODE_ENV === "production") {
 function defineApiServerConfig () {
 	const local = {
 		main: "https://localhost:2375",
-		account: "https://localhost:26480",
 		front: "https://localhost",
 	};
 	const productionWeb = {
 		main: "https://api.kaciras.net:2375",
-		account: "https://api.kaciras.net:26480",
 		front: "https://blog.kaciras.net",
 	};
 	if (process.env.VUE_ENV === "server" || process.env.NODE_ENV !== "production") {
@@ -78,7 +76,6 @@ const apiConfig = defineApiServerConfig();
 
 const apiSet = {
 	mainServer: createAxios({ baseURL: apiConfig.main }),
-	securityServer: createAxios({ baseURL: apiConfig.account }),
 	webServer: createAxios({ baseURL: apiConfig.front }),
 };
 
@@ -255,10 +252,6 @@ class AbstractApi {
 
 	get mainServer () {
 		return this.axiosSet.mainServer;
-	}
-
-	get securityServer () {
-		return this.axiosSet.securityServer;
 	}
 
 	get webServer () {
@@ -483,7 +476,7 @@ class MiscApi extends AbstractApi {
 	 * @return {string} 验证码URL
 	 */
 	get captchaAddress () {
-		return apiConfig.account + "/captcha?r=" + Math.random();
+		return apiConfig.main + "/captcha?r=" + Math.random();
 	}
 }
 
@@ -493,14 +486,9 @@ class UserApi extends AbstractApi {
 	/**
 	 * 用户登录，登录成功后会添加相应的Cookie
 	 * @param form 一个对象，格式如下：{ name: 用户名, password: 密码, remember: 是否保存登录 }
-	 * @return Promise
 	 */
 	login (form) {
-		return this.securityServer.post("/session/account", form);
-	}
-
-	logout () {
-		return this.securityServer.delete("/session/account");
+		return this.mainServer.post("/accounts/login", form);
 	}
 
 	/**
@@ -514,12 +502,15 @@ class UserApi extends AbstractApi {
 	 * @return Promise
 	 */
 	signup (data) {
-		return this.securityServer.post("/accounts", data);
+		return this.mainServer.post("/accounts", data);
 	}
 
-	// 会自动创建用户，需要先登录
+	logout () {
+		return this.mainServer.delete("/session/user");
+	}
+
 	getCurrent () {
-		return this.mainServer.get("/current-user", { validateStatus: NormalResponse });
+		return this.mainServer.get("/session/user", { validateStatus: NormalResponse });
 	}
 
 	get (id) {

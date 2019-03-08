@@ -37,10 +37,18 @@
 
 		<span class="center" :class="$style.separtor">第三方登录</span>
 		<div class="center">
-			<oauth-icon endpoint="github" icon="github.png" tip="Github登录"/>
+			<oauth-icon
+				endpoint="github"
+				icon="github.png"
+				tip="Github登录"
+				:return-uri="returnUri"/>
 
 			<!-- ADBlock会拦截谷歌图标，必须改个名 -->
-			<oauth-icon endpoint="google" icon="xoago.png" tip="Google登录"/>
+			<oauth-icon
+				endpoint="google"
+				icon="xoago.png"
+				tip="Google登录"
+				:return-uri="returnUri"/>
 		</div>
 	</base-login-form>
 </template>
@@ -54,12 +62,17 @@ import OauthIcon from "../../components/OauthIcon";
 
 export default {
 	name: "LoginPanel",
-	components: { OauthIcon, BaseLoginForm },
+	components: {
+		OauthIcon, BaseLoginForm,
+	},
+	props: {
+		returnUri: String,
+	},
 	data: () => ({
 		message: "",
 		form: {
-			name: "",
 			password: "",
+			name: "",
 			remember: false,
 		},
 	}),
@@ -68,14 +81,13 @@ export default {
 			try {
 				await api.user.login(this.form);
 				await this.$store.dispatch(REFRESH_USER);
-				this.$router.push(this.$route.params.return || "/");
+				this.$router.push(this.returnUri);
 			} catch (e) {
 				this.message = errorMessage(e);
 			}
 		},
 		switchPanel () {
-			// this.$emit("switch-panel", "SignupPanel");
-			this.$dialog.messageBox("别注册了", "个人博客你注册干嘛？\n建议使用第三方登录");
+			this.$emit("switch-panel", "SignupPanel");
 		},
 	},
 };
