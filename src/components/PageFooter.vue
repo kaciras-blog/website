@@ -25,7 +25,6 @@ export default {
 
 :global(#bottom-footer) {
 	width: 100%;
-	margin-top: 4rem;
 	color: #eee;
 	background-color: #303030;
 	padding: 1rem;

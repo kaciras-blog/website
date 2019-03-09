@@ -66,6 +66,6 @@ export default {
 
 <style lang="less">
 #category {
-
+	margin-bottom: 4rem;
 }
 </style>

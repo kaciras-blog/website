@@ -162,8 +162,7 @@ export default {
 }
 
 .discussPanel {
-	margin-left: auto;
-	margin-right: auto;
+	margin: 0 auto 3rem auto;
 
 	@media screen {
 		@media (min-width: @length-screen-pad) {

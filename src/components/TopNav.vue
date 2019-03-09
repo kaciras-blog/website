@@ -1,8 +1,10 @@
 <template>
 	<div :style="navStyle" :class="navClass">
-		<div :class="$style.filterContainer">
+		<div v-if="showBanner"
+			 :class="[$style.filterContainer, $style.shadow]">
 			<top-nav-wide/>
 		</div>
+		<top-nav-wide v-else :class="$style.shadow"/>
 		<div v-if="showBanner" :class="$style.banner" role="banner"></div>
 	</div>
 </template>
@@ -62,7 +64,9 @@ export default {
 	right: 0;
 	top: 0;
 	height: 3rem;
+}
 
+.shadow {
 	box-shadow: rgba(0, 0, 0, .2) 0 0 3px 1px;
 }
 

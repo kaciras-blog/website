@@ -142,7 +142,7 @@ export default {
 			max-width: 82%
 		}
 	}
-	margin: 0 auto;
+	margin: 0 auto 4rem auto;
 
 	& > aside {
 		width: 29%;
