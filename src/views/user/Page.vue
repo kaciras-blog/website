@@ -1,8 +1,8 @@
 <template>
-	<page-layout view-id="profile">
+	<page-layout :class="$style.pageLayout" view-id="profile">
 		<div :class="$style.card" class="panel">
 			<h2>修改用户信息</h2>
-			<div :class="$style.headSection">
+			<div :class="[$style.headSection, $style.field]">
 				<img
 					:class="$style.head"
 					alt="头像"
@@ -10,7 +10,12 @@
 					:src="user.head"
 					@click="editHead">
 			</div>
-			<div :class="$style.nameInput">
+			<div :class="$style.field">
+				用户ID:
+				<auth-type-tag :auth-type="user.authType"/>
+				{{user.id}}
+			</div>
+			<div :class="$style.field">
 				<label :class="$style.label">用户名</label>
 				<input :class="$style.input" name="name" v-model="user.name">
 			</div>
@@ -23,9 +28,11 @@
 import api from "../../api";
 import { openFile } from "kx-ui/src/helpers";
 import AvatarCropper from "./AvatarCropper";
+import AuthTypeTag from "./AuthTypeTag";
 
 export default {
 	name: "Page",
+	components: { AuthTypeTag },
 	data () {
 		return { user: this.$store.state.user };
 	},
@@ -48,9 +55,16 @@ export default {
 <style module lang="less">
 @import "../../css/Imports";
 
+.pageLayout {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
 :global(#profile) {
-	background-color: #FCFCFC;
-	margin-top: 6rem;
+	padding-top: 4rem;
+	flex: 1;
+	background-color: #FDFDFD;
 }
 
 .card {
@@ -66,10 +80,9 @@ export default {
 	text-align: center;
 }
 
-.nameInput {
-	margin: 1rem 0;
+.field {
+	margin-bottom: 1rem;
 }
-
 
 .label, .input  {
 	display: block;

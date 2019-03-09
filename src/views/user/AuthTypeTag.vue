@@ -1,0 +1,39 @@
+<template>
+	<span :class="[$style.authTag, $style[authType]]" title="登录类型">{{authType}}</span>
+</template>
+
+<script>
+export default {
+	name: "AuthTypeTag",
+	props: {
+		authType: {
+			type: String,
+			required: true,
+		},
+	},
+};
+</script>
+
+<style module lang="less">
+.authTag {
+	padding: 1px 4px;
+	border-radius: 4px;
+	color: white;
+
+	&::selection {
+		background: none;
+	}
+}
+
+.Local {
+	background-color: #ef8660;
+}
+
+.Github {
+	background-color: #63b1e2;
+}
+
+.Google {
+	background-color: #85dead;
+}
+</style>
