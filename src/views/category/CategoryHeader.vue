@@ -31,6 +31,10 @@ export default {
 	grid-template-areas: "____ head name" "meta head desc";
 
 	border-top: solid 6px white;
+
+	@media (max-width: @length-screen-mobile) {
+		grid-template-columns: 5% 10rem 1fr;
+	}
 }
 
 .head {

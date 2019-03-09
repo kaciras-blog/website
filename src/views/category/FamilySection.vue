@@ -47,7 +47,7 @@ export default {
 
 .container {
 	/*display: flex;*/
-	margin: 1rem auto 0 auto;
+	margin: 0 auto 0 auto;
 	padding: 0 !important;
 	max-width: 90%;
 }
