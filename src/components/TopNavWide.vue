@@ -14,10 +14,13 @@
 		</div>
 
 		<div v-if="user && user.id > 0" class="nav-item-group">
-			<img :src="user.head"
-				 class="small head"
-				 :class="$style.head"
-				 title="就是一个头像而已">
+			<router-link to="/profile">
+				<img :src="user.head"
+					 alt="用户头像"
+					 title="就是一个头像而已"
+					 class="small head"
+					 :class="$style.head">
+			</router-link>
 			<router-link
 				v-if="user.id === 2"
 				to="/console"

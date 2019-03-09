@@ -87,6 +87,12 @@ export default function () {
 			meta: { title: "文章编辑器" },
 		},
 		{
+			path: "/profile",
+			name: "profile",
+			component: () => import("./views/user/Page"),
+			meta: { title: "用户" },
+		},
+		{
 			path: "/error/:code",
 			name: "error",
 			component: Error,

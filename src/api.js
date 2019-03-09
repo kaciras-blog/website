@@ -516,6 +516,10 @@ class UserApi extends AbstractApi {
 	get (id) {
 		return this.mainServer.get("/users/" + id);
 	}
+
+	updateProfile (profile) {
+		return this.mainServer.patch("/session/user", profile);
+	}
 }
 
 
