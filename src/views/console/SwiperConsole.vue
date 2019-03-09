@@ -2,25 +2,28 @@
 	<main>
 		<div class="toolbar btn-group">
 			<kx-button @click="createNew">添加轮播</kx-button>
+			<kx-button @click="load">重新加载</kx-button>
 			<kx-button class="primary" @click="submit">应用更改</kx-button>
 		</div>
 
 		<div ref="container">
-			<div v-for="item of slides"
-				 v-if="item.hold"
-				 class="hold slide"
-				 :key="item.tid">
-			</div>
-
-			<swiper-console-item
-				v-else
-				:key="item.tid"
-				class="slide"
-				:item="item"
-				@drag-started="drag"
-				@remove="remove"/>
+			<template v-for="item of slides">
+				<div
+					v-if="item.hold"
+					class="hold slide"
+					:key="item.tid">
+				</div>
+				<swiper-console-item
+					v-else
+					:key="item.tid"
+					class="slide"
+					:item="item"
+					@drag-started="drag"
+					@remove="remove"/>
+			</template>
 		</div>
 
+		<!-- 拖动中的元素 -->
 		<swiper-console-item
 			v-if="dragging"
 			ref="draggingComponent"
@@ -56,6 +59,10 @@ export default {
 					description: "这是新添加的轮播页",
 				},
 			});
+		},
+		async load () {
+			const slides = await api.recommend.swiper.get();
+			this.slides = slides.map(slide => ({ slide, open: false, tid: ++this.counter }));
 		},
 		remove (id) {
 			deleteOn(this.slides, s => s.tid === id);
@@ -147,8 +154,7 @@ export default {
 		},
 	},
 	beforeMount () {
-		api.recommend.swiper.get().then(slides => slides
-			.forEach(slide => this.slides.push({ slide, open: false, tid: ++this.counter })));
+		this.load();
 	},
 };
 </script>
