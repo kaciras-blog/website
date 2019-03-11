@@ -1,6 +1,8 @@
-declare const self: ServiceWorkerGlobalScope;
+import { cacheNames, ManagedCache } from "./cache";
+import { CacheProxyServer, RegexRoute } from "./cache-server";
 
-import { cacheNames, CacheProxyServer, ManagedCache, RegexRoute } from "./cache";
+// 默认是WebWorker，需要声明一下ServiceWorker，其他文件里也一样。
+declare const self: ServiceWorkerGlobalScope;
 
 // ServiceWorkerWebpackPlugin 自动生成，其中包含静态资源列表 .
 declare const serviceWorkerOption: {
@@ -37,7 +39,7 @@ declare const serviceWorkerOption: {
 
 const STATIC_CACHE_NAME = "StaticFiles";
 const proxyServer = new CacheProxyServer();
-proxyServer.addFetchListener();
+proxyServer.registerFetchListener();
 
 
 async function initUserCode() {
@@ -75,7 +77,7 @@ self.addEventListener("install", (event: ExtendableEvent) => {
 });
 
 /**
- * 激活事件，这个事件触发时表明当前ServiceWorker已经被使用，而其他的ServiceWorker则没有。
+ * 激活事件，这个事件触发时表明当前ServiceWorker已经被使用。
  *
  * 在这个事件里应当清理旧版的缓存。
  */

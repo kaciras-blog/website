@@ -1,19 +1,23 @@
-interface CursorOptions {
+/*
+ * 封装IndexedDB，所有的方法均为异步的。
+ * 主要参考了Google的workbox项目。
+ */
+export interface CursorOptions {
 	index?: string;
 	range?: IDBKeyRange;
 	direction?: IDBCursorDirection
 }
 
 /** 事务和游标的回调 */
-type TransactionCallback = (tx: IDBTransaction, done: (value: any) => void, abort: () => void) => void;
-type CursorCallback = (cursor: IDBCursorWithValue) => void;
+export type TransactionCallback = (tx: IDBTransaction, done: (value: any) => void, abort: () => void) => void;
+export type CursorCallback = (cursor: IDBCursorWithValue) => void;
 
 /** 两个事件的处理函数，比较长就搞个别名 */
-type IDBUpdateHandler = (this: IDBOpenDBRequest, ev: IDBVersionChangeEvent) => any | null;
-type IDBonVersionChangeHandler = ((this: IDBDatabase, ev: IDBVersionChangeEvent) => any) | null;
+export type IDBUpdateHandler = (this: IDBOpenDBRequest, ev: IDBVersionChangeEvent) => any | null;
+export type IDBonVersionChangeHandler = ((this: IDBDatabase, ev: IDBVersionChangeEvent) => any) | null;
 
 
-export class AsyncDB {
+export class AsyncIndexedDB {
 
 	readonly name: string;
 	readonly version?: number;

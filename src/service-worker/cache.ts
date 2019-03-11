@@ -1,6 +1,6 @@
 declare const self: ServiceWorkerGlobalScope;
 
-import { AsyncDB } from "./idb-async";
+import { AsyncIndexedDB } from "./asyncdb";
 
 const EXPRIATION_STORE_NAME = "cache-expiration";
 const URL_KEY = "url";
@@ -16,11 +16,11 @@ export class ManagedCache {
 	readonly name: string;
 	readonly maxSize?: number;
 	readonly maxAge?: number;
-	readonly db: AsyncDB;
+	readonly db: AsyncIndexedDB;
 
 	private constructor(name: string, maxSize?: number, maxAge?: number) {
 		if (cacheNames.has(name)) {
-			throw new Error(`ManagedCache ${name} already exists.`);
+			throw new Error(`ManagedCache ${name} already exists`);
 		}
 		cacheNames.add(name);
 
@@ -28,7 +28,7 @@ export class ManagedCache {
 		this.maxSize = maxSize;
 		this.maxAge = maxAge;
 
-		this.db = new AsyncDB(name, 1);
+		this.db = new AsyncIndexedDB(name, 1);
 	}
 
 	/**
@@ -93,7 +93,7 @@ export class ManagedCache {
 }
 
 
-abstract class AbstractFetchHandler {
+export abstract class FetchHandler {
 
 	protected readonly cache: ManagedCache;
 
@@ -122,7 +122,7 @@ abstract class AbstractFetchHandler {
 /**
  * 网络优先，适用于频繁更新但又需要离线访问的内容。
  */
-class NetworkFirstHandler extends AbstractFetchHandler {
+class NetworkFirstHandler extends FetchHandler {
 
 	async handle(event: FetchEvent) {
 		try {
@@ -140,7 +140,7 @@ class NetworkFirstHandler extends AbstractFetchHandler {
 /**
  * 缓存优先，并在后台更新。
  */
-class StaleWhileRevalidateHandler extends AbstractFetchHandler {
+class StaleWhileRevalidateHandler extends FetchHandler {
 
 	private readonly channel?: BroadcastChannel;
 
@@ -181,7 +181,7 @@ class StaleWhileRevalidateHandler extends AbstractFetchHandler {
  * 缓存优先。尝试从缓存里加载响应，如果缓存中没有则发送请求，并将成功的响应加入缓存。
  * 该策略适用于文件名中带 Hash 的请求。
  */
-class CacheFirstHandler extends AbstractFetchHandler {
+class CacheFirstHandler extends FetchHandler {
 
 	async handle(event: FetchEvent) {
 		// 如果请求的资源已被缓存，则直接返回
@@ -191,89 +191,5 @@ class CacheFirstHandler extends AbstractFetchHandler {
 		}
 		// 没有，则发起请求并缓存结果
 		return await this.fetchAndCache(event);
-	}
-}
-
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-export class CacheProxyServer {
-
-	private readonly routes: RegexRoute[];
-
-	constructor() {
-		this.routes = [];
-	}
-
-	/**
-	 * 添加一个路由，注意没有删除方法，先添加的优先匹配。
-	 *
-	 * @param route 路由对象
-	 * @return 链式调用返回自己
-	 */
-	addRoute(route: RegexRoute) {
-		this.routes.push(route);
-		return this;
-	}
-
-	private handleFetchEvent(event: FetchEvent) {
-		const { request } = event;
-
-		if (request.method !== "GET") {
-			return;
-		}
-		let matchedRoute;
-		for (const route of this.routes) {
-			if (route.match(request)) {
-				matchedRoute = route;
-				break;
-			}
-		}
-
-		if (!matchedRoute) {
-			return;
-		}
-		event.respondWith(matchedRoute.handler.handle(event));
-	}
-
-	/**
-	 * 注册抓取事件，这个方法只能在最外层调用。
-	 */
-	addFetchListener() {
-		self.addEventListener('fetch', (event: FetchEvent) => this.handleFetchEvent(event));
-	}
-}
-
-export class RegexRoute {
-
-	private pattern: RegExp;
-	private blacklist: RegExp[];
-
-	handler: AbstractFetchHandler;
-
-	constructor(pattern: string | RegExp, handler: AbstractFetchHandler, blacklist: RegExp[] = []) {
-		if (typeof pattern === "string") {
-			pattern = new RegExp(pattern);
-		}
-		this.pattern = pattern;
-		this.handler = handler;
-		this.blacklist = blacklist;
-	}
-
-	match(request: Request) {
-		const { pattern, blacklist } = this;
-		if (!pattern.test(request.url)) {
-			return false;
-		}
-		return blacklist.every(v => !v.test(request.url));
-	}
-}
-
-export class NavigateRoute extends RegexRoute {
-
-	match(request: Request) {
-		if (request.mode !== "navigate") {
-			return false;
-		}
-		return super.match(request);
 	}
 }
