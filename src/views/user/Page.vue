@@ -45,8 +45,13 @@ export default {
 			};
 			reader.readAsDataURL(files[0]);
 		},
-		save () {
-			api.user.updateProfile(this.user);
+		async save () {
+			try {
+				await api.user.updateProfile(this.user);
+				this.$dialog.messageBox("保存", "保存成功");
+			} catch (e) {
+				this.$dialog.messageBox("保存", "保存失败！\n" + e.message, "error");
+			}
 		},
 	},
 };

@@ -3,15 +3,18 @@ import Vue from "vue";
 import TransitionsCurtain from "./components/TransitionCurtain";
 import { REFRESH_USER } from "./store/types";
 import { CancelToken } from "kx-ui";
-import runtime from "serviceworker-webpack-plugin/lib/runtime";
+// import runtime from "serviceworker-webpack-plugin/lib/runtime";
 
+// 这个傻B库初始化就用到了window，跟SSR冲突
+import VueCropper from "vue-cropper";
+Vue.use(VueCropper);
 
 /* 注册 ServiceWorker 启用 PWA */
-if ("serviceWorker" in navigator) {
-	runtime.register()
-		.then(() => console.log("Service worker registered successfully."))
-		.catch(() => console.error("Service worker failed to register."));
-}
+// if ("serviceWorker" in navigator) {
+// 	runtime.register()
+// 		.then(() => console.log("Service worker registered successfully."))
+// 		.catch(() => console.error("Service worker failed to register."));
+// }
 
 const curtain = new Vue(TransitionsCurtain).$mount();
 document.body.appendChild(curtain.$el);
