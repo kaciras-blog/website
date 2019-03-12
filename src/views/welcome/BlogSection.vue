@@ -2,24 +2,24 @@
 	<section id="blog-section">
 
 		<header :class="$style.header">
-			<h1 :class="$style.title">博客网站</h1>
+			<h1 :class="$style.title">编程开发</h1>
 			<kx-button
 				route="/test"
 				class="outline primary"
 				:class="$style.link_button">
-				去看看
+				更多文章
 			</kx-button>
 		</header>
 
-		<sk-fading-circle v-if="loading"/>
+		<!--<sk-fading-circle v-if="loading"/>-->
 
-		<kx-carousel v-else
-			:class="$style.carousel"
-			:items="slides"
-			:stop-on-hover="true"
-		>
-			<swiper-slide v-slot="{ slide }" :key="slide.tid" :item="slide"/>
-		</kx-carousel>
+		<!--<kx-carousel v-else-->
+			<!--:class="$style.carousel"-->
+			<!--:items="slides"-->
+			<!--:stop-on-hover="true"-->
+		<!--&gt;-->
+			<!--<swiper-slide v-slot="{ slide }" :key="slide.tid" :item="slide"/>-->
+		<!--</kx-carousel>-->
 
 		<div :class="$style.others"></div>
 	</section>

@@ -56,9 +56,9 @@ export default {
 #error-page {
 	flex: 1;
 
-	margin-top: 5rem;
+	margin-top: 2rem;
 	@media screen and (min-width: 768px) {
-		margin-top: 8rem;
+		margin-top: 5rem;
 	}
 }
 </style>
