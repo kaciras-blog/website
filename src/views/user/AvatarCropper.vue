@@ -4,44 +4,91 @@
 			<h3>裁剪图片</h3>
 		</template>
 
-		<vueCropper
-			ref="cropper"
-			:img="src"
-			:centerBox="true"
-			:fixed="true"/>
+		<div :class="$style.wrapper">
+			<croppa
+				v-model="croppa"
+				:width="300"
+				:height="300"
+				:show-remove-button="false"
+				:prevent-white-space="true"
+				:zoom-speed="10"
+				:quality="1"
+				@file-choose="onFileChoose"/>
 
-		<kx-button @click="cancel">取消</kx-button>
-		<kx-button class="primary" @click="ok">确定</kx-button>
+			<div :class="$style.sight"></div>
+		</div>
+
+		<template v-slot:footer>
+			<div :class="$style.footer">
+				<kx-button @click="cancel">取消</kx-button>
+				<kx-button class="primary" @click="ok">确定</kx-button>
+			</div>
+		</template>
 	</kx-base-dialog>
 </template>
 
 <script>
-import { VueCropper } from "vue-cropper";
+import api from "../../api";
 
 export default {
 	name: "AvatarCropper",
-	components: {
-		VueCropper,
-	},
 	props: {
-		src: {
-			type: [String, Blob],
-			required: true,
-		},
+		src: {},
 	},
+	data: () => ({
+		croppa: {},
+		mimetype: undefined,
+	}),
 	methods: {
-		ok () {
-			this.$refs.cropper.getCropBlob((data) => {
-				console.log(data);
-			});
+		async ok () {
+			const data = await this.croppa.promisedBlob(this.mimetype);
+			const uri = await api.misc.uploadImage(data);
+			this.$dialog.close(uri);
 		},
 		cancel () {
 			this.$dialog.close();
+		},
+		onFileChoose (e) {
+			this.mimetype = e.type;
 		},
 	},
 };
 </script>
 
 <style module lang="less">
+@import "../../css/Imports";
 
+.wrapper {
+	position: relative;
+}
+
+.sight {
+	position: absolute;
+	.full-vertex;
+	overflow: hidden;
+	pointer-events: none;
+
+	&::after {
+		content: "";
+		box-sizing: content-box;
+
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+
+		width: 300px;
+		height: 300px;
+		border-radius: 50%;
+
+		border: 300px solid rgba(0, 0, 0, 0.4);
+	}
+}
+
+.footer {
+	display: flex;
+	justify-content: space-between;
+	padding-left: 1rem;
+	padding-right: 1rem;
+}
 </style>

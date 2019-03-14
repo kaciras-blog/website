@@ -34,16 +34,13 @@ export default {
 	name: "Page",
 	components: { AuthTypeTag },
 	data () {
-		return { user: this.$store.state.user };
+		return { user: this.$store.state.user || {} };
 	},
 	methods: {
 		async editHead () {
-			const files = await openFile(false, "image/*");
-			const reader = new FileReader();
-			reader.onload = (event) => {
-				this.$dialog.show(AvatarCropper, { src: event.target.result });
-			};
-			reader.readAsDataURL(files[0]);
+			const r = await this.$dialog.show(AvatarCropper);
+			if(r)
+				this.user.head = r;
 		},
 		async save () {
 			try {
@@ -89,7 +86,7 @@ export default {
 	margin-bottom: 1rem;
 }
 
-.label, .input  {
+.label, .input {
 	display: block;
 	width: 100%;
 }

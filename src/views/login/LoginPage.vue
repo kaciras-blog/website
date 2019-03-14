@@ -50,7 +50,7 @@ export default {
 	max-width: 980px;
 
 	margin: 0 auto;
-	padding-top: 8rem;
+	padding-top: 6rem;
 
 	align-items: flex-start;
 }
