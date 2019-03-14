@@ -76,6 +76,9 @@ function initAppAndRouterHook () {
 		next();
 	}
 
+	// 切换视图后应该关掉所有弹窗
+	router.afterEach(() => vue.$dialog.clear());
+
 	/*
 	 * 在异步组件解析前就显示加载指示器。
 	 * 异步组件getMatchedComponents()返回一个函数，加载完成的组件则返回对象。
