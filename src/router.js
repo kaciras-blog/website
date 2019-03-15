@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Error from "./views/error/Error";
 import Welcome from "./views/welcome/Welcome";
+import Error from "./views/error/Error";
 
 Vue.use(Router);
 
@@ -42,14 +42,18 @@ export default function () {
 	const routes = [
 		{
 			path: "/",
-			name: "index",
-			component: () => import("./views/index/IndexPage"),
+			component: Welcome,
 			meta: { title: "首页" },
 		},
 		{
-			path: "/page/:index",
+			path: "/list",
 			component: () => import("./views/index/IndexPage"),
-			meta: { title: "首页" },
+			meta: { title: "所有文章" },
+		},
+		{
+			path: "/list/:index",
+			component: () => import("./views/index/IndexPage"),
+			meta: { title: "所有文章" },
 		},
 		{
 			path: "/category/:id",
@@ -60,14 +64,7 @@ export default function () {
 			component: () => import("./views/category/Category"),
 		},
 		{
-			path: "/welcome",
-			naem: "welcome",
-			component: Welcome,
-			meta: { title: "网站导航" },
-		},
-		{
 			path: "/login",
-			name: "login",
 			component: () => import("./views/login/LoginPage"),
 			meta: { title: "登录" },
 		},
@@ -77,24 +74,25 @@ export default function () {
 		},
 		{
 			path: "/article/:id/:urlTitle",
-			name: "article",
 			component: () => import("./views/article/Article"),
 		},
 		{
 			path: "/edit/:id",
-			name: "edit",
 			component: () => import("./views/editor/ArticleEditor"),
 			meta: { title: "文章编辑器" },
 		},
 		{
 			path: "/profile",
-			name: "profile",
 			component: () => import("./views/user/Page"),
 			meta: { title: "用户" },
 		},
 		{
+			path: "/about",
+			component: () => import("./views/about/AboutPage"),
+			meta: { title: "关于" },
+		},
+		{
 			path: "/error/:code",
-			name: "error",
 			component: Error,
 			props: true,
 			meta: { title: "错误" },

@@ -4,7 +4,7 @@
 		<header :class="$style.header">
 			<h1 :class="$style.title">编程开发</h1>
 			<kx-button
-				route="/test"
+				route="/list"
 				class="outline primary"
 				:class="$style.link_button">
 				更多文章

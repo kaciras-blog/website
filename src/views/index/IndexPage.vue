@@ -46,7 +46,7 @@ function nextPageUrl (route, count) {
 	for (const k of Object.keys(params)) {
 		pairs.push(k + "=" + params[k]);
 	}
-	const nextPath = "/page/" + ((parseInt(route.params.index) || 0) + count);
+	const nextPath = "/list/" + ((parseInt(route.params.index) || 0) + count);
 	return pairs.length ? nextPath + "?" + pairs.join("&") : nextPath;
 }
 

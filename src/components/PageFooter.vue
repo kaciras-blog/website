@@ -2,7 +2,7 @@
 <template functional v-once>
 	<footer id="bottom-footer">
 		<div :class="$style.info">
-			<p>Copyright &copy; 2017-2018 Kaciras.net All Rights Reserved.</p>
+			<p>Copyright &copy; 2018-2019 Kaciras.net All Rights Reserved.</p>
 			<address>Kaciras@outlook.com</address>
 		</div>
 		<div>
