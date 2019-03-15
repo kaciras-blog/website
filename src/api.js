@@ -221,6 +221,9 @@ class ProxiedApiFactory extends BasicApiFactory {
 			if (csrf) {
 				config.headers[CSRF_HEADER_NAME] = csrf;
 			}
+
+			// SSR 也属于反向代理，记得带上原始IP
+			config.headers["X-Forwarded-For"] = proto.ip;
 		});
 		return this;
 	}
