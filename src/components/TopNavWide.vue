@@ -13,33 +13,38 @@
 			<!--</router-link>-->
 		</div>
 
-		<div v-if="user && user.id > 0" class="nav-item-group">
-			<router-link to="/profile">
-				<img :src="user.head"
-					 alt="用户头像"
-					 title="就是一个头像而已"
-					 class="small head"
-					 :class="$style.head">
-			</router-link>
-			<router-link
-				v-if="user.id === 2"
-				to="/console"
-				class="nav-item">
-				管理
-			</router-link>
-			<button
-				@click="logout"
-				class="nav-item">
-				退出登录
-			</button>
-		</div>
+		<div class="nav-item-group">
 
-		<div v-else class="nav-item-group">
-			<router-link
-				to="/login"
-				class="nav-item">
-				登录
-			</router-link>
+			<template v-if="user && user.id > 0">
+				<router-link to="/profile">
+					<img :src="user.head"
+						 alt="用户头像"
+						 title="就是一个头像而已"
+						 class="small head"
+						 :class="$style.head">
+				</router-link>
+				<router-link
+					v-if="user.id === 2"
+					to="/console"
+					class="nav-item">
+					管理
+				</router-link>
+				<button
+					@click="logout"
+					class="nav-item">
+					退出登录
+				</button>
+			</template>
+
+			<template v-else>
+				<router-link
+					to="/login"
+					class="nav-item">
+					登录
+				</router-link>
+			</template>
+
+			<router-link to="/about" class="nav-item">关于</router-link>
 		</div>
 	</nav>
 </template>

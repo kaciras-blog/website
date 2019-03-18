@@ -9,9 +9,7 @@
 				 :class="props.navClass"
 				 :style="props.navStyle"/>
 
-		<main :id="props.viewId">
-			<slot/>
-		</main>
+		<main :id="props.viewId" :class="props.viewClass"><slot/></main>
 		<page-footer v-if="props.footer"/>
 	</div>
 </template>
@@ -24,6 +22,7 @@ export default {
 			default: true,
 		},
 		viewId: {},
+		viewClass: {},
 		showBanner: {},
 		banner: {},
 		navClass: {},

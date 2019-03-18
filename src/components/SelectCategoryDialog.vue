@@ -1,5 +1,5 @@
 <template>
-	<kx-base-dialog class="category-selector">
+	<kx-base-dialog>
 
 		<template v-slot:title>
 			<h3>选择分类</h3>
