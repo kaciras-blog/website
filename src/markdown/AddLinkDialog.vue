@@ -1,14 +1,6 @@
 <template>
-	<kx-base-dialog :closeIcon="true" @close-button-clicked="cancel">
-
-		<template v-slot:title>
-			<h3>添加链接</h3>
-		</template>
-
-		<form :class="$style.form"
-			  @keyup.13="ok"
-			  @keyup.27="cancel">
-
+	<kx-base-dialog title="添加链接">
+		<form :class="$style.form" @keyup.13="ok">
 			<label>链接地址</label>
 			<input title="链接地址"
 				   :class="$style.input"
@@ -23,24 +15,17 @@
 				   v-model="text"
 				   :placeholder="href"/>
 		</form>
-
-		<template v-slot:footer>
-			<div :class="$style.footer">
-				<kx-button :class="$style.button" class="primary" @click="ok">确定</kx-button>
-			</div>
-		</template>
+		<kx-standard-dialog-buttons @confirm="ok"/>
 	</kx-base-dialog>
 </template>
 
 <script>
 export default {
 	name: "AddLinkDialog",
-	data () {
-		return {
-			text: "",
-			href: "",
-		};
-	},
+	data: () => ({
+		text: "",
+		href: "",
+	}),
 	methods: {
 		ok () {
 			const data = this.$data;
@@ -50,7 +35,7 @@ export default {
 			if (!data.text) {
 				data.text = data.href;
 			}
-			this.$dialog.close(data);
+			this.$dialog.confirm(data);
 		},
 		cancel () {
 			this.$dialog.close();

@@ -34,7 +34,6 @@
 import KxMarkdownEditWindow from "../../markdown/EditWindow";
 import KxMarkdownBasicToolbar from "../../markdown/BasicToolbar";
 import TextStateGroup from "../../markdown/TextStateGroup";
-import KxMarkdownConfigToolbar from "../../markdown/ConfigToolbar";
 import ViewModeToolbar from "../../markdown/ViewModeToolbar";
 
 import PublishDialog from "./PublishDialog";
@@ -57,7 +56,6 @@ export default {
 	name: "ArticleEditor",
 	components: {
 		ViewModeToolbar,
-		KxMarkdownConfigToolbar,
 		KxMarkdownBasicToolbar,
 		KxMarkdownEditWindow,
 		TextStateGroup,
@@ -90,10 +88,8 @@ export default {
 			this.content = v.substring(0, selEnd) + `![](${res})` + v.substring(selEnd);
 			this.selection = [p, p];
 		},
-		async metadataDialog () {
-			const res = await this.$dialog.show(MetadataDialog, { metadata: this.metadata });
-			if (res)
-				this.metadata = res;
+		metadataDialog () {
+			this.$dialog.show(MetadataDialog, { metadata: this.metadata }).onComfirm(data => this.metadata = data);
 		},
 		async saveManually () {
 			const { archive } = this;

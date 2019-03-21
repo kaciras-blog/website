@@ -1,8 +1,5 @@
 <template>
-	<kx-base-dialog @close-button-clicked="ok">
-		<template #title>
-			<h3 :class="$style.compact">编辑描述信息</h3>
-		</template>
+	<kx-base-dialog title="编辑描述信息">
 
 		<div :class="$style.content">
 			<img :class="$style.cover"
@@ -28,12 +25,7 @@
 				   placeholder="关键字,空格隔开"/>
 		</div>
 
-		<template v-slot:footer>
-			<div :class="$style.footer" class="btn-group">
-				<kx-button @click="cancel">取消</kx-button>
-				<kx-button class="primary" @click="ok">确定</kx-button>
-			</div>
-		</template>
+		<kx-standard-dialog-buttons @confirm="ok"/>
 	</kx-base-dialog>
 </template>
 
@@ -46,14 +38,12 @@ export default {
 		metadata: Object,
 	},
 	data () {
-		return this.metadata;
+		// metadata 是直接传的，复制一份防止影响原数据
+		return Object.assign({}, this.metadata);
 	},
 	methods: {
 		ok () {
-			this.$dialog.close(this.$data);
-		},
-		cancel () {
-			this.$dialog.close();
+			this.$dialog.confirm(this.$data);
 		},
 		changeCover () {
 			api.misc.uploadImageFile().then(name => this.cover = name);
@@ -91,10 +81,5 @@ export default {
 
 .keywords {
 	grid-area: keywords;
-}
-
-.footer {
-	text-align: right;
-	padding-right: 1rem;
 }
 </style>

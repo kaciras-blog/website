@@ -35,9 +35,8 @@
 <script>
 import api from "../../api";
 import { deleteOn } from "../../utils";
-import { drag } from "kx-ui";
+import { listenDragging } from "kx-ui";
 import SwiperConsoleItem from "./SwiperConsoleItem";
-
 
 export default {
 	name: "SwiperConsole",
@@ -145,11 +144,13 @@ export default {
 					}
 				};
 
-				// 开始拖动，在结束时移除被拖动元素，并将被拖动元素的数据放到占位元素的位置
-				drag(el, event.clientX, event.clientY, callback).then(() => {
+				const accept = () => {
 					this.dragging = null;
 					slides[index] = item;
-				});
+				};
+
+				// TODO:开始拖动，在结束时移除被拖动元素，并将被拖动元素的数据放到占位元素的位置
+				listenDragging().subscribe({ next: callback, complete: accept });
 			});
 		},
 	},

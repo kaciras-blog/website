@@ -10,13 +10,13 @@ import Croppa from "vue-croppa";
 
 Vue.config.productionTip = false;
 
-Vue.use(Croppa);
 Vue.use(KxUI);
 Vue.use(KxMarkdown);
 Vue.use(BlogPlugin);
+Vue.use(Croppa);
 
 
-export default function () {
+export default function createApp () {
 	const store = createStore();
 	const router = createRouter();
 

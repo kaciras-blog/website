@@ -105,9 +105,11 @@ export default {
 		},
 		async addLink () {
 			const res = await this.$dialog.show(AddLinkDialog);
-			if (res) {
+			if (res.isConfirm) {
+				const { text, href } = res.data;
+				const str = `[${text}](${href})`;
+
 				const selEnd = this.getSelectedRange(false)[1];
-				const str = "[" + res.text + "](" + res.href + ")";
 				this.changeTextArea(selEnd, selEnd, str);
 				this.reselect(selEnd, selEnd + str.length);
 			}

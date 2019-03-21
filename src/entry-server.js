@@ -28,7 +28,7 @@ export default async context => {
 			.map(c => c.asyncData({
 				store,
 				route: router.currentRoute,
-				cancelToken: CancelToken.never(),
+				cancelToken: CancelToken.NEVER,
 				prototype: context.request,
 			})));
 	} catch (e) {
@@ -45,7 +45,7 @@ export default async context => {
 	const title = router.currentRoute.meta.title;
 	if (title) {
 		context.title = title + " - Kaciras的博客";
-		context.meta = "<meta name='description' content='Kaciras个人博客，热衷于计算机技术'>";
+		context.meta = "<meta name='description' content='Kaciras个人博客'>";
 	}
 
 	context.state = store.state;

@@ -9,9 +9,14 @@
 		"allowSyntheticDefaultImports": true,
 		"forceConsistentCasingInFileNames": true,
 		"resolveJsonModule": true,
+		"experimentalDecorators": true,
 
 		"jsx": "preserve",
 		"sourceMap": true
 	},
-	"include": ["./src/**/*"]
+	"include": [
+		"src/**/*.ts",
+		"src/**/*.tsx",
+		"src/**/*.vue"
+	]
 }

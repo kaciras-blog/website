@@ -1,8 +1,5 @@
 <template>
-	<kx-base-dialog :draggable="true">
-		<template v-slot:title>
-			<h3>{{ archive.articleId ? "更新文章": "发表文章" }}</h3>
-		</template>
+	<kx-base-dialog :title='archive.articleId ? "更新文章": "发表文章"'>
 
 		<div :class="$style.body">
 			<div :class="$style.category" class="segment">
@@ -29,12 +26,7 @@
 			</label>
 		</div>
 
-		<template v-slot:footer>
-			<div class="btn-group" :class="$style.footer">
-				<kx-button @click="cancel">取消</kx-button>
-				<kx-task-button class="primary" :on-click="accept">确定</kx-task-button>
-			</div>
-		</template>
+		<kx-standard-dialog-buttons @confirm="accept"/>
 	</kx-base-dialog>
 </template>
 
@@ -42,6 +34,7 @@
 import api from "../../api";
 import SelectCategoryDialog from "../../components/SelectCategoryDialog";
 import { errorMessage } from "../../utils";
+import { MessageBoxType } from "kx-ui/src/dialog";
 
 export default {
 	name: "PublishDialog",
@@ -57,7 +50,7 @@ export default {
 	methods: {
 		selectCategory () {
 			this.$dialog.show(SelectCategoryDialog.name).then(res => {
-				if(res) this.category = res;
+				if (res) this.category = res;
 			});
 		},
 		async accept () {
@@ -72,24 +65,18 @@ export default {
 
 				if (article) {
 					await api.article.update(article, data);
+				} else if (!this.category) {
+					return this.$dialog.messageBox({ title: "发表失败", content: "请选择分类", type: MessageBoxType.Error });
 				} else {
-					if (!this.category) {
-						this.$dialog.messageBox("发表失败", "请选择分类", "error");
-						return;
-					}
 					data.category = this.category.id;
 					data.urlTitle = this.url.length ? this.url : data.title;
-
 					article = (await api.article.publish(data)).substring("/articles/".length);
 				}
-				this.$dialog.close();
+				this.$dialog.confirm();
 				this.$router.push(`/article/${article}`);
 			} catch (e) {
-				this.$dialog.messageBox("发表失败", errorMessage(e), "error");
+				this.$dialog.messageBox("发表失败", errorMessage(e), MessageBoxType.Error);
 			}
-		},
-		cancel () {
-			this.$dialog.close(false);
 		},
 	},
 };
@@ -129,7 +116,7 @@ export default {
 	width: 100%;
 }
 
-.footer{
+.footer {
 	text-align: right;
 	padding-right: 1rem;
 }
