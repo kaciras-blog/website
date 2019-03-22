@@ -32,6 +32,7 @@
 <script>
 import AsidePanel from "./AsidePanel";
 import ArticlePreviewItem from "./ArticlePreviewItem";
+import { mapState } from "vuex";
 import api from "../../api";
 
 /**
@@ -53,6 +54,7 @@ function nextPageUrl (route, count) {
 const indexStoreModule = {
 	namespaced: true,
 	state: () => ({
+		category: {},
 		hots: null,
 		items: null,
 	}),
@@ -64,13 +66,16 @@ const indexStoreModule = {
 				.then(items => commit("setHots", items));
 			const loadList = configuredApi.article.getList({ start, count: 16 })
 				.then(items => commit("setItems", items));
+			const loadCategory = configuredApi.category.get(0)
+				.then(items => commit("setCategory", items));
 
-			return Promise.all([loadList, loadHots]);
+			return Promise.all([loadList, loadHots, loadCategory]);
 		},
 	},
 	mutations: {
 		setItems: (state, items) => state.items = items,
 		setHots: (state, items) => state.hots = items,
+		setCategory: (state, items) => state.category = items,
 	},
 };
 
@@ -86,9 +91,7 @@ export default {
 	},
 	data () {
 		const data = {
-			category: {},
 			index: parseInt(this.$route.params.index) || 0,
-
 			initArticles: [],
 			initNextUrl: null,
 			initState: "FREE",
@@ -103,6 +106,9 @@ export default {
 		}
 		return data;
 	},
+	computed: mapState({
+		category: state => state.index.category,
+	}),
 	methods: {
 		async loadPage (items, size) {
 			const { $route, index } = this;
@@ -113,9 +119,6 @@ export default {
 			items.push.apply(items, loaded);
 			return nextPageUrl($route, items.length);
 		},
-	},
-	async beforeMount () {
-		this.category = await api.category.get(0);
 	},
 	destroyed () {
 		/* 客户端不预取，所以没再注册？ */
