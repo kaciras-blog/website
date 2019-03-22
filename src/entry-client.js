@@ -1,7 +1,6 @@
 import createApp from "./main";
 import Vue from "vue";
 import TransitionsCurtain from "./components/TransitionCurtain";
-import { REFRESH_USER } from "./store/types";
 import { CancelToken } from "kx-ui";
 // import runtime from "serviceworker-webpack-plugin/lib/runtime";
 
@@ -31,10 +30,6 @@ Vue.mixin({
 });
 
 const { vue, router, store } = createApp();
-
-store.dispatch(REFRESH_USER)
-	.catch((e) => console.error("无法连接账号服务器", e)); // 异步加载用户信息
-
 
 /**
  * 导航前加载数据，在官方教程的基础上修改而来，增加了以下功能：

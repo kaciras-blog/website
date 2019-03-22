@@ -12,8 +12,8 @@ export default function () {
 			user: null,	 // 当前登录的用户，没登录为null
 		},
 		actions: {
-			async [REFRESH_USER] ({ commit }) {
-				const res = await api.user.getCurrent();
+			async [REFRESH_USER] ({ commit }, prototype) {
+				const res = await api.withPrototype(prototype).user.getCurrent();
 				if (res.status < 300) {
 					commit(SET_USER, res.data);
 				}

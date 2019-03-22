@@ -1,6 +1,7 @@
 import createApp from "./main";
 import { CancelToken } from "kx-ui";
 import Vue from "vue";
+import { REFRESH_USER } from "./store/types";
 
 
 function onReadyAsync (router) {
@@ -22,15 +23,18 @@ export default async context => {
 	}
 
 	// 对所有匹配的路由组件调用 `asyncData()`
+	const tasks = matched.filter(c => c.asyncData).map(c => c.asyncData({
+		store,
+		route: router.currentRoute,
+		cancelToken: CancelToken.NEVER,
+		prototype: context.request,
+	}));
+
+	// 因为全站都是预渲染，所以初始用户在后台加载一次即可
+	tasks.push(store.dispatch(REFRESH_USER, context.request));
+
 	try {
-		await Promise.all(matched
-			.filter(c => c.asyncData)
-			.map(c => c.asyncData({
-				store,
-				route: router.currentRoute,
-				cancelToken: CancelToken.NEVER,
-				prototype: context.request,
-			})));
+		await Promise.all(tasks);
 	} catch (e) {
 		switch (e.code) {
 			case 404:
