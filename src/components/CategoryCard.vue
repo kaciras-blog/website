@@ -12,13 +12,6 @@
 	</div>
 </template>
 
-<script>
-export default {
-	name: "CategoryCard",
-	props: { name: String, cover: String },
-};
-</script>
-
 <style module lang="less">
 @import "../css/Imports";
 

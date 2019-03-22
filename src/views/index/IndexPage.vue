@@ -25,7 +25,7 @@
 				</template>
 			</scroll-pageing-view>
 		</section>
-		<aside-panel/>
+		<aside-panel :class="$style.aside"/>
 	</page-layout>
 </template>
 
@@ -133,6 +133,7 @@ export default {
 	display: flex;
 	align-items: flex-start;
 	min-height: 100vh;
+	margin: 0 auto 4rem auto;
 
 	@media screen {
 		@media (min-width: @length-screen-mobile) {
@@ -140,20 +141,6 @@ export default {
 		}
 		@media (min-width: @length-screen-wide) {
 			max-width: 82%
-		}
-	}
-	margin: 0 auto 4rem auto;
-
-	& > aside {
-		width: 29%;
-		flex: 0 0 auto;
-		display: none;
-
-		@media screen {
-			@media (min-width: @length-screen-pad) {
-				display: block;
-				margin-left: 6%;
-			}
 		}
 	}
 }
@@ -167,6 +154,22 @@ export default {
 	text-align: center;
 	@media screen and (min-width: @length-screen-mobile) {
 		text-align: left;
+	}
+}
+
+.aside {
+	position: sticky;
+	top: 30px;
+
+	width: 29%;
+	flex: 0 0 auto;
+	display: none;
+
+	@media screen {
+		@media (min-width: @length-screen-pad) {
+			display: block;
+			margin-left: 6%;
+		}
 	}
 }
 </style>

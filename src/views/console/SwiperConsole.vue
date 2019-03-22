@@ -35,7 +35,7 @@
 <script>
 import api from "../../api";
 import { deleteOn } from "../../utils";
-import { listenDragging } from "kx-ui";
+import { listenDragging, moveElement } from "kx-ui/src/dragging";
 import SwiperConsoleItem from "./SwiperConsoleItem";
 
 export default {
@@ -150,7 +150,7 @@ export default {
 				};
 
 				// TODO:开始拖动，在结束时移除被拖动元素，并将被拖动元素的数据放到占位元素的位置
-				listenDragging().subscribe({ next: callback, complete: accept });
+				listenDragging().pipe(moveElement(event, el)).subscribe({ next: callback, complete: accept });
 			});
 		},
 	},

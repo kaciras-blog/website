@@ -30,6 +30,7 @@
 import api from "../../api";
 import DraftConsoleItem from "./DraftConsoleItem";
 import { deleteOn } from "../../utils";
+import { MessageBoxType } from "kx-ui/src/dialog/index";
 
 export default {
 	name: "DraftConsole",
@@ -43,10 +44,17 @@ export default {
 	}),
 	methods: {
 		deleteAll () {
-			api.draft.clear().then(() => {
-				this.drafts.splice(0, this.drafts.length);
-				this.last = 0;
-			}).catch(() => alert("清空失败!"));
+			this.$dialog.messageBox({
+				title: "警告",
+				content: "该操作不可撤销，是否继续？",
+				type: MessageBoxType.Warning,
+				cancelable: true,
+			}).onComfirm(() => {
+				api.draft.clear().then(() => {
+					this.drafts.splice(0, this.drafts.length);
+					this.last = 0;
+				}).catch(() => alert("清空失败!"));
+			});
 		},
 		async loadDrafts () {
 			if (this.allLoaded) {

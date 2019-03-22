@@ -32,9 +32,6 @@ const webpack = {
 		compilerOptions: {
 			whitespace: "condense",
 		},
-
-		// If you have problems debugging vue-files in devtools, set this to false - it *may* help
-		cacheBusting: true,
 	},
 };
 
