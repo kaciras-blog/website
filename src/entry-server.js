@@ -40,6 +40,7 @@ export default async context => {
 		switch (e.code) {
 			case 404:
 			case 410:
+			case 429:
 				router.push("/error/" + e.code);
 				break;
 			default:

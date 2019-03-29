@@ -1,8 +1,5 @@
 <template>
-	<kx-base-dialog :closeIcon="true">
-		<template v-slot:title>
-			<h3>裁剪图片</h3>
-		</template>
+	<kx-base-dialog title="裁剪图片">
 
 		<div :class="$style.wrapper">
 			<croppa
@@ -17,13 +14,7 @@
 
 			<div :class="$style.sight"></div>
 		</div>
-
-		<template v-slot:footer>
-			<div :class="$style.footer">
-				<kx-button @click="cancel">取消</kx-button>
-				<kx-button class="primary" @click="ok">确定</kx-button>
-			</div>
-		</template>
+		<kx-standard-dialog-buttons @confirm="ok"/>
 	</kx-base-dialog>
 </template>
 
@@ -37,20 +28,15 @@ export default {
 	},
 	data: () => ({
 		croppa: {},
-		mimetype: undefined,
+		mimetype: "",
 	}),
 	methods: {
 		async ok () {
 			const data = await this.croppa.promisedBlob(this.mimetype);
 			const uri = await api.misc.uploadImage(data);
-			this.$dialog.close(uri);
+			this.$dialog.confirm(uri);
 		},
-		cancel () {
-			this.$dialog.close();
-		},
-		onFileChoose (e) {
-			this.mimetype = e.type;
-		},
+		onFileChoose (e) { this.mimetype = e.type; },
 	},
 };
 </script>

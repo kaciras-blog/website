@@ -26,9 +26,9 @@
 
 <script>
 import api from "../../api";
-import { openFile } from "kx-ui/src/helpers";
-import AvatarCropper from "./AvatarCropper";
+import { MessageBoxType } from "kx-ui/src/dialog";
 import AuthTypeTag from "./AuthTypeTag";
+import AvatarCropper from "./AvatarCropper";
 
 export default {
 	name: "Page",
@@ -38,16 +38,16 @@ export default {
 	},
 	methods: {
 		async editHead () {
-			const r = await this.$dialog.show(AvatarCropper);
-			if(r)
-				this.user.head = r;
+			const result = await this.$dialog.show(AvatarCropper);
+			if (result.isConfirm)
+				this.user.head = result.data;
 		},
 		async save () {
 			try {
 				await api.user.updateProfile(this.user);
-				this.$dialog.messageBox("保存", "保存成功");
+				this.$dialog.messageBox({ title: "保存成功" });
 			} catch (e) {
-				this.$dialog.messageBox("保存", "保存失败！\n" + e.message, "error");
+				this.$dialog.messageBox({ title: "保存失败", content: e.message, type: MessageBoxType.Error });
 			}
 		},
 	},

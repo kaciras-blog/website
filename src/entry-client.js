@@ -32,6 +32,20 @@ Vue.mixin({
 const { vue, router, store } = createApp();
 
 /**
+ * 我们只关心非预渲染的组件，所以我们对比它们，找出两个匹配列表的差异组件。
+ * @param to 目标路由
+ * @param from 源路由
+ * @return {Component[]} 不同的组件
+ */
+function getDefferentComponents (to, from) {
+	const matched = router.getMatchedComponents(to);
+	const previous = router.getMatchedComponents(from);
+	let diffed = false;
+	return matched.filter((c, i) => diffed || (diffed = (previous[i] !== c)));
+}
+
+
+/**
  * 导航前加载数据，在官方教程的基础上修改而来，增加了以下功能：
  *   1.在异步组件解析前就显示加载指示器，让过渡更顺畅。
  *   2.检测组件的 prefetch 属性，使其能够在客户端不进行预加载。
@@ -46,15 +60,7 @@ function initAppAndRouterHook () {
 	async function prefetch (to, from, next) {
 		if (cancelToken.canceled) return;
 
-		const matched = router.getMatchedComponents(to);
-		const previous = router.getMatchedComponents(from);
-
-		// 我们只关心非预渲染的组件
-		// 所以我们对比它们，找出两个匹配列表的差异组件
-		let diffed = false;
-		const activated = matched.filter((c, i) => {
-			return diffed || (diffed = (previous[i] !== c));
-		});
+		const activated = getDefferentComponents(to, from);
 		if (!activated.length) return next();
 
 		if (to.meta.title)

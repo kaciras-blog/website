@@ -45,8 +45,8 @@ export default {
 	.full-vertex;
 
 	@yellow: rgba(255, 255, 0, .12);
-	@blue: rgba(0, 255, 255, .08);
-	@pink: rgba(255, 0, 181, 0.09);
+	@blue: rgba(0, 155, 255, 0.08);
+	@pink: rgba(255, 0, 140, 0.09);
 
 	@white: rgba(255, 255, 255, 0.6);
 
@@ -56,14 +56,14 @@ export default {
 
 	background-image: linear-gradient(
 		var(--gradient-deg, 80deg),
-		@yellow 0%, @yellow 24.7%,
-		@white 24.7%, @white 25%,
+		@yellow 0%, @yellow 24.8%,
+		@white 24.8%, @white 25%,
 
-		@blue 25%, @blue 49.7%,
-		@white 49.7%, @white 50%,
+		@blue 25%, @blue 49.8%,
+		@white 49.8%, @white 50%,
 
-		transparent 50%, transparent 74.7%,
-		@white 74.7%, @white 75%,
+		transparent 50%, transparent 74.8%,
+		@white 74.8%, @white 75%,
 
 		@pink 75%, @pink 100%);
 }
