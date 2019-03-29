@@ -18,9 +18,9 @@ document.body.appendChild(curtain.$el);
 
 Vue.mixin({
 	beforeRouteUpdate (to, from, next) {
-		const { asyncData, prefetch } = this.$options;
-		if (prefetch && asyncData) {
-			asyncData({ store: this.$store, route: to })
+		const { asyncData } = this.$options;
+		if (asyncData) {
+			asyncData({ store: this.$store, route: to, isServer: false })
 				.then(next)
 				.catch(console.error);
 		} else {
@@ -61,11 +61,11 @@ function initAppAndRouterHook () {
 			document.title = to.meta.title + " - Kaciras的博客";
 
 		// 找出所有需要预加载的组件
-		const prefetched = activated.filter(c => c.asyncData && c.prefetch);
+		const prefetched = activated.filter(c => c.asyncData);
 		if (!prefetched.length) return next();
 
 		curtain.start();
-		await Promise.all(prefetched.map(c => c.asyncData({ store, route: to, cancelToken })));
+		await Promise.all(prefetched.map(c => c.asyncData({ store, route: to, cancelToken, isServer: false })));
 
 		cancelToken.complete();
 		next();
@@ -133,6 +133,7 @@ function initAppAndRouterHook () {
  */
 if (window.__INITIAL_STATE__) {
 	store.replaceState(window.__INITIAL_STATE__);
+	delete window.__INITIAL_STATE__;
 	router.onReady(initAppAndRouterHook);
 } else {
 	initAppAndRouterHook(); // 非服务端渲染，直接初始化

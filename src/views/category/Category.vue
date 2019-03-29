@@ -51,13 +51,12 @@ export default {
 			.get(route.params.id, true)
 			.then(items => store.commit("category/setItem", items));
 	},
-	prefetch: true,
 	title () {
 		return this.category.name;
 	},
-	computed: {
-		...mapState({ category: state => state.category.item }),
-	},
+	computed: mapState({
+		category: state => state.category.item,
+	}),
 	destroyed () {
 		this.$store.unregisterModule("category");
 	},

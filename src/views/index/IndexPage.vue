@@ -30,16 +30,18 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import AsidePanel from "./AsidePanel";
 import ArticlePreviewItem from "./ArticlePreviewItem";
-import { mapState } from "vuex";
 import api from "../../api";
+
+const DEFAULT_PAGE_SIZE = 16;
 
 /**
  * 根据路由和当前加载的文章数来构造下一页的URL。
  * @param route 路由信息对象
  * @param count 加载的文章数
- * @return {string} 指向下一页的URL，相对路径
+ * @return 指向下一页的URL，相对路径
  */
 function nextPageUrl (route, count) {
 	const params = Object.assign({}, route.query);
@@ -59,23 +61,27 @@ const indexStoreModule = {
 		items: null,
 	}),
 	actions: {
-		fetchItem ({ commit }, { start, cancelToken, prototype }) {
+		fetchItem ({ commit }, { start, cancelToken, prototype, isServer }) {
 			const configuredApi = api.withCancelToken(cancelToken).withPrototype(prototype);
+			const tasks = [];
 
-			const loadHots = configuredApi.article.getHots()
-				.then(items => commit("setHots", items));
-			const loadList = configuredApi.article.getList({ start, count: 16 })
-				.then(items => commit("setItems", items));
-			const loadCategory = configuredApi.category.get(0)
-				.then(items => commit("setCategory", items));
+			if (isServer) {
+				tasks.push(configuredApi.article.getHots()
+					.then(items => commit("setHots", items)));
+				tasks.push(configuredApi.article.getList({ start, count: DEFAULT_PAGE_SIZE })
+					.then(items => commit("setItems", items)));
+			}
 
-			return Promise.all([loadList, loadHots, loadCategory]);
+			tasks.push(configuredApi.category.get(0)
+				.then(items => commit("setCategory", items)));
+
+			return Promise.all(tasks);
 		},
 	},
 	mutations: {
 		setItems: (state, items) => state.items = items,
 		setHots: (state, items) => state.hots = items,
-		setCategory: (state, items) => state.category = items,
+		setCategory: (state, item) => state.category = item,
 	},
 };
 
@@ -85,9 +91,9 @@ export default {
 		ArticlePreviewItem,
 		AsidePanel,
 	},
-	async asyncData ({ store, route, cancelToken, prototype }) {
+	async asyncData ({ store, route, cancelToken, prototype, isServer }) {
 		store.registerModule("index", indexStoreModule);
-		return store.dispatch("index/fetchItem", { start: route.params.index, cancelToken, prototype });
+		return store.dispatch("index/fetchItem", { start: route.params.index, cancelToken, prototype, isServer });
 	},
 	data () {
 		const data = {
@@ -99,10 +105,10 @@ export default {
 
 		// 预加载的文章只是第一页，后续还会加载更多所以放入data而不是计算属性。
 		const store = this.$store.state.index;
-		if (store) {
+		if (store.items) {
 			data.initArticles = store.items;
 			data.initNextUrl = nextPageUrl(this.$route, store.items.length);
-			data.initState = store.items.length >= 16 ? "FREE" : "ALL_LOADED";
+			data.initState = store.items.length >= DEFAULT_PAGE_SIZE ? "FREE" : "ALL_LOADED";
 		}
 		return data;
 	},
@@ -121,10 +127,7 @@ export default {
 		},
 	},
 	destroyed () {
-		/* 客户端不预取，所以没再注册？ */
-		// if (this.$store.state.index) {
-		// 	this.$store.unregisterModule("index");
-		// }
+		this.$store.unregisterModule("index");
 	},
 };
 </script>

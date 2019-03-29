@@ -120,7 +120,6 @@ export default {
 			throw { code: 301, location: `/article/${id}/${correctUrlTitle}` };
 		}
 	},
-	prefetch: true, // 在客户端是否预加载数据
 	computed: {
 		...mapState({ article: state => state.article.item }),
 	},

@@ -28,6 +28,7 @@ export default async context => {
 		route: router.currentRoute,
 		cancelToken: CancelToken.NEVER,
 		prototype: context.request,
+		isServer: true,
 	}));
 
 	// 因为全站都是预渲染，所以初始用户在后台加载一次即可
