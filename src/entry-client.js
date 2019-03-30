@@ -1,7 +1,7 @@
 import createApp from "./main";
 import Vue from "vue";
-import TransitionsCurtain from "./components/TransitionCurtain";
-import { CancelToken } from "kx-ui";
+import TransitionsCurtain from "./components/TransitionCurtain2";
+import { CancelToken, sleep } from "kx-ui";
 // import runtime from "serviceworker-webpack-plugin/lib/runtime";
 
 
@@ -71,6 +71,7 @@ function initAppAndRouterHook () {
 		if (!prefetched.length) return next();
 
 		curtain.start();
+		await sleep(3000);
 		await Promise.all(prefetched.map(c => c.asyncData({ store, route: to, cancelToken, isServer: false })));
 
 		cancelToken.complete();
