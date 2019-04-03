@@ -69,7 +69,7 @@ export default {
 
 .head {
 	vertical-align: top;
-	margin: 0 .5rem;
+	margin: 0 10px;
 }
 
 .container {

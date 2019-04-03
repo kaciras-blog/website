@@ -26,12 +26,6 @@
 <script>
 export default {
 	name: "TransitionCurtain",
-	props: {
-		timeout: {
-			type: Number,
-			default: 10 * 1000,
-		},
-	},
 	data: () => ({
 		show: false,
 		timeouted: false,
@@ -43,14 +37,15 @@ export default {
 				return; // 忽略重复调用，下同
 			}
 			this.show = true;
-			this.$_timer = setTimeout(() => this.timeouted = true, this.timeout);
 			this.$nextTick(() => this.$el.focus());
+		},
+		middle() {
+			this.start();
 		},
 		finish () {
 			if (!this.show) {
 				return;
 			}
-			clearTimeout(this.$_timer);
 			this.show = false;
 			this.timeouted = false;
 			this.hasError = false;
@@ -58,13 +53,6 @@ export default {
 		error () {
 			this.hasError = true;
 		},
-		cancel () {
-			this.finish();
-			this.$emit("canceled");
-		},
-	},
-	destroyed () {
-		clearTimeout(this.$_timer);
 	},
 };
 </script>

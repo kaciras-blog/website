@@ -3,48 +3,59 @@
 </template>
 
 <script>
+const TRANSITION_TIME = 300;
+const RESIDUAL_TIME = 800;
+
 export default {
 	name: "TransitionCurtain2",
 	data: () => ({
-		visible: true,
+		visible: false,
 		hasError: false,
-		progress: 20,
+		progress: 0,
 	}),
 	computed: {
-		style () {
+		style() {
 			return {
 				opacity: this.visible ? 1 : 0,
-				backgroundColor: this.hasError ? "red" : "#f50bc7",
-				left: 0,
-				width: this.progress + "%",
+				backgroundColor: this.hasError ? "#ff4d4d" : "#1a9fff",
+				"--progress": this.progress,
 			};
 		},
 	},
 	methods: {
-		start () {
+		start() {
 			if (this.visible) {
 				return; // 忽略重复调用
 			}
-			this.progress = 20;
+			this.progress = 15;
 			this.visible = true;
 			this.hasError = false;
 		},
-		finish () {
+		middle() {
+			if (!this.visible) {
+				this.start();
+			}
+			this.progress = 40;
+		},
+
+// ============================ 结束方法 ============================
+
+		finish() {
 			this.progress = 100;
 
 			setTimeout(() => {
 				this.visible = false;
-				setTimeout(() => this.progress = 0, 200);
-			}, 200);
+				setTimeout(() => this.progress = 0, TRANSITION_TIME);
+			}, RESIDUAL_TIME);
 		},
-		error () {
+		error() {
 			this.progress = 100;
 			this.hasError = true;
 
 			setTimeout(() => {
 				this.visible = false;
-				setTimeout(() => this.progress = 0, 200);
-			}, 200);
+				setTimeout(() => this.progress = 0, TRANSITION_TIME);
+			}, RESIDUAL_TIME);
 		},
 	},
 };
@@ -54,17 +65,31 @@ export default {
 .progress {
 	position: fixed;
 	top: 0;
+	left: 0;
+	width: calc(var(--progress) * 1%);
 	height: 3px;
 	z-index: 99999;
-	transition: linear .3s;
+	transition: .3s;
 
-	/*&::after {*/
-		/*content: "";*/
-		/*float: right;*/
-		/*width: 6px;*/
-		/*height: 3px;*/
-		/*background-color: #f70ccc;*/
-		/*box-shadow: 0 0 3px 1px #ff80e8;*/
-	/*}*/
+	&::before {
+		content: '';
+		position: absolute;
+		width: 40px;
+		height: 100%;
+
+		background-image: linear-gradient(
+			90deg,
+			transparent 0,
+			rgba(255, 255, 255, .8) 60%,
+			transparent 100%);
+
+		animation: highlight linear calc(50ms * var(--progress)) infinite;
+	}
+}
+
+//@formatter:off
+@keyframes highlight {
+	from { right: 100%; }
+	to { right: 0 }
 }
 </style>

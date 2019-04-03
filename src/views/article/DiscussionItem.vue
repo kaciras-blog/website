@@ -55,14 +55,14 @@
 				:init-total-count="value.replyCount"
 				:loader="loadReplies"
 			>
-				<template v-scope="{ items }">
-				<ol class="list">
-					<discussion
-						v-for="item of items"
-						:key="item.id"
-						:value="item"
-						:class="$style.reply"/>
-				</ol>
+				<template v-slot="{ items }">
+					<ol class="list">
+						<discussion
+							v-for="item of items"
+							:key="item.id"
+							:value="item"
+							:class="$style.reply"/>
+					</ol>
 				</template>
 			</button-pageing-view>
 
@@ -89,12 +89,12 @@ export default {
 	},
 	components: { DisczEditor },
 	computed: {
-		deleteable () {
+		deleteable() {
 			if (!this.user) return false;
 			return this.user.id === 2;
 		},
-		discusser () {
-			if(this.value.user.id) {
+		discusser() {
+			if (this.value.user.id) {
 				return this.value.user;
 			}
 			return { id: 0, head: "/image/akalin.jpg", name: "(匿名评论)" };
@@ -102,23 +102,23 @@ export default {
 		...mapState(["user"]),
 	},
 	methods: {
-		async submitReply (text) {
+		async submitReply(text) {
 			await api.discuss.reply(this.value.id, text);
 			this.$refs.replies.switchToLast();
 			this.$emit("reply", null);
 		},
-		remove () {
+		remove() {
 			api.discuss.remove(this.value.id)
 				.then(() => this.$emit("item-removed", this.value))
 				.catch(r => alert("删除失败 " + r.message));
 		},
-		replyThis () {
+		replyThis() {
 			this.$emit("reply", this.value.id);
 		},
 		/**
 		 * 点赞标签被点击时触发，如果用户已经点赞过则撤销点赞，否则增加点赞。
 		 */
-		vote () {
+		vote() {
 			const { value } = this;
 			if (value.voted) {
 				api.discuss.revokeVote(value.id)
@@ -130,7 +130,7 @@ export default {
 					.then(() => value.voteCount++);
 			}
 		},
-		loadReplies (index, size, cancelToken) {
+		loadReplies(index, size, cancelToken) {
 			return api
 				.withCancelToken(cancelToken)
 				.discuss

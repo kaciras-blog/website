@@ -17,7 +17,7 @@ document.body.appendChild(curtain.$el);
 
 
 Vue.mixin({
-	beforeRouteUpdate (to, from, next) {
+	beforeRouteUpdate(to, from, next) {
 		const { asyncData } = this.$options;
 		if (asyncData) {
 			asyncData({ store: this.$store, route: to, isServer: false })
@@ -37,7 +37,7 @@ const { vue, router, store } = createApp();
  * @param from 源路由
  * @return {Component[]} 不同的组件
  */
-function getDefferentComponents (to, from) {
+function getDefferentComponents(to, from) {
 	const matched = router.getMatchedComponents(to);
 	const previous = router.getMatchedComponents(from);
 	let diffed = false;
@@ -52,13 +52,12 @@ function getDefferentComponents (to, from) {
  *   3.处理一些异常情况，例如跳转。在出现内部错误时显示错误页面。
  *   4.允许用户取消正在进行的预加载，并中止网络请求。
  */
-function initAppAndRouterHook () {
+function initAppAndRouterHook() {
 
-	let cancelToken = new CancelToken();
-	curtain.$on("canceled", () => cancelToken.cancel());
+	let cancelToken = CancelToken.NEVER;
 
-	async function prefetch (to, from, next) {
-		if (cancelToken.canceled) return;
+	async function prefetch(to, from, next) {
+		if (cancelToken.isCancelled) return;
 
 		const activated = getDefferentComponents(to, from);
 		if (!activated.length) return next();
@@ -70,11 +69,8 @@ function initAppAndRouterHook () {
 		const prefetched = activated.filter(c => c.asyncData);
 		if (!prefetched.length) return next();
 
-		curtain.start();
-		await sleep(3000);
+		curtain.middle();
 		await Promise.all(prefetched.map(c => c.asyncData({ store, route: to, cancelToken, isServer: false })));
-
-		cancelToken.complete();
 		next();
 	}
 
@@ -88,9 +84,10 @@ function initAppAndRouterHook () {
 	router.beforeEach((to, from, next) => {
 		const matched = router.getMatchedComponents(to);
 		if (matched.filter(c => typeof c === "function").length) {
-			curtain.start();
+			curtain.start(); // 未加载过的异步组件是函数
 		}
-		cancelToken = new CancelToken();
+		cancelToken = CancelToken.timeout(10_000);
+		cancelToken.onCancel(() => curtain.error());
 		next();
 	});
 
@@ -104,8 +101,8 @@ function initAppAndRouterHook () {
 	});
 
 
-	function handleError (err, next) {
-		if (cancelToken.canceled) {
+	function handleError(err, next) {
+		if (cancelToken.isCancelled) {
 			return;
 		}
 		switch (err.code) {
