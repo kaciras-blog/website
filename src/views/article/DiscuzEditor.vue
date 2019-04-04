@@ -1,27 +1,29 @@
 <template>
-	<div class="discuss-editor center-all" v-if="options.disable">
+	<div class="center-all" :class="$style.container" v-if="options.disable">
 		已设置为禁止评论
 	</div>
-	<div class="discuss-editor center-all" v-else-if="options.loginRequired && !user">
+
+	<div class="center-all" :class="$style.container" v-else-if="options.loginRequired && !user">
 		已禁止匿名评论,请先
 		<router-link class='highlight' to='/login'>登录</router-link>
 	</div>
 
-	<div class="discuss-editor" v-else>
+	<div :class="$style.container" v-else>
 		<div>
 			<img class='small head'
 				 :src='discusser.head'
 				 alt="头像">
-			<span class="name">{{discusser.name}}</span>
+			<span :class="$style.name">{{discusser.name}}</span>
 		</div>
 
 		<textarea
-			class='input discuss-box'
+			class='input'
+			:class="$style.textarea"
 			v-model="content"
 			placeholder='说点什么吧'>
 		</textarea>
 
-		<div class='buttons'>
+		<div :class='$style.buttons'>
 			<kx-task-button
 				class='primary'
 				:on-click='doSubmit'>
@@ -76,14 +78,14 @@ export default {
 };
 </script>
 
-<style scoped lang="less">
-.discuss-editor {
+<style module lang="less">
+.container {
 	display: flex;
 	flex-direction: column;
 	margin-top: 1rem;
 }
 
-.discuss-box {
+.textarea {
 	min-height: 10em;
 	margin-top: 1rem;
 	margin-bottom: 1rem;

@@ -18,7 +18,7 @@
 			:loader="loadDiscussions"
 		>
 			<template v-slot="{ items }">
-				<ol class="list">
+				<ol v-if="items.length" class="list">
 					<discussion
 						v-for="item of items"
 						:key="item.id"
@@ -28,6 +28,7 @@
 						@reply="handleReplyStart"
 						@item-removed="refresh"/>
 				</ol>
+				<div :class="$style.empty" v-else>还没有评论呢</div>
 			</template>
 		</button-pageing-view>
 	</section>
@@ -101,5 +102,11 @@ export default {
 
 .totalCount {
 	float: right;
+}
+
+.empty {
+	padding: 30px 0;
+	text-align: center;
+	color: @color-text-minor;
 }
 </style>

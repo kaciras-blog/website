@@ -1,6 +1,6 @@
 <template>
 	<main>
-		<div class="toolbar btn-group">
+		<div class="btn-group" :class="$style.toolbar">
 			<kx-button
 				class="primary"
 				icon="fa fa-edit"
@@ -63,9 +63,7 @@ export default {
 };
 </script>
 
-<style scoped lang="less">
-@import "../../css/Imports";
-
+<style module lang="less">
 .toolbar {
 	margin-bottom: 1rem;
 }

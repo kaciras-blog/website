@@ -5,9 +5,7 @@
 	"author": "Kaciras <kaciras@outlook.com>",
 	"private": true,
 	"scripts": {
-		"dev": "web-server -dev build",
 		"lint": "eslint --fix --ext .js,.vue src",
-		"build": "node build/build.js -both",
 		"test": "jest"
 	},
 	"browserslist": [
