@@ -30,7 +30,6 @@ const clientTitleMixin = {
 	},
 };
 
-// 可以通过 `webpack.DefinePlugin` 注入 `VUE_ENV`
 export default process.env.VUE_ENV === "server"
 	? serverTitleMixin
 	: clientTitleMixin;

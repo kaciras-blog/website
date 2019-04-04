@@ -1,3 +1,6 @@
+/*
+ * TODO: markdown-it-lazy-image 和 lozad 都只有很少的代码，并且其功能也不是很强，考虑以后自己实现
+ */
 import MarkdownIt from "markdown-it";
 import hljs from "highlight.js";
 import Anchor from "markdown-it-anchor";

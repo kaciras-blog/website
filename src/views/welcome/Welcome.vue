@@ -35,7 +35,7 @@ export default {
 	position: relative;
 	height: 100vh;
 
-	background-image: url("../../assets/img/68079722_p0.jpg");
+	background-image: url("../../assets/img/68079722.jpg");
 	background-size: cover;
 	background-position: center bottom;
 }
