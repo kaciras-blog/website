@@ -1,16 +1,15 @@
 import createApp from "./main";
 import Vue from "vue";
 import TransitionsCurtain from "./components/TransitionCurtain2";
-import { CancelToken, sleep } from "kx-ui";
-// import runtime from "serviceworker-webpack-plugin/lib/runtime";
+import { CancelToken } from "kx-ui";
 
 
 /* 注册 ServiceWorker 启用 PWA */
-// if ("serviceWorker" in navigator) {
-// 	runtime.register()
-// 		.then(() => console.log("Service worker registered successfully."))
-// 		.catch(() => console.error("Service worker failed to register."));
-// }
+if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator) {
+	navigator.serviceWorker.register("/sw.js")
+		.then(() => console.log("Service worker registered successfully."))
+		.catch(() => console.error("Service worker failed to register."));
+}
 
 const curtain = new Vue(TransitionsCurtain).$mount();
 document.body.appendChild(curtain.$el);
@@ -56,22 +55,21 @@ function initAppAndRouterHook() {
 
 	let cancelToken = CancelToken.NEVER;
 
-	async function prefetch(to, from, next) {
+	async function prefetch(to, from) {
 		if (cancelToken.isCancelled) return;
 
 		const activated = getDefferentComponents(to, from);
-		if (!activated.length) return next();
+		if (!activated.length) return;
 
 		if (to.meta.title)
 			document.title = to.meta.title + " - Kaciras的博客";
 
 		// 找出所有需要预加载的组件
 		const prefetched = activated.filter(c => c.asyncData);
-		if (!prefetched.length) return next();
+		if (!prefetched.length) return;
 
 		curtain.middle();
 		await Promise.all(prefetched.map(c => c.asyncData({ store, route: to, cancelToken, isServer: false })));
-		next();
 	}
 
 	// 切换视图后应该关掉所有弹窗
@@ -95,7 +93,8 @@ function initAppAndRouterHook() {
 	 * 使用 `router.beforeResolve()`，以便确保所有异步组件都 resolve。
 	 */
 	router.beforeResolve((to, from, next) => {
-		prefetch(to, from, next)
+		prefetch(to, from)
+			.then(next)
 			.then(() => curtain.finish())
 			.catch(err => handleError(err, next));
 	});
