@@ -19,18 +19,20 @@ const curtain = new Vue(TransitionsCurtain).$mount();
 document.body.appendChild(curtain.$el);
 
 
+// mixin 必须在创建 Vue 实例之前
 Vue.mixin({
 	beforeRouteUpdate(to, from, next) {
 		const { asyncData } = this.$options;
-		if (asyncData) {
-			curtain.middle();
-			asyncData({ store: this.$store, route: to, isServer: false, cancelToken })
-				.then(next)
-				.then(() => curtain.finish())
-				.catch(err => handleError(err, next));
-		} else {
-			next();
+		if (!asyncData) {
+			return next();
 		}
+		curtain.middle();
+		asyncData({ store: this.$store, route: to, isServer: false, cancelToken })
+			.then(() => {
+				if (!cancelToken.isCancelled) next();
+			})
+			.then(() => curtain.finish())
+			.catch(err => handleError(err, next));
 	},
 });
 
@@ -122,7 +124,9 @@ function initAppAndRouterHook() {
 	 */
 	router.beforeResolve((to, from, next) => {
 		prefetch(to, from)
-			.then(next)
+			.then(() => {
+				if (!cancelToken.isCancelled) next();
+			})
 			.then(() => curtain.finish())
 			.catch(err => handleError(err, next));
 	});
