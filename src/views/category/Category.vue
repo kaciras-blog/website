@@ -41,9 +41,7 @@ export default {
 		CategoryBody,
 	},
 	asyncData ({ store, route, cancelToken, protorype }) {
-		if (!store.state.category) {
-			store.registerModule("category", storeModule);
-		}
+		store.registerModule("category", storeModule);
 		return api
 			.withCancelToken(cancelToken)
 			.withPrototype(protorype)

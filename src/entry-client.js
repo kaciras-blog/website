@@ -11,6 +11,10 @@ if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator) {
 		.catch(() => console.error("Service worker failed to register."));
 }
 
+// =================================== Client Data Prefetch ===================================
+
+let cancelToken = CancelToken.NEVER;
+
 const curtain = new Vue(TransitionsCurtain).$mount();
 document.body.appendChild(curtain.$el);
 
@@ -19,14 +23,40 @@ Vue.mixin({
 	beforeRouteUpdate(to, from, next) {
 		const { asyncData } = this.$options;
 		if (asyncData) {
-			asyncData({ store: this.$store, route: to, isServer: false })
+			curtain.middle();
+			asyncData({ store: this.$store, route: to, isServer: false, cancelToken })
 				.then(next)
-				.catch(console.error);
+				.then(() => curtain.finish())
+				.catch(err => handleError(err, next));
 		} else {
 			next();
 		}
 	},
 });
+
+function handleError(err, next) {
+	if (cancelToken.isCancelled) {
+		return;
+	}
+	switch (err.code) {
+		case -1:
+			curtain.error();
+			return;
+		case 301:
+		case 302:
+			next(err.location);
+			break;
+		case 404:
+		case 410:
+			next({ path: "/error/" + err.code, replace: true });
+			break;
+		default:
+			console.error(err);
+			next("/error/500");
+			break;
+	}
+	curtain.finish();
+}
 
 const { vue, router, store } = createApp();
 
@@ -52,8 +82,6 @@ function getDefferentComponents(to, from) {
  *   4.允许用户取消正在进行的预加载，并中止网络请求。
  */
 function initAppAndRouterHook() {
-
-	let cancelToken = CancelToken.NEVER;
 
 	async function prefetch(to, from) {
 		if (cancelToken.isCancelled) return;
@@ -98,31 +126,6 @@ function initAppAndRouterHook() {
 			.then(() => curtain.finish())
 			.catch(err => handleError(err, next));
 	});
-
-
-	function handleError(err, next) {
-		if (cancelToken.isCancelled) {
-			return;
-		}
-		switch (err.code) {
-			case -1:
-				curtain.error();
-				return;
-			case 301:
-			case 302:
-				next(err.location);
-				break;
-			case 404:
-			case 410:
-				next({ path: "/error/" + err.code, replace: true });
-				break;
-			default:
-				console.error(err);
-				next("/error/500");
-				break;
-		}
-		curtain.finish();
-	}
 
 	vue.$mount("#app");
 }
