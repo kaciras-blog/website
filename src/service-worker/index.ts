@@ -44,9 +44,9 @@ proxyServer.registerFetchListener();
 
 async function initUserCode() {
 	const staticCache = await ManagedCache.create(STATIC_CACHE_NAME);
-
-	proxyServer.addRoute(new RegexRoute("/static/", staticCache.cacheFirst()));
 	proxyServer.addRoute(new RegexRoute("/$", staticCache.networkFirst()));
+	proxyServer.addRoute(new RegexRoute("/static/", staticCache.cacheFirst()));
+	// proxyServer.addRoute(new RegexRoute("/image/", staticCache.cacheFirst()));
 
 	const shell = await fetch("/?shellOnly=true");
 	await staticCache.put("/", shell);
@@ -64,10 +64,9 @@ async function initUserCode() {
  * 有副作用的代码应当在 activate 事件里执行。
  */
 self.addEventListener("install", (event: ExtendableEvent) => {
-	const { assets } = serviceWorkerOption;
 
 	event.waitUntil(caches.open(STATIC_CACHE_NAME)
-		.then(cache => cache.addAll(assets))
+		.then(cache => cache.addAll(serviceWorkerOption.assets))
 		.then(() => console.log("Precache successfully."))
 		.catch(err => console.error("Precache failure.", err))
 	);

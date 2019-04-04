@@ -26,7 +26,7 @@ function defineApiServerConfig() {
 		main: "https://api.kaciras.net:2375",
 		front: "https://blog.kaciras.net",
 	};
-	if (process.env.VUE_ENV === "server" || process.env.NODE_ENV !== "production") {
+	if (process.env.VUE_ENV === "server" || process.env.DEPLOY !== "production") {
 		return local; // SSR和本地开发环境都直接走localhost
 	}
 	return productionWeb;
@@ -238,7 +238,7 @@ class AbstractApi {
 
 class ArticleApi extends AbstractApi {
 
-	get (id) {
+	get(id) {
 		return this.mainServer.get("/articles/" + id, {
 			params: { rv: true }, // rv: incresment view count
 		}).then(r => r.data);

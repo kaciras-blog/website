@@ -11,7 +11,7 @@ module.exports = {
 	rules: {
 		"indent": ["error", "tab", { SwitchCase: 1 }],
 		"comma-dangle": ["error", "always-multiline"],
-		"space-before-function-paren": "error",
+		"space-before-function-paren": "off",
 		"semi": ["error", "always"],
 		"no-mixed-spaces-and-tabs": ["warn", "smart-tabs"],
 		"no-unused-vars": "warn",
