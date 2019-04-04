@@ -1,6 +1,8 @@
 import MarkdownIt from "markdown-it";
 import hljs from "highlight.js";
 import Anchor from "markdown-it-anchor";
+import lazyImage from "markdown-it-lazy-image";
+import lozad from "lozad";
 
 
 function myPlugin (markdownIt) {
@@ -25,18 +27,23 @@ export const convertor = new MarkdownIt({
 	},
 });
 
+
 convertor.use(Anchor, {
 	permalink: true,
 	permalinkClass: "fas fa-link header-anchor",
 	permalinkSymbol: "",
 });
-
+convertor.use(lazyImage);
 convertor.use(myPlugin);
+
 
 export default {
 	install (Vue) {
 		Vue.filter("markdownToHtml", text => convertor.render(text));
 	},
+	/**
+	 * 添加一些额外的交互状态，只能在浏览器端调用。
+	 */
 	afterConvert () {
 		const images = document.querySelectorAll(".markdown img");
 		for (const node of images) {
@@ -46,6 +53,7 @@ export default {
 				node.addEventListener("click", e => this.$emit("enlarge-image", e.target));
 			}
 		}
+		lozad(images).observe();
 	},
 	renderHtml (text) {
 		return convertor.render(text);
