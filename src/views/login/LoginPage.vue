@@ -21,10 +21,11 @@ import SignupPanel from "./SignupForm";
 export default {
 	name: "LoginPage",
 	components: {
-		LoginPanel, SignupPanel,
+		LoginPanel,
+		SignupPanel,
 	},
 	data: () => ({
-		activePanel: "loginPanel",
+		activePanel: "LoginPanel",
 		returnUri: "/",
 	}),
 	methods: {
@@ -33,11 +34,11 @@ export default {
 		},
 	},
 	beforeRouteEnter (to, from, next) {
-		let returnUri = from.fullPath;
-		if (returnUri.startsWith("/login")) {
-			console.log("踩踩踩踩踩");
+		let currentPath = from.fullPath;
+		if (currentPath.startsWith("/login")) {
+			next(vm => vm.returnUri = this.returnUri);
 		}
-		next(vm => vm.returnUri = returnUri);
+		next(vm => vm.returnUri = currentPath);
 	},
 };
 </script>
