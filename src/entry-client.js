@@ -19,22 +19,21 @@ const curtain = new Vue(TransitionsCurtain).$mount();
 document.body.appendChild(curtain.$el);
 
 
-// mixin 必须在创建 Vue 实例之前
-Vue.mixin({
-	beforeRouteUpdate(to, from, next) {
-		const { asyncData } = this.$options;
-		if (!asyncData) {
-			return next();
-		}
-		curtain.middle();
-		asyncData({ store: this.$store, route: to, isServer: false, cancelToken })
-			.then(() => {
-				if (!cancelToken.isCancelled) next();
-			})
-			.then(() => curtain.finish())
-			.catch(err => handleError(err, next));
-	},
-});
+/**
+ * 处理预加载任务，包括显示加载指示器、错误页面、防止取消后跳转等。
+ *
+ * @param task {Promise | Promise[]} 预加载任务
+ * @param next 路由函数
+ */
+function prefetch(task, next) {
+	if (Array.isArray(task)) {
+		task = Promise.all(task);
+	}
+	curtain.middle();
+	task.then(() => !cancelToken.isCancelled && next())
+		.then(() => curtain.finish())
+		.catch(err => handleError(err, next));
+}
 
 function handleError(err, next) {
 	if (cancelToken.isCancelled) {
@@ -42,8 +41,7 @@ function handleError(err, next) {
 	}
 	switch (err.code) {
 		case -1:
-			curtain.error();
-			return;
+			break;
 		case 301:
 		case 302:
 			next(err.location);
@@ -57,23 +55,24 @@ function handleError(err, next) {
 			next("/error/500");
 			break;
 	}
-	curtain.finish();
+	curtain.error();
 }
+
+// mixin 必须在创建 Vue 实例之前
+Vue.mixin({
+	beforeRouteUpdate(to, from, next) {
+		if (!this.$options.asyncData) {
+			return next();
+		}
+		cancelToken = CancelToken.timeout(10_000);
+		cancelToken.onCancel(() => curtain.error());
+
+		const task = this.$options.asyncData({ store: this.$store, route: to, isServer: false, cancelToken });
+		prefetch(task, next);
+	},
+});
 
 const { vue, router, store } = createApp();
-
-/**
- * 我们只关心非预渲染的组件，所以我们对比它们，找出两个匹配列表的差异组件。
- * @param to 目标路由
- * @param from 源路由
- * @return {Component[]} 不同的组件
- */
-function getDefferentComponents(to, from) {
-	const matched = router.getMatchedComponents(to);
-	const previous = router.getMatchedComponents(from);
-	let diffed = false;
-	return matched.filter((c, i) => diffed || (diffed = (previous[i] !== c)));
-}
 
 
 /**
@@ -81,26 +80,9 @@ function getDefferentComponents(to, from) {
  *   1.在异步组件解析前就显示加载指示器，让过渡更顺畅。
  *   2.检测组件的 prefetch 属性，使其能够在客户端不进行预加载。
  *   3.处理一些异常情况，例如跳转。在出现内部错误时显示错误页面。
- *   4.允许用户取消正在进行的预加载，并中止网络请求。
+ *   4.允许用户取消正在进行的预加载，并中止网络请求（需要预加载函数支持）。
  */
 function initAppAndRouterHook() {
-
-	async function prefetch(to, from) {
-		if (cancelToken.isCancelled) return;
-
-		const activated = getDefferentComponents(to, from);
-		if (!activated.length) return;
-
-		if (to.meta.title)
-			document.title = to.meta.title + " - Kaciras的博客";
-
-		// 找出所有需要预加载的组件
-		const prefetched = activated.filter(c => c.asyncData);
-		if (!prefetched.length) return;
-
-		curtain.middle();
-		await Promise.all(prefetched.map(c => c.asyncData({ store, route: to, cancelToken, isServer: false })));
-	}
 
 	// 切换视图后应该关掉所有弹窗
 	router.afterEach(() => vue.$dialog.clear());
@@ -110,25 +92,39 @@ function initAppAndRouterHook() {
 	 * 异步组件getMatchedComponents()返回一个函数，加载完成的组件则返回对象。
 	 */
 	router.beforeEach((to, from, next) => {
+		next();
 		const matched = router.getMatchedComponents(to);
 		if (matched.filter(c => typeof c === "function").length) {
-			curtain.start(); // 未加载过的异步组件是函数
+			curtain.start(); // 未加载过的异步组件是函数，此时激活指示器
 		}
 		cancelToken = CancelToken.timeout(10_000);
 		cancelToken.onCancel(() => curtain.error());
-		next();
 	});
 
 	/*
 	 * 使用 `router.beforeResolve()`，以便确保所有异步组件都 resolve。
 	 */
 	router.beforeResolve((to, from, next) => {
-		prefetch(to, from)
-			.then(() => {
-				if (!cancelToken.isCancelled) next();
-			})
-			.then(() => curtain.finish())
-			.catch(err => handleError(err, next));
+		if (cancelToken.isCancelled) {
+			return next(); // 异步组件加载时取消
+		}
+
+		// （这段是官网给的）我们只关心非预渲染的组件，所以我们对比它们，找出两个匹配列表的差异组件。
+		const matched = router.getMatchedComponents(to);
+		const previous = router.getMatchedComponents(from);
+		let diffed = false;
+		const activated = matched.filter((c, i) => diffed || (diffed = (previous[i] !== c)));
+
+		if (!activated.length) {
+			return next();
+		}
+		if (to.meta.title) {
+			document.title = to.meta.title + " - Kaciras的博客";
+		}
+		const tasks = activated.filter(c => c.asyncData)
+			.map(c => c.asyncData({ store, route: to, cancelToken, isServer: false }));
+
+		prefetch(tasks, next);
 	});
 
 	vue.$mount("#app");
