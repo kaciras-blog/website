@@ -23,9 +23,7 @@
 			</ul>
 		</div>
 
-		<div class="tag-group"
-			 :class="$style.category">
-
+		<div class="tag-group" :class="$style.category">
 			<router-link
 				v-for="cat in item.cpath"
 				:key="cat.id"
@@ -36,21 +34,18 @@
 		</div>
 
 		<div class="minor-text" :class="$style.meta">
-			<span title="发表于"
-				  class="hide-mobile full-time meta">
+
+			<span title="发表于" class="hide-mobile full-time meta">
 				<i class="fa fa-edit"></i>
 				<time>{{item.create}}</time>
 			</span>
 
-			<span v-if="showUpdate"
-				  title="最后更新"
-				  class="hide-mobile meta">
+			<span v-if="showUpdate" title="最后更新" class="hide-mobile meta">
 				<i class="fas fa-sync"></i>
 				<time>{{item.update}}</time>
 			</span>
 
-			<span title="最后更新"
-				  class="show-mobile meta">
+			<span title="最后更新" class="show-mobile meta">
 				<i class="far fa-clock"></i>
 				<time>{{item | shortTime}}</time>
 			</span>
@@ -91,7 +86,6 @@ export default {
 };
 </script>
 
-
 <style module lang="less">
 @import "../../css/Imports.less";
 
@@ -106,10 +100,7 @@ export default {
 
 	@media screen and (max-width: (@length-screen-mobile - 1px)) {
 		text-align: center;
-		& > * {
-			justify-self: center;
-			justify-content: center;
-		}
+		justify-items: center;
 	}
 
 	@media screen and (min-width: @length-screen-mobile) {

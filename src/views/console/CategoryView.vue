@@ -17,10 +17,7 @@
 					   :class="$style.name"
 					   title="名称"
 					   v-model="item.name">
-				<span v-else
-					  :class="$style.name">
-					{{item.name}}
-				</span>
+				<span v-else :class="$style.name">{{item.name}}</span>
 
 				<textarea
 					v-if="editable"
@@ -28,10 +25,7 @@
 					:class="$style.desc"
 					v-model="item.description">
 				</textarea>
-				<span v-else
-					  :class="$style.desc">
-					{{item.description}}
-				</span>
+				<span v-else :class="$style.desc">{{item.description}}</span>
 
 				<div :class="$style.buttons" v-if="editable">
 					<kx-button class="primary outline" @click="$emit('change')">应用更改</kx-button>
