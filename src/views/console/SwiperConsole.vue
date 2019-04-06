@@ -26,7 +26,6 @@
 		<!-- 拖动中的元素 -->
 		<swiper-console-item
 			v-if="dragging"
-			ref="draggingComponent"
 			:style="dragging.style"
 			:item="dragging.item"/>
 	</main>
@@ -35,7 +34,7 @@
 <script>
 import api from "../../api";
 import { deleteOn } from "../../utils";
-import { listenDragging, moveElement } from "kx-ui/src/dragging";
+import { observeMouseMove, elementPosition } from "kx-ui/src/dragging";
 import SwiperConsoleItem from "./SwiperConsoleItem";
 
 export default {
@@ -47,7 +46,7 @@ export default {
 		counter: 0, // 轮播自身不带ID，故这里给他们加一个。
 	}),
 	methods: {
-		createNew () {
+		createNew() {
 			this.slides.unshift({
 				open: true,
 				tid: ++this.counter,
@@ -59,27 +58,27 @@ export default {
 				},
 			});
 		},
-		async load () {
+		async load() {
 			const slides = await api.recommend.swiper.get();
 			this.slides = slides.map(slide => ({ slide, open: false, tid: ++this.counter }));
 		},
-		remove (id) {
+		remove(id) {
 			deleteOn(this.slides, s => s.tid === id);
 		},
-		submit () {
+		submit() {
 			api.recommend.swiper.set(this.slides.map(item => item.slide))
 				.then(() => this.$dialog.messageBox("修改轮播", "修改成功"))
 				.catch(() => alert("失败了"));
 		},
-		drag ({ event, item }) {
+		drag({ event, item }) {
 			const slides = this.slides;
 			const slen = slides.length;
-			let index;
 
 			// 查找拖动页的索引，并折叠全部轮播页
+			let holderIndex;
 			for (let i = 0; i < slen; i++) {
 				if (slides[i].tid === item.tid) {
-					index = i;
+					holderIndex = i;
 				}
 				slides[i].open = false;
 			}
@@ -93,13 +92,14 @@ export default {
 				 *
 				 * 下面第一行Vue有BUG，不能使用组件的.$el，否则getBoundingClientRect()返回值是旧的。
 				 */
-				const el = document.querySelectorAll(".slide")[index];
+				const el = document.querySelectorAll(".slide")[holderIndex];
 				const container = this.$refs.container.getBoundingClientRect();
 				const cTop = container.top;
 				const rect = el.getBoundingClientRect();
 				const span = rect.height / 2 + 1.5 * parseFloat(getComputedStyle(el).fontSize);
 
-				slides[index] = { hold: true }; // 替换原轮播页为占位元素
+				// 原轮播页的位置替换为占位元素
+				slides[holderIndex] = { hold: true };
 
 				// 被拖动元素放到单独的位置，并设为绝对定位。
 				this.dragging = {
@@ -113,10 +113,10 @@ export default {
 					},
 				};
 
-				function moveTo (i) {
-					if (index === i) return;
-					const hold = slides.splice(index, 1)[0];
-					index = i;
+				function moveTo(i) {
+					if (holderIndex === i) return;
+					const hold = slides.splice(holderIndex, 1)[0];
+					holderIndex = i;
 					slides.splice(i, 0, hold);
 				}
 
@@ -130,7 +130,7 @@ export default {
 				 * @param x 被拖动元素新的横坐标
 				 * @param y 被拖动元素新的纵坐标
 				 */
-				const callback = (x, y) => {
+				const next = ({x, y}) => {
 					this.dragging.style.left = x + "px";
 					this.dragging.style.top = y + "px";
 
@@ -144,17 +144,19 @@ export default {
 					}
 				};
 
-				const accept = () => {
+				const complete = () => {
 					this.dragging = null;
-					slides[index] = item;
+					slides[holderIndex] = item;
 				};
 
 				// TODO:开始拖动，在结束时移除被拖动元素，并将被拖动元素的数据放到占位元素的位置
-				listenDragging().pipe(moveElement(event, el)).subscribe({ next: callback, complete: accept });
+				observeMouseMove()
+					.pipe(elementPosition(event, el))
+					.subscribe({ next, complete });
 			});
 		},
 	},
-	beforeMount () {
+	beforeMount() {
 		this.load();
 	},
 };

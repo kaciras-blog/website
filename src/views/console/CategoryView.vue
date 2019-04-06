@@ -21,9 +21,9 @@
 
 				<textarea
 					v-if="editable"
+					v-model="item.description"
 					title="描述"
-					:class="$style.desc"
-					v-model="item.description">
+					:class="$style.desc">
 				</textarea>
 				<span v-else :class="$style.desc">{{item.description}}</span>
 
