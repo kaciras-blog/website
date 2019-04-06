@@ -1,10 +1,11 @@
 <template>
-	<section>
-		<div class="summary">
+	<section :class="{ [$style.opened]: item.open }">
+		<div :class="$style.summary">
 			<h2 class="compact" @click="item.open = !item.open">{{item.slide.name}}</h2>
 
 			<kx-button
-				class="icon handler"
+				class="icon"
+				:class="$style.handler"
 				title="拖动调整次序"
 				@mousedown.stop="dragStart">
 				<i class="fas fa-arrows-alt"></i>
@@ -18,23 +19,27 @@
 			</kx-button>
 		</div>
 
-		<div v-show="item.open" class="details">
-			<div class="picture"
-				 @click="setPicture">
-				<img :src="item.slide.picture" alt="轮播图片"/>
-				<span class="tip">点击更换图片</span>
+		<div :class="$style.details">
+
+			<div :class="$style.pictureWrapper" @click="setPicture">
+				<img :src="item.slide.picture" alt="封面" :class="$style.cover"/>
+				<span :class="$style.tip">点击更换图片</span>
 			</div>
 			<label>
 				<span class="minor-text">标题</span>
-				<input v-model="item.slide.name"/>
+				<input :class="$style.inputBox" v-model="item.slide.name"/>
 			</label>
 			<label>
 				<span class="minor-text">URL（相对路径将使用页面内路由）</span>
-				<input v-model="item.slide.link"/>
+				<input :class="$style.inputBox" v-model="item.slide.link"/>
 			</label>
 			<label>
 				<span class="minor-text">描述</span>
-				<textarea class="input" v-model="item.slide.description"></textarea>
+				<textarea
+					class="input"
+					:class="$style.inputBox"
+					v-model="item.slide.description">
+				</textarea>
 			</label>
 		</div>
 	</section>
@@ -50,13 +55,13 @@ export default {
 		required: true,
 	},
 	methods: {
-		setPicture () {
+		setPicture() {
 			api.misc.uploadImageFile().then(name => this.item.slide.picture = name);
 		},
-		remove () {
+		remove() {
 			this.$emit("remove", this.item.tid);
 		},
-		dragStart (event) {
+		dragStart(event) {
 			if (!event.touches && event.button !== 0) {
 				return; // 鼠标右键不拖动
 			}
@@ -66,10 +71,10 @@ export default {
 };
 </script>
 
-<style scoped lang="less">
+<style module lang="less">
 @import "../../css/Imports";
 
-@main-color: #2f8bff;
+@main-color: #3c78f0;
 
 .summary {
 	display: flex;
@@ -77,17 +82,12 @@ export default {
 	color: white;
 	background-color: @main-color;
 	cursor: pointer;
+	border-radius: 5px;
+	overflow: hidden;
 
 	& > h2 {
 		flex: 1;
 		padding-left: 1rem;
-	}
-
-	& > div {
-		float: right;
-		font-size: 1.5rem;
-		text-align: center;
-		width: 3rem;
 	}
 }
 
@@ -96,24 +96,32 @@ export default {
 	border-top-width: 0;
 	padding: 1.5rem;
 
-	display: grid;
+	display: none; // grid 在 .opened > .details
 	grid-gap: 1rem;
 	grid-template-columns: auto 1fr;
 	grid-template-rows: auto auto 1fr;
+}
 
-	input {
-		width: 100%;
-		margin-top: .5rem;
+.opened {
+	& > .summary {
+		border-bottom-left-radius: 0;
+		border-bottom-right-radius: 0;
 	}
-
-	textarea {
-		width: 100%;
-		margin-top: .5rem;
-		height: calc(100% - 1.5rem);
+	& > .details {
+		display: grid;
 	}
 }
 
-.picture {
+textarea.inputBox {
+	height: calc(100% - 1.5rem);
+}
+
+.inputBox {
+	width: 100%;
+	margin-top: .5rem;
+}
+
+.pictureWrapper {
 	position: relative;
 	overflow: hidden;
 	grid-row: ~"1/4";
@@ -121,14 +129,14 @@ export default {
 	height: 16rem;
 	cursor: pointer;
 
-	& > img {
-		position: absolute;
-		.full-percent;
-	}
-
 	&:hover > .tip {
 		top: 0;
 	}
+}
+
+.cover {
+	position: absolute;
+	.full-percent;
 }
 
 .tip {
@@ -149,9 +157,5 @@ export default {
 .handler {
 	cursor: move;
 	background: #cfccbe;
-}
-
-.delete {
-	background: #f56c6e;
 }
 </style>

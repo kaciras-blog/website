@@ -1,8 +1,8 @@
 <template>
 	<main>
-		<div class="toolbar btn-group">
+		<div class="btn-group" :class="$style.toolbar">
 			<kx-button @click="createNew">添加轮播</kx-button>
-			<kx-button @click="load">重新加载</kx-button>
+			<kx-button @click="load">刷新</kx-button>
 			<kx-button class="primary" @click="submit">应用更改</kx-button>
 		</div>
 
@@ -10,13 +10,13 @@
 			<template v-for="item of slides">
 				<div
 					v-if="item.hold"
-					class="hold slide"
+					:class="[$style.hold, $style.slide]"
 					:key="item.tid">
 				</div>
 				<swiper-console-item
 					v-else
 					:key="item.tid"
-					class="slide"
+					:class="$style.slide"
 					:item="item"
 					@drag-started="drag"
 					@remove="remove"/>
@@ -92,7 +92,7 @@ export default {
 				 *
 				 * 下面第一行Vue有BUG，不能使用组件的.$el，否则getBoundingClientRect()返回值是旧的。
 				 */
-				const el = document.querySelectorAll(".slide")[holderIndex];
+				const el = this.$refs.container.children[holderIndex];
 				const container = this.$refs.container.getBoundingClientRect();
 				const cTop = container.top;
 				const rect = el.getBoundingClientRect();
@@ -162,7 +162,7 @@ export default {
 };
 </script>
 
-<style scoped lang="less">
+<style module lang="less">
 @import "../../css/Imports";
 
 .slide {
@@ -171,8 +171,7 @@ export default {
 
 .hold {
 	height: 2.6rem;
-	border: solid 2px #f8f078;
-	box-shadow: 0 0 3px 3px #f8efa0 inset;
+	border: solid 3px #a2f5f8;
 }
 
 .toolbar {
