@@ -77,6 +77,9 @@ export default {
 			this.replying = id;
 		},
 	},
+	mounted() {
+		this.refresh();
+	},
 };
 </script>
 
