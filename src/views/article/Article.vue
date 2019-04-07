@@ -14,13 +14,13 @@
 		<discuss-panel
 			:class="$style.discussPanel"
 			:article-id="article.id"
-			ref="discssPanel"/>
+			ref="discussPanel"/>
 
 		<div class="side-buttons compact vertical-btn-group">
 			<kx-button
 				class="primary outline"
 				title="转到评论区"
-				@click="gotodiscuss">
+				@click="gotoDiscuss">
 				<i class="far fa-comments"></i>
 			</kx-button>
 			<kx-button
@@ -124,8 +124,8 @@ export default {
 		...mapState({ article: state => state.article.item }),
 	},
 	methods: {
-		gotodiscuss () {
-			scrollToElementStart(this.$refs.discssPanel.$el);
+		gotoDiscuss () {
+			scrollToElementStart(this.$refs.discussPanel.$el);
 		},
 		gotoTop () {
 			scrollToElementStart(document.documentElement);
@@ -161,7 +161,7 @@ export default {
 }
 
 .discussPanel {
-	margin: 0 auto 3rem auto;
+	margin: 80px auto;
 
 	@media screen {
 		@media (min-width: @length-screen-pad) {

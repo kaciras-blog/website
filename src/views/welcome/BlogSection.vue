@@ -11,7 +11,7 @@
 		</header>
 
 		<ul v-if="slides" :class="$style.cardList">
-			<post-card v-for="slide of slides" :key="randomId" :item="slide"/>
+			<post-card v-for="slide of slides" :key="slide.randomId" v-bind="slide"/>
 		</ul>
 	</section>
 </template>

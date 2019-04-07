@@ -2,7 +2,7 @@
 	<page-layout view-id="welcome-page">
 		<section :class="$style.banner">
 			<div :class="$style.overlay"></div>
-			<div :class="$style.galss">
+			<div :class="$style.glass">
 				<h1>Kaciras' Blog</h1>
 				<p>程序 • 生活 • 梦想</p>
 			</div>
@@ -24,7 +24,7 @@ export default {
 @import "../../css/Imports";
 
 :global(#welcome-page) {
-
+	margin-bottom: 100px;
 }
 
 .banner {
@@ -34,15 +34,20 @@ export default {
 
 	position: relative;
 	height: 100vh;
+	overflow: hidden;
 
 	background-image: url("../../assets/img/68079722.jpg");
 	background-size: cover;
 	background-position: center bottom;
 }
 
+@flutter-distance: 20px;
+
 .overlay {
 	position: absolute;
 	.full-vertex;
+	left: -@flutter-distance;
+	right: -@flutter-distance;
 
 	@yellow: rgba(255, 255, 0, .12);
 	@blue: rgba(0, 155, 255, 0.08);
@@ -66,9 +71,23 @@ export default {
 		@white 74.8%, @white 75%,
 
 		@pink 75%, @pink 100%);
+
+	animation: flutter 10s linear infinite;
 }
 
-.galss {
+@keyframes flutter {
+	0% {
+		background-position-x: -@flutter-distance;
+	}
+	30%, 50% {
+		background-position-x: @flutter-distance;
+	}
+	80%, 100% {
+		background-position-x: -@flutter-distance;
+	}
+}
+
+.glass {
 	text-align: center;
 	z-index: 2;
 
