@@ -33,17 +33,6 @@ export function errorMessage (object) {
 
 
 /**
- * 获取URL中查询参数的值
- *
- * @param name {String} 参数名
- * @return {String} 参数值
- */
-export function getUrlParamater (name) {
-	return new URLSearchParams(window.location.search).get(name);
-}
-
-
-/**
  * 删除并返回数组中符合条件的元素，删除使用splice()函数，能够触发Vue的更新。
  *
  * @param array 数组
@@ -76,18 +65,6 @@ export function assignUpdate (src, dest) {
 		}
 	}
 	return dest;
-}
-
-export function limitFrequency (action, duration, returnValue = null) {
-	let last = 0;
-	return function (...args) {
-		const current = new Date().getTime();
-		if (last + duration > current) {
-			last = current;
-			return action(...args);
-		}
-		return returnValue;
-	};
 }
 
 /**
