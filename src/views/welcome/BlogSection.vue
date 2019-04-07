@@ -10,23 +10,26 @@
 			</router-link>
 		</header>
 
-		<!--<sk-fading-circle v-if="loading"/>-->
-
-		<!--<kx-carousel v-else-->
-			<!--:class="$style.carousel"-->
-			<!--:items="slides"-->
-			<!--:stop-on-hover="true"-->
-		<!--&gt;-->
-			<!--<swiper-slide v-slot="{ slide }" :key="slide.tid" :item="slide"/>-->
-		<!--</kx-carousel>-->
-
-		<div :class="$style.others"></div>
+		<ul v-if="slides" :class="$style.cardList">
+			<post-card v-for="slide of slides" :key="randomId" :item="slide"/>
+		</ul>
 	</section>
 </template>
 
 <script>
+import PostCard from "./PostCard";
+import api from "../../api";
+import { attachRandomId } from "../../utils";
+
 export default {
 	name: "BlogSection",
+	components: { PostCard },
+	data: () => ({
+		slides: null,
+	}),
+	beforeMount() {
+		api.recommend.swiper.get().then(slides => this.slides = slides.map(attachRandomId));
+	},
 };
 </script>
 
@@ -41,5 +44,16 @@ export default {
 .title {
 	font-size: 30px;
 	margin: 0;
+}
+
+.cardList {
+	display: grid;
+	padding: 0 5vw;
+	width: 100%;
+
+	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+	grid-auto-rows: auto;
+	justify-items: center;
+	grid-gap: 30px;
 }
 </style>

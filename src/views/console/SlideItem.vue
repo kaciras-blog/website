@@ -61,7 +61,7 @@ export default {
 			api.misc.uploadImageFile().then(name => this.item.slide.picture = name);
 		},
 		remove() {
-			this.$emit("remove", this.item.tid);
+			this.$emit("remove", this.item.randomId);
 		},
 		dragStart(event) {
 			if (!event.touches && event.button !== 0) {

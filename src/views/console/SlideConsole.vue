@@ -11,11 +11,11 @@
 				<div
 					v-if="item.hold"
 					:class="[$style.hold, $style.slide]"
-					:key="item.tid">
+					:key="item.randomId">
 				</div>
 				<slide-item
 					v-else
-					:key="item.tid"
+					:key="item.randomId"
 					:class="$style.slide"
 					:item="item"
 					@drag-started="drag"
@@ -33,8 +33,9 @@
 
 <script>
 import api from "../../api";
-import { deleteOn } from "../../utils";
+import { deleteOn, attachRandomId } from "../../utils";
 import { observeMouseMove, elementPosition } from "kx-ui/src/dragging";
+import { MessageBoxType } from "kx-ui/src/dialog";
 import SlideItem from "./SlideItem";
 
 export default {
@@ -43,32 +44,30 @@ export default {
 	data: () => ({
 		slides: [],
 		dragging: null,
-		counter: 0, // 轮播自身不带ID，故这里给他们加一个。
 	}),
 	methods: {
 		createNew() {
-			this.slides.unshift({
+			this.slides.unshift(attachRandomId({
 				open: true,
-				tid: ++this.counter,
 				slide: {
 					picture: "/image/noface.gif",
 					name: "新的轮播页",
 					link: "",
 					description: "这是新添加的轮播页",
 				},
-			});
+			}));
 		},
 		async load() {
 			const slides = await api.recommend.swiper.get();
-			this.slides = slides.map(slide => ({ slide, open: false, tid: ++this.counter }));
+			this.slides = slides.map(slide => attachRandomId({ slide, open: false }));
 		},
 		remove(id) {
-			deleteOn(this.slides, s => s.tid === id);
+			deleteOn(this.slides, s => s.randomId === id);
 		},
 		submit() {
 			api.recommend.swiper.set(this.slides.map(item => item.slide))
 				.then(() => this.$dialog.messageBox("修改轮播", "修改成功"))
-				.catch(() => alert("失败了"));
+				.catch((e) => this.$dialog.messageBox("修改轮播失败", e.message, MessageBoxType.Error));
 		},
 		drag({ event, item }) {
 			const slides = this.slides;
@@ -76,7 +75,7 @@ export default {
 			// 查找拖动页的索引，并折叠全部轮播页
 			let holderIndex;
 			for (let i = 0; i < slides.length; i++) {
-				if (slides[i].tid === item.tid) {
+				if (slides[i].randomId === item.randomId) {
 					holderIndex = i;
 				}
 				slides[i].open = false;
@@ -95,7 +94,7 @@ export default {
 				const container = this.$refs.container.getBoundingClientRect();
 				const cTop = container.top;
 				const rect = el.getBoundingClientRect();
-				const span = rect.height / 2 + 1.5 * parseFloat(getComputedStyle(el).fontSize);
+				const span = rect.height / 2 + 20;
 
 				// 原轮播页的位置替换为占位元素
 				slides[holderIndex] = { hold: true };
@@ -103,7 +102,6 @@ export default {
 				// 被拖动元素放到单独的位置，并设为绝对定位。
 				this.dragging = {
 					item,
-					tid: item.tid,
 					style: {
 						width: container.width + "px",
 						position: "absolute",
@@ -129,11 +127,11 @@ export default {
 				 * @param x 被拖动元素新的横坐标
 				 * @param y 被拖动元素新的纵坐标
 				 */
-				const next = ({x, y}) => {
+				const next = ({ x, y }) => {
 					this.dragging.style.left = x + "px";
 					this.dragging.style.top = y + "px";
 
-					const i = Math.round((y - cTop) / span);
+					const i = (y - cTop + rect.height / 2) / span;
 					if (i <= 0) {
 						moveTo(0);
 					} else if (i >= slides.length * 2 - 1) {
@@ -164,7 +162,7 @@ export default {
 @import "../../css/Imports";
 
 .slide {
-	margin: 1.5rem 0;
+	margin: 20px 0;
 }
 
 .hold {
