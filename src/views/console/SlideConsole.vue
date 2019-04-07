@@ -92,12 +92,10 @@ export default {
 				 */
 				const el = this.$refs.container.children[holderIndex];
 				const container = this.$refs.container.getBoundingClientRect();
-				const cTop = container.top;
-				const rect = el.getBoundingClientRect();
-				const span = rect.height / 2 + 20;
 
-				// 原轮播页的位置替换为占位元素
-				slides[holderIndex] = { hold: true };
+				const rect = el.getBoundingClientRect();
+				const span = rect.height + 20;
+				const yOffset = container.top + span / 2 - rect.height / 2;
 
 				// 被拖动元素放到单独的位置，并设为绝对定位。
 				this.dragging = {
@@ -110,7 +108,10 @@ export default {
 					},
 				};
 
-				function moveTo(i) {
+				// 原轮播页的位置替换为占位元素
+				slides[holderIndex] = { hold: true };
+
+				function insertInto(i) {
 					if (holderIndex === i) return;
 					const hold = slides.splice(holderIndex, 1)[0];
 					holderIndex = i;
@@ -131,13 +132,14 @@ export default {
 					this.dragging.style.left = x + "px";
 					this.dragging.style.top = y + "px";
 
-					const i = (y - cTop + rect.height / 2) / span;
+					// 索引必须取整为了后面的对比
+					const i = Math.round((y - yOffset) / span);
 					if (i <= 0) {
-						moveTo(0);
-					} else if (i >= slides.length * 2 - 1) {
-						moveTo(slides.length - 1);
+						insertInto(0);
+					} else if (i >= slides.length - 1) {
+						insertInto(slides.length - 1);
 					} else {
-						moveTo(Math.floor((i + 1) / 2));
+						insertInto(i);
 					}
 				};
 

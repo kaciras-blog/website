@@ -76,7 +76,7 @@ export default {
 <style module lang="less">
 @import "../../css/Imports";
 
-@main-color: #3c78f0;
+@main-color: #4379e6;
 
 .summary {
 	display: flex;
@@ -159,6 +159,6 @@ textarea.inputBox {
 
 .handler {
 	cursor: move;
-	background: #cfccbe;
+	background: #ccd7e4;
 }
 </style>
