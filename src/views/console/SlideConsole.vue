@@ -13,7 +13,7 @@
 					:class="[$style.hold, $style.slide]"
 					:key="item.tid">
 				</div>
-				<swiper-console-item
+				<slide-item
 					v-else
 					:key="item.tid"
 					:class="$style.slide"
@@ -24,7 +24,7 @@
 		</div>
 
 		<!-- 拖动中的元素 -->
-		<swiper-console-item
+		<slide-item
 			v-if="dragging"
 			:style="dragging.style"
 			:item="dragging.item"/>
@@ -35,11 +35,11 @@
 import api from "../../api";
 import { deleteOn } from "../../utils";
 import { observeMouseMove, elementPosition } from "kx-ui/src/dragging";
-import SwiperConsoleItem from "./SwiperConsoleItem";
+import SlideItem from "./SlideItem";
 
 export default {
-	name: "SwiperConsole",
-	components: { SwiperConsoleItem },
+	name: "SlideConsole",
+	components: { SlideItem },
 	data: () => ({
 		slides: [],
 		dragging: null,
@@ -72,11 +72,10 @@ export default {
 		},
 		drag({ event, item }) {
 			const slides = this.slides;
-			const slen = slides.length;
 
 			// 查找拖动页的索引，并折叠全部轮播页
 			let holderIndex;
-			for (let i = 0; i < slen; i++) {
+			for (let i = 0; i < slides.length; i++) {
 				if (slides[i].tid === item.tid) {
 					holderIndex = i;
 				}
@@ -137,8 +136,8 @@ export default {
 					const i = Math.round((y - cTop) / span);
 					if (i <= 0) {
 						moveTo(0);
-					} else if (i >= slen * 2 - 1) {
-						moveTo(slen - 1);
+					} else if (i >= slides.length * 2 - 1) {
+						moveTo(slides.length - 1);
 					} else {
 						moveTo(Math.floor((i + 1) / 2));
 					}
@@ -149,7 +148,6 @@ export default {
 					slides[holderIndex] = item;
 				};
 
-				// TODO:开始拖动，在结束时移除被拖动元素，并将被拖动元素的数据放到占位元素的位置
 				observeMouseMove()
 					.pipe(elementPosition(event, el))
 					.subscribe({ next, complete });
@@ -171,7 +169,7 @@ export default {
 
 .hold {
 	height: 2.6rem;
-	border: solid 3px #a2f5f8;
+	border: solid 3px #85f2d0;
 }
 
 .toolbar {

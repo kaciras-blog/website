@@ -18,7 +18,7 @@
 			:selection.sync="selection"
 			:view-mode="viewMode"/>
 
-		<div :class="$style.statebar">
+		<div :class="$style.stateBar">
 			<div>
 				<span v-if="autoSaveError" :class="$style.errMsg">自动保存出错！</span>
 				<span v-else>上次保存：{{archive.saveTime}}</span>
@@ -41,6 +41,7 @@ import MetadataDialog from "./MetadataDialog";
 import api from "../../api";
 import { assignUpdate } from "../../utils";
 import { VueMultiWatcher } from "kx-ui";
+import { MessageBoxType } from "kx-ui/src/dialog";
 
 
 function convertToTransfer (data) {
@@ -98,7 +99,7 @@ export default {
 				archive.saveTime = new Date();
 				this.$dialog.messageBox("保存草稿", "保存成功");
 			} catch (e) {
-				this.$dialog.messageBox("保存草稿", "保存失败，请手动备份", "error");
+				this.$dialog.messageBox("保存草稿", "保存失败，请手动备份", MessageBoxType.Error);
 			}
 		},
 		watchChanges () {
@@ -168,7 +169,7 @@ export default {
 	background-color: whitesmoke;
 }
 
-.statebar {
+.stateBar {
 	display: flex;
 	justify-content: space-between;
 	padding: .4rem;

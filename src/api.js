@@ -510,11 +510,11 @@ class RecommandApi extends AbstractApi {
 class SwiperApi extends AbstractApi {
 
 	get() {
-		return this.mainServer.get("/recommendation/swiper").then(r => r.data);
+		return this.mainServer.get("/recommendation/slides").then(r => r.data);
 	}
 
 	set(list) {
-		return this.mainServer.put("/recommendation/swiper", list);
+		return this.mainServer.put("/recommendation/slides", list);
 	}
 }
 

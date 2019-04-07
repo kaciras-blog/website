@@ -49,10 +49,12 @@
 import api from "../../api";
 
 export default {
-	name: "SwiperConsoleItem",
+	name: "SlideItem",
 	props: {
-		item: Object,
-		required: true,
+		item: {
+			type: Object,
+			required: true,
+		},
 	},
 	methods: {
 		setPicture() {
@@ -107,6 +109,7 @@ export default {
 		border-bottom-left-radius: 0;
 		border-bottom-right-radius: 0;
 	}
+
 	& > .details {
 		display: grid;
 	}

@@ -26,7 +26,7 @@
 import ArticleConsole from "./ArticleConsole";
 import DraftConsole from "./DraftConsole";
 import CategoryConsole from "./CategoryConsole";
-import SwiperConsole from "./SwiperConsole";
+import SlideConsole from "./SlideConsole";
 
 export default {
 	name: "ConsolePage",
@@ -34,13 +34,13 @@ export default {
 		ArticleConsole,
 		DraftConsole,
 		CategoryConsole,
-		SwiperConsole,
+		SlideConsole,
 	},
 	data: () => ({
 		views: [
 			{ name: ArticleConsole.name, label: "文章列表" },
 			{ name: DraftConsole.name, label: "我的草稿" },
-			{ name: SwiperConsole.name, label: "轮播" },
+			{ name: SlideConsole.name, label: "轮播" },
 			{ name: CategoryConsole.name, label: "管理分类" },
 		],
 		active: "ArticleConsole",
