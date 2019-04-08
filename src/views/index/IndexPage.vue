@@ -7,7 +7,7 @@
 		<section :class="$style.list">
 			<h1 class="segment" :class="$style.listTitle">全部文章</h1>
 
-			<scroll-pageing-view
+			<scroll-paging-view
 				:next-link-enabled="true"
 				:loader="loadPage"
 				:init-items="initArticles"
@@ -23,7 +23,7 @@
 							class="segment"/>
 					</ul>
 				</template>
-			</scroll-pageing-view>
+			</scroll-paging-view>
 		</section>
 		<aside-panel :class="$style.aside"/>
 	</page-layout>

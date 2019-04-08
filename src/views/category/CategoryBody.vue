@@ -2,7 +2,7 @@
 	<section :class="$style.container">
 		<h1 :class="$style.title">文章列表</h1>
 
-		<scroll-pageing-view :loader="load">
+		<scroll-paging-view :loader="load">
 			<template v-slot="{ items }">
 				<ul class="list">
 					<article-preview-item
@@ -12,7 +12,7 @@
 						class="segment"/>
 				</ul>
 			</template>
-		</scroll-pageing-view>
+		</scroll-paging-view>
 	</section>
 </template>
 

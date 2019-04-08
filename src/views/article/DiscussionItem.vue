@@ -46,7 +46,7 @@
 				</div>
 			</div>
 
-			<button-pageing-view
+			<button-paging-view
 				v-if="value.replyCount>0"
 				ref="replies"
 				theme="text"
@@ -64,7 +64,7 @@
 							:class="$style.reply"/>
 					</ol>
 				</template>
-			</button-pageing-view>
+			</button-paging-view>
 
 			<discz-editor
 				v-if="replying === value.id"

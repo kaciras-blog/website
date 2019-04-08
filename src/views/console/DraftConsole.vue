@@ -1,7 +1,6 @@
 <template>
 	<main>
-		<div class="btn-group"
-			 :class="$style.toolbar">
+		<div class="btn-group" :class="$style.toolbar">
 
 			<kx-button
 				class="dangerous"
@@ -85,7 +84,7 @@ export default {
 };
 </script>
 
-<style module>
+<style module lang="less">
 .toolbar {
 	margin-bottom: 1rem;
 }

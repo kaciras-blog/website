@@ -47,18 +47,23 @@ export default {
 	},
 	methods: {
 		async deleteDraft () {
-			const accept = await this.$dialog.messageBox("删除草稿", "删除后不可恢复，是否确定？", "warn", true);
-			if (!accept) {
-				return;
+			const result = await this.$dialog.messageBox({
+				title: "删除草稿",
+				content: "删除后不可恢复，是否确定？",
+				type: MessageBoxType.Warning,
+				cancelable: true,
+			});
+			if (result.isConfirm) {
+				await api.draft.remove(this.value.id);
+				this.$emit("removed");
 			}
-			await api.draft.remove(this.value.id);
-			this.$emit("removed");
+			// TODO: result.confirmThen
 		},
 	},
 };
 </script>
 
-<style module>
+<style module lang="less">
 .draft {
 	display: flex;
 	align-items: center;

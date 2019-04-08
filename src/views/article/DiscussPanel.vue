@@ -12,7 +12,7 @@
 			<discuz-editor :submit="submitDiscussion" @discussion-added="showLast"/>
 		</div>
 
-		<button-pageing-view
+		<button-paging-view
 			:show-top-buttons="true"
 			ref="discussions"
 			:loader="loadDiscussions"
@@ -30,7 +30,7 @@
 				</ol>
 				<div :class="$style.empty" v-else>还没有评论呢</div>
 			</template>
-		</button-pageing-view>
+		</button-paging-view>
 	</section>
 </template>
 
