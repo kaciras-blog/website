@@ -25,6 +25,13 @@ const curtain = new Vue(TransitionsCurtain).$mount();
 document.body.appendChild(curtain.$el);
 
 
+/** 取消上一个 CancelToken，然后初始化一个新的 */
+function initializeCancelToken() {
+	cancelToken.cancel();
+	cancelToken = CancelToken.timeout(10_000);
+	cancelToken.onCancel(() => curtain.error());
+}
+
 /**
  * 处理预加载任务，包括显示加载指示器、错误页面、防止取消后跳转等。
  *
@@ -70,9 +77,7 @@ Vue.mixin({
 		if (!this.$options.asyncData) {
 			return next();
 		}
-		cancelToken = CancelToken.timeout(10_000);
-		cancelToken.onCancel(() => curtain.error());
-
+		initializeCancelToken();
 		const task = this.$options.asyncData({ store: this.$store, route: to, isServer: false, cancelToken });
 		prefetch(task, next);
 	},
@@ -103,8 +108,7 @@ function initAppAndRouterHook() {
 		if (matched.filter(c => typeof c === "function").length) {
 			curtain.start(); // 未加载过的异步组件是函数，此时激活指示器
 		}
-		cancelToken = CancelToken.timeout(10_000);
-		cancelToken.onCancel(() => curtain.error());
+		initializeCancelToken();
 	});
 
 	/*
