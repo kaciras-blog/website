@@ -4,11 +4,17 @@ import TransitionsCurtain from "./components/TransitionCurtain2";
 import { CancelToken } from "kx-ui";
 
 
-/* 注册 ServiceWorker 启用 PWA */
-if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator) {
-	navigator.serviceWorker.register("/sw.js")
-		.then(() => console.log("Service worker registered successfully."))
-		.catch(() => console.error("Service worker failed to register."));
+/* 生产模式下注册 ServiceWorker，开发模式禁用 */
+if("serviceWorker" in navigator) {
+	if (process.env.NODE_ENV === "production") {
+		navigator.serviceWorker.register("/sw.js")
+			.then(() => console.log("Service worker registered successfully."))
+			.catch(() => console.error("Service worker failed to register."));
+	} else {
+		navigator.serviceWorker.getRegistrations()
+			.then(regs => regs.forEach(reg => reg.unregister()))
+			.catch(() => console.error("Service worker failed to unregister."));
+	}
 }
 
 // =================================== Client Data Prefetch ===================================
