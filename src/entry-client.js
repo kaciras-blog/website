@@ -89,9 +89,8 @@ const { vue, router, store } = createApp(window.__INITIAL_STATE__);
 /**
  * 导航前加载数据，在官方教程的基础上修改而来，增加了以下功能：
  *   1.在异步组件解析前就显示加载指示器，让过渡更顺畅。
- *   2.检测组件的 prefetch 属性，使其能够在客户端不进行预加载。
- *   3.处理一些异常情况，例如跳转。在出现内部错误时显示错误页面。
- *   4.允许用户取消正在进行的预加载，并中止网络请求（需要预加载函数支持）。
+ *   2.处理一些异常情况，例如跳转。在出现内部错误时显示错误页面。
+ *   3.允许用户取消正在进行的预加载，并中止网络请求（需要预加载函数支持）。
  */
 function initAppAndRouterHook() {
 
@@ -148,8 +147,8 @@ function initAppAndRouterHook() {
  * 路由 resolve 后执行，以便我们不会二次预取(double-fetch)已有的数据。
  */
 if (window.__INITIAL_STATE__) {
-	delete window.__INITIAL_STATE__;
 	router.onReady(initAppAndRouterHook);
+	delete window.__INITIAL_STATE__;
 } else {
 	initAppAndRouterHook(); // 非服务端渲染，直接初始化
 }
