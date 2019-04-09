@@ -1,7 +1,7 @@
 import createApp from "./main";
 import Vue from "vue";
-import TransitionsCurtain from "./components/TransitionCurtain2";
 import { CancelToken } from "kx-ui";
+import * as loadingIndicator from "./loading-indicator";
 
 
 /* 生产模式下注册 ServiceWorker，开发模式禁用 */
@@ -21,16 +21,6 @@ if("serviceWorker" in navigator) {
 
 let cancelToken = CancelToken.NEVER;
 
-const curtain = new Vue(TransitionsCurtain).$mount();
-document.body.appendChild(curtain.$el);
-
-
-/** 取消上一个 CancelToken，然后初始化一个新的 */
-function initializeCancelToken() {
-	cancelToken.cancel();
-	cancelToken = CancelToken.timeout(10_000);
-	cancelToken.onCancel(() => curtain.error());
-}
 
 /**
  * 处理预加载任务，包括显示加载指示器、错误页面、防止取消后跳转等。
@@ -42,9 +32,9 @@ function prefetch(task, next) {
 	if (Array.isArray(task)) {
 		task = Promise.all(task);
 	}
-	curtain.middle();
+	loadingIndicator.setComponentResolved();
 	task.then(() => !cancelToken.isCancelled && next())
-		.then(() => curtain.finish())
+		.then(() => loadingIndicator.setSuccessful())
 		.catch(err => handleError(err, next));
 }
 
@@ -68,7 +58,7 @@ function handleError(err, next) {
 			next("/error/500");
 			break;
 	}
-	curtain.error();
+	loadingIndicator.setError();
 }
 
 // mixin 必须在创建 Vue 实例之前
@@ -77,7 +67,7 @@ Vue.mixin({
 		if (!this.$options.asyncData) {
 			return next();
 		}
-		initializeCancelToken();
+		cancelToken = loadingIndicator.start();
 		const task = this.$options.asyncData({ store: this.$store, route: to, isServer: false, cancelToken });
 		prefetch(task, next);
 	},
@@ -105,9 +95,9 @@ function initAppAndRouterHook() {
 		next();
 		const matched = router.getMatchedComponents(to);
 		if (matched.filter(c => typeof c === "function").length) {
-			curtain.start(); // 未加载过的异步组件是函数，此时激活指示器
+			loadingIndicator.start(); // 未加载过的异步组件是函数，此时激活指示器
 		}
-		initializeCancelToken();
+		cancelToken = loadingIndicator.start();
 	});
 
 	/*

@@ -7,7 +7,7 @@ const TRANSITION_TIME = 300;
 const RESIDUAL_TIME = 800;
 
 export default {
-	name: "TransitionCurtain2",
+	name: "TopProgressBar",
 	data: () => ({
 		visible: false,
 		hasError: false,
