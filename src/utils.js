@@ -78,3 +78,25 @@ export function attachRandomId(object) {
 	object.randomId = object.randomId || Math.random();
 	return object;
 }
+
+// 这段代码压缩之后嵌入在 index.template.html 里
+// (function () {
+// 	function checkBrowserSupport() {
+// 		if(typeof window.CSS === "undefined") {
+// 			return false;
+// 		}
+// 		return CSS.supports("display", "grid");
+// 	}
+// 	if(!checkBrowserSupport()) {
+// 		var alert = document.createElement("div");
+// 		alert.setAttribute("style",
+// 			"padding: 12px;" +
+// 			"font-size: 16px;" +
+// 			"text-align: center;" +
+// 			"color: #e62e2e;" +
+// 			"background-color: #f0f0f0;");
+// 		alert.innerText = "您的浏览器版本太旧，或是非主流内核，可能无法正常浏览本站。" +
+// 			"请使用最新版的Edge、Firefox、Chrome、Safari等（本站不支持IE浏览器）";
+// 		document.body.insertBefore(alert, document.body.firstChild);
+// 	}
+// })();
