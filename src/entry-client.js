@@ -9,7 +9,7 @@ if("serviceWorker" in navigator) {
 	if (process.env.NODE_ENV === "production") {
 		navigator.serviceWorker.register("/sw.js")
 			.then(() => console.log("Service worker registered successfully."))
-			.catch(() => console.error("Service worker failed to register."));
+			.catch((err) => console.error("Service worker failed to register:", err));
 	} else {
 		navigator.serviceWorker.getRegistrations()
 			.then(regs => regs.forEach(reg => reg.unregister()))
@@ -83,7 +83,7 @@ Vue.mixin({
 	},
 });
 
-const { vue, router, store } = createApp();
+const { vue, router, store } = createApp(window.__INITIAL_STATE__);
 
 
 /**
@@ -148,7 +148,6 @@ function initAppAndRouterHook() {
  * 路由 resolve 后执行，以便我们不会二次预取(double-fetch)已有的数据。
  */
 if (window.__INITIAL_STATE__) {
-	store.replaceState(window.__INITIAL_STATE__);
 	delete window.__INITIAL_STATE__;
 	router.onReady(initAppAndRouterHook);
 } else {

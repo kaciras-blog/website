@@ -4,7 +4,7 @@ import Vue from "vue";
 import { REFRESH_USER } from "./store/types";
 
 
-function onReadyAsync (router) {
+function onReadyAsync(router) {
 	return new Promise((resolve, reject) => router.onReady(resolve, reject));
 }
 
@@ -13,6 +13,15 @@ export default async context => {
 		return new Vue({ render: h => h("div", { attrs: { id: "app" } }) });
 	}
 	const { vue, router, store } = createApp();
+	const vuexTasks = [];
+
+	// 因为全站都是预渲染，所以初始用户在服务端加载一次即可。
+	// 控制台配置了拦截，必须先登陆，否则后面的路由直接跳到错误页
+	if (/^\/console\/?/.test(context.url)) {
+		await store.dispatch(REFRESH_USER, context.request);
+	} else {
+		vuexTasks.push(store.dispatch(REFRESH_USER, context.request));
+	}
 
 	router.push(context.url);
 	await onReadyAsync(router);
@@ -22,20 +31,20 @@ export default async context => {
 		router.push("/error/" + 404);
 	}
 
-	// 对所有匹配的路由组件调用 `asyncData()`
-	const tasks = matched.filter(c => c.asyncData).map(c => c.asyncData({
-		store,
+	const asyncContext = {
+		store: store,
 		route: router.currentRoute,
 		cancelToken: CancelToken.NEVER,
 		prototype: context.request,
 		isServer: true,
-	}));
+	};
 
-	// 因为全站都是预渲染，所以初始用户在后台加载一次即可
-	tasks.push(store.dispatch(REFRESH_USER, context.request));
+	const componentTasks = matched
+		.filter(c => c.asyncData)
+		.map(c => c.asyncData(asyncContext));
 
 	try {
-		await Promise.all(tasks);
+		await Promise.all(vuexTasks.concat(componentTasks));
 	} catch (e) {
 		switch (e.code) {
 			case 404:

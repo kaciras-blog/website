@@ -15,27 +15,39 @@ Vue.use(KxMarkdown);
 Vue.use(BlogPlugin);
 Vue.use(Croppa);
 
-
-export default function createApp () {
+/**
+ * 服务端和客户端公共的初始化逻辑。
+ *
+ * 由于创建Vue实例后就立即渲染，而此时可能就需要初始状态（比如控制台页面鉴权），所以不能等到创建之后再
+ * 替换服务端渲染出的初始状态，而要在创建Vue实例之前就调用 store.replaceState(...)
+ *
+ * @param initState Vuex的初始状态
+ * @return Vue全家桶
+ */
+export default function createApp (initState = undefined) {
 	const store = createStore();
 	const router = createRouter();
+
+	if(initState) {
+		store.replaceState(initState);
+	}
 
 	/*
 	 * 阻止未登录用户访问后台页面。
 	 * router.app.$store获取不到store实例，所以就放在这了
 	 */
-	const coneoleRoute = {
+	const consoleRoute = {
 		path: "/console",
 		component: () => import("./views/console/ConsolePage"),
 		meta: { title: "控制台" },
 	};
-	coneoleRoute.beforeEnter = (to, from, next) => {
+	consoleRoute.beforeEnter = (to, from, next) => {
 		const user = store.state.user;
 		if (user && user.id === 2)
 			return next();
 		next({ path: "/error/404", replace: true });
 	};
-	router.addRoutes([coneoleRoute]);
+	router.addRoutes([consoleRoute]);
 
 	const vue = new Vue({
 		router,
