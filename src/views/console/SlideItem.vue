@@ -159,6 +159,6 @@ textarea.inputBox {
 
 .handler {
 	cursor: move;
-	background: #ccd7e4;
+	background: #e6e6e6;
 }
 </style>

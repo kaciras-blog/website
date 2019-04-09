@@ -35,8 +35,8 @@ const webpack = {
 	},
 };
 
+// TODO: 端口的配置没有同步到api中
 const server = {
-	httpsPort: 8080,
 	tls: true,
 	certificate: "D:/Coding/Utils/dev.pem",
 	privatekey: "D:/Coding/Utils/dev.pvk",

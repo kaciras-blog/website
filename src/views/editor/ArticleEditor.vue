@@ -90,7 +90,7 @@ export default {
 			this.selection = [p, p];
 		},
 		metadataDialog () {
-			this.$dialog.show(MetadataDialog, { metadata: this.metadata }).onComfirm(data => this.metadata = data);
+			this.$dialog.show(MetadataDialog, { metadata: this.metadata }).onConfirm(data => this.metadata = data);
 		},
 		async saveManually () {
 			const { archive } = this;

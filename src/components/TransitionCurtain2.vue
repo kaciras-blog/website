@@ -41,6 +41,9 @@ export default {
 // ============================ 结束方法 ============================
 
 		finish() {
+			if (!this.visible) {
+				return; // 必须先调用启动方法
+			}
 			this.progress = 100;
 
 			setTimeout(() => {
@@ -49,6 +52,9 @@ export default {
 			}, RESIDUAL_TIME);
 		},
 		error() {
+			if (!this.visible) {
+				return;
+			}
 			this.progress = 100;
 			this.hasError = true;
 
