@@ -57,13 +57,7 @@ export default {
 .filterContainer {
 	.glass;
 	.glass.blur(4px);
-
-	position: absolute;
-	z-index: 500;
-	left: 0;
-	right: 0;
-	top: 0;
-	height: 3rem;
+	height: 50px;
 }
 
 .shadow {
@@ -71,7 +65,8 @@ export default {
 }
 
 .banner {
-	height: 12rem;
+	height: 13rem;
+	margin-top: -50px;
 	margin-bottom: 4rem;
 }
 

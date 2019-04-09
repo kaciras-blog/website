@@ -27,7 +27,7 @@ export default {
 			if (this.visible) {
 				return; // 忽略重复调用
 			}
-			this.progress = 15;
+			this.progress = 30;
 			this.visible = true;
 			this.hasError = false;
 		},
@@ -35,7 +35,7 @@ export default {
 			if (!this.visible) {
 				this.start();
 			}
-			this.progress = 40;
+			this.progress = 70;
 		},
 
 // ============================ 结束方法 ============================
