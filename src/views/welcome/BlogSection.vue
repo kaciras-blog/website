@@ -34,6 +34,8 @@ export default {
 </script>
 
 <style module lang="less">
+@import "../../css/Imports";
+
 .header {
 	display: flex;
 	justify-content: space-between;
@@ -51,9 +53,9 @@ export default {
 	padding: 0 5vw;
 	width: 100%;
 
-	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+	grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
 	grid-auto-rows: auto;
 	justify-items: center;
-	grid-gap: 30px;
+	grid-gap: 50px 20px;
 }
 </style>
