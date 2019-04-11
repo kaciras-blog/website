@@ -18,18 +18,18 @@
 
 <script>
 import PostCard from "./PostCard";
-import api from "../../api";
-import { attachRandomId } from "../../utils";
+
+import { mapState } from "vuex";
+
 
 export default {
 	name: "BlogSection",
-	components: { PostCard },
-	data: () => ({
-		slides: null,
-	}),
-	beforeMount() {
-		api.recommend.swiper.get().then(slides => this.slides = slides.map(attachRandomId));
+	components: {
+		PostCard,
 	},
+	computed: mapState({
+		slides: state => state.prefetch.slides,
+	}),
 };
 </script>
 

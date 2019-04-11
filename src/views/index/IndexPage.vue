@@ -53,47 +53,31 @@ function nextPageUrl (route, count) {
 	return pairs.length ? nextPath + "?" + pairs.join("&") : nextPath;
 }
 
-const indexStoreModule = {
-	namespaced: true,
-	state: () => ({
-		category: {},
-		hots: null,
-		items: null,
-	}),
-	actions: {
-		fetchItem ({ commit }, { start, cancelToken, prototype, isServer }) {
-			const configuredApi = api.withCancelToken(cancelToken).withPrototype(prototype);
-			const tasks = [];
-
-			if (isServer) {
-				tasks.push(configuredApi.article.getHots()
-					.then(items => commit("setHots", items)));
-				tasks.push(configuredApi.article.getList({ start, count: DEFAULT_PAGE_SIZE })
-					.then(items => commit("setItems", items)));
-			}
-
-			tasks.push(configuredApi.category.get(0)
-				.then(items => commit("setCategory", items)));
-
-			return Promise.all(tasks);
-		},
-	},
-	mutations: {
-		setItems: (state, items) => state.items = items,
-		setHots: (state, items) => state.hots = items,
-		setCategory: (state, item) => state.category = item,
-	},
-};
-
 export default {
 	name: "IndexPage",
 	components: {
 		ArticlePreviewItem,
 		AsidePanel,
 	},
-	async asyncData ({ store, route, cancelToken, prototype, isServer }) {
-		store.registerModule("index", indexStoreModule);
-		return store.dispatch("index/fetchItem", { start: route.params.index, cancelToken, prototype, isServer });
+	async asyncData (session) {
+		const configuredApi = api
+			.withCancelToken(session.cancelToken)
+			.withPrototype(session.request);
+
+		const tasks = [
+			configuredApi.category.get(0).then(session.dataSetter("category"))
+		];
+
+		if (session.isServer) {
+			const routeParams = session.route.params;
+
+			tasks.push(configuredApi.article.getList({ start: routeParams.index, count: DEFAULT_PAGE_SIZE })
+				.then(session.dataSetter("items")));
+
+			tasks.push(configuredApi.article.getHots().then(session.dataSetter("hots")));
+		}
+
+		return Promise.all(tasks);
 	},
 	data () {
 		const data = {
@@ -104,7 +88,7 @@ export default {
 		};
 
 		// 预加载的文章只是第一页，后续还会加载更多所以放入data而不是计算属性。
-		const store = this.$store.state.index;
+		const store = this.$store.state.prefetch;
 		if (store.items) {
 			data.initArticles = store.items;
 			data.initNextUrl = nextPageUrl(this.$route, store.items.length);
@@ -113,7 +97,7 @@ export default {
 		return data;
 	},
 	computed: mapState({
-		category: state => state.index.category,
+		category: state => state.prefetch.category,
 	}),
 	methods: {
 		async loadPage (items, size) {
@@ -125,9 +109,6 @@ export default {
 			items.push.apply(items, loaded);
 			return nextPageUrl($route, items.length);
 		},
-	},
-	destroyed () {
-		this.$store.unregisterModule("index");
 	},
 };
 </script>

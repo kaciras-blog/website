@@ -44,25 +44,6 @@ import { articleLink } from "../../blog-plugin";
 import { scrollToElementStart } from "kx-ui";
 import ImageViewer from "./ImageViewer";
 
-const storeModule = {
-	namespaced: true,
-	state: () => ({
-		item: {},
-	}),
-	actions: {
-		fetchItem ({ commit }, { id, cancelToken, origin }) {
-			return api
-				.withPrototype(origin)
-				.withCancelToken(cancelToken)
-				.article.get(id)
-				.then(item => commit("setItem", item));
-		},
-	},
-	mutations: {
-		setItem: (state, item) => state.item = item,
-	},
-};
-
 export default {
 	name: "Article",
 	components: {
@@ -72,7 +53,7 @@ export default {
 	},
 	mixins: [TitleMixin],
 
-	title () {
+	title() {
 		return this.article.title;
 	},
 	/**
@@ -80,7 +61,7 @@ export default {
 	 *
 	 * @return {string} html文本
 	 */
-	metadata () {
+	metadata() {
 		const { keywords, summary, prev, next } = this.article;
 		let headers = `
 				<meta name="description" content="${escapeHtml(summary)}">
@@ -96,46 +77,42 @@ export default {
 	/**
 	 * 在路由切换前加载数据，并检查URL是否正确。
 	 *
-	 * @param store 全局状态存储
-	 * @param route 路由信息
-	 * @param cancelToken {CancelToken} 撤销令牌
-	 * @param prototype 原始请求，用于服务端渲染时Cookie，Header等穿透。
+	 * @param session 预加载会话
 	 * @return {Promise<void>} 指示加载状态的Promise
 	 */
-	async asyncData ({ store, route, cancelToken, prototype }) {
-		const { id, urlTitle } = route.params;
-		const module = store.state.article;
+	async asyncData(session) {
+		const { id, urlTitle } = session.route.params;
+		const { article } = session.store.state.prefetch;
 
-		if (module && module.item.id === parseInt(id)) {
-			return; // 重定向来的，文章已经加载过了，这里假定重定向后的urlTitle是正确的。
+		if (article && article.id === parseInt(id)) {
+			return; // 重定向来的，文章已经加载过了，这里假定重定向后的urlTitle一定是正确的。
 		}
 
-		store.registerModule("article", storeModule);
-		cancelToken.onCancel(() => store.unregisterModule("article"));
-		await store.dispatch("article/fetchItem", { id, cancelToken, prototype });
+		await api
+			.withPrototype(session.request)
+			.withCancelToken(session.cancelToken)
+			.article.get(id)
+			.then(session.dataSetter("article"));
 
 		// 检查URL中的标题，不正确则重定向到正确的URL
-		const correctUrlTitle = store.state.article.item.urlTitle;
+		const correctUrlTitle = session.data.article.urlTitle;
 		if (!urlTitle || urlTitle !== correctUrlTitle) {
 			throw { code: 301, location: `/article/${id}/${correctUrlTitle}` };
 		}
 	},
 	computed: {
-		...mapState({ article: state => state.article.item }),
+		...mapState({ article: state => state.prefetch.article }),
 	},
 	methods: {
-		gotoDiscuss () {
+		gotoDiscuss() {
 			scrollToElementStart(this.$refs.discussPanel.$el);
 		},
-		gotoTop () {
+		gotoTop() {
 			scrollToElementStart(document.documentElement);
 		},
-		enlargeImage (el) {
+		enlargeImage(el) {
 			this.$refs.imageViewer.show(el);
 		},
-	},
-	destroyed () {
-		this.$store.unregisterModule("article");
 	},
 };
 </script>

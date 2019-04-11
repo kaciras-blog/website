@@ -22,16 +22,6 @@ import api from "../../api";
 import TitleMixin from "../../title-mixin";
 import FamilySection from "./FamilySection";
 
-const storeModule = {
-	namespaced: true,
-	state: () => ({
-		item: {},
-	}),
-	mutations: {
-		setItem: (state, item) => state.item = item,
-	},
-};
-
 export default {
 	name: "CategoryPage",
 	mixins: [TitleMixin],
@@ -40,24 +30,20 @@ export default {
 		CategoryHeader,
 		CategoryBody,
 	},
-	asyncData ({ store, route, cancelToken, protorype }) {
-		store.registerModule("category", storeModule);
+	asyncData (session) {
 		return api
-			.withCancelToken(cancelToken)
-			.withPrototype(protorype)
+			.withCancelToken(session.cancelToken)
+			.withPrototype(session.request)
 			.category
-			.get(route.params.id, true)
-			.then(items => store.commit("category/setItem", items));
+			.get(session.route.params.id, true)
+			.then(session.dataSetter("item"));
 	},
 	title () {
 		return this.category.name;
 	},
 	computed: mapState({
-		category: state => state.category.item,
+		category: state => state.prefetch.item,
 	}),
-	destroyed () {
-		this.$store.unregisterModule("category");
-	},
 };
 </script>
 

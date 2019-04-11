@@ -32,7 +32,7 @@ import api from "../../api";
 export default {
 	name: "AsidePanel",
 	data () {
-		const store = this.$store.state.index;
+		const store = this.$store.state.prefetch;
 		if (store) {
 			return { hots: store.hots };
 		}

@@ -13,10 +13,18 @@
 
 <script>
 import BlogSection from "./BlogSection";
+import api from "../../api";
+import { attachRandomId } from "../../utils";
 
 export default {
 	name: "Welcome",
-	components: { BlogSection },
+	components: {
+		BlogSection,
+	},
+	asyncData(session) {
+		return api.recommend.swiper.get()
+			.then(slides => session.data.slides = slides.map(attachRandomId));
+	},
 };
 </script>
 

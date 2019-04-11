@@ -1,8 +1,30 @@
 import createApp from "./main";
 import { CancelToken } from "kx-ui";
 import Vue from "vue";
-import { REFRESH_USER } from "./store/types";
+import { REFRESH_USER, SET_PREFETCH_DATA } from "./store/types";
 
+
+class ServerPrefetchContext {
+
+	constructor(store, route, request) {
+		this.store = store;
+		this.route = route;
+		this.request = request;
+		this.data = {};
+	}
+
+	get cancelToken() {
+		return CancelToken.NEVER;
+	}
+
+	get isServer() {
+		return true;
+	}
+
+	dataSetter(name) {
+		return value => this.data[name] = value;
+	}
+}
 
 function onReadyAsync(router) {
 	return new Promise((resolve, reject) => router.onReady(resolve, reject));
@@ -31,20 +53,14 @@ export default async context => {
 		router.push("/error/" + 404);
 	}
 
-	const asyncContext = {
-		store: store,
-		route: router.currentRoute,
-		cancelToken: CancelToken.NEVER,
-		prototype: context.request,
-		isServer: true,
-	};
-
+	const session = new ServerPrefetchContext(store, router.currentRoute, context.request);
 	const componentTasks = matched
 		.filter(c => c.asyncData)
-		.map(c => c.asyncData(asyncContext));
+		.map(c => c.asyncData(session));
 
 	try {
 		await Promise.all(vuexTasks.concat(componentTasks));
+		store.commit(SET_PREFETCH_DATA, session.data);
 	} catch (e) {
 		switch (e.code) {
 			case 404:
