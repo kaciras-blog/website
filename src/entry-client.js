@@ -60,8 +60,8 @@ function handleError(err, next) {
 			break;
 		case 301:
 		case 302:
-			next(err.location);
-			break;
+			loadingIndicator.setSuccessful();
+			return next(err.location);
 		case 404:
 		case 410:
 			next({ path: "/error/" + err.code, replace: true });
