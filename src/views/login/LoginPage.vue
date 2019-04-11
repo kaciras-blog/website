@@ -1,3 +1,4 @@
+<!-- TODO: 这一版的设计以rem长度单位为主，对宽屏不友好，但由于我没有那么宽的屏幕来做调试，所以搞不了 -->
 <template>
 	<page-layout
 		view-id="login-view"

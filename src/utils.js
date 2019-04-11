@@ -79,7 +79,7 @@ export function attachRandomId(object) {
 	return object;
 }
 
-// 这段代码压缩之后嵌入在 index.template.html 里
+// 这段代码压缩之后嵌入在 index.template.html 里，用于检测不支持的浏览器
 // (function () {
 // 	function checkBrowserSupport() {
 // 		if(typeof window.CSS === "undefined") {

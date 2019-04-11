@@ -34,7 +34,7 @@
 	border-radius: 8px;
 	overflow: hidden;
 
-	// TODO: 取消链接样式应该挺常用的，能否提取
+	/* TODO: 取消链接样式应该挺常用的，能否提取 */
 	&:hover, &:focus, &:visited {
 		color: @color-text;
 		text-decoration: none;
