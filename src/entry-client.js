@@ -40,18 +40,20 @@ function prefetch(session, task, next) {
 	loadingIndicator.setComponentResolved();
 
 	task.then(() => {
-			if (!cancelToken.isCancelled) {
-				next();
-				store.commit(SET_PREFETCH_DATA, session.data);
-			}
-			loadingIndicator.setSuccessful();
-		})
-		.catch(err => handleError(err, next));
+		if (!cancelToken.isCancelled) {
+			next();
+			store.commit(SET_PREFETCH_DATA, session.data);
+		} else {
+			next(false);
+		}
+		loadingIndicator.setSuccessful();
+	})
+	.catch(err => handleError(err, next));
 }
 
 function handleError(err, next) {
 	if (cancelToken.isCancelled) {
-		return;
+		return next(false);
 	}
 	switch (err.code) {
 		case -1:
@@ -67,7 +69,6 @@ function handleError(err, next) {
 		default:
 			console.error(err);
 			next("/error/500");
-			break;
 	}
 	loadingIndicator.setError();
 }
@@ -99,9 +100,9 @@ Vue.mixin({
 		if (!this.$options.asyncData) {
 			return next();
 		}
-		const ctx = new ClientPrefetchContext(to, loadingIndicator.start());
-		const task = this.$options.asyncData(ctx);
-		prefetch(ctx, task, next);
+		cancelToken = loadingIndicator.start();
+		const ctx = new ClientPrefetchContext(to, cancelToken);
+		prefetch(ctx, this.$options.asyncData(ctx), next);
 	},
 });
 
@@ -121,25 +122,15 @@ function initAppAndRouterHook() {
 
 	// 在异步组件解析前就显示加载指示器
 	router.beforeEach((to, from, next) => {
-		next();
 		cancelToken = loadingIndicator.start();
+		next();
 	});
 
 	// 使用 router.beforeResolve()，以便确保所有异步组件都 resolve。
 	router.beforeResolve((to, from, next) => {
-		if (cancelToken.isCancelled) return;
-
-		// （这段是官网给的）我们只关心非预渲染的组件，所以我们对比它们，找出两个匹配列表的差异组件。
-		const matched = router.getMatchedComponents(to);
-		const previous = router.getMatchedComponents(from);
-		let diffed = false;
-		const activated = matched.filter((c, i) => diffed || (diffed = (previous[i] !== c)));
-		if (!activated.length) return;
-
-		const ctx = new ClientPrefetchContext(to, cancelToken);
-		const tasks = activated
-			.filter(c => c.asyncData)
-			.map(c => c.asyncData(ctx));
+		if (cancelToken.isCancelled) {
+			return next(false);
+		}
 
 		const nextWrapper = (...args) => {
 			if (to.meta.title) {
@@ -147,7 +138,23 @@ function initAppAndRouterHook() {
 			}
 			next(...args);
 		};
-		prefetch(ctx, tasks, nextWrapper);
+
+		// （这段是官网给的）我们只关心非预渲染的组件，所以我们对比它们，找出两个匹配列表的差异组件。
+		const matched = router.getMatchedComponents(to);
+		const previous = router.getMatchedComponents(from);
+		let diffed = false;
+		const activated = matched.filter((c, i) => diffed || (diffed = (previous[i] !== c)));
+
+		if (!activated.length) {
+			return nextWrapper();
+		}
+
+		const session = new ClientPrefetchContext(to, cancelToken);
+		const tasks = activated
+			.filter(c => c.asyncData)
+			.map(c => c.asyncData(session));
+
+		prefetch(session, tasks, nextWrapper);
 	});
 
 	vue.$mount("#app");
