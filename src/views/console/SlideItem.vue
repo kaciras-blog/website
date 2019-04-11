@@ -34,7 +34,7 @@
 				<input :class="$style.inputBox" v-model="item.slide.link"/>
 			</label>
 			<label>
-				<span class="minor-text">描述</span>
+				<span class="minor-text">描述（100字以内，太长不便于展示）</span>
 				<textarea
 					class="input"
 					:class="$style.inputBox"
@@ -128,8 +128,9 @@ textarea.inputBox {
 	position: relative;
 	overflow: hidden;
 	grid-row: ~"1/4";
-	width: 28rem;
-	height: 16rem;
+
+	width: 27vw;
+	height: 20vw;
 	cursor: pointer;
 
 	&:hover > .tip {
