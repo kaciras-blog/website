@@ -138,7 +138,10 @@ class NetworkFirstHandler extends FetchHandler {
 }
 
 /**
- * 缓存优先，并在后台更新。
+ * 缓存优先，后台更新。
+ *
+ * 该策略能够保证最快的速度且允许离线访问，同时也能够更新资源，但是在后台更新需要用户下一次访问才能生效，
+ * 通常可以给用户显示一个提示让其刷新页面。
  */
 class StaleWhileRevalidateHandler extends FetchHandler {
 
@@ -152,13 +155,13 @@ class StaleWhileRevalidateHandler extends FetchHandler {
 	async handle(event: FetchEvent) {
 		const cached = await caches.match(event.request);
 		if (cached) {
-			this.fetchAndCache(event).then(newResp => this.boradcastUpdate(cached, newResp));
+			this.fetchAndCache(event).then(newResp => this.broadcastUpdate(cached, newResp));
 			return cached;
 		}
 		return await this.fetchAndCache(event);
 	}
 
-	boradcastUpdate(cached: Response, newResp: Response) {
+	broadcastUpdate(cached: Response, newResp: Response) {
 		const { channel, cache } = this;
 		if (!channel) {
 			return;
@@ -168,11 +171,7 @@ class StaleWhileRevalidateHandler extends FetchHandler {
 				&& cached.headers.get(header) === newResp.headers.get(header);
 		});
 		if (!same) {
-			channel.postMessage({
-				type: "CACHE_UPDATE",
-				cacheName: cache.name,
-				updatedUrl: newResp.url,
-			});
+			channel.postMessage({ type: "CACHE_UPDATE", cacheName: cache.name, updatedUrl: newResp.url });
 		}
 	}
 }
