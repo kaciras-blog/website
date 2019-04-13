@@ -2,7 +2,7 @@
 	<section>
 
 		<header :class="$style.header">
-			<h1 :class="$style.title">全部文章</h1>
+			<h1 :class="$style.title">文章</h1>
 			<router-link
 				to="/list"
 				class="outline primary kx-btn">

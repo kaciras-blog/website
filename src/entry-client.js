@@ -2,7 +2,7 @@ import createApp from "./main";
 import Vue from "vue";
 import { CancelToken } from "kx-ui";
 import * as loadingIndicator from "./loading-indicator";
-import { SET_PREFETCH_DATA } from "./store/types";
+import { REFRESH_USER, SET_PREFETCH_DATA } from "./store/types";
 
 
 /* 生产模式下注册 ServiceWorker，开发模式禁用 */
@@ -16,6 +16,12 @@ if ("serviceWorker" in navigator) {
 			.then(regs => regs.forEach(reg => reg.unregister()))
 			.catch(() => console.error("Service worker failed to unregister."));
 	}
+
+
+	const channel = new BroadcastChannel("PWA-UPDATE");
+	channel.onmessage = (message) => {
+		console.log("Channel消息：", message);
+	};
 }
 
 // =================================== Client Data Prefetch ===================================
@@ -48,7 +54,7 @@ function prefetch(session, task, next) {
 		}
 		loadingIndicator.setSuccessful();
 	})
-	.catch(err => handleError(err, next));
+		.catch(err => handleError(err, next));
 }
 
 function handleError(err, next) {
@@ -108,6 +114,9 @@ Vue.mixin({
 
 const { vue, router, store } = createApp(window.__INITIAL_STATE__);
 
+if (typeof store.state.user === "undefined") {
+	store.dispatch(REFRESH_USER); // AppShell模式不会再服务端加载用户
+}
 
 /**
  * 导航前加载数据，在官方教程的基础上修改而来，增加了以下功能：
@@ -168,8 +177,8 @@ function initAppAndRouterHook() {
  * 路由 resolve 后执行，以便我们不会二次预取(double-fetch)已有的数据。
  */
 if (window.__INITIAL_STATE__) {
-	router.onReady(initAppAndRouterHook);
 	delete window.__INITIAL_STATE__;
+	router.onReady(initAppAndRouterHook);
 } else {
-	initAppAndRouterHook(); // 非服务端渲染，直接初始化
+	initAppAndRouterHook();
 }
