@@ -9,7 +9,7 @@ Vue.use(Vuex);
 export default function () {
 	return new Vuex.Store({
 		state: {
-			user: null, // 当前登录的用户，没登录为null
+			user: undefined, // 当前登录的用户，没登录为null
 			prefetch: {},
 		},
 		actions: {

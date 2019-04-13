@@ -42,17 +42,19 @@ declare const serviceWorkerOption: {
 
 const STATIC_CACHE_NAME = "StaticFiles";
 const proxyServer = new CacheProxyServer();
-proxyServer.registerFetchListener();
 
 
 async function initUserCode() {
 	const staticCache = await ManagedCache.create(STATIC_CACHE_NAME);
 	proxyServer.addRoute(new RegexRoute("/static/", staticCache.cacheFirst()));
-	proxyServer.addRoute(new RegexRoute("/image/", staticCache.cacheFirst()));
+	// proxyServer.addRoute(new RegexRoute("/image/", staticCache.cacheFirst()));
 
-	await staticCache.put("/app-shell.cache", await fetch("/?shellOnly=true"));
-	proxyServer.addRoute(new NavigateRoute(/[\s\S]+/, staticCache.staleWhileRevalidate("PWA-UPDATE")));
+	// proxyServer.addRoute(new NavigateRoute(/[\s\S]+/,
+	// 	staticCache.staleWhileRevalidate("PWA-UPDATE", "/?shellOnly=true")));
+
+	proxyServer.registerFetchListener();
 }
+
 
 /**
  * 安装事件，当新的 ServiceWorker 加载后将会调用，此时可能还有之前旧的ServiceWorker在运行。
@@ -74,6 +76,7 @@ self.addEventListener("install", (event: ExtendableEvent) => {
 	return self.skipWaiting();
 });
 
+
 /**
  * 激活事件，这个事件触发时表明当前ServiceWorker已经被使用。
  *
@@ -82,26 +85,25 @@ self.addEventListener("install", (event: ExtendableEvent) => {
 self.addEventListener("activate", (event: ExtendableEvent) => {
 	console.log("[ServiceWorker]: Activate!");
 
-	// 删除当前版本用不到的缓存，并启用导航预载
-	const init = async () => {
-		const keys = (await caches.keys()).filter(k => !cacheNames.has(k));
-		await Promise.all(keys.map(k => caches.delete(k)));
-	};
-
 	/*
-	 * 浏览器会停止没有相关页面打开的ServiceWorker以节约资源，那么对于导航请求来说可能此时ServiceWorker还没有从
-	 * 停止状态重新启动。如果ServiceWorker里有拦截请求的配置，那么导航请求必须等到ServiceWorker启动完成后才能发
-	 * 送以便其能够被拦截，这会导致导航请求多等待ServiceWorker启动的时间。
+	 * 浏览器会停止没有相关页面打开的ServiceWorker以节约资源，那么对于导航请求来说可能此时ServiceWorker还没有
+	 * 从停止状态重新启动。如果ServiceWorker里有拦截请求的配置，那么导航请求必须等到ServiceWorker启动完成后才
+	 * 能发送以便其能够被拦截，这会导致导航请求多等待ServiceWorker启动的时间。
 	 *
 	 * 通过打开导航预载，可以允许ServiceWorker未启动时就发送导航请求，与其启动过程并行执行，待ServiceWorker启动
 	 * 完成后再激活拦截事件，并行加载的导航请求使用 FetchEvent.preloadResponse 获取。
 	 *
-	 * 本站使用了AppShell缓存，不需要每次都从网络读取页面，故不适用此功能。
+	 * 如果使用了AppShell缓存，则不需要每次都从网络读取页面，不应开启该功能。
 	 */
-	// if (self.registration.navigationPreload) {
-	// 	event.waitUntil(self.registration.navigationPreload.enable());
-	// }
+	if (self.registration.navigationPreload) {
+		event.waitUntil(self.registration.navigationPreload.enable());
+	}
 
-	event.waitUntil(init());
+	// 删除当前版本用不到的缓存
+	event.waitUntil(async () => {
+		const keys = (await caches.keys()).filter(k => !cacheNames.has(k));
+		await Promise.all(keys.map(k => caches.delete(k)));
+	});
+
 	return self.clients.claim();
 });

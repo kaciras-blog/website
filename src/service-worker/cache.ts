@@ -78,12 +78,12 @@ export class ManagedCache {
 	}
 
 	// BroadcastChannel 可能不支持，不过我懒得管了
-	staleWhileRevalidate(channelName?: string) {
+	staleWhileRevalidate(channelName?: string, request?: RequestInfo) {
 		let channel;
 		if (channelName && "BroadcastChannel" in self) {
 			channel = new BroadcastChannel(channelName);
 		}
-		return new StaleWhileRevalidateHandler(this, channel);
+		return new StaleWhileRevalidateHandler(this, channel, request);
 	}
 
 	static async create(name: string, maxSize = undefined, maxAge = undefined) {
@@ -175,7 +175,7 @@ class StaleWhileRevalidateHandler extends FetchHandler {
 
 /**
  * 缓存优先。尝试从缓存里加载响应，如果缓存中没有则发送请求，并将成功的响应加入缓存。
- * 该策略适用于文件名中带 Hash 的请求。
+ * 适用于永不更新的资源，如带文件名带 HASH 的文件。
  */
 class CacheFirstHandler extends FetchHandler {
 
