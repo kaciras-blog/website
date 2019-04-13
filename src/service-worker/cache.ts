@@ -2,7 +2,7 @@ declare const self: ServiceWorkerGlobalScope;
 
 import { AsyncIndexedDB } from "./asyncdb";
 
-const EXPRIATION_STORE_NAME = "cache-expiration";
+const EXPIATION_STORE_NAME = "cache-expiration";
 const URL_KEY = "url";
 const TIMESTAMP_KEY = "time";
 
@@ -42,7 +42,7 @@ export class ManagedCache {
 	 */
 	private static updateExpireStore(event: any) {
 		const db = event.target.result;
-		db.createObjectStore(EXPRIATION_STORE_NAME, { keyPath: URL_KEY })
+		db.createObjectStore(EXPIATION_STORE_NAME, { keyPath: URL_KEY })
 			.createIndex(TIMESTAMP_KEY, TIMESTAMP_KEY, { unique: false });
 	}
 
@@ -54,13 +54,13 @@ export class ManagedCache {
 		const timePeriod = maxAge ? Date.now() - maxAge * 1000 : 0;
 		let count = 0;
 
-		await db.withCursor(EXPRIATION_STORE_NAME, { index: TIMESTAMP_KEY }, async cursor => {
+		await db.withCursor(EXPIATION_STORE_NAME, { index: TIMESTAMP_KEY }, async cursor => {
 			const value = cursor.value;
 
 			if (count < sizeLimit && value[TIMESTAMP_KEY] > timePeriod) {
 				count++;
 			} else {
-				await db.delete(EXPRIATION_STORE_NAME, value.url);
+				await db.delete(EXPIATION_STORE_NAME, value.url);
 				await cache.delete(value.url);
 			}
 			cursor.continue();
@@ -77,6 +77,7 @@ export class ManagedCache {
 		return new CacheFirstHandler(this);
 	}
 
+	// BroadcastChannel 可能不支持，不过我懒得管了
 	staleWhileRevalidate(channelName?: string) {
 		let channel;
 		if (channelName && "BroadcastChannel" in self) {
@@ -101,16 +102,9 @@ export abstract class FetchHandler {
 		this.cache = cache;
 	}
 
-	protected async fetchAndCache(event: FetchEvent) {
-		const { request, preloadResponse } = event;
-
-		let response = preloadResponse && await preloadResponse;
-		if (response) {
-			return response; // Shell 依赖于预加载缓存
-		}
-
-		response = await fetch(request, { cache: "no-store" });
-		if (response.status >= 200 && response.status < 400) {
+	protected async fetchAndCache(request: RequestInfo) {
+		const response = await fetch(request, { cache: "no-store" });
+		if (response.status == 200) {
 			await this.cache.put(request, response);
 		}
 		return response;
@@ -126,7 +120,7 @@ class NetworkFirstHandler extends FetchHandler {
 
 	async handle(event: FetchEvent) {
 		try {
-			return await this.fetchAndCache(event);
+			return await this.fetchAndCache(event.request);
 		} catch (err) {
 			const cached = await caches.match(event.request);
 			if (cached) {
@@ -146,19 +140,22 @@ class NetworkFirstHandler extends FetchHandler {
 class StaleWhileRevalidateHandler extends FetchHandler {
 
 	private readonly channel?: BroadcastChannel;
+	private readonly request?: RequestInfo;
 
-	constructor(cache: ManagedCache, channel?: BroadcastChannel) {
+	constructor(cache: ManagedCache, channel?: BroadcastChannel, request?: RequestInfo) {
 		super(cache);
 		this.channel = channel;
+		this.request = request;
 	}
 
 	async handle(event: FetchEvent) {
-		const cached = await caches.match(event.request);
+		const request = this.request || event.request;
+		const cached = await caches.match(request);
 		if (cached) {
-			this.fetchAndCache(event).then(newResp => this.broadcastUpdate(cached, newResp));
+			this.fetchAndCache(request).then(newResp => this.broadcastUpdate(cached, newResp));
 			return cached;
 		}
-		return await this.fetchAndCache(event);
+		return await this.fetchAndCache(request);
 	}
 
 	broadcastUpdate(cached: Response, newResp: Response) {
@@ -183,12 +180,10 @@ class StaleWhileRevalidateHandler extends FetchHandler {
 class CacheFirstHandler extends FetchHandler {
 
 	async handle(event: FetchEvent) {
-		// 如果请求的资源已被缓存，则直接返回
 		const cached = await caches.match(event.request);
 		if (cached) {
 			return cached;
 		}
-		// 没有，则发起请求并缓存结果
-		return await this.fetchAndCache(event);
+		return await this.fetchAndCache(event.request);
 	}
 }
