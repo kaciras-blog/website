@@ -129,10 +129,19 @@ function initAppAndRouterHook() {
 	// 切换视图后应该关掉所有弹窗
 	router.afterEach(() => vue.$dialog.clear());
 
-	// 在异步组件解析前就显示加载指示器
+	// 在异步组件解析前就显示加载指示器，在仅 hash 变化的情况下中止路由
 	router.beforeEach((to, from, next) => {
+		const fPath = from.fullPath, tPath = to.fullPath;
+		const fi = fPath.indexOf("#"), ti = tPath.indexOf("#");
+		if (ti === fi) {
+			const fpb = fi < 0 ? fPath : fPath.substring(0, fi);
+			const tpb = ti < 0 ? tPath : tPath.substring(0, ti);
+			if(fpb === tpb) {
+				return next(false);
+			}
+		}
 		cancelToken = loadingIndicator.start();
-		next();
+		return next();
 	});
 
 	// 使用 router.beforeResolve()，以便确保所有异步组件都 resolve。
