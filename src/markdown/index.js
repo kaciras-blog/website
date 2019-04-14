@@ -6,6 +6,9 @@ import hljs from "highlight.js";
 import Anchor from "markdown-it-anchor";
 import lazyImage from "markdown-it-lazy-image";
 import lozad from "lozad";
+import loadingImage from "../assets/img/loading.gif";
+import katex from "@iktakahiro/markdown-it-katex";
+import tableOfContent from "markdown-it-toc-done-right";
 
 
 function myPlugin (markdownIt) {
@@ -30,15 +33,15 @@ export const convertor = new MarkdownIt({
 	},
 });
 
-
 convertor.use(Anchor, {
 	permalink: true,
 	permalinkClass: "fas fa-link header-anchor",
 	permalinkSymbol: "",
 });
-convertor.use(lazyImage);
+convertor.use(tableOfContent);
+convertor.use(katex);
+convertor.use(lazyImage, { placeholder: loadingImage });
 convertor.use(myPlugin);
-
 
 export default {
 	install (Vue) {
