@@ -25,8 +25,23 @@ export class CacheProxyServer {
 		return this;
 	}
 
-	private handleFetchEvent(event: FetchEvent) {
+	handleFetchEvent(event: FetchEvent) {
 		const { request } = event;
+
+		self.clients.matchAll({ type: "window" })
+			.then(windows => windows.forEach(win => win.postMessage("test!!!")));
+
+		// TODO: temp
+		if (event.request.mode === "navigate") {
+			const requestNavigateRequest = async () => {
+				const preloadResponse = await event.preloadResponse;
+				if (preloadResponse) {
+					return preloadResponse;
+				}
+				return await fetch(event.request);
+			};
+			event.respondWith(requestNavigateRequest());
+		}
 
 		if (request.method !== "GET") {
 			return; // 仅缓存没有副作用的GET请求
@@ -37,13 +52,6 @@ export class CacheProxyServer {
 				return event.respondWith(route.handler.handle(event));
 			}
 		}
-	}
-
-	/**
-	 * 注册抓取事件，这个方法只能在最外层调用。
-	 */
-	registerFetchListener() {
-		self.addEventListener('fetch', (event: FetchEvent) => this.handleFetchEvent(event));
 	}
 }
 
@@ -68,16 +76,17 @@ export class RegexRoute {
 		if (!pattern.test(request.url)) {
 			return false;
 		}
-		return blacklist.every(v => !v.test(request.url));
+		return !blacklist.some(v => v.test(request.url));
 	}
 }
 
 export class NavigateRoute extends RegexRoute {
 
+	constructor(handler: FetchHandler) {
+		super("", handler);
+	}
+
 	match(request: Request) {
-		if (request.mode !== "navigate") {
-			return false;
-		}
-		return super.match(request);
+		return request.mode === "navigate";
 	}
 }

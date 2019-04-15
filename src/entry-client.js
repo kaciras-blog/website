@@ -3,28 +3,8 @@ import Vue from "vue";
 import { CancelToken } from "kx-ui";
 import * as loadingIndicator from "./loading-indicator";
 import { REFRESH_USER, SET_PREFETCH_DATA } from "./store/types";
+import "./serviceWorker";
 
-
-/* 生产模式下注册 ServiceWorker，开发模式禁用 */
-if ("serviceWorker" in navigator) {
-	if (process.env.NODE_ENV === "production") {
-		navigator.serviceWorker.register("/sw.js")
-			.then(() => console.log("Service worker registered successfully."))
-			.catch((err) => console.error("Service worker failed to register:", err));
-	} else {
-		navigator.serviceWorker.getRegistrations()
-			.then(regs => regs.forEach(reg => reg.unregister()))
-			.catch(() => console.error("Service worker failed to unregister."));
-	}
-
-
-	const channel = new BroadcastChannel("PWA-UPDATE");
-	channel.onmessage = (message) => {
-		console.log("Channel消息：", message);
-	};
-}
-
-// =================================== Client Data Prefetch ===================================
 
 let cancelToken = CancelToken.NEVER;
 
@@ -87,11 +67,11 @@ class ClientPrefetchContext {
 		this.data = {};
 	}
 
-	get store() {
+	static get store() {
 		return store;
 	}
 
-	get isServer() {
+	static get isServer() {
 		return false;
 	}
 

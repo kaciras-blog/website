@@ -167,8 +167,16 @@ class StaleWhileRevalidateHandler extends FetchHandler {
 			return cached.headers.has(header) === newResp.headers.has(header)
 				&& cached.headers.get(header) === newResp.headers.get(header);
 		});
-		if (!same) {
-			channel.postMessage({ type: "CACHE_UPDATE", cacheName: cache.name, updatedUrl: newResp.url });
+
+		if (same) {
+			return;
+		}
+		const message = { type: "CACHE_UPDATE", cacheName: cache.name, updatedUrl: newResp.url };
+		if(channel) {
+			channel.postMessage(message);
+		} else {
+			self.clients.matchAll({ type: "window" })
+				.then(windows => windows.forEach(win => win.postMessage(message)));
 		}
 	}
 }

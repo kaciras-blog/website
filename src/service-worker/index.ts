@@ -49,12 +49,10 @@ async function initUserCode() {
 	proxyServer.addRoute(new RegexRoute("/static/", staticCache.cacheFirst()));
 	// proxyServer.addRoute(new RegexRoute("/image/", staticCache.cacheFirst()));
 
-	// proxyServer.addRoute(new NavigateRoute(/[\s\S]+/,
-	// 	staticCache.staleWhileRevalidate("PWA-UPDATE", "/?shellOnly=true")));
-
-	proxyServer.registerFetchListener();
+	// proxyServer.addRoute(new NavigateRoute(staticCache.staleWhileRevalidate("PWA-UPDATE", "/?shellOnly=true")));
 }
 
+self.addEventListener('fetch', proxyServer.handleFetchEvent.bind(proxyServer));
 
 /**
  * 安装事件，当新的 ServiceWorker 加载后将会调用，此时可能还有之前旧的ServiceWorker在运行。
