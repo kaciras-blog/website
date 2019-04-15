@@ -118,6 +118,25 @@ if (typeof store.state.user === "undefined") {
 	store.dispatch(REFRESH_USER); // AppShell模式不会再服务端加载用户
 }
 
+
+/**
+ * 检查两个路由是否仅仅是 HASH 不同而 URL 的其它部分是一样的。
+ *
+ * @param to 路由记录
+ * @param from 路由记录
+ * @return {boolean} 两个路由除了HASH部分外是否一样
+ */
+function isOnlyHashChange(to, from) {
+	const fPath = from.fullPath, tPath = to.fullPath;
+	const fi = fPath.indexOf("#"), ti = tPath.indexOf("#");
+	if (ti !== fi) {
+		const fpb = fi < 0 ? fPath : fPath.substring(0, fi);
+		const tpb = ti < 0 ? tPath : tPath.substring(0, ti);
+		return fpb === tpb;
+	}
+	return false;
+}
+
 /**
  * 导航前加载数据，在官方教程的基础上修改而来，增加了以下功能：
  *   1.在异步组件解析前就显示加载指示器，让过渡更顺畅。
@@ -129,16 +148,15 @@ function initAppAndRouterHook() {
 	// 切换视图后应该关掉所有弹窗
 	router.afterEach(() => vue.$dialog.clear());
 
-	// 在异步组件解析前就显示加载指示器，在仅 hash 变化的情况下中止路由
+	/**
+	 * 相比于官网示例，这里把加载指示器提前到 beforeEach 钩子，以便在异步组件下载前就开始加载提示。
+	 *
+	 * 另外，文章页面有 Markdown 生成的标题跳转链接，这些链接都是页内跳转不需要走预加载流程，所以
+	 * 这里检查下是否仅 HASH 变化，如果是则跳过预载流程。
+	 */
 	router.beforeEach((to, from, next) => {
-		const fPath = from.fullPath, tPath = to.fullPath;
-		const fi = fPath.indexOf("#"), ti = tPath.indexOf("#");
-		if (ti === fi) {
-			const fpb = fi < 0 ? fPath : fPath.substring(0, fi);
-			const tpb = ti < 0 ? tPath : tPath.substring(0, ti);
-			if(fpb === tpb) {
-				return next(false);
-			}
+		if (isOnlyHashChange(to, from)) {
+			return next(false);
 		}
 		cancelToken = loadingIndicator.start();
 		return next();

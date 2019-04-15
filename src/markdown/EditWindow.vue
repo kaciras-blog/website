@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import kxMarkdown, { convertor } from "./index";
+import kxMarkdown, { converter } from "./index";
 
 
 export default {
@@ -68,7 +68,7 @@ export default {
 	computed: {
 		htmlText () {
 			this.$nextTick(kxMarkdown.afterConvert);
-			return convertor.render(this.text);
+			return converter.render(this.text);
 		},
 	},
 	methods: {

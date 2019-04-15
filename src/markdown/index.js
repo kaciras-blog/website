@@ -21,31 +21,34 @@ function myPlugin (markdownIt) {
 			.forEach(child => child.attrs = [["class", "inline-code"]])));
 }
 
-export const convertor = new MarkdownIt({
+export const converter = new MarkdownIt({
 	highlight: function (str, lang) {
 		let result;
 		if (lang && hljs.getLanguage(lang)) {
 			result = hljs.highlight(lang, str).value;
 		} else {
-			result = convertor.utils.escapeHtml(str);
+			result = converter.utils.escapeHtml(str);
 		}
 		return "<pre class='hljs'><code>" + result + "</code></pre>";
 	},
 });
 
-convertor.use(Anchor, {
+// NOTICE: 由 Markdown 渲染的标题链接会触发 Vue-Router 的路由流程，需要在路由钩子里做检查以跳过预载，
+//		   具体见 entry-client.js 中的 router.beforeEach 钩子。
+converter.use(Anchor, {
 	permalink: true,
 	permalinkClass: "fas fa-link header-anchor",
 	permalinkSymbol: "",
 });
-convertor.use(tableOfContent);
-convertor.use(katex);
-convertor.use(lazyImage, { placeholder: loadingImage });
-convertor.use(myPlugin);
+converter.use(tableOfContent);
+converter.use(katex);
+converter.use(lazyImage, { placeholder: loadingImage });
+converter.use(myPlugin);
+
 
 export default {
 	install (Vue) {
-		Vue.filter("markdownToHtml", text => convertor.render(text));
+		Vue.filter("markdownToHtml", text => converter.render(text));
 	},
 	/**
 	 * 添加一些额外的交互状态，只能在浏览器端调用。
@@ -62,6 +65,6 @@ export default {
 		lozad(images).observe();
 	},
 	renderHtml (text) {
-		return convertor.render(text);
+		return converter.render(text);
 	},
 };

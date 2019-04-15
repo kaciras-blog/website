@@ -3524,11 +3524,6 @@ markdown-it-lazy-image@^0.0.1:
   resolved "https://registry.yarnpkg.com/markdown-it-lazy-image/-/markdown-it-lazy-image-0.0.1.tgz#11a6f7601121d1567ea6c55c4528a3d99deffaa3"
   integrity sha512-yQzlPDDmoWBQqoR4xevK73xMoE68DtL/GaxpAwFoz3nTIu1W7aP5n89Q1xE5e0U62r5N3Bv1KIJqwweOndyF/g==
 
-markdown-it-table-of-contents@^0.4.4:
-  version "0.4.4"
-  resolved "https://registry.yarnpkg.com/markdown-it-table-of-contents/-/markdown-it-table-of-contents-0.4.4.tgz#3dc7ce8b8fc17e5981c77cc398d1782319f37fbc"
-  integrity sha512-TAIHTHPwa9+ltKvKPWulm/beozQU41Ab+FIefRaQV1NRnpzwcV9QOe6wXQS5WLivm5Q/nlo0rl6laGkMDZE7Gw==
-
 markdown-it-toc-done-right@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/markdown-it-toc-done-right/-/markdown-it-toc-done-right-3.0.1.tgz#a262e2703a85e12b0d8b6faecf07f6db4a778674"
