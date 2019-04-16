@@ -67,11 +67,11 @@ class ClientPrefetchContext {
 		this.data = {};
 	}
 
-	static get store() {
+	get store() {
 		return store;
 	}
 
-	static get isServer() {
+	get isServer() {
 		return false;
 	}
 
