@@ -28,16 +28,16 @@ export class CacheProxyServer {
 		const { request } = event;
 
 		// TODO: temp
-		if (event.request.mode === "navigate") {
-			const requestNavigateRequest = async () => {
-				const preloadResponse = await event.preloadResponse;
-				if (preloadResponse) {
-					return preloadResponse;
-				}
-				return await fetch(event.request);
-			};
-			event.respondWith(requestNavigateRequest());
-		}
+		// if (event.request.mode === "navigate") {
+		// 	const requestNavigateRequest = async () => {
+		// 		const preloadResponse = await event.preloadResponse;
+		// 		if (preloadResponse) {
+		// 			return preloadResponse;
+		// 		}
+		// 		return await fetch(event.request);
+		// 	};
+		// 	event.respondWith(requestNavigateRequest());
+		// }
 
 		if (request.method !== "GET") {
 			return; // 仅缓存没有副作用的GET请求
@@ -54,7 +54,6 @@ export class CacheProxyServer {
 
 export interface Route {
 	match(request: Request): boolean;
-
 	handle(event: FetchEvent): void;
 }
 
@@ -89,7 +88,7 @@ export class RegexRoute implements Route {
 
 export class AppShellRoute implements Route {
 
-	private readonly handler: RequestHandler;
+	private readonly handler: StaleWhileRevalidateHandler;
 	private readonly path: string;
 
 	constructor(cache: ManagedCache, path: string) {

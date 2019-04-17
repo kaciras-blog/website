@@ -14,13 +14,16 @@ declare const serviceWorkerOption: {
 };
 
 const STATIC_CACHE_NAME = "Static";
+const APP_SHELL_NAME = "/app-shell.html";
 const proxyServer = new CacheProxyServer();
 
 
 async function initUserCode() {
 	const cache = await ManagedCache.create(STATIC_CACHE_NAME);
-	proxyServer.addRoute(new AppShellRoute(cache, "/app-shell.html"));
 	proxyServer.addRoute(new RegexRoute("/static/", new CacheFirstHandler(cache)));
+
+	await cache.put(APP_SHELL_NAME, await fetch(APP_SHELL_NAME));
+	proxyServer.addRoute(new AppShellRoute(cache, APP_SHELL_NAME));
 }
 
 self.addEventListener('fetch', proxyServer.handleFetchEvent.bind(proxyServer));
@@ -43,7 +46,6 @@ self.addEventListener("install", (event: ExtendableEvent) => {
 	return self.skipWaiting();
 });
 
-
 /**
  * 激活事件，这个事件触发时表明当前ServiceWorker已经被使用。
  *
@@ -62,9 +64,10 @@ self.addEventListener("activate", (event: ExtendableEvent) => {
 	 *
 	 * 如果使用了 AppShell 模式，则不需要每次都从网络读取页面，不应开启该功能。
 	 */
-	// if (self.registration.navigationPreload) {
-	// 	event.waitUntil(self.registration.navigationPreload.enable());
-	// }
+	if (self.registration.navigationPreload) {
+		// event.waitUntil(self.registration.navigationPreload.enable());
+		event.waitUntil(self.registration.navigationPreload.disable());
+	}
 
 	// 删除当前版本用不到的缓存
 	event.waitUntil(async () => {
