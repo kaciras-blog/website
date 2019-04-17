@@ -1,7 +1,11 @@
 <template functional>
 	<li :class="$style.listItem">
 		<router-link :to="props.link" :class="$style.card">
-			<img :src="props.picture" alt="封面" :class="$style.image">
+
+			<img :src="props.picture"
+				 alt="封面"
+				 :class="$style.image">
+
 			<div :class="$style.content">
 				<h2 :class="$style.title">{{props.name}}</h2>
 				{{props.description}}

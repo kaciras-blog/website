@@ -5,10 +5,8 @@ import TopProgressBar from "./components/TopProgressBar";
 import Vue from "vue";
 import { CancelToken } from "kx-ui";
 
-
 const topProgressBar = new Vue(TopProgressBar).$mount();
 document.body.appendChild(topProgressBar.$el);
-
 
 let cancelToken = CancelToken.NEVER;
 let fetching = false;
@@ -26,7 +24,7 @@ export function start() {
 	return cancelToken;
 }
 
-export function setComponentResolved() {
+export function componentResolved() {
 	topProgressBar.setProgress(70);
 	fetching = true;
 }

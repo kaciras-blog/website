@@ -23,7 +23,7 @@ function prefetch(session, task, next) {
 		task = Promise.all(task);
 	}
 
-	loadingIndicator.setComponentResolved();
+	loadingIndicator.componentResolved();
 
 	task.then(() => {
 		if (!cancelToken.isCancelled) {

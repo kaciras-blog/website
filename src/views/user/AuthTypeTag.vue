@@ -1,18 +1,6 @@
-<template>
-	<span :class="[$style.authTag, $style[authType]]" title="登录类型">{{authType}}</span>
+<template functional>
+	<span :class="[$style.authTag, $style[props.authType]]" title="登录类型">{{props.authType}}</span>
 </template>
-
-<script>
-export default {
-	name: "AuthTypeTag",
-	props: {
-		authType: {
-			type: String,
-			required: true,
-		},
-	},
-};
-</script>
 
 <style module lang="less">
 .authTag {
