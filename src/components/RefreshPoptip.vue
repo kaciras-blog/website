@@ -1,5 +1,5 @@
 <template>
-	<div :class="$style.container">
+	<div>
 		该页面有更新，请
 		<a class="hd-link" @click="refresh">刷新查看</a>
 	</div>
@@ -13,12 +13,3 @@ export default {
 	},
 };
 </script>
-
-<style module lang="less">
-.container {
-	padding: 8px 12px;
-	border-radius: 5px;
-	background-color: #222;
-	color: white;
-}
-</style>

@@ -5,6 +5,7 @@
 			v-for="v of stack"
 			:is="v.component"
 			:key="v.randomId"
+			:class="$style.poptipDefault"
 			v-bind="v.props"
 			v-on="v.listeners"/>
 	</div>
@@ -22,7 +23,14 @@ export default {
 		add(component, props, listeners) {
 			const randomId = Math.random();
 			this.stack.push({ randomId, component, props, listeners });
-			return () => deleteOn(this.stack, item => item.randomId === randomId);
+			return randomId;
+		},
+		close(id) {
+			deleteOn(this.stack, item => item.randomId === id);
+		},
+		setState(id, props) {
+			const i = this.stack.findIndex(item => item.randomId === id);
+			this.stack[i].props = props;
 		},
 	},
 };
@@ -38,5 +46,12 @@ export default {
 
 	display: flex;
 	flex-direction: column-reverse;
+}
+
+.poptipDefault {
+	padding: 8px 12px;
+	border-radius: 5px;
+	background-color: #222;
+	color: white;
 }
 </style>

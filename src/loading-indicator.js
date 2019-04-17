@@ -16,8 +16,8 @@ document.body.appendChild(poptipContainer.$el);
 
 
 let cancelToken = CancelToken.NEVER;
+let poptip = null;
 let fetching = false;
-let closePoptip = null;
 
 /** 取消上一个 CancelToken，然后初始化一个新的 */
 export function start() {
@@ -29,10 +29,10 @@ export function start() {
 
 	cancelToken = CancelToken.timeout(10_000);
 	cancelToken.onCancel(() => {
-		closePoptip();
 		topProgressBar.reset();
+		poptipContainer.close(poptip);
 	});
-	closePoptip = poptipContainer.add(NavigatePoptip, { state: 1 }, { cancel: () => closePoptip() });
+	poptip = poptipContainer.add(NavigatePoptip, { state: 1 }, { cancel: () => poptipContainer.close(poptip) });
 	return cancelToken;
 }
 
@@ -47,8 +47,8 @@ export function setError() {
 }
 
 export function setSuccessful() {
-	closePoptip();
 	topProgressBar.finish();
+	poptipContainer.close(poptip);
 	fetching = false;
 }
 

@@ -1,5 +1,5 @@
 <template>
-	<div :class="$style.container">
+	<div>
 		<template v-if="state === 1">
 			页面正在加载，按ESC可以
 			<a class="hd-link" @click="$emit('cancel')">取消</a>
@@ -22,14 +22,3 @@ export default {
 	},
 };
 </script>
-
-<style module lang="less">
-@import "../css/Imports";
-
-.container {
-	padding: 8px 12px;
-	border-radius: 5px;
-	background-color: #222;
-	color: white;
-}
-</style>

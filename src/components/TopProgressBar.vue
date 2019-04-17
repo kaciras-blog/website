@@ -39,10 +39,11 @@ export default {
 			this.progress = percent;
 		},
 
-		/** 重置进度为0并且不显示的状态，该过程是立即的没有动画 */
+		/** 重置到进度为0并且不显示的状态，该过程是立即的没有动画 */
 		reset() {
 			this.transition = false;
 			this.progress = 0;
+			this.visible = false;
 			this.$nextTick(() => this.transition = true);
 		},
 		finish() {
