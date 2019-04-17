@@ -39,6 +39,7 @@ const DEFAULT_PAGE_SIZE = 16;
 
 /**
  * 根据路由和当前加载的文章数来构造下一页的URL。
+ *
  * @param route 路由信息对象
  * @param count 加载的文章数
  * @return 指向下一页的URL，相对路径

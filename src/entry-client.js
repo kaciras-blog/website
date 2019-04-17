@@ -95,7 +95,7 @@ Vue.mixin({
 const { vue, router, store } = createApp(window.__INITIAL_STATE__);
 
 if (typeof store.state.user === "undefined") {
-	store.dispatch(REFRESH_USER); // AppShell模式不会再服务端加载用户
+	store.dispatch(REFRESH_USER); // AppShell 模式不会再服务端加载用户
 }
 
 
