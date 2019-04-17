@@ -2,7 +2,7 @@
  * 虽然 ServiceWorker 对 Edge 版本要求比 CSS Grid 更高，但这是一项非必需的功能，即便没有 PWA 网页也能正常运行。
  */
 import { cacheNames, ManagedCache } from "./cache";
-import { CacheProxyServer, AppShellRoute, RegexRoute } from "./router";
+import { RouteService, AppShellRoute, RegexRoute } from "./router";
 import { CacheFirstHandler } from "./cache-strategy";
 
 // 默认是WebWorker，需要声明一下ServiceWorker，其他文件里也一样。
@@ -15,18 +15,18 @@ declare const serviceWorkerOption: {
 
 const STATIC_CACHE_NAME = "Static";
 const APP_SHELL_NAME = "/app-shell.html";
-const proxyServer = new CacheProxyServer();
+const routeService = new RouteService();
 
 
 async function initUserCode() {
 	const cache = await ManagedCache.create(STATIC_CACHE_NAME);
-	proxyServer.addRoute(new RegexRoute("/static/", new CacheFirstHandler(cache)));
+	routeService.addRoute(new RegexRoute("/static/", new CacheFirstHandler(cache)));
 
 	await cache.put(APP_SHELL_NAME, await fetch(APP_SHELL_NAME));
-	proxyServer.addRoute(new AppShellRoute(cache, APP_SHELL_NAME));
+	routeService.addRoute(new AppShellRoute(cache, APP_SHELL_NAME));
 }
 
-self.addEventListener('fetch', proxyServer.handleFetchEvent.bind(proxyServer));
+self.addEventListener('fetch', routeService.handleFetchEvent.bind(routeService));
 
 /**
  * 安装事件，当新的 ServiceWorker 加载后将会调用，此时可能还有之前旧的ServiceWorker在运行。
@@ -52,7 +52,7 @@ self.addEventListener("install", (event: ExtendableEvent) => {
  * 在这个事件里应当清理旧版的缓存。
  */
 self.addEventListener("activate", (event: ExtendableEvent) => {
-	// console.log("[ServiceWorker]: Activate!");
+	console.log("[ServiceWorker]: Activate");
 
 	/*
 	 * 浏览器会停止没有相关页面打开的ServiceWorker以节约资源，那么对于导航请求来说可能此时ServiceWorker还没有

@@ -24,7 +24,7 @@ function register() {
 		} else {
 			navigator.serviceWorker.onmessage = (message) => console.log("直接消息：", message);
 		}
-		console.log("Service worker registered successfully!");
+		console.log("Service worker registered successfully.");
 	}
 
 	// 等到 window.load 事件时再注册，以免 ServiceWorker 里加载的资源占用首屏宽带
@@ -37,7 +37,7 @@ function register() {
 
 
 /**
- * 注销 ServiceWorker，没有检查每个 ServiceWorker 是否都注销完成，因为就算注销失败也没有什么办法处理。
+ * 注销 ServiceWorker，没有检查 ServiceWorker 是否注销完成，因为就算注销失败也没有什么办法处理。
  */
 function unregister() {
 	navigator.serviceWorker.getRegistrations()
