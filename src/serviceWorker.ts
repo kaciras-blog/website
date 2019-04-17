@@ -1,3 +1,5 @@
+import { UPDATE_CHANNEL_NAME } from "./service-worker/cache";
+
 // 也就用一个 process 而已，就不引入 node 的类型定义了
 declare const process: {
 	env: {
@@ -16,14 +18,13 @@ function register() {
 	}
 
 	function afterRegister() {
+		if ("BroadcastChannel" in window) {
+			const channel = new BroadcastChannel(UPDATE_CHANNEL_NAME);
+			channel.onmessage = (message) => console.log("Channel消息：", message);
+		} else {
+			navigator.serviceWorker.onmessage = (message) => console.log("直接消息：", message);
+		}
 		console.log("Service worker registered successfully!");
-		const channel = new BroadcastChannel("PWA-UPDATE");
-		channel.onmessage = (message) => {
-			console.log("Channel消息：", message);
-		};
-		navigator.serviceWorker.onmessage = (message) => {
-			console.log("直接消息：", message);
-		};
 	}
 
 	// 等到 window.load 事件时再注册，以免 ServiceWorker 里加载的资源占用首屏宽带

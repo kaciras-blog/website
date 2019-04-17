@@ -91,11 +91,11 @@ self.addEventListener("activate", (event: ExtendableEvent) => {
 	 * 通过打开导航预载，可以允许ServiceWorker未启动时就发送导航请求，与其启动过程并行执行，待ServiceWorker启动
 	 * 完成后再激活拦截事件，并行加载的导航请求使用 FetchEvent.preloadResponse 获取。
 	 *
-	 * 如果使用了AppShell缓存，则不需要每次都从网络读取页面，不应开启该功能。
+	 * 如果使用了 AppShell 模式，则不需要每次都从网络读取页面，不应开启该功能。
 	 */
-	if (self.registration.navigationPreload) {
-		event.waitUntil(self.registration.navigationPreload.enable());
-	}
+	// if (self.registration.navigationPreload) {
+	// 	event.waitUntil(self.registration.navigationPreload.enable());
+	// }
 
 	// 删除当前版本用不到的缓存
 	event.waitUntil(async () => {

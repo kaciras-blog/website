@@ -1,4 +1,5 @@
 declare const self: ServiceWorkerGlobalScope;
+type FetchFunction = typeof fetch;
 
 import { AsyncIndexedDB } from "./asyncdb";
 
@@ -6,7 +7,26 @@ const EXPIATION_STORE_NAME = "cache-expiration";
 const URL_KEY = "url";
 const TIMESTAMP_KEY = "time";
 
+export const UPDATE_CHANNEL_NAME = "PWA-UPDATE";
+
 export const cacheNames = new Set<string>();
+
+
+// TODO: 目前只有一种消息，所以直接搞个全局信道
+let broadcastChannel: BroadcastChannel;
+if ("BroadcastChannel" in self) {
+	broadcastChannel = new BroadcastChannel(UPDATE_CHANNEL_NAME);
+}
+
+function broadcastMessage(message: any) {
+	if (broadcastChannel) {
+		broadcastChannel.postMessage(message);
+	} else {
+		self.clients.matchAll({ type: "window" })
+			.then(windows => windows.forEach(win => win.postMessage(message)));
+	}
+}
+
 
 /**
  * 对缓存的封装，增加了过期功能。
@@ -78,12 +98,8 @@ export class ManagedCache {
 	}
 
 	// BroadcastChannel 可能不支持，不过我懒得管了
-	staleWhileRevalidate(channelName?: string, request?: RequestInfo) {
-		let channel;
-		if (channelName && "BroadcastChannel" in self) {
-			channel = new BroadcastChannel(channelName);
-		}
-		return new StaleWhileRevalidateHandler(this, channel, request);
+	staleWhileRevalidate(request?: RequestInfo) {
+		return new StaleWhileRevalidateHandler(this, request);
 	}
 
 	static async create(name: string, maxSize = undefined, maxAge = undefined) {
@@ -142,9 +158,9 @@ class StaleWhileRevalidateHandler extends FetchHandler {
 	private readonly channel?: BroadcastChannel;
 	private readonly request?: RequestInfo;
 
-	constructor(cache: ManagedCache, channel?: BroadcastChannel, request?: RequestInfo) {
+	constructor(cache: ManagedCache, request?: RequestInfo) {
 		super(cache);
-		this.channel = channel;
+		this.channel = broadcastChannel;
 		this.request = request;
 	}
 
@@ -159,24 +175,11 @@ class StaleWhileRevalidateHandler extends FetchHandler {
 	}
 
 	broadcastUpdate(cached: Response, newResp: Response) {
-		const { channel, cache } = this;
-		if (!channel) {
-			return;
-		}
-		const same = ["content-length", "etag", "last-modified"].every(header => {
+		if (!["content-length", "etag", "last-modified"].every(header => {
 			return cached.headers.has(header) === newResp.headers.has(header)
 				&& cached.headers.get(header) === newResp.headers.get(header);
-		});
-
-		if (same) {
-			return;
-		}
-		const message = { type: "CACHE_UPDATE", cacheName: cache.name, updatedUrl: newResp.url };
-		if(channel) {
-			channel.postMessage(message);
-		} else {
-			self.clients.matchAll({ type: "window" })
-				.then(windows => windows.forEach(win => win.postMessage(message)));
+		})) {
+			broadcastMessage({ type: "CACHE_UPDATE", cacheName: this.cache.name, updatedUrl: newResp.url });
 		}
 	}
 }
