@@ -1,11 +1,17 @@
+<!--
+应用外壳模式，对单页应用使用公共的HTML容器，并将其用ServiceWorker缓存，使应用能够离线访问并加快首屏速度。
+
+应用外壳的HTML单独一个文件而不是由SSR的模板（或某一个公共模板）动态生成，原因有以下几点：
+	* AppShell 和 SSR 的模板天然具有不同的地方，比如元数据、标题、资源注入等
+	* 对于以webpack为中心的构建系统来说，HTML 并不需要做多少修改，即使有两份也无关紧要
+	* 尝试了下无论是由 SSR模板 -> AppShell 还是反过来，都挺费劲，懒得搞了
+-->
 <!DOCTYPE html>
 <html lang="zh-Hans">
 <head>
 	<meta charset="utf-8">
 	<link rel="dns-prefetch" href="//api.kaciras.net">
-
-	<title>{{title}}</title> {{{ meta }}}
-
+	<title>Kaciras的博客</title>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0">
 	<meta name="theme-color" content="#208af5">
@@ -15,7 +21,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.1/katex.min.css">
 </head>
 <body>
-<!--vue-ssr-outlet-->
+<div id="app"></div>
 <script type="text/javascript">!function(){if(void 0===window.CSS||!CSS.supports("display","grid")){var e=document.createElement("div");e.setAttribute("style","padding: 12px;font-size: 16px;text-align: center;color: #e62e2e;background-color: #f0f0f0;"),e.innerText="您的浏览器版本太旧，或是非主流内核，可能无法正常浏览本站。请使用最新版的Edge、Firefox、Chrome、Safari等（本站不支持IE浏览器）",document.body.insertBefore(e,document.body.firstChild)}}();</script>
 </body>
 </html>

@@ -1,6 +1,5 @@
-import { FetchHandler } from "./cache";
-
-declare const self: ServiceWorkerGlobalScope;
+import { RequestHandler, StaleWhileRevalidateHandler } from "./cache-strategy";
+import { ManagedCache } from "./cache";
 
 /**
  * 缓存服务器，检查传入的请求是否命中缓存，如果是则直接返回缓存的结果，否则不做任何
@@ -8,7 +7,7 @@ declare const self: ServiceWorkerGlobalScope;
  */
 export class CacheProxyServer {
 
-	private readonly routes: RegexRoute[];
+	private readonly routes: Route[];
 
 	constructor() {
 		this.routes = [];
@@ -20,16 +19,13 @@ export class CacheProxyServer {
 	 * @param route 路由对象
 	 * @return 链式调用返回自己
 	 */
-	addRoute(route: RegexRoute) {
+	addRoute(route: Route) {
 		this.routes.push(route);
 		return this;
 	}
 
 	handleFetchEvent(event: FetchEvent) {
 		const { request } = event;
-
-		self.clients.matchAll({ type: "window" })
-			.then(windows => windows.forEach(win => win.postMessage("test!!!")));
 
 		// TODO: temp
 		if (event.request.mode === "navigate") {
@@ -49,20 +45,27 @@ export class CacheProxyServer {
 
 		for (const route of this.routes) {
 			if (route.match(request)) {
-				return event.respondWith(route.handler.handle(event));
+				return route.handle(event);
 			}
 		}
 	}
 }
 
-export class RegexRoute {
+
+export interface Route {
+	match(request: Request): boolean;
+
+	handle(event: FetchEvent): void;
+}
+
+
+export class RegexRoute implements Route {
 
 	private pattern: RegExp;
+	private handler: RequestHandler;
 	private blacklist: RegExp[];
 
-	handler: FetchHandler;
-
-	constructor(pattern: string | RegExp, handler: FetchHandler, blacklist: RegExp[] = []) {
+	constructor(pattern: string | RegExp, handler: RequestHandler, blacklist: RegExp[] = []) {
 		if (typeof pattern === "string") {
 			pattern = new RegExp(pattern);
 		}
@@ -78,15 +81,27 @@ export class RegexRoute {
 		}
 		return !blacklist.some(v => v.test(request.url));
 	}
+
+	handle(event: FetchEvent) {
+		event.respondWith(this.handler.handle(event.request));
+	}
 }
 
-export class NavigateRoute extends RegexRoute {
+export class AppShellRoute implements Route {
 
-	constructor(handler: FetchHandler) {
-		super("", handler);
+	private readonly handler: RequestHandler;
+	private readonly path: string;
+
+	constructor(cache: ManagedCache, path: string) {
+		this.path = path;
+		this.handler = new StaleWhileRevalidateHandler(cache);
 	}
 
 	match(request: Request) {
 		return request.mode === "navigate";
+	}
+
+	handle(event: FetchEvent) {
+		event.respondWith(this.handler.handle(this.path))
 	}
 }

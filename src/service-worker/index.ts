@@ -2,7 +2,8 @@
  * 虽然 ServiceWorker 对 Edge 版本要求比 CSS Grid 更高，但这是一项非必需的功能，即便没有 PWA 网页也能正常运行。
  */
 import { cacheNames, ManagedCache } from "./cache";
-import { CacheProxyServer, NavigateRoute, RegexRoute } from "./cache-server";
+import { CacheProxyServer, AppShellRoute, RegexRoute } from "./router";
+import { CacheFirstHandler } from "./cache-strategy";
 
 // 默认是WebWorker，需要声明一下ServiceWorker，其他文件里也一样。
 declare const self: ServiceWorkerGlobalScope;
@@ -12,44 +13,14 @@ declare const serviceWorkerOption: {
 	assets: string[];
 };
 
-// self.addEventListener("error", function (e) {
-// 	self.clients.matchAll().then(clients => {
-// 		if (clients && clients.length) {
-// 			clients[0].postMessage({
-// 				type: "ERROR",
-// 				msg: e.message || null,
-// 				stack: e.error ? e.error.stack : null,
-// 			});
-// 		}
-// 	});
-// });
-//
-// self.addEventListener("unhandledrejection", function (e) {
-// 	self.clients.matchAll().then(clients => {
-// 		if (clients && clients.length) {
-// 			clients[0].postMessage({
-// 				type: "REJECTION",
-// 				msg: e.reason ? e.reason.message : null,
-// 				stack: e.reason ? e.reason.stack : null,
-// 			});
-// 		}
-// 	});
-// });
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-								主要逻辑部分
- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-const STATIC_CACHE_NAME = "StaticFiles";
+const STATIC_CACHE_NAME = "Static";
 const proxyServer = new CacheProxyServer();
 
 
 async function initUserCode() {
-	const staticCache = await ManagedCache.create(STATIC_CACHE_NAME);
-	proxyServer.addRoute(new RegexRoute("/static/", staticCache.cacheFirst()));
-	// proxyServer.addRoute(new RegexRoute("/image/", staticCache.cacheFirst()));
-
-	// proxyServer.addRoute(new NavigateRoute(staticCache.staleWhileRevalidate("PWA-UPDATE", "/?shellOnly=true")));
+	const cache = await ManagedCache.create(STATIC_CACHE_NAME);
+	proxyServer.addRoute(new AppShellRoute(cache, "/app-shell.html"));
+	proxyServer.addRoute(new RegexRoute("/static/", new CacheFirstHandler(cache)));
 }
 
 self.addEventListener('fetch', proxyServer.handleFetchEvent.bind(proxyServer));
@@ -63,14 +34,12 @@ self.addEventListener('fetch', proxyServer.handleFetchEvent.bind(proxyServer));
  * 有副作用的代码应当在 activate 事件里执行。
  */
 self.addEventListener("install", (event: ExtendableEvent) => {
+	event.waitUntil(initUserCode());
 
 	event.waitUntil(caches.open(STATIC_CACHE_NAME)
 		.then(cache => cache.addAll(serviceWorkerOption.assets))
-		.then(() => console.log("Precache successfully."))
-		.catch(err => console.error("Precache failure.", err))
+		.catch(err => console.error("静态资源预加载失败", err))
 	);
-
-	event.waitUntil(initUserCode());
 	return self.skipWaiting();
 });
 
@@ -81,7 +50,7 @@ self.addEventListener("install", (event: ExtendableEvent) => {
  * 在这个事件里应当清理旧版的缓存。
  */
 self.addEventListener("activate", (event: ExtendableEvent) => {
-	console.log("[ServiceWorker]: Activate!");
+	// console.log("[ServiceWorker]: Activate!");
 
 	/*
 	 * 浏览器会停止没有相关页面打开的ServiceWorker以节约资源，那么对于导航请求来说可能此时ServiceWorker还没有

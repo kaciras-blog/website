@@ -1,7 +1,7 @@
-declare const self: ServiceWorkerGlobalScope;
-type FetchFunction = typeof fetch;
-
 import { AsyncIndexedDB } from "./asyncdb";
+
+declare const self: ServiceWorkerGlobalScope;
+
 
 const EXPIATION_STORE_NAME = "cache-expiration";
 const URL_KEY = "url";
@@ -18,7 +18,7 @@ if ("BroadcastChannel" in self) {
 	broadcastChannel = new BroadcastChannel(UPDATE_CHANNEL_NAME);
 }
 
-function broadcastMessage(message: any) {
+export function broadcastMessage(message: any) {
 	if (broadcastChannel) {
 		broadcastChannel.postMessage(message);
 	} else {
@@ -89,112 +89,14 @@ export class ManagedCache {
 		return await cache.put(request, response.clone());
 	}
 
-	networkFirst() {
-		return new NetworkFirstHandler(this);
-	}
-
-	cacheFirst() {
-		return new CacheFirstHandler(this);
-	}
-
-	// BroadcastChannel 可能不支持，不过我懒得管了
-	staleWhileRevalidate(request?: RequestInfo) {
-		return new StaleWhileRevalidateHandler(this, request);
+	// noinspection JSMethodCanBeStatic 可以搞个LRU？
+	match(request: RequestInfo, options?: CacheQueryOptions) {
+		return caches.match(request, options);
 	}
 
 	static async create(name: string, maxSize = undefined, maxAge = undefined) {
 		const cache = new ManagedCache(name, maxSize, maxAge);
 		await cache.db.open(e => ManagedCache.updateExpireStore(e));
 		return cache;
-	}
-}
-
-
-export abstract class FetchHandler {
-
-	protected readonly cache: ManagedCache;
-
-	constructor(cache: ManagedCache) {
-		this.cache = cache;
-	}
-
-	protected async fetchAndCache(request: RequestInfo) {
-		const response = await fetch(request, { cache: "no-store" });
-		if (response.status == 200) {
-			await this.cache.put(request, response);
-		}
-		return response;
-	}
-
-	abstract async handle(event: FetchEvent): Promise<Response>;
-}
-
-/**
- * 网络优先，适用于频繁更新但又需要离线访问的内容。
- */
-class NetworkFirstHandler extends FetchHandler {
-
-	async handle(event: FetchEvent) {
-		try {
-			return await this.fetchAndCache(event.request);
-		} catch (err) {
-			const cached = await caches.match(event.request);
-			if (cached) {
-				return cached;
-			}
-			throw err;
-		}
-	}
-}
-
-/**
- * 缓存优先，后台更新。
- *
- * 该策略能够保证最快的速度且允许离线访问，同时也能够更新资源，但是在后台更新需要用户下一次访问才能生效，
- * 通常可以给用户显示一个提示让其刷新页面。
- */
-class StaleWhileRevalidateHandler extends FetchHandler {
-
-	private readonly channel?: BroadcastChannel;
-	private readonly request?: RequestInfo;
-
-	constructor(cache: ManagedCache, request?: RequestInfo) {
-		super(cache);
-		this.channel = broadcastChannel;
-		this.request = request;
-	}
-
-	async handle(event: FetchEvent) {
-		const request = this.request || event.request;
-		const cached = await caches.match(request);
-		if (cached) {
-			this.fetchAndCache(request).then(newResp => this.broadcastUpdate(cached, newResp));
-			return cached;
-		}
-		return await this.fetchAndCache(request);
-	}
-
-	broadcastUpdate(cached: Response, newResp: Response) {
-		if (!["content-length", "etag", "last-modified"].every(header => {
-			return cached.headers.has(header) === newResp.headers.has(header)
-				&& cached.headers.get(header) === newResp.headers.get(header);
-		})) {
-			broadcastMessage({ type: "CACHE_UPDATE", cacheName: this.cache.name, updatedUrl: newResp.url });
-		}
-	}
-}
-
-/**
- * 缓存优先。尝试从缓存里加载响应，如果缓存中没有则发送请求，并将成功的响应加入缓存。
- * 适用于永不更新的资源，如带文件名带 HASH 的文件。
- */
-class CacheFirstHandler extends FetchHandler {
-
-	async handle(event: FetchEvent) {
-		const cached = await caches.match(event.request);
-		if (cached) {
-			return cached;
-		}
-		return await this.fetchAndCache(event.request);
 	}
 }
