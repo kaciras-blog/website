@@ -1,5 +1,5 @@
 <template>
-	<div :class="$style.progress" :style="style"></div>
+	<div :class="[$style.progress, {[$style.error]: hasError}]" :style="style"></div>
 </template>
 
 <script>
@@ -12,13 +12,14 @@ export default {
 		visible: false,
 		hasError: false,
 		progress: 0,
+		transition: true,
 	}),
 	computed: {
 		style() {
 			return {
 				opacity: this.visible ? 1 : 0,
-				backgroundColor: this.hasError ? "#ff4d4d" : "#1a9fff",
 				"--progress": this.progress,
+				transition: this.transition ? `width ease-out ${TRANSITION_TIME}ms` : undefined,
 			};
 		},
 	},
@@ -27,40 +28,42 @@ export default {
 			if (this.visible) {
 				return; // 忽略重复调用
 			}
-			this.progress = 30;
+			this.progress = 0;
 			this.visible = true;
 			this.hasError = false;
 		},
-		middle() {
+		setProgress(percent) {
 			if (!this.visible) {
 				this.start();
 			}
-			this.progress = 70;
+			this.progress = percent;
 		},
 
-// ============================ 结束方法 ============================
-
+		/** 重置进度为0并且不显示的状态，该过程是立即的没有动画 */
+		reset() {
+			this.transition = false;
+			this.progress = 0;
+			this.$nextTick(() => this.transition = true);
+		},
 		finish() {
 			if (!this.visible) {
 				return; // 必须先调用启动方法
 			}
 			this.progress = 100;
-
-			setTimeout(() => {
-				this.visible = false;
-				setTimeout(() => this.progress = 0, TRANSITION_TIME);
-			}, RESIDUAL_TIME);
+			this._fadeout();
 		},
-		error() {
+		fail() {
 			if (!this.visible) {
 				return;
 			}
 			this.progress = 100;
 			this.hasError = true;
-
+			this._fadeout();
+		},
+		_fadeout() {
 			setTimeout(() => {
 				this.visible = false;
-				setTimeout(() => this.progress = 0, TRANSITION_TIME);
+				setTimeout(this.reset, TRANSITION_TIME);
 			}, RESIDUAL_TIME);
 		},
 	},
@@ -74,8 +77,9 @@ export default {
 	left: 0;
 	width: calc(var(--progress) * 1%);
 	height: 3px;
+
 	z-index: 99999;
-	transition: .3s;
+	background: #0064e6;
 
 	&::before {
 		content: '';
@@ -86,11 +90,16 @@ export default {
 		background-image: linear-gradient(
 			90deg,
 			transparent 0,
-			rgba(255, 255, 255, .8) 60%,
+			rgba(255, 255, 255, .7) 30%,
+			rgba(255, 255, 255, .9) 60%,
 			transparent 100%);
 
 		animation: highlight linear calc(50ms * var(--progress)) infinite;
 	}
+}
+
+.error {
+	background: #f74343;
 }
 
 //@formatter:off
