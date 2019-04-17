@@ -2,23 +2,24 @@
  * 虽然 ServiceWorker 对 Edge 版本要求比 CSS Grid 更高，但这是一项非必需的功能，即便没有 PWA 网页也能正常运行。
  */
 import { cacheNames, ManagedCache } from "./cache";
-import { RouteService, AppShellRoute, RegexRoute } from "./router";
+import { Router, AppShellRoute, RegexRoute } from "./router";
 import { CacheFirstHandler } from "./cache-strategy";
 
 // 默认是WebWorker，需要声明一下ServiceWorker，其他文件里也一样。
 declare const self: ServiceWorkerGlobalScope;
 
-// ServiceWorkerWebpackPlugin 自动生成，其中包含静态资源列表 .
+// ServiceWorkerWebpackPlugin 自动生成，包含静态资源的列表 .
 declare const serviceWorkerOption: {
 	assets: string[];
 };
 
 const STATIC_CACHE_NAME = "Static";
 const APP_SHELL_NAME = "/app-shell.html";
-const routeService = new RouteService();
+
+const routeService = new Router();
 
 
-async function initUserCode() {
+async function initRouteService() {
 	const cache = await ManagedCache.create(STATIC_CACHE_NAME);
 	routeService.addRoute(new RegexRoute("/static/", new CacheFirstHandler(cache)));
 
@@ -26,7 +27,7 @@ async function initUserCode() {
 	routeService.addRoute(new AppShellRoute(cache, APP_SHELL_NAME));
 }
 
-self.addEventListener('fetch', routeService.handleFetchEvent.bind(routeService));
+self.addEventListener('fetch', routeService.route.bind(routeService));
 
 /**
  * 安装事件，当新的 ServiceWorker 加载后将会调用，此时可能还有之前旧的ServiceWorker在运行。
@@ -37,7 +38,7 @@ self.addEventListener('fetch', routeService.handleFetchEvent.bind(routeService))
  * 有副作用的代码应当在 activate 事件里执行。
  */
 self.addEventListener("install", (event: ExtendableEvent) => {
-	event.waitUntil(initUserCode());
+	event.waitUntil(initRouteService());
 
 	event.waitUntil(caches.open(STATIC_CACHE_NAME)
 		.then(cache => cache.addAll(serviceWorkerOption.assets))

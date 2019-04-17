@@ -71,7 +71,7 @@ export class StaleWhileRevalidateHandler extends BaseRequestHandler {
 
 /**
  * 缓存优先。尝试从缓存里加载响应，如果缓存中没有则发送请求，并将成功的响应加入缓存。
- * 适用于永不更新的资源，如带文件名带 HASH 的文件。
+ * 适用于永不更新的资源，如带URI里带 HASH 的文件。
  */
 export class CacheFirstHandler extends BaseRequestHandler {
 

@@ -1,6 +1,6 @@
 /*
  * 封装IndexedDB，所有的方法均为异步的。
- * 主要参考了Google的workbox项目。
+ * 主要参考了Google的 workbox 项目。
  */
 export interface CursorOptions {
 	index?: string;
@@ -22,7 +22,7 @@ export class AsyncIndexedDB {
 	readonly name: string;
 	readonly version?: number;
 
-	private db!: IDBDatabase;
+	private db?: IDBDatabase;
 
 	constructor(name: string, version?: number) {
 		this.name = name;
@@ -38,22 +38,21 @@ export class AsyncIndexedDB {
 			request.onupgradeneeded = onUpgrade;
 			request.onsuccess = (event: any) => {
 				resolve();
-				this.db = event.target.result;
-				this.db.onversionchange = onVersionChange;
+				const db = this.db = event.target.result;
+				db.onversionchange = onVersionChange;
 			};
 			request.onerror = () => reject(request.error);
 		});
 	}
 
-	withTransaction(storeNames: string | string[],
-					type: IDBTransactionMode,
-					callback: TransactionCallback) {
-
+	withTransaction(storeNames: string | string[], type: IDBTransactionMode, callback: TransactionCallback) {
 		return new Promise((resolve, reject) => {
-			const tx = this.db.transaction(storeNames, type);
+
+			// 目前只有 ManagedCache.create 创建该类的实例，所以能肯定此时数据库一定已经打开了
+			const tx = (this.db as IDBDatabase).transaction(storeNames, type);
+			tx.oncomplete = () => resolve();
 			tx.onerror = (event: any) => reject(event.target.error);
 			tx.onabort = (event: any) => reject(event.target.error);
-			tx.oncomplete = () => resolve();
 
 			const abort = () => tx.abort();
 			const done = (value: any) => resolve(value);
@@ -83,5 +82,13 @@ export class AsyncIndexedDB {
 
 	delete(storeName: string, key: any) {
 		return this.withTransaction(storeName, "readwrite", tx => tx.objectStore(storeName).delete(key));
+	}
+
+	/** 通常ServiceWorker中的数据库不需要关闭 */
+	close() {
+		if (this.db) {
+			this.db.close();
+			this.db = undefined;
+		}
 	}
 }
