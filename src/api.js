@@ -216,12 +216,18 @@ class ProxiedApiFactory extends BasicApiFactory {
 		}
 		this.filters.push(config => {
 			config.headers = config.headers || {};
+
+			// UA可以随便改，没啥实际用，还不如穿透了统计下客户端类型
+			if (proto.headers.userAgent) {
+				config.headers["User-Agent"] = proto.headers["user-agent"];
+			}
 			if (proto.headers.cookie) {
 				config.headers.Cookie = proto.headers.cookie;
 			}
-			const csrf = proto.cookies.get(CSRF_COOKIE_NAME);
-			if (csrf) {
-				config.headers[CSRF_HEADER_NAME] = csrf;
+
+			const csrfToken = proto.cookies.get(CSRF_COOKIE_NAME);
+			if (csrfToken) {
+				config.headers[CSRF_HEADER_NAME] = csrfToken;
 			}
 
 			// SSR 也属于反向代理，记得带上原始IP
@@ -268,7 +274,7 @@ class ArticleApi extends AbstractApi {
 
 	get(id) {
 		return this.mainServer.get("/articles/" + id, {
-			params: { rv: true }, // rv: incresment view count
+			params: { rv: true }, // rv: increment view count
 		}).then(r => r.data);
 	}
 
@@ -362,13 +368,13 @@ class DiscussApi extends AbstractApi {
 	/**
 	 * 获取评论的回复（楼中楼）
 	 *
-	 * @param discuz {int} 评论id
+	 * @param discussionId {int} 评论id
 	 * @param index {int} 页码，从1开始
 	 * @param count {int} 每页数量
 	 * @return Promise<?> 回复列表
 	 */
-	getReplies(discuz, index, count) {
-		return this.mainServer.get(`/discussions/${discuz}/replies`, {
+	getReplies(discussionId, index, count) {
+		return this.mainServer.get(`/discussions/${discussionId}/replies`, {
 			params: { start: index * count, count },
 		}).then(r => r.data);
 	}
