@@ -10,28 +10,43 @@ declare const process: {
 
 const ServiceWorkerPath = "/sw.js";
 
+export interface ServiceWorkerConfig {
+	onResourceUpdate?: (data: any) => void;
+}
 
-function register() {
+export function register(config: ServiceWorkerConfig = {}) {
+
 	const publicUrl = new URL(process.env.PUBLIC_URL, window.location.href);
 	if (publicUrl.origin !== window.location.origin) {
 		return console.error("service worker won't work when PUBLIC_URL is on a different origin");
 	}
 
+	/**
+	 * 注册成功后调用，添加资源更新的监听。
+	 */
 	function afterRegister() {
-		if ("BroadcastChannel" in window) {
-			const channel = new BroadcastChannel(UPDATE_CHANNEL_NAME);
-			channel.onmessage = (message) => console.log("Channel消息：", message);
-		} else {
-			navigator.serviceWorker.onmessage = (message) => console.log("直接消息：", message);
+		const { onResourceUpdate } = config;
+		if (onResourceUpdate) {
+			if ("BroadcastChannel" in window) {
+				const channel = new BroadcastChannel(UPDATE_CHANNEL_NAME);
+				channel.onmessage = (message) => onResourceUpdate(message.data);
+			} else {
+				navigator.serviceWorker.onmessage = (message) => onResourceUpdate(message.data);
+			}
 		}
-		console.log("Service worker registered successfully.");
+		console.log("[ServiceWorker] 注册成功");
 	}
 
 	// 等到 window.load 事件时再注册，以免 ServiceWorker 里加载的资源占用首屏宽带
-	window.addEventListener("load", () => {
+	window.addEventListener("load", async () => {
+		const response = await fetch("/sw-check", { method: "HEAD" });
+		if (response.status !== 200) {
+			console.debug("[ServiceWorker] 预检请求返回非200，注销ServiceWorker");
+			return unregister();
+		}
 		navigator.serviceWorker.register(ServiceWorkerPath)
 			.then(afterRegister)
-			.catch((err) => console.error("Error during service worker registration:", err));
+			.catch((err) => console.error("[ServiceWorker] 注册失败：", err));
 	});
 }
 
@@ -39,7 +54,7 @@ function register() {
 /**
  * 注销 ServiceWorker，没有检查 ServiceWorker 是否注销完成，因为就算注销失败也没有什么办法处理。
  */
-function unregister() {
+export function unregister() {
 	navigator.serviceWorker.getRegistrations()
 		.then(regs => regs.forEach(reg => reg.unregister()))
 		.catch(() => console.error("Service worker failed to unregister."));
