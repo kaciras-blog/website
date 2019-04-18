@@ -10,6 +10,7 @@ declare const process: {
 
 const ServiceWorkerPath = "/sw.js";
 
+
 export interface ServiceWorkerConfig {
 	onResourceUpdate?: (data: any) => void;
 }
