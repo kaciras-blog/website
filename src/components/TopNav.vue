@@ -2,19 +2,20 @@
 	<div :style="navStyle" :class="navClass">
 		<div v-if="showBanner"
 			 :class="[$style.filterContainer, $style.shadow]">
-			<top-nav-wide/>
+			<top-nav-collapsed/>
 		</div>
-		<top-nav-wide v-else :class="$style.shadow"/>
+		<top-nav-collapsed v-else :class="$style.shadow"/>
 		<div v-if="showBanner" :class="$style.banner" role="banner"></div>
 	</div>
 </template>
 
 <script>
 import TopNavWide from "./TopNavWide";
+import TopNavCollapsed from "./TopNavCollapsed";
 
 export default {
 	name: "TopNav",
-	components: { TopNavWide },
+	components: { TopNavCollapsed, TopNavWide },
 	props: {
 		showBanner: {
 			type: Boolean,

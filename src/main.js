@@ -2,6 +2,7 @@ import "./css/Main.less";
 import Vue from "vue";
 import createRouter from "./router";
 import createStore from "./store";
+import App from "./App";
 
 import KxUI from "kx-ui";
 import KxMarkdown from "./markdown";
@@ -52,7 +53,7 @@ export default function createApp (initState = undefined) {
 	const vue = new Vue({
 		router,
 		store,
-		render: h => h("router-view", { attrs: { id: "app" } }),
+		render: h => h(App),
 	});
 	return { vue, router, store };
 }

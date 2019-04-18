@@ -1,31 +1,45 @@
 <template>
-	<div>
-		<div class="global-dimmer" v-if="showMenu" @click="showMenu=false"></div>
-		<div class="menu" v-if="showMenu">
-			<div>
+	<transition
+		:enter-class="$style.transStart"
+		:leave-to-class="$style.transStart"
+		:enter-active-class="$style.active"
+		:leave-active-class="$style.active">
 
-			</div>
-			<div class="links">
-				<router-link class="block fold" to="/welcome">欢迎页</router-link>
-				<router-link class="block" to="/login" v-if="!user">登录</router-link>
-			</div>
-		</div>
-	</div>
+		<kx-modal-wrapper
+			:prevent-scroll="true"
+			@click.self.native="$dialog.close"
+			:class="$style.container">
+
+			<personal-view :class="$style.navMenu"/>
+		</kx-modal-wrapper>
+	</transition>
 </template>
 
 <script>
+import PersonalView from "./PersonalView";
+import KxModalWrapper from "kx-ui/src/dialog/KxModalWrapper";
+
 export default {
 	name: "TopNavMenu",
+	components: { KxModalWrapper, PersonalView },
 };
 </script>
 
-<style scoped lang="less">
-.menu {
-	position: absolute;
-	top: 3rem;
-	background-color: rgba(0, 0, 0, 0.2);
-	& > * {
-		border-bottom: solid 1px #c5c5c5;
-	}
+<style module lang="less">
+.transStart {
+	transform: translateX(-75vw);
+}
+
+.active {
+	transition: all linear .25s;
+}
+
+.container {
+	display: block;
+}
+
+.navMenu {
+	width: 75vw;
+	height: 100vh;
 }
 </style>

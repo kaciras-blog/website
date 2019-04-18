@@ -126,7 +126,7 @@ function isOnlyHashChange(to, from) {
 function initAppAndRouterHook() {
 
 	// 切换视图后应该关掉所有弹窗
-	router.afterEach(() => vue.$dialog.clear());
+	router.afterEach(vue.$dialog.clear);
 
 	/**
 	 * 相比于官网示例，这里把加载指示器提前到 beforeEach 钩子，以便在异步组件下载前就开始加载提示。
