@@ -1,12 +1,5 @@
 import { UPDATE_CHANNEL_NAME } from "./service-worker/cache";
-
-// 也就用一个 process 而已，就不引入 node 的类型定义了
-declare const process: {
-	env: {
-		NODE_ENV: string,
-		PUBLIC_URL: string,
-	}
-};
+import * as ErrorReporting from "./error-report";
 
 const ServiceWorkerPath = "/sw.js";
 
@@ -32,9 +25,12 @@ export function register(config: ServiceWorkerConfig = {}) {
 				const channel = new BroadcastChannel(UPDATE_CHANNEL_NAME);
 				channel.onmessage = (message) => onResourceUpdate(message.data);
 			} else {
-				navigator.serviceWorker.onmessage = (message) => onResourceUpdate(message.data);
+				navigator.serviceWorker.addEventListener("message",(message) => {
+					if(message.data.type === "CACHE_UPDATE") onResourceUpdate(message.data);
+				});
 			}
 		}
+		ErrorReporting.reportServiceWorkerErrors();
 		console.log("[ServiceWorker] 注册成功");
 	}
 

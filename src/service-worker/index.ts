@@ -25,6 +25,8 @@ async function initRouteService() {
 
 	await cache.put(APP_SHELL_NAME, await fetch(APP_SHELL_NAME));
 	routeService.addRoute(new AppShellRoute(cache, APP_SHELL_NAME));
+
+	throw new Error("sw err");
 }
 
 self.addEventListener('fetch', routeService.route.bind(routeService));
@@ -64,11 +66,12 @@ self.addEventListener("activate", (event: ExtendableEvent) => {
 	 * 完成后再激活拦截事件，并行加载的导航请求使用 FetchEvent.preloadResponse 获取。
 	 *
 	 * 如果使用了 AppShell 模式，则不需要每次都从网络读取页面，不应开启该功能。
+	 * 如果之前开启过，则以后不再使用时必须调用 navigationPreload.disable() 关闭。
 	 */
-	if (self.registration.navigationPreload) {
-		// event.waitUntil(self.registration.navigationPreload.enable());
-		event.waitUntil(self.registration.navigationPreload.disable());
-	}
+	// if (self.registration.navigationPreload) {
+	// 	event.waitUntil(self.registration.navigationPreload.enable());
+	// 	event.waitUntil(self.registration.navigationPreload.disable());
+	// }
 
 	// 删除当前版本用不到的缓存
 	event.waitUntil(async () => {
@@ -77,4 +80,30 @@ self.addEventListener("activate", (event: ExtendableEvent) => {
 	});
 
 	return self.clients.claim();
+});
+
+// ===================================== 错误上报 =====================================
+
+function anycastMessage(message: any) {
+	self.clients.matchAll().then((clients) => {
+		if (clients && clients.length) {
+			clients[0].postMessage(message);
+		}
+	});
+}
+
+self.addEventListener('error', (err) => {
+	anycastMessage({
+		type: 'ERROR',
+		message: err.message || null,
+		stack: err.error ? err.error.stack : null
+	});
+});
+
+self.addEventListener('unhandledrejection', (err: any) => {
+	anycastMessage({
+		type: 'REJECTION',
+		message: err.reason ? err.reason.message : null,
+		stack: err.reason ? err.reason.stack : null
+	});
 });

@@ -1,3 +1,4 @@
+import * as ErrorReporting from "./error-report";
 import createApp from "./main";
 import Vue from "vue";
 import { CancelToken } from "kx-ui";
@@ -5,6 +6,12 @@ import * as loadingIndicator from "./loading-indicator";
 import { REFRESH_USER, SET_PREFETCH_DATA } from "./store/types";
 import "./serviceWorker";
 
+ErrorReporting.enableAutoReport();
+ErrorReporting.report({
+	type: "ERROR",
+	message: "test error",
+	stack: new Error().stack,
+});
 
 let cancelToken = CancelToken.NEVER;
 
