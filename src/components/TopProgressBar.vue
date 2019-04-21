@@ -77,7 +77,7 @@ export default {
 	top: 0;
 	left: 0;
 	width: calc(var(--progress) * 1%);
-	height: 3px;
+	height: 2px;
 
 	z-index: 99999;
 	background: #0064e6;
