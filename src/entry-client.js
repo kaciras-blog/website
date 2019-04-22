@@ -7,11 +7,6 @@ import { REFRESH_USER, SET_PREFETCH_DATA } from "./store/types";
 import "./serviceWorker";
 
 ErrorReporting.enableAutoReport();
-ErrorReporting.report({
-	type: "ERROR",
-	message: "test error",
-	stack: new Error().stack,
-});
 
 let cancelToken = CancelToken.NEVER;
 
