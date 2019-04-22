@@ -1,10 +1,9 @@
 /*
- * TODO: markdown-it-lazy-image 和 lozad 都只有很少的代码，并且其功能也不是很强，考虑以后自己实现
+ * TODO: lozad 只有很少的代码，并且其功能也不是很强，考虑以后自己实现
  */
 import MarkdownIt from "markdown-it";
 import hljs from "highlight.js";
 import Anchor from "markdown-it-anchor";
-import lazyImage from "markdown-it-lazy-image";
 import lozad from "lozad";
 import loadingImage from "../assets/img/loading.gif";
 import katex from "@iktakahiro/markdown-it-katex";
@@ -19,6 +18,18 @@ function myPlugin (markdownIt) {
 		.forEach(token => token.children
 			.filter(child => child.type === "code_inline")
 			.forEach(child => child.attrs = [["class", "inline-code"]])));
+
+	// 自定义图片，外层加上链接并设置居中的class
+	const defaultImageRenderer = markdownIt.renderer.rules.image;
+	markdownIt.renderer.rules.image = (tokens, idx, options, env, self) => {
+		const token = tokens[idx];
+		const srcValue = token.attrGet("src");
+		token.attrPush(["data-src", srcValue]);
+		token.attrSet("src", loadingImage);
+
+		const wrapper = `<a href="${srcValue}" class="image-wrapper" target="_blank">`;
+		return wrapper + defaultImageRenderer(tokens, idx, options, env, self) + "</a>";
+	};
 }
 
 export const converter = new MarkdownIt({
@@ -42,7 +53,6 @@ converter.use(Anchor, {
 });
 converter.use(tableOfContent);
 converter.use(katex);
-converter.use(lazyImage, { placeholder: loadingImage });
 converter.use(myPlugin);
 
 
@@ -54,15 +64,7 @@ export default {
 	 * 添加一些额外的交互状态，只能在浏览器端调用。
 	 */
 	afterConvert () {
-		const images = document.querySelectorAll(".markdown img");
-		for (const node of images) {
-			const p = node.parentNode;
-			if (p.childNodes.length === 1) {
-				p.classList.add("image-wrapper");
-				node.addEventListener("click", e => this.$emit("enlarge-image", e.target));
-			}
-		}
-		lozad(images).observe();
+		lozad(document.querySelectorAll(".markdown img")).observe();
 	},
 	renderHtml (text) {
 		return converter.render(text);

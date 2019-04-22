@@ -9,8 +9,6 @@
 			:value="article"
 			@enlarge-image="enlargeImage"/>
 
-		<image-viewer ref="imageViewer"/>
-
 		<discuss-panel
 			:class="$style.discussPanel"
 			:article-id="article.id"
@@ -42,12 +40,10 @@ import api from "../../api";
 import { mapState } from "vuex";
 import { articleLink } from "../../blog-plugin";
 import { scrollToElementStart } from "kx-ui";
-import ImageViewer from "./ImageViewer";
 
 export default {
 	name: "Article",
 	components: {
-		ImageViewer,
 		DiscussPanel,
 		ArticleView,
 	},
