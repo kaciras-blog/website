@@ -8,23 +8,12 @@ module.exports = {
 	// Stop running tests after the first failure
 	// bail: false,
 
-	// Respect "browser" field in package.json when resolving modules
-	// browser: false,
-
-	// The directory where Jest should store its cached dependency information
-	// cacheDirectory: "C:\\Users\\XuFan\\AppData\\Local\\Temp\\jest",
-
 	// Automatically clear mock calls and instances between every test
 	// clearMocks: false,
 
-	// Indicates whether the coverage information should be collected while executing the test
-	// collectCoverage: false,
-
-	// An array of glob patterns indicating a set of files for which coverage information should be collected
-	// collectCoverageFrom: null,
-
-	// The directory where Jest should output its coverage files
-	// coverageDirectory: null,
+	// collectCoverage: true,
+	// collectCoverageFrom: ["src/**/*.{js,ts,vue}", "!**/node_modules/**"],
+	// coverageDirectory: ".coverage",
 
 	// An array of regexp pattern strings used to skip coverage collection
 	// coveragePathIgnorePatterns: [
@@ -57,7 +46,7 @@ module.exports = {
 	// A set of global variables that need to be available in all test environments
 	globals: {
 		"ts-jest": {
-			"tsConfigFile": "tsconfig.json"
+			tsConfig: "tsconfig.json"
 		}
 	},
 
@@ -86,7 +75,7 @@ module.exports = {
 	// notifyMode: "always",
 
 	// A preset that is used as a base for Jest's configuration
-	// preset: null,
+	preset: "ts-jest",
 
 	// Run tests from one or more projects
 	// projects: null,
@@ -127,7 +116,7 @@ module.exports = {
 	// snapshotSerializers: [],
 
 	// The test environment that will be used for testing
-	testEnvironment: "node",
+	// testEnvironment: "node",
 
 	// Options that will be passed to the testEnvironment
 	// testEnvironmentOptions: {},
@@ -163,7 +152,7 @@ module.exports = {
 	// A map from regular expressions to paths to transformers
 	transform: {
 		"^.+\\.jsx?$": "babel-jest",
-		"^.+\\.(ts|tsx)$": "ts-jest"
+		"^.+\\.tsx?$": "ts-jest",
 	},
 
 	// An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation

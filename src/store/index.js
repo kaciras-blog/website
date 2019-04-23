@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import api from "../api";
 import { REFRESH_USER, REMOVE_USER, SET_USER, SET_PREFETCH_DATA } from "./types";
-
+import { mediaQueryModule } from "./media-query";
 
 Vue.use(Vuex);
 
@@ -13,13 +13,13 @@ export default function () {
 			prefetch: {},
 		},
 		actions: {
-			async [REFRESH_USER] ({ commit }, prototype) {
+			async [REFRESH_USER]({ commit }, prototype) {
 				const res = await api.withPrototype(prototype).user.getCurrent();
 				if (res.status < 300) {
 					commit(SET_USER, res.data);
 				}
 			},
-			[REMOVE_USER] ({ commit }) {
+			[REMOVE_USER]({ commit }) {
 				return api.user.logout().then(() => commit(SET_USER, null));
 			},
 		},
@@ -27,5 +27,6 @@ export default function () {
 			[SET_USER]: (state, info) => state.user = info,
 			[SET_PREFETCH_DATA]: (state, data) => state.prefetch = data,
 		},
+		modules: [mediaQueryModule],
 	});
 }
