@@ -4,7 +4,7 @@ import createRouter from "./router";
 import createStore from "./store";
 import App from "./App";
 
-import { MediaQueryPlugin, registerToStore } from "./store/media-query";
+import { MediaQueryPlugin, registerToStore } from "kx-ui/src/media-query";
 import KxUI from "kx-ui";
 import KxMarkdown from "./markdown";
 import BlogPlugin from "./blog-plugin";

@@ -4,7 +4,7 @@ import Vue from "vue";
 import { CancelToken } from "kx-ui";
 import * as loadingIndicator from "./loading-indicator";
 import { REFRESH_USER, SET_PREFETCH_DATA } from "./store/types";
-import { observeWindow } from "./store/media-query";
+import { observeWindow } from "kx-ui/src/media-query";
 import "./serviceWorker";
 
 ErrorReporting.enableAutoReport();

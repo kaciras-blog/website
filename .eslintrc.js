@@ -9,7 +9,11 @@ module.exports = {
 		"eslint:recommended"
 	],
 	rules: {
-		"indent": ["error", "tab", { SwitchCase: 1 }],
+		"indent": ["error", "tab", {
+			SwitchCase: 1,
+			FunctionDeclaration: { parameters: "off" }, // first 在 tab 缩进下有bug
+			ignoreComments: true, // IDE 自动注释直接加在开头
+		}],
 		"comma-dangle": ["error", "always-multiline"],
 		"space-before-function-paren": "off",
 		"semi": ["error", "always"],
