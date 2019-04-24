@@ -4,6 +4,7 @@ import Vue from "vue";
 import { CancelToken } from "kx-ui";
 import * as loadingIndicator from "./loading-indicator";
 import { REFRESH_USER, SET_PREFETCH_DATA } from "./store/types";
+import { observeWindow } from "./store/media-query";
 import "./serviceWorker";
 
 ErrorReporting.enableAutoReport();
@@ -95,6 +96,7 @@ Vue.mixin({
 });
 
 const { vue, router, store } = createApp(window.__INITIAL_STATE__);
+observeWindow(store);
 
 if (typeof store.state.user === "undefined") {
 	store.dispatch(REFRESH_USER); // AppShell 模式不会再服务端加载用户

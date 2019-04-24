@@ -4,6 +4,7 @@ import createRouter from "./router";
 import createStore from "./store";
 import App from "./App";
 
+import { MediaQueryPlugin, registerToStore } from "./store/media-query";
 import KxUI from "kx-ui";
 import KxMarkdown from "./markdown";
 import BlogPlugin from "./blog-plugin";
@@ -15,6 +16,7 @@ Vue.use(KxUI);
 Vue.use(KxMarkdown);
 Vue.use(BlogPlugin);
 Vue.use(Croppa);
+Vue.use(MediaQueryPlugin);
 
 /**
  * 服务端和客户端公共的初始化逻辑。
@@ -25,11 +27,12 @@ Vue.use(Croppa);
  * @param initState Vuex的初始状态
  * @return Vue全家桶
  */
-export default function createApp (initState = undefined) {
+export default function createApp(initState = undefined) {
 	const store = createStore();
 	const router = createRouter();
 
-	if(initState) {
+	registerToStore(store);
+	if (initState) {
 		store.replaceState(initState);
 	}
 

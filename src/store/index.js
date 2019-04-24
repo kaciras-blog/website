@@ -1,8 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import api from "../api";
-import { REFRESH_USER, REMOVE_USER, SET_USER, SET_PREFETCH_DATA } from "./types";
-import { mediaQueryModule } from "./media-query";
+import { REFRESH_USER, REMOVE_USER, SET_PREFETCH_DATA, SET_USER } from "./types";
 
 Vue.use(Vuex);
 
@@ -27,6 +26,5 @@ export default function () {
 			[SET_USER]: (state, info) => state.user = info,
 			[SET_PREFETCH_DATA]: (state, data) => state.prefetch = data,
 		},
-		modules: [mediaQueryModule],
 	});
 }

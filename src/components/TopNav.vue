@@ -1,21 +1,23 @@
 <template>
-	<div :style="navStyle" :class="navClass">
-		<div v-if="showBanner"
-			 :class="[$style.filterContainer, $style.shadow]">
-			<top-nav-collapsed/>
+	<nav :class="$style.container">
+		<router-link
+			:class="$style.logo"
+			to="/"
+			title="LOGO，点击回到首页"/>
+		<top-nav-wide v-if="$mediaMatch('desktop+')"/>
+		<div v-else class="nav-item nav-right" @click="showMenu">
+			<i class="fas fa-bars"></i>
 		</div>
-		<top-nav-collapsed v-else :class="$style.shadow"/>
-		<div v-if="showBanner" :class="$style.banner" role="banner"></div>
-	</div>
+	</nav>
 </template>
 
 <script>
 import TopNavWide from "./TopNavWide";
-import TopNavCollapsed from "./TopNavCollapsed";
+import TopNavMenu from "./TopNavMenu";
 
 export default {
 	name: "TopNav",
-	components: { TopNavCollapsed, TopNavWide },
+	components: { TopNavWide },
 	props: {
 		showBanner: {
 			type: Boolean,
@@ -49,40 +51,46 @@ export default {
 			}
 		},
 	},
+	methods: {
+		showMenu() {
+			this.$dialog.show(TopNavMenu);
+		},
+	},
 };
 </script>
 
 <style module lang="less">
 @import "../css/Imports.less";
 
-.filterContainer {
-	.glass;
-	.glass.blur(4px);
-	height: 50px;
-}
+.container {
+	position: relative;
+	display: flex;
+	.full-percent;
 
-.shadow {
-	box-shadow: rgba(0, 0, 0, .2) 0 0 3px 1px;
-}
+	background-color: rgba(255, 255, 255, .4);
+	box-shadow: rgba(0, 0, 0, .2) 0 0 3px 1px; // TODO: 不共用？
 
-.banner {
-	height: 13rem;
-	margin-top: -50px;
-	margin-bottom: 4rem;
-}
-
-// 使用变量设置背景图，只要在外层元素设置即可
-.filterContainer::before,
-.banner {
-	background: var(--background);
-	background-size: var(--background-size); // 这个属性写一起毛病多
-
-	@media screen and (min-width: @length-screen-pad) {
-		background-size: var(--background-size, cover);
+	@media screen {
+		@media (min-width: @length-screen-mobile) {
+			padding: 0 5%;
+		}
 	}
 }
 
-:global(.dark) .navWrapper {
-	box-shadow: rgba(0, 0, 0, .5) 0 0 3px 1px;
+.logo {
+	display: block;
+	width: 240px;
+	/*height: 100%;*/ // flex 容器下有问题
+
+	background: url("../assets/img/Logo-Width.svg");
+	background-size: 240px 200%;
+
+	&:hover, &:focus {
+		background-position: 0 100%;
+	}
+}
+
+:global(.dark) .container {
+	background-color: rgba(255, 255, 255, .1);
 }
 </style>
