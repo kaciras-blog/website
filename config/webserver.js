@@ -7,7 +7,7 @@ const webpack = {
 	publicPath: "/",	// 公共资源的URL前缀，可以设为外部服务器等
 	assetsDirectory: "static",	// 公共资源输出目录，是outputPath的子目录
 
-	bundleAnalyzerReport: process.env.npm_config_report,
+	// bundleAnalyzerReport: true,
 
 	client: {
 		useBabel: true,
@@ -51,6 +51,7 @@ const dev = {
 const blog = {
 	staticRoot: webpack.outputPath,
 	imageRoot: "G:/备份/blog.kaciras.net/image",
+	serverCert: "D:/Coding/Utils/dev.pem",
 	serverAddress: "https://localhost:2375",
 	cors: {
 		maxAge: 864000,
