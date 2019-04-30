@@ -8,8 +8,10 @@
 			<h1 class="segment" :class="$style.listTitle">全部文章</h1>
 
 			<scroll-paging-view
+				:auto-load="autoLoad"
 				:next-link-enabled="true"
 				:loader="loadPage"
+				:page-size="2"
 				:init-items="initArticles"
 				:init-state="initState"
 				:init-next-url="initNextUrl">
@@ -25,7 +27,12 @@
 				</template>
 			</scroll-paging-view>
 		</section>
-		<aside-panel :class="$style.aside"/>
+
+		<aside :class="$style.aside">
+			<aside-panel />
+			<kx-check-box v-model="autoLoad">滚动加载</kx-check-box>
+		</aside>
+
 	</page-layout>
 </template>
 
@@ -35,7 +42,7 @@ import AsidePanel from "./AsidePanel";
 import ArticlePreviewItem from "./ArticlePreviewItem";
 import api from "../../api";
 
-const DEFAULT_PAGE_SIZE = 16;
+const DEFAULT_PAGE_SIZE = 2;
 
 /**
  * 根据路由和当前加载的文章数来构造下一页的URL。
@@ -66,7 +73,7 @@ export default {
 			.withPrototype(session.request);
 
 		const tasks = [
-			configuredApi.category.get(0).then(session.dataSetter("category"))
+			configuredApi.category.get(0).then(session.dataSetter("category")),
 		];
 
 		if (session.isServer) {
@@ -82,6 +89,8 @@ export default {
 	},
 	data () {
 		const data = {
+			autoLoad: true,
+
 			index: parseInt(this.$route.params.index) || 0,
 			initArticles: [],
 			initNextUrl: null,

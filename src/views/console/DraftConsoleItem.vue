@@ -23,19 +23,20 @@
 		</div>
 
 		<!--<div class="history">-->
-			<!--<div class="history-item" v-for="his in value.histories" :key="his.saveCount">-->
-				<!--<div>-->
-					<!--<span><i class="fa fa-save"></i>保存于：{{his.time}}</span>-->
-					<!--<span><i class="fa fa-pencil"></i>字数：{{his.contentSize}}</span>-->
-				<!--</div>-->
-				<!--<kx-button class="primary">编辑</kx-button>-->
-			<!--</div>-->
+		<!--<div class="history-item" v-for="his in value.histories" :key="his.saveCount">-->
+		<!--<div>-->
+		<!--<span><i class="fa fa-save"></i>保存于：{{his.time}}</span>-->
+		<!--<span><i class="fa fa-pencil"></i>字数：{{his.contentSize}}</span>-->
+		<!--</div>-->
+		<!--<kx-button class="primary">编辑</kx-button>-->
+		<!--</div>-->
 		<!--</div>-->
 	</div>
 </template>
 
 <script>
 import api from "../../api";
+import { MessageBoxType } from "kx-ui/src/dialog";
 
 export default {
 	name: "DraftConsoleItem",
@@ -46,18 +47,15 @@ export default {
 		},
 	},
 	methods: {
-		async deleteDraft () {
-			const result = await this.$dialog.messageBox({
+		async deleteDraft() {
+			this.$dialog.messageBox({
 				title: "删除草稿",
 				content: "删除后不可恢复，是否确定？",
 				type: MessageBoxType.Warning,
 				cancelable: true,
-			});
-			if (result.isConfirm) {
-				await api.draft.remove(this.value.id);
-				this.$emit("removed");
-			}
-			// TODO: result.confirmThen
+			})
+				.confirmThen(() => api.draft.remove(this.value.id))
+				.then(() => this.$emit("removed"));
 		},
 	},
 };
@@ -68,6 +66,7 @@ export default {
 	display: flex;
 	align-items: center;
 }
+
 .title {
 	flex: 1;
 	margin: 0;
@@ -86,6 +85,6 @@ export default {
 }
 
 .time {
-	margin: 0  1em 0 .5em;
+	margin: 0 1em 0 .5em;
 }
 </style>

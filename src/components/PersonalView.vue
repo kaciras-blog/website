@@ -28,9 +28,15 @@
 		</router-link>
 
 		<div :class="$style.body">
-			<router-link :class="$style.link" to="/">首页</router-link>
-			<router-link :class="$style.link" to="/list">文章页</router-link>
-			<router-link :class="$style.link" to="/about">关于本站</router-link>
+			<router-link :class="$style.link" to="/">
+				<i class="fas fa-home"></i>首页
+			</router-link>
+			<router-link :class="$style.link" to="/list">
+				<i class="far fa-list-alt"></i>文章页
+			</router-link>
+			<router-link :class="$style.link" to="/about">
+				<i class="far fa-copyright"></i>关于本站
+			</router-link>
 		</div>
 
 		<div :class="$style.footer">
@@ -75,11 +81,13 @@ export default {
 
 .link {
 	display: block;
-	padding: 10px 20px;
+	padding: 12px 20px;
 }
 
 .body {
-	flex: 1;
+	flex-grow: 1;
+	border-top: solid 1px #cacaca;
+	border-bottom: solid 1px #cacaca;
 }
 
 .footer {

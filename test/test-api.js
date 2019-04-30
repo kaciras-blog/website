@@ -19,7 +19,7 @@ describe("api factory", function () {
 		expect(m.patch.mock.calls[0][1].deletion).toBe(true);
 	});
 
-	it("should touch CencelToken", async function () {
+	it("should touch CancelToken", async function () {
 		const cancelToken = axios.CancelToken.source().token;
 		await api.withCancelToken(cancelToken).article.remove(123);
 

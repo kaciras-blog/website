@@ -2,7 +2,7 @@
  * 虽然 ServiceWorker 对 Edge 版本要求比 CSS Grid 更高，但这是一项非必需的功能，即便没有 PWA 网页也能正常运行。
  */
 import { cacheNames, ManagedCache } from "./cache";
-import { Router, AppShellRoute, RegexRoute } from "./router";
+import { Routing, AppShellRoute, RegexRoute } from "./routing";
 import { CacheFirstHandler } from "./cache-strategy";
 
 // 默认是WebWorker，需要声明一下ServiceWorker，其他文件里也一样。
@@ -16,7 +16,7 @@ declare const serviceWorkerOption: {
 const STATIC_CACHE_NAME = "Static";
 const APP_SHELL_NAME = "/app-shell.html";
 
-const routeService = new Router();
+const routeService = new Routing();
 
 
 async function initRouteService() {

@@ -1,5 +1,5 @@
 <template>
-	<aside>
+	<div>
 		<h3 class="padding" :class="$style.padding">置顶</h3>
 		<p :class="$style.noContent">暂无</p>
 
@@ -16,7 +16,7 @@
 			</li>
 		</ol>
 		<p :class="$style.noContent" v-else>加载失败</p>
-	</aside>
+	</div>
 </template>
 
 <script>

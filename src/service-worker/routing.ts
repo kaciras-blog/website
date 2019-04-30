@@ -5,7 +5,7 @@ import { ManagedCache } from "./cache";
  * 缓存服务器，检查传入的请求是否命中缓存，如果是则直接返回缓存的结果，否则不做任何
  * 动作（不做动作的话浏览器默认会正常发送请求）
  */
-export class Router {
+export class Routing {
 
 	private readonly routes: Route[];
 

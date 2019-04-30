@@ -27,7 +27,7 @@ export default {
 	width: 100%;
 	color: #eee;
 	background-color: #303030;
-	padding: 1rem;
+	padding: 20px;
 
 	display: grid;
 	grid-gap: 1rem;
@@ -35,7 +35,7 @@ export default {
 	justify-items: center;
 
 	@media screen and (min-width: @length-screen-mobile) {
-		padding: 1rem 5%;
+		padding: 20px 5%;
 		grid-template-rows: auto;
 		grid-template-columns: 1fr auto auto;
 		justify-items: start;
