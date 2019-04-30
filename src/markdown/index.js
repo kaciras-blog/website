@@ -2,7 +2,7 @@
  * TODO: lozad 只有很少的代码，并且其功能也不是很强，考虑以后自己实现
  */
 import MarkdownIt from "markdown-it";
-import hljs from "highlight.js";
+import highlight from "./highlight";
 import Anchor from "markdown-it-anchor";
 import lozad from "lozad";
 import loadingImage from "../assets/img/loading.gif";
@@ -35,8 +35,8 @@ function myPlugin (markdownIt) {
 export const converter = new MarkdownIt({
 	highlight: function (str, lang) {
 		let result;
-		if (lang && hljs.getLanguage(lang)) {
-			result = hljs.highlight(lang, str).value;
+		if (lang && highlight.getLanguage(lang)) {
+			result = highlight.highlight(lang, str).value;
 		} else {
 			result = converter.utils.escapeHtml(str);
 		}
