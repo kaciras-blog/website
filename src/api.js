@@ -32,34 +32,6 @@ function defineApiServerConfig() {
 	return productionWeb;
 }
 
-/** 修改Axios使其支持内置Node的http2模块 */
-function request (options, callback) {
-	let host = `https://${options.hostname}`;
-	if (options.port) {
-		host += ":" + options.port;
-	}
-
-	const client = eval("require")("http2").connect(host);
-	const req = client.request({
-		...options.headers,
-		":method": options.method.toUpperCase(),
-		":path": options.path,
-	});
-
-	req.on("response", headers => {
-		req.headers = headers;
-		req.statusCode = headers[":status"];
-		callback(req);
-	});
-	req.on("end", () => client.close());
-	return req;
-}
-
-if (process.env.VUE_ENV === "server") {
-	Axios.defaults.transport = { request };
-}
-
-
 // MDZZ，axios不能全局配置拦截？
 function createAxios(config) {
 	const instance = Axios.create(config);
@@ -361,41 +333,44 @@ class DiscussApi extends AbstractApi {
 	}
 
 	getList(objectId, start, count) {
-		return this.mainServer.get("/discussions",
-			{ params: { objectId, type: 0, start, count } }).then(r => r.data);
+		return this.mainServer.get("/discussions", { params: { objectId, start, count } }).then(r => r.data);
 	}
 
 	/**
 	 * 获取评论的回复（楼中楼）
 	 *
-	 * @param discussionId {int} 评论id
+	 * @param id {int} 评论id
 	 * @param index {int} 页码，从1开始
 	 * @param count {int} 每页数量
 	 * @return Promise<?> 回复列表
 	 */
-	getReplies(discussionId, index, count) {
-		return this.mainServer.get(`/discussions/${discussionId}/replies`, {
-			params: { start: index * count, count },
-		}).then(r => r.data);
+	getReplies(id, index, count) {
+		return this.mainServer.get(`/discussions/${id}/replies`, { params: { start: index * count, count } }).then(r => r.data);
 	}
 
 	/**
 	 * 发表回复（楼中楼）
 	 *
-	 * @param discuz {int} 评论id
+	 * @param id {int} 评论id
 	 * @param content {String} 内容
 	 * @return Promise
 	 */
-	reply(discuz, content) {
-		return this.mainServer.post(`/discussions/${discuz}/replies`, content, {
+	reply(id, content) {
+		return this.mainServer.post(`/discussions/${id}/replies`, content, {
 			headers: { "Content-Type": "text/plain;charset=UTF-8" },
 		});
 	}
 
+	setState(id, state) {
+		this.mainServer.patch(`/discussions/${id}`, { state });
+	}
+
+	/** @deprecated */
 	remove(id) {
 		return this.mainServer.patch(`/discussions/${id}`, { deletion: true });
 	}
 
+	/** @deprecated */
 	restore(id) {
 		return this.mainServer.patch(`/discussions/${id}`, { deletion: false });
 	}
