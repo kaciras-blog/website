@@ -1,5 +1,12 @@
 import { UPDATE_CHANNEL_NAME } from "./service-worker/cache";
-import * as ErrorReporting from "./error-report";
+import { report } from "./error-report";
+
+
+export interface ErrorRecordMessage {
+	type: "ERROR" | "REJECTION",
+	stack: string | null;
+	message: string | null;
+}
 
 const ServiceWorkerPath = "/sw.js";
 
@@ -25,12 +32,15 @@ export function register(config: ServiceWorkerConfig = {}) {
 				const channel = new BroadcastChannel(UPDATE_CHANNEL_NAME);
 				channel.onmessage = (message) => onResourceUpdate(message.data);
 			} else {
-				navigator.serviceWorker.addEventListener("message",(message) => {
-					if(message.data.type === "CACHE_UPDATE") onResourceUpdate(message.data);
+				navigator.serviceWorker.addEventListener("message", (message) => {
+					if (message.data.type === "CACHE_UPDATE") onResourceUpdate(message.data);
 				});
 			}
 		}
-		ErrorReporting.reportServiceWorkerErrors();
+		navigator.serviceWorker.addEventListener("message", (message) => {
+			const { data } = message;
+			if (data.type === "ERROR" || data.type === "REJECTION") report(data);
+		});
 		console.log("[ServiceWorker] 注册成功");
 	}
 

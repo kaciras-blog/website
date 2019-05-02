@@ -7,7 +7,9 @@ import { REFRESH_USER, SET_PREFETCH_DATA } from "./store/types";
 import { observeWindow } from "kx-ui/src/media-query";
 import "./serviceWorker";
 
-ErrorReporting.enableAutoReport();
+if(process.env.NODE_ENV === "production") {
+	ErrorReporting.enableAutoReport();
+}
 
 let cancelToken = CancelToken.NEVER;
 

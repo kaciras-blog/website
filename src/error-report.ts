@@ -1,12 +1,7 @@
 import * as Sentry from '@sentry/browser';
 import Vue from "vue";
 import * as Integrations from "@sentry/integrations";
-
-export interface ErrorRecordMessage {
-	type: "ERROR" | "REJECTION",
-	message: string | null;
-	stack: string | null;
-}
+import { ErrorRecordMessage } from "./serviceWorker";
 
 export function enableAutoReport() {
 	Sentry.init({
@@ -15,16 +10,10 @@ export function enableAutoReport() {
 	});
 }
 
-class TransferredServiceWorkerError extends Error {}
-
-export function report(message: ErrorRecordMessage) {
-	const ex = new TransferredServiceWorkerError();
-	Sentry.captureException(Object.assign(ex, message));
+class TransferredServiceWorkerError extends Error {
 }
 
-export function reportServiceWorkerErrors() {
-	navigator.serviceWorker.addEventListener("message", (message) => {
-		const { data } = message;
-		if (data.type === "ERROR" || data.type === "REJECTION") report(data);
-	});
+export function report(message: ErrorRecordMessage) {
+	const container = new TransferredServiceWorkerError();
+	Sentry.captureException(Object.assign(container, message));
 }
