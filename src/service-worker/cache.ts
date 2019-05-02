@@ -27,11 +27,36 @@ export function broadcastMessage(message: any) {
 	}
 }
 
+export interface ManagedCache {
+	put(request: RequestInfo, response: Response): Promise<void>;
+	match(request: RequestInfo, options?: CacheQueryOptions): Promise<Response | undefined>;
+}
 
 /**
- * 对缓存的封装，增加了过期功能。
+ * 简单封装下，把名字绑定了。
  */
-export class ManagedCache {
+export class CacheWrapper implements ManagedCache {
+
+	private readonly name: string;
+
+	constructor(name: string) {
+		this.name = name;
+	}
+
+	match(request: RequestInfo, options?: CacheQueryOptions): Promise<Response | undefined> {
+		return caches.open(this.name).then(cache => cache.match(request, options));
+	}
+
+	put(request: RequestInfo, response: Response): Promise<void> {
+		return caches.open(this.name).then(cache => cache.put(request, response));
+	}
+}
+
+/**
+ * 有过期功能的缓存，过期信息记录在 IndexedDB 里。
+ * 请使用 ExpirationCache.create(...) 来创建。
+ */
+export class ExpirationCache implements ManagedCache {
 
 	readonly name: string;
 	readonly maxSize?: number;
@@ -95,8 +120,8 @@ export class ManagedCache {
 	}
 
 	static async create(name: string, maxSize = undefined, maxAge = undefined) {
-		const cache = new ManagedCache(name, maxSize, maxAge);
-		await cache.db.open(e => ManagedCache.updateExpireStore(e));
+		const cache = new ExpirationCache(name, maxSize, maxAge);
+		await cache.db.open(e => ExpirationCache.updateExpireStore(e));
 		return cache;
 	}
 }

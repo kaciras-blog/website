@@ -64,7 +64,7 @@ export class StaleWhileRevalidateHandler extends BaseRequestHandler {
 			return cached.headers.has(header) === newResp.headers.has(header)
 				&& cached.headers.get(header) === newResp.headers.get(header);
 		})) {
-			broadcastMessage({ type: "CACHE_UPDATE", cacheName: this.cache.name, updatedUrl: newResp.url });
+			broadcastMessage({ type: "CACHE_UPDATE", updatedUrl: newResp.url });
 		}
 	}
 }
