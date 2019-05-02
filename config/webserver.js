@@ -37,10 +37,11 @@ const webpack = {
 
 // TODO: 端口的配置没有同步到api中
 const server = {
-	tls: true,
-	certificate: "D:/Coding/Utils/dev.pem",
-	privatekey: "D:/Coding/Utils/dev.pvk",
-	redirectHttp: true,
+	tls: {
+		certFile:"D:/Coding/Utils/dev.pem",
+		keyFile: "D:/Coding/Utils/dev.pvk",
+	},
+	httpRedirect: true,
 };
 
 const dev = {
