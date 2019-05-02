@@ -190,7 +190,7 @@ class ProxiedApiFactory extends BasicApiFactory {
 			config.headers = config.headers || {};
 
 			// UA可以随便改，没啥实际用，还不如穿透了统计下客户端类型
-			if (proto.headers.userAgent) {
+			if (proto.headers["user-agent"]) {
 				config.headers["User-Agent"] = proto.headers["user-agent"];
 			}
 			if (proto.headers.cookie) {

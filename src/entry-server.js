@@ -2,6 +2,7 @@ import createApp from "./main";
 import { CancelToken } from "kx-ui";
 import Vue from "vue";
 import { REFRESH_USER, SET_PREFETCH_DATA } from "./store/types";
+import { SET_SCREEN_WIDTH, DEFAULT_QUERIES } from "kx-ui/src/media-query/index";
 
 
 class ServerPrefetchContext {
@@ -30,12 +31,22 @@ function onReadyAsync(router) {
 	return new Promise((resolve, reject) => router.onReady(resolve, reject));
 }
 
+function isMobile(userAgent) {
+	return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+}
+
 export default async context => {
 	if (context.shellOnly || /^\/edit\//.test(context.url)) {
 		return new Vue({ render: h => h("div", { attrs: { id: "app" } }) });
 	}
 	const { vue, router, store } = createApp();
 	const vuexTasks = [];
+
+	// 从 UserAgent 中检测是否手机，从而设定渲染的屏幕宽度
+	const userAgent = context.request.headers["user-agent"];
+	if (userAgent && isMobile(userAgent)) {
+		store.commit(SET_SCREEN_WIDTH, DEFAULT_QUERIES.mobile);
+	}
 
 	// 因为全站都是预渲染，所以初始用户在服务端加载一次即可。
 	// 控制台配置了拦截，必须先登陆，否则后面的路由直接跳到错误页
