@@ -1,37 +1,35 @@
 <template>
-	<banner-page-layout
-		:show-banner="true"
-		:banner="category.banner">
+	<banner-page-layout :banner="category.banner">
 
 		<div id="index-page">
-		<section :class="$style.list">
-			<h1 class="segment" :class="$style.listTitle">全部文章</h1>
+			<section :class="$style.list">
+				<h1 class="segment" :class="$style.listTitle">全部文章</h1>
 
-			<scroll-paging-view
-				:auto-load="autoLoad"
-				:next-link-enabled="true"
-				:loader="loadPage"
-				:page-size="2"
-				:init-items="initArticles"
-				:init-state="initState"
-				:init-next-url="initNextUrl">
+				<scroll-paging-view
+					:auto-load="autoLoad"
+					:next-link-enabled="true"
+					:loader="loadPage"
+					:page-size="10"
+					:init-items="initArticles"
+					:init-state="initState"
+					:init-next-url="initNextUrl">
 
-				<template v-slot="{ items }">
-					<ul class="list">
-						<article-preview-item
-							v-for="item of items"
-							:key="item.id"
-							:item="item"
-							class="segment"/>
-					</ul>
-				</template>
-			</scroll-paging-view>
-		</section>
+					<template v-slot="{ items }">
+						<ul class="list">
+							<article-preview-item
+								v-for="item of items"
+								:key="item.id"
+								:item="item"
+								class="segment"/>
+						</ul>
+					</template>
+				</scroll-paging-view>
+			</section>
 
-		<aside :class="$style.aside">
-			<aside-panel/>
-			<kx-check-box v-model="autoLoad">滚动加载</kx-check-box>
-		</aside>
+			<aside :class="$style.aside">
+				<aside-panel/>
+				<kx-check-box v-model="autoLoad">滚动加载</kx-check-box>
+			</aside>
 		</div>
 	</banner-page-layout>
 </template>
@@ -42,7 +40,7 @@ import AsidePanel from "./AsidePanel";
 import ArticlePreviewItem from "./ArticlePreviewItem";
 import api from "../../api";
 
-const DEFAULT_PAGE_SIZE = 2;
+const DEFAULT_PAGE_SIZE = 10;
 
 /**
  * 根据路由和当前加载的文章数来构造下一页的URL。
@@ -51,7 +49,7 @@ const DEFAULT_PAGE_SIZE = 2;
  * @param count 加载的文章数
  * @return 指向下一页的URL，相对路径
  */
-function nextPageUrl (route, count) {
+function nextPageUrl(route, count) {
 	const params = Object.assign({}, route.query);
 	const pairs = [];
 	for (const k of Object.keys(params)) {
@@ -67,7 +65,7 @@ export default {
 		ArticlePreviewItem,
 		AsidePanel,
 	},
-	async asyncData (session) {
+	async asyncData(session) {
 		const configuredApi = api
 			.withCancelToken(session.cancelToken)
 			.withPrototype(session.request);
@@ -87,9 +85,9 @@ export default {
 
 		return Promise.all(tasks);
 	},
-	data () {
+	data() {
 		const data = {
-			autoLoad: this.$mediaQuery.match("tablet+"),
+			autoLoad: this.$mediaQuery.match("mobile"),
 
 			index: parseInt(this.$route.params.index) || 0,
 			initArticles: [],
@@ -109,8 +107,13 @@ export default {
 	computed: mapState({
 		category: state => state.prefetch.category,
 	}),
+	watch: {
+		autoLoad(value) {
+			localStorage.setItem("scrollPager.autoLoad", JSON.stringify(value));
+		},
+	},
 	methods: {
-		async loadPage (items, size) {
+		async loadPage(items, size) {
 			const { $route, index } = this;
 			const loaded = await api.article.getList({
 				start: index + items.length,
@@ -119,6 +122,12 @@ export default {
 			items.push.apply(items, loaded);
 			return nextPageUrl($route, items.length);
 		},
+	},
+	beforeMount() {
+		const storedLoad = localStorage.getItem("scrollPager.autoLoad");
+		if (storedLoad) {
+			this.autoLoad = JSON.parse(storedLoad);
+		}
 	},
 };
 </script>
