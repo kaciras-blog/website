@@ -1,18 +1,17 @@
 <!-- TODO: 这一版的设计以rem长度单位为主，对宽屏不友好，但由于我没有那么宽的屏幕来做调试，所以搞不了 -->
 <template>
-	<page-layout
-		view-id="login-view"
-		nav-class="login-header"
-		:footer="false">
+	<base-page-layout  nav-class="login-header" :footer="false">
 
-		<div :class="$style.pictureBox">
-			<img :class="$style.picture" src="../../assets/img/LoginPicture.jpg" alt="占位置的图片。。。">
+		<div :class="$style.body">
+			<div :class="$style.pictureBox">
+				<img :class="$style.picture" src="../../assets/img/LoginPicture.jpg" alt="占位置的图片。。。">
+			</div>
+			<component :is="activePanel"
+					   :class="$style.formPanel"
+					   :return-uri="returnUri"
+					   @switch-panel="switchPanel"/>
 		</div>
-		<component :is="activePanel"
-				   :class="$style.formPanel"
-				   :return-uri="returnUri"
-				   @switch-panel="switchPanel"/>
-	</page-layout>
+	</base-page-layout>
 </template>
 
 <script>
@@ -47,7 +46,15 @@ export default {
 <style module lang="less">
 @import "../../css/Imports";
 
-:global(#login-view) {
+:global(.login-header) {
+	& .content {
+		color: white;
+		background-color: rgba(50, 50, 50, 0.3) !important;
+	}
+}
+
+
+.body {
 	display: flex;
 	max-width: 980px;
 
@@ -55,13 +62,6 @@ export default {
 	padding-top: 6rem;
 
 	align-items: flex-start;
-}
-
-:global(.login-header) {
-	& .content {
-		color: white;
-		background-color: rgba(50, 50, 50, 0.3) !important;
-	}
 }
 
 .pictureBox {

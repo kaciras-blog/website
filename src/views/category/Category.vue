@@ -1,17 +1,12 @@
 <template>
-	<page-layout
-		view-id="category"
-		:show-banner="true"
-		:banner="category.banner">
-
+	<banner-page-layout :banner="category.banner">
 		<category-header :value="category"/>
 		<family-section
 			:parent="category.parent"
 			:children="category.children"/>
-
 		<!-- 设置key在路由改变时清除加载的文章 -->
 		<category-body :key="$route.params.id"/>
-	</page-layout>
+	</banner-page-layout>
 </template>
 
 <script>
@@ -46,9 +41,3 @@ export default {
 	}),
 };
 </script>
-
-<style lang="less">
-#category {
-	margin-bottom: 4rem;
-}
-</style>

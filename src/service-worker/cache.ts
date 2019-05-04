@@ -40,7 +40,11 @@ export class CacheWrapper implements ManagedCache {
 	private readonly name: string;
 
 	constructor(name: string) {
+		if (cacheNames.has(name)) {
+			throw new Error(`ManagedCache ${name} already exists`);
+		}
 		this.name = name;
+		cacheNames.add(name);
 	}
 
 	match(request: RequestInfo, options?: CacheQueryOptions): Promise<Response | undefined> {

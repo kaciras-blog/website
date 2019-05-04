@@ -2,7 +2,10 @@
 	<section :class="$style.container">
 		<h1 :class="$style.title">文章列表</h1>
 
-		<scroll-paging-view :loader="load">
+		<scroll-paging-view
+			:auto-load="true"
+			:loader="load">
+
 			<template v-slot="{ items }">
 				<ul class="list">
 					<article-preview-item
@@ -19,7 +22,6 @@
 <script>
 import api from "../../api";
 import ArticlePreviewItem from "../index/ArticlePreviewItem";
-
 
 export default {
 	name: "CategoryBody",
@@ -41,16 +43,6 @@ export default {
 .container {
 	margin: 0 auto;
 	max-width: 75%;
-	/*&::after {*/
-	/*content: "";*/
-	/*position: absolute;*/
-
-	/*top: 0;*/
-	/*left: calc(15% + 6rem);*/
-	/*width: 6px;*/
-	/*height: 100%;*/
-	/*background-color: #007aff;*/
-	/*}*/
 }
 
 .title {

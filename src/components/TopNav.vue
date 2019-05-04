@@ -4,7 +4,9 @@
 			:class="$style.logo"
 			to="/"
 			title="LOGO，点击回到首页"/>
-		<top-nav-wide v-if="$mediaMatch('desktop+')"/>
+
+		<top-nav-wide v-if="$mediaQuery.match('desktop+')"/>
+
 		<div v-else class="nav-item nav-right" @click="showMenu">
 			<i class="fas fa-bars"></i>
 		</div>
@@ -18,39 +20,6 @@ import TopNavMenu from "./TopNavMenu";
 export default {
 	name: "TopNav",
 	components: { TopNavWide },
-	props: {
-		showBanner: {
-			type: Boolean,
-			default: false,
-		},
-		banner: {
-			type: Object,
-			required: false,
-		},
-	},
-	computed: {
-		navStyle () {
-			const { banner } = this;
-			if (banner) {
-				return { "--background": `url(${banner.image})` };
-			}
-			return null;
-		},
-		navClass () {
-			const { banner } = this;
-			if (!banner) {
-				return "default-banner";
-			}
-			switch (banner.theme) {
-				case 1:
-					return "light";
-				case 2:
-					return "dark";
-				default:
-					return null;
-			}
-		},
-	},
 	methods: {
 		showMenu() {
 			this.$dialog.show(TopNavMenu);
@@ -78,12 +47,13 @@ export default {
 }
 
 .logo {
+	@logo-width: 150px;
+
 	display: block;
-	width: 240px;
-	/*height: 100%;*/ // flex 容器下有问题
+	width: @logo-width;
 
 	background: url("../assets/img/Logo-Width.svg");
-	background-size: 240px 200%;
+	background-size: @logo-width 200%;
 
 	&:hover, &:focus {
 		background-position: 0 100%;

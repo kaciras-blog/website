@@ -1,5 +1,5 @@
 <template>
-	<page-layout view-id="welcome-page">
+	<base-page-layout>
 		<section :class="$style.banner">
 			<div :class="$style.overlay"></div>
 			<div :class="$style.glass">
@@ -8,7 +8,7 @@
 			</div>
 		</section>
 		<blog-section/>
-	</page-layout>
+	</base-page-layout>
 </template>
 
 <script>

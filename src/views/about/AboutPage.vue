@@ -1,5 +1,5 @@
 <template>
-	<page-layout :view-class="$style.view">
+	<base-page-layout>
 		<header :class="$style.header">
 			<tab-button
 				:class="$style.tab"
@@ -17,7 +17,7 @@
 			</tab-button>
 		</header>
 		<component :is="subPage"/>
-	</page-layout>
+	</base-page-layout>
 </template>
 
 <script>
@@ -40,10 +40,6 @@ export default {
 
 <style module lang="less">
 @import "../../css/Imports";
-
-.view {
-	font-size: 22px;
-}
 
 .header {
 	padding-top: 100px;

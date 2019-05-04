@@ -39,11 +39,12 @@ export default async context => {
 	if (context.shellOnly || /^\/edit\//.test(context.url)) {
 		return new Vue({ render: h => h("div", { attrs: { id: "app" } }) });
 	}
-	const { vue, router, store } = createApp();
 	const vuexTasks = [];
+	const { vue, router, store } = createApp();
+	const { request } = context;
 
 	// 从 UserAgent 中检测是否手机，从而设定渲染的屏幕宽度
-	const userAgent = context.request.headers["user-agent"];
+	const userAgent = request && request.headers["user-agent"];
 	if (userAgent && isMobile(userAgent)) {
 		store.commit(SET_SCREEN_WIDTH, DEFAULT_QUERIES.mobile);
 	}
@@ -51,9 +52,9 @@ export default async context => {
 	// 因为全站都是预渲染，所以初始用户在服务端加载一次即可。
 	// 控制台配置了拦截，必须先登陆，否则后面的路由直接跳到错误页
 	if (/^\/console\/?/.test(context.url)) {
-		await store.dispatch(REFRESH_USER, context.request);
+		await store.dispatch(REFRESH_USER, request);
 	} else {
-		vuexTasks.push(store.dispatch(REFRESH_USER, context.request));
+		vuexTasks.push(store.dispatch(REFRESH_USER, request));
 	}
 
 	router.push(context.url);
@@ -64,7 +65,7 @@ export default async context => {
 		router.push("/error/" + 404);
 	}
 
-	const session = new ServerPrefetchContext(store, router.currentRoute, context.request);
+	const session = new ServerPrefetchContext(store, router.currentRoute, request);
 	const componentTasks = matched
 		.filter(c => c.asyncData)
 		.map(c => c.asyncData(session));

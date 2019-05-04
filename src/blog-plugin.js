@@ -1,7 +1,8 @@
 import SelectCategoryDialog from "./components/SelectCategoryDialog";
 import TopNav from "./components/TopNav";
 import PageFooter from "./components/PageFooter";
-import PageLayout from "./components/PageLayout";
+import BasePageLayout from "./components/BasePageLayout";
+import BannerPageLayout from "./components/BannerPageLayout";
 
 /**
  * 获取Article对象的完整URL，该URL指向文章页面。
@@ -26,5 +27,6 @@ export default function (Vue) {
 	Vue.component(TopNav.name, TopNav);
 	Vue.component(PageFooter.name, PageFooter);
 	Vue.component(SelectCategoryDialog.name, SelectCategoryDialog);
-	Vue.component(PageLayout.name, PageLayout);
+	Vue.component(BasePageLayout.name, BasePageLayout);
+	Vue.component(BannerPageLayout.name, BannerPageLayout);
 }

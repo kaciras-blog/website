@@ -41,7 +41,7 @@ export default {
 }
 
 .active {
-	transition: transform linear .25s;
+	transition: transform linear .2s;
 }
 
 .container {

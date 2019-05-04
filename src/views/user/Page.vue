@@ -1,27 +1,29 @@
 <template>
-	<page-layout :class="$style.pageLayout" view-id="profile">
-		<div :class="$style.card" class="panel">
-			<h2>修改用户信息</h2>
-			<div :class="[$style.headSection, $style.field]">
-				<img
-					:class="$style.head"
-					alt="头像"
-					title="点击换头像"
-					:src="user.head"
-					@click="editHead">
+	<base-page-layout :class="$style.pageLayout">
+		<div :class="$style.body">
+			<div :class="$style.card" class="panel">
+				<h2>修改用户信息</h2>
+				<div :class="[$style.headSection, $style.field]">
+					<img
+						:class="$style.head"
+						alt="头像"
+						title="点击换头像"
+						:src="user.head"
+						@click="editHead">
+				</div>
+				<div :class="$style.field">
+					用户ID:
+					<auth-type-tag :auth-type="user.authType"/>
+					{{user.id}}
+				</div>
+				<div :class="$style.field">
+					<label :class="$style.label">用户名</label>
+					<input :class="$style.input" name="name" v-model="user.name">
+				</div>
+				<kx-button class="primary" @click="save">保存</kx-button>
 			</div>
-			<div :class="$style.field">
-				用户ID:
-				<auth-type-tag :auth-type="user.authType"/>
-				{{user.id}}
-			</div>
-			<div :class="$style.field">
-				<label :class="$style.label">用户名</label>
-				<input :class="$style.input" name="name" v-model="user.name">
-			</div>
-			<kx-button class="primary" @click="save">保存</kx-button>
 		</div>
-	</page-layout>
+	</base-page-layout>
 </template>
 
 <script>
@@ -33,16 +35,16 @@ import AvatarCropper from "./AvatarCropper";
 export default {
 	name: "Page",
 	components: { AuthTypeTag },
-	data () {
+	data() {
 		return { user: this.$store.state.user || {} };
 	},
 	methods: {
-		async editHead () {
+		async editHead() {
 			const result = await this.$dialog.show(AvatarCropper);
 			if (result.isConfirm)
 				this.user.head = result.data;
 		},
-		async save () {
+		async save() {
 			try {
 				await api.user.updateProfile(this.user);
 				this.$dialog.messageBox({ title: "保存成功" });
@@ -63,7 +65,7 @@ export default {
 	min-height: 100vh;
 }
 
-:global(#profile) {
+.body {
 	padding-top: 4rem;
 	flex: 1;
 	background-color: #FDFDFD;

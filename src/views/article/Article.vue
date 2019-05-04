@@ -1,7 +1,6 @@
 <template>
-	<page-layout
+	<banner-page-layout
 		:class="$style.container"
-		:show-banner="true"
 		:banner="article.banner">
 
 		<article-view
@@ -28,7 +27,7 @@
 				<i class="fas fa-chevron-up"></i>
 			</kx-button>
 		</div>
-	</page-layout>
+	</banner-page-layout>
 </template>
 
 <script>

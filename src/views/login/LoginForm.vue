@@ -16,9 +16,7 @@
 			type="password"
 			required>
 
-		<div class="center">
-			<kx-check-box v-model="form.remember">保持登录</kx-check-box>
-		</div>
+		<kx-check-box :class="$style.centerElement" v-model="form.remember">保持登录</kx-check-box>
 
 		<span class="text-warning center">{{message}}</span>
 
@@ -112,5 +110,10 @@ export default {
 
 	&::before { right: 0; }
 	&::after { left: 0; }
+}
+
+.centerElement {
+	grid-column: ~"1/3";
+	justify-self: center !important;
 }
 </style>

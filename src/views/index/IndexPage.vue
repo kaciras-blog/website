@@ -1,9 +1,9 @@
 <template>
-	<page-layout
-		view-id="index-page"
+	<banner-page-layout
 		:show-banner="true"
 		:banner="category.banner">
 
+		<div id="index-page">
 		<section :class="$style.list">
 			<h1 class="segment" :class="$style.listTitle">全部文章</h1>
 
@@ -29,11 +29,11 @@
 		</section>
 
 		<aside :class="$style.aside">
-			<aside-panel />
+			<aside-panel/>
 			<kx-check-box v-model="autoLoad">滚动加载</kx-check-box>
 		</aside>
-
-	</page-layout>
+		</div>
+	</banner-page-layout>
 </template>
 
 <script>
@@ -89,7 +89,7 @@ export default {
 	},
 	data () {
 		const data = {
-			autoLoad: true,
+			autoLoad: this.$mediaQuery.match("tablet+"),
 
 			index: parseInt(this.$route.params.index) || 0,
 			initArticles: [],

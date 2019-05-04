@@ -28,6 +28,7 @@ export default {
 	color: #eee;
 	background-color: #303030;
 	padding: 20px;
+	margin-top: 60px;
 
 	display: grid;
 	grid-gap: 1rem;
