@@ -1,68 +1,47 @@
 <template>
-	<base-page-layout>
-		<header :class="$style.header">
-			<tab-button
-				:class="$style.tab"
-				name="Person"
-				:active-class="$style.active"
-				v-model="subPage">
-				关于博主
-			</tab-button>
-			<tab-button
-				:class="$style.tab"
-				name="Technology"
-				:active-class="$style.active"
-				v-model="subPage">
-				关于网站
-			</tab-button>
-		</header>
-		<component :is="subPage"/>
+	<base-page-layout :nav-class="$style.topNav">
+		<slide-nav :class="$style.header" :tabs="tabs" @change="switchPage"/>
+		<component :is="tabPage"/>
 	</base-page-layout>
 </template>
 
 <script>
 import Person from "./Person";
 import Technology from "./Technology";
-import TabButton from "./TabButton";
+import SlideNav from "./SlideNav";
 
 export default {
 	name: "AboutPage",
 	components: {
-		TabButton,
+		SlideNav,
 		Person,
 		Technology,
 	},
 	data: () => ({
-		subPage: "Person",
+		tabs: [
+			{ title: "关于博主", value: "Person" },
+			{ title: "关于博客", value: "Technology" },
+		],
+		tabPage: "Person",
 	}),
+	methods: {
+		switchPage(name) {
+			this.tabPage = name;
+		},
+	},
 };
 </script>
 
 <style module lang="less">
 @import "../../css/Imports";
 
+.topNav {
+	box-shadow: none;
+}
+
 .header {
-	padding-top: 100px;
-
-	border-bottom: solid 1px @color-border;
-	text-align: center;
+	position: sticky;
+	top: 0;
+	box-shadow: 0 3px 2px 0 #ececec;
 }
-
-.tab {
-	display: inline-block;
-	margin-left: -1px;
-	margin-bottom: -1px;
-	padding: .8em 3rem;
-
-	font-weight: 600;
-
-	border: solid 1px @color-border;
-	cursor: pointer;
-
-	&.active {
-		border-bottom-color: white;
-		color: #0083ff;
-	}
-}
-
 </style>

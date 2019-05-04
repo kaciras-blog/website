@@ -9,6 +9,6 @@
 
 <style module lang="less">
 .info {
-	padding: 100px 15vw;
+	padding: 1000px 15vw;
 }
 </style>
