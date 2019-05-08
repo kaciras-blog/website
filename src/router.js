@@ -94,7 +94,10 @@ export default function() {
 			children: [
 				{
 					path: "",
-					alias: "blogger",
+					redirect: "blogger",
+				},
+				{
+					path: "blogger",
 					component: () => import(/* webpackChunkName: "about" */ "./views/about/Blogger"),
 				},
 				{

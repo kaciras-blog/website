@@ -13,12 +13,22 @@
 </template>
 
 <style module lang="less">
+@import "../../css/Imports";
+
 .container {
-	padding: 0 10vw;
+	padding: 0 5vw;
+	font-size: initial;
+
+	@media screen and (min-width: @length-screen-mobile) {
+		padding: 0 15vw;
+	}
+	@media screen and (min-width: @length-screen-wide) {
+		padding: 0 25vw;
+	}
 }
 
 .blogger {
-	padding: 300px 15vw;
+	padding: 300px 0;
 }
 .tags {
 

@@ -1,5 +1,5 @@
 <template functional>
-	<div>
+	<div :class="$style.container">
 		<h1>博客网站开发相关</h1>
 		<section>
 			<h2>网页客户端</h2>
@@ -26,5 +26,7 @@
 </template>
 
 <style module lang="less">
-
+.container {
+	font-size: initial;
+}
 </style>
