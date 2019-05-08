@@ -38,7 +38,7 @@ function scrollBehavior(to, from, savedPosition) {
  *   1.不常被访问的页面，如编辑器、控制台。
  *   2.预渲染的页面，如首页、文章页
  */
-export default function () {
+export default function() {
 	const routes = [
 		{
 			path: "/",
@@ -85,10 +85,23 @@ export default function () {
 			component: () => import("./views/user/Page"),
 			meta: { title: "用户" },
 		},
+
+		// webpackChunkName 告诉 webpack 把他们打包在一个文件里
 		{
 			path: "/about",
-			component: () => import("./views/about/AboutPage"),
+			component: () => import(/* webpackChunkName: "about" */ "./views/about/AboutPage"),
 			meta: { title: "关于" },
+			children: [
+				{
+					path: "",
+					alias: "blogger",
+					component: () => import(/* webpackChunkName: "about" */ "./views/about/Blogger"),
+				},
+				{
+					path: "technology",
+					component: () => import(/* webpackChunkName: "about" */ "./views/about/Technology"),
+				},
+			],
 		},
 		{
 			path: "/error/:code",

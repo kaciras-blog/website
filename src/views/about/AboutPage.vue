@@ -1,34 +1,26 @@
 <template>
 	<base-page-layout :nav-class="$style.topNav">
-		<slide-nav :class="$style.header" :tabs="tabs" @change="switchPage"/>
-		<component :is="tabPage"/>
+		<slide-nav
+			:class="$style.header"
+			:tabs="tabs"/>
+		<router-view></router-view>
 	</base-page-layout>
 </template>
 
 <script>
-import Person from "./Person";
-import Technology from "./Technology";
 import SlideNav from "./SlideNav";
 
 export default {
 	name: "AboutPage",
 	components: {
 		SlideNav,
-		Person,
-		Technology,
 	},
 	data: () => ({
 		tabs: [
-			{ title: "关于博主", value: "Person" },
-			{ title: "关于博客", value: "Technology" },
+			{ title: "关于博主", route: "/about/blogger" },
+			{ title: "关于博客", route: "/about/technology" },
 		],
-		tabPage: "Person",
 	}),
-	methods: {
-		switchPage(name) {
-			this.tabPage = name;
-		},
-	},
 };
 </script>
 

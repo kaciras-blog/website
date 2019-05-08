@@ -3,13 +3,16 @@ TODO: 超出屏幕宽度的元素点击后滚动到可视区
 -->
 <template>
 	<ol :class="$style.tabList" class="list">
-
-		<li v-for="(tab, i) of tabs"
+		<router-link
+			v-for="tab of tabs"
 			:key="tab.title"
-			:class="[$style.tabItem, { [$style.active]: i === active }]"
-			@click="onClick(i)">
-			{{tab.title}}
-		</li>
+			tag="li"
+			:to="tab.route"
+			:class="$style.tabItem"
+			:active-class="$style.active"
+		>
+			<a :class="$style.text" :href="tab.route">{{tab.title}}</a>
+		</router-link>
 	</ol>
 </template>
 
@@ -17,16 +20,7 @@ TODO: 超出屏幕宽度的元素点击后滚动到可视区
 export default {
 	name: "SlideNav",
 	props: {
-		tabs: {}, // { title, value }
-	},
-	data: () => ({
-		active: 0,
-	}),
-	methods: {
-		onClick(index) {
-			this.active = index;
-			this.$emit("change", this.tabs[index].value);
-		},
+		tabs: {}, // { title, route }
 	},
 };
 </script>
@@ -38,17 +32,14 @@ export default {
 	display: flex;
 	background-color: white;
 	overflow-x: auto;
-
-	@media screen and (min-width: @length-screen-mobile) {
-		justify-content: center;
-	}
+	justify-content: center;
 }
 
 // 纯 CSS 实现下边框两个方向平移
 // 关键在于使用后面的元素选择符，改变激活元素之后所有元素的边框起始位置
 .tabItem {
 	position: relative;
-	padding: 15px;
+
 	font-size: 16px;
 
 	@media screen and (min-width: @length-screen-mobile) {
@@ -82,6 +73,17 @@ export default {
 	& ~ .tabItem::before {
 		left: 0;
 		right: 100%;
+	}
+}
+
+/* TODO: 去除高亮样式的链接元素很多地方都要用 */
+.text {
+	display: block;
+	padding: 15px;
+
+	&:hover, &:active, &:visited, &:focus {
+		color: inherit;
+		text-decoration: none;
 	}
 }
 </style>
