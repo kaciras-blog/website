@@ -52,7 +52,7 @@ export default {
 	display: block;
 	width: @logo-width;
 
-	background: url("../assets/img/Logo-Width.svg");
+	background: url("../assets/img/logo-kaciras.svg");
 	background-size: @logo-width 200%;
 
 	&:hover, &:focus {

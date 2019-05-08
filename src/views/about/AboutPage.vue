@@ -35,5 +35,6 @@ export default {
 	position: sticky;
 	top: 0;
 	box-shadow: 0 3px 2px 0 #ececec;
+	z-index: 100;
 }
 </style>
