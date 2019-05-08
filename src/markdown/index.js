@@ -9,18 +9,29 @@ import loadingImage from "../assets/img/loading.gif";
 import katex from "@iktakahiro/markdown-it-katex";
 import tableOfContent from "markdown-it-toc-done-right";
 
-
-function myPlugin (markdownIt) {
-
-	// 给行内代码加个class
+/**
+ * 给行内代码加个 code_inline 类
+ *
+ * @param markdownIt MarkdownIt的实例
+ */
+function inlineCodePlugin (markdownIt) {
 	markdownIt.core.ruler.push("inline_code_class", state => state.tokens
 		.filter(token => token.type === "inline")
 		.forEach(token => token.children
 			.filter(child => child.type === "code_inline")
 			.forEach(child => child.attrs = [["class", "inline-code"]])));
+}
 
-	// 自定义图片，外层加上链接并设置居中的class
+/**
+ * 修改图片的渲染输出的插件，具有以下两个功能：
+ * 1. 给外层加上链接并设置居中的class
+ * 2. 将图片的src改为data-src以便懒加载。
+ *
+ * @param markdownIt MarkdownIt的实例
+ */
+function customImagePlugin(markdownIt) {
 	const defaultImageRenderer = markdownIt.renderer.rules.image;
+
 	markdownIt.renderer.rules.image = (tokens, idx, options, env, self) => {
 		const token = tokens[idx];
 		const srcValue = token.attrGet("src");
@@ -53,8 +64,8 @@ converter.use(Anchor, {
 });
 converter.use(tableOfContent);
 converter.use(katex);
-converter.use(myPlugin);
-
+converter.use(inlineCodePlugin);
+converter.use(customImagePlugin);
 
 export default {
 	install (Vue) {
