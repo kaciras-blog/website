@@ -22,10 +22,10 @@
 			placeholder="不填也行">
 
 		<label for="captcha">验证码:</label>
-		<div class="captcha">
+		<div :class="$style.captcha">
 			<input
 				id="captcha"
-				class="input-captcha"
+				:class="$style.inputCaptcha"
 				title="验证码"
 				ref="captchaInput"
 				v-model="form.captcha"
@@ -105,7 +105,7 @@ export default {
 };
 </script>
 
-<style scoped lang="less">
+<style module lang="less">
 .captcha {
 	& > img {
 		width: 150px;
@@ -114,7 +114,7 @@ export default {
 	}
 }
 
-.input-captcha {
+.inputCaptcha {
 	width: calc(100% - 150px - 1em);
 	margin-right: 1em;
 }

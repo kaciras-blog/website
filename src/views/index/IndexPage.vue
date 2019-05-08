@@ -164,6 +164,7 @@ export default {
 }
 
 .aside {
+	// sticky在支持Grid的浏览器上都可用，但是table里面使用有些问题
 	position: sticky;
 	top: 30px;
 

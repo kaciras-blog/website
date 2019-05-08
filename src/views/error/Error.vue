@@ -11,10 +11,10 @@
 			<error-content v-else-if="code === '404' || code === '410'"
 						   title="404 Not Found"
 						   :image="require('@/assets/img/error-404.jpg')">
-				<p>你所寻找的Loli<span class="red">不存在</span>！！</p>
-				<p>可能该Loli已被<span class="red">推倒</span>！！</p>
+				<p>你所寻找的 Loli <span class="red">不存在</span>！！</p>
+				<p>可能该 Loli 已被<span class="red">推倒</span>！！</p>
 				<p>或者是被怪蜀黍<span class="red">诱拐</span>！！</p>
-				<p>亦或是被Loli控<span class="red">吃掉</span>！！</p>
+				<p>亦或是被 Loli 控<span class="red">吃掉</span>！！</p>
 			</error-content>
 
 			<error-content v-else-if="code === '500'"
@@ -23,10 +23,9 @@
 				<p>服务器要<span :class="$style.red">爆炸啦！！</span>，快叫博主起床改BUG啊</p>
 			</error-content>
 
-			<error-content v-else
-						   title="其他错误"
-						   image="/static/img/error-other.png">
-				<p>您发现了一个被埋没的错误</p>
+			<error-content v-else title="其他错误"
+						   :image="require('@/assets/img/error-other.png')">
+				<p>你发现了一个隐藏的错误</p>
 				<p>就连作者都没有为这个错误编写页面</p>
 			</error-content>
 		</div>
