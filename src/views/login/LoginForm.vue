@@ -2,19 +2,19 @@
 	<base-login-form @ok="login">
 		<h1 class="center segment">登录</h1>
 
-		<label>用户名:</label>
-		<input
-			title="用户名"
-			v-model="form.name"
-			required
-			autofocus>
+		<label for="name">用户名:</label>
+		<input id="name"
+			   title="用户名"
+			   v-model="form.name"
+			   required
+			   v-autofocus>
 
-		<label>密码:</label>
-		<input
-			title="密码"
-			v-model="form.password"
-			type="password"
-			required>
+		<label for="password">密码:</label>
+		<input id="password"
+			   type="password"
+			   title="密码"
+			   v-model="form.password"
+			   required>
 
 		<kx-check-box :class="$style.centerElement" v-model="form.remember">保持登录</kx-check-box>
 
@@ -33,7 +33,7 @@
 			</kx-button>
 		</div>
 
-		<span class="center" :class="$style.separtor">第三方登录</span>
+		<span class="center" :class="$style.separator">第三方登录</span>
 		<div class="center">
 			<oauth-icon
 				endpoint="github"
@@ -75,7 +75,7 @@ export default {
 		},
 	}),
 	methods: {
-		async login () {
+		async login() {
 			try {
 				await api.user.login(this.form);
 				await this.$store.dispatch(REFRESH_USER);
@@ -84,7 +84,7 @@ export default {
 				this.message = errorMessage(e);
 			}
 		},
-		switchPanel () {
+		switchPanel() {
 			this.$emit("switch-panel", "SignupPanel");
 		},
 	},
@@ -94,7 +94,7 @@ export default {
 <style module lang="less">
 @import "../../css/Imports";
 
-.separtor {
+.separator {
 	position: relative;
 	color: #747474;
 	margin-top: .5rem;
@@ -108,8 +108,13 @@ export default {
 		width: 30%;
 	}
 
-	&::before { right: 0; }
-	&::after { left: 0; }
+	&::before {
+		right: 0;
+	}
+
+	&::after {
+		left: 0;
+	}
 }
 
 .centerElement {

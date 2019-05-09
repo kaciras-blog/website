@@ -2,34 +2,34 @@
 	<base-login-form @ok="signup">
 		<h1 class="center segment">注册</h1>
 
-		<label>用户名:</label>
-		<input
-			v-model="form.name"
-			placeholder="中英文数字和下划线"
-			required>
+		<label for="name">用户名:</label>
+		<input id="name"
+			   v-model="form.name"
+			   placeholder="中英文数字和下划线"
+			   required
+			   v-autofocus>
 
-		<label>密码:</label>
-		<input
-			v-model="form.password"
-			type="password"
-			placeholder="至少有个6位吧"
-			required>
+		<label for="password">密码:</label>
+		<input id="password"
+			   type="password"
+			   v-model="form.password"
+			   placeholder="至少有个6位吧"
+			   required>
 
-		<label>邮箱:</label>
-		<input
-			v-model="form.email"
-			type="email"
-			placeholder="不填也行">
+		<label for="email">邮箱:</label>
+		<input id="email"
+			   v-model="form.email"
+			   type="email"
+			   placeholder="（可选）不填也行">
 
 		<label for="captcha">验证码:</label>
 		<div :class="$style.captcha">
-			<input
-				id="captcha"
-				:class="$style.inputCaptcha"
-				title="验证码"
-				ref="captchaInput"
-				v-model="form.captcha"
-				required>
+			<input id="captcha"
+				   :class="$style.inputCaptcha"
+				   title="验证码"
+				   ref="captchaInput"
+				   v-model="form.captcha"
+				   required>
 
 			<img :src="captcha"
 				 alt="验证码"
@@ -68,7 +68,7 @@ export default {
 	props: {
 		returnUri: String,
 	},
-	data () {
+	data() {
 		return {
 			message: "",
 			captcha: null,
@@ -81,7 +81,7 @@ export default {
 		};
 	},
 	methods: {
-		async signup () {
+		async signup() {
 			try {
 				await api.user.signup(this.form);
 				await this.$store.dispatch(REFRESH_USER);
@@ -90,16 +90,16 @@ export default {
 				this.message = errorMessage(e);
 			}
 		},
-		switchPanel () {
+		switchPanel() {
 			this.$emit("switch-panel", "LoginPanel");
 		},
-		updateCaptcha () {
+		updateCaptcha() {
 			this.captcha = api.misc.captchaAddress;
 			this.form.captcha = "";
 			this.$refs.captchaInput.focus();
 		},
 	},
-	mounted () {
+	mounted() {
 		this.captcha = api.misc.captchaAddress;
 	},
 };
