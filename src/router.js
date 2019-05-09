@@ -69,11 +69,11 @@ export default function() {
 		},
 		{
 			path: "/article/:id",
-			component: () => import("./views/article/Article"),
+			component: () => import("./views/article/ArticlePage"),
 		},
 		{
 			path: "/article/:id/:urlTitle",
-			component: () => import("./views/article/Article"),
+			component: () => import("./views/article/ArticlePage"),
 		},
 		{
 			path: "/edit/:id",

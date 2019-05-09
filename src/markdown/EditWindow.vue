@@ -45,7 +45,6 @@
 <script>
 import kxMarkdown, { converter } from "./index";
 
-
 export default {
 	name: "kxMarkdownEditWindow",
 	props: {
