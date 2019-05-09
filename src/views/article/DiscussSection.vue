@@ -40,7 +40,7 @@ import discuzEditor from "./DiscuzEditor.vue";
 import discussion from "./DiscussionItem.vue";
 
 export default {
-	name: "DiscussPanel",
+	name: "DiscussSection",
 	props: {
 		articleId: {
 			type: Number,

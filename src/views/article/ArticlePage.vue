@@ -8,8 +8,8 @@
 			:value="article"
 			@enlarge-image="enlargeImage"/>
 
-		<discuss-panel
-			:class="$style.discussPanel"
+		<discuss-section
+			:class="$style.discuss_section"
 			:article-id="article.id"
 			ref="discussPanel"/>
 
@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import DiscussPanel from "./DiscussPanel";
+import DiscussSection from "./DiscussSection";
 import ArticleView from "./ArticleView";
 import TitleMixin from "../../title-mixin";
 import { escapeHtml } from "../../utils";
@@ -41,9 +41,9 @@ import { articleLink } from "../../blog-plugin";
 import { scrollToElementStart } from "kx-ui";
 
 export default {
-	name: "Article",
+	name: "ArticlePage",
 	components: {
-		DiscussPanel,
+		DiscussSection,
 		ArticleView,
 	},
 	mixins: [TitleMixin],
@@ -132,7 +132,7 @@ export default {
 	}
 }
 
-.discussPanel {
+.discuss_section {
 	margin: 80px auto;
 
 	@media screen {

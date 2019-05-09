@@ -2,12 +2,8 @@
 	<article>
 		<header class="segment" :class="$style.header">
 			<h1 :class="$style.title">{{value.title}}</h1>
-			<p><span>发布时间：</span>
-				<time>{{value.create}}</time>
-			</p>
-			<p><span>最后更新：</span>
-				<time>{{value.update}}</time>
-			</p>
+			<p><span>发布时间：</span><time>{{value.create}}</time></p>
+			<p><span>最后更新：</span><time>{{value.update}}</time></p>
 			<div>
 				<span>关键词：</span>
 				<span v-for="kw in value.keywords"
