@@ -10,17 +10,17 @@
 			</router-link>
 		</header>
 
-		<ul v-if="slides" :class="$style.cardList">
-			<post-card v-for="slide of slides" :key="slide.randomId" v-bind="slide"/>
+		<ul v-if="slides" :class="$style.cardList" class="list">
+			<li v-for="slide of slides" :key="slide.randomId">
+				<post-card v-bind="slide"/>
+			</li>
 		</ul>
 	</section>
 </template>
 
 <script>
 import PostCard from "./PostCard";
-
 import { mapState } from "vuex";
-
 
 export default {
 	name: "BlogSection",
@@ -55,7 +55,10 @@ export default {
 
 	grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
 	grid-auto-rows: auto;
-	justify-items: center;
 	grid-gap: 50px 20px;
+
+	@media screen and (min-width: @length-screen-mobile) {
+		justify-items: center;
+	}
 }
 </style>

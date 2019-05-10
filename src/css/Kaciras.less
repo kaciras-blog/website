@@ -7,6 +7,14 @@ html {
 	}
 }
 
+// 清除链接元素的所有高亮样式
+.clean-link {
+	&:hover, &:focus, &:visited {
+		color: inherit;
+		text-decoration: none;
+	}
+}
+
 .kx-dialog-header h3 {
 	margin: 0;
 }
