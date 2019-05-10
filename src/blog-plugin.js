@@ -3,6 +3,7 @@ import TopNav from "./components/TopNav";
 import PageFooter from "./components/PageFooter";
 import BasePageLayout from "./components/BasePageLayout";
 import BannerPageLayout from "./components/BannerPageLayout";
+import PasswordInput from "./components/PasswordInput";
 
 /**
  * 获取Article对象的完整URL，该URL指向文章页面。
@@ -29,4 +30,5 @@ export default function (Vue) {
 	Vue.component(SelectCategoryDialog.name, SelectCategoryDialog);
 	Vue.component(BasePageLayout.name, BasePageLayout);
 	Vue.component(BannerPageLayout.name, BannerPageLayout);
+	Vue.component(PasswordInput.name, PasswordInput);
 }

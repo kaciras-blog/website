@@ -10,11 +10,11 @@
 			   v-autofocus>
 
 		<label for="password">密码:</label>
-		<input id="password"
-			   type="password"
-			   v-model="form.password"
-			   placeholder="至少有个6位吧"
-			   required>
+		<password-input
+			input-id="password"
+			v-model="form.password"
+			placeholder="至少有个6位吧"
+			required/>
 
 		<label for="email">邮箱:</label>
 		<input id="email"

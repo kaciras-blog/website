@@ -53,7 +53,6 @@ export default {
 	}
 }
 
-
 .body {
 	display: flex;
 	max-width: 980px;
