@@ -101,33 +101,21 @@ export class BasicApiFactory {
 		return new clazz(this.axiosSet);
 	}
 
-	get article() {
-		return this.createApiInstance(ArticleApi);
-	}
+	get article() { return this.createApiInstance(ArticleApi); }
 
-	get category() {
-		return this.createApiInstance(CategoryApi);
-	}
+	get category() { return this.createApiInstance(CategoryApi); }
 
-	get discuss() {
-		return this.createApiInstance(DiscussApi);
-	}
+	get discuss() { return this.createApiInstance(DiscussApi); }
 
-	get draft() {
-		return this.createApiInstance(DraftApi);
-	}
+	get draft() { return this.createApiInstance(DraftApi); }
 
-	get user() {
-		return this.createApiInstance(UserApi);
-	}
+	get user() { return this.createApiInstance(UserApi); }
 
-	get recommend() {
-		return this.createApiInstance(RecommandApi);
-	}
+	get recommend() { return this.createApiInstance(RecommandApi); }
 
-	get misc() {
-		return this.createApiInstance(MiscApi);
-	}
+	get misc() { return this.createApiInstance(MiscApi); }
+
+	get config() { return this.createApiInstance(ConfigApi); }
 }
 
 
@@ -301,12 +289,8 @@ class CategoryApi extends AbstractApi {
 		return this.mainServer.get(`/categories/${id}/children`).then(r => r.data);
 	}
 
-	deleteOne(id) {
-		return this.mainServer.delete("/categories/" + id, { params: { tree: false } });
-	}
-
-	deleteTree(id) {
-		return this.mainServer.delete("/categories/" + id, { params: { tree: true } });
+	remove(id, treeMode) {
+		return this.mainServer.delete("/categories/" + id, { params: { tree: treeMode } });
 	}
 
 	get(id, aggregate) {
@@ -328,51 +312,52 @@ class CategoryApi extends AbstractApi {
 
 class DiscussApi extends AbstractApi {
 
-	add(objectId, content) {
-		return this.mainServer.post("/discussions", { objectId, type: 0, content });
-	}
-
-	getList(objectId, start, count) {
-		return this.mainServer.get("/discussions", { params: { objectId, start, count } }).then(r => r.data);
-	}
-
-	/**
-	 * 获取评论的回复（楼中楼）
-	 *
-	 * @param id {int} 评论id
-	 * @param index {int} 页码，从1开始
-	 * @param count {int} 每页数量
-	 * @return Promise<?> 回复列表
-	 */
-	getReplies(id, index, count) {
-		return this.mainServer.get(`/discussions/${id}/replies`, { params: { start: index * count, count } }).then(r => r.data);
+	add(objectId, type, content) {
+		return this.mainServer.post("/discussions", { objectId, type, content });
 	}
 
 	/**
 	 * 发表回复（楼中楼）
 	 *
-	 * @param id {int} 评论id
+	 * @param parent {int} 评论id
 	 * @param content {String} 内容
 	 * @return Promise
 	 */
-	reply(id, content) {
-		return this.mainServer.post(`/discussions/${id}/replies`, content, {
-			headers: { "Content-Type": "text/plain;charset=UTF-8" },
-		});
+	reply(parent, content) {
+		return this.mainServer.post("/discussions", { parent, content });
 	}
 
-	setState(id, state) {
-		this.mainServer.patch(`/discussions/${id}`, { state });
+	getList(objectId, type, start, count) {
+		const params = { objectId, type, parent: 0, start, count };
+		return this.mainServer.get("/discussions", { params }).then(r => r.data);
 	}
 
-	/** @deprecated */
-	remove(id) {
-		return this.mainServer.patch(`/discussions/${id}`, { deletion: true });
+	/**
+	 * 获取评论的回复（楼中楼）
+	 *
+	 * @param parent {int} 评论id
+	 * @param start {int} 起始位置
+	 * @param count {int} 每页数量
+	 * @return Promise<?> 回复列表
+	 */
+	getReplies(parent, start, count) {
+		return this.mainServer.get("/discussions", { params: { parent, start, count } }).then(r => r.data);
 	}
 
-	/** @deprecated */
-	restore(id) {
-		return this.mainServer.patch(`/discussions/${id}`, { deletion: false });
+	getModeration() {
+		return this.mainServer.get("/discussions", { params: { state: 2, linked: true } }).then(r => r.data);
+	}
+
+	/**
+	 * 批量更新评论的状态（待审、删除、正常）
+	 * 该API目前仅能由管理者使用，不支持用户删除自己的评论，因为匿名评论无法确定用户身份。
+	 *
+	 * @param ids 评论ID或ID数组
+	 * @param state 目标状态
+	 */
+	updateStates(ids, state) {
+		ids = Array.isArray(ids) ? ids : [ids];
+		this.mainServer.patch("/discussions", { ids, state });
 	}
 
 	voteUp(id) {
@@ -526,5 +511,22 @@ class SwiperApi extends AbstractApi {
 		return this.mainServer.put("/recommendation/slides", list);
 	}
 }
+
+class ConfigApi extends AbstractApi {
+
+	get(namespace) {
+		return this.mainServer.get(`config/${namespace}`).then(r => r.data);
+	}
+
+	set(namespace, properties) {
+		return this.mainServer.patch(`config/${namespace}`, properties);
+	}
+}
+
+export const DiscussionState = {
+	Visible: 0, // 正常显示
+	Deleted: 1, // 已删除
+	Pending: 2, // 等待审核
+};
 
 export default new BasicApiFactory(apiSet);

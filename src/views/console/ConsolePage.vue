@@ -5,15 +5,15 @@
 		</nav>
 		<aside :class="$style.tabs">
 			<h1>控制台</h1>
-			<ul :class="$style.menu" role="tablist">
+			<ul class="list" role="tablist">
 				<li v-for="link of views"
-					:key="link.name"
+					:key="link.label"
 					role="tab"
 					tabindex="2"
 					:aria-selected="active === link.name"
-					:class="{ [$style.active]: active === link.name, [$style.tabItem]: true}"
-					@click="active = link.name"
-					@keyup.enter="active = link.name">
+					:class="{ [$style.active]: active === link.view, [$style.tabItem]: true}"
+					@click="active = link.view"
+					@keyup.enter="active = link.view">
 					{{link.label}}
 				</li>
 			</ul>
@@ -27,6 +27,7 @@ import ArticleConsole from "./ArticleConsole";
 import DraftConsole from "./DraftConsole";
 import CategoryConsole from "./CategoryConsole";
 import SlideConsole from "./SlideConsole";
+import DiscussionConsole from "./DiscussionConsole";
 
 export default {
 	name: "ConsolePage",
@@ -38,12 +39,13 @@ export default {
 	},
 	data: () => ({
 		views: [
-			{ name: ArticleConsole.name, label: "文章列表" },
-			{ name: DraftConsole.name, label: "我的草稿" },
-			{ name: SlideConsole.name, label: "轮播" },
-			{ name: CategoryConsole.name, label: "管理分类" },
+			{ view: ArticleConsole, label: "文章列表" },
+			{ view: DraftConsole, label: "我的草稿" },
+			{ view: DiscussionConsole, label: "评论系统" },
+			{ view: SlideConsole, label: "轮播" },
+			{ view: CategoryConsole, label: "管理分类" },
 		],
-		active: "ArticleConsole",
+		active: ArticleConsole,
 	}),
 };
 </script>
@@ -81,10 +83,6 @@ export default {
 	text-align: center;
 }
 
-.menu {
-	padding: 0;
-}
-
 .left-triangle(@size) {
 	position: absolute;
 	top: 50%;
@@ -98,11 +96,7 @@ export default {
 }
 
 .tabItem {
-	display: block;
-	padding-top: .8rem;
-	padding-bottom: .8rem;
-
-	list-style: none;
+	padding: .8rem 0;
 	transform: rotateZ(0);
 
 	font-size: 1rem;

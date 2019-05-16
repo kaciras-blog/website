@@ -60,7 +60,7 @@ export default {
 			return api
 				.withCancelToken(cancelToken)
 				.discuss
-				.getList(this.articleId, index * size, size)
+				.getList(this.articleId, 0, index * size, size)
 				.then(res => {
 					this.totalCount = res.total;
 					return res;
@@ -71,7 +71,7 @@ export default {
 		},
 		submitDiscussion (text) {
 			// 文章以外的评论如何设计API？
-			return api.discuss.add(this.articleId, text);
+			return api.discuss.add(this.articleId, 0, text);
 		},
 		handleReplyStart (id) {
 			this.replying = id;

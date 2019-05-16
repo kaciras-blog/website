@@ -93,7 +93,7 @@ export default {
 			api.category.move(this.item.id, target.id, moveType);
 		},
 		remove () {
-			api.category.deleteOne(this.item.id).then(() => this.$emit("removed"));
+			api.category.remove(this.item.id, false).then(() => this.$emit("removed"));
 		},
 	},
 };

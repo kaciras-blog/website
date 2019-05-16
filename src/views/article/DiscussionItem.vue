@@ -1,6 +1,7 @@
 <template>
 	<li>
 		<img :src="discusser.head"
+			 alt="头像"
 			 class="small head"
 			 :class="$style.head">
 
@@ -68,13 +69,13 @@
 
 			<discz-editor
 				v-if="replying === value.id"
-				:submit="submitReply"/>
+				:submit="text => submitReply(text)"/>
 		</div>
 	</li>
 </template>
 
 <script>
-import api from "../../api";
+import api, {DiscussionState} from "../../api";
 import DisczEditor from "./DiscuzEditor.vue";
 import { mapState } from "vuex";
 
@@ -90,7 +91,9 @@ export default {
 	components: { DisczEditor },
 	computed: {
 		deleteable() {
-			if (!this.user) return false;
+			if (!this.user) {
+				return false;
+			}
 			return this.user.id === 2;
 		},
 		discusser() {
@@ -104,11 +107,12 @@ export default {
 	methods: {
 		async submitReply(text) {
 			await api.discuss.reply(this.value.id, text);
+			this.$emit("reply");
 			this.$refs.replies.switchToLast();
-			this.$emit("reply", null);
 		},
 		remove() {
-			api.discuss.remove(this.value.id)
+			api.discuss
+				.updateStates(this.value.id, DiscussionState.Deleted)
 				.then(() => this.$emit("item-removed", this.value))
 				.catch(r => alert("删除失败 " + r.message));
 		},
@@ -134,7 +138,7 @@ export default {
 			return api
 				.withCancelToken(cancelToken)
 				.discuss
-				.getReplies(this.value.id, index, size);
+				.getReplies(this.value.id, index * size, size);
 		},
 	},
 };

@@ -35,6 +35,7 @@
 
 <script>
 import { mapState } from "vuex";
+import { MessageBoxType } from "kx-ui/src/dialog";
 import { errorMessage } from "../../utils";
 
 export default {
@@ -53,13 +54,13 @@ export default {
 		content: "",
 	}),
 	computed: {
-		discusser () {
+		discusser() {
 			return this.user || { id: 0, head: "/image/akalin.jpg", name: "(匿名评论)" };
 		},
 		...mapState(["user"]),
 	},
 	methods: {
-		async doSubmit () {
+		async doSubmit() {
 			const { content, submit, $dialog } = this;
 
 			if (!content || /^\s*$/.test(content)) {
@@ -71,7 +72,7 @@ export default {
 				this.content = "";
 				this.$emit("discussion-added");
 			} catch (e) {
-				$dialog.messageBox("发表评论", errorMessage(e), "error");
+				$dialog.messageBox("发表评论", errorMessage(e), MessageBoxType.Error);
 			}
 		},
 	},
