@@ -41,7 +41,7 @@ export default {
 
 <style module lang="less">
 .container {
-	margin: 0 auto;
+	margin: 0 auto 60px auto;
 	max-width: 75%;
 }
 

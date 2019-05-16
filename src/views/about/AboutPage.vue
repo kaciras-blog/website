@@ -1,8 +1,6 @@
 <template>
 	<base-page-layout :nav-class="$style.topNav">
-		<slide-nav
-			:class="$style.header"
-			:tabs="tabs"/>
+		<slide-nav :class="$style.header" :tabs="tabs"/>
 		<router-view></router-view>
 	</base-page-layout>
 </template>

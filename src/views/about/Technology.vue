@@ -1,7 +1,7 @@
 <!-- 函数式组件里不能局部注册组件，注册了也引用不到 -->
 <template>
-	<div :class="$style.container">
-		<section>
+	<div class="about-tab-page">
+		<section class="about-section">
 			<icon-section-header title="网页客户端" :icon="require('../../assets/img/website.svg')"/>
 			<div>
 				兼容性（使用了Grid布局）：
@@ -25,16 +25,16 @@
 			</icon-paragraph>
 		</section>
 
-		<section>
+		<section class="about-section">
 			<icon-section-header title="页面服务器" :icon="require('../../assets/img/web-server.svg')"/>
 			<icon-paragraph :src="require('../../assets/img/logo-nodejs.svg')" title="nodejs">
-				页面服务器使用NodeJS编写，使用了Koa2
+				页面服务器使用NodeJS编写，使用了Koa2全家桶
 			</icon-paragraph>
 			<p>Spring全家桶</p>
 			<p>Spring全家桶</p>
 		</section>
 
-		<section>
+		<section class="about-section">
 			<icon-section-header title="内容服务器" :icon="require('../../assets/img/data-server.svg')"/>
 			<icon-paragraph :src="require('../../assets/img/logo-spring-framework.svg')" title="spring framework">
 				内容服务由JAVA语言编写，使用了Spring全家桶
@@ -57,21 +57,3 @@ export default {
 	components: { IconSectionHeader, IconParagraph },
 };
 </script>
-
-<style module lang="less">
-@import "../../css/Imports";
-
-.container {
-	font-size: initial;
-	padding: 0 5vw;
-
-	@media screen and (min-width: @length-screen-mobile) {
-		padding: 0 15vw;
-	}
-	@media screen and (min-width: @length-screen-wide) {
-		padding: 0 25vw;
-	}
-}
-
-
-</style>

@@ -7,7 +7,7 @@
 				<p>程序 • 生活 • 梦想</p>
 			</div>
 		</section>
-		<blog-section/>
+		<blog-section :class="$style.last"/>
 	</base-page-layout>
 </template>
 
@@ -107,8 +107,8 @@ export default {
 		font-size: 2rem;
 	}
 }
+
+.last {
+	margin-bottom: 60px;
+}
 </style>
-
-<!--
-
--->
