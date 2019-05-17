@@ -1,15 +1,19 @@
 <template>
 	<li :class="$style.container">
-		<h2 class="compact" :class="$style.title">
-			<router-link :to="item | articleLink">{{item.title}}</router-link>
-		</h2>
-
 		<router-link
 			:to="item | articleLink"
 			tabindex="-1"
-			:class="$style.cover">
-			<img :src="item.cover" class="cram" alt="封面">
+			:class="$style.cover_link">
+
+			<img :src="item.cover"
+				 alt="封面"
+				 class="cram"
+				 :class="$style.cover">
 		</router-link>
+
+		<h2 class="compact" :class="$style.title">
+			<router-link :to="item | articleLink">{{item.title}}</router-link>
+		</h2>
 
 		<div :class="$style.summary">{{item.summary}}</div>
 
@@ -80,7 +84,7 @@ export default {
 	},
 	computed: {
 		showUpdate () {
-			return this.item["create"] !== this.item["update"];
+			return this.item.create !== this.item.update;
 		},
 	},
 };
@@ -120,7 +124,7 @@ export default {
 }
 
 @media screen and (min-width: @length-screen-mobile) {
-	.cover {
+	.cover_link {
 		grid-area: cover;
 	}
 
@@ -150,10 +154,20 @@ export default {
 .cover {
 	width: 10rem;
 	height: 9rem;
+
+	@media screen and (max-width: @length-screen-mobile) {
+		width: 70vw;
+		height: 63vw;
+		border-radius: 10px;
+	}
 }
 
 .title {
 	font-size: 1.5em;
 	font-weight: 500;
+}
+
+.summary {
+	line-height: 1.5;
 }
 </style>

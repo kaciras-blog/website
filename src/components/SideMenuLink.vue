@@ -10,7 +10,7 @@
 	padding: 12px 25px;
 
 	&:hover, &:focus {
-		background-color: hsla(320, 100%, 50%, .05);
+		background-color: rgba(0, 0, 0, .05);
 	}
 }
 </style>

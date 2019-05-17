@@ -13,7 +13,7 @@
 		<div :class="$style.body">
 			<side-menu-link to="/" icon="fas fa-home">首页</side-menu-link>
 			<side-menu-link to="/list" icon="far fa-list-alt">文章列表</side-menu-link>
-			<side-menu-link to="/about" icon="far fa-copyright">关于本站</side-menu-link>
+			<side-menu-link to="/about" icon="far fa-copyright">关于</side-menu-link>
 			<side-menu-link to="/login" icon="fas fa-sign-in-alt">登录</side-menu-link>
 		</div>
 
