@@ -70,7 +70,7 @@ export default {
 			try {
 				await submit(content);
 				this.content = "";
-				this.$emit("discussion-added");
+				this.$emit("submitted");
 			} catch (e) {
 				$dialog.messageBox("发表评论", errorMessage(e), MessageBoxType.Error);
 			}

@@ -51,6 +51,7 @@
 				v-if="value.replyCount>0"
 				ref="replies"
 				theme="text"
+				:show-top-buttons="false"
 				:init-items="value.replies"
 				:init-page-size="5"
 				:init-total-count="value.replyCount"

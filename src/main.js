@@ -9,14 +9,17 @@ import KxUI from "kx-ui";
 import KxMarkdown from "./markdown";
 import BlogPlugin from "./blog-plugin";
 import Croppa from "vue-croppa";
+import VueMultiselect from "vue-multiselect";
 
 Vue.config.productionTip = false;
 
+Vue.use(Croppa);
+Vue.use(MediaQueryPlugin);
 Vue.use(KxUI);
 Vue.use(KxMarkdown);
 Vue.use(BlogPlugin);
-Vue.use(Croppa);
-Vue.use(MediaQueryPlugin);
+
+Vue.component(VueMultiselect.name, VueMultiselect);
 
 /**
  * 服务端和客户端公共的初始化逻辑。

@@ -1,16 +1,22 @@
 <template>
 	<section class="panel" :class="$style.container">
 
-		<header :class="$style.header">
-			<h2 :class="$style.title">评论区</h2>
-			<span :class="$style.totalCount">{{totalCount}}条</span>
+		<header class="segment" :class="$style.header">
+			<h2 :class="$style.title">评论区({{totalCount}})</h2>
+
+			<vue-multiselect
+				:class="$style.sort_select"
+				v-model="sort"
+				:options="allSorts"
+				label="label"
+				track-by="label"
+				:allow-empty="false"
+				:searchable="false"
+				:show-labels="false"
+				@input="reload"/>
 		</header>
 
-		<hr>
-
-		<div class="segment">
-			<discuz-editor :submit="submitDiscussion" @discussion-added="showLast"/>
-		</div>
+		<discuz-editor class="segment" :submit="submitDiscussion" @submitted="showLast"/>
 
 		<button-paging-view
 			:show-top-buttons="true"
@@ -22,9 +28,9 @@
 					<discussion
 						v-for="item of items"
 						:key="item.id"
-						class="segment"
 						:value="item"
 						:replying="replying"
+						class="segment"
 						@reply="handleReplyStart"
 						@item-removed="refresh"/>
 				</ol>
@@ -39,6 +45,12 @@ import api from "../../api";
 import discuzEditor from "./DiscuzEditor.vue";
 import discussion from "./DiscussionItem.vue";
 
+const allSorts = [
+	{ label: "最新", value: "id,DESC" },
+	{ label: "时间顺序", value: "id,ASC" },
+	{ label: "点赞数", value: "vote,DESC" },
+];
+
 export default {
 	name: "DiscussSection",
 	props: {
@@ -50,30 +62,36 @@ export default {
 	data: () => ({
 		replying: null,
 		totalCount: 0,
+		allSorts,
+		sort: allSorts[0],
 	}),
 	components: { discuzEditor, discussion },
 	methods: {
-		refresh () {
+		// reload - 重新加载，回到第一页；refresh - 刷新当前页
+		reload() {
+			this.$refs.discussions.loadPage(0);
+		},
+		refresh() {
 			this.$refs.discussions.refresh();
 		},
-		loadDiscussions (index, size, cancelToken) {
+		loadDiscussions(index, size, cancelToken) {
 			return api
 				.withCancelToken(cancelToken)
 				.discuss
-				.getList(this.articleId, 0, index * size, size)
+				.getList(this.articleId, 0, index * size, size, this.sort.value)
 				.then(res => {
 					this.totalCount = res.total;
 					return res;
 				});
 		},
-		showLast () {
+		showLast() {
 			this.$refs.discussions.switchToLast();
 		},
-		submitDiscussion (text) {
+		submitDiscussion(text) {
 			// 文章以外的评论如何设计API？
 			return api.discuss.add(this.articleId, 0, text);
 		},
-		handleReplyStart (id) {
+		handleReplyStart(id) {
 			this.replying = id;
 		},
 	},
@@ -97,14 +115,18 @@ export default {
 
 .header {
 	font-size: initial;
+	display: flex;
+	align-items: center;
 }
 
 .title {
 	display: inline-block;
+	margin: 0;
 }
 
-.totalCount {
-	float: right;
+.sort_select {
+	width: 8em;
+	margin-left: auto;
 }
 
 .empty {
