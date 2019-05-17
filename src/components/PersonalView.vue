@@ -1,42 +1,20 @@
 <template>
 	<div :class="$style.container">
-		<router-link
-			v-if="user && user.id > 0"
-			to="/profile"
-			tag="header"
-			:class="$style.header">
 
-			<img :src="user.head"
-				 alt="用户头像"
-				 class="small head"
-				 :class="$style.head"
-				 title="用户头像">
-			<span :class="$style.name">{{user.name}}</span>
-		</router-link>
-		<router-link
-			v-else
-			to="/login"
-			tag="header"
-			:class="$style.header">
+		<div :class="$style.header">
+			<img src="../assets/img/logo-kaciras-circle.svg"
+				 alt="Kaciras' Blog"
+				 class="head"
+				 :class="$style.head">
 
-			<img src="/image/akalin.jpg"
-				 alt="点击登陆"
-				 class="small head"
-				 :class="$style.head"
-				 title="点击登陆">
-			<span :class="$style.name">点击登陆</span>
-		</router-link>
+			<p :class="$style.name">Kaciras' Blog</p>
+		</div>
 
 		<div :class="$style.body">
-			<router-link :class="$style.link" to="/">
-				<i class="fas fa-home"></i>首页
-			</router-link>
-			<router-link :class="$style.link" to="/list">
-				<i class="far fa-list-alt"></i>文章页
-			</router-link>
-			<router-link :class="$style.link" to="/about">
-				<i class="far fa-copyright"></i>关于本站
-			</router-link>
+			<side-menu-link to="/" icon="fas fa-home">首页</side-menu-link>
+			<side-menu-link to="/list" icon="far fa-list-alt">文章列表</side-menu-link>
+			<side-menu-link to="/about" icon="far fa-copyright">关于本站</side-menu-link>
+			<side-menu-link to="/login" icon="fas fa-sign-in-alt">登录</side-menu-link>
 		</div>
 
 		<div :class="$style.footer">
@@ -53,9 +31,11 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import { REMOVE_USER } from "../store/types";
+import SideMenuLink from "./SideMenuLink";
 
 export default {
 	name: "PersonalView",
+	components: { SideMenuLink },
 	computed: mapState(["user"]),
 	methods: mapActions({ logout: REMOVE_USER }),
 };
@@ -72,22 +52,18 @@ export default {
 
 .header {
 	padding: 20px;
-	cursor: pointer;
+	text-align: center;
 }
 
 .name {
-	margin-left: 10px;
+	font-size: 20px;
+	margin: 10px 0 0 0;
 }
 
-.link {
-	display: block;
-	padding: 12px 20px;
-}
 
 .body {
 	flex-grow: 1;
-	border-top: solid 1px #cacaca;
-	border-bottom: solid 1px #cacaca;
+	font-size: 18px;
 }
 
 .footer {

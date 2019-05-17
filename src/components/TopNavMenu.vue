@@ -36,6 +36,8 @@ export default {
 </script>
 
 <style module lang="less">
+// 由于本站主体部分大量使用图片，故侧栏不宜再搞图片背景，不然显得太乱
+
 .transStart {
 	transform: translateX(-100%);
 }
@@ -50,8 +52,9 @@ export default {
 }
 
 .navMenu {
+	position: relative;
 	max-width: 400px;
-	width: 75vw;
+	width: 70vw;
 	height: 100vh;
 }
 </style>
