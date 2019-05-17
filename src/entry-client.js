@@ -139,10 +139,12 @@ function initAppAndRouterHook() {
 	 *
 	 * 另外，文章页面有 Markdown 生成的标题跳转链接，这些链接都是页内跳转不需要走预加载流程，所以
 	 * 这里检查下是否仅 HASH 变化，如果是则跳过预载流程。
+	 *
+	 * 在 isOnlyHashChange 为 true 时，应当直接返回而不是 return next(false)，否则浏览器URL不会改变。
 	 */
 	router.beforeEach((to, from, next) => {
 		if (isOnlyHashChange(to, from)) {
-			return next(false);
+			return;
 		}
 		cancelToken = loadingIndicator.start();
 		return next();
