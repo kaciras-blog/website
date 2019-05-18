@@ -5,7 +5,7 @@
 			to="/"
 			title="LOGO，点击回到首页"/>
 
-		<top-nav-wide v-if="$mediaQuery.match('desktop+')"/>
+		<top-nav-wide v-if="$mediaQuery.match('tablet+')"/>
 
 		<div v-else class="nav-item nav-right" @click="showMenu">
 			<i class="fas fa-bars"></i>
