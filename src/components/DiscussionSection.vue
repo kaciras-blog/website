@@ -110,9 +110,9 @@ export default {
 @import "../css/Imports";
 
 .header {
-	font-size: initial;
 	display: flex;
 	align-items: center;
+	font-size: initial;
 }
 
 .title {

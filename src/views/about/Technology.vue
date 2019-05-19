@@ -3,8 +3,8 @@
 	<div class="about-tab-page">
 		<section class="about-section">
 			<icon-section-header title="网页客户端" :icon="require('../../assets/img/website.svg')"/>
-			<div>
-				兼容性（使用了Grid布局）：
+			<icon-paragraph :src="require('../../assets/img/html-code.svg')" title="browsers">
+				兼容性（Grid布局）：
 				<ul>
 					<li>MicrosoftEdge 16</li>
 					<li>Firefox 52</li>
@@ -13,12 +13,12 @@
 					<li>Opera 44</li>
 					<li>IE 全部不支持</li>
 				</ul>
-			</div>
+			</icon-paragraph>
 			<icon-paragraph :src="require('../../assets/img/logo-vue.svg')" title="sentry">
-				使用了Vue全家桶，未使用更进一步的UI框架和组件库
+				使用了Vue全家桶编写的单页应用，未使用更进一步的UI框架和组件库
 			</icon-paragraph>
 			<icon-paragraph :src="require('../../assets/img/logo-sentry.png')" title="pwa">
-				拥有PWA支持，自己写了一个简单的ServiceWorker框架，主要参考了workbox项目
+				拥有PWA支持，使用自己写的一个简单的ServiceWorker框架，主要参考了workbox项目
 			</icon-paragraph>
 			<icon-paragraph :src="require('../../assets/img/logo-sentry.png')" title="sentry">
 				使用Sentry的免费服务来监控和统计页面里发生的异常
@@ -30,7 +30,9 @@
 			<icon-paragraph :src="require('../../assets/img/logo-nodejs.svg')" title="nodejs">
 				页面服务器使用NodeJS编写，使用了Koa2全家桶
 			</icon-paragraph>
-			<p>Spring全家桶</p>
+			<icon-paragraph :src="require('../../assets/img/browser-gears.svg')" title="ssr">
+				服务端渲染
+			</icon-paragraph>
 			<p>Spring全家桶</p>
 		</section>
 

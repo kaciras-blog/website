@@ -32,7 +32,7 @@ export default {
 .header {
 	position: sticky;
 	top: 0;
-	box-shadow: 0 3px 2px 0 #ececec;
+	box-shadow: 0 3px 2px 0 rgba(0, 0, 0, 0.05);
 	z-index: 100;
 }
 </style>
