@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex/types";
+import { mapState } from "vuex";
 import { MessageBoxType } from "kx-ui/src/dialog";
 import { errorMessage } from "../utils";
 

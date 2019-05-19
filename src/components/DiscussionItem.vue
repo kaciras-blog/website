@@ -68,7 +68,7 @@
 				</template>
 			</button-paging-view>
 
-			<discuz-editor
+			<discussion-editor
 				v-if="replying === value.id"
 				:submit="text => submitReply(text)"/>
 		</div>
@@ -76,9 +76,9 @@
 </template>
 
 <script>
-import api, {DiscussionState} from "../api";
-import DiscuzEditor from "./DiscuzEditor.vue";
-import { mapState } from "vuex/types";
+import api, { DiscussionState } from "../api";
+import DiscussionEditor from "./DiscussionEditor.vue";
+import { mapState } from "vuex";
 
 export default {
 	name: "Discussion",
@@ -89,7 +89,7 @@ export default {
 		},
 		replying: Number,
 	},
-	components: { DiscuzEditor },
+	components: { DiscussionEditor },
 	computed: {
 		deleteable() {
 			if (!this.user) {

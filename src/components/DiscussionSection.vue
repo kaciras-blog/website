@@ -17,7 +17,7 @@
 				@input="reload"/>
 		</header>
 
-		<discuz-editor class="segment" :submit="submitDiscussion" @submitted="showLast"/>
+		<discussion-editor class="segment" :submit="submitDiscussion" @submitted="showLast"/>
 
 		<button-paging-view
 			:show-top-buttons="true"
@@ -43,8 +43,8 @@
 
 <script>
 import api from "../api";
-import discuzEditor from "./DiscuzEditor.vue";
-import discussion from "./DiscussionItem.vue";
+import DiscussionEditor from "./DiscussionEditor.vue";
+import Discussion from "./DiscussionItem.vue";
 
 const allSorts = [
 	{ label: "最新", value: "id,DESC" },
@@ -53,7 +53,7 @@ const allSorts = [
 ];
 
 export default {
-	name: "DiscussSection",
+	name: "DiscussionSection",
 	props: {
 		objectId: {
 			type: Number,
@@ -70,7 +70,7 @@ export default {
 		allSorts,
 		sort: allSorts[0],
 	}),
-	components: { discuzEditor, discussion },
+	components: { DiscussionEditor, Discussion },
 	methods: {
 		// reload - 重新加载，回到第一页；refresh - 刷新当前页
 		reload() {

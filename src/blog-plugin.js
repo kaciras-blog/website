@@ -4,7 +4,7 @@ import PageFooter from "./components/PageFooter";
 import BasePageLayout from "./components/BasePageLayout";
 import BannerPageLayout from "./components/BannerPageLayout";
 import PasswordInput from "./components/PasswordInput";
-import DiscussSection from "./components/DiscussSection";
+import DiscussionSection from "./components/DiscussionSection";
 
 /**
  * 获取Article对象的完整URL，该URL指向文章页面。
@@ -26,7 +26,7 @@ export default function (Vue) {
 	Vue.filter("articleLink", articleLink);
 	Vue.filter("categoryLink", categoryLink);
 
-	Vue.component(DiscussSection.name, DiscussSection);
+	Vue.component(DiscussionSection.name, DiscussionSection);
 	Vue.component(TopNav.name, TopNav);
 	Vue.component(PageFooter.name, PageFooter);
 	Vue.component(SelectCategoryDialog.name, SelectCategoryDialog);

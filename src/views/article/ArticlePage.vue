@@ -3,7 +3,7 @@
 
 		<content-view :class="$style.article" :value="article"/>
 
-		<discuss-section
+		<discussion-section
 			:object-id="article.id"
 			:type="0"
 			:class="$style.discuss_section"
