@@ -32,17 +32,15 @@ export default {
 @import "../css/Imports.less";
 
 .container {
-	position: relative;
 	display: flex;
-	.full-percent;
+	position: relative;
+	width: 100%;
 
 	background-color: rgba(255, 255, 255, .4);
 	box-shadow: rgba(0, 0, 0, .2) 0 0 3px 1px; // TODO: 不共用？
 
-	@media screen {
-		@media (min-width: @length-screen-mobile) {
-			padding: 0 5%;
-		}
+	@media screen and (min-width: @length-screen-mobile) {
+		padding: 0 5%;
 	}
 }
 
