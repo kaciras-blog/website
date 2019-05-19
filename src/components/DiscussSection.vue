@@ -1,9 +1,10 @@
 <template>
-	<section class="panel" :class="$style.container">
+	<section>
 
 		<header class="segment" :class="$style.header">
-			<h2 :class="$style.title">评论区({{totalCount}})</h2>
-
+			<h2 :class="$style.title">
+				评论区({{totalCount}})
+			</h2>
 			<vue-multiselect
 				:class="$style.sort_select"
 				v-model="sort"
@@ -41,20 +42,24 @@
 </template>
 
 <script>
-import api from "../../api";
+import api from "../api";
 import discuzEditor from "./DiscuzEditor.vue";
 import discussion from "./DiscussionItem.vue";
 
 const allSorts = [
 	{ label: "最新", value: "id,DESC" },
-	{ label: "时间顺序", value: "id,ASC" },
+	{ label: "最早评论", value: "id,ASC" },
 	{ label: "点赞数", value: "vote,DESC" },
 ];
 
 export default {
 	name: "DiscussSection",
 	props: {
-		articleId: {
+		objectId: {
+			type: Number,
+			required: true,
+		},
+		type: {
 			type: Number,
 			required: true,
 		},
@@ -78,7 +83,7 @@ export default {
 			return api
 				.withCancelToken(cancelToken)
 				.discuss
-				.getList(this.articleId, 0, index * size, size, this.sort.value)
+				.getList(this.objectId, this.type, index * size, size, this.sort.value)
 				.then(res => {
 					this.totalCount = res.total;
 					return res;
@@ -89,7 +94,7 @@ export default {
 		},
 		submitDiscussion(text) {
 			// 文章以外的评论如何设计API？
-			return api.discuss.add(this.articleId, 0, text);
+			return api.discuss.add(this.objectId, this.type, text);
 		},
 		handleReplyStart(id) {
 			this.replying = id;
@@ -102,16 +107,7 @@ export default {
 </script>
 
 <style module lang="less">
-@import "../../css/Imports";
-
-.container {
-	margin-top: 3rem;
-	padding: 2rem .5rem;
-
-	@media (min-width: @length-screen-mobile) {
-		padding: 2rem;
-	}
-}
+@import "../css/Imports";
 
 .header {
 	font-size: initial;

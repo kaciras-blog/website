@@ -34,9 +34,9 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from "vuex/types";
 import { MessageBoxType } from "kx-ui/src/dialog";
-import { errorMessage } from "../../utils";
+import { errorMessage } from "../utils";
 
 export default {
 	name: "DiscussEditor",
@@ -87,7 +87,7 @@ export default {
 }
 
 .textarea {
-	min-height: 10em;
+	min-height: 8em;
 	margin-top: 1rem;
 	margin-bottom: 1rem;
 	resize: vertical;

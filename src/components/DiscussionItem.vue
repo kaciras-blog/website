@@ -11,7 +11,7 @@
 				<!-- 用户名 -->
 				<span :class="$style.name">{{discusser.name}}</span>
 				<!-- 右边的楼层号 -->
-				<span v-if="value.parent === 0" class="minor-text">{{value.floor}}楼</span>
+				<span v-if="value.parent === 0" class="minor-text">#{{value.floor}}</span>
 			</header>
 
 			<div :class="$style.content">{{value.content}}</div>
@@ -76,9 +76,9 @@
 </template>
 
 <script>
-import api, {DiscussionState} from "../../api";
+import api, {DiscussionState} from "../api";
 import DiscuzEditor from "./DiscuzEditor.vue";
-import { mapState } from "vuex";
+import { mapState } from "vuex/types";
 
 export default {
 	name: "Discussion",

@@ -1,16 +1,12 @@
 <template>
-	<banner-page-layout
-		:class="$style.container"
-		:banner="article.banner">
+	<banner-page-layout :class="$style.container" :banner="article.banner">
 
-		<article-view
-			:class="$style.article"
-			:value="article"
-			@enlarge-image="enlargeImage"/>
+		<content-view :class="$style.article" :value="article"/>
 
 		<discuss-section
+			:object-id="article.id"
+			:type="0"
 			:class="$style.discuss_section"
-			:article-id="article.id"
 			ref="discussPanel"/>
 
 		<div class="side-buttons compact vertical-btn-group">
@@ -31,8 +27,7 @@
 </template>
 
 <script>
-import DiscussSection from "./DiscussSection";
-import ArticleView from "./ArticleView";
+import ContentView from "./ContentView";
 import TitleMixin from "../../title-mixin";
 import { escapeHtml } from "../../utils";
 import api from "../../api";
@@ -43,8 +38,7 @@ import { scrollToElementStart } from "kx-ui";
 export default {
 	name: "ArticlePage",
 	components: {
-		DiscussSection,
-		ArticleView,
+		ContentView,
 	},
 	mixins: [TitleMixin],
 
@@ -105,9 +99,6 @@ export default {
 		gotoTop() {
 			scrollToElementStart(document.documentElement);
 		},
-		enlargeImage(el) {
-			this.$refs.imageViewer.show(el);
-		},
 	},
 };
 </script>
@@ -133,9 +124,13 @@ export default {
 }
 
 .discuss_section {
-	margin: 80px auto;
+	margin: 40px auto;
+	padding: 2rem .5rem;
 
 	@media screen {
+		@media (min-width: @length-screen-mobile) {
+			padding: 2rem;
+		}
 		@media (min-width: @length-screen-pad) {
 			max-width: 85%;
 		}
