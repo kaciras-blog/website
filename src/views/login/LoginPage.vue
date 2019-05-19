@@ -1,15 +1,14 @@
 <!-- TODO: 这一版的设计以rem长度单位为主，对宽屏不友好，但由于我没有那么宽的屏幕来做调试，所以搞不了 -->
 <template>
-	<base-page-layout  nav-class="login-header" :footer="false">
-
+	<base-page-layout nav-class="login-header" :footer="false">
 		<div :class="$style.body">
-			<div :class="$style.pictureBox">
-				<img :class="$style.picture" src="../../assets/img/LoginPicture.jpg" alt="占位置的图片。。。">
+			<div :class="$style.picture_box">
+				<img :class="$style.picture" src="../../assets/img/LoginPicture.jpg" alt="banner">
 			</div>
 			<component :is="activePanel"
-					   :class="$style.formPanel"
-					   :return-uri="returnUri"
-					   @switch-panel="switchPanel"/>
+				:class="$style.formPanel"
+				:return-uri="returnUri"
+				@switch-panel="switchPanel"/>
 		</div>
 	</base-page-layout>
 </template>
@@ -29,11 +28,11 @@ export default {
 		returnUri: "/",
 	}),
 	methods: {
-		switchPanel (panel) {
+		switchPanel(panel) {
 			this.activePanel = panel;
 		},
 	},
-	beforeRouteEnter (to, from, next) {
+	beforeRouteEnter(to, from, next) {
 		let currentPath = from.fullPath;
 		if (currentPath.startsWith("/login")) {
 			next(vm => vm.returnUri = this.returnUri);
@@ -63,9 +62,10 @@ export default {
 	align-items: flex-start;
 }
 
-.pictureBox {
+.picture_box {
 	position: relative;
 	width: 50%;
+	padding: 0 20px;
 
 	@media (max-width: @length-screen-mobile) {
 		display: none;
@@ -88,7 +88,6 @@ export default {
 }
 
 .formPanel {
-	float: right;
 	width: 20rem;
 	margin: 0 auto;
 }
