@@ -18,6 +18,7 @@
 	"dependencies": {
 		"@iktakahiro/markdown-it-katex": "^3.1.0",
 		"axios": "^0.18.0",
+		"epic-spinners": "^1.1.0",
 		"highlight.js": "^9.15.6",
 		"kx-ui": "file:../../KxUI",
 		"kxc-server": "file:../WebServer/packages/kxc-server",

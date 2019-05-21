@@ -1,6 +1,9 @@
 <template>
-	<section>
-
+	<div v-if="loading" :class="$style.loading">
+		<atom-spinner :animation-duration="1200" :size="64" color="#53bcff"/>
+		<span :class="$style.loading_text">评论加载中</span>
+	</div>
+	<div v-else>
 		<header class="segment" :class="$style.header">
 			<h2 :class="$style.title">
 				评论区({{totalCount}})
@@ -23,6 +26,7 @@
 			:show-top-buttons="true"
 			ref="discussions"
 			:loader="loadDiscussions"
+			:init-items="initItems"
 		>
 			<template v-slot="{ items }">
 				<ol v-if="items.length" class="list">
@@ -38,13 +42,14 @@
 				<div :class="$style.empty" v-else>还没有评论呢</div>
 			</template>
 		</button-paging-view>
-	</section>
+	</div>
 </template>
 
 <script>
 import api from "../api";
 import DiscussionEditor from "./DiscussionEditor.vue";
 import Discussion from "./DiscussionItem.vue";
+import AtomSpinner from "epic-spinners/src/components/lib/AtomSpinner.vue";
 
 const allSorts = [
 	{ label: "最新", value: "id,DESC" },
@@ -54,6 +59,11 @@ const allSorts = [
 
 export default {
 	name: "DiscussionSection",
+	components: {
+		DiscussionEditor,
+		Discussion,
+		AtomSpinner,
+	},
 	props: {
 		objectId: {
 			type: Number,
@@ -65,19 +75,21 @@ export default {
 		},
 	},
 	data: () => ({
+		loading: true,
+		initItems: [],
+
 		replying: null,
 		totalCount: 0,
 		allSorts,
 		sort: allSorts[0],
 	}),
-	components: { DiscussionEditor, Discussion },
 	methods: {
 		// reload - 重新加载，回到第一页；refresh - 刷新当前页
 		reload() {
 			this.$refs.discussions.loadPage(0);
 		},
 		refresh() {
-			this.$refs.discussions.refresh();
+			return this.$refs.discussions.refresh();
 		},
 		loadDiscussions(index, size, cancelToken) {
 			return api
@@ -89,11 +101,13 @@ export default {
 					return res;
 				});
 		},
+		/** 评论发表后跳转到能显示新评论的位置 */
 		showLast() {
-			this.$refs.discussions.switchToLast();
+			if (this.sort !== allSorts[0]) {
+				this.$refs.discussions.switchToLast();
+			}
 		},
 		submitDiscussion(text) {
-			// 文章以外的评论如何设计API？
 			return api.discuss.add(this.objectId, this.type, text);
 		},
 		handleReplyStart(id) {
@@ -101,13 +115,29 @@ export default {
 		},
 	},
 	mounted() {
-		this.refresh();
+		const tasks = [
+			this.loadDiscussions(0, 20).then(view => this.initItems = view.items),
+			this.$store.dispatch("loadOptions"),
+		];
+		Promise.all(tasks).then(() => this.loading = false);
 	},
 };
 </script>
 
 <style module lang="less">
 @import "../css/Imports";
+
+.loading {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 30px 0;
+}
+
+.loading_text {
+	margin-top: 10px;
+	font-size: 16px;
+}
 
 .header {
 	display: flex;

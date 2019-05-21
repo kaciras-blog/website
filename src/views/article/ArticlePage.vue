@@ -108,7 +108,7 @@ export default {
 
 .article {
 	margin: 0 auto;
-	padding: 0 2em;
+	padding: 0 1em;
 
 	@media screen {
 		@media (min-width: @length-screen-mobile) {

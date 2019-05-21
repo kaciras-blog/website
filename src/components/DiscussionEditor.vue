@@ -1,9 +1,9 @@
 <template>
-	<div class="center-all" :class="$style.container" v-if="options.disable">
+	<div class="center-all" :class="$style.container" v-if="!options.enabled">
 		已设置为禁止评论
 	</div>
 
-	<div class="center-all" :class="$style.container" v-else-if="options.loginRequired && !user">
+	<div class="center-all" :class="$style.container" v-else-if="!options.allowAnonymous && !user">
 		已禁止匿名评论,请先
 		<router-link class='highlight' to='/login'>登录</router-link>
 	</div>
@@ -23,9 +23,13 @@
 			placeholder='说点什么吧'>
 		</textarea>
 
-		<div :class='$style.buttons'>
+		<div :class='$style.bottom_toolbar'>
+			<span v-if="options.moderation" class="minor-text">
+				为防止恶意刷提交，评论将在审核后显示
+			</span>
 			<kx-task-button
 				class='primary'
+				:class="$style.buttons"
 				:on-click='doSubmit'>
 				发表评论
 			</kx-task-button>
@@ -45,10 +49,6 @@ export default {
 			type: Function,
 			required: true,
 		},
-		options: {
-			type: Object,
-			default: () => ({}),
-		},
 	},
 	data: () => ({
 		content: "",
@@ -57,7 +57,7 @@ export default {
 		discusser() {
 			return this.user || { id: 0, head: "/image/akalin.jpg", name: "(匿名评论)" };
 		},
-		...mapState(["user"]),
+		...mapState({ user: "user", options: "discussionOptions" }),
 	},
 	methods: {
 		async doSubmit() {
@@ -66,11 +66,13 @@ export default {
 			if (!content || /^\s*$/.test(content)) {
 				return; // 没写评论就按发表按钮
 			}
-
 			try {
 				await submit(content);
 				this.content = "";
-				this.$emit("submitted");
+
+				if(!this.options.moderation) {
+					this.$emit("submitted");
+				}
 			} catch (e) {
 				$dialog.messageBox("发表评论", errorMessage(e), MessageBoxType.Error);
 			}
@@ -93,12 +95,17 @@ export default {
 	resize: vertical;
 }
 
-.buttons {
-	text-align: right;
-}
-
 .name {
 	font-size: 1.1em;
 	margin-left: .5em;
+}
+
+.buttons {
+	margin-left: auto;
+}
+
+.bottom_toolbar {
+	display: flex;
+	align-items: center;
 }
 </style>

@@ -10,6 +10,7 @@ export default function () {
 		state: {
 			user: undefined, // 当前登录的用户，没登录为null
 			prefetch: {},
+			discussionOptions: undefined,
 		},
 		actions: {
 			async [REFRESH_USER]({ commit }, prototype) {
@@ -21,8 +22,15 @@ export default function () {
 			[REMOVE_USER]({ commit }) {
 				return api.user.logout().then(() => commit(SET_USER, null));
 			},
+			loadOptions({ commit, state }) {
+				if (typeof state.discussionOptions !== "undefined") {
+					return;
+				}
+				return api.config.get("discussion").then(options => commit("setDiscussionOptions", options));
+			},
 		},
 		mutations: {
+			setDiscussionOptions: (state, data) => state.discussionOptions = data,
 			[SET_USER]: (state, info) => state.user = info,
 			[SET_PREFETCH_DATA]: (state, data) => state.prefetch = data,
 		},
