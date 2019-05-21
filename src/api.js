@@ -1,12 +1,17 @@
-import Axios from "axios";
 import * as KxUI from "kx-ui";
+import Axios from "axios";
+import cookies from "axios/lib/helpers/cookies";
+import isURLSameOrigin from "axios/lib/helpers/isURLSameOrigin";
+import { isStandardBrowserEnv } from "axios/lib/utils";
 
 const CSRF_COOKIE_NAME = "CSRF-Token";
 const CSRF_HEADER_NAME = "X-CSRF-Token";
 
-Axios.defaults.xsrfCookieName = CSRF_COOKIE_NAME;
-Axios.defaults.xsrfHeaderName = CSRF_HEADER_NAME;
 Axios.defaults.withCredentials = true;
+
+// CSRF Token 在下面自定义处理了
+// Axios.defaults.xsrfCookieName = CSRF_COOKIE_NAME;
+// Axios.defaults.xsrfHeaderName = CSRF_HEADER_NAME;
 
 if (process.env.NODE_ENV === "production") {
 	Axios.defaults.timeout = 10000;
@@ -32,10 +37,43 @@ function defineApiServerConfig() {
 	return productionWeb;
 }
 
+/**
+ * 配置Axios实例，在请求参数中带上Token来防止CSRF攻击。
+ *
+ * Axios内置了在请求头中带Token的功能，但是这个请求头将导致所有跨域请求都要预检。
+ * 这里自定义了这一过程，并排除掉安全请求（GET，HEAD）以提高性能。
+ *
+ * @param axios Axios实例
+ */
+function parameterCsrfProtection(axios) {
+
+	function configure(config) {
+		const method = config.method.toUpperCase();
+		if(method === "GET" || method === "HEAD") {
+			return config;
+		}
+		const xsrfValue = config.withCredentials || isURLSameOrigin(config.url)
+			? cookies.read(CSRF_COOKIE_NAME) : null;
+
+		if (xsrfValue) {
+			// config.params = config.params || {};
+			// config.params["csrf"] = xsrfValue;
+			config.headers[CSRF_HEADER_NAME] = xsrfValue;
+		}
+		return config;
+	}
+
+	if (isStandardBrowserEnv()) {
+		axios.interceptors.request.use(configure);
+	}
+}
+
 // MDZZ，axios不能全局配置拦截？
 function createAxios(config) {
-	const instance = Axios.create(config);
-	instance.interceptors.response.use(null, error => {
+	const axios = Axios.create(config);
+	parameterCsrfProtection(axios);
+
+	axios.interceptors.response.use(null, error => {
 		if (error.response) {
 			error.code = error.response.status;
 		} else {
@@ -43,7 +81,7 @@ function createAxios(config) {
 		}
 		return Promise.reject(error);
 	});
-	return instance;
+	return axios;
 }
 
 const apiConfig = defineApiServerConfig();
@@ -327,8 +365,8 @@ class DiscussApi extends AbstractApi {
 		return this.mainServer.post("/discussions", { parent, content });
 	}
 
-	getList(objectId, type, start, count) {
-		const params = { objectId, type, parent: 0, start, count };
+	getList(objectId, type, start, count, sort = undefined) {
+		const params = { objectId, type, parent: 0, start, count, sort };
 		return this.mainServer.get("/discussions", { params }).then(r => r.data);
 	}
 
@@ -345,7 +383,9 @@ class DiscussApi extends AbstractApi {
 	}
 
 	getModeration() {
-		return this.mainServer.get("/discussions", { params: { state: 2, linked: true } }).then(r => r.data);
+		const params = { objectId: 37, type: 0, parent: 0, start: 0, count: 20, linked: true };
+		return this.mainServer.get("/discussions", { params }).then(r => r.data);
+		// return this.mainServer.get("/discussions", { params: { state: 2, linked: true } }).then(r => r.data);
 	}
 
 	/**
