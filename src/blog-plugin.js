@@ -1,5 +1,6 @@
 import SelectCategoryDialog from "./components/SelectCategoryDialog";
 import TopNav from "./components/TopNav";
+import TopNavGlass from "./components/TopNavGlass";
 import PageFooter from "./components/PageFooter";
 import BasePageLayout from "./components/BasePageLayout";
 import BannerPageLayout from "./components/BannerPageLayout";
@@ -28,6 +29,7 @@ export default function (Vue) {
 
 	Vue.component(DiscussionSection.name, DiscussionSection);
 	Vue.component(TopNav.name, TopNav);
+	Vue.component(TopNavGlass.name, TopNavGlass);
 	Vue.component(PageFooter.name, PageFooter);
 	Vue.component(SelectCategoryDialog.name, SelectCategoryDialog);
 	Vue.component(BasePageLayout.name, BasePageLayout);

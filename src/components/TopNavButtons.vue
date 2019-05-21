@@ -38,7 +38,7 @@ import { mapActions, mapState } from "vuex";
 import { REMOVE_USER } from "../store/types";
 
 export default {
-	name: "TopNavWide",
+	name: "TopNavButtons",
 	computed: {
 		...mapState(["user"]),
 	},

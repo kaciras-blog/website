@@ -1,5 +1,11 @@
 <template>
-	<base-page-layout :nav-class="$style.nav">
+	<base-page-layout>
+
+		<!-- 经过1小时的尝试仍未能做到模糊层背景定位，已放弃 -->
+		<template v-slot:nav>
+			<top-nav-glass :class="$style.nav"/>
+		</template>
+
 		<section :class="$style.banner">
 			<h1>Kaciras' Blog</h1>
 			<p>程序 • 生活 • 梦想</p>
@@ -31,10 +37,12 @@ export default {
 :global(#welcome-page) {
 	margin-bottom: 100px;
 }
+
 .nav {
-	position: absolute;
+	position: absolute !important;
 	top: 0;
 }
+
 .banner {
 	padding-top: 35vh;
 	height: 100vh;

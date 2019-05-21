@@ -2,6 +2,7 @@
 	<kx-base-dialog title="选择分类">
 
 		<div :class="$style.buttons">
+
 			<template v-if="current">
 				<h3 class="compact minor-text">当前分类：</h3>
 				<img class="small head"

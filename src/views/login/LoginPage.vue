@@ -54,12 +54,15 @@ export default {
 
 .body {
 	display: flex;
-	max-width: 980px;
-
-	margin: 0 auto;
-	padding-top: 6rem;
-
 	align-items: flex-start;
+
+	max-width: 980px;
+	margin: 0 auto;
+	padding-top: 40px;
+
+	@media screen and (min-width: @length-screen-mobile) {
+		padding-top: 80px
+	}
 }
 
 .picture_box {

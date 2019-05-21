@@ -208,6 +208,7 @@ class ProxiedApiFactory extends BasicApiFactory {
 		return new clazz(new Proxy(this.axiosSet, new AxiosSetProxy(this.filters)));
 	}
 
+	// TODO: 所有请求都穿透了CSRF，但安全请求并不需要
 	withPrototype(proto) {
 		if (!proto) {
 			return this;

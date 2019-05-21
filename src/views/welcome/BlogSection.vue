@@ -10,11 +10,12 @@
 			</router-link>
 		</header>
 
-		<ul v-if="slides" :class="$style.cardList" class="list">
+		<ul v-if="slides" :class="$style.card_list" class="list">
 			<li v-for="slide of slides" :key="slide.randomId">
 				<post-card v-bind="slide"/>
 			</li>
 		</ul>
+
 	</section>
 </template>
 
@@ -48,17 +49,19 @@ export default {
 	margin: 0;
 }
 
-.cardList {
+.card_list {
 	display: grid;
 	padding: 0 5vw;
-	width: 100%;
 
-	grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
 	grid-auto-rows: auto;
 	grid-gap: 50px 20px;
+	justify-items: center;
 
 	@media screen and (min-width: @length-screen-mobile) {
-		justify-items: center;
+		grid-template-columns: 1fr 1fr;
+	}
+	@media screen and (min-width: @length-screen-pad) {
+		grid-template-columns: 1fr 1fr 1fr;
 	}
 }
 </style>

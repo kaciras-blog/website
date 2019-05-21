@@ -6,7 +6,7 @@
 				 :class="$style.image">
 			<figcaption :class="$style.content">
 				<h2>{{props.name}}</h2>
-				<span :class="$style.description">{{props.description}}</span>
+				<span class="loose">{{props.description}}</span>
 			</figcaption>
 		</figure>
 	</router-link>
@@ -19,7 +19,9 @@
 	margin: 0;
 
 	border-radius: 8px;
-	box-shadow: 0 2px 3px rgba(10, 10, 10, .1), 0 0 0 1px rgba(10, 10, 10, .1);
+	box-shadow:
+		0 2px 3px rgba(10, 10, 10, .1),
+		0 0 0 1px rgba(10, 10, 10, .1);
 	font-size: 16px;
 	overflow: hidden;
 
@@ -40,9 +42,5 @@
 
 .content {
 	padding: 20px;
-}
-
-.description {
-	line-height: 1.5;
 }
 </style>

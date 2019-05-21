@@ -5,7 +5,7 @@
 			to="/"
 			title="LOGO，点击回到首页"/>
 
-		<top-nav-wide v-if="$mediaQuery.match('tablet+')"/>
+		<top-nav-buttons v-if="$mediaQuery.match('tablet+')"/>
 
 		<div v-else class="nav-item nav-right" @click="showMenu">
 			<i class="fas fa-bars"></i>
@@ -14,12 +14,12 @@
 </template>
 
 <script>
-import TopNavWide from "./TopNavWide";
+import TopNavButtons from "./TopNavButtons";
 import TopNavMenu from "./TopNavMenu";
 
 export default {
 	name: "TopNav",
-	components: { TopNavWide },
+	components: { TopNavButtons },
 	methods: {
 		showMenu() {
 			this.$dialog.show(TopNavMenu);
@@ -33,14 +33,13 @@ export default {
 
 .container {
 	display: flex;
-	position: relative;
 	width: 100%;
 
 	background-color: rgba(255, 255, 255, .4);
 	box-shadow: rgba(0, 0, 0, .2) 0 0 3px 1px; // TODO: 不共用？
 
 	@media screen and (min-width: @length-screen-mobile) {
-		padding: 0 5%;
+		padding: 0 5vw;
 	}
 }
 
