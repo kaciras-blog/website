@@ -1,3 +1,4 @@
+<!-- 左边弹出菜单里的带图标链接 -->
 <template functional>
 	<router-link :to="props.to" :class="$style.link" class="clean-link">
 		<i :class="props.icon"></i>&nbsp;<slot/>

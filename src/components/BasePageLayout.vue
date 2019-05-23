@@ -9,7 +9,7 @@
 			<top-nav :class="props.navClass" :style="props.navStyle"/>
 		</slot>
 
-		<slot/>
+		<slot></slot>
 		<page-footer v-if="props.footer"/>
 	</main>
 </template>
