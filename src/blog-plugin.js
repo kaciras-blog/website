@@ -5,7 +5,7 @@ import PageFooter from "./components/PageFooter";
 import BasePageLayout from "./components/BasePageLayout";
 import BannerPageLayout from "./components/BannerPageLayout";
 import PasswordInput from "./components/PasswordInput";
-import DiscussionSection from "./components/DiscussionSection";
+import DiscussionSection from "./components/discussion/DiscussionSection";
 
 /**
  * 获取Article对象的完整URL，该URL指向文章页面。

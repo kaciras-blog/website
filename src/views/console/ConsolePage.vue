@@ -59,7 +59,7 @@ export default {
 	display: grid;
 	grid-template-areas: "menu nav" "menu body";
 	grid-template-columns: 12rem 1fr;
-	grid-template-rows: 3rem 1fr;
+	grid-template-rows: auto 1fr;
 }
 
 .nav {
