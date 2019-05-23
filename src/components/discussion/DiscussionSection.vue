@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import api from "../api";
+import api from "../../api";
 import DiscussionEditor from "./DiscussionEditor.vue";
 import Discussion from "./DiscussionItem.vue";
 import AtomSpinner from "epic-spinners/src/components/lib/AtomSpinner.vue";
@@ -125,7 +125,7 @@ export default {
 </script>
 
 <style module lang="less">
-@import "../css/Imports";
+@import "../../css/Imports";
 
 .loading {
 	display: flex;

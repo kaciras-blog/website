@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import api, { DiscussionState } from "../api";
+import api, { DiscussionState } from "../../api";
 import DiscussionEditor from "./DiscussionEditor.vue";
 import { mapState } from "vuex";
 

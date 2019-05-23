@@ -1,11 +1,13 @@
 <template>
 	<div class="center-all" :class="$style.container" v-if="!options.enabled">
-		已设置为禁止评论
+		<div class="minor-text" :class="$style.shore">已设置为禁止评论</div>
 	</div>
 
 	<div class="center-all" :class="$style.container" v-else-if="!options.allowAnonymous && !user">
-		已禁止匿名评论,请先
-		<router-link class='highlight' to='/login'>登录</router-link>
+		<div class="minor-text" :class="$style.shore">
+			已禁止匿名评论,请先
+			<router-link class='highlight' to='/login'>登录</router-link>
+		</div>
 	</div>
 
 	<div :class="$style.container" v-else>
@@ -25,7 +27,7 @@
 
 		<div :class='$style.bottom_toolbar'>
 			<span v-if="options.moderation" class="minor-text">
-				为防止恶意刷提交，评论将在审核后显示
+				为防止恶意刷评论，评论将在审核后显示
 			</span>
 			<kx-task-button
 				class='primary'
@@ -40,7 +42,7 @@
 <script>
 import { mapState } from "vuex";
 import { MessageBoxType } from "kx-ui/src/dialog";
-import { errorMessage } from "../utils";
+import { errorMessage } from "../../utils";
 
 export default {
 	name: "DiscussEditor",
@@ -86,6 +88,12 @@ export default {
 	display: flex;
 	flex-direction: column;
 	margin-top: 1rem;
+}
+
+.shore {
+	padding: 3rem 0;
+	text-align: center;
+	font-size: 16px;
 }
 
 .textarea {
