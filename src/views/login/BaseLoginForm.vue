@@ -1,5 +1,5 @@
 <template functional>
-	<form class="login-form" @keyup.13="listeners.ok"><slot/></form>
+	<form class="login-form"><slot/></form>
 </template>
 
 <style lang="less">

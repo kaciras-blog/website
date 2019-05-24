@@ -1,5 +1,5 @@
 <template>
-	<base-login-form @ok="signup">
+	<base-login-form>
 		<h1 class="center segment">注册</h1>
 
 		<label for="name">用户名:</label>

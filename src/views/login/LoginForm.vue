@@ -1,5 +1,5 @@
 <template>
-	<base-login-form @ok="login">
+	<base-login-form>
 		<h1 class="center segment">登录</h1>
 
 		<label for="name">用户名:</label>
@@ -61,7 +61,8 @@ import OauthIcon from "../../components/OauthIcon";
 export default {
 	name: "LoginPanel",
 	components: {
-		OauthIcon, BaseLoginForm,
+		OauthIcon,
+		BaseLoginForm,
 	},
 	props: {
 		returnUri: String,
