@@ -1,16 +1,14 @@
 <template>
-	<div class="center-all" :class="$style.container" v-if="!options.enabled">
-		<div class="minor-text" :class="$style.shore">已设置为禁止评论</div>
+	<div v-if="!options.enabled" :class="$style.shore">
+		已设置为禁止评论
 	</div>
 
-	<div class="center-all" :class="$style.container" v-else-if="!options.allowAnonymous && !user">
-		<div class="minor-text" :class="$style.shore">
-			已禁止匿名评论,请先
-			<router-link class='highlight' to='/login'>登录</router-link>
-		</div>
+	<div v-else-if="!options.allowAnonymous && !user" :class="$style.shore">
+		已禁止匿名评论,请先
+		<router-link class='highlight' to='/login'>登录</router-link>
 	</div>
 
-	<div :class="$style.container" v-else>
+	<div v-else :class="$style.container">
 		<div>
 			<img class='small head'
 				 :src='discusser.head'
@@ -84,6 +82,8 @@ export default {
 </script>
 
 <style module lang="less">
+@import "../../css/Imports";
+
 .container {
 	display: flex;
 	flex-direction: column;
@@ -91,9 +91,10 @@ export default {
 }
 
 .shore {
-	padding: 3rem 0;
-	text-align: center;
+	padding: 3rem 0 4rem 0 !important;
 	font-size: 16px;
+	text-align: center;
+	color: @color-text-minor;
 }
 
 .textarea {
