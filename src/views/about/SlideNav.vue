@@ -1,8 +1,9 @@
 <!--
+router-link 不能再函数式组件里使用。
 TODO: 超出屏幕宽度的元素点击后滚动到可视区
 -->
 <template>
-	<ol :class="$style.tabList" class="list">
+	<ol :class="$style.tabList" class="list" role="tablist">
 		<router-link
 			v-for="tab of tabs"
 			:key="tab.title"
@@ -10,6 +11,7 @@ TODO: 超出屏幕宽度的元素点击后滚动到可视区
 			:to="tab.route"
 			:class="$style.tabItem"
 			:active-class="$style.active"
+			role="tab"
 			v-ripple
 		>
 			<a :class="$style.text" :href="tab.route">{{tab.title}}</a>
@@ -21,7 +23,8 @@ TODO: 超出屏幕宽度的元素点击后滚动到可视区
 export default {
 	name: "SlideNav",
 	props: {
-		tabs: {}, // { title, route }
+		/** Array<{ title: string, route: string }> */
+		tabs: { type: Array, required: true },
 	},
 };
 </script>
@@ -41,16 +44,14 @@ export default {
 // 关键在于使用后面的元素选择符，改变激活元素之后所有元素的边框起始位置
 .tabItem {
 	position: relative;
-
 	font-size: 16px;
+	word-break: keep-all;
+	cursor: pointer;
+	user-select: none;
 
 	@media screen and (min-width: @length-screen-mobile) {
 		font-size: 20px;
 	}
-
-	word-break: keep-all;
-	cursor: pointer;
-	user-select: none;
 
 	&::before {
 		content: "";
