@@ -1,7 +1,21 @@
 <template>
 	<banner-page-layout :class="$style.container" :banner="article.banner">
 
-		<content-view :class="$style.article" :value="article"/>
+		<article :class="$style.article">
+			<header class="segment" :class="$style.header">
+				<h1 :class="$style.title">{{article.title}}</h1>
+				<p><span>发布时间：</span><time>{{article.create}}</time></p>
+				<p><span>最后更新：</span><time>{{article.update}}</time></p>
+				<div>
+					<span>关键词：</span>
+					<span v-for="keyword in article.keywords"
+						  :key="keyword"
+						  :class="$style.keyword">{{keyword}}
+					</span>
+				</div>
+			</header>
+			<markdown-view class="segment" :value="article.content"/>
+		</article>
 
 		<discussion-section
 			:object-id="article.id"
@@ -27,7 +41,7 @@
 </template>
 
 <script>
-import ContentView from "./ContentView";
+import MarkdownView from "../../markdown/MarkdownView";
 import TitleMixin from "../../title-mixin";
 import { escapeHtml } from "../../utils";
 import api from "../../api";
@@ -38,7 +52,7 @@ import { scrollToElementStart } from "kx-ui";
 export default {
 	name: "ArticlePage",
 	components: {
-		ContentView,
+		MarkdownView,
 	},
 	mixins: [TitleMixin],
 
@@ -121,6 +135,18 @@ export default {
 			max-width: 66%;
 		}
 	}
+}
+
+.header {
+	text-align: center;
+}
+
+.title {
+	font-size: 2rem;
+}
+
+.keyword {
+	margin-right: .3em;
 }
 
 .discuss_section {
