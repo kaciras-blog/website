@@ -4,7 +4,7 @@ import createRouter from "./router";
 import createStore from "./store";
 import App from "./App";
 
-import { MediaQueryPlugin, registerToStore } from "kx-ui/src/media-query";
+import { MediaQueryManager } from "kx-ui/src/media-query";
 import KxUI from "kx-ui";
 import KxMarkdown from "./markdown";
 import BlogPlugin from "./blog-plugin";
@@ -14,10 +14,18 @@ import VueMultiselect from "vue-multiselect";
 Vue.config.productionTip = false;
 
 Vue.use(Croppa);
-Vue.use(MediaQueryPlugin);
 Vue.use(KxUI);
 Vue.use(KxMarkdown);
 Vue.use(BlogPlugin);
+
+export const mediaBreakpoints = {
+	mobile: 768,
+	tablet: 992,
+	desktop: 1200,
+	wide: 99999,
+};
+export const mediaQueryPlugin = new MediaQueryManager(mediaBreakpoints);
+Vue.use(mediaQueryPlugin);
 
 Vue.component(VueMultiselect.name, VueMultiselect);
 
@@ -28,13 +36,13 @@ Vue.component(VueMultiselect.name, VueMultiselect);
  * 替换服务端渲染出的初始状态，而要在创建Vue实例之前就调用 store.replaceState(...)
  *
  * @param initState Vuex的初始状态
- * @return Vue全家桶
+ * @return {*} Vue全家桶
  */
 export default function createApp(initState = undefined) {
 	const store = createStore();
 	const router = createRouter();
 
-	registerToStore(store);
+	mediaQueryPlugin.registerToStore(store);
 	if (initState) {
 		store.replaceState(initState);
 	}

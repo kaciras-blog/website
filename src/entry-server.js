@@ -1,8 +1,8 @@
-import createApp from "./main";
+import createApp, { mediaBreakpoints } from "./main";
 import { CancelToken } from "kx-ui";
 import Vue from "vue";
 import { REFRESH_USER, SET_PREFETCH_DATA } from "./store/types";
-import { SET_SCREEN_WIDTH, DEFAULT_QUERIES } from "kx-ui/src/media-query/index";
+import { SET_WIDTH } from "kx-ui/src/media-query/index";
 
 
 class ServerPrefetchContext {
@@ -46,7 +46,7 @@ export default async context => {
 	// 从 UserAgent 中检测是否手机，从而设定渲染的屏幕宽度
 	const userAgent = request && request.headers["user-agent"];
 	if (userAgent && isMobile(userAgent)) {
-		store.commit(SET_SCREEN_WIDTH, DEFAULT_QUERIES.mobile);
+		store.commit(SET_WIDTH, mediaBreakpoints.mobile);
 	}
 
 	// 因为全站都是预渲染，所以初始用户在服务端加载一次即可。

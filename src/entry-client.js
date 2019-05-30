@@ -1,10 +1,9 @@
 import * as ErrorReporting from "./error-report";
-import createApp from "./main";
+import createApp, {mediaQueryPlugin} from "./main";
 import Vue from "vue";
 import { CancelToken } from "kx-ui";
 import * as loadingIndicator from "./loading-indicator";
 import { REFRESH_USER, SET_PREFETCH_DATA } from "./store/types";
-import { observeWindow } from "kx-ui/src/media-query";
 import "./serviceWorker";
 
 if(process.env.NODE_ENV === "production") {
@@ -98,7 +97,7 @@ Vue.mixin({
 });
 
 const { vue, router, store } = createApp(window.__INITIAL_STATE__);
-observeWindow(store);
+mediaQueryPlugin.observeWindow(store);
 
 if (typeof store.state.user === "undefined") {
 	store.dispatch(REFRESH_USER); // AppShell 模式不会再服务端加载用户
