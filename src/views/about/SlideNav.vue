@@ -9,11 +9,12 @@ TODO: 超出屏幕宽度的元素点击后滚动到可视区
 			:key="tab.title"
 			tag="li"
 			:to="tab.route"
+			replace
 			:class="$style.tabItem"
 			:active-class="$style.active"
 			role="tab"
-			v-ripple
-		>
+			v-ripple>
+
 			<a :class="$style.text" :href="tab.route">{{tab.title}}</a>
 		</router-link>
 	</ol>
