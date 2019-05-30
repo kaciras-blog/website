@@ -1,47 +1,46 @@
 <template>
 	<li>
-		<img :src="discusser.head"
+		<img :src="value.user.head"
 			 alt="头像"
 			 class="small head"
 			 :class="$style.head">
 
 		<div :class="$style.main">
 
+			<!-- 评论者的用户名和右上角的楼层号 -->
 			<header :class="$style.header">
-				<!-- 用户名 -->
-				<span :class="$style.name">{{discusser.name}}</span>
-				<!-- 右边的楼层号 -->
-				<span v-if="value.parent === 0" class="minor-text">#{{value.floor}}</span>
+				<span :class="$style.name">{{value.user.name}}</span>
+				<span v-if="!value.parent" class="minor-text">#{{value.floor}}</span>
 			</header>
 
 			<div :class="$style.content">{{value.content}}</div>
 
 			<div class="minor-text" :class="$style.metas">
 				<div>
-					<span class="meta"
-						  :class="{ [$style.clickable]: discusser.id > 0, [$style.active]: value.voted }"
-						  :title="value.voted ? '取消点赞' : '点赞'"
+					<span :title="value.voted ? '取消点赞' : '点赞'"
+						  class="meta"
+						  :class="[$style.clickable, { [$style.active]: value.voted }]"
 						  @click="vote">
-						<i class="far fa-thumbs-up"></i>
-						{{value.voteCount}}
+
+						<i class="far fa-thumbs-up"></i>{{value.voteCount}}
 					</span>
 
 					<span v-if="value.parent === 0"
 						  class="meta"
 						  :class="$style.clickable"
 						  @click="replyThis">
-						<i class="far fa-comment"></i>
-						回复({{value.replyCount}})
+
+						<i class="far fa-comment"></i>回复({{value.replyCount}})
 					</span>
 				</div>
 
 				<div>
-					<span v-if="deleteable"
+					<span v-if="removable"
 						  class="meta"
 						  :class="$style.clickable"
 						  @click="remove">
-						<i class="far fa-trash-alt"></i>
-						删除
+
+						<i class="far fa-trash-alt"></i>删除
 					</span>
 					<time>{{value.time}}</time>
 				</div>
@@ -78,7 +77,6 @@
 <script>
 import api, { DiscussionState } from "../../api";
 import DiscussionEditor from "./DiscussionEditor.vue";
-import { mapState } from "vuex";
 
 export default {
 	name: "Discussion",
@@ -91,19 +89,13 @@ export default {
 	},
 	components: { DiscussionEditor },
 	computed: {
-		deleteable() {
-			if (!this.user) {
+		removable() {
+			const { user } = this.$store;
+			if (!user) {
 				return false;
 			}
-			return this.user.id === 2;
+			return user.id === 2;
 		},
-		discusser() {
-			if (this.value.user.id) {
-				return this.value.user;
-			}
-			return { id: 0, head: "/image/akalin.jpg", name: "(匿名评论)" };
-		},
-		...mapState(["user"]),
 	},
 	methods: {
 		async submitReply(text) {
