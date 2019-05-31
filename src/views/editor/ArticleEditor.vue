@@ -16,7 +16,8 @@
 		<kx-markdown-edit-window
 			:text.sync="content"
 			:selection.sync="selection"
-			:view-mode="viewMode"/>
+			:view-mode="viewMode"
+		/>
 
 		<div :class="$style.stateBar">
 			<div>

@@ -12,13 +12,16 @@
 						@click="editHead">
 				</div>
 				<div :class="$style.field">
-					用户ID:
+					ID:
 					<auth-type-tag :auth-type="user.authType"/>
 					{{user.id}}
 				</div>
 				<div :class="$style.field">
-					<label :class="$style.label">用户名</label>
-					<input :class="$style.input" name="name" v-model="user.name">
+					<label for="name" :class="$style.label">用户名</label>
+					<input id="name"
+						   v-model="user.name"
+						   name="name"
+						   :class="$style.input">
 				</div>
 				<kx-button class="primary" @click="save">保存</kx-button>
 			</div>

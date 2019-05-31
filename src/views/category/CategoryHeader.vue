@@ -1,6 +1,6 @@
 <template>
 	<header :class="$style.container">
-		<img :src="value.cover" :class="$style.head">
+		<img :src="value.cover" :class="$style.head" alt="封面">
 		<h1 :class="$style.name">{{value.name}}</h1>
 		<span :class="$style.desc">{{value.description}}</span>
 	</header>

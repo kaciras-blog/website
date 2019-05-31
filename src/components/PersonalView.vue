@@ -2,11 +2,12 @@
 	<div :class="$style.container">
 
 		<div :class="$style.header">
-			<img src="../assets/img/logo-kaciras-circle.svg"
-				 alt="Kaciras' Blog"
-				 class="head"
-				 :class="$style.head">
-
+			<img
+				src="../assets/img/logo-kaciras-circle.svg"
+				alt="Kaciras' Blog"
+				class="head"
+				:class="$style.head"
+			>
 			<p :class="$style.name">Kaciras' Blog</p>
 		</div>
 

@@ -18,10 +18,11 @@
 		</article>
 
 		<discussion-section
+			ref="discussionSection"
 			:object-id="article.id"
 			:type="0"
 			:class="$style.discuss_section"
-			ref="discussPanel"/>
+		/>
 
 		<div class="side-buttons compact vertical-btn-group">
 			<kx-button
@@ -108,7 +109,7 @@ export default {
 	},
 	methods: {
 		gotoDiscuss() {
-			scrollToElementStart(this.$refs.discussPanel.$el);
+			scrollToElementStart(this.$refs.discussionSection.$el);
 		},
 		gotoTop() {
 			scrollToElementStart(document.documentElement);

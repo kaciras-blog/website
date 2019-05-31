@@ -27,18 +27,18 @@
 			</div>
 			<label>
 				<span class="minor-text">标题</span>
-				<input :class="$style.inputBox" v-model="item.slide.name"/>
+				<input v-model="item.slide.name" :class="$style.inputBox"/>
 			</label>
 			<label>
 				<span class="minor-text">URL（相对路径将使用页面内路由）</span>
-				<input :class="$style.inputBox" v-model="item.slide.link"/>
+				<input v-model="item.slide.link" :class="$style.inputBox"/>
 			</label>
 			<label>
 				<span class="minor-text">描述（100字以内，太长不便于展示）</span>
 				<textarea
+					v-model="item.slide.description"
 					class="input"
-					:class="$style.inputBox"
-					v-model="item.slide.description">
+					:class="$style.inputBox">
 				</textarea>
 			</label>
 		</div>

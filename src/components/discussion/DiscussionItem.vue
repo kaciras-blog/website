@@ -61,8 +61,8 @@
 						<discussion
 							v-for="item of items"
 							:key="item.id"
-							:value="item"
-							:class="$style.reply"/>
+							:class="$style.reply"
+							:value="item"/>
 					</ol>
 				</template>
 			</button-paging-view>

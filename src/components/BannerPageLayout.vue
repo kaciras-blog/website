@@ -1,11 +1,13 @@
 <template>
 	<base-page-layout :nav-class="$style.body">
+
 		<template v-if="$mediaQuery.match('tablet+')" v-slot:nav>
 			<div :style="navStyle" :class="navClass">
 				<top-nav-glass :image-class="$style.image_resolver"/>
 				<div :class="$style.banner" role="banner"></div>
 			</div>
 		</template>
+
 		<slot></slot>
 	</base-page-layout>
 </template>

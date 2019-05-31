@@ -14,9 +14,9 @@
 					 @click="setCover">
 
 				<input v-if="editable"
-					   :class="$style.name"
+					   v-model="item.name"
 					   title="名称"
-					   v-model="item.name">
+					   :class="$style.name">
 				<span v-else :class="$style.name">{{item.name}}</span>
 
 				<textarea
@@ -37,7 +37,7 @@
 
 		<div v-if="editable" :class="$style.optionSection">
 			<h3>导航栏背景色：</h3>
-			<kx-radio-box-group name="theme" v-model="item.theme">
+			<kx-radio-box-group v-model="item.theme" name="theme">
 				<kx-radio-box :value="0">默认</kx-radio-box>
 				<kx-radio-box :value="1">明亮背景</kx-radio-box>
 				<kx-radio-box :value="2">暗色背景</kx-radio-box>

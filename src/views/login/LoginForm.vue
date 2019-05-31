@@ -4,19 +4,24 @@
 
 		<label for="name">用户名:</label>
 		<input id="name"
-			   title="用户名"
 			   v-model="form.name"
+			   title="用户名"
 			   required
 			   v-autofocus>
 
 		<label for="password">密码:</label>
 		<password-input
 			input-id="password"
-			title="密码"
 			v-model="form.password"
+			title="密码"
 			required/>
 
-		<kx-check-box :class="$style.centerElement" v-model="form.remember">保持登录</kx-check-box>
+		<kx-check-box
+			v-model="form.remember"
+			:class="$style.centerElement"
+		>
+			保持登录
+		</kx-check-box>
 
 		<span class="text-warning center">{{message}}</span>
 

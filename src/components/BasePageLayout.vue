@@ -10,6 +10,7 @@
 		</slot>
 
 		<slot></slot>
+
 		<page-footer v-if="props.footer"/>
 	</main>
 </template>

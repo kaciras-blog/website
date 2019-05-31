@@ -1,7 +1,6 @@
 <template>
 	<main>
 		<div class="btn-group" :class="$style.toolbar">
-
 			<kx-button
 				class="dangerous"
 				icon="far fa-trash-alt"

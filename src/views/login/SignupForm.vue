@@ -25,12 +25,11 @@
 		<label for="captcha">验证码:</label>
 		<div :class="$style.captcha">
 			<input id="captcha"
-				   :class="$style.inputCaptcha"
-				   title="验证码"
 				   ref="captchaInput"
 				   v-model="form.captcha"
+				   title="验证码"
+				   :class="$style.inputCaptcha"
 				   required>
-
 			<img :src="captcha"
 				 alt="验证码"
 				 title="点击换一张"

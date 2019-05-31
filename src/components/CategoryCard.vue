@@ -1,5 +1,5 @@
 <template functional>
-	<div :class="$style.container"
+	<li :class="$style.container"
 		 tabindex="0"
 		 @click="listeners.click"
 		 @keyup.enter="listeners.click">
@@ -9,7 +9,7 @@
 			 :class="$style.head">
 
 		<span :class="$style.name">{{props.name}}</span>
-	</div>
+	</li>
 </template>
 
 <style module lang="less">

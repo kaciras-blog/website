@@ -2,17 +2,17 @@
 	<kx-base-dialog title="添加链接">
 		<form :class="$style.form" @keyup.13="ok">
 			<label>链接地址</label>
-			<input title="链接地址"
+			<input v-model="href"
+				   title="链接地址"
 				   :class="$style.input"
-				   v-model="href"
 				   placeholder="地址不能为空"
 				   required
 				   v-autofocus/>
 
 			<label>文字</label>
-			<input title="文字"
+			<input v-model="text"
+				   title="文字"
 				   :class="$style.input"
-				   v-model="text"
 				   :placeholder="href"/>
 		</form>
 		<kx-standard-dialog-buttons @confirm="ok"/>

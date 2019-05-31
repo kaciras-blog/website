@@ -1,12 +1,12 @@
+import createApp, { mediaQueryPlugin } from "./main";
 import * as ErrorReporting from "./error-report";
-import createApp, {mediaQueryPlugin} from "./main";
 import Vue from "vue";
 import { CancelToken } from "kx-ui";
 import * as loadingIndicator from "./loading-indicator";
 import { REFRESH_USER, SET_PREFETCH_DATA } from "./store/types";
 import "./serviceWorker";
 
-if(process.env.NODE_ENV === "production") {
+if (process.env.NODE_ENV === "production") {
 	ErrorReporting.enableAutoReport();
 }
 

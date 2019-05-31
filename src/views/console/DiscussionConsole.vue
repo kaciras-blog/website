@@ -2,11 +2,21 @@
 	<main>
 		<discussion-config-panel></discussion-config-panel>
 		<div class="panel compact">
+
 			<div :class="$style.toolbar">
 				<kx-check-box v-model="allChecked"/>
+
 				<div class="btn-group">
-					<kx-button class="primary" @click="approveAll">全部发布</kx-button>
-					<kx-button class="dangerous" @click="removeAll">全部删除</kx-button>
+					<kx-button
+						class="primary"
+						@click="approveAll">
+						全部发布
+					</kx-button>
+					<kx-button
+						class="dangerous"
+						@click="removeAll">
+						全部删除
+					</kx-button>
 				</div>
 			</div>
 			<ul class="list" :class="$style.list">

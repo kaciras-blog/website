@@ -1,6 +1,5 @@
 <template>
 	<kx-base-dialog title="裁剪图片">
-
 		<div :class="$style.wrapper">
 			<croppa
 				v-model="croppa"
@@ -10,8 +9,8 @@
 				:prevent-white-space="true"
 				:zoom-speed="10"
 				:quality="1"
-				@file-choose="onFileChoose"/>
-
+				@file-choose="onFileChoose"
+			/>
 			<div :class="$style.sight"></div>
 		</div>
 		<kx-standard-dialog-buttons @confirm="ok"/>

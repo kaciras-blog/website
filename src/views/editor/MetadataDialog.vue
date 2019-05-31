@@ -7,21 +7,21 @@
 				 alt="封面"
 				 @click="changeCover"/>
 
-			<input title="标题"
+			<input v-model="title"
+				   title="标题"
 				   :class="$style.title"
-				   v-model="title"
 				   placeholder="标题最多50个字"/>
 
 			<textarea
+				v-model="summary"
 				:class="$style.summary"
 				class="input"
-				v-model="summary"
 				placeholder="摘要，别写太多">
 			</textarea>
 
-			<input title="关键字"
+			<input v-model="keywords"
+				   title="关键字"
 				   :class="$style.keywords"
-				   v-model="keywords"
 				   placeholder="关键字,空格隔开"/>
 		</div>
 

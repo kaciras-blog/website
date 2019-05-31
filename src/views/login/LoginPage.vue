@@ -3,12 +3,15 @@
 	<base-page-layout nav-class="login-header" :footer="false">
 		<div :class="$style.body">
 			<div :class="$style.picture_box">
-				<img :class="$style.picture" src="../../assets/img/LoginPicture.jpg" alt="banner">
+				<img src="../../assets/img/LoginPicture.jpg"
+					 alt="banner"
+					 :class="$style.picture">
 			</div>
 			<component :is="activePanel"
 				:class="$style.formPanel"
 				:return-uri="returnUri"
-				@switch-panel="switchPanel"/>
+				@switch-panel="switchPanel"
+			/>
 		</div>
 	</base-page-layout>
 </template>

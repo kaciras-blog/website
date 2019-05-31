@@ -3,7 +3,8 @@
 		<router-link
 			:class="$style.logo"
 			to="/"
-			title="LOGO，点击回到首页"/>
+			title="LOGO，点击回到首页"
+		/>
 
 		<!-- 手机屏的折叠菜单 -->
 		<div v-if="$mediaQuery.match('mobile')"
@@ -23,7 +24,12 @@
 						 class="small head"
 						 :class="$style.head">
 				</router-link>
-				<router-link v-if="user.id === 2" to="/console" class="nav-item">管理</router-link>
+				<router-link
+					v-if="user.id === 2"
+					to="/console"
+					class="nav-item">
+					管理
+				</router-link>
 				<button class="nav-item" @click="logout">退出登录</button>
 			</template>
 

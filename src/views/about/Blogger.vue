@@ -1,5 +1,6 @@
 <template functional>
 	<div class="about-tab-page">
+
 		<section class="about-section" :class="$style.blogger">
 			<img src="../../assets/img/logo-kaciras-circle.svg" alt="头像" class="head">
 			<div>

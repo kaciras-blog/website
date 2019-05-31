@@ -6,7 +6,6 @@
 				<span class="label">发表到：</span>
 
 				<div v-if="category" :class="$style.selected">
-
 					<img class="small head"
 						 :src="category.cover"
 						 alt="分类图标">
@@ -19,10 +18,10 @@
 
 			<label>
 				文章的URL，发表后不能修改，尽量使用英文，默认与标题相同
-				<input title="URL，尽量用英文"
+				<input v-model="url"
+					   title="URL，尽量用英文"
 					   :class="$style.input"
-					   v-model="url"
-					   :placeholder="metadata.title"/>
+					   :placeholder="metadata.title">
 			</label>
 		</div>
 

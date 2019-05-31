@@ -5,13 +5,13 @@
 		:enter-active-class="$style.active"
 		:leave-active-class="$style.active"
 		@after-enter="afterEnter"
-		@before-leave="beforeLeave">
-
+		@before-leave="beforeLeave"
+	>
 		<kx-modal-wrapper
 			:prevent-scroll="true"
 			@click.self.native="$dialog.close"
-			:class="$style.container">
-
+			:class="$style.container"
+		>
 			<personal-view :class="$style.navMenu"/>
 		</kx-modal-wrapper>
 	</transition>

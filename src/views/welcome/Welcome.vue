@@ -10,6 +10,7 @@
 			<h1>Kaciras' Blog</h1>
 			<p>程序 • 生活 • 梦想</p>
 		</section>
+
 		<blog-section :class="$style.last"/>
 	</base-page-layout>
 </template>

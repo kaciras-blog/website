@@ -1,14 +1,15 @@
 <template>
 	<kx-base-dialog title="选择分类">
-
 		<div :class="$style.buttons">
 
 			<template v-if="current">
 				<h3 class="compact minor-text">当前分类：</h3>
-				<img class="small head"
-					 :class="$style.head"
-					 :src="current.cover"
-					 alt="分类图标">
+				<img
+					class="small head"
+					:class="$style.head"
+					:src="current.cover"
+					alt="分类图标"
+				>
 				<span :class="$style.name">{{current.name}}</span>
 			</template>
 			<div v-else :class="$style.hold"></div>
@@ -28,16 +29,17 @@
 		</div>
 
 		<div :class="$style.cards">
-			<div v-for="cate of categories"
-				 :key="cate.id"
-				 :class="{ [$style.category]: true, selected: cate.selected }"
-				 @click="showChild(cate)">
-
+			<div
+				v-for="cate of categories"
+				:key="cate.id"
+				:class="{ [$style.category]: true, selected: cate.selected }"
+				@click="showChild(cate)"
+			>
 				<kx-check-box
 					:value="cate.selected"
 					@click.native.stop
-					@changed="select(cate)"/>
-
+					@changed="select(cate)"
+				/>
 				<div :class="$style.categoryWrapper">
 					<img class="head"
 						 :class="$style.head"
@@ -49,12 +51,11 @@
 		</div>
 
 		<div :class="$style.footer">
-			<div v-if="multiple"
-				 :class="$style.tip">
-				已选择：{{ selected.length }} 个分类
+
+			<div v-if="multiple" :class="$style.tip">
+				已选择{{ selected.length }}个分类
 			</div>
-			<div v-else
-				 :class="$style.tip">
+			<div v-else :class="$style.tip">
 				已选择：{{ selected.length ? selected[0].name : '' }}
 			</div>
 

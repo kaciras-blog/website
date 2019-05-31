@@ -14,10 +14,10 @@
 			<h2 class="compact">下级分类</h2>
 			<div v-if="children.length">
 				<category-card
-					v-for="ch of children"
-					:key="ch.id"
-					v-bind="ch"
-					@click="goto(ch)"/>
+					v-for="child of children"
+					:key="child.id"
+					v-bind="child"
+					@click="goto(child)"/>
 			</div>
 			<div v-else :class="$style.holder">已经是最底层的分类了</div>
 		</div>

@@ -2,13 +2,16 @@
 <template>
 	<div class="input" :class="$style.container">
 
-		<input :type="visible ? 'text': 'password'"
-			   :id="inputId"
-			   :class="$style.input"
-			   :value="value"
-			   :placeholder="placeholder"
-			   :required="required"
-			   @input="$emit('input', $event.target.value)">
+		<!--suppress HtmlFormInputWithoutLabel 标签在外面 -->
+		<input
+			:type="visible ? 'text': 'password'"
+			:id="inputId"
+			:class="$style.input"
+			:value="value"
+			:placeholder="placeholder"
+			:required="required"
+			@input="$emit('input', $event.target.value)"
+		>
 
 		<i class="fa"
 		   :class="[visible ? 'fa-eye' : 'fa-eye-slash', $style.toggle]"

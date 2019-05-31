@@ -1,9 +1,11 @@
 <template functional>
 	<router-link :to="props.link" class="clean-link">
 		<figure :class="$style.figure">
+
 			<img :src="props.picture"
 				 alt="封面"
 				 :class="$style.image">
+
 			<figcaption :class="$style.content">
 				<h2>{{props.name}}</h2>
 				<span class="loose">{{props.description}}</span>

@@ -3,8 +3,8 @@
 		<router-link
 			:to="item | articleLink"
 			tabindex="-1"
-			:class="$style.cover_link">
-
+			:class="$style.cover_link"
+		>
 			<img :src="item.cover"
 				 alt="封面"
 				 class="cram"
@@ -22,8 +22,7 @@
 			<ul class="inline list">
 				<li v-for="kw in item.keywords"
 					:key="kw"
-					:class="$style.keyword">{{kw}}
-				</li>
+					:class="$style.keyword">{{kw}}</li>
 			</ul>
 		</div>
 

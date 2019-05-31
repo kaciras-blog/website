@@ -28,18 +28,19 @@
 			:editable="true"
 			:item="current"
 			@removed="gotoParent"
-			@change="submit"/>
+			@change="submit"
+		/>
 
 		<div :class="$style.childrenTitle" v-if="current">下级分类</div>
-		<div :class="$style.cards">
+
+		<ul v-if="children.length" :class="$style.cards">
 			<category-card
 				v-for="item of children"
 				:key="item.id"
 				v-bind="item"
 				@click="goto(item)"/>
-
-			<span v-if="!children.length">没有了</span>
-		</div>
+		</ul>
+		<div v-else :class="$style.empty_holder">没有下级分类了</div>
 	</main>
 </template>
 
@@ -125,10 +126,20 @@ export default {
 }
 
 .cards {
+	list-style: none;
+
 	display: flex;
-	flex-wrap: wrap;
 	justify-content: center;
+	flex-wrap: wrap;
 
 	margin-bottom: 2rem; // 控制台body是网格布局元素，padding有点问题
+}
+
+.empty_holder {
+	padding: 50px;
+	margin-bottom: 2rem;
+
+	font-size: 16px;
+	text-align: center;
 }
 </style>

@@ -7,12 +7,12 @@
 
 				<scroll-paging-view
 					ref="pagingView"
-					:auto-load="autoLoad"
-					:next-link="nextPageUrl"
+					v-model="articleList"
 					:loader="loadPage"
 					:start="startPos"
 					:page-size="2"
-					v-model="articleList">
+					:next-link="nextPageUrl"
+					:auto-load="autoLoad">
 
 					<template v-slot="{ items }">
 						<ul class="list">

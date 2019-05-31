@@ -1,16 +1,19 @@
 <template>
 	<section class="panel" :class="$style.config_section">
 		<h2>评论系统设置</h2>
+
 		<div :class="$style.config_row">
 			<kx-check-box
 				v-for="(_, name) in config"
 				:key="name"
-				:class="$style.checkbox"
 				v-model="config[name]"
+				:class="$style.checkbox"
 				@input="value => sync(name, value)">
 				{{LABELS[name]}}
 			</kx-check-box>
 		</div>
+
+		<!-- TODO: 这个函数式组件 v-show 无效？ -->
 		<sk-fading-circle v-if="refreshing" :class="$style.progress"/>
 	</section>
 </template>

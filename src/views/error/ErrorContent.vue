@@ -1,7 +1,11 @@
 <template functional>
 	<main :class="$style.container">
 		<h1 :class="$style.title">{{props.title}}</h1>
-		<img :class="$style.image" :src="props.image" alt="ErrorImage">
+
+		<img :src="props.image"
+			 alt="ErrorImage"
+			 :class="$style.image">
+
 		<div :class="$style.content"><slot/></div>
 	</main>
 </template>

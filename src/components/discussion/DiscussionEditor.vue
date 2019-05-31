@@ -10,10 +10,8 @@
 
 	<div v-else>
 		<div>
-			<img class='small head'
-				 :src='discusser.head'
-				 alt="头像">
-			<span :class="$style.name">{{discusser.name}}</span>
+			<img :src="user.head" alt="头像" class="small head">
+			<span :class="$style.name">{{user.name}}</span>
 		</div>
 
 		<textarea
@@ -53,12 +51,10 @@ export default {
 	data: () => ({
 		content: "",
 	}),
-	computed: {
-		discusser() {
-			return this.user || { id: 0, head: "/image/akalin.jpg", name: "(匿名评论)" };
-		},
-		...mapState({ user: "user", options: "discussionOptions" }),
-	},
+	computed: mapState({
+		user: "user",
+		options: "discussionOptions",
+	}),
 	methods: {
 		async doSubmit() {
 			const { content, submit, $dialog } = this;

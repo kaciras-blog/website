@@ -9,8 +9,8 @@
 				评论区({{data.total}})
 			</h2>
 			<vue-multiselect
-				:class="$style.sort_select"
 				v-model="sort"
+				:class="$style.sort_select"
 				:options="allSorts"
 				label="label"
 				track-by="label"
@@ -23,11 +23,11 @@
 		<discussion-editor class="segment" :submit="submitDiscussion" @submitted="showLast"/>
 
 		<button-paging-view
-			:show-top-buttons="true"
 			ref="discussions"
-			:loader="loadDiscussions"
 			v-model="data"
-		>
+			:show-top-buttons="true"
+			:loader="loadDiscussions">
+
 			<template v-slot="{ items }">
 				<ol v-if="items.length" class="list">
 					<discussion
