@@ -6,7 +6,7 @@
 	<div v-else>
 		<header class="segment" :class="$style.header">
 			<h2 :class="$style.title">
-				评论区({{totalCount}})
+				评论区({{data.total}})
 			</h2>
 			<vue-multiselect
 				:class="$style.sort_select"
@@ -26,7 +26,7 @@
 			:show-top-buttons="true"
 			ref="discussions"
 			:loader="loadDiscussions"
-			:init-items="initItems"
+			v-model="data"
 		>
 			<template v-slot="{ items }">
 				<ol v-if="items.length" class="list">
@@ -76,10 +76,9 @@ export default {
 	},
 	data: () => ({
 		loading: true,
-		initItems: [],
+		data: null,
 
 		replying: null,
-		totalCount: 0,
 		allSorts,
 		sort: allSorts[0],
 	}),
@@ -91,15 +90,11 @@ export default {
 		refresh() {
 			return this.$refs.discussions.refresh();
 		},
-		loadDiscussions(index, size, cancelToken) {
+		loadDiscussions(start, size, cancelToken) {
 			return api
 				.withCancelToken(cancelToken)
 				.discuss
-				.getList(this.objectId, this.type, index * size, size, this.sort.value)
-				.then(res => {
-					this.totalCount = res.total;
-					return res;
-				});
+				.getList(this.objectId, this.type, start, size, this.sort.value);
 		},
 		/** 评论发表后跳转到能显示新评论的位置 */
 		showLast() {
@@ -116,7 +111,7 @@ export default {
 	},
 	mounted() {
 		const tasks = [
-			this.loadDiscussions(0, 20).then(view => this.initItems = view.items),
+			this.loadDiscussions(0, 20).then(view => this.data = view),
 			this.$store.dispatch("loadOptions"),
 		];
 		Promise.all(tasks).then(() => this.loading = false);
@@ -159,5 +154,10 @@ export default {
 	padding: 30px 0;
 	text-align: center;
 	color: @color-text-minor;
+}
+
+.popup {
+	position: absolute;
+	.full-vertex;
 }
 </style>

@@ -6,13 +6,13 @@
 				<h1 class="segment" :class="$style.listTitle">全部文章</h1>
 
 				<scroll-paging-view
+					ref="pagingView"
 					:auto-load="autoLoad"
-					:next-link-enabled="true"
+					:next-link="nextPageUrl"
 					:loader="loadPage"
-					:page-size="10"
-					:init-items="initArticles"
-					:init-state="initState"
-					:init-next-url="initNextUrl">
+					:start="startPos"
+					:page-size="2"
+					v-model="articleList">
 
 					<template v-slot="{ items }">
 						<ul class="list">
@@ -42,23 +42,6 @@ import api from "../../api";
 
 const DEFAULT_PAGE_SIZE = 10;
 
-/**
- * 根据路由和当前加载的文章数来构造下一页的URL。
- *
- * @param route 路由信息对象
- * @param count 加载的文章数
- * @return 指向下一页的URL，相对路径
- */
-function nextPageUrl(route, count) {
-	const params = Object.assign({}, route.query);
-	const pairs = [];
-	for (const k of Object.keys(params)) {
-		pairs.push(k + "=" + params[k]);
-	}
-	const nextPath = "/list/" + ((parseInt(route.params.index) || 0) + count);
-	return pairs.length ? nextPath + "?" + pairs.join("&") : nextPath;
-}
-
 export default {
 	name: "IndexPage",
 	components: {
@@ -66,9 +49,7 @@ export default {
 		AsidePanel,
 	},
 	async asyncData(session) {
-		const configuredApi = api
-			.withCancelToken(session.cancelToken)
-			.withPrototype(session.request);
+		const configuredApi = api.withCancelToken(session.cancelToken).withPrototype(session.request);
 
 		const tasks = [
 			configuredApi.category.get(0).then(session.dataSetter("category")),
@@ -77,8 +58,9 @@ export default {
 		if (session.isServer) {
 			const routeParams = session.route.params;
 
-			tasks.push(configuredApi.article.getList({ start: routeParams.index, count: DEFAULT_PAGE_SIZE })
-				.then(session.dataSetter("items")));
+			tasks.push(configuredApi.article
+				.getList({ start: routeParams.index, count: DEFAULT_PAGE_SIZE })
+				.then(session.dataSetter("articleList")));
 
 			tasks.push(configuredApi.article.getHots().then(session.dataSetter("hots")));
 		}
@@ -88,19 +70,15 @@ export default {
 	data() {
 		const data = {
 			autoLoad: this.$mediaQuery.match("mobile"),
-
-			index: parseInt(this.$route.params.index) || 0,
-			initArticles: [],
-			initNextUrl: null,
-			initState: "FREE",
+			startPos: parseInt(this.$route.params.index) || 0,
+			articleList: null,
 		};
 
 		// 预加载的文章只是第一页，后续还会加载更多所以放入data而不是计算属性。
-		const store = this.$store.state.prefetch;
-		if (store.items) {
-			data.initArticles = store.items;
-			data.initNextUrl = nextPageUrl(this.$route, store.items.length);
-			data.initState = store.items.length >= DEFAULT_PAGE_SIZE ? "FREE" : "ALL_LOADED";
+		const { articleList } = this.$store.state.prefetch;
+		if (articleList) {
+			data.articleList = articleList;
+			data.startPos += articleList.items.length;
 		}
 		return data;
 	},
@@ -113,20 +91,35 @@ export default {
 		},
 	},
 	methods: {
-		async loadPage(items, size) {
-			const { $route, index } = this;
-			const loaded = await api.article.getList({
-				start: index + items.length,
-				count: size,
-			});
-			items.push.apply(items, loaded);
-			return nextPageUrl($route, items.length);
+		loadPage(start, count) {
+			return api.article.getList({ start, count });
+		},
+		/**
+		 * 根据路由和当前加载的文章数来构造下一页的URL。
+		 *
+		 * @param start 下一页起始位置
+		 * @param count 每页显示多少个
+		 * @return 指向下一页的URL，相对路径
+		 */
+		nextPageUrl(start, count) {
+			const params = Object.assign({}, this.$route.query);
+			const pairs = [];
+			for (const k of Object.keys(params)) {
+				pairs.push(k + "=" + params[k]);
+			}
+			const nextPath = "/list/" + ((parseInt(this.$route.params.index) || 0) + count);
+			return pairs.length ? nextPath + "?" + pairs.join("&") : nextPath;
 		},
 	},
 	beforeMount() {
 		const storedLoad = localStorage.getItem("scrollPager.autoLoad");
 		if (storedLoad) {
 			this.autoLoad = JSON.parse(storedLoad);
+		}
+	},
+	mounted() {
+		if(!this.articleList) {
+			this.$refs.pagingView.loadPage();
 		}
 	},
 };
