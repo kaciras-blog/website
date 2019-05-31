@@ -8,7 +8,7 @@
 		<router-link class='highlight' to='/login'>登录</router-link>
 	</div>
 
-	<div v-else :class="$style.container">
+	<div v-else>
 		<div>
 			<img class='small head'
 				 :src='discusser.head'
@@ -17,9 +17,9 @@
 		</div>
 
 		<textarea
+			v-model="content"
 			class='input'
 			:class="$style.textarea"
-			v-model="content"
 			placeholder='说点什么吧'>
 		</textarea>
 
@@ -84,12 +84,6 @@ export default {
 <style module lang="less">
 @import "../../css/Imports";
 
-.container {
-	display: flex;
-	flex-direction: column;
-	margin-top: 1rem;
-}
-
 .shore {
 	padding: 3rem 0 4rem 0 !important;
 	font-size: 16px;
@@ -98,6 +92,7 @@ export default {
 }
 
 .textarea {
+	width: 100%;
 	min-height: 8em;
 	margin-top: 1rem;
 	margin-bottom: 1rem;
@@ -109,12 +104,12 @@ export default {
 	margin-left: .5em;
 }
 
-.buttons {
-	margin-left: auto;
-}
-
 .bottom_toolbar {
 	display: flex;
 	align-items: center;
+}
+
+.buttons {
+	margin-left: auto;
 }
 </style>

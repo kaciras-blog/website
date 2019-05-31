@@ -126,13 +126,13 @@ export default {
 
 	@media screen {
 		@media (min-width: @length-screen-mobile) {
-			max-width: 90%;
+			max-width: 90vw;
 		}
 		@media (min-width: @length-screen-pad) {
-			max-width: 78%;
+			max-width: 78vw;
 		}
 		@media (min-width: @length-screen-wide) {
-			max-width: 66%;
+			max-width: 66vw;
 		}
 	}
 }
@@ -151,17 +151,17 @@ export default {
 
 .discuss_section {
 	margin: 40px auto;
-	padding: 2rem .5rem;
+	padding: 2rem 1rem;
 
 	@media screen {
 		@media (min-width: @length-screen-mobile) {
-			padding: 2rem;
+			padding: 30px;
 		}
 		@media (min-width: @length-screen-pad) {
-			max-width: 85%;
+			max-width: 85vw;
 		}
 		@media (min-width: @length-screen-wide) {
-			max-width: 75%;
+			max-width: 75vw;
 		}
 	}
 }
