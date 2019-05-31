@@ -108,13 +108,35 @@ export default {
 		handleReplyStart(id) {
 			this.replying = id;
 		},
+
+		/** 初始化，加载配置信息和第一页，完成时切换加载指示器到列表 */
+		initialize() {
+			const tasks = [
+				this.loadDiscussions(0, 20).then(view => this.data = view),
+				this.$store.dispatch("loadOptions"),
+			];
+			Promise.all(tasks).then(() => this.loading = false);
+		},
 	},
 	mounted() {
-		const tasks = [
-			this.loadDiscussions(0, 20).then(view => this.data = view),
-			this.$store.dispatch("loadOptions"),
-		];
-		Promise.all(tasks).then(() => this.loading = false);
+		if (typeof window.IntersectionObserver === "undefined") {
+			return this.initialize();
+		}
+		this.$_observer = new IntersectionObserver(entries => {
+			const entry = entries[0];
+
+			if (entry.isIntersecting) {
+				this.initialize();
+				this.$_observer.disconnect();
+				delete this.$_observer;
+			}
+		});
+		this.$_observer.observe(this.$el);
+	},
+	destroyed() {
+		if (this.$_observer) {
+			this.$_observer.disconnect();
+		}
 	},
 };
 </script>
