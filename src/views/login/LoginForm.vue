@@ -42,14 +42,14 @@
 		<div class="center">
 			<oauth-icon
 				endpoint="github"
-				icon="github.png"
+				icon="github-logo.svg"
 				tip="Github登录"
 				:return-uri="returnUri"/>
 
 			<!-- ADBlock会拦截谷歌图标，必须改个名 -->
 			<oauth-icon
 				endpoint="google"
-				icon="xoago.png"
+				icon="google-logo.svg"
 				tip="Google登录"
 				:return-uri="returnUri"/>
 		</div>

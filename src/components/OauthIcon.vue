@@ -21,7 +21,8 @@ export default {
 		const { endpoint, returnUri, icon, tip } = ctx.props;
 
 		// <img :class="$style.logo" :src="..." :alt="tip" :title="tip">
-		const attrs = { src: `/static/icons/${icon}`, alt: tip, title: tip };
+		const src = require("../assets/img/" + icon);
+		const attrs = { src, alt: tip, title: tip };
 		const imgElement = h("img", { staticClass: ctx.$style.logo, attrs });
 
 		// <a :href="href"><img ...></a>
@@ -33,7 +34,8 @@ export default {
 
 <style module lang="less">
 .logo {
-	width: 48px;
-	height: 48px;
+	width: 40px;
+	height: 40px;
+	margin: 5px;
 }
 </style>
