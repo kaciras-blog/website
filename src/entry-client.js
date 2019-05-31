@@ -6,6 +6,11 @@ import * as loadingIndicator from "./loading-indicator";
 import { REFRESH_USER, SET_PREFETCH_DATA } from "./store/types";
 import "./serviceWorker";
 
+// 防止网址被 iframe 嵌入，这样写也包括同域网页
+if (window !== parent) {
+	window.top.location.href = window.location.href;
+}
+
 if (process.env.NODE_ENV === "production") {
 	ErrorReporting.enableAutoReport();
 }
