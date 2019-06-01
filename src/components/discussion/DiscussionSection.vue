@@ -3,6 +3,9 @@
 		<atom-spinner :animation-duration="1200" :size="64" color="#53bcff"/>
 		<span :class="$style.loading_text">评论加载中</span>
 	</div>
+	<div v-else-if="loadFail" :class="$style.loading">
+		<span :class="$style.loading_fail_text">评论加载失败</span>
+	</div>
 	<div v-else>
 		<header class="segment" :class="$style.header">
 			<h2 :class="$style.title">
@@ -76,8 +79,9 @@ export default {
 	},
 	data: () => ({
 		loading: true,
-		data: null,
+		loadFail: false,
 
+		data: null,
 		replying: null,
 		allSorts,
 		sort: allSorts[0],
@@ -115,17 +119,14 @@ export default {
 				this.loadDiscussions(0, 20).then(view => this.data = view),
 				this.$store.dispatch("loadOptions"),
 			];
-			Promise.all(tasks).then(() => this.loading = false);
+			Promise.all(tasks)
+				.catch(() => this.loadFail = true)
+				.finally(() => this.loading = false);
 		},
 	},
 	mounted() {
-		if (typeof window.IntersectionObserver === "undefined") {
-			return this.initialize();
-		}
 		this.$_observer = new IntersectionObserver(entries => {
-			const entry = entries[0];
-
-			if (entry.isIntersecting) {
+			if (entries[0].isIntersecting) {
 				this.initialize();
 				this.$_observer.disconnect();
 				delete this.$_observer;
@@ -154,6 +155,12 @@ export default {
 .loading_text {
 	margin-top: 10px;
 	font-size: 16px;
+}
+
+// TODO: 错误字体和颜色用得挺多
+.loading_fail_text {
+	font-size: 16px;
+	color: red;
 }
 
 .header {

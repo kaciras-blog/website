@@ -11,7 +11,7 @@
 					<li>Chrome 57</li>
 					<li>Safari 10.3</li>
 					<li>Opera 44</li>
-					<li>IE 全部不支持</li>
+					<li>IE 全都不支持</li>
 				</ul>
 			</icon-paragraph>
 			<icon-paragraph :src="require('../../assets/img/logo-vue.svg')" title="sentry">
