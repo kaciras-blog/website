@@ -2,16 +2,14 @@ const path = require("path");
 
 const webpack = {
 	mode: "development",
-
-	outputPath: path.resolve(__dirname, "../dist"),	// webpack的输出目录
 	publicPath: "/",	// 公共资源的URL前缀，可以设为外部服务器等
-	assetsDirectory: "static",	// 公共资源输出目录，是outputPath的子目录
+
+	parallel: false, // 多线程编译JS文件
 
 	// bundleAnalyzerReport: true,
 
 	client: {
 		useBabel: true,
-		parallel: false, // 多线程编译JS文件
 		devtool: "cheap-module-eval-source-map",
 		cssSourceMap: true,
 	},
@@ -46,11 +44,10 @@ const server = {
 
 const dev = {
 	useHotClient: false,
-	slient: false,
+	silent: false,
 };
 
 const blog = {
-	staticRoot: webpack.outputPath,
 	imageRoot: "G:/备份/blog.kaciras.net/image",
 	serverCert: "D:/Coding/Utils/dev.pem",
 	serverAddress: "https://localhost:2375",
@@ -62,4 +59,9 @@ const blog = {
 	},
 };
 
-module.exports = { webpack, server, dev, blog };
+module.exports = {
+	outputDir: path.resolve(__dirname, "../dist"), // 构建输出的目录
+	assetsDir: "wwwroot", // 静态资源目录，相对于outputDir
+
+	webpack, server, dev, blog ,
+};
