@@ -308,12 +308,8 @@ class ArticleApi extends AbstractApi {
 		return this.mainServer.get("/recommendation/articles").then(r => r.data);
 	}
 
-	remove(id) {
-		return this.mainServer.patch(`/articles/${id}`, { deletion: true });
-	}
-
-	restore(id) {
-		return this.mainServer.patch(`/articles/${id}`, { deletion: false });
+	updateDeletion(id, deletion) {
+		return this.mainServer.patch(`/articles/${id}`, { deletion });
 	}
 
 	changeCategories(id, category) {

@@ -2,8 +2,8 @@
 	<main>
 		<div class="btn-group" :class="$style.toolbar">
 			<kx-button
-				class="primary"
 				icon="fa fa-edit"
+				class="primary"
 				@click="newArticle">
 				新文章
 			</kx-button>
@@ -11,12 +11,12 @@
 
 		<div class="panel">
 			<article-console-item
-				v-for="item of articles"
+				v-for="item of list.items"
 				:key="item.id"
 				:value="item"
-				class="segment"/>
-
-			<span v-if="allLoaded && !articles.length">没有找到文章,去写一篇吧~</span>
+				class="segment"
+			/>
+			<span v-if="list.total === 0">没有找到文章,去写一篇吧~</span>
 			<sk-fading-circle v-if="loading"/>
 		</div>
 	</main>
@@ -29,14 +29,13 @@ import ArticleConsoleItem from "./ArticleConsoleItem";
 
 export default {
 	name: "ArticleConsole",
-	components: { ArticleConsoleItem },
-	data() {
-		return {
-			loading: true,
-			allLoaded: false,
-			articles: [],
-		};
+	components: {
+		ArticleConsoleItem,
 	},
+	data: () => ({
+		loading: true,
+		list: [],
+	}),
 	methods: {
 		newArticle() {
 			api.draft.createNew()
@@ -47,11 +46,10 @@ export default {
 			this.loading = true;
 
 			api.article.getList({
-				start: this.articles.length,
+				start: 0,
 				deletion: "ALL",
-			}).then(r => {
-				this.articles = r;
-				this.allLoaded = r.length === 0;
+			}).then(data => {
+				this.list = data;
 				this.loading = false;
 			}).catch(err => {
 				this.$dialog.messageBox("加载文章失败", err.message, MessageBoxType.Error);

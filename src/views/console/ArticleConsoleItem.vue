@@ -9,7 +9,12 @@
 
 		<div class="info">
 			<div class="tag-group">
-				<span v-for="c in value.cpath" :key="c.id">{{c.name}}</span>
+				<span
+					v-for="c in value.cpath"
+					:key="c.id"
+					class="tag-group-item">
+					{{c.name}}
+				</span>
 			</div>
 
 			<div class="minor-text">
@@ -38,10 +43,17 @@
 				@click="move">
 				移动
 			</kx-button>
+
 			<kx-button
-				v-if="!value.deleted"
-				class="dangerous outline"
-				@click="remove">
+				v-if="value.deleted"
+				class="info"
+				@click="updateDeleteState(false)">
+				恢复
+			</kx-button>
+			<kx-button
+				v-else
+				class="dangerous"
+				@click="updateDeleteState(true)">
 				删除
 			</kx-button>
 		</div>
@@ -51,6 +63,7 @@
 <script>
 import api from "../../api";
 import { errorMessage } from "../../utils";
+import { MessageBoxType } from "kx-ui/src/dialog";
 
 export default {
 	name: "ArticleConsoleItem",
@@ -61,19 +74,19 @@ export default {
 		},
 	},
 	methods: {
-		edit () {
+		edit() {
 			api.draft.fromArticle(this.value.id)
 				.then(id => window.location.href = "/edit/" + id)
 				.catch(err => console.log(err));
 		},
-		move () {
+		move() {
 
 		},
-		remove () {
-			const id = this.value.id;
-			api.article.remove(id)
-				.then(() => this.value.deleted = true)
-				.catch(err => this.$dialog.messageBox("删除文章", errorMessage(err), "error"));
+		updateDeleteState(deletion) {
+			const { value } = this;
+			api.article.updateDeletion(value.id, deletion)
+				.then(() => value.deleted = deletion)
+				.catch(err => this.$dialog.messageBox("修改删除状态", errorMessage(err), MessageBoxType.Error));
 		},
 	},
 };
@@ -105,10 +118,12 @@ export default {
 
 .info {
 	align-self: end;
+
 	& i {
 		&:not(:first-of-type) {
 			margin-left: 1rem;
 		}
+
 		margin-right: .2rem;
 	}
 }
