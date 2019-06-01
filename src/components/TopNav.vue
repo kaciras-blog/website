@@ -1,10 +1,9 @@
 <template>
 	<nav :class="$style.container">
-		<router-link
-			:class="$style.logo"
-			to="/"
-			title="LOGO，点击回到首页"
-		/>
+
+		<router-link to="/" title="回到首页">
+			<img src="../assets/img/logo-kaciras-wide.svg" alt="logo" :class="$style.logo">
+		</router-link>
 
 		<!-- 手机屏的折叠菜单 -->
 		<button
@@ -75,17 +74,17 @@ export default {
 	}
 }
 
+// 外层套了个<a>所以宽高不能用百分比，只能写死图片的大小
 .logo {
-	@logo-width: 150px;
-
 	display: block;
-	width: @logo-width;
+	width: 150px;
+	height: 50px;
 
-	background: url("../assets/img/logo-kaciras-wide.svg");
-	background-size: @logo-width 200%;
+	object-fit: cover;
+	object-position: top;
 
 	&:hover, &:focus {
-		background-position: 0 100%;
+		object-position: 0 -50px;
 	}
 }
 
