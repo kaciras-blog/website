@@ -7,11 +7,13 @@
 		/>
 
 		<!-- 手机屏的折叠菜单 -->
-		<div v-if="$mediaQuery.match('mobile')"
-			 class="nav-item nav-right"
-			 @click="showMenu">
+		<button
+			v-if="$mediaQuery.match('mobile')"
+			title="弹出菜单"
+			class="nav-item nav-right"
+			@click="showMenu">
 			<i class="fas fa-bars"></i>
-		</div>
+		</button>
 
 		<!-- 宽屏直接把按钮显示在上面 -->
 		<div v-else class="nav-right">

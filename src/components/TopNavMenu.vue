@@ -7,10 +7,16 @@
 		@after-enter="afterEnter"
 		@before-leave="beforeLeave"
 	>
+		<!-- div弹出层默认被辅助工具忽略，且组件内没有其他的关闭按钮，必须设置role和title属性来提示 -->
 		<kx-modal-wrapper
-			:prevent-scroll="true"
-			@click.self.native="$dialog.close"
 			:class="$style.container"
+			:prevent-scroll="true"
+			role="button"
+			title="点击或按ESC关闭弹窗"
+			tabindex="0"
+			v-autofocus
+			@keydown.esc.self.native="$dialog.close"
+			@click.self.native="$dialog.close"
 		>
 			<personal-view :class="$style.navMenu"/>
 		</kx-modal-wrapper>
