@@ -58,7 +58,7 @@ const blog = {
 
 module.exports = {
 	outputDir: path.resolve(__dirname, "../dist"), // 构建输出的目录
-	assetsDir: "wwwroot", // 静态资源目录，相对于outputDir
+	assetsDir: "", // 静态资源目录，相对于outputDir
 
 	webpack, server, dev, blog ,
 };
