@@ -24,7 +24,7 @@
 	.size(16rem);
 
 	@media screen and (min-width: @length-screen-mobile) {
-		.full-percent;
+		.size(100%);
 	}
 }
 

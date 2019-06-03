@@ -7,7 +7,7 @@
 		>
 			<img :src="item.cover"
 				 alt="封面"
-				 class="cram"
+				 class="full-percent"
 				 :class="$style.cover">
 		</router-link>
 

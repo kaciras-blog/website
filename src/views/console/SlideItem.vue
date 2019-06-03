@@ -140,7 +140,7 @@ textarea.inputBox {
 
 .cover {
 	position: absolute;
-	.full-percent;
+	.size(100%);
 }
 
 .tip {

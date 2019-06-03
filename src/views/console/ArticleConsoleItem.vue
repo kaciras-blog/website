@@ -105,7 +105,7 @@ export default {
 
 .cover {
 	grid-area: img;
-	.full-percent;
+	.size(100%);
 }
 
 .ops {
