@@ -3,10 +3,8 @@ const path = require("path");
 const webpack = {
 	mode: "development",
 	publicPath: "/",	// 公共资源的URL前缀，可以设为外部服务器等
-
 	parallel: false, // 多线程编译JS文件
-
-	// bundleAnalyzerReport: true,
+	bundleAnalyzerReport: false, // 显示模块大小图
 
 	client: {
 		useBabel: true,
@@ -15,7 +13,6 @@ const webpack = {
 	},
 
 	server: {
-		template: "public/index.template.html",
 		devtool: "source-map", // 服务端没有eval模式
 		cssSourceMap: false,
 	},
