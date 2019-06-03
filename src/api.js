@@ -380,9 +380,7 @@ class DiscussApi extends AbstractApi {
 	}
 
 	getModeration() {
-		const params = { objectId: 37, type: 0, parent: 0, start: 0, count: 20, linked: true };
-		return this.mainServer.get("/discussions", { params }).then(r => r.data);
-		// return this.mainServer.get("/discussions", { params: { state: 2, linked: true } }).then(r => r.data);
+		return this.mainServer.get("/discussions", { params: { state: "Moderation", linked: true } }).then(r => r.data);
 	}
 
 	/**
@@ -561,9 +559,9 @@ class ConfigApi extends AbstractApi {
 }
 
 export const DiscussionState = {
-	Visible: 0, // 正常显示
-	Deleted: 1, // 已删除
-	Pending: 2, // 等待审核
+	Visible: "Visible", // 正常显示
+	Deleted: "Deleted", // 已删除
+	Moderation: "Moderation", // 等待审核
 };
 
 export default new BasicApiFactory(apiSet);

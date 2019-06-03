@@ -9,11 +9,13 @@
 				<div class="btn-group">
 					<kx-button
 						class="primary"
+						:disabled="!selected.length"
 						@click="approveAll">
 						全部发布
 					</kx-button>
 					<kx-button
 						class="dangerous"
+						:disabled="!selected.length"
 						@click="removeAll">
 						全部删除
 					</kx-button>
@@ -27,7 +29,7 @@
 </template>
 
 <script>
-import api from "../../api";
+import api, { DiscussionState } from "../../api";
 import DiscussionConfigPanel from "./DiscussionConfigPanel";
 import { articleLink } from "../../blog-plugin";
 import DiscussionCheckItem from "./DiscussionCheckItem";
@@ -54,25 +56,37 @@ export default {
 	computed: {
 		allChecked: {
 			get() {
-				return this.pendingList.every(item => item.checked);
+				const { length } = this.pendingList;
+				return length && length === this.selected.length;
 			},
 			set(value) {
 				this.pendingList.forEach(item => item.checked = value);
 			},
 		},
+		selected() {
+			return this.pendingList.filter(item => item.checked);
+		},
+		selectedIds() {
+			return this.selected.map(item => item.id);
+		},
 	},
 	methods: {
-		removeAll() {
-
+		async loadItems() {
+			const list = await api.discuss.getModeration();
+			list.items.forEach(normalize);
+			this.pendingList = list.items;
 		},
-		approveAll() {
-
+		async removeAll() {
+			await api.discuss.updateStates(this.selectedIds, DiscussionState.Deleted);
+			this.loadItems();
+		},
+		async approveAll() {
+			await api.discuss.updateStates(this.selectedIds, DiscussionState.Visible);
+			this.loadItems();
 		},
 	},
-	async created() {
-		const list = await api.discuss.getModeration();
-		list.items.forEach(normalize);
-		this.pendingList = list.items;
+	created() {
+		this.loadItems();
 	},
 };
 </script>
