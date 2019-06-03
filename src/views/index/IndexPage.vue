@@ -10,10 +10,10 @@
 					v-model="articleList"
 					:loader="loadPage"
 					:start="startPos"
-					:page-size="2"
+					:page-size="10"
 					:next-link="nextPageUrl"
-					:auto-load="autoLoad">
-
+					:auto-load="autoLoad"
+				>
 					<template v-slot="{ items }">
 						<ul class="list">
 							<article-preview-item

@@ -28,11 +28,11 @@
 
 		<div class="tag-group" :class="$style.category">
 			<router-link
-				v-for="cat in item.cpath"
-				:key="cat.id"
-				:to="cat | categoryLink"
+				v-for="c in item.cpath"
+				:key="c.id"
+				:to="c | categoryLink"
 				class="tag-group-item">
-				{{cat.name}}
+				{{c.name}}
 			</router-link>
 		</div>
 
