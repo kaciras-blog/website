@@ -45,7 +45,7 @@ import { VueMultiWatcher } from "kx-ui";
 import { MessageBoxType } from "kx-ui/src/dialog";
 
 
-function convertToTransfer (data) {
+function convertToTransfer(data) {
 	return Object.assign({
 		id: data.archive.id,
 		articleId: data.archive.articleId,
@@ -78,10 +78,10 @@ export default {
 		content: "",
 		selection: [0, 0],
 		viewMode: 0,
-		autoSaveError: false,
+		autoSaveError: null,
 	}),
 	methods: {
-		async addImage () {
+		async addImage() {
 			const res = await api.misc.uploadImageFile();
 			const [selStart, selEnd] = this.selection;
 			const p = selStart + 2;
@@ -90,10 +90,10 @@ export default {
 			this.content = v.substring(0, selEnd) + `![](${res})` + v.substring(selEnd);
 			this.selection = [p, p];
 		},
-		metadataDialog () {
+		metadataDialog() {
 			this.$dialog.show(MetadataDialog, { metadata: this.metadata }).onConfirm(data => this.metadata = data);
 		},
-		async saveManually () {
+		async saveManually() {
 			const { archive } = this;
 			try {
 				await api.draft.saveNewHistory(archive.id, convertToTransfer(this.$data));
@@ -103,24 +103,29 @@ export default {
 				this.$dialog.messageBox("保存草稿", "保存失败，请手动备份", MessageBoxType.Error);
 			}
 		},
-		watchChanges () {
-			new VueMultiWatcher(this, ["metadata", "content"],
-				() => setTimeout(this.autoSave, 10 * 60 * 1000), { once: true });
+
+		/** 监视文本的改变，当改变时开始计时10分钟，到点自动保存 */
+		watchChanges() {
+			const callback = () => setTimeout(this.autoSave, 10 * 60 * 1000);
+			new VueMultiWatcher(this, ["metadata", "content"], callback, { once: true });
 		},
-		autoSave () {
+		autoSave() {
 			const { archive } = this;
 			api.draft.save(archive.id, archive.saveCount, convertToTransfer(this.$data))
 				.then(() => {
-					archive.saveTime = new Date();
-					this.autoSaveError = false;
 					this.watchChanges();
+					archive.saveTime = new Date();
+					this.autoSaveError = null;
 				})
-				.catch(() => this.autoSaveError = true);
+				.catch((err) => {
+					console.error(err);
+					this.autoSaveError = err;
+				});
 		},
-		publish () {
+		publish() {
 			this.$dialog.show(PublishDialog, this.$data);
 		},
-		async loadHistory (saveCount) {
+		async loadHistory(saveCount) {
 			const { archive } = this;
 			const history = await api.draft.getHistory(archive.id, saveCount);
 
@@ -130,7 +135,7 @@ export default {
 			this.content = history.content;
 		},
 	},
-	async beforeMount () {
+	async beforeMount() {
 		const id = this.$route.params["id"];
 		if (!id) {
 			return; // 必须先创建草稿

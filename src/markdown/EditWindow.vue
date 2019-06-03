@@ -4,41 +4,32 @@
 			v-show="viewMode !== 2"
 			ref="textarea"
 			class="text-view"
-			:class="{
-				split:viewMode === 0,
-				single:viewMode === 1
-			}"
+			:class="{ split:viewMode === 0, single:viewMode === 1 }"
 			title="编辑区"
 			spellcheck="false"
 			:value="text"
-			@input="$emit('update:text', $event.target.value)"
-
 			v-bind-selection.focus="selection"
 			v-on-selection-changed="handleSelect"
-			@keydown.tab.prevent="insertTab">
-		</textarea>
+			@keydown.tab.prevent="insertTab"
+			@input="$emit('update:text', $event.target.value)"
+		></textarea>
 
 		<article
 			v-if="renderMode === 'MD'"
 			v-show="viewMode !== 1"
 			ref="preview"
 			class="text-view preview markdown"
-			:class="{
-				split:viewMode === 0,
-				single:viewMode === 2
-			}"
-			v-html="htmlText">
-		</article>
+			:class="{ split:viewMode === 0, single:viewMode === 2 }"
+			v-html="htmlText"
+		></article>
+
 		<pre v-else-if="renderMode === 'PLAIN'"
 			 v-show="viewMode !== 1"
 			 ref="preview"
 			 class="text-view preview markdown"
-			 :class="{
-				split:viewMode === 0,
-				single:viewMode === 2
-			}">
-			{{text}}
-		</pre>
+			 :class="{ split:viewMode === 0, single:viewMode === 2 }"
+			 v-text="text"
+		></pre>
 	</div>
 </template>
 
