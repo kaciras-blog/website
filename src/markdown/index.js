@@ -1,13 +1,14 @@
 /*
  * TODO: lozad 只有很少的代码，并且其功能也不是很强，考虑以后自己实现
  */
+import "./Markdown.less";
 import MarkdownIt from "markdown-it";
-import highlight from "./highlight";
 import Anchor from "markdown-it-anchor";
-import lozad from "lozad";
-import loadingImage from "../assets/img/loading.gif";
-import katex from "@iktakahiro/markdown-it-katex";
 import tableOfContent from "markdown-it-toc-done-right";
+import katex from "@iktakahiro/markdown-it-katex";
+import lozad from "lozad";
+import highlight from "./highlight";
+import loadingImage from "../assets/img/loading.gif";
 
 /**
  * 给行内代码加个 code_inline 类
