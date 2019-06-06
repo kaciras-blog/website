@@ -3,7 +3,7 @@ const path = require("path");
 const webpack = {
 	mode: "development",
 	publicPath: "/",	// 公共资源的URL前缀，可以设为外部服务器等
-	parallel: false, // 多线程编译JS文件
+	parallel: true, // 多线程编译JS文件
 	bundleAnalyzerReport: false, // 显示模块大小图
 
 	client: {
@@ -58,7 +58,7 @@ const blog = {
 
 module.exports = {
 	outputDir: path.resolve(__dirname, "../dist"), // 构建输出的目录
-	assetsDir: "", // 静态资源目录，相对于outputDir
+	assetsDir: "static", // 静态资源目录，相对于outputDir
 
 	webpack, server, dev, blog ,
 };
