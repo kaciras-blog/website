@@ -1,17 +1,15 @@
 <template functional>
-	<router-link :to="props.link" class="clean-link">
-		<figure :class="$style.figure">
-
-			<img :src="props.picture"
-				 alt="封面"
-				 :class="$style.image">
-
-			<figcaption :class="$style.content">
-				<h2>{{props.name}}</h2>
-				<span class="loose">{{props.description}}</span>
-			</figcaption>
-		</figure>
-	</router-link>
+	<figure :class="$style.figure">
+		<img
+			:src="props.picture"
+			alt="封面"
+			:class="$style.image"
+		>
+		<figcaption :class="$style.content">
+			<h2>{{props.name}}</h2>
+			<span class="loose">{{props.description}}</span>
+		</figcaption>
+	</figure>
 </template>
 
 <style module lang="less">
@@ -21,9 +19,8 @@
 	margin: 0;
 
 	border-radius: 8px;
-	box-shadow:
-		0 2px 3px rgba(10, 10, 10, .1),
-		0 0 0 1px rgba(10, 10, 10, .1);
+	box-shadow: 0 2px 3px rgba(10, 10, 10, .1),
+	0 0 0 1px rgba(10, 10, 10, .1);
 	font-size: 16px;
 	overflow: hidden;
 

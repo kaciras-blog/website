@@ -10,9 +10,19 @@
 			</router-link>
 		</header>
 
-		<ul v-if="slides" :class="$style.card_list" class="list">
-			<li v-for="slide of slides" :key="slide.randomId">
-				<post-card v-bind="slide"/>
+		<ul v-if="slides"
+			class="list"
+			:class="$style.card_list"
+		>
+			<li v-for="card of slides"
+				:key="card.randomId"
+			>
+				<auto-link
+					:href="card.link"
+					class="clean-link"
+				>
+					<post-card v-bind="card"/>
+				</auto-link>
 			</li>
 		</ul>
 
@@ -22,10 +32,12 @@
 <script>
 import PostCard from "./PostCard";
 import { mapState } from "vuex";
+import AutoLink from "./AutoLink";
 
 export default {
 	name: "BlogSection",
 	components: {
+		AutoLink,
 		PostCard,
 	},
 	computed: mapState({
