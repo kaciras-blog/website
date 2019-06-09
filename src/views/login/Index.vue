@@ -36,11 +36,15 @@ export default {
 		},
 	},
 	beforeRouteEnter(to, from, next) {
-		let currentPath = from.fullPath;
-		if (currentPath.startsWith("/login")) {
-			next(vm => vm.returnUri = this.returnUri);
+		const param = to.query["return_uri"];
+		if (param) {
+			return next(vm => vm.returnUri = param);
 		}
-		next(vm => vm.returnUri = currentPath);
+		const fromPath = from.fullPath;
+		if (fromPath.startsWith("/login")) {
+			return next(vm => vm.returnUri = this.returnUri);
+		}
+		next(vm => vm.returnUri = fromPath);
 	},
 };
 </script>

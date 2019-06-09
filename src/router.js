@@ -64,7 +64,7 @@ export default function() {
 		},
 		{
 			path: "/login",
-			component: () => import("./views/login/LoginPage"),
+			component: () => import("./views/login/Index"),
 			meta: { title: "登录" },
 		},
 		{
