@@ -9,18 +9,25 @@
 			</kx-button>
 		</div>
 
-		<div class="panel">
-			<draft-console-item
-				v-for="draft in drafts"
-				:key="draft.id"
-				class="segment"
-				:value="draft"
-				@removed="removeItem(draft.id)"/>
-
-			<span v-if="!loading && drafts.length===0" class="minor-text">空空如也</span>
-
-			<sk-fading-circle v-if="loading"/>
-		</div>
+		<scroll-paging-view
+			v-model="draftList"
+			:loader="loadPage"
+			class="panel"
+			:page-size="20"
+			:auto-load="true"
+		>
+			<template v-slot="{ items }">
+				<ol v-if="items.length" class="list">
+					<draft-console-item
+						v-for="draft in items"
+						:key="draft.id"
+						class="segment"
+						:value="draft"
+						@removed="removeItem(draft.id)"/>
+				</ol>
+				<span v-else class="minor-text">空空如也</span>
+			</template>
+		</scroll-paging-view>
 	</main>
 </template>
 
@@ -33,52 +40,32 @@ import { MessageBoxType } from "kx-ui/src/dialog/index";
 export default {
 	name: "DraftConsole",
 	components: { DraftConsoleItem },
-	data:() => ({
-		drafts: [],
+	data: () => ({
+		draftList: null,
 		showHistory: null,
-		allLoaded: false,
-		last: 0,
-		loading: true,
 	}),
 	methods: {
-		deleteAll () {
-			this.$dialog.messageBox({
+		async deleteAll() {
+			const result = await this.$dialog.messageBox({
 				title: "警告",
 				content: "该操作不可撤销，是否继续？",
 				type: MessageBoxType.Warning,
 				cancelable: true,
-			}).onComfirm(() => {
-				api.draft.clear().then(() => {
-					this.drafts.splice(0, this.drafts.length);
-					this.last = 0;
-				}).catch(() => alert("清空失败!"));
 			});
-		},
-		async loadDrafts () {
-			if (this.allLoaded) {
+			if (!result.isConfirm) {
 				return;
 			}
-			this.loading = true;
-
-			try {
-				const list = await api.draft.getList(1, 0, 20);
-				if (list.length === 0) {
-					this.allLoaded = true;
-				} else {
-					list.forEach(v => this.drafts.push(v));
-					this.last = list[list.length - 1]["id"];
-				}
-			} catch (e) {
-				alert("加载草稿失败!");
-			}
-			this.loading = false;
+			api.draft.clear()
+				.then(() => this.draftList = null)
+				.catch(() => alert("清空失败!"));
 		},
-		removeItem (id) {
-			deleteOn(this.drafts, d => d.id === id);
+		loadPage(start, count) {
+			const userId = this.$store.state.user.id;
+			return api.draft.getList(userId, start, count);
 		},
-	},
-	beforeMount () {
-		this.loadDrafts();
+		removeItem(id) {
+			deleteOn(this.draftList.items, d => d.id === id);
+		},
 	},
 };
 </script>

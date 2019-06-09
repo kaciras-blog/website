@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<li>
 		<div :class="$style.draft">
 			<h3 :class="$style.title">{{value.title}}</h3>
 
@@ -31,7 +31,7 @@
 		<!--<kx-button class="primary">编辑</kx-button>-->
 		<!--</div>-->
 		<!--</div>-->
-	</div>
+	</li>
 </template>
 
 <script>

@@ -149,7 +149,7 @@ export class BasicApiFactory {
 
 	get user() { return this.createApiInstance(UserApi); }
 
-	get recommend() { return this.createApiInstance(RecommandApi); }
+	get recommend() { return this.createApiInstance(RecommendApi); }
 
 	get misc() { return this.createApiInstance(MiscApi); }
 
@@ -272,9 +272,7 @@ class AbstractApi {
 class ArticleApi extends AbstractApi {
 
 	get(id) {
-		return this.mainServer.get("/articles/" + id, {
-			params: { rv: true }, // rv: increment view count
-		}).then(r => r.data);
+		return this.mainServer.get("/articles/" + id).then(r => r.data);
 	}
 
 	publish(data) {
@@ -529,7 +527,7 @@ class UserApi extends AbstractApi {
 }
 
 
-class RecommandApi extends AbstractApi {
+class RecommendApi extends AbstractApi {
 
 	get swiper() {
 		return new SwiperApi(this.axiosSet);
@@ -539,11 +537,11 @@ class RecommandApi extends AbstractApi {
 class SwiperApi extends AbstractApi {
 
 	get() {
-		return this.mainServer.get("/recommendation/slides").then(r => r.data);
+		return this.mainServer.get("/recommendation/cards").then(r => r.data);
 	}
 
 	set(list) {
-		return this.mainServer.put("/recommendation/slides", list);
+		return this.mainServer.put("/recommendation/cards", list);
 	}
 }
 

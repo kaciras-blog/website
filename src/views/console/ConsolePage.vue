@@ -42,7 +42,7 @@ export default {
 			{ view: ArticleConsole, label: "文章列表" },
 			{ view: DraftConsole, label: "我的草稿" },
 			{ view: DiscussionConsole, label: "评论系统" },
-			{ view: SlideConsole, label: "轮播" },
+			{ view: SlideConsole, label: "卡片" },
 			{ view: CategoryConsole, label: "管理分类" },
 		],
 		active: ArticleConsole,

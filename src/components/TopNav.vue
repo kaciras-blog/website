@@ -10,7 +10,8 @@
 			v-if="$mediaQuery.match('mobile')"
 			title="弹出菜单"
 			class="nav-item nav-right"
-			@click="showMenu">
+			@click="showMenu"
+		>
 			<i class="fas fa-bars"></i>
 		</button>
 
