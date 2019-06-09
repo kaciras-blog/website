@@ -30,7 +30,7 @@
 				<input v-model="item.slide.name" :class="$style.inputBox"/>
 			</label>
 			<label>
-				<span class="minor-text">URL（相对路径将使用页面内路由）</span>
+				<span class="minor-text">URI，相对路径（以/开头的）将使用单页路由</span>
 				<input v-model="item.slide.link" :class="$style.inputBox"/>
 			</label>
 			<label>
