@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Welcome from "./views/welcome/Welcome";
+import Welcome from "./views/index/Welcome";
 import Error from "./views/error/Error";
 
 Vue.use(Router);
@@ -51,7 +51,7 @@ export default function() {
 		},
 		{
 			path: "/list/:index",
-			component: () => import("./views/index/IndexPage"),
+			component: () => import("./views/list/IndexPage"),
 			meta: { title: "所有文章" },
 		},
 		{

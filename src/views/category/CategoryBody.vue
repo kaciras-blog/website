@@ -21,7 +21,7 @@
 
 <script>
 import api from "../../api";
-import ArticlePreviewItem from "../index/ArticlePreviewItem";
+import ArticlePreviewItem from "../list/ArticlePreviewItem";
 
 export default {
 	name: "CategoryBody",
