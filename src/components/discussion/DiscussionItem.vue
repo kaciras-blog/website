@@ -1,85 +1,46 @@
 <template>
-	<li>
-		<img :src="value.user.head"
-			 alt="头像"
-			 class="small head"
-			 :class="$style.head">
+	<discussion-content
+		:value="value"
+		@item-removed="$emit('item-removed', value)"
+		@reply="$emit('reply', value.id)"
+	>
+		<template v-slot:footer>
 
-		<div :class="$style.main">
-
-			<!-- 评论者的用户名和右上角的楼层号 -->
-			<header :class="$style.header">
-				<span :class="$style.name">{{value.user.name}}</span>
-				<span v-if="!value.parent" class="minor-text">#{{value.floor}}</span>
-			</header>
-
-			<div :class="$style.content">{{value.content}}</div>
-
-			<div class="minor-text" :class="$style.metas">
-				<div>
-					<span :title="value.voted ? '取消点赞' : '点赞'"
-						  class="meta"
-						  :class="[$style.clickable, { [$style.active]: value.voted }]"
-						  @click="vote">
-
-						<i class="far fa-thumbs-up"></i>{{value.voteCount}}
-					</span>
-
-					<span v-if="value.parent === 0"
-						  class="meta"
-						  :class="$style.clickable"
-						  @click="replyThis">
-
-						<i class="far fa-comment"></i>回复({{value.replyCount}})
-					</span>
-				</div>
-
-				<div>
-					<span v-if="removable"
-						  class="meta"
-						  :class="$style.clickable"
-						  @click="remove">
-
-						<i class="far fa-trash-alt"></i>删除
-					</span>
-					<time>{{value.time}}</time>
-				</div>
-			</div>
-
-			<button-paging-view
-				v-if="value.replyCount>0"
-				ref="replies"
-				theme="text"
-				:show-top-buttons="false"
-				:init-items="value.replies"
-				:init-page-size="5"
-				:init-total-count="value.replyCount"
-				:loader="loadReplies"
+			<ol v-if="value.replyCount"
+				class="list"
+				:class="$style.replies"
 			>
-				<template v-slot="{ items }">
-					<ol class="list">
-						<discussion
-							v-for="item of items"
-							:key="item.id"
-							:class="$style.reply"
-							:value="item"/>
-					</ol>
-				</template>
-			</button-paging-view>
+				<discussion-content
+					v-for="item of value.replies"
+					:key="item.id"
+					:value="item"
+					:class="$style.reply"
+					@item-removed="$emit('item-removed', item)"/>
+			</ol>
+
+			<a v-if="value.replyCount"
+			   href="#"
+			   class="hd-link"
+			   @click.prevent="showAllReplies">
+				查看全部
+			</a>
 
 			<discussion-editor
 				v-if="replying === value.id"
-				:submit="text => submitReply(text)"/>
-		</div>
-	</li>
+				:submit="text => submitReply(text)"
+			/>
+		</template>
+	</discussion-content>
 </template>
 
 <script>
-import api, { DiscussionState } from "../../api";
+import DiscussionContent from "./DiscussionContent";
 import DiscussionEditor from "./DiscussionEditor.vue";
+import api from "../../api";
+import ReplyFrame from "./ReplyFrame";
 
 export default {
-	name: "Discussion",
+	name: "DiscussionItem",
 	props: {
 		value: {
 			type: Object,
@@ -87,15 +48,9 @@ export default {
 		},
 		replying: Number,
 	},
-	components: { DiscussionEditor },
-	computed: {
-		removable() {
-			const { user } = this.$store;
-			if (!user) {
-				return false;
-			}
-			return user.id === 2;
-		},
+	components: {
+		DiscussionContent,
+		DiscussionEditor,
 	},
 	methods: {
 		async submitReply(text) {
@@ -103,83 +58,16 @@ export default {
 			this.$emit("reply");
 			this.$refs.replies.switchToLast();
 		},
-		remove() {
-			api.discuss
-				.updateStates(this.value.id, DiscussionState.Deleted)
-				.then(() => this.$emit("item-removed", this.value))
-				.catch(r => alert("删除失败 " + r.message));
-		},
-		replyThis() {
-			this.$emit("reply", this.value.id);
-		},
-		/**
-		 * 点赞标签被点击时触发，如果用户已经点赞过则撤销点赞，否则增加点赞。
-		 */
-		vote() {
-			const { value } = this;
-			if (value.voted) {
-				api.discuss.revokeVote(value.id)
-					.then(() => value.voted = false)
-					.then(() => value.voteCount--);
-			} else {
-				api.discuss.voteUp(value.id)
-					.then(() => value.voted = true)
-					.then(() => value.voteCount++);
-			}
-		},
-		loadReplies(index, size, cancelToken) {
-			return api
-				.withCancelToken(cancelToken)
-				.discuss
-				.getReplies(this.value.id, index * size, size);
+		showAllReplies() {
+			this.$dialog.show(ReplyFrame, { value: this.value });
 		},
 	},
 };
 </script>
 
 <style module lang="less">
-.head {
-	display: block;
-	float: left;
-	position: relative;
-}
-
-.main {
-	position: relative;
-	margin-left: 4rem;
-}
-
-.name {
-	font-size: 16px;
-	font-weight: 600;
-}
-
-.metas {
-	display: flex;
-	justify-content: space-between;
-	align-items: baseline;
-	margin-bottom: 2rem;
-}
-
-.clickable {
-	cursor: pointer;
-}
-
-.clickable:hover, .active {
-	color: #f785d7;
-}
-
-.content {
-	margin-top: 1rem;
-	margin-bottom: 1rem;
-	white-space: pre-wrap;
-	word-wrap: break-word;
-}
-
-.header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
+.replies {
+	padding-top: 2rem;
 }
 
 .reply {

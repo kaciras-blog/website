@@ -3,9 +3,11 @@
 		<atom-spinner :animation-duration="1200" :size="64" color="#53bcff"/>
 		<span :class="$style.loading_text">评论加载中</span>
 	</div>
+
 	<div v-else-if="loadFail" :class="$style.loading">
 		<span :class="$style.loading_fail_text">评论加载失败</span>
 	</div>
+
 	<div v-else>
 		<header class="segment" :class="$style.header">
 			<h2 :class="$style.title">
@@ -23,24 +25,29 @@
 				@input="reload"/>
 		</header>
 
-		<discussion-editor class="segment" :submit="submitDiscussion" @submitted="showLast"/>
+		<discussion-editor
+			class="segment"
+			:submit="submitDiscussion"
+			@submitted="showLast"
+		/>
 
 		<button-paging-view
 			ref="discussions"
 			v-model="data"
+			:loader="loadDiscussions"
 			:show-top-buttons="true"
-			:loader="loadDiscussions">
-
+		>
 			<template v-slot="{ items }">
 				<ol v-if="items.length" class="list">
-					<discussion
+					<discussion-item
 						v-for="item of items"
 						:key="item.id"
 						:value="item"
 						:replying="replying"
 						class="segment"
 						@reply="handleReplyStart"
-						@item-removed="refresh"/>
+						@item-removed="refresh"
+					/>
 				</ol>
 				<div :class="$style.empty" v-else>还没有评论呢</div>
 			</template>
@@ -51,7 +58,7 @@
 <script>
 import api from "../../api";
 import DiscussionEditor from "./DiscussionEditor.vue";
-import Discussion from "./DiscussionItem.vue";
+import DiscussionItem from "./DiscussionItem.vue";
 import AtomSpinner from "epic-spinners/src/components/lib/AtomSpinner.vue";
 
 const allSorts = [
@@ -63,8 +70,8 @@ const allSorts = [
 export default {
 	name: "DiscussionSection",
 	components: {
+		DiscussionItem,
 		DiscussionEditor,
-		Discussion,
 		AtomSpinner,
 	},
 	props: {
