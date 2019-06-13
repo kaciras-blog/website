@@ -15,7 +15,7 @@
 					:auto-load="autoLoad"
 				>
 					<template v-slot="{ items }">
-						<ul class="list">
+						<ul class="clean-list">
 							<article-preview-item
 								v-for="item of items"
 								:key="item.id"

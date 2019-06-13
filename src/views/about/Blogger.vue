@@ -11,7 +11,7 @@
 
 		<section class="about-section">
 			<h2>标签</h2>
-			<ul class="list" :class="$style.tag_list">
+			<ul class="clean-list" :class="$style.tag_list">
 				<li>热爱技术</li>
 				<li>冻鳗</li>
 				<li>二刺螈</li>

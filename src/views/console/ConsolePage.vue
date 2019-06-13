@@ -5,7 +5,7 @@
 		</nav>
 		<aside :class="$style.tabs">
 			<h1>控制台</h1>
-			<ul class="list" role="tablist">
+			<ul class="clean-list" role="tablist">
 				<li v-for="link of views"
 					:key="link.label"
 					role="tab"
@@ -77,7 +77,7 @@ export default {
 	padding-top: 1rem;
 	grid-area: menu;
 
-	background-color: #1c1d20;
+	background-color: #222429;
 	height: 100%;
 	color: #DDD;
 	text-align: center;

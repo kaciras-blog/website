@@ -24,7 +24,9 @@
 			:class="$style.discuss_section"
 		/>
 
-		<div class="side-buttons compact vertical-btn-group">
+		<div v-if="$mediaQuery.match('tablet+')"
+			 class="side-buttons compact vertical-btn-group"
+		>
 			<kx-button
 				class="primary outline"
 				title="转到评论区"
@@ -121,6 +123,12 @@ export default {
 <style module lang="less">
 @import "../../css/Imports";
 
+.container {
+	@media screen and (min-width: @length-screen-pad) {
+		--background-size: cover;
+	}
+}
+
 .article {
 	margin: 0 auto;
 	padding: 0 1em;
@@ -151,8 +159,8 @@ export default {
 }
 
 .discuss_section {
-	margin: 40px auto;
-	padding: 2rem 1rem;
+	margin: 50px auto;
+	padding: 0 1rem;
 
 	@media screen {
 		@media (min-width: @length-screen-mobile) {
@@ -164,12 +172,6 @@ export default {
 		@media (min-width: @length-screen-wide) {
 			max-width: 75vw;
 		}
-	}
-}
-
-.container {
-	@media screen and (min-width: @length-screen-pad) {
-		--background-size: cover;
 	}
 }
 </style>

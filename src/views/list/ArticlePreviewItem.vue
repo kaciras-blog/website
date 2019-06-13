@@ -19,7 +19,7 @@
 
 		<div :class="$style.keywords">
 			<h4 class="inline compact">关键词：</h4>
-			<ul class="inline list">
+			<ul class="inline clean-list">
 				<li v-for="kw in item.keywords"
 					:key="kw"
 					:class="$style.keyword">{{kw}}</li>

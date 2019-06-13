@@ -19,6 +19,7 @@
 		<div v-else class="nav-right">
 
 			<template v-if="user && user.id > 0">
+
 				<router-link to="/profile">
 					<img :src="user.head"
 						 alt="用户头像"
@@ -26,12 +27,14 @@
 						 class="small head"
 						 :class="$style.head">
 				</router-link>
+
 				<router-link
 					v-if="user.id === 2"
 					to="/console"
 					class="nav-item">
 					管理
 				</router-link>
+
 				<button class="nav-item" @click="logout">退出登录</button>
 			</template>
 
@@ -69,6 +72,7 @@ export default {
 
 	background-color: rgba(255, 255, 255, .4);
 	box-shadow: rgba(0, 0, 0, .2) 0 0 3px 1px; // TODO: 不共用？
+	z-index: 10; // 防止容器Flex布局时被主体部分盖住
 
 	@media screen and (min-width: @length-screen-mobile) {
 		padding: 0 5vw;

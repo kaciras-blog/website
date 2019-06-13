@@ -5,13 +5,14 @@
 			<h1 :class="$style.title">文章</h1>
 			<router-link
 				to="/list"
-				class="outline primary kx-btn">
+				class="outline primary kx-btn"
+			>
 				更多文章 >
 			</router-link>
 		</header>
 
 		<ul v-if="slides"
-			class="list"
+			class="clean-list"
 			:class="$style.card_list"
 		>
 			<li v-for="card of slides"
@@ -53,7 +54,7 @@ export default {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	padding: 2rem 5vw;
+	padding: 2rem 0;
 }
 
 .title {
@@ -63,8 +64,6 @@ export default {
 
 .card_list {
 	display: grid;
-	padding: 0 5vw;
-
 	grid-auto-rows: auto;
 	grid-gap: 50px 20px;
 	justify-items: center;

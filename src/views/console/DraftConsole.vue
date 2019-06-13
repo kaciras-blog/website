@@ -17,7 +17,7 @@
 			:auto-load="true"
 		>
 			<template v-slot="{ items }">
-				<ol v-if="items.length" class="list">
+				<ol v-if="items.length" class="clean-list">
 					<draft-console-item
 						v-for="draft in items"
 						:key="draft.id"

@@ -25,7 +25,7 @@
 			:auto-load="true"
 		>
 			<template v-slot="{ items }">
-				<ol class="list">
+				<ol class="clean-list">
 					<discussion-content
 						v-for="item of items"
 						:key="item.id"

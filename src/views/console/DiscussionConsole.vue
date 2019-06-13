@@ -21,7 +21,7 @@
 					</kx-button>
 				</div>
 			</div>
-			<ul class="list" :class="$style.list">
+			<ul class="clean-list" :class="$style.list">
 				<discussion-check-item v-for="item of pendingList" :key="item.id" :item="item"/>
 			</ul>
 		</div>

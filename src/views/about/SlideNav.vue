@@ -3,7 +3,7 @@ router-link 不能再函数式组件里使用。
 TODO: 超出屏幕宽度的元素点击后滚动到可视区
 -->
 <template>
-	<ol :class="$style.tabList" class="list" role="tablist">
+	<ol :class="$style.tabList" class="clean-list" role="tablist">
 		<router-link
 			v-for="tab of tabs"
 			:key="tab.title"

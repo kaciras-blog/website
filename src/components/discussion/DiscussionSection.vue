@@ -38,7 +38,7 @@
 			:show-top-buttons="true"
 		>
 			<template v-slot="{ items }">
-				<ol v-if="items.length" class="list">
+				<ol v-if="items.length" class="clean-list" :class="$style.list">
 					<discussion-item
 						v-for="item of items"
 						:key="item.id"
@@ -184,6 +184,10 @@ export default {
 .sort_select {
 	width: 8em;
 	margin-left: auto;
+}
+
+.list {
+	margin: 30px 0;
 }
 
 .empty {

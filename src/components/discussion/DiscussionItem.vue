@@ -7,7 +7,7 @@
 		<template v-slot:footer>
 
 			<ol v-if="value.replyCount"
-				class="list"
+				class="clean-list"
 				:class="$style.replies"
 			>
 				<discussion-content

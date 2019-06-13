@@ -8,10 +8,10 @@
 
 		<section :class="$style.banner">
 			<h1>Kaciras' Blog</h1>
-			<p>程序 • 生活 • 梦想</p>
+			<p :class="$style.sub_title">程序 • 生活 • 梦想</p>
 		</section>
 
-		<blog-section :class="$style.last"/>
+		<blog-section :class="$style.blog"/>
 	</base-page-layout>
 </template>
 
@@ -57,13 +57,14 @@ export default {
 	& > h1 {
 		font-size: 5rem;
 	}
-
-	& > p {
-		font-size: 2rem;
-	}
 }
 
-.last {
+.sub_title {
+	font-size: 2rem;
+}
+
+.blog {
+	padding: 0 5vw;
 	margin-bottom: 60px;
 }
 </style>
