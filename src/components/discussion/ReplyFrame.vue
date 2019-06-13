@@ -40,12 +40,14 @@
 <script>
 import api from "../../api";
 import DiscussionContent from "./DiscussionContent";
+import { PreventScrollMixin } from "kx-ui";
 
 export default {
 	name: "ReplyFrame",
 	components: {
 		DiscussionContent,
 	},
+	mixins: [PreventScrollMixin],
 	props: {
 		value: {
 			type: Object,
@@ -70,7 +72,9 @@ export default {
 	left: 0;
 	width: 100vw;
 	height: 100vh;
+
 	background-color: white;
+	overflow-y: auto;
 }
 
 .header {
