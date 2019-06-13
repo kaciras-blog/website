@@ -1,7 +1,6 @@
 /*
  * TODO: lozad 只有很少的代码，并且其功能也不是很强，考虑以后自己实现
  */
-import "./Markdown.less";
 import MarkdownIt from "markdown-it";
 import Anchor from "markdown-it-anchor";
 import tableOfContent from "markdown-it-toc-done-right";
@@ -75,8 +74,8 @@ export default {
 	/**
 	 * 添加一些额外的交互状态，只能在浏览器端调用。
 	 */
-	afterConvert () {
-		lozad(document.querySelectorAll(".markdown img")).observe();
+	afterConvert (el) {
+		lozad(el.querySelectorAll("img")).observe();
 	},
 	renderHtml (text) {
 		return converter.render(text);

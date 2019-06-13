@@ -1,6 +1,7 @@
 <!-- 虽然只有脚本代码，但因为是组件所以用vue文件 -->
 <script>
 import KxMarkdown from ".";
+import "./Markdown.less";
 
 export default {
 	name: "MarkdownView",
@@ -12,7 +13,7 @@ export default {
 		return h("div", { staticClass: "markdown", domProps: { innerHTML } });
 	},
 	mounted() {
-		KxMarkdown.afterConvert.call(this);
+		KxMarkdown.afterConvert(this.$el);
 	},
 };
 </script>
