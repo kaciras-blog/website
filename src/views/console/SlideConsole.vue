@@ -1,5 +1,5 @@
 <template>
-	<main>
+	<div>
 		<div class="btn-group" :class="$style.toolbar">
 			<kx-button @click="createNew">添加轮播</kx-button>
 			<kx-button @click="load">重新加载</kx-button>
@@ -28,7 +28,7 @@
 			v-if="dragging"
 			:style="dragging.style"
 			:item="dragging.item"/>
-	</main>
+	</div>
 </template>
 
 <script>

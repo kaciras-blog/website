@@ -53,7 +53,7 @@ export default function createApp(initState = undefined) {
 	 */
 	const consoleRoute = {
 		path: "/console",
-		component: () => import("./views/console/ConsolePage"),
+		component: () => import(/* webpackChunkName: "console" */ "./views/console/Index"),
 		meta: { title: "控制台" },
 
 		beforeEnter(to, from, next) {

@@ -1,6 +1,6 @@
 <template>
-	<main>
-		<div class="btn-group" :class="$style.toolbar">
+	<div>
+		<div class="btn-group console-toolbar">
 			<kx-button
 				class="dangerous"
 				icon="far fa-trash-alt"
@@ -28,7 +28,7 @@
 				<span v-else class="minor-text">空空如也</span>
 			</template>
 		</scroll-paging-view>
-	</main>
+	</div>
 </template>
 
 <script>
@@ -39,7 +39,9 @@ import { MessageBoxType } from "kx-ui/src/dialog/index";
 
 export default {
 	name: "DraftConsole",
-	components: { DraftConsoleItem },
+	components: {
+		DraftConsoleItem,
+	},
 	data: () => ({
 		draftList: null,
 		showHistory: null,
@@ -69,9 +71,3 @@ export default {
 	},
 };
 </script>
-
-<style module lang="less">
-.toolbar {
-	margin-bottom: 1rem;
-}
-</style>

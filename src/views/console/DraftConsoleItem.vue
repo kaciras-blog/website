@@ -10,8 +10,8 @@
 
 			<div class="btn-group">
 				<kx-button
-					class="primary outline"
-					:route="'/edit/' + value.id">
+					:route="'/edit/' + value.id"
+					class="primary outline">
 					编辑
 				</kx-button>
 				<kx-button

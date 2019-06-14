@@ -51,38 +51,38 @@ export default function() {
 		},
 		{
 			path: "/list/:index",
-			component: () => import("./views/list/IndexPage"),
+			component: () => import(/* webpackChunkName: "list" */ "./views/list/Index"),
 			meta: { title: "所有文章" },
 		},
 		{
 			path: "/category/:id",
-			component: () => import("./views/category/Category"),
+			component: () => import(/* webpackChunkName: "category" */"./views/category/Category"),
 		},
 		{
 			path: "/category/:id/:name",
-			component: () => import("./views/category/Category"),
+			component: () => import(/* webpackChunkName: "category" */ "./views/category/Category"),
 		},
 		{
 			path: "/login",
-			component: () => import("./views/login/Index"),
+			component: () => import(/* webpackChunkName: "login" */ "./views/login/Index"),
 			meta: { title: "登录" },
 		},
 		{
 			path: "/article/:id",
-			component: () => import("./views/article/ArticlePage"),
+			component: () => import(/* webpackChunkName: "article" */ "./views/article/ArticlePage"),
 		},
 		{
 			path: "/article/:id/:urlTitle",
-			component: () => import("./views/article/ArticlePage"),
+			component: () => import(/* webpackChunkName: "article" */ "./views/article/ArticlePage"),
 		},
 		{
 			path: "/edit/:id",
-			component: () => import("./views/editor/ArticleEditor"),
+			component: () => import(/* webpackChunkName: "edit" */ "./views/editor/ArticleEditor"),
 			meta: { title: "文章编辑器" },
 		},
 		{
 			path: "/profile",
-			component: () => import("./views/user/Page"),
+			component: () => import(/* webpackChunkName: "profile" */ "./views/user/Page"),
 			meta: { title: "用户" },
 		},
 

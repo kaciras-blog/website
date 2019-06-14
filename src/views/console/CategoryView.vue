@@ -1,5 +1,5 @@
 <template>
-	<div :class="$style.container">
+	<div>
 		<div :class="$style.infoSection"
 			 @click.self="setBackground"
 			 :style="styleVars"
@@ -101,10 +101,6 @@ export default {
 
 <style module lang="less">
 @import "../../css/Imports";
-
-.container {
-	margin-bottom: 2rem;
-}
 
 .infoSection {
 	background-image: var(--background);

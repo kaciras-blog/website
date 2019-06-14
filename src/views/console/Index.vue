@@ -18,7 +18,9 @@
 				</li>
 			</ul>
 		</aside>
-		<component :is="active" :class="$style.body"/>
+		<main :class="$style.body_wrapper">
+			<component :is="active" :class="$style.body"/>
+		</main>
 	</div>
 </template>
 
@@ -117,9 +119,19 @@ export default {
 	}
 }
 
-.body {
+// 网格布局会使padding失效？只能外套一层然后内层加margin
+.body_wrapper {
 	grid-area: body;
 	overflow-y: scroll;
-	padding: 2rem;
+}
+
+.body {
+	margin: 30px;
+}
+</style>
+
+<style lang="less">
+.console-toolbar {
+	margin-bottom: 1rem;
 }
 </style>

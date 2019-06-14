@@ -13,10 +13,12 @@
 			</span>
 		</div>
 
-		<img :src="item.user.head"
-			 alt="头像"
-			 :class="$style.head"
-			 class="small head">
+		<img
+			:src="item.user.head"
+			alt="头像"
+			:class="$style.head"
+			class="small head"
+		>
 
 		<div :class="$style.content">
 			<p :class="$style.name">{{item.user.name}}</p>

@@ -66,7 +66,7 @@ import { errorMessage } from "../../utils";
 import { MessageBoxType } from "kx-ui/src/dialog";
 
 export default {
-	name: "ArticleConsoleItem",
+	name: "ArticleItem",
 	props: {
 		value: {
 			type: Object,

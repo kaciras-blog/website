@@ -1,6 +1,6 @@
 <template>
-	<main>
-		<div class="btn-group" :class="$style.toolbar">
+	<div>
+		<div class="btn-group console-toolbar">
 			<kx-button
 				icon="fa fa-edit"
 				class="primary"
@@ -10,7 +10,7 @@
 		</div>
 
 		<div class="panel">
-			<article-console-item
+			<article-item
 				v-for="item of list.items"
 				:key="item.id"
 				:value="item"
@@ -19,18 +19,18 @@
 			<span v-if="list.total === 0">没有找到文章,去写一篇吧~</span>
 			<sk-fading-circle v-if="loading"/>
 		</div>
-	</main>
+	</div>
 </template>
 
 <script>
 import api from "../../api";
 import { MessageBoxType } from "kx-ui/src/dialog";
-import ArticleConsoleItem from "./ArticleConsoleItem";
+import ArticleItem from "./ArticleItem";
 
 export default {
 	name: "ArticleConsole",
 	components: {
-		ArticleConsoleItem,
+		ArticleItem,
 	},
 	data: () => ({
 		loading: true,
@@ -61,9 +61,3 @@ export default {
 	},
 };
 </script>
-
-<style module lang="less">
-.toolbar {
-	margin-bottom: 1rem;
-}
-</style>

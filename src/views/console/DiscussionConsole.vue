@@ -1,5 +1,5 @@
 <template>
-	<main>
+	<div>
 		<discussion-config-panel></discussion-config-panel>
 		<div class="panel compact">
 
@@ -25,7 +25,7 @@
 				<discussion-check-item v-for="item of pendingList" :key="item.id" :item="item"/>
 			</ul>
 		</div>
-	</main>
+	</div>
 </template>
 
 <script>

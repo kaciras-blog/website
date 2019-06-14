@@ -1,5 +1,5 @@
 <template>
-	<main>
+	<div>
 		<div :class="$style.buttons">
 			<div class="btn-group">
 				<kx-button
@@ -41,7 +41,7 @@
 				@click="goto(item)"/>
 		</ul>
 		<div v-else :class="$style.empty_holder">没有下级分类了</div>
-	</main>
+	</div>
 </template>
 
 <script>
@@ -113,7 +113,7 @@ export default {
 @import "../../css/Imports";
 
 .buttons {
-	margin-bottom: 1rem;
+	composes: global(console-toolbar);
 	display: flex;
 	justify-content: space-between;
 }
@@ -121,7 +121,7 @@ export default {
 .childrenTitle {
 	font-size: 1.5rem;
 	width: 100%;
-	padding-bottom: 1rem;
+	padding: 20px 0;
 	border-bottom: solid 1px @color-border;
 }
 
