@@ -12,28 +12,33 @@
 			<span :class="$style.title">查看回复</span>
 		</header>
 
-		<discussion-content
-			:value="value"
-			tag="div"
-			class="segment"
-			:class="$style.item"
-		/>
+		<div :class="$style.body">
+			<discussion-content
+				:value="value"
+				tag="div"
+				class="segment"
+				:class="$style.item"
+			/>
+			<scroll-paging-view
+				v-model="replies"
+				:loader="loadNext"
+				:auto-load="true"
+			>
+				<template v-slot="{ items }">
+					<ol class="clean-list">
+						<discussion-content
+							v-for="item of items"
+							:key="item.id"
+							:value="item"
+							:class="$style.item"/>
+					</ol>
+				</template>
+			</scroll-paging-view>
+		</div>
 
-		<scroll-paging-view
-			v-model="replies"
-			:loader="loadNext"
-			:auto-load="true"
-		>
-			<template v-slot="{ items }">
-				<ol class="clean-list">
-					<discussion-content
-						v-for="item of items"
-						:key="item.id"
-						:value="item"
-						:class="$style.item"/>
-				</ol>
-			</template>
-		</scroll-paging-view>
+		<div :class="$style.input_footer">
+			<input :value="inputData">
+		</div>
 	</div>
 </template>
 
@@ -56,6 +61,7 @@ export default {
 	},
 	data: () => ({
 		replies: null,
+		inputData: "",
 	}),
 	methods: {
 		loadNext(start, count) {
@@ -67,6 +73,9 @@ export default {
 
 <style module lang="less">
 .container {
+	display: flex;
+	flex-direction: column;
+
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -74,21 +83,23 @@ export default {
 	height: 100vh;
 
 	background-color: white;
-	overflow-y: auto;
 }
 
 .header {
 	position: relative;
-	background-color: #317df3;
-	color: white;
 	text-align: center;
 	height: 50px;
+	box-shadow: rgba(0, 0, 0, .2) 0 0 3px 1px;
+}
+
+.body {
+	overflow-y: auto;
+	flex: 1;
 }
 
 .back_button {
 	position: absolute;
 	left: 0;
-	color: white !important;
 }
 
 .title {
@@ -99,5 +110,10 @@ export default {
 
 .item {
 	padding: 15px;
+}
+
+.input_footer {
+	padding: 10px;
+	background-color: #3a3a3a;
 }
 </style>

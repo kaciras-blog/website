@@ -31,7 +31,8 @@
 			@submitted="showLast"
 		/>
 
-		<button-paging-view
+		<component
+			:is="$mediaQuery.match('mobile') ? 'ScrollPagingView' : 'ButtonPagingView'"
 			ref="discussions"
 			v-model="data"
 			:loader="loadDiscussions"
@@ -46,12 +47,12 @@
 						:replying="replying"
 						class="segment"
 						@reply="handleReplyStart"
-						@item-removed="refresh"
+						@removed="refresh"
 					/>
 				</ol>
 				<div :class="$style.empty" v-else>还没有评论呢</div>
 			</template>
-		</button-paging-view>
+		</component>
 	</div>
 </template>
 

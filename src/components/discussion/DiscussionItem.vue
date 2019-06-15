@@ -1,32 +1,35 @@
 <template>
 	<discussion-content
 		:value="value"
-		@item-removed="$emit('item-removed', value)"
+		@removed="$emit('removed', value)"
 		@reply="$emit('reply', value.id)"
 	>
 		<template v-slot:footer>
 
-			<ol v-if="value.replyCount"
-				class="clean-list"
-				:class="$style.replies"
-			>
-				<discussion-content
-					v-for="item of value.replies"
-					:key="item.id"
-					:value="item"
-					:class="$style.reply"
-					@item-removed="$emit('item-removed', item)"/>
-			</ol>
+			<template v-if="value.replyCount">
+				<button-paging-view
+					v-if="expend"
+					ref="replies"
+					v-model="replies"
+					theme="text"
+					:class="$style.replyList"
+					:loader="loadNext"
+					:page-size="10"
+				>
+					<template v-slot="{ items }">
+						<reply-list :items="items" @removed="() => $refs.replies.refresh()"/>
+					</template>
+				</button-paging-view>
 
-			<a v-if="value.replyCount"
-			   href="#"
-			   class="hd-link"
-			   @click.prevent="showAllReplies">
-				查看全部
-			</a>
+				<template v-else>
+					<reply-list :items="value.replies" @removed="() => $refs.replies.refresh()"/>
+					<a class="hd-link" @click="showAllReplies">查看全部</a>
+				</template>
+			</template>
 
 			<discussion-editor
 				v-if="replying === value.id"
+				:class="$style.input"
 				:submit="text => submitReply(text)"
 			/>
 		</template>
@@ -38,6 +41,7 @@ import DiscussionContent from "./DiscussionContent";
 import DiscussionEditor from "./DiscussionEditor.vue";
 import api from "../../api";
 import ReplyFrame from "./ReplyFrame";
+import ReplyList from "./ReplyList";
 
 export default {
 	name: "DiscussionItem",
@@ -49,9 +53,14 @@ export default {
 		replying: Number,
 	},
 	components: {
+		ReplyList,
 		DiscussionContent,
 		DiscussionEditor,
 	},
+	data: () => ({
+		replies: null,
+		expend: false,
+	}),
 	methods: {
 		async submitReply(text) {
 			await api.discuss.reply(this.value.id, text);
@@ -59,18 +68,29 @@ export default {
 			this.$refs.replies.switchToLast();
 		},
 		showAllReplies() {
-			this.$dialog.show(ReplyFrame, { value: this.value });
+			if (this.$mediaQuery.match("mobile")) {
+				this.$dialog.show(ReplyFrame, { value: this.value });
+			} else {
+				this.loadNext(0, 10).then((replies) => {
+					this.expend = true;
+					this.replies = replies;
+				});
+			}
+		},
+
+		// 重复
+		loadNext(start, count) {
+			return api.discuss.getReplies(this.value.id, start, count);
 		},
 	},
 };
 </script>
 
 <style module lang="less">
-.replies {
-	padding-top: 2rem;
+.input {
+	margin-top: 20px;
 }
-
-.reply {
-	margin-bottom: 1.5rem;
+.replyList {
+	padding-top: 2rem;
 }
 </style>

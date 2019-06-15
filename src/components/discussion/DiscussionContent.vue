@@ -27,7 +27,7 @@
 						<i class="far fa-thumbs-up"></i>{{value.voteCount}}
 					</span>
 
-					<span v-if="value.parent === 0"
+					<span v-if="!value.parent"
 						  class="meta"
 						  :class="$style.clickable"
 						  @click="$emit('reply', value.id)"
@@ -48,7 +48,6 @@
 				</div>
 			</div>
 
-			<!--  -->
 			<slot name="footer"></slot>
 		</div>
 	</component>
@@ -79,7 +78,7 @@ export default {
 		remove() {
 			api.discuss
 				.updateStates(this.value.id, DiscussionState.Deleted)
-				.then(() => this.$emit("item-removed", this.value))
+				.then(() => this.$emit("removed", this.value))
 				.catch(r => alert("删除失败 " + r.message));
 		},
 
