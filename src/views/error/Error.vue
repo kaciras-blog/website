@@ -11,6 +11,16 @@
 			</error-content>
 
 			<error-content
+				v-else-if="code === '403'"
+				title="403 Access Denied"
+				:image="require('@/assets/img/error-403.jpg')"
+			>
+				<p>你要前往的页面<span class="red">可不简单</span>！！！</p>
+				<p>只有<span class="red">被选中的人</span>才能浏览！！！</p>
+				<p>和我一起努力吧，骚年！</p>
+			</error-content>
+
+			<error-content
 				v-else-if="code === '404' || code === '410'"
 				title="404 Not Found"
 				:image="require('@/assets/img/error-404.jpg')"
@@ -52,10 +62,6 @@ export default {
 </script>
 
 <style module lang="less">
-.red {
-	color: #f40000;
-}
-
 .container {
 	display: flex;
 	flex-direction: column;

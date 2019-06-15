@@ -107,6 +107,11 @@ export default function() {
 			],
 		},
 		{
+			path: "/console",
+			component: () => import(/* webpackChunkName: "console" */ "./views/console/Index"),
+			meta: { title: "控制台", requireAuth: true },
+		},
+		{
 			path: "/error/:code",
 			component: Error,
 			props: true,

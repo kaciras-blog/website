@@ -22,6 +22,7 @@
 .image {
 	grid-area: image;
 	.size(16rem);
+	justify-self: center;
 
 	@media screen and (min-width: @length-screen-mobile) {
 		.size(100%);
@@ -31,6 +32,10 @@
 .content {
 	grid-area: content;
 	text-align: center;
+
+	@media screen and (max-width: @length-screen-mobile) {
+		padding: 20px 0;
+	}
 }
 
 .container {
@@ -40,8 +45,7 @@
 	grid-template-rows: auto auto auto;
 	grid-template-areas: "title" "image" "content";
 
-	font-size: 1.1rem;
-	margin: 1rem;
+	font-size: 16px;
 
 	@media screen and (min-width: @length-screen-mobile) {
 		grid-template-rows: auto 10rem;

@@ -51,20 +51,19 @@ export default function createApp(initState = undefined) {
 	 * 阻止未登录用户访问后台页面。
 	 * router.app.$store获取不到store实例，所以就放在这了
 	 */
-	const consoleRoute = {
-		path: "/console",
-		component: () => import(/* webpackChunkName: "console" */ "./views/console/Index"),
-		meta: { title: "控制台" },
-
-		beforeEnter(to, from, next) {
-			const { user } = store.state;
-			if (user && user.id === 2)
-				next();
-			else
-				next({ path: "/login", query: { return_uri: "/console" } });
-		},
-	};
-	router.addRoutes([consoleRoute]);
+	router.beforeEach((to, from, next) => {
+		const { user } = store.state;
+		if(!to.meta.requireAuth) {
+			return next();
+		}
+		if (!user) {
+			next({ path: "/login", query: { return_uri: "/console" } });
+		} else if (user.id === 2) {
+			next();
+		} else {
+			next("/error/403");
+		}
+	});
 
 	const vue = new Vue({
 		router,
