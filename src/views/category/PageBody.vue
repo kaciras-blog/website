@@ -24,7 +24,7 @@ import api from "../../api";
 import ArticlePreviewItem from "../list/ArticlePreviewItem";
 
 export default {
-	name: "CategoryBody",
+	name: "PageBody",
 	components: { ArticlePreviewItem },
 	methods: {
 		load (items, pageSize) {

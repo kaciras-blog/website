@@ -1,5 +1,5 @@
 <template>
-	<base-login-form>
+	<form-base>
 		<h1 class="center segment">登录</h1>
 
 		<label for="name">用户名:</label>
@@ -44,22 +44,22 @@
 				endpoint="github"
 				icon="github-logo.svg"
 				tip="Github登录"
-				:return-uri="returnUri"/>
-
-			<!-- ADBlock会拦截谷歌图标，必须改个名 -->
+				:return-uri="returnUri"
+			/>
 			<oauth-icon
 				endpoint="google"
 				icon="google-logo.svg"
 				tip="Google登录"
-				:return-uri="returnUri"/>
+				:return-uri="returnUri"
+			/>
 		</div>
-	</base-login-form>
+	</form-base>
 </template>
 
 <script>
 import api from "../../api";
 import { errorMessage } from "../../utils";
-import BaseLoginForm from "./BaseLoginForm";
+import FormBase from "./FormBase";
 import { REFRESH_USER } from "../../store/types";
 import OauthIcon from "../../components/OauthIcon";
 
@@ -67,7 +67,7 @@ export default {
 	name: "LoginPanel",
 	components: {
 		OauthIcon,
-		BaseLoginForm,
+		FormBase,
 	},
 	props: {
 		returnUri: String,

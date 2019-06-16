@@ -21,7 +21,7 @@
 					</kx-button>
 				</div>
 			</div>
-			<ul class="clean-list" :class="$style.list">
+			<ul class="clean-list">
 				<discussion-check-item v-for="item of pendingList" :key="item.id" :item="item"/>
 			</ul>
 		</div>
@@ -92,16 +92,10 @@ export default {
 </script>
 
 <style module lang="less">
-// TODO: 清除list的间距，是否写到list类里
-.list {
-	margin: 0;
-}
-
 .toolbar {
 	display: flex;
 	padding: 20px;
 	justify-content: space-between;
 	align-items: center;
 }
-
 </style>

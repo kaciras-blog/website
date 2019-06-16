@@ -36,14 +36,12 @@ import KxMarkdownEditWindow from "../../markdown/EditWindow";
 import KxMarkdownBasicToolbar from "../../markdown/BasicToolbar";
 import TextStateGroup from "../../markdown/TextStateGroup";
 import ViewModeToolbar from "../../markdown/ViewModeToolbar";
-
 import PublishDialog from "./PublishDialog";
 import MetadataDialog from "./MetadataDialog";
 import api from "../../api";
 import { assignUpdate } from "../../utils";
 import { VueMultiWatcher } from "kx-ui";
 import { MessageBoxType } from "kx-ui/src/dialog";
-
 
 function convertToTransfer(data) {
 	return Object.assign({
@@ -53,9 +51,8 @@ function convertToTransfer(data) {
 	}, data.metadata);
 }
 
-
 export default {
-	name: "ArticleEditor",
+	name: "EditPage",
 	components: {
 		ViewModeToolbar,
 		KxMarkdownBasicToolbar,

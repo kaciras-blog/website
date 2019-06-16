@@ -1,18 +1,19 @@
 <template>
 	<banner-page-layout :banner="category.banner">
-		<category-header :value="category"/>
+		<page-header :value="category"/>
 		<family-section
 			:parent="category.parent"
-			:children="category.children"/>
+			:children="category.children"
+		/>
 		<!-- 设置key在路由改变时清除加载的文章 -->
-		<category-body :key="$route.params.id"/>
+		<page-body :key="$route.params.id"/>
 	</banner-page-layout>
 </template>
 
 <script>
 import { mapState } from "vuex";
-import CategoryHeader from "./CategoryHeader";
-import CategoryBody from "./CategoryBody";
+import PageHeader from "./PageHeader";
+import PageBody from "./PageBody";
 import api from "../../api";
 import TitleMixin from "../../title-mixin";
 import FamilySection from "./FamilySection";
@@ -21,9 +22,9 @@ export default {
 	name: "CategoryPage",
 	mixins: [TitleMixin],
 	components: {
+		PageHeader,
+		PageBody,
 		FamilySection,
-		CategoryHeader,
-		CategoryBody,
 	},
 	asyncData (session) {
 		return api

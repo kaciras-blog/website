@@ -28,23 +28,17 @@
 import ArticleConsole from "./ArticleConsole";
 import DraftConsole from "./DraftConsole";
 import CategoryConsole from "./CategoryConsole";
-import SlideConsole from "./SlideConsole";
+import CardsConsole from "./CardsConsole";
 import DiscussionConsole from "./DiscussionConsole";
 
 export default {
 	name: "ConsolePage",
-	components: {
-		ArticleConsole,
-		DraftConsole,
-		CategoryConsole,
-		SlideConsole,
-	},
 	data: () => ({
 		views: [
 			{ view: ArticleConsole, label: "文章列表" },
 			{ view: DraftConsole, label: "我的草稿" },
 			{ view: DiscussionConsole, label: "评论系统" },
-			{ view: SlideConsole, label: "卡片" },
+			{ view: CardsConsole, label: "卡片" },
 			{ view: CategoryConsole, label: "管理分类" },
 		],
 		active: ArticleConsole,

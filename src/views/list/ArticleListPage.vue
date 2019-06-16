@@ -43,7 +43,7 @@ import api from "../../api";
 const DEFAULT_PAGE_SIZE = 10;
 
 export default {
-	name: "IndexPage",
+	name: "ArticleListPage",
 	components: {
 		ArticlePreviewItem,
 		AsidePanel,

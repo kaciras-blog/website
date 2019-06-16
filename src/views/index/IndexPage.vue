@@ -21,7 +21,7 @@ import api from "../../api";
 import { attachRandomId } from "../../utils";
 
 export default {
-	name: "Welcome",
+	name: "IndexPage",
 	components: {
 		BlogSection,
 	},

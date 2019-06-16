@@ -75,4 +75,8 @@ export default {
 		grid-template-columns: 1fr 1fr 1fr;
 	}
 }
+
+@media screen and (max-width: @length-screen-mobile) {
+	.card_list > li { width: 100%; }
+}
 </style>

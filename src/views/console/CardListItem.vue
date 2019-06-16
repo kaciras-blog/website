@@ -20,9 +20,12 @@
 		</div>
 
 		<div :class="$style.details">
-
 			<div :class="$style.pictureWrapper" @click="setPicture">
-				<img :src="item.slide.picture" alt="封面" :class="$style.cover"/>
+				<img
+					:src="item.slide.picture"
+					alt="封面"
+					:class="$style.cover"
+				/>
 				<span :class="$style.tip">点击更换图片</span>
 			</div>
 			<label>
@@ -49,7 +52,7 @@
 import api from "../../api";
 
 export default {
-	name: "SlideItem",
+	name: "CardListItem",
 	props: {
 		item: {
 			type: Object,

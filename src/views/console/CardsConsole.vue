@@ -13,7 +13,7 @@
 					:class="[$style.hold, $style.slide]"
 					:key="item.randomId">
 				</div>
-				<slide-item
+				<card-list-item
 					v-else
 					:key="item.randomId"
 					:class="$style.slide"
@@ -24,7 +24,7 @@
 		</div>
 
 		<!-- 拖动中的元素 -->
-		<slide-item
+		<card-list-item
 			v-if="dragging"
 			:style="dragging.style"
 			:item="dragging.item"/>
@@ -36,11 +36,13 @@ import api from "../../api";
 import { deleteOn, attachRandomId } from "../../utils";
 import { observeMouseMove, elementPosition } from "kx-ui/src/dragging";
 import { MessageBoxType } from "kx-ui/src/dialog";
-import SlideItem from "./SlideItem";
+import CardListItem from "./CardListItem";
 
 export default {
 	name: "SlideConsole",
-	components: { SlideItem },
+	components: {
+		CardListItem,
+	},
 	data: () => ({
 		slides: [],
 		dragging: null,
@@ -50,7 +52,7 @@ export default {
 			this.slides.unshift(attachRandomId({
 				open: true,
 				slide: {
-					picture: "/image/noface.gif",
+					picture: "/image/placeholder.png",
 					name: "新的轮播页",
 					link: "",
 					description: "这是新添加的轮播页",

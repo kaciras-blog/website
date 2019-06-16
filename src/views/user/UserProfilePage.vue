@@ -9,13 +9,15 @@
 						alt="头像"
 						title="点击换头像"
 						:src="user.head"
-						@click="editHead">
+						@click="editHead"
+					>
 				</div>
 				<div :class="$style.field">
 					ID:
 					<auth-type-tag :auth-type="user.authType"/>
 					{{user.id}}
 				</div>
+
 				<div :class="$style.field">
 					<label for="name" :class="$style.label">用户名</label>
 					<input id="name"
@@ -23,6 +25,7 @@
 						   name="name"
 						   :class="$style.input">
 				</div>
+
 				<kx-button class="primary" @click="save">保存</kx-button>
 			</div>
 		</div>
@@ -36,8 +39,10 @@ import AuthTypeTag from "./AuthTypeTag";
 import AvatarCropper from "./AvatarCropper";
 
 export default {
-	name: "Page",
-	components: { AuthTypeTag },
+	name: "UserProfilePage",
+	components: {
+		AuthTypeTag,
+	},
 	data() {
 		return { user: this.$store.state.user || {} };
 	},

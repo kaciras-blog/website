@@ -8,7 +8,7 @@
 
 <script>
 export default {
-	name: "CategoryHeader",
+	name: "PageHeader",
 	props: {
 		value: {
 			type: Object,

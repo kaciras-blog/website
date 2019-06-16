@@ -1,5 +1,5 @@
 <template>
-	<base-login-form>
+	<form-base>
 		<h1 class="center segment">注册</h1>
 
 		<label for="name">用户名:</label>
@@ -50,35 +50,33 @@
 				登录
 			</kx-button>
 		</div>
-	</base-login-form>
+	</form-base>
 </template>
 
 <script>
 import api from "../../api";
 import { errorMessage } from "../../utils";
-import BaseLoginForm from "./BaseLoginForm";
+import FormBase from "./FormBase";
 import { REFRESH_USER } from "../../store/types";
 
 export default {
 	name: "SignupPanel",
 	components: {
-		BaseLoginForm,
+		FormBase,
 	},
 	props: {
 		returnUri: String,
 	},
-	data() {
-		return {
-			message: "",
-			captcha: null,
-			form: {
-				name: "",
-				password: "",
-				email: "",
-				captcha: "",
-			},
-		};
-	},
+	data: () => ({
+		message: "",
+		captcha: null,
+		form: {
+			name: "",
+			password: "",
+			email: "",
+			captcha: "",
+		},
+	}),
 	methods: {
 		async signup() {
 			try {
@@ -105,12 +103,10 @@ export default {
 </script>
 
 <style module lang="less">
-.captcha {
-	& > img {
-		width: 150px;
-		height: 40px;
-		cursor: pointer;
-	}
+.captcha > img {
+	width: 150px;
+	height: 40px;
+	cursor: pointer;
 }
 
 .inputCaptcha {

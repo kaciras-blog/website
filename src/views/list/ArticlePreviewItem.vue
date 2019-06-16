@@ -8,7 +8,8 @@
 			<img :src="item.cover"
 				 alt="封面"
 				 class="full-percent"
-				 :class="$style.cover">
+				 :class="$style.cover"
+			>
 		</router-link>
 
 		<h2 class="compact" :class="$style.title">

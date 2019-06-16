@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Welcome from "./views/index/Welcome";
-import Error from "./views/error/Error";
+import IndexPage from "./views/index/IndexPage";
+import ErrorPage from "./views/error/ErrorPage";
 
 Vue.use(Router);
 
@@ -42,7 +42,7 @@ export default function() {
 	const routes = [
 		{
 			path: "/",
-			component: Welcome,
+			component: IndexPage,
 			meta: { title: "首页" },
 		},
 		{
@@ -51,20 +51,20 @@ export default function() {
 		},
 		{
 			path: "/list/:index",
-			component: () => import(/* webpackChunkName: "list" */ "./views/list/Index"),
+			component: () => import(/* webpackChunkName: "list" */ "./views/list/ArticleListPage"),
 			meta: { title: "所有文章" },
 		},
 		{
 			path: "/category/:id",
-			component: () => import(/* webpackChunkName: "category" */"./views/category/Category"),
+			component: () => import(/* webpackChunkName: "category" */"./views/category/CategoryPage"),
 		},
 		{
 			path: "/category/:id/:name",
-			component: () => import(/* webpackChunkName: "category" */ "./views/category/Category"),
+			component: () => import(/* webpackChunkName: "category" */ "./views/category/CategoryPage"),
 		},
 		{
 			path: "/login",
-			component: () => import(/* webpackChunkName: "login" */ "./views/login/Index"),
+			component: () => import(/* webpackChunkName: "login" */ "./views/login/LoginPage"),
 			meta: { title: "登录" },
 		},
 		{
@@ -77,12 +77,12 @@ export default function() {
 		},
 		{
 			path: "/edit/:id",
-			component: () => import(/* webpackChunkName: "edit" */ "./views/editor/ArticleEditor"),
+			component: () => import(/* webpackChunkName: "edit" */ "./views/editor/EditPage"),
 			meta: { title: "文章编辑器" },
 		},
 		{
 			path: "/profile",
-			component: () => import(/* webpackChunkName: "profile" */ "./views/user/Page"),
+			component: () => import(/* webpackChunkName: "profile" */ "./views/user/UserProfilePage"),
 			meta: { title: "用户" },
 		},
 
@@ -108,19 +108,19 @@ export default function() {
 		},
 		{
 			path: "/console",
-			component: () => import(/* webpackChunkName: "console" */ "./views/console/Index"),
+			component: () => import(/* webpackChunkName: "console" */ "./views/console/ConsolePage"),
 			meta: { title: "控制台", requireAuth: true },
 		},
 		{
 			path: "/error/:code",
-			component: Error,
+			component: ErrorPage,
 			props: true,
 			meta: { title: "错误" },
 		},
 		{
 			path: "*",
 			alias: "/error/404",
-			component: Error,
+			component: ErrorPage,
 			props: { code: "404" },
 		},
 	];
