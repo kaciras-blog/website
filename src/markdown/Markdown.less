@@ -8,32 +8,29 @@
 .markdown {
 
 	font-size: 16px;
+	line-height: 1.75;
 
-	* {
-		line-height: 1.75;
+	ol, ul {
+		margin: 1em 0;
 	}
 
 	pre, code {
-		border-radius: .5em;
+		border-radius: 5px;
 	}
 
 	code {
 		display: inline-block;
 		font-size: .9em;
-		line-height: 20px;
-		& * {
-			line-height: 25px;
-		}
-	}
+		line-height: 25px;
 
-	pre > code {
-		-moz-tab-size: 4;
 		tab-size: 4;
+		-moz-tab-size: 4;
 	}
 
 	.inline-code {
 		margin: 0 .2em;
 		padding: 2px 5px;
+		line-height: 20px;
 
 		border-radius: 5px;
 		background-color: #4b4d43;
