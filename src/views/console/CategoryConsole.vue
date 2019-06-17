@@ -90,16 +90,15 @@ export default {
 			this.children = [];
 		},
 		async submit () {
-			const { current, stack, $dialog } = this;
+			const { current, stack } = this;
 
 			if (typeof current.id === "number") {
 				await api.category.update(current.id, current);
-				await $dialog.messageBox("修改分类", "修改成功");
 			} else {
 				const parent = stack.length ? stack[stack.length - 1].id : 0;
 				await api.category.create(current, parent);
-				await $dialog.messageBox("新建分类", "添加成功");
 			}
+			this.$dialog.alertSuccess("保存成功");
 		},
 	},
 	async beforeMount () {

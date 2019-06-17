@@ -37,7 +37,6 @@
 
 <script>
 import { mapState } from "vuex";
-import { MessageBoxType } from "kx-ui/src/dialog";
 import { errorMessage } from "../../utils";
 
 export default {
@@ -57,7 +56,7 @@ export default {
 	}),
 	methods: {
 		async doSubmit() {
-			const { content, submit, $dialog } = this;
+			const { content, submit } = this;
 
 			if (!content || /^\s*$/.test(content)) {
 				return; // 没写评论就按发表按钮
@@ -70,7 +69,7 @@ export default {
 					this.$emit("submitted");
 				}
 			} catch (e) {
-				$dialog.messageBox("发表评论", errorMessage(e), MessageBoxType.Error);
+				this.$dialog.alertError("发表失败", errorMessage(e));
 			}
 		},
 	},

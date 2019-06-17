@@ -95,9 +95,9 @@ export default {
 			try {
 				await api.draft.saveNewHistory(archive.id, convertToTransfer(this.$data));
 				archive.saveTime = new Date();
-				this.$dialog.messageBox("保存草稿", "保存成功");
+				this.$dialog.alertSuccess("保存成功");
 			} catch (e) {
-				this.$dialog.messageBox("保存草稿", "保存失败，请手动备份", MessageBoxType.Error);
+				this.$dialog.alertError("保存失败，请手动备份", e.message);
 			}
 		},
 
@@ -119,6 +119,7 @@ export default {
 					this.autoSaveError = err;
 				});
 		},
+
 		publish() {
 			this.$dialog.show(PublishDialog, this.$data);
 		},

@@ -48,11 +48,11 @@ export default {
 	},
 	methods: {
 		async deleteDraft() {
-			this.$dialog.messageBox({
+			this.$dialog.alert({
 				title: "删除草稿",
 				content: "删除后不可恢复，是否确定？",
 				type: MessageBoxType.Warning,
-				cancelable: true,
+				showCancelButton: true,
 			})
 				.confirmThen(() => api.draft.remove(this.value.id))
 				.then(() => this.$emit("removed"));

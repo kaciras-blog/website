@@ -63,7 +63,6 @@
 <script>
 import api from "../../api";
 import { errorMessage } from "../../utils";
-import { MessageBoxType } from "kx-ui/src/dialog";
 
 export default {
 	name: "ArticleItem",
@@ -86,7 +85,7 @@ export default {
 			const { value } = this;
 			api.article.updateDeletion(value.id, deletion)
 				.then(() => value.deleted = deletion)
-				.catch(err => this.$dialog.messageBox("修改删除状态", errorMessage(err), MessageBoxType.Error));
+				.catch(e => this.$dialog.alertError("设置失败", errorMessage(e)));
 		},
 	},
 };

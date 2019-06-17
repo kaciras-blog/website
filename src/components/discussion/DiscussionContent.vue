@@ -55,6 +55,7 @@
 
 <script>
 import api, { DiscussionState } from "../../api";
+import {errorMessage} from "../../utils";
 
 export default {
 	name: "DiscussionContent",
@@ -76,10 +77,9 @@ export default {
 	},
 	methods: {
 		remove() {
-			api.discuss
-				.updateStates(this.value.id, DiscussionState.Deleted)
+			api.discuss.updateStates(this.value.id, DiscussionState.Deleted)
 				.then(() => this.$emit("removed", this.value))
-				.catch(r => alert("删除失败 " + r.message));
+				.catch(e => this.$dialog.alertError("删除失败", errorMessage(e)));
 		},
 
 		/** 点赞标签被点击时触发，如果用户已经点赞过则撤销点赞，否则增加点赞 */

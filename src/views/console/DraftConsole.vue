@@ -36,6 +36,7 @@ import api from "../../api";
 import DraftConsoleItem from "./DraftConsoleItem";
 import { deleteOn } from "../../utils";
 import { MessageBoxType } from "kx-ui/src/dialog/index";
+import {errorMessage} from "../../utils";
 
 export default {
 	name: "DraftConsole",
@@ -48,18 +49,18 @@ export default {
 	}),
 	methods: {
 		async deleteAll() {
-			const result = await this.$dialog.messageBox({
-				title: "警告",
+			const result = await this.$dialog.alert({
+				title: "删除所有草稿",
 				content: "该操作不可撤销，是否继续？",
 				type: MessageBoxType.Warning,
-				cancelable: true,
+				showCancelButton: true,
 			});
 			if (!result.isConfirm) {
 				return;
 			}
 			api.draft.clear()
 				.then(() => this.draftList = null)
-				.catch(() => alert("清空失败!"));
+				.catch(e => this.$dialog.alertError("清空失败", errorMessage(e)));
 		},
 		loadPage(start, count) {
 			const userId = this.$store.state.user.id;

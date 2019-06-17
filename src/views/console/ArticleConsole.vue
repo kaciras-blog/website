@@ -24,8 +24,8 @@
 
 <script>
 import api from "../../api";
-import { MessageBoxType } from "kx-ui/src/dialog";
 import ArticleItem from "./ArticleItem";
+import {errorMessage} from "../../utils";
 
 export default {
 	name: "ArticleConsole",
@@ -40,7 +40,7 @@ export default {
 		newArticle() {
 			api.draft.createNew()
 				.then(id => this.$router.push("/edit/" + id))
-				.catch(err => console.log(err));
+				.catch(e => this.$dialog.alertError("创建失败", errorMessage(e)));
 		},
 		loadArticles() {
 			this.loading = true;
@@ -49,10 +49,10 @@ export default {
 				start: 0,
 				deletion: "ALL",
 			}).then(data => {
-				this.list = data;
 				this.loading = false;
-			}).catch(err => {
-				this.$dialog.messageBox("加载文章失败", err.message, MessageBoxType.Error);
+				this.list = data;
+			}).catch(e => {
+				this.$dialog.alertError("加载文章失败", errorMessage(e));
 			});
 		},
 	},

@@ -33,7 +33,6 @@
 import api from "../../api";
 import SelectCategoryDialog from "../../components/SelectCategoryDialog";
 import { errorMessage } from "../../utils";
-import { MessageBoxType } from "kx-ui/src/dialog";
 
 export default {
 	name: "PublishDialog",
@@ -65,7 +64,7 @@ export default {
 				if (article) {
 					await api.article.update(article, data);
 				} else if (!this.category) {
-					return this.$dialog.messageBox({ title: "发表失败", content: "请选择分类", type: MessageBoxType.Error });
+					return this.$dialog.alertError("发表失败", "必须选择一个分类");
 				} else {
 					data.category = this.category.id;
 					data.urlTitle = this.url.length ? this.url : data.title;
@@ -74,7 +73,7 @@ export default {
 				this.$dialog.confirm();
 				this.$router.push(`/article/${article}`);
 			} catch (e) {
-				this.$dialog.messageBox("发表失败", errorMessage(e), MessageBoxType.Error);
+				this.$dialog.alertError("发表失败", errorMessage(e));
 			}
 		},
 	},

@@ -35,7 +35,6 @@
 import api from "../../api";
 import { deleteOn, attachRandomId } from "../../utils";
 import { observeMouseMove, elementPosition } from "kx-ui/src/dragging";
-import { MessageBoxType } from "kx-ui/src/dialog";
 import CardListItem from "./CardListItem";
 
 export default {
@@ -68,8 +67,8 @@ export default {
 		},
 		submit() {
 			api.recommend.swiper.set(this.slides.map(item => item.slide))
-				.then(() => this.$dialog.messageBox("修改轮播", "修改成功"))
-				.catch((e) => this.$dialog.messageBox("修改轮播失败", e.message, MessageBoxType.Error));
+				.then(() => this.$dialog.alertSuccess("修改成功"))
+				.catch((e) => this.$dialog.alertError("修改失败", e.message));
 		},
 		drag({ event, item }) {
 			const slides = this.slides;

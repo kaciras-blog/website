@@ -34,9 +34,9 @@
 
 <script>
 import api from "../../api";
-import { MessageBoxType } from "kx-ui/src/dialog";
 import AuthTypeTag from "./AuthTypeTag";
 import AvatarCropper from "./AvatarCropper";
+import { errorMessage } from "../../utils";
 
 export default {
 	name: "UserProfilePage",
@@ -55,9 +55,9 @@ export default {
 		async save() {
 			try {
 				await api.user.updateProfile(this.user);
-				this.$dialog.messageBox({ title: "保存成功" });
+				this.$dialog.alertSuccess("保存成功");
 			} catch (e) {
-				this.$dialog.messageBox({ title: "保存失败", content: e.message, type: MessageBoxType.Error });
+				this.$dialog.alertError("保存失败", errorMessage(e));
 			}
 		},
 	},
