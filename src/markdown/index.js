@@ -1,6 +1,3 @@
-/*
- * TODO: lozad 只有很少的代码，并且其功能也不是很强，考虑以后自己实现
- */
 import MarkdownIt from "markdown-it";
 import Anchor from "markdown-it-anchor";
 import tableOfContent from "markdown-it-toc-done-right";
@@ -10,7 +7,7 @@ import highlight from "./highlight";
 import loadingImage from "../assets/img/loading.gif";
 
 /**
- * 给行内代码加个 code_inline 类
+ * 给行内代码加个 inline-code 类以便跟代码块区别开
  *
  * @param markdownIt MarkdownIt的实例
  */

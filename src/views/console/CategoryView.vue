@@ -11,18 +11,22 @@
 					 :src="item.cover"
 					 :title="editable ? '点击换头像' : null"
 					 alt="图标"
-					 @click="setCover">
+					 @click="setCover"
+				>
 
 				<input v-if="editable"
 					   v-model="item.name"
 					   title="名称"
-					   :class="$style.name">
+					   class="dark"
+					   :class="$style.name"
+				>
 				<span v-else :class="$style.name">{{item.name}}</span>
 
 				<textarea
 					v-if="editable"
 					v-model="item.description"
 					title="描述"
+					class="dark input"
 					:class="$style.desc">
 				</textarea>
 				<span v-else :class="$style.desc">{{item.description}}</span>
@@ -48,7 +52,7 @@
 
 <script>
 import api from "../../api";
-import CategoryMoveTypeDialog from "./CategoryMoveTypeDialog";
+import MoveCategoryDialog from "./MoveCategoryDialog";
 import SelectCategoryDialog from "../../components/SelectCategoryDialog";
 
 export default {
@@ -89,7 +93,7 @@ export default {
 		},
 		async move () {
 			const target = await this.$dialog.show(SelectCategoryDialog);
-			const moveType = await this.$dialog.show(CategoryMoveTypeDialog);
+			const moveType = await this.$dialog.show(MoveCategoryDialog);
 			api.category.move(this.item.id, target.id, moveType);
 		},
 		remove () {
@@ -169,6 +173,7 @@ export default {
 .desc {
 	grid-area: desc;
 	justify-self: stretch;
+	flex: 1;
 
 	padding: .5rem;
 	word-break: break-all;
@@ -178,13 +183,6 @@ export default {
 	border: none;
 	background: none;
 	overflow: hidden;
-	color: white;
-	flex: 1;
-
-	&:focus {
-		background-color: #333;
-		box-shadow: 0 0 3px 2px @color-input-active;
-	}
 }
 
 .buttons {
@@ -192,8 +190,8 @@ export default {
 	display: flex;
 	flex-direction: column;
 
-	& > button:not(:last-of-type) {
-		margin-bottom: .5rem;
+	& > :global(.kx-btn) + :global(.kx-btn) {
+		margin-top: 10px;
 	}
 }
 </style>
