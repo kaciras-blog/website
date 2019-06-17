@@ -42,6 +42,7 @@ import DiscussionEditor from "./DiscussionEditor.vue";
 import api from "../../api";
 import ReplyFrame from "./ReplyFrame";
 import ReplyList from "./ReplyList";
+import { throttleFirst } from "kx-ui";
 
 export default {
 	name: "DiscussionItem",
@@ -67,17 +68,15 @@ export default {
 			this.$emit("reply");
 			this.$refs.replies.switchToLast();
 		},
-		showAllReplies() {
+		showAllReplies: throttleFirst(function () {
 			if (this.$mediaQuery.match("mobile")) {
-				this.$dialog.show(ReplyFrame, { value: this.value });
-			} else {
-				this.loadNext(0, 10).then((replies) => {
-					this.expend = true;
-					this.replies = replies;
-				});
+				return this.$dialog.show(ReplyFrame, { value: this.value });
 			}
-		},
-
+			return this.loadNext(0, 10).then((replies) => {
+				this.expend = true;
+				this.replies = replies;
+			});
+		}),
 		// 重复
 		loadNext(start, count) {
 			return api.discuss.getReplies(this.value.id, start, count);
@@ -90,6 +89,7 @@ export default {
 .input {
 	margin-top: 20px;
 }
+
 .replyList {
 	padding-top: 2rem;
 }
