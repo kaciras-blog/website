@@ -1,5 +1,5 @@
 import "./error-report";
-import "./miscellaneous";
+import "./analytics";
 import createApp, { mediaQueryPlugin } from "./main";
 import Vue from "vue";
 import { CancelToken } from "kx-ui";

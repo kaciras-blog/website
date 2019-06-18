@@ -9,10 +9,10 @@
 
 <script>
 export default {
-	name: "CategoryMoveTypeDialog",
+	name: "MoveCategoryDialog",
 };
 </script>
 
-<style scoped>
+<style module lang="less">
 
 </style>
