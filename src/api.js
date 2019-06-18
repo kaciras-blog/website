@@ -18,26 +18,6 @@ if (process.env.NODE_ENV === "production") {
 }
 
 /**
- * 配置不同环境下的服务器地址。
- *
- * @return {*} 配置选项
- */
-function defineApiServerConfig() {
-	const local = {
-		main: "https://localhost:2375",
-		front: "https://localhost",
-	};
-	const productionWeb = {
-		main: "https://api.kaciras.net:2375",
-		front: "https://blog.kaciras.net",
-	};
-	if (process.env.VUE_ENV === "server" || process.env.DEPLOY !== "production") {
-		return local; // SSR和本地开发环境都直接走localhost
-	}
-	return productionWeb;
-}
-
-/**
  * 配置Axios实例，在请求参数中带上Token来防止CSRF攻击。
  *
  * Axios内置了在请求头中带Token的功能，但是这个请求头将导致所有跨域请求都要预检。
@@ -84,11 +64,9 @@ function createAxios(config) {
 	return axios;
 }
 
-const apiConfig = defineApiServerConfig();
-
 const apiSet = {
-	mainServer: createAxios({ baseURL: apiConfig.main }),
-	webServer: createAxios({ baseURL: apiConfig.front }),
+	mainServer: createAxios({ baseURL: process.env.CONFIG.contentServerUri }),
+	webServer: createAxios(),
 };
 
 
@@ -121,7 +99,7 @@ export class BasicApiFactory {
 	 * @return {*} API集
 	 */
 	withPrototype(proto) {
-		return new ProxiedApiFactory(this.axiosSet).withPrototype(proto);
+		return new ProxyApiFactory(this.axiosSet).withPrototype(proto);
 	}
 
 	/**
@@ -131,7 +109,7 @@ export class BasicApiFactory {
 	 * @return {*} API集
 	 */
 	withCancelToken(cancelToken) {
-		return new ProxiedApiFactory(this.axiosSet).withCancelToken(cancelToken);
+		return new ProxyApiFactory(this.axiosSet).withCancelToken(cancelToken);
 	}
 
 	// protected
@@ -197,7 +175,7 @@ class AxiosProxy {
 	}
 }
 
-class ProxiedApiFactory extends BasicApiFactory {
+class ProxyApiFactory extends BasicApiFactory {
 
 	constructor(axiosSet) {
 		super(axiosSet);
@@ -240,9 +218,9 @@ class ProxiedApiFactory extends BasicApiFactory {
 			return this;
 		}
 		if (cancelToken instanceof KxUI.CancelToken) {
-			const asioxCancelToken = Axios.CancelToken.source();
-			cancelToken.onCancel(asioxCancelToken.cancel);
-			cancelToken = asioxCancelToken.token;
+			const axiosCancelToken = Axios.CancelToken.source();
+			cancelToken.onCancel(axiosCancelToken.cancel);
+			cancelToken = axiosCancelToken.token;
 		}
 		this.filters.push(config => config.cancelToken = cancelToken);
 		return this;
@@ -314,7 +292,6 @@ class ArticleApi extends AbstractApi {
 		return this.mainServer.patch(`/articles/${id}`, { category });
 	}
 }
-
 
 class CategoryApi extends AbstractApi {
 
@@ -402,7 +379,6 @@ class DiscussApi extends AbstractApi {
 	}
 }
 
-
 class DraftApi extends AbstractApi {
 
 	createNew() {
@@ -446,7 +422,6 @@ class DraftApi extends AbstractApi {
 	}
 }
 
-
 class MiscApi extends AbstractApi {
 	/**
 	 *
@@ -479,11 +454,10 @@ class MiscApi extends AbstractApi {
 	 *
 	 * @return {string} 验证码URL
 	 */
-	get captchaAddress() {
-		return apiConfig.main + "/captcha?r=" + Math.random();
+	newCaptchaAddress() {
+		return process.env.CONFIG.contentServerUri + "/captcha?r=" + Math.random();
 	}
 }
-
 
 class UserApi extends AbstractApi {
 

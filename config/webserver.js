@@ -59,6 +59,7 @@ const blog = {
 const envConfig = {
 	googleTagManager: "UA-139954016-1",
 	sentryDSN: "https://3ec2222f7972477ba3007e0e0e8a99f2@sentry.io/1442466",
+	contentServerUri: "https://localhost:2375",
 };
 
 module.exports = {

@@ -91,13 +91,13 @@ export default {
 			this.$emit("switch-panel", "LoginPanel");
 		},
 		updateCaptcha() {
-			this.captcha = api.misc.captchaAddress;
+			this.captcha = api.misc.newCaptchaAddress();
 			this.form.captcha = "";
 			this.$refs.captchaInput.focus();
 		},
 	},
 	mounted() {
-		this.captcha = api.misc.captchaAddress;
+		this.captcha = api.misc.newCaptchaAddress();
 	},
 };
 </script>
