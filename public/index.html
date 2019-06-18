@@ -3,7 +3,6 @@
 
 应用外壳的HTML单独一个文件而不是由SSR的模板（或某一个公共模板）动态生成，原因有以下几点：
 	* AppShell 和 SSR 的模板天然具有不同的地方，比如元数据、标题、资源注入等
-	* 对于以webpack为中心的构建系统来说，HTML 并不需要做多少修改，即使有两份也无关紧要
 	* 尝试了下无论是由 SSR模板 -> AppShell 还是反过来，都挺费劲，懒得搞了
 -->
 <!DOCTYPE html>
@@ -11,12 +10,12 @@
 <head>
 	<meta charset="utf-8">
 	<link rel="dns-prefetch" href="//api.kaciras.net">
-	<title>Kaciras的博客</title>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
 	<meta name="theme-color" content="#FFFFFF">
 	<meta name="mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-capable" content="yes">
+	<title>Kaciras的博客</title>
 	<link rel="icon" href="/favicon.ico">
 	<link rel="manifest" href="/manifest.json">
 	<style>
@@ -29,19 +28,9 @@
 		background-color: #f0efe9;
 	}
 	</style>
-
-	<!-- 自己的火狐浏览器开了反跟踪，直接给拦截了 -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-139954016-1"></script>
-	<script>
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-	gtag('config', 'UA-139954016-1');
-	</script>
 </head>
 <body>
 <noscript class="ealert">必须启用JavaScript才能正常浏览本站</noscript>
 <div id="app"></div>
-<script type="text/javascript">!function(){if(void 0===window.CSS||!CSS.supports("display","grid")){var e=document.createElement("div");e.setAttribute("class","ealert"),e.innerText="您的浏览器版本太旧，或是非主流内核，可能无法正常浏览本站。请使用最新版的Edge、Firefox、Chrome、Safari等浏览器（本站不支持IE）",document.body.insertBefore(e,document.body.firstChild)}}();</script>
 </body>
 </html>

@@ -3,15 +3,14 @@ import Vue from "vue";
 import * as Integrations from "@sentry/integrations";
 import { ErrorRecordMessage } from "./serviceWorker";
 
-export function enableAutoReport() {
+if (process.env.CONFIG.sentryDSN) {
 	Sentry.init({
-		dsn: 'https://3ec2222f7972477ba3007e0e0e8a99f2@sentry.io/1442466',
+		dsn: process.env.CONFIG.sentryDSN,
 		integrations: [new Integrations.Vue({ Vue })],
 	});
 }
 
-class TransferredServiceWorkerError extends Error {
-}
+class TransferredServiceWorkerError extends Error {}
 
 export function report(message: ErrorRecordMessage) {
 	const container = new TransferredServiceWorkerError();

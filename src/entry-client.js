@@ -1,5 +1,6 @@
+import "./error-report";
+import "./miscellaneous";
 import createApp, { mediaQueryPlugin } from "./main";
-import * as ErrorReporting from "./error-report";
 import Vue from "vue";
 import { CancelToken } from "kx-ui";
 import * as loadingIndicator from "./loading-indicator";
@@ -9,10 +10,6 @@ import "./serviceWorker";
 // 防止网址被 iframe 嵌入，这样写也包括同域网页
 if (window !== parent) {
 	window.top.location.href = window.location.href;
-}
-
-if (process.env.NODE_ENV === "production") {
-	ErrorReporting.enableAutoReport();
 }
 
 let cancelToken = CancelToken.NEVER;

@@ -33,7 +33,7 @@ const webpack = {
 // TODO: 端口的配置没有同步到api中
 const server = {
 	tls: {
-		certFile:"D:/Coding/Utils/dev.pem",
+		certFile: "D:/Coding/Utils/dev.pem",
 		keyFile: "D:/Coding/Utils/dev.pvk",
 	},
 	httpRedirect: true,
@@ -41,7 +41,6 @@ const server = {
 
 const dev = {
 	useHotClient: false,
-	silent: false,
 };
 
 const blog = {
@@ -56,9 +55,15 @@ const blog = {
 	},
 };
 
+/** process.env.CONFIG */
+const envConfig = {
+	googleTagManager: "UA-139954016-1",
+	sentryDSN: "https://3ec2222f7972477ba3007e0e0e8a99f2@sentry.io/1442466",
+};
+
 module.exports = {
 	outputDir: path.resolve(__dirname, "../dist"), // 构建输出的目录
 	assetsDir: "static", // 静态资源目录，相对于outputDir
 
-	webpack, server, dev, blog ,
+	webpack, server, dev, blog, envConfig,
 };
