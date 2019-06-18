@@ -57,8 +57,9 @@ export default {
 		},
 	},
 	computed: {
+		// TODO: 计算属性里有副作用不太好？
 		htmlText() {
-			this.$nextTick(kxMarkdown.afterConvert);
+			this.$nextTick(() => kxMarkdown.afterConvert(this.$refs.preview.$el));
 			return converter.render(this.text);
 		},
 	},
