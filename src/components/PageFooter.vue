@@ -2,7 +2,7 @@
 <template functional v-once>
 	<footer id="bottom-footer">
 		<div :class="$style.info">
-			<p>&copy; Kaciras' Blog 2018-2019</p>
+			<p>&copy; Kaciras 2018-2019</p>
 			<address>Kaciras@outlook.com</address>
 
 			<!-- 懒得写图标版权了，反正个人网站也没人管 -->
