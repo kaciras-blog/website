@@ -38,7 +38,8 @@
 				v-for="item of children"
 				:key="item.id"
 				v-bind="item"
-				@click="goto(item)"/>
+				@click="goto(item)"
+			/>
 		</ul>
 		<div v-else :class="$style.empty_holder">没有下级分类了</div>
 	</div>
@@ -49,7 +50,7 @@ import CategoryView from "./CategoryView";
 import CategoryCard from "../../components/CategoryCard";
 import api from "../../api";
 
-const _default = {
+const CATEGORY_TEMPLATE = {
 	name: "新建分类",
 	cover: "/image/category-default.png",
 	description: "没有",
@@ -86,7 +87,7 @@ export default {
 		},
 		createNew () {
 			this.stack.push(this.current);
-			this.current = Object.assign({}, _default);
+			this.current = Object.assign({}, CATEGORY_TEMPLATE);
 			this.children = [];
 		},
 		async submit () {

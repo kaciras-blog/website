@@ -6,6 +6,7 @@
 			 :title="editable ? '点击换背景' : null">
 
 			<div :class="$style.infoPanel">
+
 				<img class="head"
 					 :class="$style.head"
 					 :src="item.cover"
@@ -69,7 +70,7 @@ export default {
 		parent: Number,
 	},
 	computed: {
-		styleVars () {
+		styleVars() {
 			const { item, editable } = this;
 			const vars = {};
 
@@ -83,20 +84,20 @@ export default {
 		},
 	},
 	methods: {
-		setCover () {
+		setCover() {
 			if (this.editable)
 				api.misc.uploadImageFile().then(name => this.item.cover = name);
 		},
-		setBackground () {
+		setBackground() {
 			if (this.editable)
 				api.misc.uploadImageFile().then(name => this.item.background = name);
 		},
-		async move () {
+		async move() {
 			const target = await this.$dialog.show(SelectCategoryDialog);
 			const moveType = await this.$dialog.show(MoveCategoryDialog);
 			api.category.move(this.item.id, target.id, moveType);
 		},
-		remove () {
+		remove() {
 			api.category.remove(this.item.id, false).then(() => this.$emit("removed"));
 		},
 	},

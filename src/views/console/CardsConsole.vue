@@ -19,7 +19,8 @@
 					:class="$style.slide"
 					:item="item"
 					@drag-started="drag"
-					@remove="remove"/>
+					@remove="remove"
+				/>
 			</template>
 		</div>
 
@@ -37,6 +38,13 @@ import { deleteOn, attachRandomId } from "../../utils";
 import { observeMouseMove, elementPosition } from "kx-ui/src/dragging";
 import CardListItem from "./CardListItem";
 
+const CARD_TEMPLATE = {
+	picture: "/image/placeholder.png",
+	name: "新的轮播页",
+	link: "",
+	description: "这是新添加的轮播页",
+};
+
 export default {
 	name: "SlideConsole",
 	components: {
@@ -50,12 +58,7 @@ export default {
 		createNew() {
 			this.slides.unshift(attachRandomId({
 				open: true,
-				slide: {
-					picture: "/image/placeholder.png",
-					name: "新的轮播页",
-					link: "",
-					description: "这是新添加的轮播页",
-				},
+				slide: CARD_TEMPLATE,
 			}));
 		},
 		async load() {
@@ -96,7 +99,7 @@ export default {
 
 				const rect = el.getBoundingClientRect();
 				const span = rect.height + 20;
-				const yOffset = container.top + span / 2 - rect.height / 2;
+				const yOffset = container.top + 10; // 【坑】列表项的margin在垂直方向上超出容器
 
 				// 被拖动元素放到单独的位置，并设为绝对定位。
 				this.dragging = {
@@ -137,10 +140,10 @@ export default {
 					const i = Math.round((y - yOffset) / span);
 					if (i <= 0) {
 						insertInto(0);
-					} else if (i >= slides.length - 1) {
-						insertInto(slides.length - 1);
-					} else {
+					} else if (i < slides.length) {
 						insertInto(i);
+					} else {
+						insertInto(slides.length - 1);
 					}
 				};
 
