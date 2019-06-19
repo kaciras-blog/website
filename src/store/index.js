@@ -5,10 +5,10 @@ import { REFRESH_USER, REMOVE_USER, SET_PREFETCH_DATA, SET_USER } from "./types"
 
 Vue.use(Vuex);
 
-export default function () {
+export default function createVuexStore() {
 	return new Vuex.Store({
 		state: {
-			user: undefined, // 当前登录的用户，没登录为null
+			user: undefined,
 			prefetch: {},
 			discussionOptions: undefined,
 		},

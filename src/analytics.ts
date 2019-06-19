@@ -5,8 +5,8 @@ interface Window {
 	dataLayer: any[];
 }
 
-const AnalyticsId = process.env.CONFIG.googleTagManager;
-if (AnalyticsId) {
+const { googleAnalyticsId } = process.env.CONFIG;
+if (googleAnalyticsId) {
 	window.dataLayer = window.dataLayer || [];
 
 	function gtag(...args: any[]) {
@@ -14,11 +14,11 @@ if (AnalyticsId) {
 	}
 
 	gtag('js', new Date());
-	gtag('config', AnalyticsId);
+	gtag('config', googleAnalyticsId);
 
 	const script = document.createElement("script");
 	script.async = true;
-	script.src = `https://www.googletagmanager.com/gtag/js?id=${AnalyticsId}`;
+	script.src = `https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}`;
 	document.head.append(script)
 }
 

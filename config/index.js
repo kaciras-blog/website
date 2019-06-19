@@ -5,7 +5,7 @@
 const path = require("path");
 
 /**
- * 全部的配置项，除了注释里有【可选】意外的均为必填项，有【环境】的项需要修改为自己的环境
+ * 全部的配置项，除了注释里有【可选】以外的均为必填项，有【环境】的项需要修改为自己的环境
  */
 module.exports = {
 
@@ -115,7 +115,7 @@ module.exports = {
 		// webHost: "https://localhost",
 
 		/** 【可选】Google Analytics 的ID，不填则不启用 Google Analytics */
-		// googleTagManager: "UA-12345678-1",
+		// googleAnalyticsId: "UA-12345678-1",
 
 		/** 【可选】本站使用 Sentry 来上报异常，填写该项后将启用 */
 		// sentryDSN: "https://foobar@sentry.io/123456",

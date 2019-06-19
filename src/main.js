@@ -47,9 +47,9 @@ export default function createApp(initState = undefined) {
 		store.replaceState(initState);
 	}
 
-	/*
+	/**
 	 * 阻止未登录用户访问后台页面。
-	 * router.app.$store获取不到store实例，所以就放在这了
+	 * 因为 router.app.$store获取不到store实例，所以就放在这了
 	 */
 	router.beforeEach((to, from, next) => {
 		const { user } = store.state;

@@ -33,11 +33,6 @@ function scrollBehavior(to, from, savedPosition) {
 	}
 }
 
-/*
- * 两种情况下使用异步组件：
- *   1.不常被访问的页面，如编辑器、控制台。
- *   2.预渲染的页面，如首页、文章页
- */
 export default function() {
 	const routes = [
 		{

@@ -27,6 +27,12 @@ class ServerPrefetchContext {
 	}
 }
 
+/**
+ * 等待路由准备好，都什么时代了 vue-router 还在用回调式的API。
+ *
+ * @param router Vue的路由
+ * @return {Promise<any>} 在路由准备好了之后resolve
+ */
 function onReadyAsync(router) {
 	return new Promise((resolve, reject) => router.onReady(resolve, reject));
 }
@@ -85,7 +91,7 @@ export default async context => {
 		}
 	}
 
-	const title = router.currentRoute.meta.title;
+	const { title } = router.currentRoute.meta;
 	if (title) {
 		context.title = title + " - Kaciras的博客";
 		context.meta = "<meta name='description' content='Kaciras个人博客'>";
