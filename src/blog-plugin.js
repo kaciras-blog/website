@@ -4,7 +4,6 @@ import TopNavGlass from "./components/TopNavGlass";
 import PageFooter from "./components/PageFooter";
 import BasePageLayout from "./components/BasePageLayout";
 import BannerPageLayout from "./components/BannerPageLayout";
-import PasswordInput from "./components/PasswordInput";
 import DiscussionSection from "./components/discussion/DiscussionSection";
 
 /**
@@ -34,5 +33,4 @@ export default function (Vue) {
 	Vue.component(SelectCategoryDialog.name, SelectCategoryDialog);
 	Vue.component(BasePageLayout.name, BasePageLayout);
 	Vue.component(BannerPageLayout.name, BannerPageLayout);
-	Vue.component(PasswordInput.name, PasswordInput);
 }

@@ -10,11 +10,12 @@
 			   v-autofocus>
 
 		<label for="password">密码:</label>
-		<password-input
+		<kx-password-input
 			input-id="password"
 			v-model="form.password"
+			required
 			title="密码"
-			required/>
+		/>
 
 		<kx-check-box
 			v-model="form.remember"
