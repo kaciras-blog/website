@@ -7,13 +7,8 @@ import * as loadingIndicator from "./loading-indicator";
 import { REFRESH_USER, SET_PREFETCH_DATA } from "./store/types";
 import "./serviceWorker";
 
-// 防止网址被 iframe 嵌入，这样写也包括同域网页
-if (window !== parent) {
-	window.top.location.href = window.location.href;
-}
 
 let cancelToken = CancelToken.NEVER;
-
 
 /**
  * 处理预加载任务，包括显示加载指示器、错误页面、防止取消后跳转等。

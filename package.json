@@ -8,7 +8,8 @@
 		"lint": "eslint --fix --ext .js,.vue src",
 		"test": "jest",
 		"serve": "cli-dev serve",
-		"build-prod": "cli-dev build --profile=prod --deploy=production"
+		"build": "cli-dev build",
+		"build-prod": "cli-dev build --profile=prod"
 	},
 	"browserslist": [
 		">1%",
