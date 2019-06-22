@@ -45,8 +45,8 @@ interface ArticleListQuery {
 	start: number;
 	count: number;
 	category: number;
-	deletion: DeletionState; // 删除状态
-	recursive: boolean; //是否递归子分类
+	deletion?: DeletionState; // 删除状态
+	recursive?: boolean; //是否递归子分类
 }
 
 class ArticleApi extends AbstractApi {
@@ -67,7 +67,7 @@ class ArticleApi extends AbstractApi {
 		params = Object.assign({
 			start: 0,
 			count: 20,
-			deletion: "FALSE",
+			deletion: DeletionState.ALIVE,
 		}, params);
 		return this.mainServer.get("/articles", { params }).then(r => r.data);
 	}
@@ -323,21 +323,16 @@ class ConfigApi extends AbstractApi {
 	}
 }
 
+BasicApiFactory.registerApi("article", ArticleApi);
+BasicApiFactory.registerApi("draft", DraftApi);
+BasicApiFactory.registerApi("category", CategoryApi);
+BasicApiFactory.registerApi("discuss", DiscussApi);
+BasicApiFactory.registerApi("user", UserApi);
+BasicApiFactory.registerApi("config", ConfigApi);
+BasicApiFactory.registerApi("recommend", RecommendApi);
+BasicApiFactory.registerApi("misc", MiscApi);
 
-function registerApi(name: string, clazz: Function) {
-	Object.defineProperty(BasicApiFactory.prototype, name, { get() { return this.createApiInstance(clazz); } });
-}
-
-registerApi("article", ArticleApi);
-registerApi("draft", DraftApi);
-registerApi("category", CategoryApi);
-registerApi("discuss", DiscussApi);
-registerApi("user", UserApi);
-registerApi("config", ConfigApi);
-registerApi("recommend", RecommendApi);
-registerApi("misc", MiscApi);
-
-// 为了让IDE能够提示，费了劳资半天劲
+// 为了让IDE能够提示
 interface ApiSet extends BasicApiFactory {
 	article: ArticleApi;
 	draft: DraftApi;

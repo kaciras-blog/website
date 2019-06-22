@@ -23,9 +23,9 @@
 </template>
 
 <script>
-import api from "../../api";
+import api, { DeletionState } from "../../api";
 import ArticleItem from "./ArticleItem";
-import {errorMessage} from "../../utils";
+import { errorMessage } from "../../utils";
 
 export default {
 	name: "ArticleConsole",
@@ -47,7 +47,7 @@ export default {
 
 			api.article.getList({
 				start: 0,
-				deletion: "ALL",
+				deletion: DeletionState.ALL,
 			}).then(data => {
 				this.loading = false;
 				this.list = data;

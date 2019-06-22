@@ -3,7 +3,7 @@ import Axios from "axios";
 import cookies from "axios/lib/helpers/cookies";
 import isURLSameOrigin from "axios/lib/helpers/isURLSameOrigin";
 import { isStandardBrowserEnv } from "axios/lib/utils";
-import * as KxUI from "kx-ui";
+import * as KxUI from "kx-ui/src/cancellation";
 
 const CSRF_COOKIE_NAME = "CSRF-Token";
 const CSRF_HEADER_NAME = "X-CSRF-Token";
@@ -30,7 +30,7 @@ function parameterCsrfProtection(axios) {
 
 	function configure(config) {
 		const method = config.method.toUpperCase();
-		if(method === "GET" || method === "HEAD") {
+		if (method === "GET" || method === "HEAD") {
 			return config;
 		}
 		const xsrfValue = config.withCredentials || isURLSameOrigin(config.url)
@@ -65,15 +65,14 @@ function createAxios(config) {
 	return axios;
 }
 
-const apiSet = {
-	mainServer: createAxios({ baseURL: process.env.CONFIG.contentServerUri }),
-	webServer: createAxios(),
-};
 
 export class BasicApiFactory {
 
-	constructor() {
-		this.axiosSet = apiSet;
+	constructor(axiosSet = {
+		mainServer: createAxios({ baseURL: process.env.CONFIG.contentServerUri }),
+		webServer: createAxios(),
+	}) {
+		this.axiosSet = axiosSet;
 	}
 
 	/**
@@ -100,6 +99,13 @@ export class BasicApiFactory {
 	// protected
 	createApiInstance(clazz) {
 		return new clazz(this.axiosSet);
+	}
+
+	static registerApi(name, clazz) {
+		Object.defineProperty(BasicApiFactory.prototype, name, {
+			configurable: true,
+			get() { return this.createApiInstance(clazz); },
+		});
 	}
 }
 
