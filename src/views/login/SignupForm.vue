@@ -22,7 +22,8 @@
 		<input id="email"
 			   v-model="form.email"
 			   type="email"
-			   placeholder="（可选）不填也行">
+			   placeholder="（可选）不填也行"
+		>
 
 		<label for="captcha">验证码:</label>
 		<div :class="$style.captcha">
@@ -35,7 +36,8 @@
 			<img :src="captcha"
 				 alt="验证码"
 				 title="点击换一张"
-				 @click="updateCaptcha">
+				 @click="updateCaptcha"
+			>
 		</div>
 
 		<span class="text-warning center">{{message}}</span>
@@ -43,7 +45,7 @@
 		<div class="buttons">
 			<kx-task-button
 				class="primary outline"
-				:on-click="signup">
+				:on-click="signUp">
 				确定
 			</kx-task-button>
 			<kx-button
@@ -80,9 +82,9 @@ export default {
 		},
 	}),
 	methods: {
-		async signup() {
+		async signUp() {
 			try {
-				await api.user.signup(this.form);
+				await api.user.signUp(this.form);
 				await this.$store.dispatch(REFRESH_USER);
 				this.$router.push(this.returnUri);
 			} catch (e) {

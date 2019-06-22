@@ -36,7 +36,7 @@ import api from "../../api";
 import DraftConsoleItem from "./DraftConsoleItem";
 import { deleteOn } from "../../utils";
 import { MessageBoxType } from "kx-ui/src/dialog/index";
-import {errorMessage} from "../../utils";
+import { errorMessage } from "../../utils";
 
 export default {
 	name: "DraftConsole",

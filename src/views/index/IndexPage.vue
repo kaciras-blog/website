@@ -26,7 +26,7 @@ export default {
 		BlogSection,
 	},
 	asyncData(session) {
-		return api.recommend.swiper.get()
+		return api.recommend.getCards()
 			.then(slides => session.data.slides = slides.map(attachRandomId));
 	},
 };

@@ -28,7 +28,8 @@
 		<card-list-item
 			v-if="dragging"
 			:style="dragging.style"
-			:item="dragging.item"/>
+			:item="dragging.item"
+		/>
 	</div>
 </template>
 
@@ -62,14 +63,14 @@ export default {
 			}));
 		},
 		async load() {
-			const slides = await api.recommend.swiper.get();
+			const slides = await api.recommend.getCards();
 			this.slides = slides.map(slide => attachRandomId({ slide, open: false }));
 		},
 		remove(id) {
 			deleteOn(this.slides, s => s.randomId === id);
 		},
 		submit() {
-			api.recommend.swiper.set(this.slides.map(item => item.slide))
+			api.recommend.setCards(this.slides.map(item => item.slide))
 				.then(() => this.$dialog.alertSuccess("修改成功"))
 				.catch((e) => this.$dialog.alertError("修改失败", e.message));
 		},
