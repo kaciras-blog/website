@@ -1,5 +1,5 @@
 <template>
-	<nav :class="$style.container">
+	<nav class="top-nav" :class="$style.container">
 
 		<router-link to="/" title="回到首页">
 			<img src="../assets/img/logo-kaciras-wide.svg" alt="logo" :class="$style.logo">
@@ -69,13 +69,15 @@ export default {
 .container {
 	display: flex;
 	width: 100%;
-
 	background-color: rgba(255, 255, 255, .4);
-	box-shadow: rgba(0, 0, 0, .2) 0 0 3px 1px; // TODO: 不共用？
-	z-index: 10; // 防止容器Flex布局时被主体部分盖住
 
 	@media screen and (min-width: @length-screen-mobile) {
 		padding: 0 5vw;
+	}
+	@media screen and (max-width: @length-screen-mobile) {
+		position: sticky;
+		top: 0;
+		background-color: white;
 	}
 }
 

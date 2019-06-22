@@ -26,6 +26,7 @@ export default {
 @import "../../css/Imports";
 
 .topNav {
+	position: static;
 	box-shadow: none;
 }
 

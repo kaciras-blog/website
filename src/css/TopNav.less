@@ -1,0 +1,46 @@
+@import "Imports";
+
+.top-nav {
+	width: 100%;
+	box-shadow: rgba(0, 0, 0, .2) 0 0 3px 1px;
+	z-index: 100; // 防止容器Flex布局时被主体部分盖住
+}
+
+.nav-right {
+	display: flex;
+	justify-content: flex-end;
+	margin-left: auto;
+}
+
+.nav-item {
+	display: inline-block;
+
+	padding: 0 1.5rem;
+	line-height: 50px;
+
+	font-size: 16px;
+	background-color: transparent;
+	.click-item;
+
+	&:hover, &:focus {
+		text-decoration: none;
+		color: black;
+		background-color: rgba(255, 255, 255, 0.4);
+	}
+}
+
+
+.light .nav-item {
+	&:hover, &:focus {
+		background-color: rgba(0, 0, 0, 0.05);
+	}
+}
+
+.dark .nav-item {
+	color: white;
+
+	&:hover, &:focus {
+		color: white;
+		background-color: rgba(255, 255, 255, 0.2);
+	}
+}
