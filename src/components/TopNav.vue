@@ -47,7 +47,7 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import { REMOVE_USER } from "../store/types";
-import TopNavMenu from "./TopNavMenu";
+import NavMenuFrame from "./NavMenuFrame";
 
 export default {
 	name: "TopNav",
@@ -56,7 +56,7 @@ export default {
 	},
 	methods: {
 		showMenu() {
-			this.$dialog.show(TopNavMenu);
+			this.$dialog.show(NavMenuFrame);
 		},
 		...mapActions({ logout: REMOVE_USER }),
 	},

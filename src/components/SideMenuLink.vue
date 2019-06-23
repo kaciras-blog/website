@@ -5,7 +5,8 @@
 		:class="$style.link"
 		:to="props.to"
 	>
-		<i :class="props.icon"></i>&nbsp;<slot/>
+		<i :class="[$style.icon, props.icon]"></i>
+		<slot/>
 	</router-link>
 </template>
 
@@ -17,5 +18,9 @@
 	&:hover, &:focus {
 		background-color: rgba(0, 0, 0, .05);
 	}
+}
+
+.icon {
+	margin-right: 2pc;
 }
 </style>

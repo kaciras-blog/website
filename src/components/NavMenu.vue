@@ -2,13 +2,15 @@
 	<div :class="$style.container">
 
 		<div :class="$style.header">
-			<img
-				src="../assets/img/logo-kaciras-circle.svg"
-				alt="Kaciras' Blog"
-				class="head"
-				:class="$style.head"
-			>
-			<p :class="$style.name">Kaciras' Blog</p>
+			<div :class="$style.header_content">
+				<img
+					src="../assets/img/logo-kaciras-circle.svg"
+					alt="Kaciras' Blog"
+					class="head"
+					:class="$style.head"
+				>
+				<p :class="$style.name">Kaciras' Blog</p>
+			</div>
 		</div>
 
 		<div :class="$style.body">
@@ -35,7 +37,7 @@ import { REMOVE_USER } from "../store/types";
 import SideMenuLink from "./SideMenuLink";
 
 export default {
-	name: "PersonalView",
+	name: "NavMenu",
 	components: { SideMenuLink },
 	computed: mapState(["user"]),
 	methods: mapActions({ logout: REMOVE_USER }),
@@ -52,7 +54,13 @@ export default {
 }
 
 .header {
-	padding: 20px;
+	background: url("../assets/img/54045756_p0.png");
+	background-size: cover;
+}
+
+.header_content {
+	padding: 35px 0;
+	background: rgba(255, 255, 255, .2);
 	text-align: center;
 }
 
@@ -64,7 +72,7 @@ export default {
 
 .body {
 	flex-grow: 1;
-	font-size: 18px;
+	padding: 10px 0;
 }
 
 .footer {
