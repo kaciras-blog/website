@@ -41,7 +41,6 @@ import MetadataDialog from "./MetadataDialog";
 import api from "../../api";
 import { assignUpdate } from "../../utils";
 import { VueMultiWatcher } from "kx-ui";
-import { MessageBoxType } from "kx-ui/src/dialog";
 
 function convertToTransfer(data) {
 	return Object.assign({

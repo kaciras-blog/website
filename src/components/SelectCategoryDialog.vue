@@ -113,6 +113,10 @@ export default {
 			this.selected.forEach(cate => cate.selected = false);
 			this.selected = [];
 		},
+		/*
+		 * TODO:一部分逻辑跟 CategoryConsole 是重合的，但是Vue没有像ReactHooks
+		 * 这样的复用方法，用Mixin又不太好毕竟要被废弃了。
+		 */
 		showChild (category) {
 			this.stack.push(this.current);
 			this.current = category;

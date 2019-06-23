@@ -68,7 +68,7 @@ export default {
 				} else {
 					data.category = this.category.id;
 					data.urlTitle = this.url.length ? this.url : data.title;
-					article = (await api.article.publish(data)).substring("/articles/".length);
+					article = await api.article.publish(data);
 				}
 				this.$dialog.confirm();
 				this.$router.push(`/article/${article}`);
