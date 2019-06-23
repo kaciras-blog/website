@@ -2,7 +2,7 @@
 	<nav class="top-nav" :class="$style.container">
 
 		<router-link to="/" title="回到首页">
-			<img src="../assets/img/logo-kaciras-wide.svg" alt="logo" :class="$style.logo">
+			<img src="@/assets/img/logo-kaciras-wide.svg" alt="logo" :class="$style.logo">
 		</router-link>
 
 		<!-- 手机屏的折叠菜单 -->
@@ -46,7 +46,7 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import { REMOVE_USER } from "../store/types";
+import { REMOVE_USER } from "@/store/types";
 import NavMenuFrame from "./NavMenuFrame";
 
 export default {
@@ -64,7 +64,7 @@ export default {
 </script>
 
 <style module lang="less">
-@import "../css/Imports.less";
+@import "../../css/Imports.less";
 
 .container {
 	display: flex;

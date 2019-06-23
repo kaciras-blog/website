@@ -4,7 +4,7 @@
 		<div :class="$style.header">
 			<div :class="$style.header_content">
 				<img
-					src="../assets/img/logo-kaciras-circle.svg"
+					src="@/assets/img/logo-kaciras-circle.svg"
 					alt="Kaciras' Blog"
 					class="head"
 					:class="$style.head"
@@ -33,7 +33,7 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import { REMOVE_USER } from "../store/types";
+import { REMOVE_USER } from "@/store/types";
 import SideMenuLink from "./SideMenuLink";
 
 export default {
@@ -54,7 +54,7 @@ export default {
 }
 
 .header {
-	background: url("../assets/img/54045756_p0.png");
+	background: url("../../assets/img/54045756_p0.png");
 	background-size: cover;
 }
 
