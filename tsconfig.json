@@ -4,6 +4,11 @@
 		"module": "esnext",
 		"moduleResolution": "node",
 
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["src/*"]
+		},
+
 		"strict": true,
 		"esModuleInterop": true,
 		"allowSyntheticDefaultImports": true,
