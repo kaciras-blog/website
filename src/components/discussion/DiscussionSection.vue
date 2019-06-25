@@ -62,7 +62,7 @@ import DiscussionEditor from "./DiscussionEditor.vue";
 import DiscussionItem from "./DiscussionItem.vue";
 import AtomSpinner from "epic-spinners/src/components/lib/AtomSpinner.vue";
 
-const allSorts = [
+const ALL_SORTS = [
 	{ label: "最新", value: "id,DESC" },
 	{ label: "最早评论", value: "id,ASC" },
 	{ label: "点赞数", value: "vote,DESC" },
@@ -91,17 +91,18 @@ export default {
 
 		data: null,
 		replying: null,
-		allSorts,
-		sort: allSorts[0],
+		allSorts: ALL_SORTS,
+		sort: ALL_SORTS[0],
 	}),
 	methods: {
 		// reload - 重新加载，回到第一页；refresh - 刷新当前页
 		reload() {
-			this.$refs.discussions.loadPage(0);
+			this.$refs.discussions.reload();
 		},
 		refresh() {
 			return this.$refs.discussions.refresh();
 		},
+
 		loadDiscussions(start, size, cancelToken) {
 			return api
 				.withCancelToken(cancelToken)
@@ -110,7 +111,7 @@ export default {
 		},
 		/** 评论发表后跳转到能显示新评论的位置 */
 		showLast() {
-			if (this.sort !== allSorts[0]) {
+			if (this.sort !== ALL_SORTS[0]) {
 				this.$refs.discussions.switchToLast();
 			}
 		},
@@ -195,10 +196,5 @@ export default {
 	padding: 30px 0;
 	text-align: center;
 	color: @color-text-minor;
-}
-
-.popup {
-	position: absolute;
-	.full-vertex;
 }
 </style>
