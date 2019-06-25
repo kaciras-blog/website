@@ -7,7 +7,6 @@
 		>
 			<img :src="item.cover"
 				 alt="封面"
-				 class="full-percent"
 				 :class="$style.cover"
 			>
 		</router-link>
@@ -110,9 +109,7 @@ export default {
 	@media screen and (min-width: @length-screen-mobile) {
 		padding-left: 0;
 		padding-right: 0;
-
-		grid-template-rows: auto auto;
-		grid-template-columns: 10rem auto;
+		grid-template-columns: auto 1fr;
 		grid-template-areas: "cover title" "cover summary" "cover keywords" "category category" "meta meta";
 	}
 }

@@ -48,8 +48,7 @@ export default {
 }
 
 .sight {
-	position: absolute;
-	.full-vertex;
+	composes: full-vertex from global;
 	overflow: hidden;
 	pointer-events: none;
 

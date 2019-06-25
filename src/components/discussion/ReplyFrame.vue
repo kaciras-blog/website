@@ -73,15 +73,12 @@ export default {
 
 <style module lang="less">
 .container {
+	composes: full-vertex from global;
 	display: flex;
-	flex-direction: column;
-
 	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100vw;
-	height: 100vh;
 
+	flex-direction: column;
+	z-index: 900;
 	background-color: white;
 }
 
@@ -114,6 +111,6 @@ export default {
 
 .input_footer {
 	padding: 10px;
-	background-color: #3a3a3a;
+	border-top: solid 1px #d1d1d1;
 }
 </style>

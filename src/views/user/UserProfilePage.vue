@@ -44,7 +44,7 @@ export default {
 		AuthTypeTag,
 	},
 	data() {
-		return { user: this.$store.state.user || {} };
+		return { user: this.$store.state.user };
 	},
 	methods: {
 		async editHead() {
