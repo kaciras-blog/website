@@ -16,6 +16,7 @@
 					:loader="loadNext"
 					:page-size="10"
 				>
+					<!-- removed 事件处理必须包装一下，因为创建时还不存在 $refs.replies，下同 -->
 					<template v-slot="{ items }">
 						<reply-list :items="items" @removed="() => $refs.replies.refresh()"/>
 					</template>
@@ -30,7 +31,7 @@
 			<discussion-editor
 				v-if="replying === value.id"
 				:class="$style.input"
-				:submit="text => submitReply(text)"
+				:submit="submitReply"
 			/>
 		</template>
 	</discussion-content>
@@ -42,7 +43,7 @@ import DiscussionEditor from "./DiscussionEditor.vue";
 import api from "../../api";
 import ReplyFrame from "./ReplyFrame";
 import ReplyList from "./ReplyList";
-import { throttleFirst } from "kx-ui";
+import { debounceFirst } from "kx-ui";
 
 export default {
 	name: "DiscussionItem",
@@ -68,7 +69,7 @@ export default {
 			this.$emit("reply");
 			this.$refs.replies.switchToLast();
 		},
-		showAllReplies: throttleFirst(function () {
+		showAllReplies: debounceFirst(function () {
 			if (this.$mediaQuery.match("mobile")) {
 				return this.$dialog.show(ReplyFrame, { value: this.value });
 			}
