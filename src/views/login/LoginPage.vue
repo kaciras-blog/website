@@ -65,7 +65,7 @@ export default {
 
 	max-width: 980px;
 	margin: 0 auto;
-	padding-top: 40px;
+	padding-top: 30px;
 
 	@media screen and (min-width: @length-screen-mobile) {
 		padding-top: 80px
