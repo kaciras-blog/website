@@ -108,8 +108,12 @@ module.exports = {
 	/** 该对象由 process.env.CONFIG 传递到构建的脚本里 */
 	envConfig: {
 
-		/** 【环境】内容服务器的公网 URL */
+		/** 【环境】内容服务器的公网 URL，如果是对象则依据页面使用HTTP还是HTTPS选择 */
 		contentServerUri: "https://api.example.com",
+		// contentServerUri: {
+		// 	http: "http://api.example.com:54321",
+		// 	https: "https://api.example.com:12345",
+		// },
 
 		/** 【可选】网站的前端地址，目前该项仅用于防镜像检测 */
 		// webHost: "https://localhost",
