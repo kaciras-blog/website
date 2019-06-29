@@ -132,14 +132,17 @@ export default {
 	display: flex;
 	align-items: flex-start;
 	min-height: 100vh;
-	margin: 0 auto 4rem auto;
+	margin: 0 auto;
+	padding-top: 30px;
+	padding-bottom: 70px;
 
 	@media screen {
 		@media (min-width: @length-screen-mobile) {
-			max-width: 90%
+			max-width: 90%;
+			padding-top: 50px;
 		}
 		@media (min-width: @length-screen-wide) {
-			max-width: 82%
+			max-width: 82%;
 		}
 	}
 }

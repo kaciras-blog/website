@@ -1,8 +1,10 @@
 @import "Imports";
 
 .top-nav {
+	--nav-height: 48px;
+
 	width: 100%;
-	box-shadow: rgba(0, 0, 0, .2) 0 0 3px 1px;
+	box-shadow: rgba(0, 0, 0, .15) 0 0 3px 1px;
 	z-index: 100; // 防止容器Flex布局时被主体部分盖住
 }
 
@@ -16,7 +18,7 @@
 	display: inline-block;
 
 	padding: 0 1.5rem;
-	line-height: 50px;
+	line-height: var(--nav-height);
 
 	font-size: 16px;
 	background-color: transparent;

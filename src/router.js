@@ -33,7 +33,7 @@ function scrollBehavior(to, from, savedPosition) {
 	}
 }
 
-export default function() {
+export default function CreateRouter() {
 	const routes = [
 		{
 			path: "/",

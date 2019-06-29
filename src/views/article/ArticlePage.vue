@@ -131,11 +131,12 @@ export default {
 
 .article {
 	margin: 0 auto;
-	padding: 0 1em;
+	padding: 30px 1em 0;
 
 	@media screen {
 		@media (min-width: @length-screen-mobile) {
 			max-width: 90vw;
+			padding-top: 50px;
 		}
 		@media (min-width: @length-screen-pad) {
 			max-width: 78vw;

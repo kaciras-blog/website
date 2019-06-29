@@ -22,7 +22,7 @@
 
 		<div :class="$style.footer">
 			<kx-button
-				v-if="user && user.id > 0"
+				v-if="user.id > 0"
 				class="second"
 				@click="logout">
 				退出登录
@@ -60,7 +60,8 @@ export default {
 
 .header_content {
 	padding: 35px 0;
-	background: rgba(255, 255, 255, .2);
+	color: black;
+	background: rgba(255, 255, 255, .15);
 	text-align: center;
 }
 

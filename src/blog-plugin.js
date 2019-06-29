@@ -1,4 +1,5 @@
 import SelectCategoryDialog from "./components/SelectCategoryDialog";
+import TopNavBody from "./components/top-nav/TopNavBody";
 import TopNav from "./components/top-nav/TopNav";
 import TopNavGlass from "./components/top-nav/TopNavGlass";
 import PageFooter from "./components/PageFooter";
@@ -22,11 +23,12 @@ export function categoryLink ({ id, name }) {
 	return `/category/${id}/${name}`;
 }
 
-export default function (Vue) {
+export default function install(Vue) {
 	Vue.filter("articleLink", articleLink);
 	Vue.filter("categoryLink", categoryLink);
 
 	Vue.component(DiscussionSection.name, DiscussionSection);
+	Vue.component(TopNavBody.name, TopNavBody); // 函数式组件无法引用components选项
 	Vue.component(TopNav.name, TopNav);
 	Vue.component(TopNavGlass.name, TopNavGlass);
 	Vue.component(PageFooter.name, PageFooter);

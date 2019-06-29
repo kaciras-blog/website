@@ -59,14 +59,15 @@ export default {
 }
 
 .nav {
+	--nav-height: 3rem;
+
 	text-align: right;
 	padding: 0 1rem;
 	min-height: 3rem; // 谷歌的浏览器必须用min-height
-	color: @color-nav;
-	background-color: @color-nav-background;
+	z-index: 1;
+
 	border-bottom: solid 1px #c9c9c9;
 	box-shadow: 0 0 @length-border-shadow 1px fade(@color-border, 30%);
-	z-index: 1;
 }
 
 .tabs {
@@ -74,7 +75,6 @@ export default {
 	grid-area: menu;
 
 	background-color: #222429;
-	height: 100%;
 	color: #DDD;
 	text-align: center;
 }
@@ -97,13 +97,11 @@ export default {
 
 	font-size: 1rem;
 	.click-item;
-	text-decoration: none;
 	border: none;
 	background-color: transparent;
 	color: whitesmoke;
 
 	&:hover, &:focus {
-		outline: none;
 		background-color: rgba(255, 255, 255, 0.1);
 	}
 

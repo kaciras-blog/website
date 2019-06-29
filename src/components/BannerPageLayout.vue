@@ -1,5 +1,5 @@
 <template>
-	<base-page-layout :nav-class="$style.body">
+	<base-page-layout>
 
 		<template v-if="$mediaQuery.match('tablet+')" v-slot:nav>
 			<div :style="navStyle" :class="navClass">
@@ -60,13 +60,9 @@ export default {
 	}
 }
 
-.body {
-	margin-bottom: 4rem;
-}
-
 .banner {
-	composes: image_resolver body;
-	height: 13rem;
+	composes: image_resolver;
+	height: 12rem;
 	margin-top: -50px;
 }
 
