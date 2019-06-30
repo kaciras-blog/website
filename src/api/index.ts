@@ -1,4 +1,4 @@
-import * as KxUI from "kx-ui";
+import { openFile } from "kx-ui";
 import { BasicApiFactory } from "./support";
 import { AxiosInstance, AxiosResponse } from "axios";
 
@@ -44,7 +44,7 @@ export enum DeletionState {
 interface ArticleListQuery {
 	start: number;
 	count: number;
-	category: number;
+	category?: number;
 	deletion?: DeletionState; // 删除状态
 	recursive?: boolean; //是否递归子分类
 }
@@ -95,7 +95,7 @@ class CategoryApi extends AbstractApi {
 		return this.mainServer.delete("/categories/" + id, { params: { tree: treeMode } });
 	}
 
-	get(id: number, aggregate: boolean) {
+	get(id: number, aggregate?: boolean) {
 		return this.mainServer.get("/categories/" + id, { params: { aggregate } }).then(r => r.data);
 	}
 
@@ -243,7 +243,7 @@ class MiscApi extends AbstractApi {
 	 * @returns Promise<String> 保存的图片文件名
 	 */
 	async uploadImageFile() {
-		const files = await KxUI.openFile(false, "image/*");
+		const files = await openFile(false, "image/*");
 		return await this.uploadImage(files[0]);
 	}
 
