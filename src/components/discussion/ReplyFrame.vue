@@ -131,10 +131,11 @@ export default {
 	flex: 1;
 
 	min-height: 0;
-	max-height: 32px; // HACK
+	max-height: 30px; // HACK
 	padding: .5rem;
 	margin-right: 10px;
-	border-color: white;
+	border: none;
+	border-radius: 4px;
 
 	&:focus {
 		max-height: 10rem;

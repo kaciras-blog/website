@@ -15,17 +15,13 @@ html {
 	flex-direction: column;
 	position: fixed;
 
-	top: 72vh;
-	right: .8rem;
+	top: 65vh;
+	right: 1rem;
 
 	border-radius: .2rem;
 	background-color: white; // 按钮组边角
 
 	@media screen {
-		@media (min-width: @length-screen-mobile) {
-			top: 60%;
-			right: 1rem;
-		}
 		@media (min-width: @length-screen-pad) {
 			right: 3%;
 		}
@@ -34,7 +30,7 @@ html {
 		}
 	}
 
-	& > .kx-btn.outline {
+	& > .kx-btn {
 		margin-top: -1px;
 		padding: 0;
 		width: 2.3rem;
@@ -42,12 +38,10 @@ html {
 
 		font-size: 1.4rem;
 
-		@media screen {
-			@media (min-width: @length-screen-mobile) {
-				font-size: 1.8rem;
-				width: 3rem;
-				height: 3rem;
-			}
+		@media screen and  (min-width: @length-screen-mobile) {
+			font-size: 1.8rem;
+			width: 3rem;
+			height: 3rem;
 		}
 	}
 }
