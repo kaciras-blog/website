@@ -2,10 +2,11 @@
 	<div :class="$style.container">
 
 		<header :class="$style.header">
-			<button title="返回"
-					:class="$style.back_button"
-					class="nav-item"
-					@click="$dialog.close"
+			<button
+				title="返回"
+				:class="$style.back_button"
+				class="nav-item"
+				@click="$dialog.close"
 			>
 				<i class="fas fa-arrow-left"></i>
 			</button>
@@ -37,7 +38,8 @@
 		</div>
 
 		<div :class="$style.input_footer">
-			<input :value="inputData">
+			<textarea :value="inputData" :class="$style.input" @input="fit"></textarea>
+			<kx-button class="primary" @click="publish">发送</kx-button>
 		</div>
 	</div>
 </template>
@@ -67,6 +69,14 @@ export default {
 		loadNext(start, count) {
 			return api.discuss.getReplies(this.value.id, start, count);
 		},
+		fit(event) {
+			const el = event.target;
+			el.style.height = "";
+			el.style.height = el.scrollHeight + "px";
+		},
+		publish() {
+
+		},
 	},
 };
 </script>
@@ -85,7 +95,7 @@ export default {
 .header {
 	position: relative;
 	text-align: center;
-	height: 50px;
+	height: 48px;
 	box-shadow: rgba(0, 0, 0, .2) 0 0 3px 1px;
 }
 
@@ -97,12 +107,13 @@ export default {
 .back_button {
 	position: absolute;
 	left: 0;
+	top: 0;
+	bottom: 0;
 }
 
 .title {
-	font-size: 20px;
-	font-weight: 600;
-	line-height: 50px;
+	font-size: 16px;
+	line-height: 48px;
 }
 
 .item {
@@ -110,7 +121,23 @@ export default {
 }
 
 .input_footer {
+	display: flex;
+	align-items: flex-end;
 	padding: 10px;
-	border-top: solid 1px #d1d1d1;
+	background: #f0f0f5;
+}
+
+.input {
+	flex: 1;
+
+	min-height: 0;
+	max-height: 32px; // HACK
+	padding: .5rem;
+	margin-right: 10px;
+	border-color: white;
+
+	&:focus {
+		max-height: 10rem;
+	}
 }
 </style>
