@@ -28,10 +28,14 @@
 				</template>
 			</template>
 
-			<discussion-editor
+			<input-h-o-c
 				v-if="replying === value.id"
+				:component="$options.components.DiscussionEditor"
+				:type="value.type"
+				:object-id="value.objectId"
+				:parent="value.id"
 				:class="$style.input"
-				:submit="submitReply"
+				@submitted="submitReply"
 			/>
 		</template>
 	</discussion-content>
@@ -44,6 +48,7 @@ import api from "../../api";
 import ReplyFrame from "./ReplyFrame";
 import ReplyList from "./ReplyList";
 import { debounceFirst } from "kx-ui";
+import InputHOC from "@/components/discussion/InputHOC";
 
 export default {
 	name: "DiscussionItem",
@@ -55,6 +60,7 @@ export default {
 		replying: Number,
 	},
 	components: {
+		InputHOC,
 		ReplyList,
 		DiscussionContent,
 		DiscussionEditor,
@@ -64,10 +70,13 @@ export default {
 		expend: false,
 	}),
 	methods: {
-		async submitReply(text) {
-			await api.discuss.reply(this.value.id, text);
-			this.$emit("reply");
-			this.$refs.replies.switchToLast();
+		async submitReply(reply) {
+			this.expend = true;
+			if (this.replies) {
+				this.$refs.replies.switchToLast();
+			} else {
+				this.replies = [reply.data]; // 对没有过回复的处理
+			}
 		},
 		showAllReplies: debounceFirst(function () {
 			if (this.$mediaQuery.match("mobile")) {
