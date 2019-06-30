@@ -120,19 +120,16 @@ export enum DiscussionState {
 
 class DiscussApi extends AbstractApi {
 
-	add(objectId: number, type: number, content: string) {
-		return this.mainServer.post("/discussions", { objectId, type, content });
-	}
-
 	/**
-	 * 发表回复（楼中楼）
+	 * 添加评论，返回服务端保存的对象。
 	 *
-	 * @param parent 评论id
-	 * @param content 内容
-	 * @return Promise
+	 * @param objectId 被评论对象的ID
+	 * @param type 被评论对象的类型
+	 * @param parent 父评论，如果没有则填0
+	 * @param content 评论内容
 	 */
-	reply(parent: number, content: string) {
-		return this.mainServer.post("/discussions", { parent, content });
+	add(objectId: number, type: number, parent: number, content: string) {
+		return this.mainServer.post("/discussions", { objectId, type, parent, content }).then(r => r.data);
 	}
 
 	getList(objectId: number, type: number, start: number, count: number, sort?: string) {
