@@ -25,11 +25,16 @@
 				@input="reload"/>
 		</header>
 
-		<discussion-editor
+		<input-h-o-c
+			:object-id="objectId"
+			:type="type"
 			class="segment"
-			:submit="submitDiscussion"
 			@submitted="showLast"
-		/>
+		>
+			<template v-slot="{ content, onSubmit, onInput }">
+				<discussion-editor :content="content" :on-submit="onSubmit" @input="onInput"/>
+			</template>
+		</input-h-o-c>
 
 		<component
 			:is="$mediaQuery.match('mobile') ? 'ScrollPagingView' : 'ButtonPagingView'"
@@ -61,6 +66,7 @@ import api from "../../api";
 import DiscussionEditor from "./DiscussionEditor.vue";
 import DiscussionItem from "./DiscussionItem.vue";
 import AtomSpinner from "epic-spinners/src/components/lib/AtomSpinner.vue";
+import InputHOC from "@/components/discussion/InputHOC";
 
 const ALL_SORTS = [
 	{ label: "最新", value: "id,DESC" },
@@ -71,6 +77,7 @@ const ALL_SORTS = [
 export default {
 	name: "DiscussionSection",
 	components: {
+		InputHOC,
 		DiscussionItem,
 		DiscussionEditor,
 		AtomSpinner,
@@ -115,13 +122,9 @@ export default {
 				this.$refs.discussions.switchToLast();
 			}
 		},
-		submitDiscussion(text) {
-			return api.discuss.add(this.objectId, this.type, text);
-		},
 		handleReplyStart(id) {
 			this.replying = id;
 		},
-
 		/** 初始化，加载配置信息和第一页，完成时切换加载指示器到列表 */
 		initialize() {
 			const tasks = [

@@ -14,14 +14,17 @@
 		</header>
 
 		<div :class="$style.body">
+
 			<discussion-content
 				:value="value"
 				tag="div"
 				class="segment"
 				:class="$style.item"
 			/>
+
 			<scroll-paging-view
-				v-model="replies"
+				v-model="pageData"
+				:start="value.replies.length"
 				:loader="loadNext"
 				:auto-load="true"
 			>
@@ -37,10 +40,22 @@
 			</scroll-paging-view>
 		</div>
 
-		<div :class="$style.input_footer">
-			<textarea :value="inputData" :class="$style.input" @input="fit"></textarea>
-			<kx-button class="primary" @click="publish">发送</kx-button>
-		</div>
+		<input-h-o-c
+			:type="value.type"
+			:object-id="value.objectId"
+			:parent="value.id"
+			:class="$style.input_footer"
+			@submitted="submitted"
+		>
+			<template v-slot="{ content, onSubmit, onInput }">
+				<textarea
+					:class="$style.input"
+					:value="content"
+					v-ime-input="e => fit(e, onInput)"
+				/>
+				<kx-button class="primary" @click="onSubmit">发送</kx-button>
+			</template>
+		</input-h-o-c>
 	</div>
 </template>
 
@@ -48,10 +63,12 @@
 import api from "../../api";
 import DiscussionContent from "./DiscussionContent";
 import { PreventScrollMixin } from "kx-ui";
+import InputHOC from "@/components/discussion/InputHOC";
 
 export default {
 	name: "ReplyFrame",
 	components: {
+		InputHOC,
 		DiscussionContent,
 	},
 	mixins: [PreventScrollMixin],
@@ -61,21 +78,25 @@ export default {
 			required: true,
 		},
 	},
-	data: () => ({
-		replies: null,
-		inputData: "",
-	}),
+	data() {
+		const pageData = {
+			items: this.value.replies.slice(),
+			total: this.value.replyCount,
+		};
+		return { pageData };
+	},
 	methods: {
 		loadNext(start, count) {
 			return api.discuss.getReplies(this.value.id, start, count);
 		},
-		fit(event) {
+		fit(event, updater) {
 			const el = event.target;
 			el.style.height = "";
 			el.style.height = el.scrollHeight + "px";
+			updater(el.value);
 		},
-		publish() {
-
+		submitted(entity) {
+			this.pageData.items.push(entity);
 		},
 	},
 };
@@ -132,6 +153,7 @@ export default {
 
 	min-height: 0;
 	max-height: 30px; // HACK
+	font-size: 14px;
 	padding: .5rem;
 	margin-right: 10px;
 	border: none;

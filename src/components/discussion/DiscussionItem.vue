@@ -30,13 +30,17 @@
 
 			<input-h-o-c
 				v-if="replying === value.id"
-				:component="$options.components.DiscussionEditor"
 				:type="value.type"
 				:object-id="value.objectId"
 				:parent="value.id"
 				:class="$style.input"
 				@submitted="submitReply"
-			/>
+			>
+				<template v-slot="{ content, onSubmit, onInput }">
+					<discussion-editor :content="content" :on-submit="onSubmit" @input="onInput"/>
+				</template>
+			</input-h-o-c>
+
 		</template>
 	</discussion-content>
 </template>

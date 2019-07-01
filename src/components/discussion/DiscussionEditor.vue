@@ -14,13 +14,14 @@
 			<span :class="$style.name">{{user.name}}</span>
 		</div>
 
+		<!--suppress CheckEmptyScriptTag 什么垃圾IDE支持 -->
 		<textarea
-			class='input'
-			:class="$style.textarea"
 			:value="content"
 			placeholder='说点什么吧'
-			v-input-fix="$event => $emit('input', $event.target.value)">
-		</textarea>
+			class='input'
+			:class="$style.textarea"
+			v-ime-input="event => $emit('input', event.target.value)"
+		/>
 
 		<div :class='$style.bottom_toolbar'>
 			<span v-if="options.moderation" class="minor-text">
@@ -40,29 +41,8 @@
 <script>
 import { mapState } from "vuex";
 
-/**
- * 类似 input 事件，额外处理了输入法问题。
- * 输入法再未上屏时的字符（如拼音）也算作元素的内容并触发 input 事件，使用该指令来监听可以避免这个问题。
- */
-function inputFix(el, binding) {
-	let completed = true;
-	el.addEventListener("compositionstart", () => {
-		completed = false;
-	});
-	el.addEventListener("compositionend", (event) => {
-		completed = true;
-		binding.value(event);
-	});
-	el.addEventListener("input", (event) => {
-		completed && binding.value(event);
-	});
-}
-
 export default {
 	name: "DiscussEditor",
-	directives: {
-		inputFix: { inserted: inputFix },
-	},
 	props: {
 		content: {
 			type: String,

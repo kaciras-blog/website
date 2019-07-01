@@ -1,11 +1,8 @@
+<!-- 这个组件没有样式，只是封装数据，但Vue2就是没有Hooks只能用这种丑陋的写法 -->
 <template>
-	<component
-		:is="component"
-		:content="content"
-		:onSubmit="submit"
-		@input="handleInput"
-		@submit="submit"
-	/>
+	<div>
+		<slot :content="content" :onSubmit="submit" :onInput="handleInput"/>
+	</div>
 </template>
 
 <script>
@@ -15,10 +12,6 @@ import { errorMessage } from "../../utils";
 export default {
 	name: "InputHOC",
 	props: {
-		component: {
-			type: Object,
-			required: true,
-		},
 		type: {
 			type: Number,
 			required: true,
@@ -33,13 +26,13 @@ export default {
 		},
 	},
 	data() {
-		const key = `DIS_${this.type}_${this.objectId}`;
+		const key = `DIS_${this.type}_${this.objectId}_${this.parent}`;
 		const cached = localStorage.getItem(key) || "";
 		return { key, content: cached, snapshot: cached };
 	},
 	methods: {
+		// 想当年高中作文格子一行20个字
 		handleInput(newContent) {
-			console.log(newContent);
 			if (newContent.length - this.snapshot.length > 20) {
 				this.snapshot = newContent;
 				localStorage.setItem(this.key, newContent);
