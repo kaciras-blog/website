@@ -31,9 +31,11 @@ export default {
 		return { key, content: cached, snapshot: cached };
 	},
 	methods: {
-		// 想当年高中作文格子一行20个字
 		handleInput(newContent) {
-			if (newContent.length - this.snapshot.length > 20) {
+			// 想当年高中试卷，作文格子一行20个字
+			if (newContent.length === 0) {
+				localStorage.removeItem(this.key);
+			} else if (newContent.length - this.snapshot.length > 20) {
 				this.snapshot = newContent;
 				localStorage.setItem(this.key, newContent);
 			}
