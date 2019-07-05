@@ -48,10 +48,10 @@ export default {
 				return; // 没写评论就按发表按钮
 			}
 			try {
-				const entry = await api.discuss.add(objectId, type, parent, content);
+				const entity = await api.discuss.add(objectId, type, parent, content);
 				this.content = "";
 				localStorage.removeItem(key);
-				this.$emit("submitted", entry);
+				this.$emit("submitted", entity);
 			} catch (e) {
 				this.$dialog.alertError("发表失败", errorMessage(e));
 			}
