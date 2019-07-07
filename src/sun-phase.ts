@@ -1,5 +1,9 @@
 import { Observable } from "rxjs";
 
+/**
+ * 定义太阳阶段，以名称为键，一天之内的起始小时为值。
+ * TODO: 目前仅支持小时，以后再考虑更精确的日期
+ */
 export interface SunPhases {
 	[key: string]: number;
 }
@@ -22,7 +26,13 @@ function getInitialPhase(breakPoints: number[], date: Date) {
 	throw new Error("小时最大23，一定小于最后一个元素");
 }
 
-
+/**
+ * 该函数应当在客户端调用，返回一个可观察对象，根据当前时间来推送各个阶段。
+ * 订阅后将立即触发一次当前的阶段，此后在各阶段相应的时间到达时触发，该订阅一直有效不会结束。
+ *
+ * @param phases 太阳阶段的定义
+ * @param date 当前时间，测试用
+ */
 export function observeSunPhases(phases: SunPhases, date = new Date()) {
 	const entries = Object.entries(phases);
 	if (!entries.length) {

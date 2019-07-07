@@ -1,9 +1,22 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import api from "../api";
-import { REFRESH_USER, REMOVE_USER, SET_PREFETCH_DATA, SET_USER } from "./types";
+import { REFRESH_USER, REMOVE_USER, SET_PREFETCH_DATA, SET_USER, SET_SUN_PHASE } from "./types";
 
 Vue.use(Vuex);
+
+/**
+ * 定义几个时间阶段：7-11 黎明，11-16 白天, 16 - 20 黄昏，20 - 7 夜晚。
+ *
+ * 这些时间并不准确，因为昼夜的长短还与纬度有关。应当通过太阳角度公式来计算，但是在浏览器里获取
+ * 用户的位置信息并不方便，使用 navigator.geolocation 需要授权，为了这个功能去请求权限不划算。
+ */
+export const SUN_PHASES = {
+	Dawn: 7,
+	Daytime: 11,
+	Dusk: 16,
+	Night: 20,
+};
 
 export default function createVuexStore() {
 	return new Vuex.Store({
@@ -11,6 +24,7 @@ export default function createVuexStore() {
 			user: undefined,
 			prefetch: {},
 			discussionOptions: undefined,
+			sunPhase: "Daytime",
 		},
 		actions: {
 			async [REFRESH_USER]({ commit }, prototype) {
@@ -33,6 +47,7 @@ export default function createVuexStore() {
 			setDiscussionOptions: (state, data) => state.discussionOptions = data,
 			[SET_USER]: (state, info) => state.user = info,
 			[SET_PREFETCH_DATA]: (state, data) => state.prefetch = data,
+			[SET_SUN_PHASE]: (state, value) => state.sunPhase = value,
 		},
 	});
 }
