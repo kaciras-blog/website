@@ -2,13 +2,32 @@
 	<base-page-layout>
 
 		<!-- 经过1小时的尝试仍未能做到模糊层背景定位，已放弃 -->
-		<template v-slot:nav>
-			<top-nav-glass :class="$style.nav"/>
+		<template #nav>
+			<top-nav-glass :class="navClass"/>
 		</template>
 
-		<section :class="$style.banner">
-			<h1>Kaciras' Blog</h1>
-			<p :class="$style.sub_title">程序 • 生活 • 梦想</p>
+		<section :class="$style.banner" :style="{ backgroundImage: `url(${banner})` }">
+			<transition
+				:enter-class="$style.enter_before"
+				:enter-active-class="$style.active_enter"
+				@after-enter="replaceBackground"
+			>
+				<div
+					v-if="transitionImage"
+					class="full-vertex"
+					:class="$style.banner"
+					:style="{ backgroundImage: `url(${transitionImage})` }"
+				/>
+			</transition>
+
+			<div
+				class="full-vertex"
+				:class="this.$style.banner_content"
+				:style="titleStyle"
+			>
+				<h1 @click="test">Kaciras' Blog</h1>
+				<p :class="$style.sub_title">程序 • 生活 • 梦想</p>
+			</div>
 		</section>
 
 		<blog-section :class="$style.blog"/>
@@ -16,20 +35,65 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+import { attachRandomId } from "@/utils";
+import api from "@/api";
 import BlogSection from "./BlogSection";
-import api from "../../api";
-import { attachRandomId } from "../../utils";
+import FriendsSection from "./FriendsSection";
+
+const BANNER_MAP = {
+	Dawn: require("../../assets/img/IndexBannerDawn.png"),
+	Daytime: require("../../assets/img/IndexBannerLight.png"),
+	Dusk: require("../../assets/img/IndexBannerDusk.png"),
+	Night: require("../../assets/img/IndexBannerNight.png"),
+};
 
 export default {
 	name: "IndexPage",
 	components: {
+		FriendsSection,
 		BlogSection,
 	},
 	asyncData(session) {
-		return api.recommend.getCards()
-			.then(slides => session.data.slides = slides.map(attachRandomId));
+		return api.recommend.getCards().then(slides => session.data.slides = slides.map(attachRandomId));
+	},
+	data() {
+		return {
+			transitionImage: null,
+			banner: BANNER_MAP[this.$store.state.sunPhase],
+		};
+	},
+	computed: {
+		navClass() {
+			if (this.sunPhase === "Night") {
+				return [this.$style.nav, "dark"];
+			}
+			return [this.$style.nav];
+		},
+		titleStyle() {
+			return this.sunPhase === "Night" && { color: "deeppink" };
+		},
+		...mapState(["sunPhase"]),
+	},
+	methods: {
+		replaceBackground() {
+			this.banner = this.transitionImage;
+			this.transitionImage = null;
+		},
+		switchBanner(nv) {
+			this.transitionImage = BANNER_MAP[nv];
+		},
+		test() {
+			index = index < 4 ? index++ : 0;
+			this.$store.commit("SET_SUN_PHASE", testD[index++]);
+		},
+	},
+	beforeMount() {
+		this.$store.watch((state) => state.sunPhase, this.switchBanner);
 	},
 };
+const testD = Object.keys(BANNER_MAP);
+let index = 0;
 </script>
 
 <style module lang="less">
@@ -45,17 +109,26 @@ export default {
 }
 
 .banner {
-	padding-top: 35vh;
 	height: 100vh;
-
-	text-align: center;
-
-	background-image: url("../../assets/img/68079722.jpg");
-	background-size: cover;
 	background-position: center bottom;
+	background-size: cover;
+}
+
+.active_enter {
+	transition: opacity 1s linear;
+}
+
+.enter_before {
+	opacity: 0;
+}
+
+.banner_content {
+	padding: 35vh 30px 0;
+	text-align: center;
 
 	& > h1 {
 		font-size: 5rem;
+		margin-bottom: 40px;
 	}
 }
 
@@ -65,6 +138,9 @@ export default {
 
 .blog {
 	padding: 0 5vw;
-	margin-bottom: 60px;
+}
+
+.friends {
+	padding: 60px 5vw;
 }
 </style>

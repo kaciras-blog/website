@@ -1,37 +1,42 @@
 <template>
 	<section>
-
 		<header :class="$style.header">
 			<h1 :class="$style.title">文章</h1>
 			<router-link
 				to="/list"
 				class="outline primary kx-btn"
 			>
-				更多文章 >
+				还有更多 >
 			</router-link>
 		</header>
 
-		<ul v-if="slides"
-			class="clean-list"
-			:class="$style.card_list"
-		>
-			<li v-for="card of slides"
+		<!-- 因为 figure 也是单个容器元素，懒得再套一层 li 了，所以没用 ul -->
+		<div v-if="slides.length" :class="$style.card_list">
+			<auto-link
+				v-for="card of slides"
 				:key="card.randomId"
+				:href="card.link"
+				class="clean-link"
+				:class="$style.card_link"
 			>
-				<auto-link
-					:href="card.link"
-					class="clean-link"
-				>
-					<post-card v-bind="card"/>
-				</auto-link>
-			</li>
-		</ul>
+				<figure :class="$style.figure">
+					<img
+						:src="card.picture"
+						alt="封面"
+						:class="$style.image"
+					>
+					<figcaption :class="$style.content">
+						<h2>{{card.name}}</h2>
+						<span class="loose">{{card.description}}</span>
+					</figcaption>
+				</figure>
+			</auto-link>
+		</div>
 
 	</section>
 </template>
 
 <script>
-import PostCard from "./PostCard";
 import { mapState } from "vuex";
 import AutoLink from "./AutoLink";
 
@@ -39,7 +44,6 @@ export default {
 	name: "BlogSection",
 	components: {
 		AutoLink,
-		PostCard,
 	},
 	computed: mapState({
 		slides: state => state.prefetch.slides,
@@ -58,8 +62,8 @@ export default {
 }
 
 .title {
-	font-size: 30px;
 	margin: 0;
+	font-size: 30px;
 }
 
 .card_list {
@@ -77,6 +81,37 @@ export default {
 }
 
 @media screen and (max-width: @length-screen-mobile) {
-	.card_list > li { width: 100%; }
+	.card_link {
+		width: 100%;
+		max-width: 500px;
+	}
+}
+
+.figure {
+	margin: 0;
+
+	border-radius: 8px;
+	box-shadow: 0 2px 3px rgba(10, 10, 10, .1),
+	0 0 0 1px rgba(10, 10, 10, .1);
+	font-size: 16px;
+	overflow: hidden;
+
+	@media screen and (min-width: @length-screen-mobile) {
+		width: 320px;
+		height: 480px;
+	}
+}
+
+.image {
+	width: 100%;
+	height: 250px;
+
+	@media screen and (max-width: @length-screen-mobile) {
+		height: 65vw;
+	}
+}
+
+.content {
+	padding: 20px;
 }
 </style>
