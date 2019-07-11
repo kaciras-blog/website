@@ -21,8 +21,7 @@
 			</transition>
 
 			<div
-				class="full-vertex"
-				:class="this.$style.banner_content"
+				:class="$style.banner_content"
 				:style="titleStyle"
 			>
 				<h1 @click="test">Kaciras' Blog</h1>
@@ -123,8 +122,13 @@ let index = 0;
 }
 
 .banner_content {
-	padding: 35vh 30px 0;
+	position: absolute;
+	top: 34vh;
+	left: 30px;
+	right: 30px;
+
 	text-align: center;
+	transition: all 1s cubic-bezier(.25, .7, .7, .8);
 
 	& > h1 {
 		font-size: 5rem;
