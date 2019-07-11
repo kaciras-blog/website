@@ -51,13 +51,15 @@ export default {
 	composes: full-vertex from global;
 	position: fixed;
 	z-index: 1000;
-	background: rgba(0, 0, 0, .4);
+	background: rgba(0, 0, 0, .6);
+	will-change: background-color;
 }
 
 .navMenu {
 	max-width: 400px;
 	width: 68vw;
 	height: 100vh;
+	will-change: transform;
 }
 
 .enter_before {
