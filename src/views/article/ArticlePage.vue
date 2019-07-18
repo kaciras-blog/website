@@ -30,13 +30,15 @@
 			<kx-button
 				class="primary outline"
 				title="转到评论区"
-				@click="gotoDiscuss">
+				@click="gotoDiscuss"
+			>
 				<i class="far fa-comments"></i>
 			</kx-button>
 			<kx-button
 				class="primary outline"
 				title="回顶部"
-				@click="gotoTop">
+				@click="gotoTop"
+			>
 				<i class="fas fa-chevron-up"></i>
 			</kx-button>
 		</div>
