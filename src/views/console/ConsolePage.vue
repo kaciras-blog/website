@@ -19,7 +19,7 @@
 			</ul>
 		</aside>
 		<main :class="$style.body_wrapper">
-			<component :is="active" :class="$style.body"/>
+			<keep-alive><component :is="active" :class="$style.body"/></keep-alive>
 		</main>
 	</div>
 </template>
