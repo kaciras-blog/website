@@ -109,10 +109,6 @@ export default {
 
 .ops {
 	grid-area: buttons;
-
-	& > .kx-btn {
-		display: block;
-	}
 }
 
 .info {
