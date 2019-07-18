@@ -76,10 +76,15 @@ export default {
 	},
 	methods: {
 		replaceBackground() {
+			this.$_lock = false;
 			this.banner = this.transitionImage;
 			this.transitionImage = null;
 		},
 		switchBanner(nv) {
+			if (this.$_lock) {
+				return;
+			}
+			this.$_lock = true;
 			this.transitionImage = BANNER_MAP[nv];
 		},
 		test() {
