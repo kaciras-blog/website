@@ -30,6 +30,7 @@
 		</section>
 
 		<blog-section :class="$style.blog"/>
+		<friends-section :class="$style.friends"/>
 	</base-page-layout>
 </template>
 
@@ -41,7 +42,7 @@ import BlogSection from "./BlogSection";
 import FriendsSection from "./FriendsSection";
 
 const BANNER_MAP = {
-	Dawn: require("../../assets/img/IndexBannerDawn.png"),
+	Dawn: require("../../assets/img/IndexBannerDawn.png?size=IndexBannerMobile"),
 	Daytime: require("../../assets/img/IndexBannerLight.png"),
 	Dusk: require("../../assets/img/IndexBannerDusk.png"),
 	Night: require("../../assets/img/IndexBannerNight.png"),
@@ -54,7 +55,10 @@ export default {
 		BlogSection,
 	},
 	asyncData(session) {
-		return api.recommend.getCards().then(slides => session.data.slides = slides.map(attachRandomId));
+		return Promise.all([
+			api.recommend.getCards().then(slides => session.data.slides = slides.map(attachRandomId)),
+			api.friend.getFriends().then(friends => session.data.friends = friends.map(attachRandomId)),
+		]);
 	},
 	data() {
 		return {
