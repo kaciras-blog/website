@@ -320,10 +320,33 @@ class ConfigApi extends AbstractApi {
 	}
 }
 
+interface FriendLink {
+	name: string;
+	url: string;
+	favicon: string;
+}
+
+class FriendApi extends AbstractApi {
+
+	getFriends() {
+		return this.mainServer.get("/friends").then(r => r.data);
+	}
+
+	makeFriends(link: FriendLink){
+		return this.mainServer.post("/friends", link).then(r => r.data);
+	}
+
+	rupture(link: FriendLink) {
+		const host = new URL(link.url).hostname;
+		return this.mainServer.delete("/friends/" + host);
+	}
+}
+
 BasicApiFactory.registerApi("article", ArticleApi);
 BasicApiFactory.registerApi("draft", DraftApi);
 BasicApiFactory.registerApi("category", CategoryApi);
 BasicApiFactory.registerApi("discuss", DiscussApi);
+BasicApiFactory.registerApi("friend", FriendApi);
 BasicApiFactory.registerApi("user", UserApi);
 BasicApiFactory.registerApi("config", ConfigApi);
 BasicApiFactory.registerApi("recommend", RecommendApi);
@@ -335,6 +358,7 @@ interface ApiSet extends BasicApiFactory {
 	draft: DraftApi;
 	category: CategoryApi;
 	discuss: DiscussApi;
+	friend: FriendApi;
 	user: UserApi;
 	config: ConfigApi;
 	recommend: RecommendApi;
