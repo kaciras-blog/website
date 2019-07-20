@@ -33,9 +33,9 @@
 </template>
 
 <script>
-import api from "../../api";
+import api from "@/api";
 import AuthTypeTag from "./AuthTypeTag";
-import AvatarCropper from "./AvatarCropper";
+import ImageCropper from "@/components/ImageCropper";
 import { errorMessage } from "../../utils";
 
 export default {
@@ -48,9 +48,10 @@ export default {
 	},
 	methods: {
 		async editHead() {
-			const result = await this.$dialog.show(AvatarCropper);
-			if (result.isConfirm)
-				this.user.head = result.data;
+			const result = await this.$dialog.show(ImageCropper, { width: 300, height: 300, circle: true });
+			if (result.isConfirm) {
+				this.user.head = await api.misc.uploadImage(result.data);
+			}
 		},
 		async save() {
 			try {
