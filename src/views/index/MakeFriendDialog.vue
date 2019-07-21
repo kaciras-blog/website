@@ -1,13 +1,12 @@
 <template>
 	<kx-base-dialog title="友链信息">
 
-		<div :class="$style.favicon_group">
-			<img :src="favicon" alt="favicon" :class="$style.favicon">
-			<div class="vertical-btn-group">
-				<kx-button>上传</kx-button>
-				<kx-button @click="fetchFavicon">自动采集</kx-button>
-			</div>
-		</div>
+		<img
+			:src="favicon"
+			alt="网站图标"
+			:class="$style.favicon"
+			@click="uploadFavicon"
+		>
 
 		<label :class="$style.material">
 			<span :class="$style.material_label">网址</span>
@@ -31,6 +30,19 @@
 </template>
 
 <script>
+import { openFile } from "kx-ui";
+import api from "@/api";
+import ImageCropper from "@/components/ImageCropper";
+
+function blobToString(blob) {
+	return new Promise((resolve, reject) => {
+		const reader = new FileReader();
+		reader.onloadend = () => resolve(reader.result);
+		reader.onerror = reject;
+		reader.readAsDataURL(blob);
+	});
+}
+
 export default {
 	name: "MakeFriendDialog",
 	data: () => ({
@@ -39,12 +51,14 @@ export default {
 		favicon: "/image/placeholder.png",
 	}),
 	methods: {
-		async fetchFavicon() {
-			if (!this.url) {
-				alert("请先填写目标网址的地址");
+		async uploadFavicon() {
+			let favicon = (await openFile(false, "image/*"))[0];
+			const src = await blobToString(favicon);
+			const cropping = await this.$dialog.show(ImageCropper, { width: 300, height: 300, initialImage: src });
+			if (cropping.isConfirm) {
+				favicon = cropping.data;
 			}
-			const res = await fetch(this.url);
-			this.favicon = await res.blob();
+			this.favicon = await api.misc.uploadImage(favicon);
 		},
 	},
 };
@@ -60,19 +74,16 @@ export default {
 	}
 }
 
-.favicon_group {
-	display: flex;
-}
-
 .favicon {
-	width: 150px;
-	height: 150px;
-	margin-right: 20px;
+	display: block;
+	width: 160px;
+	height: 160px;
+	margin: 0 auto;
+	cursor: pointer;
 }
 
 .material_label {
 	display: block;
-	color: #929292;
 	transition: all .2s ease;
 }
 
@@ -89,7 +100,7 @@ export default {
 	transition: all .2s ease;
 
 	&:focus {
-		border-bottom-color: #2f91ff;
+		border-bottom-color: #1175ff;
 	}
 }
 </style>
