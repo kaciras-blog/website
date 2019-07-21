@@ -1,25 +1,33 @@
 <template>
 	<section>
 		<h1>友情链接</h1>
-		<ul class="clean-list">
-
-			<li v-for="item of friends"
+		<ul class="clean-list" :class="$style.list">
+			<li
+				v-for="item of friends"
 				:key="item.randomId"
+			>
+				<a :href="item.url" :class="$style.item">
+					<img
+						:src="item.favicon"
+						alt="favicon"
+						:class="$style.favicon"
+					>
+					<div :class="$style.name">{{item.name}}</div>
+				</a>
+			</li>
+
+			<li
+				v-if="user.id === 2"
 				:class="$style.item"
 			>
-				<img :src="item.favicon" alt="favicon">
-				{{item.name}}
-			</li>
-			<!--<li :class="$style.cell"></li>-->
-			<!--<li :class="$style.cell"></li>-->
-			<!--<li :class="$style.cell"></li>-->
-			<!--<li :class="$style.cell"></li>-->
-			<!--<li :class="$style.cell"></li>-->
-			<li  @click="makeFriends">
-				<svg class="svg-grid" style="width: 64px; height: 83.1384px; background-color: rgb(102, 102, 102);">
-					<polygon points="16,0 48,0 64,28 48,56 16,56 0,28" class="svg-cell"
-							 style="fill: rgb(255, 255, 255); stroke: rgb(51, 51, 51); stroke-width: 1px;"></polygon>
-				</svg>
+				<img
+					src="../../assets/img/hexagon-add.svg"
+					alt="添加友链"
+					title="添加友链"
+					role="button"
+					:class="$style.hexagon_add"
+					@click="makeFriends"
+				>
 			</li>
 		</ul>
 	</section>
@@ -28,12 +36,14 @@
 <script>
 import api from "@/api";
 import MakeFriendDialog from "@/views/index/MakeFriendDialog";
+import { mapState } from "vuex";
 
 export default {
 	name: "FriendsSection",
 	data() {
 		return { friends: this.$store.state.prefetch.friends };
 	},
+	computed: mapState(["user"]),
 	methods: {
 		async makeFriends() {
 			const result = await this.$dialog.show(MakeFriendDialog);
@@ -47,30 +57,40 @@ export default {
 };
 </script>
 
-<style lang="less">
-.svg-grid {
-	background-color: #666;
-}
-
-.svg-cell {
-	fill: #fff;
-	stroke: #666;
-	stroke-width: 1;
-}
-
-.svg-cell:focus {
-	outline: none;
-}
-
-.svg-cell:hover {
-	fill: #ff0000;
-}
-</style>
-
 <style module lang="less">
+.list {
+	display: flex;
+	flex-wrap: wrap;
+}
+
 .item {
-	width: 200px;
-	height: 200px;
-	padding: 32px;
+	composes: clean-link from global;
+	display: block;
+	padding: 20px;
+}
+
+.favicon {
+	width: 120px;
+	height: 120px;
+}
+
+.name {
+	width: 120px;
+	padding: 10px 0;
+
+	font-size: 16px;
+	text-align: center;
+	word-wrap: break-word;
+}
+
+.hexagon_add {
+	width: 120px;
+	height: 120px;
+
+	opacity: .15;
+	cursor: pointer;
+	transition: opacity .3s ease;
+
+	&:hover, &:active { opacity: .8; }
 }
 </style>

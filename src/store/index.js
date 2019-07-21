@@ -33,9 +33,13 @@ export default function createVuexStore() {
 					commit(SET_USER, res.data);
 				}
 			},
+
+			// 不要设为null，未登录用ID=0表示
 			[REMOVE_USER]({ commit }) {
-				return api.user.logout().then(() => commit(SET_USER, null));
+				const guest = { id: 0, name: "(游客)" };
+				return api.user.logout().then(() => commit(SET_USER, guest));
 			},
+
 			loadOptions({ commit, state }) {
 				if (typeof state.discussionOptions !== "undefined") {
 					return;
