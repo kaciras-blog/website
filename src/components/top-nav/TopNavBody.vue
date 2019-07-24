@@ -6,26 +6,30 @@
 		</router-link>
 
 		<!-- 手机屏的折叠菜单 -->
-		<button
-			v-if="$mediaQuery.match('mobile')"
-			title="弹出菜单"
-			class="nav-item nav-right"
-			@click="showMenu"
-		>
-			<i class="fas fa-bars"></i>
-		</button>
+		<template v-if="$mediaQuery.match('mobile')">
+			<button
+				title="弹出菜单"
+				class="nav-item nav-right"
+				@click="showNavMenu = true"
+			>
+				<i class="fas fa-bars"></i>
+			</button>
+			<nav-menu-frame v-model="showNavMenu"/>
+		</template>
 
-		<!-- 宽屏直接把按钮显示在上面 -->
+		<!-- 宽屏直接把按钮都显示在上面 -->
 		<div v-else class="nav-right">
 
 			<template v-if="user && user.id > 0">
 
 				<router-link to="/profile">
-					<img :src="user.head"
-						 alt="用户头像"
-						 title="就是一个头像而已"
-						 class="small head"
-						 :class="$style.head">
+					<img
+						:src="user.head"
+						alt="用户头像"
+						title="就是一个头像而已"
+						class="small head"
+						:class="$style.head"
+					>
 				</router-link>
 
 				<router-link
@@ -51,7 +55,15 @@ import NavMenuFrame from "./NavMenuFrame";
 
 export default {
 	name: "TopNavBody",
-	props: { tag: String },
+	components: {
+		NavMenuFrame,
+	},
+	props: {
+		tag: String,
+	},
+	data: () => ({
+		showNavMenu: false,
+	}),
 	computed: mapState(["user"]),
 	methods: {
 		showMenu() {
