@@ -42,7 +42,7 @@ export default {
 			if (value === oldValue) {
 				return;
 			}
-			this.$_restoreScroll = value ? preventScroll() : this.$_restoreScroll();
+			this.$_scroll = value ? preventScroll() : this.$_scroll();
 		},
 	},
 };
@@ -53,30 +53,24 @@ export default {
 	composes: full-vertex from global;
 	position: fixed;
 	z-index: 1000;
-	background: rgba(0, 0, 0, .6);
-	will-change: background-color;
+	background: rgba(0, 0, 0, .5);
 }
 
 .navMenu {
 	max-width: 400px;
 	width: 68vw;
 	height: 100vh;
-	will-change: transform;
 }
 
-.enter_before {
-	background: rgba(0, 0, 0, 0);
-
-	& > .navMenu {
-		transform: translateX(-100%);
-	}
+.enter_before > .navMenu {
+	transform: translateX(-100%);
 }
 
 .active_enter, .active_enter > .navMenu {
-	transition: .2s ease-in;
+	transition: .3s;
 }
 
 .active_leave, .active_leave > .navMenu {
-	transition: .2s linear;
+	transition: .3s linear;
 }
 </style>

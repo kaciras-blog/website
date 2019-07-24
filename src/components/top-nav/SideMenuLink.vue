@@ -13,7 +13,7 @@
 <style module lang="less">
 .link {
 	display: block;
-	padding: 12px 20px;
+	padding: 12px 0;
 
 	&:hover, &:focus {
 		background-color: rgba(0, 0, 0, .05);
@@ -21,6 +21,6 @@
 }
 
 .icon {
-	margin-right: 2pc;
+	margin: 0 1pc;
 }
 </style>

@@ -34,6 +34,6 @@ export default {
 	position: sticky;
 	top: 0;
 	box-shadow: 0 3px 2px 0 rgba(0, 0, 0, 0.05);
-	z-index: 100;
+	z-index: 90; // 比TopNav小一点
 }
 </style>
