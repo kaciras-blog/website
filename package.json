@@ -1,9 +1,9 @@
 {
-	"name": "@kaciras/blog",
-	"version": "10.0.0",
-	"description": "Kaciras Blog WebSite V10. created at: 2018-11-8",
+	"name": "@kaciras-blog/web",
+	"version": "1.0.0",
+	"description": "Kaciras Blog web pages",
+	"license": "MIT",
 	"author": "Kaciras <kaciras@outlook.com>",
-	"private": true,
 	"scripts": {
 		"lint": "eslint --fix --ext .js,.vue src",
 		"test": "jest",
