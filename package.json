@@ -46,7 +46,7 @@
 		"@babel/plugin-transform-runtime": "^7.6.0",
 		"@babel/preset-env": "^7.6.0",
 		"@babel/runtime": "^7.6.0",
-		"@fortawesome/fontawesome-free": "^5.8.2",
+		"@fortawesome/fontawesome-free": "^5.11.2",
 		"@kaciras-blog/devtool": "file:../WebServer/packages/devtool",
 		"@sentry/browser": "5.6.3",
 		"@sentry/integrations": "^5.6.1",
