@@ -73,7 +73,10 @@ module.exports = {
 	/** 开发服务器的配置项 */
 	dev: {
 
-		/** 是否使用 webpack-hot-client，如果为 false 则使用传统的 webpack-hot-middleware */
+		/**
+		 * 热重载中间件的选择，如果为 false 则使用传统的 webpack-hot-middleware，
+		 * true 或未指定则使用 webpack-hot-client。
+		 */
 		useHotClient: false,
 	},
 
