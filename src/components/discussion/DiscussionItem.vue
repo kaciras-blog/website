@@ -51,7 +51,7 @@ import DiscussionEditor from "./DiscussionEditor.vue";
 import api from "../../api";
 import ReplyFrame from "./ReplyFrame";
 import ReplyList from "./ReplyList";
-import { debounceFirst } from "kx-ui";
+import { debounceFirst } from "@kaciras-blog/common/functions";
 import InputHOC from "@/components/discussion/InputHOC";
 
 export default {
