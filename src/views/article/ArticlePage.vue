@@ -102,21 +102,19 @@ export default {
 			.article.get(id)
 			.then(session.dataSetter("article"));
 
-		// 检查URL中的标题，不正确则重定向到正确的URL
+		// 检查URL中的标题，不正确则重定向到正确的 URL，这里直接抛出对象不知道好不好
 		const correctUrlTitle = session.data.article.urlTitle;
 		if (!urlTitle || urlTitle !== correctUrlTitle) {
 			throw { code: 301, location: `/article/${id}/${correctUrlTitle}` };
 		}
 	},
-	computed: {
-		...mapState({ article: state => state.prefetch.article }),
-	},
+	computed: mapState({ article: state => state.prefetch.article }),
 	methods: {
-		gotoDiscuss() {
-			scrollToElementStart(this.$refs.discussionSection.$el);
-		},
 		gotoTop() {
 			scrollToElementStart(document.documentElement);
+		},
+		gotoDiscuss() {
+			scrollToElementStart(this.$refs.discussionSection.$el);
 		},
 	},
 };
