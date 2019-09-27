@@ -3,8 +3,8 @@
 	<main v-bind="data.attrs"
 		  :class="[data.class, data.staticClass]"
 		  :style="[data.style, data.staticStyle]"
-		  v-on="listeners">
-
+		  v-on="listeners"
+	>
 		<slot name="nav">
 			<top-nav :class="props.navClass" :style="props.navStyle"/>
 		</slot>

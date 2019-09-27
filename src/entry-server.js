@@ -37,11 +37,17 @@ function onReadyAsync(router) {
 	return new Promise((resolve, reject) => router.onReady(resolve, reject));
 }
 
+/**
+ * 简单地通过 User-Agent 判断客户端的设备是不是手机
+ *
+ * @param userAgent User-Agent
+ * @return {boolean} 如果是手机返回true，否则false
+ */
 function isMobile(userAgent) {
 	return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
 }
 
-export default async context => {
+export default async (context) => {
 	if (context.shellOnly || /^\/edit\//.test(context.url)) {
 		return new Vue({ render: h => h("div", { attrs: { id: "app" } }) });
 	}
@@ -96,7 +102,7 @@ export default async context => {
 		context.title = title + " - Kaciras的博客";
 		context.meta = "<meta name='description' content='Kaciras个人博客'>";
 	}
-
 	context.state = store.state;
+
 	return vue;
 };
