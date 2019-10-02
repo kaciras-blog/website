@@ -45,6 +45,15 @@ export default {
 			this.$_scroll = value ? preventScroll() : this.$_scroll();
 		},
 	},
+	// 处理因外层组件销毁导致没还原滚动的问题
+	mounted() {
+		if(this.show) {
+			this.$_scroll = preventScroll();
+		}
+	},
+	destroyed() {
+		this.$_scroll && this.$_scroll();
+	},
 };
 </script>
 
