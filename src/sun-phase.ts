@@ -1,37 +1,60 @@
 import { Observable } from "rxjs";
 
 /**
- * 定义太阳阶段，以名称为键，一天之内的起始小时为值。
+ * 定义太阳位置，以名称为键，一天之内的起始小时为值。
+ * 太阳位置是循环的，一天的最后一个结束后将从下一天的第一个开始。
  * TODO: 目前仅支持小时
  */
 export interface SunPhasePoints {
 	[key: string]: number;
 }
 
+/**
+ * 提供对太阳位置查询的类，太阳位置所对应的时间由用户定义，该类对其进行封装，
+ * 提供查询和自动监听变化等功能。
+ */
 export class SunPhases {
 
-	private readonly array: ReadonlyArray<readonly [string, number]>;
+	private readonly names: string[];
+	private readonly points: number[];
 
 	constructor(breakPoints: SunPhasePoints) {
-		const array = this.array = Object.entries(breakPoints);
+		const array = Object.entries(breakPoints);
 		if (array.length === 0) {
 			throw new Error("Empty sun phases");
 		}
 		array.sort((a, b) => a[1] - b[1]);
+		array.push([array[0][0], 24 + array[0][1]]);
+
+		this.names = Array.from(array, x => x[0]);
+		this.points = Array.from(array, x => x[1]);
 	}
 
-	getCurrent() {
-		const hours = new Date().getHours();
-		const phase = this.array.find(([, start]) => hours >= start);
-		return (phase || this.array[0])[0];
+	/**
+	 * 查询给定时间太阳所处的位置
+	 *
+	 * @param date 时间
+	 * @return 太阳所处的位置
+	 */
+	ofTime(date: Date) {
+		const hours = date.getHours();
+		const i = this.points.findIndex((start) => hours >= start);
+		return this.names[i];
 	}
 
+	/**
+	 * 获取给定太阳位置的下一个位置
+	 *
+	 * @param phase 前一个位置
+	 * @return 下一个位置
+	 * @throws 如果给定的位置不在此类中
+	 */
 	nextOf(phase: string) {
-		const i = this.array.findIndex(([name,]) => name === phase) + 1;
-		if (i === 0) {
+		const i = this.names.indexOf(phase);
+		if (i < 0) {
 			throw new Error(`没有任何一个阶段叫${phase}`);
 		}
-		return (i < this.array.length ? this.array[i] : this.array[0])[0];
+		return this.names[i + 1];
 	}
 
 	/**
@@ -39,13 +62,11 @@ export class SunPhases {
 	 * 订阅后将立即触发一次当前的阶段，此后在各阶段相应的时间到达时触发，该订阅一直有效不会结束。
 	 *
 	 * @param date 当前时间，测试用
+	 * @return RxJS 的 Observable
 	 */
 	observe(date = new Date()) {
-		const names = Array.from(this.array, x => x[0]);
-		const points = Array.from(this.array, x => x[1]);
-		points.push(24 + points[0]);
-
-		let [i, initDuration] = getInitialPhase(points, date);
+		const { names, points } = this;
+		let [i, initDuration] = getInitial(points, date);
 
 		return new Observable<string>((subscriber) => {
 			subscriber.next(names[i]);
@@ -60,7 +81,7 @@ export class SunPhases {
 	}
 }
 
-function getInitialPhase(breakPoints: number[], date: Date) {
+function getInitial(breakPoints: number[], date: Date) {
 	const hours = date.getHours();
 	const lastIndex = breakPoints.length - 2;
 	let index = lastIndex;
