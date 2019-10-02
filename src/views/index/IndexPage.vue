@@ -24,7 +24,7 @@
 				:class="$style.banner_content"
 				:style="titleStyle"
 			>
-				<h1 @click="test">Kaciras' Blog</h1>
+				<h1 @click.middle="nextSunPhase">Kaciras' Blog</h1>
 				<p :class="$style.sub_title">程序 • 生活 • 梦想</p>
 			</div>
 		</section>
@@ -40,9 +40,11 @@ import { attachRandomId } from "@/utils";
 import api from "@/api";
 import BlogSection from "./BlogSection";
 import FriendsSection from "./FriendsSection";
+import { SUN_PHASES } from "@/store";
 
 const BANNER_MAP = {
-	Dawn: require("../../assets/img/IndexBannerDawn.png?size=IndexBannerMobile"),
+	// Dawn: require("../../assets/img/IndexBannerDawn.png?size=IndexBannerMobile"),
+	Dawn: require("../../assets/img/IndexBannerDawn.png"),
 	Daytime: require("../../assets/img/IndexBannerLight.png"),
 	Dusk: require("../../assets/img/IndexBannerDusk.png"),
 	Night: require("../../assets/img/IndexBannerNight.png"),
@@ -84,24 +86,21 @@ export default {
 			this.banner = this.transitionImage;
 			this.transitionImage = null;
 		},
-		switchBanner(nv) {
+		switchBanner(sunPhase) {
+			this.transitionImage = BANNER_MAP[sunPhase];
+		},
+		nextSunPhase() {
 			if (this.$_lock) {
 				return;
 			}
 			this.$_lock = true;
-			this.transitionImage = BANNER_MAP[nv];
-		},
-		test() {
-			index = index < 4 ? index++ : 0;
-			this.$store.commit("SET_SUN_PHASE", testD[index++]);
+			this.$store.commit("SET_SUN_PHASE", SUN_PHASES.nextOf(this.sunPhase));
 		},
 	},
 	beforeMount() {
 		this.$store.watch((state) => state.sunPhase, this.switchBanner);
 	},
 };
-const testD = Object.keys(BANNER_MAP);
-let index = 0;
 </script>
 
 <style module lang="less">

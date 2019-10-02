@@ -6,7 +6,6 @@ import { CancelToken } from "kx-ui";
 import * as loadingIndicator from "./loading-indicator";
 import { REFRESH_USER, SET_PREFETCH_DATA, SET_SUN_PHASE } from "./store/types";
 import "./serviceWorker";
-import { observeSunPhases } from "./sun-phase";
 import { SUN_PHASES } from "@/store";
 
 
@@ -97,7 +96,7 @@ Vue.mixin({
 
 const { vue, router, store } = createApp(window.__INITIAL_STATE__);
 mediaQueryPlugin.observeWindow(store);
-observeSunPhases(SUN_PHASES).subscribe(value => store.commit(SET_SUN_PHASE, value));
+SUN_PHASES.observe().subscribe(value => store.commit(SET_SUN_PHASE, value));
 
 if (typeof store.state.user === "undefined") {
 	store.dispatch(REFRESH_USER); // AppShell 模式不会再服务端加载用户
