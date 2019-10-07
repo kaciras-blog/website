@@ -17,7 +17,7 @@ export interface ServiceWorkerConfig {
 
 export function register(config: ServiceWorkerConfig = {}) {
 
-	const publicUrl = new URL(process.env.PUBLIC_URL, window.location.href);
+	const publicUrl = new URL(process.env.PUBLIC_URL!, window.location.href);
 	if (publicUrl.origin !== window.location.origin) {
 		return console.error("service worker won't work when PUBLIC_URL is on a different origin");
 	}
