@@ -52,7 +52,7 @@ import api from "../../api";
 
 const CATEGORY_TEMPLATE = {
 	name: "新建分类",
-	cover: "/image/category-default.png",
+	cover: "/static/img/category.png",
 	description: "没有",
 	theme: 0,
 	background: null,
