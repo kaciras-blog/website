@@ -12,7 +12,7 @@
 			v-on-selection-changed="handleSelect"
 			@keydown.tab.prevent="insertTab"
 			@input="$emit('update:text', $event.target.value)"
-		></textarea>
+		/>
 
 		<article
 			v-if="renderMode === 'MD'"
@@ -21,15 +21,16 @@
 			class="text-view preview markdown"
 			:class="{ split:viewMode === 0, single:viewMode === 2 }"
 			v-html="htmlText"
-		></article>
+		/>
 
-		<pre v-else-if="renderMode === 'PLAIN'"
-			 v-show="viewMode !== 1"
-			 ref="preview"
-			 class="text-view preview markdown"
-			 :class="{ split:viewMode === 0, single:viewMode === 2 }"
-			 v-text="text"
-		></pre>
+		<pre
+			v-else-if="renderMode === 'PLAIN'"
+			v-show="viewMode !== 1"
+			ref="preview"
+			class="text-view preview markdown"
+			:class="{ split:viewMode === 0, single:viewMode === 2 }"
+			v-text="text"
+		/>
 	</div>
 </template>
 
@@ -59,7 +60,7 @@ export default {
 	computed: {
 		// TODO: 计算属性里有副作用不太好？
 		htmlText() {
-			this.$nextTick(() => kxMarkdown.afterConvert(this.$refs.preview.$el));
+			this.$nextTick(() => kxMarkdown.afterConvert(this.$refs.preview));
 			return converter.render(this.text);
 		},
 	},
