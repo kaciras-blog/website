@@ -23,7 +23,8 @@
 						:key="draft.id"
 						class="segment"
 						:value="draft"
-						@removed="removeItem(draft.id)"/>
+						@removed="removeItem(draft.id)"
+					/>
 				</ol>
 				<span v-else class="minor-text">空空如也</span>
 			</template>

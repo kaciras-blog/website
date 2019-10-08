@@ -42,6 +42,11 @@ import BlogSection from "./BlogSection";
 import FriendsSection from "./FriendsSection";
 import { SUN_PHASES } from "@/store";
 
+/*
+ * 由于SSR的存在，并且服务端无法获取客户的时间，只能默认用白天的主题，
+ * 这导致当客户端时间不是白天时，一加载页面看到的仍是白天主题，但马上又变为其它的样式。
+ * 目前来看没有解决办法，这是服务端渲染固有的缺陷。
+ */
 const BANNER_MAP = {
 	// Dawn: require("../../assets/img/IndexBannerDawn.png?size=IndexBannerMobile"),
 	Dawn: require("../../assets/img/IndexBannerDawn.png"),
