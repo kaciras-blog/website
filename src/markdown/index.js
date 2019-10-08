@@ -1,3 +1,4 @@
+import "./Markdown.less";
 import MarkdownIt from "markdown-it";
 import Anchor from "markdown-it-anchor";
 import tableOfContent from "markdown-it-toc-done-right";
