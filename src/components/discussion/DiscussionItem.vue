@@ -16,7 +16,7 @@
 					:loader="loadNext"
 					:page-size="10"
 				>
-					<!-- removed 事件处理必须包装一下，因为创建时还不存在 $refs.replies，下同 -->
+					<!-- removed 事件必须包装一下，因为创建时还不存在 $refs.replies，下同 -->
 					<template v-slot="{ items }">
 						<reply-list :items="items" @removed="() => $refs.replies.refresh()"/>
 					</template>
@@ -46,13 +46,13 @@
 </template>
 
 <script>
-import DiscussionContent from "./DiscussionContent";
-import DiscussionEditor from "./DiscussionEditor.vue";
+import { debounceFirst } from "@kaciras-blog/common/lib/functions";
 import api from "../../api";
 import ReplyFrame from "./ReplyFrame";
 import ReplyList from "./ReplyList";
-import { debounceFirst } from "@kaciras-blog/common/functions";
-import InputHOC from "@/components/discussion/InputHOC";
+import InputHOC from "./InputHOC";
+import DiscussionContent from "./DiscussionContent";
+import DiscussionEditor from "./DiscussionEditor";
 
 export default {
 	name: "DiscussionItem",
