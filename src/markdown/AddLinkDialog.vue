@@ -1,19 +1,24 @@
 <template>
 	<kx-base-dialog title="添加链接">
-		<form :class="$style.form" @keyup.13="ok">
+		<form :class="$style.form" @keyup.enter="ok">
+
 			<label>链接地址</label>
-			<input v-model="href"
-				   title="链接地址"
-				   :class="$style.input"
-				   placeholder="地址不能为空"
-				   required
-				   v-autofocus/>
+			<input
+				v-model="href"
+				title="链接地址"
+				:class="$style.input"
+				placeholder="地址不能为空"
+				required
+				v-autofocus
+			/>
 
 			<label>文字</label>
-			<input v-model="text"
-				   title="文字"
-				   :class="$style.input"
-				   :placeholder="href"/>
+			<input
+				v-model="text"
+				title="文字"
+				:class="$style.input"
+				:placeholder="href"
+			/>
 		</form>
 		<kx-standard-dialog-buttons @confirm="ok"/>
 	</kx-base-dialog>
@@ -27,7 +32,7 @@ export default {
 		href: "",
 	}),
 	methods: {
-		ok () {
+		ok() {
 			const data = this.$data;
 			if (!data.href) {
 				return this.$dialog.close();
@@ -36,9 +41,6 @@ export default {
 				data.text = data.href;
 			}
 			this.$dialog.confirm(data);
-		},
-		cancel () {
-			this.$dialog.close();
 		},
 	},
 };
@@ -58,14 +60,5 @@ export default {
 .form {
 	display: flex;
 	flex-direction: column;
-}
-
-.footer {
-	padding-left: 1rem;
-	padding-right: 1rem;
-}
-
-.button {
-	width: 100%;
 }
 </style>

@@ -5,7 +5,8 @@
 			:key="item.id"
 			:value="item"
 			:class="$style.reply"
-			@removed="listeners.removed"/>
+			@removed="listeners.removed"
+		/>
 	</ol>
 </template>
 

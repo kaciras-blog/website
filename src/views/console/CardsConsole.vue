@@ -40,7 +40,7 @@ import { observeMouseMove, elementPosition } from "kx-ui/src/dragging";
 import CardListItem from "./CardListItem";
 
 const CARD_TEMPLATE = {
-	picture: "/image/placeholder.png",
+	picture: "/static/img/placeholder.png",
 	name: "新的轮播页",
 	link: "",
 	description: "这是新添加的轮播页",

@@ -18,12 +18,12 @@
 				>
 					<!-- removed 事件必须包装一下，因为创建时还不存在 $refs.replies，下同 -->
 					<template v-slot="{ items }">
-						<reply-list :items="items" @removed="() => $refs.replies.refresh()"/>
+						<reply-list :items="items" @removed="onReplyRemoved"/>
 					</template>
 				</button-paging-view>
 
 				<template v-else>
-					<reply-list :items="value.replies" @removed="() => $refs.replies.refresh()"/>
+					<reply-list :items="value.replies" @removed="onReplyRemoved"/>
 					<a class="hd-link" @click="showAllReplies">查看全部</a>
 				</template>
 			</template>
@@ -91,6 +91,9 @@ export default {
 				this.replies = replies;
 			});
 		}),
+		onReplyRemoved() {
+			this.$refs.replies.refresh();
+		},
 		// 重复
 		loadNext(start, count) {
 			return api.discuss.getReplies(this.value.id, start, count);
