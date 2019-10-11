@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import api from "../../api";
-import { errorMessage } from "../../utils";
+import api from "@/api";
+import { errorMessage } from "@/utils";
 
 export default {
 	name: "InputHOC",

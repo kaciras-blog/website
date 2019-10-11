@@ -47,7 +47,7 @@
 
 <script>
 import { debounceFirst } from "@kaciras-blog/common/lib/functions";
-import api from "../../api";
+import api from "@/api";
 import ReplyFrame from "./ReplyFrame";
 import ReplyList from "./ReplyList";
 import InputHOC from "./InputHOC";

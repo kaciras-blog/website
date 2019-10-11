@@ -1,7 +1,8 @@
 <template functional>
-	<nav :class="[$style.container, data.class, data.staticClass]"
-		 :style="[data.style, data.staticStyle]">
-
+	<nav
+		:class="[$style.container, data.class, data.staticClass]"
+		:style="[data.style, data.staticStyle]"
+	>
 		<!-- 为了动态接收传入的样式，不能用伪元素 -->
 		<div :class="[$style.pseudo, props.imageClass]" :style="props.imageStyle"></div>
 		<top-nav-body tag="div" class="full-vertex"/>

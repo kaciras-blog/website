@@ -4,16 +4,17 @@
 			<kx-button
 				icon="fa fa-edit"
 				class="primary"
-				@click="newArticle">
+				@click="newArticle"
+			>
 				新文章
 			</kx-button>
 		</div>
 
 		<div class="panel">
 			<article-item
-				v-for="item of list.items"
-				:key="item.id"
-				:value="item"
+				v-for="article of list.items"
+				:key="article.id"
+				:value="article"
 				class="segment"
 			/>
 			<span v-if="list.total === 0">没有找到文章,去写一篇吧~</span>
@@ -23,9 +24,9 @@
 </template>
 
 <script>
-import api, { DeletionState } from "../../api";
+import api, { DeletionState } from "@/api";
+import { errorMessage } from "@/utils";
 import ArticleItem from "./ArticleItem";
-import { errorMessage } from "../../utils";
 
 export default {
 	name: "ArticleConsole",
@@ -33,8 +34,8 @@ export default {
 		ArticleItem,
 	},
 	data: () => ({
-		loading: true,
 		list: [],
+		loading: true,
 	}),
 	methods: {
 		newArticle() {

@@ -17,13 +17,18 @@
 			<div class="btn-group">
 				<kx-button
 					:disabled="current === null"
-					@click="gotoParent">
-					<i class="fa fa-arrow-left"></i><span>回到父级</span>
+					@click="gotoParent"
+				>
+					<i class="fa fa-arrow-left"></i>
+					<span>回到父级</span>
 				</kx-button>
+
 				<kx-button
 					:disabled="current === null"
-					@click="gotoTop">
-					<i class="fas fa-arrow-up"></i><span>返回顶层</span>
+					@click="gotoTop"
+				>
+					<i class="fas fa-arrow-up"></i>
+					<span>返回顶层</span>
 				</kx-button>
 			</div>
 		</div>
@@ -41,10 +46,12 @@
 					@changed="select(cate)"
 				/>
 				<div :class="$style.categoryWrapper">
-					<img class="head"
-						 :class="$style.head"
-						 :src="cate.cover"
-						 alt="分类图标">
+					<img
+						class="head"
+						:class="$style.head"
+						:src="cate.cover"
+						alt="分类图标"
+					>
 					<h3 :class="$style.name">{{cate.name}}</h3>
 				</div>
 			</div>
@@ -69,8 +76,8 @@
 </template>
 
 <script>
-import api from "../api";
-import { deleteOn } from "../utils";
+import api from "@/api";
+import { deleteOn } from "@/utils";
 
 export default {
 	name: "SelectCategoryDialog",

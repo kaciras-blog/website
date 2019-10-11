@@ -60,10 +60,10 @@
 </template>
 
 <script>
-import api from "../../api";
-import DiscussionContent from "./DiscussionContent";
 import { PreventScrollMixin } from "kx-ui";
+import api from "@/api";
 import InputHOC from "@/components/discussion/InputHOC";
+import DiscussionContent from "./DiscussionContent";
 
 export default {
 	name: "ReplyFrame",

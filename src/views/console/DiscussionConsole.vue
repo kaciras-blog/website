@@ -29,9 +29,9 @@
 </template>
 
 <script>
-import api, { DiscussionState } from "../../api";
+import api, { DiscussionState } from "@/api";
+import { articleLink } from "@/blog-plugin";
 import DiscussionConfigPanel from "./DiscussionConfigPanel";
-import { articleLink } from "../../blog-plugin";
 import DiscussionCheckItem from "./DiscussionCheckItem";
 
 function normalize(item) {

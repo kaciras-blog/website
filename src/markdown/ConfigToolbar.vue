@@ -21,7 +21,3 @@ export default {
 	name: "KxMarkdownConfigToolbar",
 };
 </script>
-
-<style scoped>
-
-</style>

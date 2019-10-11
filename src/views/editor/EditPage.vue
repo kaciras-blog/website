@@ -32,15 +32,15 @@
 </template>
 
 <script>
-import KxMarkdownEditWindow from "../../markdown/EditWindow";
-import KxMarkdownBasicToolbar from "../../markdown/BasicToolbar";
-import TextStateGroup from "../../markdown/TextStateGroup";
-import ViewModeToolbar from "../../markdown/ViewModeToolbar";
+import { VueMultiWatcher } from "kx-ui";
+import api from "@/api";
+import { assignUpdate } from "@/utils";
+import KxMarkdownEditWindow from "@/markdown/EditWindow";
+import KxMarkdownBasicToolbar from "@/markdown/BasicToolbar";
+import TextStateGroup from "@/markdown/TextStateGroup";
+import ViewModeToolbar from "@/markdown/ViewModeToolbar";
 import PublishDialog from "./PublishDialog";
 import MetadataDialog from "./MetadataDialog";
-import api from "../../api";
-import { assignUpdate } from "../../utils";
-import { VueMultiWatcher } from "kx-ui";
 
 function convertToTransfer(data) {
 	return Object.assign({
@@ -118,7 +118,6 @@ export default {
 					this.autoSaveError = err;
 				});
 		},
-
 		publish() {
 			this.$dialog.show(PublishDialog, this.$data);
 		},

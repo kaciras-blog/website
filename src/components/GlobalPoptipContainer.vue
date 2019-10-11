@@ -4,19 +4,20 @@
 		<transition
 			name="remix"
 			v-for="v of stack"
-			:key="v.randomId">
-
+			:key="v.randomId"
+		>
 			<component
 				:is="v.component"
 				:class="$style.poptipDefault"
 				v-bind="v.props"
-				v-on="v.listeners"/>
+				v-on="v.listeners"
+			/>
 		</transition>
 	</div>
 </template>
 
 <script>
-import { deleteOn } from "../utils";
+import { deleteOn } from "@/utils";
 
 export default {
 	name: "GlobalPoptipContainer",

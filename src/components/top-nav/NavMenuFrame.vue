@@ -22,8 +22,8 @@
 </template>
 
 <script>
-import NavMenu from "./NavMenu";
 import { preventScroll } from "kx-ui";
+import NavMenu from "./NavMenu";
 
 export default {
 	name: "NavMenuFrame",

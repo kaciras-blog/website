@@ -6,11 +6,14 @@
 				<span class="label">发表到：</span>
 
 				<div v-if="category" :class="$style.selected">
-					<img class="small head"
-						 :src="category.cover"
-						 alt="分类图标">
+					<img
+						class="small head"
+						:src="category.cover"
+						alt="分类图标"
+					>
 					<h3 class="compact">{{category.name}}</h3>
 				</div>
+
 				<div v-else :class="$style.selected"></div>
 
 				<kx-button @click="selectCategory">选择分类</kx-button>
@@ -18,10 +21,12 @@
 
 			<label>
 				文章的URL，发表后不能修改，尽量使用英文，默认与标题相同
-				<input v-model="url"
-					   title="URL，尽量用英文"
-					   :class="$style.input"
-					   :placeholder="metadata.title">
+				<input
+					v-model="url"
+					title="URL，尽量用英文"
+					:class="$style.input"
+					:placeholder="metadata.title"
+				>
 			</label>
 		</div>
 
@@ -30,9 +35,9 @@
 </template>
 
 <script>
-import api from "../../api";
-import SelectCategoryDialog from "../../components/SelectCategoryDialog";
-import { errorMessage } from "../../utils";
+import api from "@/api";
+import SelectCategoryDialog from "@/components/SelectCategoryDialog";
+import { errorMessage } from "@/utils";
 
 export default {
 	name: "PublishDialog",
@@ -71,7 +76,7 @@ export default {
 					article = await api.article.publish(data);
 				}
 				this.$dialog.confirm();
-				this.$router.push(`/article/${article}`);
+				await this.$router.push(`/article/${article}`);
 			} catch (e) {
 				this.$dialog.alertError("发表失败", errorMessage(e));
 			}

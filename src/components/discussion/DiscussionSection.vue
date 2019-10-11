@@ -22,7 +22,8 @@
 				:allow-empty="false"
 				:searchable="false"
 				:show-labels="false"
-				@input="reload"/>
+				@input="reload"
+			/>
 		</header>
 
 		<input-h-o-c
@@ -62,11 +63,11 @@
 </template>
 
 <script>
-import api from "../../api";
+import AtomSpinner from "epic-spinners/src/components/lib/AtomSpinner.vue";
+import api from "@/api";
+import InputHOC from "@/components/discussion/InputHOC";
 import DiscussionEditor from "./DiscussionEditor.vue";
 import DiscussionItem from "./DiscussionItem.vue";
-import AtomSpinner from "epic-spinners/src/components/lib/AtomSpinner.vue";
-import InputHOC from "@/components/discussion/InputHOC";
 
 const ALL_SORTS = [
 	{ label: "最新", value: "id,DESC" },

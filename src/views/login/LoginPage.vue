@@ -3,9 +3,11 @@
 	<base-page-layout nav-class="login-header" :footer="false">
 		<div :class="$style.body">
 			<div :class="$style.picture_box">
-				<img src="../../assets/img/LoginPicture.jpg"
-					 alt="banner"
-					 :class="$style.picture">
+				<img
+					src="../../assets/img/LoginPicture.jpg"
+					alt="banner"
+					:class="$style.picture"
+				>
 			</div>
 			<component :is="activePanel"
 				:class="$style.formPanel"

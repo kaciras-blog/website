@@ -3,6 +3,7 @@
 		<div :class="$style.body">
 			<div :class="$style.card" class="panel">
 				<h2>修改用户信息</h2>
+
 				<div :class="[$style.headSection, $style.field]">
 					<img
 						:class="$style.head"
@@ -12,6 +13,7 @@
 						@click="editHead"
 					>
 				</div>
+
 				<div :class="$style.field">
 					ID:
 					<auth-type-tag :auth-type="user.authType"/>
@@ -20,10 +22,12 @@
 
 				<div :class="$style.field">
 					<label for="name" :class="$style.label">用户名</label>
-					<input id="name"
-						   v-model="user.name"
-						   name="name"
-						   :class="$style.input">
+					<input
+						id="name"
+						v-model="user.name"
+						name="name"
+						:class="$style.input"
+					>
 				</div>
 
 				<kx-button class="primary" @click="save">保存</kx-button>
@@ -34,9 +38,9 @@
 
 <script>
 import api from "@/api";
-import AuthTypeTag from "./AuthTypeTag";
+import { errorMessage } from "@/utils";
 import ImageCropper from "@/components/ImageCropper";
-import { errorMessage } from "../../utils";
+import AuthTypeTag from "./AuthTypeTag";
 
 export default {
 	name: "UserProfilePage",

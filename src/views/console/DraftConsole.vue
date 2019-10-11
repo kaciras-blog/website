@@ -33,11 +33,10 @@
 </template>
 
 <script>
-import api from "../../api";
-import DraftConsoleItem from "./DraftConsoleItem";
-import { deleteOn } from "../../utils";
 import { MessageBoxType } from "kx-ui/src/dialog/index";
-import { errorMessage } from "../../utils";
+import api from "@/api";
+import { deleteOn , errorMessage} from "@/utils";
+import DraftConsoleItem from "./DraftConsoleItem";
 
 export default {
 	name: "DraftConsole",

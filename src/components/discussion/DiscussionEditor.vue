@@ -20,7 +20,7 @@
 			placeholder='说点什么吧'
 			class='input'
 			:class="$style.textarea"
-			v-ime-input="event => $emit('input', event.target.value)"
+			v-ime-input="(event) => $emit('input', event.target.value)"
 		/>
 
 		<div :class='$style.bottom_toolbar'>

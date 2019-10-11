@@ -38,9 +38,9 @@
 import { mapState } from "vuex";
 import { attachRandomId } from "@/utils";
 import api from "@/api";
+import { SUN_PHASES } from "@/store";
 import BlogSection from "./BlogSection";
 import FriendsSection from "./FriendsSection";
-import { SUN_PHASES } from "@/store";
 
 /*
  * 由于SSR的存在，并且服务端无法获取客户的时间，只能默认用白天的主题，

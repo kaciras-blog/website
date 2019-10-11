@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import api from "../../api";
+import api from "@/api";
 
 // 传过来的配置没有描述，这里直接定义
 const LABELS = {

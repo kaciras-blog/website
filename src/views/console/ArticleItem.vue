@@ -3,17 +3,18 @@
 		<img class="cover" :src="value.cover" alt="封面">
 
 		<div>
-			<span class="red note" v-if="value.deleted">已删除</span>
+			<span v-if="value.deleted" class="red note">已删除</span>
 			<h3 class="compact">{{value.title}}</h3>
 		</div>
 
 		<div class="info">
 			<div class="tag-group">
 				<span
-					v-for="c in value.cpath"
-					:key="c.id"
-					class="tag-group-item">
-					{{c.name}}
+					v-for="category of value.cpath"
+					:key="category.id"
+					class="tag-group-item"
+				>
+					{{category.name}}
 				</span>
 			</div>
 
@@ -61,8 +62,8 @@
 </template>
 
 <script>
-import api from "../../api";
-import { errorMessage } from "../../utils";
+import api from "@/api";
+import { errorMessage } from "@/utils";
 
 export default {
 	name: "ArticleItem",
@@ -74,7 +75,7 @@ export default {
 	},
 	methods: {
 		edit() {
-			api.draft.fromArticle(this.value.id)
+			return api.draft.fromArticle(this.value.id)
 				.then(id => window.location.href = "/edit/" + id)
 				.catch(err => console.log(err));
 		},

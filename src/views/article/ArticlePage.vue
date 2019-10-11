@@ -24,8 +24,9 @@
 			:class="$style.discuss_section"
 		/>
 
-		<div v-if="$mediaQuery.match('tablet+')"
-			 class="side-buttons compact vertical-btn-group"
+		<div
+			v-if="$mediaQuery.match('tablet+')"
+			class="side-buttons compact vertical-btn-group"
 		>
 			<kx-button
 				class="primary outline"

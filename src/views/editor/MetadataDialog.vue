@@ -1,36 +1,37 @@
 <template>
 	<kx-base-dialog title="编辑描述信息">
-
 		<div :class="$style.content">
-			<img :class="$style.cover"
-				 :src="cover"
-				 alt="封面"
-				 @click="changeCover"/>
-
-			<input v-model="title"
-				   title="标题"
-				   :class="$style.title"
-				   placeholder="标题最多50个字"/>
-
+			<img
+				:class="$style.cover"
+				:src="cover"
+				alt="封面"
+				@click="changeCover"
+			/>
+			<input
+				v-model="title"
+				title="标题"
+				:class="$style.title"
+				placeholder="标题最多50个字"
+			/>
 			<textarea
 				v-model="summary"
 				:class="$style.summary"
 				class="input"
-				placeholder="摘要，别写太多">
-			</textarea>
-
-			<input v-model="keywords"
-				   title="关键字"
-				   :class="$style.keywords"
-				   placeholder="关键字,空格隔开"/>
+				placeholder="摘要，别写太多"
+			/>
+			<input
+				v-model="keywords"
+				title="关键字"
+				:class="$style.keywords"
+				placeholder="关键字,空格隔开"
+			/>
 		</div>
-
 		<kx-standard-dialog-buttons @confirm="ok"/>
 	</kx-base-dialog>
 </template>
 
 <script>
-import api from "../../api";
+import api from "@/api";
 
 export default {
 	name: "MetadataDialog",

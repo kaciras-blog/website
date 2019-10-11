@@ -1,13 +1,15 @@
 <template functional>
-	<li :class="$style.container"
-		 tabindex="0"
-		 @click="listeners.click"
-		 @keyup.enter="listeners.click">
-
-		<img :src="props.cover"
-			 alt="分类图标"
-			 :class="$style.head">
-
+	<li
+		:class="$style.container"
+		tabindex="0"
+		@click="listeners.click"
+		@keyup.enter="listeners.click"
+	>
+		<img
+			:src="props.cover"
+			alt="分类图标"
+			:class="$style.head"
+		>
 		<span :class="$style.name">{{props.name}}</span>
 	</li>
 </template>

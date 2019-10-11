@@ -4,17 +4,19 @@
 			<h2 class="compact" @click="item.open = !item.open">{{item.slide.name}}</h2>
 
 			<kx-button
-				class="icon"
 				:class="$style.handler"
+				class="icon"
 				title="拖动调整次序"
-				@mousedown.stop="dragStart">
+				@mousedown.stop="dragStart"
+			>
 				<i class="fas fa-arrows-alt"></i>
 			</kx-button>
 
 			<kx-button
 				class="icon dangerous"
 				title="删除"
-				@click="remove">
+				@click="remove"
+			>
 				<i class="fas fa-trash"></i>
 			</kx-button>
 		</div>
@@ -41,15 +43,15 @@
 				<textarea
 					v-model="item.slide.description"
 					class="input"
-					:class="$style.inputBox">
-				</textarea>
+					:class="$style.inputBox"
+				/>
 			</label>
 		</div>
 	</section>
 </template>
 
 <script>
-import api from "../../api";
+import api from "@/api";
 
 export default {
 	name: "CardListItem",

@@ -3,23 +3,23 @@
 		<div :class="$style.infoSection"
 			 @click.self="setBackground"
 			 :style="styleVars"
-			 :title="editable ? '点击换背景' : null">
-
+			 :title="editable ? '点击换背景' : null"
+		>
 			<div :class="$style.infoPanel">
-
-				<img class="head"
-					 :class="$style.head"
-					 :src="item.cover"
-					 :title="editable ? '点击换头像' : null"
-					 alt="图标"
-					 @click="setCover"
+				<img
+					class="head"
+					:class="$style.head"
+					:src="item.cover"
+					:title="editable ? '点击换头像' : null"
+					alt="图标"
+					@click="setCover"
 				>
-
-				<input v-if="editable"
-					   v-model="item.name"
-					   title="名称"
-					   class="dark"
-					   :class="$style.name"
+				<input
+					v-if="editable"
+					v-model="item.name"
+					title="名称"
+					class="dark"
+					:class="$style.name"
 				>
 				<span v-else :class="$style.name">{{item.name}}</span>
 
@@ -28,8 +28,9 @@
 					v-model="item.description"
 					title="描述"
 					class="dark input"
-					:class="$style.desc">
-				</textarea>
+					:class="$style.desc"
+				/>
+
 				<span v-else :class="$style.desc">{{item.description}}</span>
 
 				<div :class="$style.buttons" v-if="editable">
@@ -52,9 +53,9 @@
 </template>
 
 <script>
-import api from "../../api";
+import api from "@/api";
+import SelectCategoryDialog from "@/components/SelectCategoryDialog";
 import MoveCategoryDialog from "./MoveCategoryDialog";
-import SelectCategoryDialog from "../../components/SelectCategoryDialog";
 
 export default {
 	name: "CategoryView",
@@ -85,12 +86,16 @@ export default {
 	},
 	methods: {
 		setCover() {
-			if (this.editable)
-				api.misc.uploadImageFile().then(name => this.item.cover = name);
+			if (!this.editable) {
+				return;
+			}
+			api.misc.uploadImageFile().then(name => this.item.cover = name);
 		},
 		setBackground() {
-			if (this.editable)
-				api.misc.uploadImageFile().then(name => this.item.background = name);
+			if (!this.editable) {
+				return;
+			}
+			api.misc.uploadImageFile().then(name => this.item.background = name);
 		},
 		async move() {
 			const target = await this.$dialog.show(SelectCategoryDialog);

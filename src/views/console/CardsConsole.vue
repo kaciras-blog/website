@@ -34,9 +34,9 @@
 </template>
 
 <script>
-import api from "../../api";
-import { deleteOn, attachRandomId } from "../../utils";
 import { observeMouseMove, elementPosition } from "kx-ui/src/dragging";
+import api from "@/api";
+import { deleteOn, attachRandomId } from "@/utils";
 import CardListItem from "./CardListItem";
 
 const CARD_TEMPLATE = {
@@ -57,10 +57,7 @@ export default {
 	}),
 	methods: {
 		createNew() {
-			this.slides.unshift(attachRandomId({
-				open: true,
-				slide: CARD_TEMPLATE,
-			}));
+			this.slides.unshift(attachRandomId({ open: true, slide: CARD_TEMPLATE }));
 		},
 		async load() {
 			const slides = await api.recommend.getCards();

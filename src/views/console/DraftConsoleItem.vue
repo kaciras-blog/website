@@ -35,8 +35,8 @@
 </template>
 
 <script>
-import api from "../../api";
 import { MessageBoxType } from "kx-ui/src/dialog";
+import api from "@/api";
 
 export default {
 	name: "DraftConsoleItem",
@@ -47,7 +47,7 @@ export default {
 		},
 	},
 	methods: {
-		async deleteDraft() {
+		deleteDraft() {
 			this.$dialog.alert({
 				title: "删除草稿",
 				content: "删除后不可恢复，是否确定？",

@@ -3,11 +3,13 @@
 		<h1 class="center segment">登录</h1>
 
 		<label for="name">用户名:</label>
-		<input id="name"
-			   v-model="form.name"
-			   title="用户名"
-			   required
-			   v-autofocus>
+		<input
+			id="name"
+			v-model="form.name"
+			title="用户名"
+			required
+			v-autofocus
+		>
 
 		<label for="password">密码:</label>
 		<kx-password-input
@@ -58,11 +60,11 @@
 </template>
 
 <script>
-import api from "../../api";
-import { errorMessage } from "../../utils";
+import api from "@/api";
+import { errorMessage } from "@/utils";
+import { REFRESH_USER } from "@/store/types";
+import OauthIcon from "@/components/OauthIcon";
 import FormBase from "./FormBase";
-import { REFRESH_USER } from "../../store/types";
-import OauthIcon from "../../components/OauthIcon";
 
 export default {
 	name: "LoginPanel",
@@ -86,7 +88,7 @@ export default {
 			try {
 				await api.user.login(this.form);
 				await this.$store.dispatch(REFRESH_USER);
-				this.$router.push(this.returnUri);
+				await this.$router.push(this.returnUri);
 			} catch (e) {
 				this.message = errorMessage(e);
 			}

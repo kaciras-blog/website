@@ -46,9 +46,9 @@
 </template>
 
 <script>
+import api from "@/api";
+import CategoryCard from "@/components/CategoryCard";
 import CategoryView from "./CategoryView";
-import CategoryCard from "../../components/CategoryCard";
-import api from "../../api";
 
 const CATEGORY_TEMPLATE = {
 	name: "新建分类",

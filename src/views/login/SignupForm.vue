@@ -3,11 +3,13 @@
 		<h1 class="center segment">注册</h1>
 
 		<label for="name">用户名:</label>
-		<input id="name"
-			   v-model="form.name"
-			   placeholder="中英文数字和下划线"
-			   required
-			   v-autofocus>
+		<input
+			id="name"
+			v-model="form.name"
+			placeholder="中英文数字和下划线"
+			required
+			v-autofocus
+		>
 
 		<label for="password">密码:</label>
 		<kx-password-input
@@ -19,24 +21,28 @@
 		/>
 
 		<label for="email">邮箱:</label>
-		<input id="email"
-			   v-model="form.email"
-			   type="email"
-			   placeholder="（可选）不填也行"
+		<input
+			id="email"
+			v-model="form.email"
+			type="email"
+			placeholder="（可选）不填也行"
 		>
 
 		<label for="captcha">验证码:</label>
 		<div :class="$style.captcha">
-			<input id="captcha"
-				   ref="captchaInput"
-				   v-model="form.captcha"
-				   title="验证码"
-				   :class="$style.inputCaptcha"
-				   required>
-			<img :src="captcha"
-				 alt="验证码"
-				 title="点击换一张"
-				 @click="updateCaptcha"
+			<input
+				id="captcha"
+				ref="captchaInput"
+				v-model="form.captcha"
+				title="验证码"
+				:class="$style.inputCaptcha"
+				required
+			>
+			<img
+				:src="captcha"
+				alt="验证码"
+				title="点击换一张"
+				@click="updateCaptcha"
 			>
 		</div>
 
@@ -58,10 +64,10 @@
 </template>
 
 <script>
-import api from "../../api";
-import { errorMessage } from "../../utils";
+import api from "@/api";
+import { REFRESH_USER } from "@/store/types";
+import { errorMessage } from "@/utils";
 import FormBase from "./FormBase";
-import { REFRESH_USER } from "../../store/types";
 
 export default {
 	name: "SignupPanel",
@@ -86,7 +92,7 @@ export default {
 			try {
 				await api.user.signUp(this.form);
 				await this.$store.dispatch(REFRESH_USER);
-				this.$router.push(this.returnUri);
+				await this.$router.push(this.returnUri);
 			} catch (e) {
 				this.message = errorMessage(e);
 			}

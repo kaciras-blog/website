@@ -1,10 +1,10 @@
 <template>
 	<component :is="tag">
-
-		<img :src="value.user.head"
-			 alt="头像"
-			 class="small head"
-			 :class="$style.head"
+		<img
+			:src="value.user.head"
+			alt="头像"
+			class="small head"
+			:class="$style.head"
 		>
 
 		<div :class="$style.main">
@@ -54,8 +54,8 @@
 </template>
 
 <script>
-import api, { DiscussionState } from "../../api";
-import {errorMessage} from "../../utils";
+import api, { DiscussionState } from "@/api";
+import {errorMessage} from "@/utils";
 
 export default {
 	name: "DiscussionContent",

@@ -17,7 +17,8 @@
 					v-for="child of children"
 					:key="child.id"
 					v-bind="child"
-					@click="goto(child)"/>
+					@click="goto(child)"
+				/>
 			</div>
 			<div v-else :class="$style.holder">已经是最底层的分类了</div>
 		</div>
@@ -25,11 +26,13 @@
 </template>
 
 <script>
-import CategoryCard from "../../components/CategoryCard";
+import CategoryCard from "@/components/CategoryCard";
 
 export default {
 	name: "FamilySection",
-	components: { CategoryCard },
+	components: {
+		CategoryCard,
+	},
 	props: {
 		parent: Object,
 		children: Array,

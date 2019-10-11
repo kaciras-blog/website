@@ -5,9 +5,10 @@
 			tabindex="-1"
 			:class="$style.cover_link"
 		>
-			<img :src="item.cover"
-				 alt="封面"
-				 :class="$style.cover"
+			<img
+				:src="item.cover"
+				alt="封面"
+				:class="$style.cover"
 			>
 		</router-link>
 
@@ -20,9 +21,11 @@
 		<div :class="$style.keywords">
 			<h4 class="inline compact">关键词：</h4>
 			<ul class="inline clean-list">
-				<li v-for="kw in item.keywords"
+				<li
+					v-for="kw in item.keywords"
 					:key="kw"
-					:class="$style.keyword">{{kw}}</li>
+					:class="$style.keyword">{{kw}}
+				</li>
 			</ul>
 		</div>
 
@@ -82,7 +85,7 @@ export default {
 		},
 	},
 	computed: {
-		showUpdate () {
+		showUpdate() {
 			return this.item.create !== this.item.update;
 		},
 	},
