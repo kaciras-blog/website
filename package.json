@@ -19,7 +19,7 @@
 	],
 	"dependencies": {
 		"@iktakahiro/markdown-it-katex": "^3.1.0",
-		"@kaciras-blog/server": "^0.1.0",
+		"@kaciras-blog/server": "^0.1.1",
 		"axios": "~0.18.1",
 		"date-fns": "^2.4.1",
 		"epic-spinners": "^1.1.0",
@@ -47,7 +47,7 @@
 		"@babel/preset-env": "^7.6.0",
 		"@babel/runtime": "^7.6.0",
 		"@fortawesome/fontawesome-free": "^5.11.2",
-		"@kaciras-blog/devtool": "^0.1.0",
+		"@kaciras-blog/devtool": "^0.1.1",
 		"@sentry/browser": "5.6.3",
 		"@sentry/integrations": "^5.6.1",
 		"@types/jest": "^24.0.18",
@@ -67,7 +67,6 @@
 		"eslint-plugin-vue": "^5.2.3",
 		"jest": "^24.9.0",
 		"ts-jest": "^24.1.0",
-		"ts-loader": "^6.1.2",
 		"typescript": "^3.6.3",
 		"vue-template-compiler": "^2.6.10"
 	}
