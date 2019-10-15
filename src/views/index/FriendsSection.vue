@@ -18,14 +18,14 @@
 
 			<li
 				v-if="user.id === 2"
-				:class="$style.item"
+				:class="$style.hexagon_add"
 			>
 				<img
 					src="../../assets/img/hexagon-add.svg"
 					alt="添加友链"
 					title="添加友链"
 					role="button"
-					:class="$style.hexagon_add"
+					:class="$style.hexagon_add_image"
 					@click="makeFriends"
 				>
 			</li>
@@ -84,8 +84,13 @@ export default {
 }
 
 .hexagon_add {
-	width: 120px;
-	height: 120px;
+	composes: item;
+	padding: 35px;
+}
+
+.hexagon_add_image {
+	width: 90px;
+	height: 90px;
 
 	opacity: .15;
 	cursor: pointer;

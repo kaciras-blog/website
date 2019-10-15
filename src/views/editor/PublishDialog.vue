@@ -16,7 +16,7 @@
 
 				<div v-else :class="$style.selected"></div>
 
-				<kx-button @click="selectCategory">选择分类</kx-button>
+				<kx-button :class="$style.select_button" @click="selectCategory">选择分类</kx-button>
 			</div>
 
 			<label>
@@ -112,6 +112,10 @@ export default {
 		margin: 0 .5rem;
 		.ellipsis;
 	}
+}
+
+.select_button {
+	margin-left: auto;
 }
 
 .input {

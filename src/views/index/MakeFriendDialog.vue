@@ -48,7 +48,7 @@ export default {
 	data: () => ({
 		name: "",
 		url: "",
-		favicon: "/image/placeholder.png",
+		favicon: "/static/img/placeholder.png",
 	}),
 	methods: {
 		async uploadFavicon() {
