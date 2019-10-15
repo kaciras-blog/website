@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { observeMouseMove, elementPosition } from "kx-ui/src/dragging";
+import { observeMouseMove, elementPosition } from "@kaciras-blog/uikit/src/dragging";
 import api from "@/api";
 import { deleteOn, attachRandomId } from "@/utils";
 import CardListItem from "./CardListItem";

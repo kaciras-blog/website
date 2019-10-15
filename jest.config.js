@@ -12,6 +12,6 @@ module.exports = {
 		"**/test/**/*.+(ts|tsx|js)"
 	],
 	transformIgnorePatterns:[
-		"node_modules/(?!kx-ui/)" // kx-ui 没有构建，必须要编译
+		"node_modules/(?!@kaciras-blog/uikit/)" // @kaciras-blog/uikit 没有构建，必须要编译
 	],
 };

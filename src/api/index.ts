@@ -1,4 +1,4 @@
-import { openFile } from "kx-ui";
+import { openFile } from "@kaciras-blog/uikit";
 import { BasicApiFactory } from "./support";
 import { AxiosInstance, AxiosResponse } from "axios";
 

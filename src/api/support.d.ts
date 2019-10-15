@@ -1,4 +1,4 @@
-import { CancelToken } from "kx-ui/src/cancellation";
+import { CancelToken } from "@kaciras-blog/uikit/src/cancellation";
 import { AxiosInstance } from "axios";
 
 export class BasicApiFactory {

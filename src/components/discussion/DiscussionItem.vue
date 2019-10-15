@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { debounceFirst } from "@kaciras-blog/common/lib/functions";
+import { debounceFirst } from "@kaciras-blog/server/lib/functions";
 import api from "@/api";
 import ReplyFrame from "./ReplyFrame";
 import ReplyList from "./ReplyList";

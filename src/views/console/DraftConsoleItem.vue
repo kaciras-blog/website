@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { MessageBoxType } from "kx-ui/src/dialog";
+import { MessageBoxType } from "@kaciras-blog/uikit/src/dialog";
 import api from "@/api";
 
 export default {

@@ -53,7 +53,7 @@ import { escapeHtml } from "../../utils";
 import api from "../../api";
 import { mapState } from "vuex";
 import { articleLink } from "../../blog-plugin";
-import { scrollToElementStart } from "kx-ui";
+import { scrollToElementStart } from "@kaciras-blog/uikit";
 
 export default {
 	name: "ArticlePage",

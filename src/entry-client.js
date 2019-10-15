@@ -2,7 +2,7 @@ import "./error-report";
 import "./analytics";
 import createApp, { mediaQueryPlugin } from "./main";
 import Vue from "vue";
-import { CancelToken } from "kx-ui";
+import { CancelToken } from "@kaciras-blog/uikit";
 import * as loadingIndicator from "./loading-indicator";
 import { REFRESH_USER, SET_PREFETCH_DATA, SET_SUN_PHASE } from "./store/types";
 import "./serviceWorker";

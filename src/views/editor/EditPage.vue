@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { VueMultiWatcher } from "kx-ui";
+import { VueMultiWatcher } from "@kaciras-blog/uikit";
 import api from "@/api";
 import { assignUpdate } from "@/utils";
 import KxMarkdownEditWindow from "@/markdown/EditWindow";

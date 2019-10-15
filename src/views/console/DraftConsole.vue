@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { MessageBoxType } from "kx-ui/src/dialog/index";
+import { MessageBoxType } from "@kaciras-blog/uikit/src/dialog/index";
 import api from "@/api";
 import { deleteOn , errorMessage} from "@/utils";
 import DraftConsoleItem from "./DraftConsoleItem";

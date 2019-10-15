@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { openFile } from "kx-ui";
+import { openFile } from "@kaciras-blog/uikit";
 import api from "@/api";
 import ImageCropper from "@/components/ImageCropper";
 

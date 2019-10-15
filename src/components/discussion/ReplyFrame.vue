@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { PreventScrollMixin } from "kx-ui";
+import { PreventScrollMixin } from "@kaciras-blog/uikit";
 import api from "@/api";
 import InputHOC from "@/components/discussion/InputHOC";
 import DiscussionContent from "./DiscussionContent";

@@ -3,7 +3,7 @@ import Axios from "axios";
 import cookies from "axios/lib/helpers/cookies";
 import isURLSameOrigin from "axios/lib/helpers/isURLSameOrigin";
 import { isStandardBrowserEnv } from "axios/lib/utils";
-import * as KxUI from "kx-ui/src/cancellation";
+import * as KxUI from "@kaciras-blog/uikit/src/cancellation";
 
 const CSRF_COOKIE_NAME = "CSRF-Token";
 const CSRF_HEADER_NAME = "X-CSRF-Token";

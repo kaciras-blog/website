@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { preventScroll } from "kx-ui";
+import { preventScroll } from "@kaciras-blog/uikit";
 import NavMenu from "./NavMenu";
 
 export default {

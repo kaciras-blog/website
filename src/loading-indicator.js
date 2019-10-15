@@ -3,7 +3,7 @@
  */
 import TopProgressBar from "./components/TopProgressBar";
 import Vue from "vue";
-import { CancelToken } from "kx-ui";
+import { CancelToken } from "@kaciras-blog/uikit";
 
 const topProgressBar = new Vue(TopProgressBar).$mount();
 document.body.appendChild(topProgressBar.$el);
