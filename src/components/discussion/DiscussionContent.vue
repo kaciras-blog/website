@@ -44,7 +44,7 @@
 					>
 						<i class="far fa-trash-alt"></i>删除
 					</span>
-					<time>{{value.time}}</time>
+					<time>{{value.time | localDateMinute}}</time>
 				</div>
 			</div>
 

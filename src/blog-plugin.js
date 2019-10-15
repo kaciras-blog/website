@@ -6,6 +6,7 @@ import PageFooter from "./components/PageFooter";
 import BasePageLayout from "./components/BasePageLayout";
 import BannerPageLayout from "./components/BannerPageLayout";
 import DiscussionSection from "./components/discussion/DiscussionSection";
+import { format } from "date-fns";
 
 /**
  * 获取Article对象的完整URL，该URL指向文章页面。
@@ -15,15 +16,18 @@ import DiscussionSection from "./components/discussion/DiscussionSection";
  * @param url 在URL中显示的文章名
  * @return {string} URL中的Path部分。
  */
-export function articleLink ({ id, urlTitle }) {
+export function articleLink({ id, urlTitle }) {
 	return `/article/${id}/${urlTitle}`;
 }
 
-export function categoryLink ({ id, name }) {
+export function categoryLink({ id, name }) {
 	return `/category/${id}/${name}`;
 }
 
 export default function install(Vue) {
+	Vue.filter("localDate", timestamp => format(timestamp, "yyyy-M-d"));
+	Vue.filter("localDateMinute", timestamp => format(timestamp, "yyyy-M-d HH:mm"));
+
 	Vue.filter("articleLink", articleLink);
 	Vue.filter("categoryLink", categoryLink);
 

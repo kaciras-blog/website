@@ -20,10 +20,10 @@
 
 			<div class="minor-text">
 				<i class="far fa-edit" title="发表于"></i>
-				<time>{{value.create}}</time>
+				<time>{{value.create | localDateMinute}}</time>
 
 				<i class="fas fa-sync" title="最后更新"></i>
-				<time>{{value.update}}</time>
+				<time>{{value.update | localDateMinute}}</time>
 
 				<i class="fas fa-comment-dots" title="评论数"></i>
 				<span>{{value.dcnt}}</span>

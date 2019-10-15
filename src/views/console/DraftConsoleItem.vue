@@ -5,7 +5,7 @@
 
 			<span class="minor-text">
 				<i class="fas fa-pencil-alt"></i>
-				<time :class="$style.time">{{value.updateTime}}</time>
+				<time :class="$style.time">{{value.updateTime | localDateMinute}}</time>
 			</span>
 
 			<div class="btn-group">

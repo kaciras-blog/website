@@ -41,19 +41,14 @@
 
 		<div class="minor-text" :class="$style.meta">
 
-			<span title="发表于" class="hide-mobile full-time meta">
+			<span title="发表于" class="meta">
 				<i class="fa fa-edit"></i>
-				<time>{{item.create}}</time>
+				<time>{{item.create | localDate}}</time>
 			</span>
 
-			<span v-if="showUpdate" title="最后更新" class="hide-mobile meta">
+			<span title="最后更新" class="hide-mobile meta">
 				<i class="fas fa-sync"></i>
-				<time>{{item.update}}</time>
-			</span>
-
-			<span title="最后更新" class="show-mobile meta">
-				<i class="far fa-clock"></i>
-				<time>{{item | shortTime}}</time>
+				<time>{{item.update | localDate}}</time>
 			</span>
 
 			<span title="评论数" class="meta">
@@ -74,19 +69,6 @@ export default {
 		item: {
 			type: Object,
 			required: true,
-		},
-	},
-	filters: {
-		shortTime (article) {
-			const time = article.create !== article.update
-				? article.update
-				: article.create;
-			return time.substring(5);
-		},
-	},
-	computed: {
-		showUpdate() {
-			return this.item.create !== this.item.update;
 		},
 	},
 };

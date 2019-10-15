@@ -4,13 +4,20 @@
 		<article :class="$style.article">
 			<header class="segment" :class="$style.header">
 				<h1 :class="$style.title">{{article.title}}</h1>
-				<p><span>发布时间：</span><time>{{article.create}}</time></p>
-				<p><span>最后更新：</span><time>{{article.update}}</time></p>
+				<p>
+					<span>发布时间：</span>
+					<time>{{article.create | localDateMinute}}</time>
+				</p>
+				<p>
+					<span>最后更新：</span>
+					<time>{{article.update | localDateMinute}}</time>
+				</p>
 				<div>
 					<span>关键词：</span>
-					<span v-for="keyword in article.keywords"
-						  :key="keyword"
-						  :class="$style.keyword">{{keyword}}
+					<span
+						v-for="keyword in article.keywords"
+						:key="keyword"
+						:class="$style.keyword">{{keyword}}
 					</span>
 				</div>
 			</header>

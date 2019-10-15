@@ -22,7 +22,7 @@
 		<div :class="$style.stateBar">
 			<div>
 				<span v-if="autoSaveError" :class="$style.errMsg">自动保存出错！</span>
-				<span v-else>上次保存：{{archive.saveTime}}</span>
+				<span v-else>上次保存：{{archive.saveTime | localDateMinute}}</span>
 			</div>
 			<div>
 				<text-state-group :text="content" :selection="selection"/>

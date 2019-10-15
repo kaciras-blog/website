@@ -21,6 +21,7 @@
 		"@iktakahiro/markdown-it-katex": "^3.1.0",
 		"@kaciras-blog/server": "^0.1.0",
 		"axios": "~0.18.1",
+		"date-fns": "^2.4.1",
 		"epic-spinners": "^1.1.0",
 		"highlight.js": "^9.15.10",
 		"@kaciras-blog/uikit": "^0.1.0",
