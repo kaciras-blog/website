@@ -22,10 +22,20 @@ export const SUN_PHASES = new SunPhases({
 export default function createVuexStore() {
 	return new Vuex.Store({
 		state: {
+			/** 当前登录的用户，这个字段不会为 null 或 undefined，其值将在入口处被设置 */
 			user: undefined,
+
+			/** 路由页面的预取数据 */
 			prefetch: {},
+
+			/** 评论设置，因为不常变所以放到全局免得每次都读取 */
 			discussionOptions: undefined,
-			sunPhase: "Daytime",
+
+			/**
+			 * 当前的太阳阶段，值是上面 SUN_PHASES 的字段名，null 表明无法确定。
+			 * 【注意】不要使用 undefined，$store.watch 无法监听值为 undefined 的字段。
+			 */
+			sunPhase: null,
 		},
 		actions: {
 			async [REFRESH_USER]({ commit }, prototype) {

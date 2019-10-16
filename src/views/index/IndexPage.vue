@@ -6,11 +6,13 @@
 			<top-nav-glass :class="navClass"/>
 		</template>
 
-		<section :class="$style.banner" :style="{ backgroundImage: `url(${banner})` }">
+		<section :class="$style.banner" :style="{ backgroundImage: banner && `url(${banner})` }">
+
+			<!-- 用于背景图片切换的渐变效果 -->
 			<transition
 				:enter-class="$style.enter_before"
 				:enter-active-class="$style.active_enter"
-				@after-enter="replaceBackground"
+				@after-enter="transitionEnd"
 			>
 				<div
 					v-if="transitionImage"
@@ -43,9 +45,15 @@ import BlogSection from "./BlogSection";
 import FriendsSection from "./FriendsSection";
 
 /*
- * 由于SSR的存在，并且服务端无法获取客户的时间，只能默认用白天的主题，
- * 这导致当客户端时间不是白天时，一加载页面看到的仍是白天主题，但马上又变为其它的样式。
- * 目前来看没有解决办法，这是服务端渲染固有的缺陷。
+ * 由于服务端无法获取客户的时间，导致服务端渲染时无法获取太阳位置。
+ *
+ * 如果此时用一个默认值，例如白天，那么当客户端时间不是白天时，一加载页面看到的仍是白天主题，
+ * 但马上又变为其它的样式，造成闪烁影响用户体验。
+ *
+ * 所以干脆SSR的输出就留个空白，等到执行JS设置了太阳位置后再显示图片，
+ * 反正图片加载完毕前也是白的，刚好表现一致。
+ *
+ * 这样的话如果不开启JS就看不到图，但是我的SSR是用来做SEO和加速的，本站也不支持关闭JS访问，所以没问题。
  */
 const BANNER_MAP = {
 	// Dawn: require("../../assets/img/IndexBannerDawn.png?size=IndexBannerMobile"),
@@ -86,13 +94,14 @@ export default {
 		...mapState(["sunPhase"]),
 	},
 	methods: {
-		replaceBackground() {
+		switchBanner(sunPhase) {
+			this.transitionImage = BANNER_MAP[sunPhase];
+		},
+		/** 在图片切换效果结束后调用 */
+		transitionEnd() {
 			this.$_lock = false;
 			this.banner = this.transitionImage;
 			this.transitionImage = null;
-		},
-		switchBanner(sunPhase) {
-			this.transitionImage = BANNER_MAP[sunPhase];
 		},
 		nextSunPhase() {
 			if (this.$_lock) {
