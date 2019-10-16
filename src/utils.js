@@ -56,16 +56,12 @@ export function deleteOn (array, predicate) {
  * 目标对象已存在的字段。
  *
  * @param src 源对象
- * @param dest 目标对象
+ * @param dist 目标对象
  * @return {*} 目标对象
  */
-export function assignUpdate (src, dest) {
-	for (let k in dest) {
-		if (dest.hasOwnProperty(k) && src.hasOwnProperty(k)) {
-			dest[k] = src[k];
-		}
-	}
-	return dest;
+export function assignUpdate (src, dist) {
+	Object.keys(dist).forEach(k => dist[k] = src[k]);
+	return dist;
 }
 
 /**
