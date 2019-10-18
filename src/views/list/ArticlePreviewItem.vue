@@ -31,7 +31,7 @@
 
 		<div class="tag-group" :class="$style.category">
 			<router-link
-				v-for="c in item.cpath"
+				v-for="c in item.categories"
 				:key="c.id"
 				:to="c | categoryLink"
 				class="tag-group-item">
@@ -51,12 +51,12 @@
 				<time>{{item.update | localDate}}</time>
 			</span>
 
-			<span title="评论数" class="meta">
-				<i class="fas fa-comment-dots"></i>{{item.dcnt}}
+			<span title="浏览数" class="meta">
+				<i class="fa fa-eye"></i>{{item.viewCount}}
 			</span>
 
-			<span title="浏览数" class="meta">
-				<i class="fa fa-eye"></i>{{item.vcnt}}
+			<span title="评论数" class="meta">
+				<i class="fas fa-comment-dots"></i>{{item.discussionCount}}
 			</span>
 		</div>
 	</li>

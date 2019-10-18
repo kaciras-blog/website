@@ -10,7 +10,7 @@
 		<div class="info">
 			<div class="tag-group">
 				<span
-					v-for="category of value.cpath"
+					v-for="category of value.categories"
 					:key="category.id"
 					class="tag-group-item"
 				>
@@ -25,11 +25,11 @@
 				<i class="fas fa-sync" title="最后更新"></i>
 				<time>{{value.update | localDateMinute}}</time>
 
-				<i class="fas fa-comment-dots" title="评论数"></i>
-				<span>{{value.dcnt}}</span>
-
 				<i class="fa fa-eye" title="浏览数"></i>
-				<span>{{value.vcnt}}</span>
+				<span>{{value.viewCount}}</span>
+
+				<i class="fas fa-comment-dots" title="评论数"></i>
+				<span>{{value.discussionCount}}</span>
 			</div>
 		</div>
 
