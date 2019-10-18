@@ -1,4 +1,3 @@
-
 /**
  * 转义HTML文本中的特殊字符
  *
@@ -15,7 +14,6 @@ export function escapeHtml (text) {
 	};
 	return text.replace(/[&<>"']/g, ch => map[ch]);
 }
-
 
 /**
  * 从Axios的错误原因对象中提取错误信息。
