@@ -6,7 +6,7 @@
 			<top-nav-glass :class="navClass"/>
 		</template>
 
-		<section :class="$style.banner" :style="{ backgroundImage: banner && `url(${banner})` }">
+		<section :class="$style.banner" :style="bannerStyle">
 
 			<!-- 用于背景图片切换的渐变效果 -->
 			<transition
@@ -15,10 +15,10 @@
 				@after-enter="transitionEnd"
 			>
 				<div
-					v-if="transitionImage"
+					v-if="transitionSunPhase"
 					class="full-vertex"
 					:class="$style.banner"
-					:style="{ backgroundImage: `url(${transitionImage})` }"
+					:style="transitionStyle"
 				/>
 			</transition>
 
@@ -26,7 +26,7 @@
 				:class="$style.banner_content"
 				:style="titleStyle"
 			>
-				<h1 @click.middle="nextSunPhase">Kaciras' Blog</h1>
+				<h1 @click.middle="toNextPhase">Kaciras' Blog</h1>
 				<p :class="$style.sub_title">程序 • 生活 • 梦想</p>
 			</div>
 		</section>
@@ -37,7 +37,6 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
 import { attachRandomId } from "@/utils";
 import api from "@/api";
 import { SUN_PHASES } from "@/store";
@@ -56,11 +55,17 @@ import FriendsSection from "./FriendsSection";
  * 这样的话如果不开启JS就看不到图，但是我的SSR是用来做SEO和加速的，本站也不支持关闭JS访问，所以没问题。
  */
 const BANNER_MAP = {
-	// Dawn: require("../../assets/img/IndexBannerDawn.png?size=IndexBannerMobile"),
 	Dawn: require("../../assets/img/IndexBannerDawn.png"),
 	Daytime: require("../../assets/img/IndexBannerLight.png"),
 	Dusk: require("../../assets/img/IndexBannerDusk.png"),
 	Night: require("../../assets/img/IndexBannerNight.png"),
+};
+
+const BANNER_MAP_MOBILE = {
+	Dawn: require("../../assets/img/IndexBannerDawn.png?size=IndexBannerMobile"),
+	Daytime: require("../../assets/img/IndexBannerLight.png?size=IndexBannerMobile"),
+	Dusk: require("../../assets/img/IndexBannerDusk.png?size=IndexBannerMobile"),
+	Night: require("../../assets/img/IndexBannerNight.png?size=IndexBannerMobile"),
 };
 
 export default {
@@ -69,50 +74,63 @@ export default {
 		FriendsSection,
 		BlogSection,
 	},
-	asyncData(session) {
-		return Promise.all([
-			api.recommend.getCards().then(slides => session.data.slides = slides.map(attachRandomId)),
-			api.friend.getFriends().then(friends => session.data.friends = friends.map(attachRandomId)),
-		]);
-	},
+	asyncData: (session) => Promise.all([
+		api.recommend.getCards().then(slides => session.data.slides = slides.map(attachRandomId)),
+		api.friend.getFriends().then(friends => session.data.friends = friends.map(attachRandomId)),
+	]),
 	data() {
+		// data 在 computed 之前创建，此时 currentSunPhase 无法访问
 		return {
-			transitionImage: null,
-			banner: BANNER_MAP[this.$store.state.sunPhase],
+			transitionSunPhase: null,
+			visibleSunPhase: this.$store.state.sunPhase,
 		};
 	},
 	computed: {
+		currentSunPhase() {
+			return this.$store.state.sunPhase;
+		},
+		bannerMap() {
+			return this.$mediaQuery.match("mobile") ? BANNER_MAP_MOBILE : BANNER_MAP;
+		},
 		navClass() {
-			if (this.sunPhase === "Night") {
+			if (this.currentSunPhase === "Night") {
 				return [this.$style.nav, "dark"];
 			}
 			return [this.$style.nav];
 		},
 		titleStyle() {
-			return this.sunPhase === "Night" && { color: "deeppink" };
+			return this.currentSunPhase === "Night" && { color: "deeppink" };
 		},
-		...mapState(["sunPhase"]),
+		bannerStyle() {
+			const imageFile = this.bannerMap[this.visibleSunPhase];
+			return { backgroundImage: `url(${imageFile})` };
+		},
+		transitionStyle() {
+			const imageFile = this.bannerMap[this.transitionSunPhase];
+			return { backgroundImage: `url(${imageFile})` };
+		},
 	},
 	methods: {
-		switchBanner(sunPhase) {
-			this.transitionImage = BANNER_MAP[sunPhase];
+		/** 开始切换大图，太阳位置改变时都要通过这个方法来触发过渡动画 */
+		switchSunPhase(sunPhase) {
+			this.transitionSunPhase = sunPhase;
 		},
 		/** 在图片切换效果结束后调用 */
 		transitionEnd() {
 			this.$_lock = false;
-			this.banner = this.transitionImage;
-			this.transitionImage = null;
+			this.visibleSunPhase = this.transitionSunPhase;
+			this.transitionSunPhase = null;
 		},
-		nextSunPhase() {
+		toNextPhase() {
 			if (this.$_lock) {
 				return;
 			}
 			this.$_lock = true;
-			this.$store.commit("SET_SUN_PHASE", SUN_PHASES.nextOf(this.sunPhase));
+			this.$store.commit("SET_SUN_PHASE", SUN_PHASES.nextOf(this.currentSunPhase));
 		},
 	},
 	beforeMount() {
-		this.$store.watch((state) => state.sunPhase, this.switchBanner);
+		this.$store.watch((state) => state.sunPhase, this.switchSunPhase);
 	},
 };
 </script>
