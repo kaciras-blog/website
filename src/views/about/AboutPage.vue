@@ -16,7 +16,7 @@ export default {
 	data: () => ({
 		tabs: [
 			{ title: "关于博主", route: "/about/blogger" },
-			{ title: "关于博客", route: "/about/technology" },
+			{ title: "技术栈", route: "/about/technology" },
 		],
 	}),
 };

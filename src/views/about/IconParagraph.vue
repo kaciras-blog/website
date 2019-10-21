@@ -1,10 +1,11 @@
 <template functional>
 	<p :class="$style.wrapper">
-		<img :class="$style.image"
-			 :src="props.src"
-			 :alt="props.title"
-			 :title="props.title">
-
+		<img
+			:class="$style.image"
+			:src="props.src"
+			:alt="props.title"
+			:title="props.title"
+		>
 		<span :class="$style.text"><slot/></span>
 	</p>
 </template>

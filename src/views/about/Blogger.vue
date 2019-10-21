@@ -1,11 +1,13 @@
 <template functional>
 	<div class="about-tab-page">
 
-		<section class="about-section" :class="$style.blogger">
-			<img src="../../assets/img/logo-kaciras-circle.svg" alt="头像" class="head">
-			<div>
-				<h2>Kaciras（这是网名）</h2>
-				<address>Kaciras@outlook.com</address>
+		<section class="about-section">
+			<div :class="$style.blogger">
+				<img src="../../assets/img/logo-kaciras-circle.svg" alt="头像" class="head">
+				<div>
+					<h2>Kaciras（这是网名）</h2>
+					<address>Kaciras@outlook.com</address>
+				</div>
 			</div>
 		</section>
 
@@ -13,8 +15,10 @@
 			<h2>标签</h2>
 			<ul class="clean-list" :class="$style.tag_list">
 				<li>热爱技术</li>
+				<li>全栈开发</li>
 				<li>冻鳗</li>
 				<li>二刺螈</li>
+				<li>啥都想学</li>
 			</ul>
 		</section>
 
@@ -22,7 +26,8 @@
 			:object-id="0"
 			:type="1"
 			class="about-section"
-			:class="$style.discussion"/>
+			:class="$style.discussion"
+		/>
 	</div>
 </template>
 
