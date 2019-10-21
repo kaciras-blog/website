@@ -78,8 +78,19 @@ export default {
 		api.recommend.getCards().then(slides => session.data.slides = slides.map(attachRandomId)),
 		api.friend.getFriends().then(friends => session.data.friends = friends.map(attachRandomId)),
 	]),
+	/*
+	 * 三个状态与过渡动画的关系：
+	 *   currentSunPhase：当前的太阳位置，过渡一开始它就立即变为下一个太阳位置。
+	 *   transitionSunPhase：过渡开始时，下一个太阳位置，过渡完成后为null。
+	 *   visibleSunPhase：过渡开始时等于上一个太阳位置，过渡完成后替换为transitionSunPhase。
+	 *
+	 * 切换流程：
+	 *   当太阳位置改变，即 Vuex 中的 sunPhase 被修改时，注册的 switchSunPhase 监听被调用。
+	 *   transitionSunPhase 被设置，创建过渡元素并触发过渡动画。
+	 *   动画完成后调用注册的回调 transitionEnd，删除过渡元素并将新的太阳位置赋值给 visibleSunPhase。
+	 */
 	data() {
-		// data 在 computed 之前创建，此时 currentSunPhase 无法访问
+		// data 在 computed 之前创建，此时 currentSunPhase 还无法访问
 		return {
 			transitionSunPhase: null,
 			visibleSunPhase: this.$store.state.sunPhase,
