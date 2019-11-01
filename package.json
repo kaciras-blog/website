@@ -7,15 +7,17 @@
 	"scripts": {
 		"lint": "eslint --fix --ext .js,.vue src",
 		"test": "jest",
-		"serve": "cli-dev serve",
-		"build": "cli-dev build",
-		"build-prod": "cli-dev build --profile=prod"
+		"serve": "blog-devtool serve",
+		"build": "blog-devtool build",
+		"build-prod": "blog-devtool build --profile=prod",
+		"run": "blog-server run"
 	},
 	"browserslist": [
-		">1%",
-		"last 2 versions",
-		"not dead",
-		"not ie <= 11"
+		"Chrome >= 57",
+		"Safari >= 10.1",
+		"iOS >= 10.3",
+		"Firefox >= 52",
+		"Edge >= 16"
 	],
 	"dependencies": {
 		"@iktakahiro/markdown-it-katex": "^3.1.0",
