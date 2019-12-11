@@ -88,9 +88,6 @@ module.exports = {
 		/** 【环境】内容服务器的内部访问 URL，用于服务端渲染和内部通信 */
 		serverAddress: "https://localhost:12345",
 
-		/** 【环境】内容服务器是否启用了HTTPS */
-		https: false,
-
 		/**
 		 * 【环境】【可选】内容服务器的证书，如果它启用了HTTPS的话可能需要添加额外的信任。
 		 * 如果内容服务器没有使用HTTPS，或是从 serverAddress 访问的证书没问题则此项可以去掉。
