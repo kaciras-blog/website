@@ -52,22 +52,24 @@ module.exports = {
 		},
 	},
 
+	/** 连接设置，可以配置接受HTTP和HTTPS连接 */
 	server: {
 
-		/** 【可选】服务器端口，默认是80或443，取决于有没有启用HTTPS */
-		// port: 80,
+		http: {
+			// port: 80,
 
-		/** 【环境】【可选】HTTPS的证书，如果没有此项则不启用HTTPS */
-		// tls: {
-		// 	certFile: "/etc/letsencrypt/live/www.example.com/cert.pem",
-		// 	keyFile: "/etc/letsencrypt/live/www.example.com/privkey.pem",
-		// },
+			/**
+			 * 【可选】如果该项为true，则该端口将发送301重定向到HTTPS端口。
+			 * 该选项也可以为整数，表示重定向目的地的端口号。
+			 */
+			redirect: true,
+		},
 
-		/**
-		 * 【可选】如果启用了HTTPS，是否启动HTTP服务器将HTTP请求重定向到HTTPS。
-		 * 该选项也可以为整数，指定HTTP服务器的端口。
-		 */
-		httpRedirect: true,
+		https: {
+			// port: 443,
+			certFile: "/etc/letsencrypt/live/www.example.com/cert.pem",
+			keyFile: "/etc/letsencrypt/live/www.example.com/privkey.pem",
+		},
 	},
 
 	/** 开发服务器的配置项 */
