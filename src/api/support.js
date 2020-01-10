@@ -3,7 +3,6 @@ import Axios from "axios";
 import cookies from "axios/lib/helpers/cookies";
 import isURLSameOrigin from "axios/lib/helpers/isURLSameOrigin";
 import { isStandardBrowserEnv } from "axios/lib/utils";
-import * as KxUI from "@kaciras-blog/uikit/src/cancellation";
 
 const CSRF_COOKIE_NAME = "CSRF-Token";
 const CSRF_HEADER_NAME = "X-CSRF-Token";
@@ -192,16 +191,16 @@ class ProxyApiFactory extends BasicApiFactory {
 		return this;
 	}
 
-	withCancelToken(cancelToken) {
-		if (!cancelToken) {
+	withCancelToken(token) {
+		if (!token) {
 			return this;
 		}
-		if (cancelToken instanceof KxUI.CancelToken) {
-			const axiosCancelToken = Axios.CancelToken.source();
-			cancelToken.onCancel(axiosCancelToken.cancel);
-			cancelToken = axiosCancelToken.token;
+		if ("addListener" in token) {
+			const axiosTokenSource = Axios.CancelToken.source();
+			token.addListener(axiosTokenSource.cancel);
+			token = axiosTokenSource.token;
 		}
-		this.filters.push(config => config.cancelToken = cancelToken);
+		this.filters.push(config => config.cancelToken = token);
 		return this;
 	}
 }

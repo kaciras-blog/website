@@ -52,6 +52,16 @@ module.exports = {
 		},
 	},
 
+	/** 开发服务器的配置项 */
+	dev: {
+
+		/**
+		 * 热重载中间件的选择，如果为 false 则使用传统的 webpack-hot-middleware，
+		 * true 或未指定则使用 webpack-hot-client。
+		 */
+		useHotClient: true,
+	},
+
 	/** 连接设置，可以配置接受HTTP和HTTPS连接 */
 	server: {
 
@@ -72,19 +82,15 @@ module.exports = {
 		},
 	},
 
-	/** 开发服务器的配置项 */
-	dev: {
-
-		/**
-		 * 热重载中间件的选择，如果为 false 则使用传统的 webpack-hot-middleware，
-		 * true 或未指定则使用 webpack-hot-client。
-		 */
-		useHotClient: true,
-	},
-
 	blog: {
 
-		/** 【环境】前端服务器自带图片存储功能，上传的图片保存在该位置 */
+		/**
+		 * 【环境】网页所在的域，该项用于CORS和防镜像检测。
+		 * 【注意】CORS 包含端口，但目前不支持端口限制。
+		 */
+		host: "localhost",
+
+		/** 【环境】上传的图片保存的位置 */
 		imageRoot: "/var/blog/images",
 
 		/** 【环境】内容服务器的内部访问 URL，用于服务端渲染和内部通信 */
@@ -96,18 +102,9 @@ module.exports = {
 		 * 把此项设置为 true 可以关闭 NodeJS 的 HTTP 证书检查。
 		 */
 		// serverCert: "/etc/letsencrypt/live/api.example.com/cert.pem",
-
-		/** CORS 的配置，不解释了都看得懂，具体见 @koa/cors */
-		cors: {
-			origin: "https://localhost",
-			maxAge: 864000,
-			exposeHeaders: ["Location"],
-			allowHeaders: ["X-CSRF-Token", "X-Requested-With", "Content-Type"],
-			credentials: true,
-		},
 	},
 
-	/** 该对象由 process.env.CONFIG 传递到构建的脚本里 */
+	/** 该对象由 process.env 传递到构建的脚本里 */
 	envConfig: {
 
 		/** 【环境】内容服务器的公网 URL，如果是对象则依据页面使用HTTP还是HTTPS选择 */
@@ -117,13 +114,10 @@ module.exports = {
 		// 	https: "https://api.example.com:12345",
 		// },
 
-		/** 【可选】网站的前端地址，目前该项仅用于防镜像检测 */
-		// webHost: "https://localhost",
-
 		/** 【可选】Google Analytics 的ID，不填则不启用 Google Analytics */
-		// googleAnalyticsId: "UA-12345678-1",
+		GOOGLE_ANALYTICS_ID: "UA-12345678-1",
 
 		/** 【可选】本站使用 Sentry 来上报异常，填写该项后将启用 */
-		// sentryDSN: "https://foobar@sentry.io/123456",
+		SENTRY_DSN: "https://foobar@sentry.io/123456",
 	},
 };

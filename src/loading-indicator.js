@@ -3,12 +3,12 @@
  */
 import TopProgressBar from "./components/TopProgressBar";
 import Vue from "vue";
-import { CancelToken } from "@kaciras-blog/uikit";
+import { CancellationToken } from "@kaciras-blog/uikit";
 
 const topProgressBar = new Vue(TopProgressBar).$mount();
 document.body.appendChild(topProgressBar.$el);
 
-let cancelToken = CancelToken.NEVER;
+let cancelToken = CancellationToken.NEVER;
 let fetching = false;
 
 /** 取消上一个 CancelToken，然后初始化一个新的 */
@@ -19,8 +19,9 @@ export function start() {
 	topProgressBar.setProgress(30);
 	fetching = true;
 
-	cancelToken = CancelToken.timeout(10_000);
-	cancelToken.onCancel(topProgressBar.reset);
+	cancelToken = CancellationToken.create();
+	setTimeout(() => cancelToken.cancel(), 10_000);
+	cancelToken.addListener(topProgressBar.reset);
 	return cancelToken;
 }
 

@@ -1,5 +1,5 @@
 import createApp, { mediaBreakpoints } from "./main";
-import { CancelToken } from "@kaciras-blog/uikit";
+import { CancellationToken } from "@kaciras-blog/uikit";
 import Vue from "vue";
 import { REFRESH_USER, SET_PREFETCH_DATA } from "./store/types";
 import { SET_WIDTH } from "@kaciras-blog/uikit/src/media-query/index";
@@ -15,7 +15,7 @@ class ServerPrefetchContext {
 	}
 
 	get cancelToken() {
-		return CancelToken.NEVER;
+		return CancellationToken.NEVER;
 	}
 
 	get isServer() {

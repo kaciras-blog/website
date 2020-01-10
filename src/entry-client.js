@@ -2,14 +2,14 @@ import "./error-report";
 import "./analytics";
 import createApp, { mediaQueryPlugin } from "./main";
 import Vue from "vue";
-import { CancelToken } from "@kaciras-blog/uikit";
+import { CancellationToken } from "@kaciras-blog/uikit";
 import * as loadingIndicator from "./loading-indicator";
 import { REFRESH_USER, SET_PREFETCH_DATA, SET_SUN_PHASE } from "./store/types";
 import "./serviceWorker";
 import { SUN_PHASES } from "@/store";
 
 
-let cancelToken = CancelToken.NEVER;
+let cancelToken = CancellationToken.NEVER;
 
 /**
  * 处理预加载任务，包括显示加载指示器、错误页面、防止取消后跳转等。
@@ -101,7 +101,6 @@ SUN_PHASES.observe().subscribe(value => store.commit(SET_SUN_PHASE, value));
 if (typeof store.state.user === "undefined") {
 	store.dispatch(REFRESH_USER); // AppShell 模式不会再服务端加载用户
 }
-
 
 /**
  * 检查两个路由是否仅仅是 HASH 不同而 URL 的其它部分是一样的。
