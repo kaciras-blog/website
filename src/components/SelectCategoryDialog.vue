@@ -111,7 +111,7 @@ export default {
 		},
 		ok () {
 			const { multiple, selected } = this;
-			this.$dialog.close(multiple ? selected : selected[0]);
+			this.$dialog.confirm(multiple ? selected : selected[0]);
 		},
 		cancel () {
 			this.$dialog.close();

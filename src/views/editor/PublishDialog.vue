@@ -20,7 +20,7 @@
 			</div>
 
 			<label>
-				文章的URL，发表后不能修改，尽量使用英文，默认与标题相同
+				文章的URL（发表后不能修改，尽量使用英文）
 				<input
 					v-model="url"
 					title="URL，尽量用英文"
@@ -51,12 +51,12 @@ export default {
 		category: null,
 	}),
 	methods: {
-		selectCategory () {
-			this.$dialog.show(SelectCategoryDialog.name).then(res => {
-				if (res) this.category = res;
-			});
+		selectCategory() {
+			this.$dialog.show(SelectCategoryDialog)
+				.confirmPromise
+				.then(data => this.category = data);
 		},
-		async accept () {
+		async accept() {
 			const { archive, metadata, content } = this;
 			try {
 				const data = Object.assign({}, metadata);
@@ -95,7 +95,7 @@ export default {
 .category {
 	display: flex;
 	align-items: center;
-	margin-bottom: 1rem;
+	margin-bottom: 2rem;
 
 	& > .label {
 		word-break: keep-all;

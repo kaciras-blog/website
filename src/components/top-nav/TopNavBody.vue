@@ -12,7 +12,7 @@
 				class="nav-item nav-right"
 				@click="showNavMenu = true"
 			>
-				<i class="fas fa-bars"></i>
+				<i class="fas fa-bars"/>
 			</button>
 			<nav-menu-frame v-model="showNavMenu"/>
 		</template>
