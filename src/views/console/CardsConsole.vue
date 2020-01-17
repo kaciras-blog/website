@@ -9,17 +9,17 @@
 		<div ref="container">
 			<template v-for="item of slides">
 				<div
-					v-if="item.hold"
-					:class="[$style.hold, $style.slide]"
-					:key="item.randomId">
-				</div>
+					v-if="item.holder"
+					:class="$style.holder"
+					:key="item.randomId"
+				/>
 				<card-list-item
 					v-else
 					:key="item.randomId"
 					:class="$style.slide"
 					:item="item"
-					@drag-started="drag"
 					@remove="remove"
+					@drag-started="drag"
 				/>
 			</template>
 		</div>
@@ -34,16 +34,16 @@
 </template>
 
 <script>
-import { observeMouseMove, elementPosition } from "@kaciras-blog/uikit/src/dragging";
+import { observeMouseMove, elementPosition } from "@kaciras-blog/uikit";
 import api from "@/api";
 import { deleteOn, attachRandomId } from "@/utils";
 import CardListItem from "./CardListItem";
 
 const CARD_TEMPLATE = {
 	picture: "/static/img/placeholder.png",
-	name: "新的轮播页",
+	name: "新的卡片",
 	link: "",
-	description: "这是新添加的轮播页",
+	description: "为卡片添加个描述吧",
 };
 
 export default {
@@ -71,7 +71,7 @@ export default {
 				.then(() => this.$dialog.alertSuccess("修改成功"))
 				.catch((e) => this.$dialog.alertError("修改失败", e.message));
 		},
-		drag({ event, item }) {
+		async drag({ event, item }) {
 			const slides = this.slides;
 
 			// 查找拖动页的索引，并折叠全部轮播页
@@ -84,45 +84,47 @@ export default {
 			}
 
 			// 等到全部折叠完了再计算高度。
-			this.$nextTick(() => {
-				/*
-				 * 获取被拖动元素和容器元素的大小位置，计算出每个轮播标题栏的置换范围，在拖动时
-				 * 不断检测被拖动元素位置与其他元素是否进入其他元素的置换范围，不断调整 slides
-				 * 数组。
-				 *
-				 * 下面第一行Vue有BUG，不能使用组件的.$el，否则getBoundingClientRect()返回值是旧的。
-				 */
-				const el = this.$refs.container.children[holderIndex];
-				const container = this.$refs.container.getBoundingClientRect();
+			await this.$nextTick();
 
-				const rect = el.getBoundingClientRect();
-				const span = rect.height + 20;
-				const yOffset = container.top + 10; // 【坑】列表项的margin在垂直方向上超出容器
+			/*
+			 * 获取被拖动元素和容器元素的大小位置，计算出每个轮播标题栏的置换范围，在拖动时
+			 * 不断检测被拖动元素位置与其他元素是否进入其他元素的置换范围，不断调整 slides
+			 * 数组。
+			 *
+			 * 下面第一行Vue有BUG，不能使用组件的.$el，否则getBoundingClientRect()返回值是旧的。
+			 */
+			const el = this.$refs.container.children[holderIndex];
+			const container = this.$refs.container.getBoundingClientRect();
 
-				// 被拖动元素放到单独的位置，并设为绝对定位。
-				this.dragging = {
-					item,
-					style: {
-						width: container.width + "px",
-						position: "absolute",
-						top: rect.top + "px",
-						left: rect.left + "px",
-					},
-				};
+			const rect = el.getBoundingClientRect();
+			const span = rect.height + 20;
+			const yOffset = container.top + 10; // 【坑】列表项的margin在垂直方向上超出容器
 
-				// 原轮播页的位置替换为占位元素
-				slides[holderIndex] = { hold: true };
+			// 被拖动元素放到单独的位置，并设为绝对定位。
+			this.dragging = {
+				item,
+				style: {
+					width: container.width + "px",
+					position: "absolute",
+					top: rect.top + "px",
+					left: rect.left + "px",
+				},
+			};
 
-				function insertInto(i) {
-					if (holderIndex === i) return;
-					const hold = slides.splice(holderIndex, 1)[0];
-					holderIndex = i;
-					slides.splice(i, 0, hold);
-				}
+			// 原轮播页的位置替换为占位元素
+			slides[holderIndex] = { holder: true };
+
+			function insertInto(i) {
+				if (holderIndex === i) return;
+				const holder = slides.splice(holderIndex, 1)[0];
+				holderIndex = i;
+				slides.splice(i, 0, holder);
+			}
+
+			observeMouseMove().pipe(elementPosition(event, el)).subscribe({
 
 				/**
-				 * 在拖动的过程中不断调用的函数。函数中修改被拖到元素的坐标，并
-				 * 计算是否置换，置换取决于被拖动元素的纵坐标：
+				 * 置换取决于被拖动元素的纵坐标：
 				 *     小于 slides 中第一个元素中心：插入到最前
 				 *     大于第N个元素中心、小于第N+1个： 插入到N之后
 				 *     大于最后一个元素中心：添加到最后
@@ -130,7 +132,7 @@ export default {
 				 * @param x 被拖动元素新的横坐标
 				 * @param y 被拖动元素新的纵坐标
 				 */
-				const next = ({ x, y }) => {
+				next:({ x, y }) => {
 					this.dragging.style.left = x + "px";
 					this.dragging.style.top = y + "px";
 
@@ -143,16 +145,11 @@ export default {
 					} else {
 						insertInto(slides.length - 1);
 					}
-				};
-
-				const complete = () => {
+				},
+				complete: () => {
 					this.dragging = null;
 					slides[holderIndex] = item;
-				};
-
-				observeMouseMove()
-					.pipe(elementPosition(event, el))
-					.subscribe({ next, complete });
+				},
 			});
 		},
 	},
@@ -169,9 +166,10 @@ export default {
 	margin: 20px 0;
 }
 
-.hold {
+.holder {
+	composes: slide;
 	height: 2.6rem;
-	border: solid 3px #85f2d0;
+	border: solid 3px #94f2ca;
 }
 
 .toolbar {
