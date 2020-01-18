@@ -105,13 +105,10 @@ const { vue, router, store } = createApp();
  */
 function isOnlyHashChange(to, from) {
 	const fPath = from.fullPath, tPath = to.fullPath;
-	const fi = fPath.indexOf("#"), ti = tPath.indexOf("#");
-	if (ti !== fi) {
-		const fpb = fi < 0 ? fPath : fPath.substring(0, fi);
-		const tpb = ti < 0 ? tPath : tPath.substring(0, ti);
-		return fpb === tpb;
-	}
-	return false;
+	const i = fPath.indexOf("#"), j = tPath.indexOf("#");
+	const fp = i < 0 ? fPath : fPath.substring(0, i);
+	const tp = j < 0 ? tPath : tPath.substring(0, j);
+	return fp === tp;
 }
 
 /**
