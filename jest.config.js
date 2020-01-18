@@ -1,5 +1,5 @@
 module.exports = {
-	moduleFileExtensions: ["ts", "tsx", "js"],
+	moduleFileExtensions: ["ts", "tsx", "js", "jsx"],
 	moduleNameMapper: {
 		'^@/(.*)$': '<rootDir>/src/$1'
 	},
@@ -9,9 +9,10 @@ module.exports = {
 		"^.+\\.tsx?$": "ts-jest",
 	},
 	testMatch: [
-		"**/test/**/*.+(ts|tsx|js)"
+		"**/tests/**/*.spec.+(ts|js|tsx|jsx)",
+		"**/tests/**/test-*.+(ts|js|tsx|jsx)"
 	],
-	transformIgnorePatterns:[
+	transformIgnorePatterns: [
 		"node_modules/(?!@kaciras-blog/uikit/)" // @kaciras-blog/uikit 没有构建，必须要编译
 	],
 };
