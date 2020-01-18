@@ -37,9 +37,15 @@ export class SunPhases {
 	 * @return 太阳所处的位置
 	 */
 	ofTime(date: Date) {
+		const { points } = this;
 		const hours = date.getHours();
-		const i = this.points.findIndex((start) => hours >= start);
-		return this.names[i];
+
+		for (let i = points.length; i >= 0; i--) {
+			if (points[i] < hours) {
+				return this.names[i + 1];
+			}
+		}
+		return this.names[0];
 	}
 
 	/**
@@ -96,5 +102,6 @@ function getInitial(breakPoints: number[], date: Date) {
 		}
 		index = index < lastIndex ? index + 1 : 0;
 	}
+
 	throw new Error("小时最大23，一定小于最后一个元素");
 }
