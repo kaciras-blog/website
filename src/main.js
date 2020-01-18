@@ -24,6 +24,7 @@ export const mediaBreakpoints = {
 	desktop: 1200,
 	wide: 99999,
 };
+
 export const mediaQueryPlugin = new MediaQueryManager(mediaBreakpoints);
 Vue.use(mediaQueryPlugin);
 
@@ -35,17 +36,13 @@ Vue.component(VueMultiselect.name, VueMultiselect);
  * 由于创建Vue实例后就立即渲染，而此时可能就需要初始状态（比如控制台页面鉴权），所以不能等到创建之后再
  * 替换服务端渲染出的初始状态，而要在创建Vue实例之前就调用 store.replaceState(...)
  *
- * @param initState Vuex的初始状态
  * @return {*} Vue全家桶
  */
-export default function createApp(initState = undefined) {
+export default function createApp() {
 	const store = createStore();
 	const router = createRouter();
 
 	mediaQueryPlugin.registerToStore(store);
-	if (initState) {
-		store.replaceState(initState);
-	}
 
 	/**
 	 * 阻止未登录用户访问后台页面。
@@ -70,5 +67,6 @@ export default function createApp(initState = undefined) {
 		store,
 		render: h => h(App),
 	});
+
 	return { vue, router, store };
 }

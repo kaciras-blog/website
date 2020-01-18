@@ -94,13 +94,7 @@ Vue.mixin({
 	},
 });
 
-const { vue, router, store } = createApp(window.__INITIAL_STATE__);
-mediaQueryPlugin.observeWindow(store);
-SUN_PHASES.observe().subscribe(value => store.commit(SET_SUN_PHASE, value));
-
-if (typeof store.state.user === "undefined") {
-	store.dispatch(REFRESH_USER); // AppShell 模式不会再服务端加载用户
-}
+const { vue, router, store } = createApp();
 
 /**
  * 检查两个路由是否仅仅是 HASH 不同而 URL 的其它部分是一样的。
@@ -153,18 +147,18 @@ function initAppAndRouterHook() {
 			return next(false);
 		}
 
+		// （这段是官网给的）我们只关心非预渲染的组件，所以我们对比它们，找出两个匹配列表的差异组件。
+		const matched = router.getMatchedComponents(to);
+		const previous = router.getMatchedComponents(from);
+		let diffed = false;
+		const activated = matched.filter((c, i) => diffed || (diffed = (previous[i] !== c)));
+
 		const nextWrapper = (...args) => {
 			if (to.meta.title) {
 				document.title = to.meta.title + " - Kaciras的博客";
 			}
 			next(...args);
 		};
-
-		// （这段是官网给的）我们只关心非预渲染的组件，所以我们对比它们，找出两个匹配列表的差异组件。
-		const matched = router.getMatchedComponents(to);
-		const previous = router.getMatchedComponents(from);
-		let diffed = false;
-		const activated = matched.filter((c, i) => diffed || (diffed = (previous[i] !== c)));
 
 		if (!activated.length) {
 			return nextWrapper();
@@ -178,19 +172,27 @@ function initAppAndRouterHook() {
 		prefetch(session, tasks, nextWrapper);
 	});
 
+	// AppShell 模式不会在服务端加载用户
+	if (typeof store.state.user === "undefined") {
+		store.dispatch(REFRESH_USER);
+	}
+
+	mediaQueryPlugin.observeWindow(store);
+	SUN_PHASES.observe().subscribe(value => store.commit(SET_SUN_PHASE, value));
+
 	vue.$mount("#app");
 }
 
-
 /*
- * 检测并替换服务端渲染的状态，并添加路由钩子函数，用于处理 asyncData.
+ * 如果有 window.__INITIAL_STATE__ 全局属性则说明使用了服务端渲染。
  *
  * 在服务端渲染下，将初始化注册到 router.onReady() 上，使其在初始
  * 路由 resolve 后执行，以便我们不会二次预取(double-fetch)已有的数据。
  */
 if (window.__INITIAL_STATE__) {
+	store.replaceState(window.__INITIAL_STATE__);
 	delete window.__INITIAL_STATE__;
 	router.onReady(initAppAndRouterHook);
 } else {
-	initAppAndRouterHook();
+	initAppAndRouterHook(); // 没有经过服务端渲染，就直接初始化。
 }
