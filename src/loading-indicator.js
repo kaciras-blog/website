@@ -25,19 +25,19 @@ export function start() {
 	return cancelToken;
 }
 
-export function componentResolved() {
+export function startPrefetch() {
 	topProgressBar.setProgress(70);
 	fetching = true;
 }
 
-export function setError() {
-	topProgressBar.fail();
-	fetching = false;
-}
-
-export function setSuccessful() {
+export function finishSuccessful() {
 	topProgressBar.finish();
 	fetching = false;
 }
 
-// 没有setCancel，因为取消总是由这里发起
+export function finishWithError() {
+	topProgressBar.fail();
+	fetching = false;
+}
+
+// 没有 finishCancel，因为取消总是由这里发起

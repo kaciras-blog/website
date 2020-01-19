@@ -11,56 +11,6 @@ import { SUN_PHASES } from "@/store";
 
 let cancelToken = CancellationToken.NEVER;
 
-/**
- * 处理预加载任务，包括显示加载指示器、错误页面、防止取消后跳转等。
- *
- * @param session 预加载会话
- * @param task {Promise | Promise[] | undefined} 预加载任务
- * @param next 路由函数
- */
-function prefetch(session, task, next) {
-	if (!task) {
-		task = Promise.resolve();
-	} else if (Array.isArray(task)) {
-		task = Promise.all(task);
-	}
-
-	loadingIndicator.componentResolved();
-
-	task.then(() => {
-		if (!cancelToken.isCancelled) {
-			next();
-			store.commit(SET_PREFETCH_DATA, session.data);
-		} else {
-			next(false);
-		}
-		loadingIndicator.setSuccessful();
-	})
-		.catch(err => handleError(err, next));
-}
-
-function handleError(err, next) {
-	if (cancelToken.isCancelled) {
-		return next(false);
-	}
-	switch (err.code) {
-		case -1:
-			break;
-		case 301:
-		case 302:
-			loadingIndicator.setSuccessful();
-			return next(err.location);
-		case 404:
-		case 410:
-			next({ path: "/error/" + err.code, replace: true });
-			break;
-		default:
-			console.error(err);
-			next("/error/500");
-	}
-	loadingIndicator.setError();
-}
-
 class ClientPrefetchContext {
 
 	constructor(route, cancelToken) {
@@ -82,6 +32,53 @@ class ClientPrefetchContext {
 	}
 }
 
+/**
+ * 处理预加载任务，包括显示加载指示器、错误页面、防止取消后跳转等。
+ *
+ * @param route 即将要进入的目标路由对象
+ * @param components 需要预载数据的组件数组
+ * @param next 进行管道中的下一个钩子
+ */
+function prefetch(route, components, next) {
+	loadingIndicator.startPrefetch();
+
+	const context = new ClientPrefetchContext(route, cancelToken);
+	const tasks = components.map(c => c.asyncData(context));
+
+	Promise.all(tasks).then(() => {
+		if (cancelToken.isCancelled) {
+			next(false);
+		} else {
+			store.commit(SET_PREFETCH_DATA, context.data);
+			next();
+		}
+		loadingIndicator.finishSuccessful();
+	})
+		.catch((err) => handleError(err, next));
+}
+
+function handleError(err, next) {
+	if (cancelToken.isCancelled) {
+		return next(false);
+	}
+	switch (err.code) {
+		case -1:
+			break;
+		case 301:
+		case 302:
+			loadingIndicator.finishSuccessful();
+			return next(err.location);
+		case 404:
+		case 410:
+			next({ path: "/error/" + err.code, replace: true });
+			break;
+		default:
+			console.error(err);
+			next("/error/500");
+	}
+	loadingIndicator.finishWithError();
+}
+
 // mixin 必须在创建 Vue 实例之前
 Vue.mixin({
 	beforeRouteUpdate(to, from, next) {
@@ -89,8 +86,7 @@ Vue.mixin({
 			return next();
 		}
 		cancelToken = loadingIndicator.start();
-		const ctx = new ClientPrefetchContext(to, cancelToken);
-		prefetch(ctx, this.$options.asyncData(ctx), next);
+		prefetch(to, [this.$options], next);
 	},
 });
 
@@ -161,12 +157,7 @@ function initAppAndRouterHook() {
 			return nextWrapper();
 		}
 
-		const session = new ClientPrefetchContext(to, cancelToken);
-		const tasks = activated
-			.filter(c => c.asyncData)
-			.map(c => c.asyncData(session));
-
-		prefetch(session, tasks, nextWrapper);
+		prefetch(to, activated.filter(c => c.asyncData), nextWrapper);
 	});
 
 	// AppShell 模式不会在服务端加载用户
