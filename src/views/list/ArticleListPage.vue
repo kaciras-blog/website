@@ -28,7 +28,13 @@
 
 			<aside :class="$style.aside">
 				<aside-panel/>
-				<kx-check-box v-model="autoLoad">滚动加载</kx-check-box>
+
+				<h3 class="padding">设置</h3>
+				<label :class="$style.switch_option">
+					<span :class="$style.switch_label">滚动加载</span>
+					<kx-switch v-model="autoLoad"/>
+				</label>
+
 			</aside>
 		</div>
 	</banner-page-layout>
@@ -174,5 +180,16 @@ export default {
 			margin-left: 6%;
 		}
 	}
+}
+
+.switch_option {
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+}
+
+.switch_label {
+	margin-right: auto;
+	font-size: 16px;
 }
 </style>
