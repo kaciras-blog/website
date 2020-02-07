@@ -44,6 +44,10 @@
 
 			<router-link v-else to="/login" class="nav-item">登录</router-link>
 			<router-link to="/about" class="nav-item">关于</router-link>
+
+			<a href="/feed/atom" class="nav-item" title="Feed订阅">
+				<i class="fas fa-rss" :class="$style.icon_only"></i>
+			</a>
 		</div>
 	</component>
 </template>
@@ -108,6 +112,11 @@ export default {
 .head {
 	vertical-align: top;
 	margin: 0 10px;
+}
+
+.icon_only {
+	font-size: 20px;
+	vertical-align: middle;
 }
 
 :global(.dark) .container {
