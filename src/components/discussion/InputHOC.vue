@@ -1,4 +1,7 @@
-<!-- 这个组件没有样式，只是封装数据，但Vue2就是没有Hooks只能用这种丑陋的写法 -->
+<!--
+提供自动保存功能和提交逻辑。
+这个组件没有样式，只是封装数据，但Vue2就是没有Hooks只能用这种丑陋的写法。
+-->
 <template>
 	<div>
 		<slot :content="content" :onSubmit="submit" :onInput="handleInput"/>

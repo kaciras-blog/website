@@ -54,6 +54,7 @@ import FriendsSection from "./FriendsSection";
  *
  * 这样的话如果不开启JS就看不到图，但是我的SSR是用来做SEO和加速的，本站也不支持关闭JS访问，所以没问题。
  */
+
 const BANNER_MAP = {
 	Dawn: require("../../assets/img/IndexBannerDawn.png"),
 	Daytime: require("../../assets/img/IndexBannerLight.png"),

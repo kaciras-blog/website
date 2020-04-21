@@ -1,6 +1,10 @@
 <template>
 	<div v-if="loading" :class="$style.loading">
-		<atom-spinner :animation-duration="1200" :size="64" color="#53bcff"/>
+		<atom-spinner
+			:animation-duration="1200"
+			:size="64"
+			color="#53bcff"
+		/>
 		<span :class="$style.loading_text">评论加载中</span>
 	</div>
 
@@ -33,7 +37,11 @@
 			@submitted="showLast"
 		>
 			<template v-slot="{ content, onSubmit, onInput }">
-				<discussion-editor :content="content" :on-submit="onSubmit" @input="onInput"/>
+				<discussion-editor
+					:content="content"
+					:on-submit="onSubmit"
+					@input="onInput"
+				/>
 			</template>
 		</input-h-o-c>
 

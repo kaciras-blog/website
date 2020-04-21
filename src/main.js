@@ -47,6 +47,8 @@ export default function createApp() {
 	/**
 	 * 阻止未登录用户访问后台页面。
 	 * 因为 router.app.$store获取不到store实例，所以就放在这了
+	 *
+	 * TODO: 在 store.replaceState(window.__INITIAL_STATE__); 之前导致直接访问控制台会跳转
 	 */
 	router.beforeEach((to, from, next) => {
 		const { user } = store.state;

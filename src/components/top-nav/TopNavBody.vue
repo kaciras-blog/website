@@ -54,7 +54,7 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import { REMOVE_USER } from "@/store/types";
+import { LOGOUT } from "@/store/types";
 import NavMenuFrame from "./NavMenuFrame";
 
 export default {
@@ -73,7 +73,7 @@ export default {
 		showMenu() {
 			this.$dialog.show(NavMenuFrame);
 		},
-		...mapActions({ logout: REMOVE_USER }),
+		...mapActions({ logout: LOGOUT }),
 	},
 };
 </script>

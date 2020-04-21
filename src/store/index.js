@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import api from "../api";
-import { REFRESH_USER, REMOVE_USER, SET_PREFETCH_DATA, SET_USER, SET_SUN_PHASE } from "./types";
+import { REFRESH_USER, LOGOUT, SET_PREFETCH_DATA, SET_USER, SET_SUN_PHASE } from "./types";
 import { SunPhases } from "@/sun-phase";
 
 Vue.use(Vuex);
@@ -46,7 +46,7 @@ export default function createVuexStore() {
 			},
 
 			// 不要设为null，未登录用ID=0表示
-			[REMOVE_USER]({ commit }) {
+			[LOGOUT]({ commit }) {
 				const guest = { id: 0, name: "(游客)" };
 				return api.user.logout().then(() => commit(SET_USER, guest));
 			},

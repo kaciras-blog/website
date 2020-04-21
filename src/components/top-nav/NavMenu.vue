@@ -34,14 +34,14 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
-import { REMOVE_USER } from "@/store/types";
+import { LOGOUT } from "@/store/types";
 import SideMenuLink from "./SideMenuLink";
 
 export default {
 	name: "NavMenu",
 	components: { SideMenuLink },
 	computed: mapState(["user"]),
-	methods: mapActions({ logout: REMOVE_USER }),
+	methods: mapActions({ logout: LOGOUT }),
 };
 </script>
 

@@ -1,11 +1,11 @@
-import { RequestHandler, StaleWhileRevalidateHandler } from "./cache-strategy";
+import { CacheFirstHandler, RequestHandler, StaleWhileRevalidateHandler } from "./cache-strategy";
 import { ManagedCache } from "./cache";
 
 /**
  * 缓存服务器，检查传入的请求是否命中缓存，如果是则直接返回缓存的结果，否则不做任何
  * 动作（不做动作的话浏览器默认会正常发送请求）
  */
-export class Routing {
+export class Router {
 
 	private readonly routes: Route[];
 
@@ -39,12 +39,12 @@ export class Routing {
 	}
 }
 
-
 export interface Route {
+
 	match(request: Request): boolean;
+
 	handle(event: FetchEvent): void;
 }
-
 
 export class RegexRoute implements Route {
 
@@ -120,5 +120,41 @@ export class NavigatePreloadRoute implements Route {
 			if (loaded) event.respondWith(loaded);
 		};
 		event.waitUntil(possiblePreload());
+	}
+}
+
+/**
+ * 如果浏览器支持 webp 格式，则把图片请求的文件扩展名改为 .webp
+ *
+ * TODO: 没有找到怎么在worker里检测webp支持的方法，只能使用Accept请求头判断
+ */
+export class WebpUpgradeRoute implements Route {
+
+	private readonly handler: RequestHandler;
+	private readonly pathPattern: RegExp;
+
+	constructor(cache: ManagedCache, pathPattern: RegExp) {
+		this.handler = new CacheFirstHandler(cache);
+		this.pathPattern = pathPattern;
+	}
+
+	match(request: Request) {
+		const url = new URL(request.url);
+		const path = url.pathname;
+
+		if (path.endsWith("gif")) {
+			return false;
+		}
+		if (this.pathPattern.test(path)) {
+			return request.headers.get("Accept")!.includes("image/webp");
+		}
+		return false;
+	}
+
+	async handle(event: FetchEvent) {
+		const url = new URL(event.request.url);
+		const path = url.pathname;
+		url.pathname = path.substring(0, path.lastIndexOf(".")) + ".webp";
+		return this.handler.handle(new Request(url.href, event.request));
 	}
 }
