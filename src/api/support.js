@@ -64,15 +64,15 @@ function createAxios(config) {
 	return axios;
 }
 
-const apiOrigin = process.env.CONFIG.contentServerUri;
-const baseURL = typeof apiOrigin === "string"
+const apiOrigin = process.env.CONFIG.CONTENT_SERVER_URI;
+export const BASE_URL = typeof apiOrigin === "string"
 	? apiOrigin
 	: apiOrigin[location.protocol.substring(0, location.protocol.length - 1)];
 
 export class BasicApiFactory {
 
 	constructor(axiosSet = {
-		mainServer: createAxios({ baseURL }),
+		mainServer: createAxios({ baseURL: BASE_URL }),
 		webServer: createAxios(),
 	}) {
 		this.axiosSet = axiosSet;

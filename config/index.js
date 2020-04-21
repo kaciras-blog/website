@@ -25,6 +25,9 @@ module.exports = {
 		/** 是否启用 webpack-bundle-analyzer */
 		bundleAnalyzerReport: false,
 
+		/** 是否启用 speed-measure-webpack-plugin */
+		speedMeasure: false,
+
 		/** 客户端构建的一些其他选项 */
 		client: {
 			useBabel: true,
@@ -108,8 +111,8 @@ module.exports = {
 	envConfig: {
 
 		/** 【环境】内容服务器的公网 URL，如果是对象则依据页面使用HTTP还是HTTPS选择 */
-		contentServerUri: "https://api.example.com",
-		// contentServerUri: {
+		CONTENT_SERVER_URI: "https://api.example.com",
+		// CONTENT_SERVER_URI: {
 		// 	http: "http://api.example.com:54321",
 		// 	https: "https://api.example.com:12345",
 		// },

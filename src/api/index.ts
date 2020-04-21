@@ -1,5 +1,5 @@
 import { openFile } from "@kaciras-blog/uikit";
-import { BasicApiFactory } from "./support";
+import { BASE_URL, BasicApiFactory } from "./support";
 import { AxiosInstance, AxiosResponse } from "axios";
 
 
@@ -251,7 +251,7 @@ class MiscApi extends AbstractApi {
 	 * @return {string} 验证码URL
 	 */
 	newCaptchaAddress() {
-		return process.env.CONFIG.contentServerUri + "/captcha?r=" + Math.random();
+		return BASE_URL + "/captcha?r=" + Math.random();
 	}
 }
 

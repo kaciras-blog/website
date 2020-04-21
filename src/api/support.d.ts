@@ -1,6 +1,8 @@
 import { CancellationToken } from "@kaciras-blog/uikit/src/cancellation";
 import { AxiosInstance } from "axios";
 
+export const BASE_URL: string;
+
 export class BasicApiFactory {
 	constructor(axiosSet?: { [key: string]: AxiosInstance })
 
