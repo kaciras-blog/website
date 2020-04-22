@@ -1,57 +1,26 @@
 // 这个文件里用了太多动态调用，懒得写成TS了
 import Axios from "axios";
-import cookies from "axios/lib/helpers/cookies";
-import isURLSameOrigin from "axios/lib/helpers/isURLSameOrigin";
-import { isStandardBrowserEnv } from "axios/lib/utils";
 
 const CSRF_COOKIE_NAME = "CSRF-Token";
 const CSRF_HEADER_NAME = "X-CSRF-Token";
 
+/*
+ * 【设计错误】
+ * 后端将用户信息记录在SESSION里，而SESSION对应的Cookie跟登录控制器不在一个层级，
+ * 导致无法将 SESSION Cookie 的过期时间设置为会话结束，如果登录时未选择记住登陆则会造成后端无法判断，
+ * 于是是否登录的判断全靠CSRF。
+ */
 Axios.defaults.withCredentials = true;
-
-// CSRF Token 在下面自定义处理了
-// Axios.defaults.xsrfCookieName = CSRF_COOKIE_NAME;
-// Axios.defaults.xsrfHeaderName = CSRF_HEADER_NAME;
+Axios.defaults.xsrfCookieName = CSRF_COOKIE_NAME;
+Axios.defaults.xsrfHeaderName = CSRF_HEADER_NAME;
 
 if (process.env.NODE_ENV === "production") {
 	Axios.defaults.timeout = 10000;
 }
 
-/**
- * 配置Axios实例，在请求参数中带上Token来防止CSRF攻击。
- *
- * Axios内置了在请求头中带Token的功能，但是这个请求头将导致所有跨域请求都要预检。
- * 这里自定义了这一过程，并排除掉安全请求（GET，HEAD）以提高性能。
- *
- * @param axios Axios实例
- */
-function parameterCsrfProtection(axios) {
-
-	function configure(config) {
-		const method = config.method.toUpperCase();
-		if (method === "GET" || method === "HEAD") {
-			return config;
-		}
-		const xsrfValue = config.withCredentials || isURLSameOrigin(config.url)
-			? cookies.read(CSRF_COOKIE_NAME) : null;
-
-		if (xsrfValue) {
-			// config.params = config.params || {};
-			// config.params["csrf"] = xsrfValue;
-			config.headers[CSRF_HEADER_NAME] = xsrfValue;
-		}
-		return config;
-	}
-
-	if (isStandardBrowserEnv()) {
-		axios.interceptors.request.use(configure);
-	}
-}
-
-// MDZZ，axios不能全局配置拦截？
+// Axios 不能全局配置拦截？
 function createAxios(config) {
 	const axios = Axios.create(config);
-	parameterCsrfProtection(axios);
 
 	axios.interceptors.response.use(null, error => {
 		if (error.response) {
