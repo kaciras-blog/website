@@ -3,20 +3,30 @@
 		<div :class="$style.draft">
 			<h3 :class="$style.title">{{value.title}}</h3>
 
-			<span class="minor-text">
+			<div
+				v-if="value.articleId"
+				title="修改现有的文章"
+				:class="$style.target"
+			>
 				<i class="fas fa-pencil-alt"></i>
+				{{value.articleId}}
+			</div>
+
+			<span class="minor-text">
 				<time :class="$style.time">{{value.updateTime | localDateMinute}}</time>
 			</span>
 
 			<div class="btn-group">
 				<kx-button
 					:route="'/edit/' + value.id"
-					class="primary outline">
+					class="primary outline"
+				>
 					编辑
 				</kx-button>
 				<kx-button
 					class="dangerous outline"
-					@click="deleteDraft">
+					@click="deleteDraft"
+				>
 					删除
 				</kx-button>
 			</div>
@@ -47,15 +57,16 @@ export default {
 		},
 	},
 	methods: {
-		deleteDraft() {
-			this.$dialog.alert({
+		async deleteDraft() {
+			await this.$dialog.alert({
 				title: "删除草稿",
 				content: "删除后不可恢复，是否确定？",
 				type: MessageBoxType.Warning,
 				showCancelButton: true,
-			})
-				.confirmThen(() => api.draft.remove(this.value.id))
-				.then(() => this.$emit("removed"));
+			}).confirmPromise;
+
+			await api.draft.remove(this.value.id);
+			this.$emit("removed");
 		},
 	},
 };
@@ -72,6 +83,13 @@ export default {
 	margin: 0;
 }
 
+.target {
+	padding: 5px;
+	border-radius: 4px;
+	color: white;
+	background: dodgerblue;
+}
+
 .history {
 	color: #c3c3c3;
 	background-color: #3a3a3a;
@@ -85,6 +103,6 @@ export default {
 }
 
 .time {
-	margin: 0 1em 0 .5em;
+	padding: 0 10px;
 }
 </style>
