@@ -1,11 +1,12 @@
-import * as Sentry from '@sentry/browser';
 import Vue from "vue";
+import * as Sentry from '@sentry/browser';
 import * as Integrations from "@sentry/integrations";
 import { ErrorRecordMessage } from "./serviceWorker";
 
-if (process.env.CONFIG.sentryDSN) {
+const { SENTRY_DSN } = process.env.CONFIG as any
+if (SENTRY_DSN) {
 	Sentry.init({
-		dsn: process.env.CONFIG.sentryDSN,
+		dsn: SENTRY_DSN,
 		integrations: [new Integrations.Vue({ Vue })],
 	});
 }
