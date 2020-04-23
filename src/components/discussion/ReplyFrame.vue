@@ -53,7 +53,7 @@
 					:value="content"
 					v-ime-input="e => fit(e, onInput)"
 				/>
-				<kx-button class="primary" @click="onSubmit">发送</kx-button>
+				<kx-button class="primary" @click="onSubmit">回复</kx-button>
 			</template>
 		</input-h-o-c>
 	</div>
@@ -158,6 +158,12 @@ export default {
 	margin-right: 10px;
 	border: none;
 	border-radius: 4px;
+
+	// hide scroll bar, support Firefox, Safari, and Chrome
+	scrollbar-width: none;
+	&::-webkit-scrollbar {
+		display: none;
+	}
 
 	&:focus {
 		max-height: 10rem;
