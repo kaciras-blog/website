@@ -125,7 +125,7 @@ export default {
 	},
 	mounted() {
 		if(!this.articleList) {
-			this.$refs.pagingView.loadPage();
+			this.$refs.pagingView.reload();
 		}
 	},
 };
