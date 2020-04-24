@@ -60,7 +60,7 @@ class ArticleApi extends AbstractApi {
 	}
 
 	update(id: number, data: any) {
-		return this.mainServer.put("/articles/" + id, data).then(extractLocation("/articles/"));
+		return this.mainServer.put("/articles/" + id, data);
 	}
 
 	getList(params: ArticleListQuery) {
