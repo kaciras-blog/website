@@ -57,7 +57,7 @@ export default {
 		allChecked: {
 			get() {
 				const { length } = this.pendingList;
-				return length && length === this.selected.length;
+				return length > 0 && length === this.selected.length;
 			},
 			set(value) {
 				this.pendingList.forEach(item => item.checked = value);
