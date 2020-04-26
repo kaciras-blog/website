@@ -1,8 +1,8 @@
-import createApp, { mediaBreakpoints } from "./main";
-import { CancellationToken } from "@kaciras-blog/uikit";
 import Vue from "vue";
-import { REFRESH_USER, SET_PREFETCH_DATA } from "./store/types";
+import { CancellationToken } from "@kaciras-blog/uikit";
 import { SET_WIDTH } from "@kaciras-blog/uikit/src/media-query/index";
+import createApp, { mediaBreakpoints } from "./main";
+import { REFRESH_USER, SET_PREFETCH_DATA } from "./store/types";
 
 
 class ServerPrefetchContext {
@@ -53,6 +53,7 @@ export default async (context) => {
 	if (context.shellOnly || /^\/edit\//.test(url.pathname)) {
 		return new Vue({ render: h => h("div", { attrs: { id: "app" } }) });
 	}
+
 	const vuexTasks = [];
 	const { vue, router, store } = createApp();
 

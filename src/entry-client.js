@@ -90,7 +90,7 @@ Vue.mixin({
 	},
 });
 
-const { vue, router, store } = createApp();
+const { vue, router, store } = createApp(window.__INITIAL_STATE__);
 
 /**
  * 检查两个路由是否仅仅是 HASH 不同而 URL 的其它部分是一样的。
@@ -178,9 +178,8 @@ function initAppAndRouterHook() {
  * 路由 resolve 后执行，以便我们不会二次预取(double-fetch)已有的数据。
  */
 if (window.__INITIAL_STATE__) {
-	store.replaceState(window.__INITIAL_STATE__);
-	delete window.__INITIAL_STATE__;
 	router.onReady(initAppAndRouterHook);
+	delete window.__INITIAL_STATE__;
 } else {
-	initAppAndRouterHook(); // 没有经过服务端渲染，就直接初始化。
+	initAppAndRouterHook(); // 没有服务端渲染，直接初始化。
 }

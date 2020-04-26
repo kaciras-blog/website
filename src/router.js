@@ -85,7 +85,6 @@ export default function CreateRouter() {
 		{
 			path: "/about",
 			component: () => import(/* webpackChunkName: "about" */ "./views/about/AboutPage"),
-			meta: { title: "关于" },
 			children: [
 				{
 					path: "",
@@ -94,10 +93,12 @@ export default function CreateRouter() {
 				{
 					path: "blogger",
 					component: () => import(/* webpackChunkName: "about" */ "./views/about/Blogger"),
+					meta: { title: "关于" },
 				},
 				{
 					path: "technology",
 					component: () => import(/* webpackChunkName: "about" */ "./views/about/Technology"),
+					meta: { title: "关于" },
 				},
 			],
 		},

@@ -36,26 +36,29 @@ Vue.component(VueMultiselect.name, VueMultiselect);
  * 由于创建Vue实例后就立即渲染，而此时可能就需要初始状态（比如控制台页面鉴权），所以不能等到创建之后再
  * 替换服务端渲染出的初始状态，而要在创建Vue实例之前就调用 store.replaceState(...)
  *
+ * @param initState Vuex的初始状态
  * @return {*} Vue全家桶
  */
-export default function createApp() {
+export default function createApp(initState = undefined) {
 	const store = createStore();
 	const router = createRouter();
 
 	mediaQueryPlugin.registerToStore(store);
 
+	if (initState) {
+		store.replaceState(initState);
+	}
+
 	/**
 	 * 阻止未登录用户访问后台页面。
-	 * 因为 router.app.$store获取不到store实例，所以就放在这了
-	 *
-	 * TODO: 在 store.replaceState(window.__INITIAL_STATE__); 之前导致直接访问控制台会跳转
 	 */
 	router.beforeEach((to, from, next) => {
-		const { user } = store.state;
-		if(!to.meta.requireAuth) {
+		if (!to.meta.requireAuth) {
 			return next();
 		}
-		if (!user) {
+		const { user } = router.app.$store.state;
+
+		if (!user || user.id === 0) {
 			next({ path: "/login", query: { return_uri: "/console" } });
 		} else if (user.id === 2) {
 			next();
