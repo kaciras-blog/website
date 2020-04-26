@@ -1,6 +1,7 @@
 // TreeShaking 优化，排除掉不需要的语言
-import hljs from "highlight.js/lib/highlight";
+import hljs from "highlight.js/lib/core";
 
+import cLike from "highlight.js/lib/languages/c-like";
 import c from "highlight.js/lib/languages/c";
 import cpp from "highlight.js/lib/languages/cpp";
 import xml from "highlight.js/lib/languages/xml";
@@ -30,6 +31,7 @@ import sql from "highlight.js/lib/languages/sql";
 import yaml from "highlight.js/lib/languages/yaml";
 import typescript from "highlight.js/lib/languages/typescript";
 
+hljs.registerLanguage("c-like", cLike);
 hljs.registerLanguage("c", c);
 hljs.registerLanguage("cpp", cpp);
 hljs.registerLanguage("xml", xml);
