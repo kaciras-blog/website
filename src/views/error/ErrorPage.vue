@@ -32,8 +32,18 @@
 			</error-content>
 
 			<error-content
-				v-else-if="code === '500'"
-				title="500 Internal Server Error"
+				v-else-if="code === '429'"
+				title="429 Too Many Requests"
+				:image="require('@/assets/img/error-429.jpg')"
+			>
+				<p>服务器忙不过来啦！</p>
+				<p>可能是您的请求过于频繁，请歇会再试</p>
+				<p>也有可能是服务器出现了BUG</p>
+			</error-content>
+
+			<error-content
+				v-else-if="code === '500' || code === '503'"
+				:title="code + 'Internal Server Error'"
 				:image="require('@/assets/img/error-500.png')"
 			>
 				<p>服务器要<span :class="$style.red">爆炸啦！！</span>，快叫博主起床改BUG啊</p>
