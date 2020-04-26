@@ -3,16 +3,18 @@
 		<h1 :class="$style.title">文章列表</h1>
 
 		<scroll-paging-view
+			v-model="articles"
 			:auto-load="true"
-			:loader="load">
-
+			:loader="loadPage"
+		>
 			<template v-slot="{ items }">
 				<ul class="clean-list">
 					<article-preview-item
 						v-for="item of items"
 						:key="item.id"
 						:item="item"
-						class="segment"/>
+						class="segment"
+					/>
 				</ul>
 			</template>
 		</scroll-paging-view>
@@ -25,15 +27,20 @@ import ArticlePreviewItem from "../list/ArticlePreviewItem";
 
 export default {
 	name: "PageBody",
-	components: { ArticlePreviewItem },
+	components: {
+		ArticlePreviewItem,
+	},
+	data:()=>({
+		articles: [],
+	}),
 	methods: {
-		load (items, pageSize) {
+		loadPage (start, count) {
 			return api.article.getList({
+				start,
+				count,
 				category: this.$route.params["id"],
-				start: items.length,
-				count: pageSize,
 				recursive: true,
-			}).then(list => items.push.apply(items, list));
+			});
 		},
 	},
 };
@@ -42,7 +49,7 @@ export default {
 <style module lang="less">
 .container {
 	margin: 0 auto 60px auto;
-	max-width: 75%;
+	max-width: 70%;
 }
 
 .title {

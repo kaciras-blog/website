@@ -29,14 +29,15 @@
 			</ul>
 		</div>
 
+		<!-- TODO: 分类页暂不使用 -->
 		<div class="tag-group" :class="$style.category">
-			<router-link
+			<span
 				v-for="c in item.categories"
 				:key="c.id"
 				:to="c | categoryLink"
 				class="tag-group-item">
 				{{c.name}}
-			</router-link>
+			</span>
 		</div>
 
 		<div class="minor-text" :class="$style.meta">
