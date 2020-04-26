@@ -52,7 +52,7 @@ import FriendsSection from "./FriendsSection";
  * 所以干脆SSR的输出就留个空白，等到执行JS设置了太阳位置后再显示图片，
  * 反正图片加载完毕前也是白的，刚好表现一致。
  *
- * 这样的话如果不开启JS就看不到图，但是我的SSR是用来做SEO和加速的，本站也不支持关闭JS访问，所以没问题。
+ * 这样的话不开启JS就看不到图，但是禁用JS的访问者应当有体验降级的准备。
  */
 
 const BANNER_MAP = {

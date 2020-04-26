@@ -5,14 +5,10 @@
 			<div :class="$style.blogger">
 				<img src="../../assets/img/logo-kaciras-circle.svg" alt="头像" class="head">
 				<div>
-					<h2>Kaciras（这是网名）</h2>
-					<address>Kaciras@outlook.com</address>
+					<h2>Kaciras</h2>
+					<address>Kaciras@protonmail.com</address>
 				</div>
 			</div>
-		</section>
-
-		<section class="about-section">
-			<h2>标签</h2>
 			<ul class="clean-list" :class="$style.tag_list">
 				<li>热爱技术</li>
 				<li>全栈开发</li>
@@ -20,6 +16,11 @@
 				<li>二刺螈</li>
 				<li>啥都想学</li>
 			</ul>
+		</section>
+
+		<section class="about-section">
+			<h2>友链</h2>
+			加友链的在下面评论即可，需要图片、名称、地址三项。
 		</section>
 
 		<discussion-section
@@ -36,6 +37,7 @@
 	display: grid;
 	grid-template-columns: auto 1fr;
 	grid-gap: 20px;
+	margin-bottom: 1rem;
 }
 
 .tag_list {

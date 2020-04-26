@@ -90,9 +90,11 @@ export default {
 			this.content = v.substring(0, selEnd) + `![](${res})` + v.substring(selEnd);
 			this.selection = [p, p];
 		},
+
 		metadataDialog() {
 			this.$dialog.show(MetadataDialog, { metadata: this.metadata }).onConfirm(data => this.metadata = data);
 		},
+
 		async saveManually() {
 			const { archive } = this;
 			try {
@@ -109,6 +111,7 @@ export default {
 			const callback = () => setTimeout(this.autoSave, 10 * 60 * 1000);
 			new VueMultiWatcher(this, ["metadata", "content"], callback, { once: true });
 		},
+
 		autoSave() {
 			const { archive } = this;
 			api.draft.save(archive.id, archive.saveCount, convertToTransfer(this.$data))
@@ -122,9 +125,11 @@ export default {
 					this.autoSaveError = err;
 				});
 		},
+
 		publish() {
 			this.$dialog.show(PublishDialog, this.$data);
 		},
+
 		async loadHistory(saveCount) {
 			const { archive } = this;
 			const history = await api.draft.getHistory(archive.id, saveCount);

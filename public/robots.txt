@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 Crawl-delay: 10
-Sitemap: https://blog.kaciras.net/sitemap.xml
+Sitemap: https://blog.kaciras.com/sitemap.xml

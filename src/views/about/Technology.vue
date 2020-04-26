@@ -1,8 +1,16 @@
-<!-- 函数式组件里不能局部注册组件，注册了也引用不到 -->
+<!-- 不能用函数式组件，因为函数式组件里不能局部注册组件，注册了也引用不到 -->
 <template>
 	<div class="about-tab-page">
 		<section class="about-section">
-			<icon-section-header title="网页客户端" :icon="require('../../assets/img/website.svg')"/>
+			<icon-section-header title="Kaciras的个人博客" :icon="require('../../assets/img/logo-kaciras.svg')"/>
+			<icon-paragraph :src="require('../../assets/img/github-logo.svg')" title="github">
+				网站代码开源：
+				<a class="highlight" href="https://github.com/kaciras-blog">https://github.com/kaciras-blog</a>
+			</icon-paragraph>
+			<icon-paragraph :src="require('../../assets/img/logo-tor.png')" title="no-js">
+				本站支持服务端渲染，能够在禁止JS的情况下浏览。
+				禁用JS仅会导致首页背景无法加载，以及无法看到评论。
+			</icon-paragraph>
 			<icon-paragraph :src="require('../../assets/img/html-code.svg')" title="browsers">
 				兼容性（以Grid布局为基准）：
 				<ul>
@@ -14,6 +22,10 @@
 					<li>IE 全都不支持</li>
 				</ul>
 			</icon-paragraph>
+		</section>
+
+		<section class="about-section">
+			<icon-section-header title="网页客户端" :icon="require('../../assets/img/website.svg')"/>
 			<icon-paragraph :src="require('../../assets/img/logo-vue.svg')" title="sentry">
 				网页端是用Vue全家桶编写的单页应用，目前共有11个页面
 			</icon-paragraph>
@@ -35,6 +47,9 @@
 			</icon-paragraph>
 			<icon-paragraph :src="require('../../assets/img/browser-gears.svg')" title="ssr">
 				支持由Vue提供的服务端渲染功能，让网站能够被搜索引擎抓取，并减少白屏时间
+			</icon-paragraph>
+			<icon-paragraph :src="require('../../assets/img/photo.svg')" title="webp">
+				支持图片自动优化，转码为最新的WebP格式，节约了36.8%的流量
 			</icon-paragraph>
 		</section>
 
