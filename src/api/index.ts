@@ -49,13 +49,26 @@ interface ArticleListQuery {
 	recursive?: boolean; //是否递归子分类
 }
 
+interface PublishRequest {
+	title: string;
+	keywords: string[];
+	cover: string;
+	summary: string;
+	content: string;
+
+	draftId: number;
+	category: number;
+	urlTitle: string;
+	destroy?: boolean;
+}
+
 class ArticleApi extends AbstractApi {
 
 	get(id: number) {
 		return this.mainServer.get("/articles/" + id).then(r => r.data);
 	}
 
-	publish(data: any) {
+	publish(data: PublishRequest) {
 		return this.mainServer.post("/articles", data).then(extractLocation("/articles/"));
 	}
 
@@ -332,7 +345,7 @@ class FriendApi extends AbstractApi {
 		return this.mainServer.get("/friends").then(r => r.data);
 	}
 
-	makeFriends(link: FriendLink){
+	makeFriends(link: FriendLink) {
 		return this.mainServer.post("/friends", link).then(r => r.data);
 	}
 

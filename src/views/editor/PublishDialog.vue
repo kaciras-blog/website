@@ -16,7 +16,12 @@
 
 				<div v-else :class="$style.selected"></div>
 
-				<kx-button :class="$style.select_button" @click="selectCategory">选择分类</kx-button>
+				<kx-button
+					:class="$style.select_button"
+					@click="selectCategory"
+				>
+					选择分类
+				</kx-button>
 			</div>
 
 			<label>
@@ -28,6 +33,10 @@
 					:placeholder="metadata.title"
 				>
 			</label>
+
+			<kx-check-box v-model="destroy">
+				发表后删除草稿
+			</kx-check-box>
 		</div>
 
 		<kx-standard-dialog-buttons @confirm="accept"/>
@@ -49,12 +58,11 @@ export default {
 	data: () => ({
 		url: "",
 		category: null,
+		destroy: false,
 	}),
 	methods: {
 		selectCategory() {
-			this.$dialog.show(SelectCategoryDialog)
-				.confirmPromise
-				.then(data => this.category = data);
+			this.$dialog.show(SelectCategoryDialog).onConfirm(data => this.category = data);
 		},
 		async accept() {
 			const { archive, metadata, content } = this;
@@ -63,6 +71,7 @@ export default {
 				data.content = content;
 				data.keywords = data.keywords.split(" ");
 				data.draftId = archive.id; // 文章API里是draftId
+				data.destroy = this.destroy;
 
 				let article = archive.articleId;
 
@@ -108,9 +117,10 @@ export default {
 	display: contents;
 
 	& > h3 {
+		.ellipsis;
+
 		display: inline-block;
 		margin: 0 .5rem;
-		.ellipsis;
 	}
 }
 
@@ -119,7 +129,7 @@ export default {
 }
 
 .input {
-	margin-top: .4rem;
+	margin: 5px 0 14px 0;
 	width: 100%;
 }
 
