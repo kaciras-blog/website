@@ -68,6 +68,9 @@ module.exports = {
 	/** 连接设置，可以配置接受HTTP和HTTPS连接 */
 	server: {
 
+		/** 服务器绑定的地址，默认是localhost */
+		hostname: "0.0.0.0",
+
 		http: {
 			// port: 80,
 
@@ -97,7 +100,7 @@ module.exports = {
 		imageRoot: "/var/blog/images",
 
 		/** 【环境】内容服务器的内部访问 URL，用于服务端渲染和内部通信 */
-		serverAddress: "https://localhost:12345",
+		serverAddress: "http://localhost:12345",
 
 		/**
 		 * 【环境】【可选】内容服务器的证书，如果它启用了HTTPS的话可能需要添加额外的信任。
