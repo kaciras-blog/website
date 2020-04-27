@@ -4,3 +4,4 @@ export const LOGOUT = "LOGOUT";
 export const SET_USER = "SET_USER";
 export const SET_PREFETCH_DATA = "SET_PREFETCH_DATA";
 export const SET_SUN_PHASE = "SET_SUN_PHASE";
+export const SET_DISCUSSION_OPTIONS = "SET_DISCUSSION_OPTIONS";

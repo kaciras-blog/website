@@ -1,10 +1,10 @@
 /**
  * 转义HTML文本中的特殊字符
  *
- * @param text {String} 原始文本
- * @return {String} 转义后的文本
+ * @param text 原始文本
+ * @return 转义后的文本
  */
-export function escapeHtml (text) {
+export function escapeHtml(text: string) {
 	const map = {
 		"&": "&amp;",
 		"<": "&lt;",
@@ -12,16 +12,17 @@ export function escapeHtml (text) {
 		"\"": "&quot;",
 		"'": "&#039;",
 	};
-	return text.replace(/[&<>"']/g, ch => map[ch]);
+	// @ts-ignore 正则提取的 ch 一定是 map 的 key
+	return text.replace(/[&<>"']/g, (ch) => map[ch]);
 }
 
 /**
  * 从Axios的错误原因对象中提取错误信息。
  *
- * @param object {*} 异常
- * @return {string} 错误信息
+ * @param object 异常
+ * @return 错误信息
  */
-export function errorMessage (object) {
+export function errorMessage(object: any) {
 	const res = object.response;
 	if (res && res.data && res.data.message) {
 		return res.data.message;
@@ -36,9 +37,9 @@ export function errorMessage (object) {
  *
  * @param array 数组
  * @param predicate 判断函数
- * @return {Array} 被删除的元素
+ * @return 被删除的元素
  */
-export function deleteOn (array, predicate) {
+export function deleteOn<T>(array: T[], predicate: (value: T) => boolean) {
 	const removed = [];
 	for (let i = array.length - 1; i >= 0; i--) {
 		if (predicate(array[i])) {
@@ -55,9 +56,9 @@ export function deleteOn (array, predicate) {
  *
  * @param src 源对象
  * @param dist 目标对象
- * @return {*} 目标对象
+ * @return 目标对象
  */
-export function assignUpdate (src, dist) {
+export function assignUpdate(src: any, dist: any) {
 	Object.keys(dist).forEach(k => dist[k] = src[k]);
 	return dist;
 }
@@ -69,7 +70,7 @@ export function assignUpdate (src, dist) {
  * @param object 对象
  * @return 返回输入的对象
  */
-export function attachRandomId(object) {
+export function attachRandomId(object: any) {
 	object.randomId = object.randomId || Math.random();
 	return object;
 }

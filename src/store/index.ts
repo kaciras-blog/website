@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import api from "../api";
-import { REFRESH_USER, LOGOUT, SET_PREFETCH_DATA, SET_USER, SET_SUN_PHASE } from "./types";
+import { REFRESH_USER, LOGOUT, SET_PREFETCH_DATA, SET_USER, SET_SUN_PHASE, SET_DISCUSSION_OPTIONS } from "./types";
 import { SunPhases } from "@/sun-phase";
 
 Vue.use(Vuex);
@@ -51,15 +51,15 @@ export default function createVuexStore() {
 				return api.user.logout().then(() => commit(SET_USER, guest));
 			},
 
-			loadOptions({ commit, state }) {
+			async loadOptions({ commit, state }) {
 				if (typeof state.discussionOptions !== "undefined") {
 					return;
 				}
-				return api.config.get("discussion").then(options => commit("setDiscussionOptions", options));
+				commit(SET_DISCUSSION_OPTIONS, await api.config.get("discussion"));
 			},
 		},
 		mutations: {
-			setDiscussionOptions: (state, data) => state.discussionOptions = data,
+			[SET_DISCUSSION_OPTIONS]: (state, data) => state.discussionOptions = data,
 			[SET_USER]: (state, info) => state.user = info,
 			[SET_PREFETCH_DATA]: (state, data) => state.prefetch = data,
 			[SET_SUN_PHASE]: (state, value) => state.sunPhase = value,
