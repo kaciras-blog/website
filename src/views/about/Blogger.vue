@@ -3,7 +3,11 @@
 
 		<section class="about-section">
 			<div :class="$style.blogger">
-				<img src="../../assets/img/logo-kaciras-circle.svg" alt="头像" class="head">
+				<img
+					src="../../assets/img/logo-kaciras-circle.svg"
+					alt="头像"
+					class="head"
+				>
 				<div>
 					<h2>Kaciras</h2>
 					<address>Kaciras@protonmail.com</address>

@@ -56,17 +56,17 @@ import FriendsSection from "./FriendsSection";
  */
 
 const BANNER_MAP = {
-	Dawn: require("../../assets/img/IndexBannerDawn.png"),
-	Daytime: require("../../assets/img/IndexBannerLight.png"),
-	Dusk: require("../../assets/img/IndexBannerDusk.png"),
-	Night: require("../../assets/img/IndexBannerNight.png"),
+	Dawn: require("@/assets/img/IndexBannerDawn.png"),
+	Daytime: require("@/assets/img/IndexBannerLight.png"),
+	Dusk: require("@/assets/img/IndexBannerDusk.png"),
+	Night: require("@/assets/img/IndexBannerNight.png"),
 };
 
 const BANNER_MAP_MOBILE = {
-	Dawn: require("../../assets/img/IndexBannerDawn.png?size=IndexBannerMobile"),
-	Daytime: require("../../assets/img/IndexBannerLight.png?size=IndexBannerMobile"),
-	Dusk: require("../../assets/img/IndexBannerDusk.png?size=IndexBannerMobile"),
-	Night: require("../../assets/img/IndexBannerNight.png?size=IndexBannerMobile"),
+	Dawn: require("@/assets/img/IndexBannerDawn.png?size=IndexBannerMobile"),
+	Daytime: require("@/assets/img/IndexBannerLight.png?size=IndexBannerMobile"),
+	Dusk: require("@/assets/img/IndexBannerDusk.png?size=IndexBannerMobile"),
+	Night: require("@/assets/img/IndexBannerNight.png?size=IndexBannerMobile"),
 };
 
 export default {

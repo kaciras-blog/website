@@ -48,6 +48,10 @@ module.exports = {
 				source: "src",
 				img: "src",
 				image: "xlink:href",
+
+				"icon-paragraph": "src",
+				"icon-section-header": "icon",
+				"error-content": "image",
 			},
 			compilerOptions: {
 				whitespace: "condense",
