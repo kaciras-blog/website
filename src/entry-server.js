@@ -50,7 +50,7 @@ function isMobile(userAgent) {
 export default async (context) => {
 	const { request, url } = context;
 
-	if (context.shellOnly || /^\/edit\//.test(url.pathname)) {
+	if (/^\/edit\//.test(url.pathname)) {
 		return new Vue({ render: h => h("div", { attrs: { id: "app" } }) });
 	}
 
