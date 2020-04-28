@@ -160,11 +160,6 @@ function initAppAndRouterHook() {
 		prefetch(to, activated.filter(c => c.asyncData), nextWrapper);
 	});
 
-	// AppShell 模式不会在服务端加载用户
-	if (typeof store.state.user === "undefined") {
-		store.dispatch(REFRESH_USER);
-	}
-
 	mediaQueryPlugin.observeWindow(store);
 	SUN_PHASES.observe().subscribe(value => store.commit(SET_SUN_PHASE, value));
 
@@ -182,4 +177,5 @@ if (window.__INITIAL_STATE__) {
 	delete window.__INITIAL_STATE__;
 } else {
 	initAppAndRouterHook(); // 没有服务端渲染，直接初始化。
+	store.dispatch(REFRESH_USER); // AppShell 模式不会在服务端加载用户
 }
