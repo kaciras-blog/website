@@ -2,8 +2,8 @@
 <template functional v-once>
 	<footer id="bottom-footer">
 		<div :class="$style.info">
-			<p>&copy; Kaciras 2018-2019</p>
-			<address>Kaciras@outlook.com</address>
+			<p>&copy; Kaciras 2018-2020</p>
+			<address>Kaciras@protonmail.com</address>
 		</div>
 		<div>
 			<router-link class="highlight pink" to="/">首页</router-link>
