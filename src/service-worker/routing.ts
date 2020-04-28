@@ -1,4 +1,4 @@
-import { CacheFirstHandler, RequestHandler, StaleWhileRevalidateHandler } from "./cache-strategy";
+import { RequestHandler, StaleWhileRevalidateHandler } from "./cache-strategy";
 import { ManagedCache } from "./cache";
 
 /**
@@ -133,18 +133,14 @@ export class WebpUpgradeRoute implements Route {
 	private readonly handler: RequestHandler;
 	private readonly pathPattern: RegExp;
 
-	constructor(cache: ManagedCache, pathPattern: RegExp) {
-		this.handler = new CacheFirstHandler(cache);
+	constructor(handler: RequestHandler, pathPattern: RegExp) {
+		this.handler = handler;
 		this.pathPattern = pathPattern;
 	}
 
 	match(request: Request) {
-		const url = new URL(request.url);
-		const path = url.pathname;
+		const path = new URL(request.url).pathname;
 
-		if (path.endsWith("gif")) {
-			return false;
-		}
 		if (this.pathPattern.test(path)) {
 			return request.headers.get("Accept")!.includes("image/webp");
 		}
@@ -154,7 +150,10 @@ export class WebpUpgradeRoute implements Route {
 	async handle(event: FetchEvent) {
 		const url = new URL(event.request.url);
 		const path = url.pathname;
+
 		url.pathname = path.substring(0, path.lastIndexOf(".")) + ".webp";
-		return this.handler.handle(new Request(url.href, event.request));
+		const request = new Request(url.href, event.request);
+
+		event.respondWith(this.handler.handle(request));
 	}
 }

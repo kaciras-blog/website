@@ -16,7 +16,7 @@ export abstract class BaseRequestHandler implements RequestHandler {
 	protected async fetchAndCache(request: RequestInfo) {
 		const response = await fetch(request);
 		if (response.status == 200) {
-			await this.cache.put(request, response);
+			await this.cache.put(request, response.clone());
 		}
 		return response;
 	}
