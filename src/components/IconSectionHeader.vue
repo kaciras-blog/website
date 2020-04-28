@@ -12,7 +12,7 @@ export default {
 </script>
 
 <style module lang="less">
-@import "../../css/Imports";
+@import "../css/Imports";
 
 .section_header {
 	display: flex;

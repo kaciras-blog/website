@@ -6,6 +6,9 @@ import PageFooter from "./components/PageFooter";
 import BasePageLayout from "./components/BasePageLayout";
 import BannerPageLayout from "./components/BannerPageLayout";
 import DiscussionSection from "./components/discussion/DiscussionSection";
+import IconParagraph from "./components/IconParagraph";
+import IconSectionHeader from "./components/IconSectionHeader";
+
 import { format } from "date-fns";
 
 /**
@@ -39,4 +42,6 @@ export default function install(Vue) {
 	Vue.component(SelectCategoryDialog.name, SelectCategoryDialog);
 	Vue.component(BasePageLayout.name, BasePageLayout);
 	Vue.component(BannerPageLayout.name, BannerPageLayout);
+	Vue.component(IconParagraph.name, IconParagraph);
+	Vue.component(IconSectionHeader.name, IconSectionHeader);
 }

@@ -1,4 +1,4 @@
-<template>
+<template functional>
 	<div class="about-tab-page">
 		<section class="about-section">
 			<icon-section-header title="版权声明" :icon="require('../../assets/img/copyright.svg')"/>
@@ -57,13 +57,3 @@
 		</section>
 	</div>
 </template>
-
-<script>
-import IconSectionHeader from "@/views/about/IconSectionHeader";
-import IconParagraph from "@/views/about/IconParagraph";
-
-export default {
-	name: "Copyrights",
-	components: { IconSectionHeader, IconParagraph },
-};
-</script>

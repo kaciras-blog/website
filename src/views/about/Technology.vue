@@ -1,5 +1,4 @@
-<!-- 不能用函数式组件，因为函数式组件里不能局部注册组件，注册了也引用不到 -->
-<template>
+<template functional>
 	<div class="about-tab-page">
 
 		<section class="about-section">
@@ -68,12 +67,3 @@
 		</section>
 	</div>
 </template>
-
-<script>
-import IconParagraph from "./IconParagraph";
-import IconSectionHeader from "./IconSectionHeader";
-
-export default {
-	components: { IconSectionHeader, IconParagraph },
-};
-</script>
