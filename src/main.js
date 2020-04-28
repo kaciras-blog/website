@@ -58,7 +58,7 @@ export default function createApp(initState = undefined) {
 		}
 		const { user } = router.app.$store.state;
 
-		if (!user || user.id === 0) {
+		if (user.id === 0) {
 			next({ path: "/login", query: { return_uri: "/console" } });
 		} else if (user.id === 2) {
 			next();

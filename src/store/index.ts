@@ -19,11 +19,18 @@ export const SUN_PHASES = new SunPhases({
 	Night: 20,
 });
 
+const GUESTS = {
+	id: 0,
+	name: "(游客)",
+	head: "akalin.jpg",
+	authType: 0,
+}
+
 export default function createVuexStore() {
 	return new Vuex.Store({
 		state: {
-			/** 当前登录的用户，这个字段不会为 null 或 undefined，其值将在入口处被设置 */
-			user: undefined,
+			/** 当前登录的用户，其值将在入口处被设置 */
+			user: GUESTS,
 
 			/** 路由页面的预取数据 */
 			prefetch: {},
@@ -45,10 +52,9 @@ export default function createVuexStore() {
 				}
 			},
 
-			// 不要设为null，未登录用ID=0表示
+			// 不要设为null，未登录用 id=0 表示
 			[LOGOUT]({ commit }) {
-				const guest = { id: 0, name: "(游客)" };
-				return api.user.logout().then(() => commit(SET_USER, guest));
+				return api.user.logout().then(() => commit(SET_USER, GUESTS));
 			},
 
 			async loadOptions({ commit, state }) {
@@ -60,7 +66,7 @@ export default function createVuexStore() {
 		},
 		mutations: {
 			[SET_DISCUSSION_OPTIONS]: (state, data) => state.discussionOptions = data,
-			[SET_USER]: (state, info) => state.user = info,
+			[SET_USER]: (state, data) => state.user = data,
 			[SET_PREFETCH_DATA]: (state, data) => state.prefetch = data,
 			[SET_SUN_PHASE]: (state, value) => state.sunPhase = value,
 		},

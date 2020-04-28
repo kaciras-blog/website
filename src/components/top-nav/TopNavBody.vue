@@ -20,7 +20,7 @@
 		<!-- 宽屏直接把按钮都显示在上面 -->
 		<div v-else class="nav-right">
 
-			<template v-if="user && user.id > 0">
+			<template v-if="user.id > 0">
 
 				<router-link to="/profile">
 					<img

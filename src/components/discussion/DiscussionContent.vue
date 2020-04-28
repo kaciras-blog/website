@@ -71,8 +71,7 @@ export default {
 	},
 	computed: {
 		removable() {
-			const { user } = this.$store.state;
-			return user && user.id === 2;
+			return this.$store.state.user.id === 2;
 		},
 	},
 	methods: {
