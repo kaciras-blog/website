@@ -1,0 +1,69 @@
+<template>
+	<div class="about-tab-page">
+		<section class="about-section">
+			<icon-section-header title="版权声明" :icon="require('../../assets/img/copyright.svg')"/>
+			<p>网站的图标来自</p>
+			<p>
+				<a
+					class="highlight"
+					href="https://www.flaticon.com/"
+					title="Flaticon"
+				>
+					www.flaticon.com
+				</a>
+			</p>
+			<p>首页的大图</p>
+			<p>
+				<a
+					class="highlight"
+					href="https://www.pixiv.net/artworks/68079722"
+				>
+					https://www.pixiv.net/artworks/68079722
+				</a>
+			</p>
+			<p>
+				<a
+					class="highlight"
+					href="https://www.pixiv.net/artworks/68080014"
+				>
+					https://www.pixiv.net/artworks/68080014
+				</a>
+			</p>
+			<p>
+				<a
+					class="highlight"
+					href="https://www.pixiv.net/artworks/68080160"
+				>
+					https://www.pixiv.net/artworks/68080160
+				</a>
+			</p>
+			<p>
+				<a
+					class="highlight"
+					href="https://www.pixiv.net/artworks/68079868"
+				>
+					https://www.pixiv.net/artworks/68079868
+				</a>
+			</p>
+			<p>手机版侧边菜单上的图</p>
+			<p>
+				<a
+					class="highlight"
+					href="https://www.pixiv.net/artworks/54045756"
+				>
+					https://www.pixiv.net/artworks/54045756
+				</a>
+			</p>
+		</section>
+	</div>
+</template>
+
+<script>
+import IconSectionHeader from "@/views/about/IconSectionHeader";
+import IconParagraph from "@/views/about/IconParagraph";
+
+export default {
+	name: "Copyrights",
+	components: { IconSectionHeader, IconParagraph },
+};
+</script>
