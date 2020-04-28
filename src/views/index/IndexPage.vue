@@ -115,6 +115,9 @@ export default {
 		},
 		bannerStyle() {
 			const imageFile = this.bannerMap[this.visibleSunPhase];
+			if (!imageFile) {
+				return {};
+			}
 			return { backgroundImage: `url(${imageFile})` };
 		},
 		transitionStyle() {
