@@ -67,7 +67,12 @@ import ErrorContent from "./ErrorContent";
 export default {
 	name: "Error",
 	components: { ErrorContent },
-	props: ["code"],
+	props: {
+		code: String,
+	},
+	serverPrefetch() {
+		this.$ssrContext.notFound = this.code === "404";
+	},
 };
 </script>
 

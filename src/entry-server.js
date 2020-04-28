@@ -73,14 +73,14 @@ export default async (context) => {
 
 	router.push(url.pathname);
 	await onReadyAsync(router);
-
-	const matched = router.getMatchedComponents();
-	if (!matched.length) {
-		router.push("/error/" + 404);
-	}
-
 	const session = new ServerPrefetchContext(store, router.currentRoute, request);
-	const componentTasks = matched
+
+	/*
+	 * 路由配置里最后一条把所有未匹配的路由都转到错误页，
+	 * 故 router.getMatchedComponents() 不会返回空数组，也无法用其区分404.
+	 * 目前的方案是在 ErrorPage.vue 里设置一个标识表示 NotFound.
+	 */
+	const componentTasks = router.getMatchedComponents()
 		.filter(c => c.asyncData)
 		.map(c => c.asyncData(session));
 
