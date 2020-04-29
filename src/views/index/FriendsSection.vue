@@ -4,7 +4,7 @@
 		<ul class="clean-list" :class="$style.list">
 			<li
 				v-for="item of friends"
-				:key="item.randomId"
+				:key="item.id"
 			>
 				<a :href="item.url" :class="$style.item">
 					<img

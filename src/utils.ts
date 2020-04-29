@@ -64,13 +64,13 @@ export function assignUpdate(src: any, dist: any) {
 }
 
 /**
- * 给对象附加一个随机的 randomId 字段，作为列表渲染时的 key。
- * 该方法可以对一个对象重复调用，其 randomId 字段在生成后不会改变。
+ * 给对象附加一个随机的 id 字段，作为列表渲染时的 key。
+ * 该方法可以对一个对象重复调用，其 id 字段在生成后不会改变。
  *
  * @param object 对象
  * @return 返回输入的对象
  */
 export function attachRandomId(object: any) {
-	object.randomId = object.randomId || Math.random();
+	object.id = object.id || Math.random();
 	return object;
 }

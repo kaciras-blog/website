@@ -14,7 +14,7 @@
 		<div v-if="slides.length" :class="$style.card_list">
 			<auto-link
 				v-for="card of slides"
-				:key="card.randomId"
+				:key="card.id"
 				:href="card.link"
 				class="clean-link"
 				:class="$style.card_link"

@@ -7,19 +7,20 @@
 		</div>
 
 		<div ref="container">
-			<template v-for="item of slides">
+			<template v-for="item of cards">
 				<div
 					v-if="item.holder"
 					:class="$style.holder"
-					:key="item.randomId"
+					:key="item.id"
 				/>
 				<card-list-item
 					v-else
-					:key="item.randomId"
-					:class="$style.slide"
-					:item="item"
+					:key="item.id"
+					:class="$style.card"
+					v-bind="item"
+					@switch-expand="item.expand = !item.expand"
 					@remove="remove"
-					@drag-started="drag"
+					@drag-start="e => drag(e, item)"
 				/>
 			</template>
 		</div>
@@ -28,7 +29,7 @@
 		<card-list-item
 			v-if="dragging"
 			:style="dragging.style"
-			:item="dragging.item"
+			v-bind="dragging.item"
 		/>
 	</div>
 </template>
@@ -52,7 +53,7 @@ export default {
 		CardListItem,
 	},
 	data: () => ({
-		slides: [],
+		cards: [],
 		initialized: false,
 		dragging: null,
 	}),
@@ -68,30 +69,30 @@ export default {
 			this.addCard(CARD_TEMPLATE);
 		},
 		addCard(data) {
-			this.slides.unshift(attachRandomId({ open: true, slide: data }));
+			this.cards.unshift(attachRandomId({ expand: true, card: data }));
 		},
 		remove(id) {
-			deleteOn(this.slides, s => s.randomId === id);
+			deleteOn(this.cards, (s) => s.id === id);
 		},
 		async load() {
-			const slides = await api.recommend.getCards();
-			this.slides = slides.map(slide => attachRandomId({ slide, open: false }));
+			const cards = await api.recommend.getCards();
+			this.cards = cards.map(card => attachRandomId({ card, expand: false }));
 		},
 		submit() {
-			api.recommend.setCards(this.slides.map(item => item.slide))
+			api.recommend.setCards(this.cards.map(item => item.card))
 				.then(() => this.$dialog.alertSuccess("修改成功"))
 				.catch((e) => this.$dialog.alertError("修改失败", e.message));
 		},
-		async drag({ event, item }) {
-			const slides = this.slides;
+		async drag(event, item) {
+			const { cards } = this;
 
 			// 查找拖动页的索引，并折叠全部轮播页
 			let holderIndex;
-			for (let i = 0; i < slides.length; i++) {
-				if (slides[i].randomId === item.randomId) {
+			for (let i = 0; i < cards.length; i++) {
+				if (cards[i].id === item.id) {
 					holderIndex = i;
 				}
-				slides[i].open = false;
+				cards[i].expand = false;
 			}
 
 			// 等到全部折叠完了再计算高度。
@@ -99,7 +100,7 @@ export default {
 
 			/*
 			 * 获取被拖动元素和容器元素的大小位置，计算出每个轮播标题栏的置换范围，在拖动时
-			 * 不断检测被拖动元素位置与其他元素是否进入其他元素的置换范围，不断调整 slides
+			 * 不断检测被拖动元素位置与其他元素是否进入其他元素的置换范围，不断调整 cards
 			 * 数组。
 			 *
 			 * 下面第一行Vue有BUG，不能使用组件的.$el，否则getBoundingClientRect()返回值是旧的。
@@ -123,20 +124,20 @@ export default {
 			};
 
 			// 原轮播页的位置替换为占位元素
-			slides[holderIndex] = { holder: true };
+			cards[holderIndex] = { holder: true };
 
 			function insertInto(i) {
 				if (holderIndex === i) return;
-				const holder = slides.splice(holderIndex, 1)[0];
+				const holder = cards.splice(holderIndex, 1)[0];
 				holderIndex = i;
-				slides.splice(i, 0, holder);
+				cards.splice(i, 0, holder);
 			}
 
 			observeMouseMove().pipe(elementPosition(event, el)).subscribe({
 
 				/**
 				 * 置换取决于被拖动元素的纵坐标：
-				 *     小于 slides 中第一个元素中心：插入到最前
+				 *     小于 cards 中第一个元素中心：插入到最前
 				 *     大于第N个元素中心、小于第N+1个： 插入到N之后
 				 *     大于最后一个元素中心：添加到最后
 				 *
@@ -151,15 +152,15 @@ export default {
 					const i = Math.round((y - yOffset) / span);
 					if (i <= 0) {
 						insertInto(0);
-					} else if (i < slides.length) {
+					} else if (i < cards.length) {
 						insertInto(i);
 					} else {
-						insertInto(slides.length - 1);
+						insertInto(cards.length - 1);
 					}
 				},
 				complete: () => {
 					this.dragging = null;
-					slides[holderIndex] = item;
+					cards[holderIndex] = item;
 				},
 			});
 		},
@@ -174,12 +175,12 @@ export default {
 <style module lang="less">
 @import "../../css/Imports";
 
-.slide {
+.card {
 	margin: 20px 0;
 }
 
 .holder {
-	composes: slide;
+	composes: card;
 	height: 2.6rem;
 	border: solid 3px #94f2ca;
 }

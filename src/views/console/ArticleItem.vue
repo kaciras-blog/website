@@ -42,7 +42,7 @@
 			<kx-button
 				class="primary outline"
 				@click="addToCards">
-				添加卡片
+				创建卡片
 			</kx-button>
 
 			<kx-button

@@ -1,7 +1,7 @@
 <template>
-	<section :class="{ [$style.opened]: item.open }">
+	<section :class="{ [$style.expand]: expand }">
 		<div :class="$style.summary">
-			<h2 class="compact" @click="item.open = !item.open">{{item.slide.name}}</h2>
+			<h2 class="compact" @click="$emit('switch-expand')">{{card.name}}</h2>
 
 			<kx-button
 				:class="$style.handler"
@@ -9,41 +9,57 @@
 				title="拖动调整次序"
 				@mousedown.stop="dragStart"
 			>
-				<i class="fas fa-arrows-alt"></i>
+				<i class="fas fa-arrows-alt"/>
 			</kx-button>
 
 			<kx-button
 				class="icon dangerous"
 				title="删除"
-				@click="remove"
+				@click="$emit('remove', id)"
 			>
-				<i class="fas fa-trash"></i>
+				<i class="fas fa-trash"/>
 			</kx-button>
 		</div>
 
 		<div :class="$style.details">
 			<div :class="$style.pictureWrapper" @click="setPicture">
 				<img
-					:src="item.slide.picture"
+					:src="card.picture"
 					alt="封面"
 					:class="$style.cover"
 				/>
 				<span :class="$style.tip">点击更换图片</span>
 			</div>
+
 			<label>
-				<span class="minor-text">标题</span>
-				<input v-model="item.slide.name" :class="$style.inputBox"/>
+				<span class="minor-text">
+					标题
+				</span>
+				<input
+					v-model="card.name"
+					:class="$style.inputBox"
+				/>
 			</label>
+
 			<label>
-				<span class="minor-text">URI，相对路径（以/开头的）将使用单页路由</span>
-				<input v-model="item.slide.link" :class="$style.inputBox"/>
+				<span class="minor-text">
+					URI，相对路径（以/开头的）将使用单页路由
+				</span>
+				<input
+					v-model="card.link"
+					:class="$style.inputBox"
+				/>
 			</label>
+
 			<label>
-				<span class="minor-text">描述（100字以内，太长不便于展示）</span>
+				<span class="minor-text">
+					描述（100字以内，太长不便于展示）
+				</span>
 				<textarea
-					v-model="item.slide.description"
+					v-model="card.description"
 					class="input"
 					:class="$style.inputBox"
+					placeholder="为卡片添加个描述吧"
 				/>
 			</label>
 		</div>
@@ -56,23 +72,28 @@ import api from "@/api";
 export default {
 	name: "CardListItem",
 	props: {
-		item: {
+		id: {
+			type: Number,
+			required: true,
+		},
+		expand:{
+			type: Boolean,
+			required: true,
+		},
+		card: {
 			type: Object,
 			required: true,
 		},
 	},
 	methods: {
 		setPicture() {
-			api.misc.uploadImageFile().then(name => this.item.slide.picture = name);
-		},
-		remove() {
-			this.$emit("remove", this.item.randomId);
+			api.misc.uploadImageFile().then(name => this.card.picture = name);
 		},
 		dragStart(event) {
 			if (!event.touches && event.button !== 0) {
 				return; // 鼠标右键不拖动
 			}
-			this.$emit("drag-started", { event, item: this.item });
+			this.$emit("drag-start", event);
 		},
 	},
 };
@@ -103,13 +124,13 @@ export default {
 	border-top-width: 0;
 	padding: 1.5rem;
 
-	display: none; // grid 在 .opened > .details
+	display: none; // grid 在 .expand > .details
 	grid-gap: 1rem;
 	grid-template-columns: auto 1fr;
 	grid-template-rows: auto auto 1fr;
 }
 
-.opened {
+.expand {
 	& > .summary {
 		border-bottom-left-radius: 0;
 		border-bottom-right-radius: 0;
