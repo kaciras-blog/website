@@ -1065,13 +1065,13 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
-"@kaciras-blog/devtool@^0.5.1":
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/@kaciras-blog/devtool/-/devtool-0.5.1.tgz#0679624f60285a653f48f99ad4df465f55abe8f2"
-  integrity sha512-wJPCa/XNoSZ3tmWJ45iKYaPjpUE84OiFcT9azBLZiQYYZDNZ49xlnpC7oB7Ag18GqXl8NeODxg6Luu+Kj3QgLQ==
+"@kaciras-blog/devtool@^0.5.2":
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/@kaciras-blog/devtool/-/devtool-0.5.2.tgz#b7ef389bfc136cc410e899de01480a375082f9b9"
+  integrity sha512-mX6UbrPc3K9YtQt6xIwJNNYsIH7zzyXFtGiOSh6GxaU2G+lK0RW6+zqNBZRBMWx/GGC+m4lRnQ8dMsPIVo1J3w==
   dependencies:
     "@kaciras-blog/image" "^0.5.1"
-    "@kaciras-blog/server" "^0.5.1"
+    "@kaciras-blog/server" "^0.5.2"
     babel-loader "^8.1.0"
     cache-loader "^4.1.0"
     case-sensitive-paths-webpack-plugin "^2.3.0"
@@ -1122,10 +1122,10 @@
     sharp "^0.25.2"
     svgo "^1.3.2"
 
-"@kaciras-blog/server@^0.5.1":
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/@kaciras-blog/server/-/server-0.5.1.tgz#6464f7a97ea5a1270d2f8e4bd4b4e6ac6ac2f5f2"
-  integrity sha512-rzEpQMDCp4A1tyEhImMisoAuCTdDmfwMQVPZE9/1+kH45iDE4aAmF84pYz6MoZMLYHEFKj5y1CT81I1Zv7ytzg==
+"@kaciras-blog/server@^0.5.2":
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/@kaciras-blog/server/-/server-0.5.2.tgz#30f6548889565edb62061a752800b894328960e0"
+  integrity sha512-j1vCKZrHUhZdutX8k/V533ZUbSJ3RHXFYODQ/HmBLTFffqWsr6lVRmtRSG3dv7yrAQDAHsXlV7lJvXGw4NQ1/Q==
   dependencies:
     "@iktakahiro/markdown-it-katex" "^3.1.0"
     "@kaciras-blog/image" "^0.5.1"
