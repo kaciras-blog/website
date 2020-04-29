@@ -9,7 +9,6 @@
 		"test": "jest",
 		"serve": "blog-devtool serve",
 		"build": "blog-devtool build",
-		"build-prod": "blog-devtool build --profile=prod",
 		"run": "blog-server run"
 	},
 	"browserslist": [
@@ -21,12 +20,12 @@
 	],
 	"dependencies": {
 		"@iktakahiro/markdown-it-katex": "^3.1.0",
-		"@kaciras-blog/server": "^0.3.1",
+		"@kaciras-blog/server": "^0.5.0",
 		"@kaciras-blog/uikit": "^0.2.1",
 		"axios": "~0.18.1",
 		"date-fns": "^2.12.0",
 		"epic-spinners": "^1.1.0",
-		"highlight.js": "^10.0.0",
+		"highlight.js": "^10.0.1",
 		"lozad": "^1.14.0",
 		"markdown-it": "^10.0.0",
 		"markdown-it-anchor": "^5.2.7",
@@ -36,7 +35,7 @@
 		"vue-croppa": "^1.3.8",
 		"vue-multiselect": "^2.1.6",
 		"vue-router": "^3.1.6",
-		"vuex": "^3.2.0"
+		"vuex": "^3.3.0"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.9.0",
@@ -49,7 +48,7 @@
 		"@babel/preset-env": "^7.9.5",
 		"@babel/runtime": "^7.9.2",
 		"@fortawesome/fontawesome-free": "^5.13.0",
-		"@kaciras-blog/devtool": "^0.3.1",
+		"@kaciras-blog/devtool": "^0.5.0",
 		"@sentry/browser": "5.15.5",
 		"@sentry/integrations": "^5.15.5",
 		"@types/jest": "^25.2.1",
@@ -58,7 +57,7 @@
 		"@vue/test-utils": "^1.0.0-beta.33",
 		"autoprefixer": "^9.7.6",
 		"babel-eslint": "^10.1.0",
-		"babel-jest": "^25.4.0",
+		"babel-jest": "^25.5.0",
 		"core-js": "^3.6.5",
 		"eslint": "^6.8.0",
 		"eslint-config-standard": "^14.1.1",
@@ -68,8 +67,7 @@
 		"eslint-plugin-promise": "^4.2.1",
 		"eslint-plugin-standard": "^4.0.1",
 		"eslint-plugin-vue": "^6.2.2",
-		"jest": "^25.4.0",
-		"selenium-webdriver": "^4.0.0-alpha.7",
+		"jest": "^25.5.0",
 		"ts-jest": "^25.4.0",
 		"typescript": "^3.8.3",
 		"vue-template-compiler": "^2.6.11"
