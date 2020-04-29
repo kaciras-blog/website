@@ -46,6 +46,7 @@ self.addEventListener("install", (event: ExtendableEvent) => {
 		.then(cache => cache.addAll(serviceWorkerOption.assets))
 		.catch(err => console.error("静态资源预加载失败", err))
 	);
+
 	return self.skipWaiting();
 });
 
@@ -65,7 +66,7 @@ self.addEventListener("activate", (event: ExtendableEvent) => {
 	 * 完成后再激活拦截事件，使用 FetchEvent.preloadResponse 获取导航请求的响应。
 	 *
 	 * 如果使用了 AppShell 模式，则不需要每次都从网络读取页面，不应开启该功能。
-	 * 如果之前开启过，则以后不再使用时必须调用 navigationPreload.disable() 关闭。
+	 * 如果之前开启过，以后不再使用时必须调用 navigationPreload.disable() 关闭。
 	 *
 	 * 详情见：https://developers.google.com/web/updates/2017/02/navigation-preload
 	 */

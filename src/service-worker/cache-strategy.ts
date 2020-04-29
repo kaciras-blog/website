@@ -1,6 +1,5 @@
 import { broadcastMessage, ManagedCache } from "./cache";
 
-
 export interface RequestHandler {
 	handle(request: RequestInfo): Promise<Response>;
 }
@@ -46,7 +45,7 @@ export class NetworkFirstHandler extends BaseRequestHandler {
  * 缓存优先，后台更新。
  *
  * 该策略能够保证最快的速度且允许离线访问，同时也能够更新资源，但是在后台更新需要用户下一次访问才能生效，
- * 通常可以给用户显示一个提示让其刷新页面。
+ * 通常给用户显示一个提示，让其刷新页面查看最新的内容。
  */
 export class StaleWhileRevalidateHandler extends BaseRequestHandler {
 
@@ -56,7 +55,7 @@ export class StaleWhileRevalidateHandler extends BaseRequestHandler {
 			this.fetchAndCache(request).then(newResp => this.broadcastUpdate(cached, newResp));
 			return cached;
 		}
-		return await this.fetchAndCache(request);
+		return this.fetchAndCache(request);
 	}
 
 	broadcastUpdate(cached: Response, newResp: Response) {
@@ -70,8 +69,8 @@ export class StaleWhileRevalidateHandler extends BaseRequestHandler {
 }
 
 /**
- * 缓存优先。尝试从缓存里加载响应，如果缓存中没有则发送请求，并将成功的响应加入缓存。
- * 适用于永不更新的资源，如带URI里带 HASH 的文件。
+ * 缓存优先，尝试从缓存里加载响应，如果缓存中没有则发送请求，并将成功的响应加入缓存。
+ * 适用于永不更新的资源，如带名字里带 Hash 的文件。
  */
 export class CacheFirstHandler extends BaseRequestHandler {
 
@@ -80,6 +79,6 @@ export class CacheFirstHandler extends BaseRequestHandler {
 		if (cached) {
 			return cached;
 		}
-		return await this.fetchAndCache(request);
+		return this.fetchAndCache(request);
 	}
 }

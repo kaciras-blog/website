@@ -1,10 +1,6 @@
 import { RequestHandler, StaleWhileRevalidateHandler } from "./cache-strategy";
 import { ManagedCache } from "./cache";
 
-/**
- * 缓存服务器，检查传入的请求是否命中缓存，如果是则直接返回缓存的结果，否则不做任何
- * 动作（不做动作的话浏览器默认会正常发送请求）
- */
 export class Router {
 
 	private readonly routes: Route[];
@@ -21,7 +17,6 @@ export class Router {
 	 */
 	addRoute(route: Route) {
 		this.routes.push(route);
-		return this;
 	}
 
 	route(event: FetchEvent) {
@@ -100,7 +95,14 @@ export class AppShellRoute implements Route {
 }
 
 /**
- * 处理导航请求预载的路由，需要把ServiceWorker的导航预载功能打开。
+ * 处理导航请求预载的路由，需要把ServiceWorker的导航预载功能打开：
+ *
+ * @example
+ * self.addEventListener("activate", (event: ExtendableEvent) => {
+ *     if (self.registration.navigationPreload) {
+ *         event.waitUntil(self.registration.navigationPreload.enable());
+ *     }
+ * }
  */
 export class NavigatePreloadRoute implements Route {
 
@@ -109,7 +111,7 @@ export class NavigatePreloadRoute implements Route {
 	}
 
 	/**
-	 * 检查下是有已经预载了，如果是就回复预载的响应，不是的话不管它让浏览器自己走网络加载。
+	 * 检查下是否已经预载了，如果是就回复预载的响应，不是的话不管它让浏览器自己走网络加载。
 	 * 特别注意 event.preloadResponse 一定要 await 之后再判断，不能直接 if(event.preloadResponse)。
 	 *
 	 * @param event 加载事件
@@ -124,7 +126,7 @@ export class NavigatePreloadRoute implements Route {
 }
 
 /**
- * 如果浏览器支持 webp 格式，则把图片请求的文件扩展名改为 .webp
+ * 如果浏览器支持 webp 格式，则把图片请求的文件扩展名改为 webp
  *
  * TODO: 没有找到怎么在worker里检测webp支持的方法，只能使用Accept请求头判断
  */

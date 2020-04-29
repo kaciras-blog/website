@@ -1,6 +1,8 @@
 /*
  * 封装IndexedDB，所有的方法均为异步的。
- * 主要参考了Google的 workbox 项目。
+ *
+ * 主要参考了Google的 workbox 项目：
+ * https://github.com/GoogleChrome/workbox/blob/master/packages/workbox-core/src/_private/DBWrapper.ts
  */
 export interface CursorOptions {
 	index?: string;

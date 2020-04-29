@@ -11,7 +11,6 @@ export const UPDATE_CHANNEL_NAME = "PWA-UPDATE";
 
 export const cacheNames = new Set<string>();
 
-
 // TODO: 目前只有一种消息，所以直接搞个全局信道
 let broadcastChannel: BroadcastChannel;
 if ("BroadcastChannel" in self) {
@@ -28,12 +27,14 @@ export function broadcastMessage(message: any) {
 }
 
 export interface ManagedCache {
+
 	put(request: RequestInfo, response: Response): Promise<void>;
+
 	match(request: RequestInfo, options?: CacheQueryOptions): Promise<Response | undefined>;
 }
 
 /**
- * 简单封装下，把名字绑定了。
+ * 简单包装下self.caches，把名字绑定了免得每次 open() 传名字参数。
  */
 export class CacheWrapper implements ManagedCache {
 
@@ -47,18 +48,18 @@ export class CacheWrapper implements ManagedCache {
 		cacheNames.add(name);
 	}
 
-	match(request: RequestInfo, options?: CacheQueryOptions): Promise<Response | undefined> {
+	match(request: RequestInfo, options?: CacheQueryOptions) {
 		return caches.open(this.name).then(cache => cache.match(request, options));
 	}
 
-	put(request: RequestInfo, response: Response): Promise<void> {
+	put(request: RequestInfo, response: Response) {
 		return caches.open(this.name).then(cache => cache.put(request, response));
 	}
 }
 
 /**
  * 有过期功能的缓存，过期信息记录在 IndexedDB 里。
- * 请使用 ExpirationCache.create(...) 来创建。
+ * 使用 ExpirationCache.create(...) 来创建。
  */
 export class ExpirationCache implements ManagedCache {
 
@@ -115,7 +116,7 @@ export class ExpirationCache implements ManagedCache {
 			cursor.continue();
 		});
 
-		return await cache.put(request, response.clone());
+		return await cache.put(request, response);
 	}
 
 	// noinspection JSMethodCanBeStatic 可以搞个LRU？
