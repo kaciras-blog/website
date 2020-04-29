@@ -43,28 +43,39 @@ const CARD_TEMPLATE = {
 	picture: "/static/img/placeholder.png",
 	name: "新的卡片",
 	link: "",
-	description: "为卡片添加个描述吧",
+	description: "",
 };
 
 export default {
-	name: "SlideConsole",
+	name: "CardsConsole",
 	components: {
 		CardListItem,
 	},
 	data: () => ({
 		slides: [],
+		initialized: false,
 		dragging: null,
 	}),
 	methods: {
+		receiveMessage(data) {
+			if (this.initialized) {
+				this.addCard(data);
+			} else {
+				this.$watch("initialized", () => this.addCard(data));
+			}
+		},
 		createNew() {
-			this.slides.unshift(attachRandomId({ open: true, slide: CARD_TEMPLATE }));
+			this.addCard(CARD_TEMPLATE);
+		},
+		addCard(data) {
+			this.slides.unshift(attachRandomId({ open: true, slide: data }));
+		},
+		remove(id) {
+			deleteOn(this.slides, s => s.randomId === id);
 		},
 		async load() {
 			const slides = await api.recommend.getCards();
 			this.slides = slides.map(slide => attachRandomId({ slide, open: false }));
-		},
-		remove(id) {
-			deleteOn(this.slides, s => s.randomId === id);
 		},
 		submit() {
 			api.recommend.setCards(this.slides.map(item => item.slide))
@@ -132,7 +143,7 @@ export default {
 				 * @param x 被拖动元素新的横坐标
 				 * @param y 被拖动元素新的纵坐标
 				 */
-				next:({ x, y }) => {
+				next: ({ x, y }) => {
 					this.dragging.style.left = x + "px";
 					this.dragging.style.top = y + "px";
 
@@ -153,8 +164,9 @@ export default {
 			});
 		},
 	},
-	beforeMount() {
-		this.load();
+	async beforeMount() {
+		await this.load();
+		this.initialized = true;
 	},
 };
 </script>

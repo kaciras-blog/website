@@ -10,16 +10,17 @@
 					:key="link.label"
 					role="tab"
 					tabindex="2"
-					:aria-selected="active === link.name"
+					:aria-selected="active === link.view"
 					:class="{ [$style.active]: active === link.view, [$style.tabItem]: true}"
 					@click="active = link.view"
-					@keyup.enter="active = link.view">
+					@keyup.enter="active = link.view"
+				>
 					{{link.label}}
 				</li>
 			</ul>
 		</aside>
 		<main :class="$style.body_wrapper">
-			<keep-alive><component :is="active" :class="$style.body"/></keep-alive>
+			<keep-alive><component :is="active" ref="panel" :class="$style.body"/></keep-alive>
 		</main>
 	</div>
 </template>
@@ -36,13 +37,27 @@ export default {
 	data: () => ({
 		views: [
 			{ view: ArticleConsole, label: "文章列表" },
-			{ view: DraftConsole, label: "我的草稿" },
-			{ view: DiscussionConsole, label: "评论系统" },
+			{ view: DraftConsole, label: "草稿" },
+			{ view: DiscussionConsole, label: "评论" },
 			{ view: CardsConsole, label: "卡片" },
 			{ view: CategoryConsole, label: "管理分类" },
 		],
 		active: ArticleConsole,
 	}),
+	provide() {
+		return { sendMessage: this.sendMessage };
+	},
+	methods: {
+		async sendMessage(component, data) {
+			this.active = component;
+			await this.$nextTick();
+
+			const target = this.$refs.panel;
+			if ("receiveMessage" in target) {
+				target.receiveMessage(data);
+			}
+		},
+	},
 };
 </script>
 

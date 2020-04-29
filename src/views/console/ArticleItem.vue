@@ -40,9 +40,9 @@
 				修改
 			</kx-button>
 			<kx-button
-				class="second outline"
-				@click="move">
-				移动
+				class="primary outline"
+				@click="addToCards">
+				添加卡片
 			</kx-button>
 
 			<kx-button
@@ -63,7 +63,9 @@
 
 <script>
 import api from "@/api";
+import { articleLink } from "@/blog-plugin";
 import { errorMessage } from "@/utils";
+import CardsConsole from "./CardsConsole";
 
 export default {
 	name: "ArticleItem",
@@ -73,14 +75,20 @@ export default {
 			required: true,
 		},
 	},
+	inject: ["sendMessage"],
 	methods: {
 		edit() {
 			return api.draft.fromArticle(this.value.id)
 				.then(id => window.location.href = "/edit/" + id)
 				.catch(err => console.log(err));
 		},
-		move() {
-
+		addToCards() {
+			this.sendMessage(CardsConsole, {
+				picture: this.value.cover,
+				name: this.value.title,
+				link: articleLink(this.value),
+				description: this.value.summary,
+			});
 		},
 		updateDeleteState(deletion) {
 			const { value } = this;
