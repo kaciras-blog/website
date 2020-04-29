@@ -24,7 +24,7 @@
 	"dependencies": {
 		"@iktakahiro/markdown-it-katex": "^3.1.0",
 		"@kaciras-blog/server": "^0.5.2",
-		"@kaciras-blog/uikit": "^0.2.1",
+		"@kaciras-blog/uikit": "^0.2.2",
 		"axios": "~0.18.1",
 		"date-fns": "^2.12.0",
 		"epic-spinners": "^1.1.0",
