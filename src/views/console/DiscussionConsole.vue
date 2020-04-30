@@ -49,7 +49,10 @@ function normalize(item) {
 
 export default {
 	name: "DiscussionConsole",
-	components: { DiscussionCheckItem, DiscussionConfigPanel },
+	components: {
+		DiscussionCheckItem,
+		DiscussionConfigPanel,
+	},
 	data: () => ({
 		pendingList: [],
 	}),

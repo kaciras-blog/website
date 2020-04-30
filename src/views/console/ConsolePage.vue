@@ -1,7 +1,13 @@
 <template>
 	<div :class="$style.container">
 		<nav class="light nav-item-group" :class="$style.nav">
-			<router-link tabindex="1" to="/" class="nav-item">返回首页</router-link>
+			<router-link
+				to="/"
+				class="nav-item"
+				tabindex="1"
+			>
+				返回首页
+			</router-link>
 		</nav>
 		<aside :class="$style.tabs">
 			<h1>控制台</h1>
@@ -20,7 +26,9 @@
 			</ul>
 		</aside>
 		<main :class="$style.body_wrapper">
-			<keep-alive><component :is="active" ref="panel" :class="$style.body"/></keep-alive>
+			<keep-alive>
+				<component :is="active" ref="panel" :class="$style.body"/>
+			</keep-alive>
 		</main>
 	</div>
 </template>

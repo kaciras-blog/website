@@ -8,7 +8,8 @@
 				:key="name"
 				v-model="config[name]"
 				:class="$style.checkbox"
-				@input="value => sync(name, value)">
+				@input="value => sync(name, value)"
+			>
 				{{LABELS[name]}}
 			</kx-check-box>
 		</div>
@@ -46,8 +47,8 @@ export default {
 			this.refreshing = false;
 		},
 	},
-	created() {
-		api.config.get("discussion").then(props => this.config = props);
+	async created() {
+		this.config = await api.config.get("discussion");
 	},
 };
 </script>

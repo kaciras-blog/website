@@ -17,7 +17,9 @@
 					<span
 						v-for="keyword in article.keywords"
 						:key="keyword"
-						:class="$style.keyword">{{keyword}}
+						:class="$style.keyword"
+					>
+						{{keyword}}
 					</span>
 				</div>
 			</header>
@@ -25,7 +27,7 @@
 		</article>
 
 		<discussion-section
-			ref="discussionSection"
+			ref="discussion"
 			:object-id="article.id"
 			:type="0"
 			:class="$style.discuss_section"
@@ -54,13 +56,13 @@
 </template>
 
 <script>
-import MarkdownView from "../../markdown/MarkdownView";
-import TitleMixin from "../../title-mixin";
-import { escapeHtml } from "../../utils";
-import api from "../../api";
 import { mapState } from "vuex";
-import { articleLink } from "../../blog-plugin";
 import { scrollToElementStart } from "@kaciras-blog/uikit";
+import api from "@/api";
+import TitleMixin from "@/title-mixin";
+import { articleLink } from "@/blog-plugin";
+import { escapeHtml } from "@/utils";
+import MarkdownView from "@/markdown/MarkdownView";
 
 export default {
 	name: "ArticlePage",
@@ -116,13 +118,15 @@ export default {
 			throw { code: 301, location: `/article/${id}/${correctUrlTitle}` };
 		}
 	},
-	computed: mapState({ article: state => state.prefetch.article }),
+	computed: mapState({
+		article: state => state.prefetch.article,
+	}),
 	methods: {
 		gotoTop() {
 			scrollToElementStart(document.documentElement);
 		},
 		gotoDiscuss() {
-			scrollToElementStart(this.$refs.discussionSection.$el);
+			scrollToElementStart(this.$refs.discussion.$el);
 		},
 	},
 };

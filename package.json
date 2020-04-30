@@ -12,7 +12,7 @@
 		"test": "jest",
 		"serve": "blog-devtool serve",
 		"build": "blog-devtool build",
-		"run": "blog-server run"
+		"start": "blog-server run"
 	},
 	"browserslist": [
 		"Chrome >= 57",

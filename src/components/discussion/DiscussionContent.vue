@@ -19,32 +19,39 @@
 
 			<div class="minor-text" :class="$style.metas">
 				<div>
-					<span :title="value.voted ? '取消点赞' : '点赞'"
-						  class="meta"
-						  :class="[$style.clickable, { [$style.active]: value.voted }]"
-						  @click="vote"
+					<span
+						:title="value.voted ? '取消点赞' : '点赞'"
+						class="meta"
+						:class="[$style.clickable, { [$style.active]: value.voted }]"
+						@click="vote"
 					>
-						<i class="far fa-thumbs-up"></i>{{value.voteCount}}
+						<i class="far fa-thumbs-up"/>
+						{{value.voteCount}}
 					</span>
 
-					<span v-if="!value.parent"
-						  class="meta"
-						  :class="$style.clickable"
-						  @click="$emit('reply', value.id)"
+					<span
+						v-if="!value.parent"
+						class="meta"
+						:class="$style.clickable"
+						@click="$emit('reply', value.id)"
 					>
-						<i class="far fa-comment"></i>回复({{value.replyCount}})
+						<i class="far fa-comment"/>
+						回复({{value.replyCount}})
 					</span>
 				</div>
 
 				<div>
-					<span v-if="removable"
-						  class="meta"
-						  :class="$style.clickable"
-						  @click="remove"
+					<span
+						v-if="removable"
+						class="meta"
+						:class="$style.clickable"
+						@click="remove"
 					>
-						<i class="far fa-trash-alt"></i>删除
+						<i class="far fa-trash-alt"/>删除
 					</span>
-					<time>{{value.time | localDateMinute}}</time>
+					<time>
+						{{value.time | localDateMinute}}
+					</time>
 				</div>
 			</div>
 
@@ -55,7 +62,7 @@
 
 <script>
 import api, { DiscussionState } from "@/api";
-import {errorMessage} from "@/utils";
+import { errorMessage } from "@/utils";
 
 export default {
 	name: "DiscussionContent",

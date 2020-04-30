@@ -8,12 +8,14 @@
 				title="修改现有的文章"
 				:class="$style.target"
 			>
-				<i class="fas fa-pencil-alt"></i>
+				<i class="fas fa-pencil-alt"/>
 				{{value.articleId}}
 			</div>
 
 			<span class="minor-text">
-				<time :class="$style.time">{{value.updateTime | localDateMinute}}</time>
+				<time :class="$style.time">
+					{{value.updateTime | localDateMinute}}
+				</time>
 			</span>
 
 			<div class="btn-group">

@@ -7,7 +7,8 @@
 				用户评论了文章：
 				<router-link
 					class="highlight"
-					:to="item.link">
+					:to="item.link"
+				>
 					{{item.title}}
 				</router-link>
 			</span>
@@ -21,7 +22,9 @@
 		>
 
 		<div :class="$style.content">
-			<p :class="$style.name">{{item.user.name}}</p>
+			<p :class="$style.name">
+				{{item.user.name}}
+			</p>
 			<div>{{item.content}}</div>
 		</div>
 	</li>

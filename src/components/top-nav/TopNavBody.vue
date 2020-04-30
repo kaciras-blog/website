@@ -91,7 +91,6 @@ export default {
 	@media screen and (max-width: @length-screen-mobile) {
 		position: sticky;
 		top: 0;
-		background-color: white;
 	}
 }
 

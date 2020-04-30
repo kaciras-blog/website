@@ -8,7 +8,7 @@
 				class="nav-item"
 				@click="$dialog.close"
 			>
-				<i class="fas fa-arrow-left"></i>
+				<i class="fas fa-arrow-left"/>
 			</button>
 			<span :class="$style.title">查看回复</span>
 		</header>
@@ -34,7 +34,8 @@
 							v-for="item of items"
 							:key="item.id"
 							:value="item"
-							:class="$style.item"/>
+							:class="$style.item"
+						/>
 					</ol>
 				</template>
 			</scroll-paging-view>

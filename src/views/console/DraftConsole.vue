@@ -4,7 +4,8 @@
 			<kx-button
 				class="dangerous"
 				icon="far fa-trash-alt"
-				@click="deleteAll">
+				@click="deleteAll"
+			>
 				全部删除
 			</kx-button>
 		</div>

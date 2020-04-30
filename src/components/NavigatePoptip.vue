@@ -8,8 +8,10 @@
 			页面加载出错！
 		</template>
 		<template v-else>
-			5秒都没加载完，可能是废了<br>
-			您可以继续等等，或是 <a class="hd-link" @click="$emit('cancel')">取消</a>
+			5秒都没加载完，可能是废了
+			<br>
+			您可以继续等等，或是
+			<a class="hd-link" @click="$emit('cancel')">取消</a>
 		</template>
 	</div>
 </template>

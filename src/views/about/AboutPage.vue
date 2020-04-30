@@ -1,5 +1,5 @@
 <template>
-	<base-page-layout :nav-class="$style.topNav">
+	<base-page-layout :nav-class="$style.top_nav">
 		<slide-nav :class="$style.header" :tabs="tabs"/>
 		<router-view/>
 	</base-page-layout>
@@ -26,7 +26,7 @@ export default {
 <style module lang="less">
 @import "../../css/Imports";
 
-.topNav {
+.top_nav {
 	position: static;
 	box-shadow: none;
 }

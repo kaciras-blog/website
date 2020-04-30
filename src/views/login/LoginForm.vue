@@ -31,13 +31,15 @@
 		<div class="buttons">
 			<kx-task-button
 				class="primary outline"
-				:on-click="login">
+				:on-click="login"
+			>
 				确定
 			</kx-task-button>
 			<kx-button
 				disabled
 				class="second outline"
-				@click="switchPanel">
+				@click="switchPanel"
+			>
 				注册
 			</kx-button>
 		</div>

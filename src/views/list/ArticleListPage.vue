@@ -20,7 +20,8 @@
 								v-for="item of items"
 								:key="item.id"
 								:item="item"
-								class="segment"/>
+								class="segment"
+							/>
 						</ul>
 					</template>
 				</scroll-paging-view>
@@ -103,9 +104,9 @@ export default {
 		/**
 		 * 根据路由和当前加载的文章数来构造下一页的URL。
 		 *
-		 * @param start 下一页起始位置
-		 * @param count 每页显示多少个
-		 * @return 指向下一页的URL，相对路径
+		 * @param start {number} 下一页起始位置
+		 * @param count {number} 每页显示多少个
+		 * @return {string} 指向下一页的URL，相对路径
 		 */
 		nextPageUrl(start, count) {
 			const params = Object.assign({}, this.$route.query);

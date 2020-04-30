@@ -54,10 +54,12 @@ export default {
 		async uploadFavicon() {
 			let favicon = (await openFile(false, "image/*"))[0];
 			const src = await blobToString(favicon);
+
 			const cropping = await this.$dialog.show(ImageCropper, { width: 300, height: 300, initialImage: src });
 			if (cropping.isConfirm) {
 				favicon = cropping.data;
 			}
+
 			this.favicon = await api.misc.uploadImage(favicon);
 		},
 	},

@@ -5,20 +5,23 @@
 				<kx-button
 					:disabled="!stack.length"
 					@click="gotoTop"
-					icon="fas fa-arrow-up">
+					icon="fas fa-arrow-up"
+				>
 					返回顶层
 				</kx-button>
 				<kx-button
 					:disabled="!stack.length"
 					@click="gotoParent"
-					icon="fa fa-arrow-left">
+					icon="fa fa-arrow-left"
+				>
 					回到父级
 				</kx-button>
 			</div>
 
 			<kx-button
 				class="second"
-				@click="createNew">
+				@click="createNew"
+			>
 				新建分类
 			</kx-button>
 		</div>
@@ -70,27 +73,27 @@ export default {
 		stack: [],
 	}),
 	methods: {
-		goto (category) {
+		async goto(category) {
 			this.stack.push(this.current);
 			this.current = category;
-			api.category.getChildren(category.id).then(r => this.children = r);
+			this.children = api.category.getChildren(category.id);
 		},
-		gotoTop () {
+		async gotoTop() {
 			this.current = this.stack[0];
 			this.stack.splice(0);
-			api.category.getChildren(0).then(r => this.children = r);
+			this.children = api.category.getChildren(0);
 		},
-		gotoParent () {
+		async gotoParent() {
 			this.current = this.stack.pop();
 			const id = this.current ? this.current.id : 0;
-			api.category.getChildren(id).then(r => this.children = r);
+			this.children = api.category.getChildren(id);
 		},
-		createNew () {
+		createNew() {
 			this.stack.push(this.current);
 			this.current = Object.assign({}, CATEGORY_TEMPLATE);
 			this.children = [];
 		},
-		async submit () {
+		async submit() {
 			const { current, stack } = this;
 
 			if (typeof current.id === "number") {
@@ -99,10 +102,11 @@ export default {
 				const parent = stack.length ? stack[stack.length - 1].id : 0;
 				await api.category.create(current, parent);
 			}
+
 			this.$dialog.alertSuccess("保存成功");
 		},
 	},
-	async beforeMount () {
+	async beforeMount() {
 		this.current = await api.category.get(0, true);
 		this.children = this.current.children;
 	},

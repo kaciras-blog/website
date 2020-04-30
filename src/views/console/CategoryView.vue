@@ -1,9 +1,10 @@
 <template>
 	<div>
-		<div :class="$style.infoSection"
-			 @click.self="setBackground"
-			 :style="styleVars"
-			 :title="editable ? '点击换背景' : null"
+		<div
+			:class="$style.infoSection"
+			@click.self="setBackground"
+			:style="styleVars"
+			:title="editable ? '点击换背景' : null"
 		>
 			<div :class="$style.infoPanel">
 				<img
@@ -45,8 +46,8 @@
 			<h3>导航栏背景色：</h3>
 			<kx-radio-box-group v-model="item.theme" name="theme">
 				<kx-radio-box :value="0">默认</kx-radio-box>
-				<kx-radio-box :value="1">明亮背景</kx-radio-box>
-				<kx-radio-box :value="2">暗色背景</kx-radio-box>
+				<kx-radio-box :value="1">明亮</kx-radio-box>
+				<kx-radio-box :value="2">暗色</kx-radio-box>
 			</kx-radio-box-group>
 		</div>
 	</div>
@@ -102,8 +103,9 @@ export default {
 			const moveType = await this.$dialog.show(MoveCategoryDialog);
 			api.category.move(this.item.id, target.id, moveType);
 		},
-		remove() {
-			api.category.remove(this.item.id, false).then(() => this.$emit("removed"));
+		async remove() {
+			await api.category.remove(this.item.id, false);
+			this.$emit("removed");
 		},
 	},
 };

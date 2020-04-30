@@ -35,7 +35,7 @@ export default {
 	},
 	methods: {
 		handleInput(newContent) {
-			// 想当年高中试卷，作文格子一行20个字
+			// 想当年高中试卷，作文格子一行20个字，这里也搞个20字自动保存
 			if (newContent.length === 0) {
 				localStorage.removeItem(this.key);
 			} else if (newContent.length - this.snapshot.length > 20) {

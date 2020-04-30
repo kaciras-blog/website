@@ -18,12 +18,12 @@
 				>
 					<!-- removed 事件必须包装一下，因为创建时还不存在 $refs.replies，下同 -->
 					<template v-slot="{ items }">
-						<reply-list :items="items" @removed="onReplyRemoved"/>
+						<reply-list :items="items" @removed="refresh"/>
 					</template>
 				</button-paging-view>
 
 				<template v-else>
-					<reply-list :items="value.replies" @removed="onReplyRemoved"/>
+					<reply-list :items="value.replies" @removed="refresh"/>
 					<a class="hd-link" @click="showAllReplies">查看全部</a>
 				</template>
 			</template>
@@ -91,7 +91,7 @@ export default {
 				this.replies = replies;
 			});
 		}),
-		onReplyRemoved() {
+		refresh() {
 			this.$refs.replies.refresh();
 		},
 		// 重复

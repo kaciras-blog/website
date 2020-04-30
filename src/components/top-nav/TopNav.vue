@@ -1,5 +1,5 @@
-<template functional>
-	<top-nav-body tag="nav" class="top-nav"/>
+<template>
+	<top-nav-body tag="nav"/>
 </template>
 
 <script>
