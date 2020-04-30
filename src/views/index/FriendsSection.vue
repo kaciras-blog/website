@@ -44,7 +44,7 @@
 import api from "@/api";
 import MakeFriendDialog from "@/views/index/MakeFriendDialog";
 import { mapState } from "vuex";
-import { deleteOn } from "@/utils";
+import { deleteOn, errorMessage } from "@/utils";
 
 export default {
 	name: "FriendsSection",
@@ -64,7 +64,7 @@ export default {
 				const friend = await api.friend.makeFriends(result.data);
 				this.friends.push(friend);
 			} catch (e) {
-				this.$dialog.alertError(e.message);
+				this.$dialog.alertError("添加失败", errorMessage(e));
 			}
 		},
 		async rupture(friend) {
