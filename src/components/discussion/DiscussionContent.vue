@@ -47,7 +47,8 @@
 						:class="$style.clickable"
 						@click="remove"
 					>
-						<i class="far fa-trash-alt"/>删除
+						<i class="far fa-trash-alt"/>
+						删除
 					</span>
 					<time>
 						{{value.time | localDateMinute}}

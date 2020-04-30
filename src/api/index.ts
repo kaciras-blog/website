@@ -125,6 +125,17 @@ class CategoryApi extends AbstractApi {
 	}
 }
 
+export interface DiscussionListRequest {
+	objectId: number;
+	type: number;
+
+	start: number;
+	count: number;
+	sort?: string;
+
+	replySize?: number;
+}
+
 export enum DiscussionState {
 	Visible = "Visible", // 正常显示
 	Deleted = "Deleted", // 已删除
@@ -145,8 +156,8 @@ class DiscussApi extends AbstractApi {
 		return this.mainServer.post("/discussions", { objectId, type, parent, content }).then(r => r.data);
 	}
 
-	getList(objectId: number, type: number, start: number, count: number, sort?: string) {
-		const params = { objectId, type, parent: 0, start, count, sort };
+	getList(query: DiscussionListRequest) {
+		const params = { ...query, parent: 0 };
 		return this.mainServer.get("/discussions", { params }).then(r => r.data);
 	}
 
@@ -159,7 +170,9 @@ class DiscussApi extends AbstractApi {
 	 * @return 回复列表
 	 */
 	getReplies(parent: number, start: number, count: number) {
-		return this.mainServer.get("/discussions", { params: { parent, start, count } }).then(r => r.data);
+		return this.mainServer.get("/discussions", {
+			params: { parent, start, count }
+		}).then(r => r.data);
 	}
 
 	getModeration() {
@@ -174,9 +187,9 @@ class DiscussApi extends AbstractApi {
 	 * @param ids 评论ID或ID数组
 	 * @param state 目标状态
 	 */
-	updateStates(ids: number[], state: DiscussionState) {
+	updateStates(ids: number | number[], state: DiscussionState) {
 		ids = Array.isArray(ids) ? ids : [ids];
-		this.mainServer.patch("/discussions", { ids, state });
+		return this.mainServer.patch("/discussions", { ids, state });
 	}
 
 	voteUp(id: number) {

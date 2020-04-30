@@ -34,7 +34,7 @@
 			:object-id="objectId"
 			:type="type"
 			class="segment"
-			@submitted="showLast"
+			@submitted="showLatest"
 		>
 			<template v-slot="{ content, onSubmit, onInput }">
 				<discussion-editor
@@ -60,7 +60,7 @@
 						:value="item"
 						:replying="replying"
 						class="segment"
-						@reply="handleReplyStart"
+						@reply="replying = item.id"
 						@removed="refresh"
 					/>
 				</ol>
@@ -79,8 +79,8 @@ import DiscussionItem from "./DiscussionItem.vue";
 import DiscussionEditor from "./DiscussionEditor.vue";
 
 const ALL_SORTS = [
-	{ label: "最新", value: "id,DESC" },
 	{ label: "最早评论", value: "id,ASC" },
+	{ label: "最新", value: "id,DESC" },
 	{ label: "点赞数", value: "vote,DESC" },
 ];
 
@@ -120,21 +120,30 @@ export default {
 			return this.$refs.discussions.refresh();
 		},
 
-		loadDiscussions(start, size, cancelToken) {
+		loadDiscussions(start, count, cancelToken) {
 			return api
 				.withCancelToken(cancelToken)
 				.discuss
-				.getList(this.objectId, this.type, start, size, this.sort.value);
+				.getList({
+					objectId: this.objectId,
+					type: this.type,
+					start,
+					count,
+					sort: this.sort.value,
+					replySize: 3,
+				});
 		},
+
 		/** 评论发表后跳转到能显示新评论的位置 */
-		showLast() {
-			if (this.sort !== ALL_SORTS[0]) {
+		showLatest() {
+			if (this.sort === ALL_SORTS[1]) {
+				this.$refs.discussions.reload();
+				this.$refs.discussions.scrollToStart();
+			} else {
 				this.$refs.discussions.switchToLast();
 			}
 		},
-		handleReplyStart(id) {
-			this.replying = id;
-		},
+
 		/** 初始化，加载配置信息和第一页，完成时切换加载指示器到列表 */
 		initialize() {
 			const tasks = [

@@ -1,11 +1,12 @@
 <template>
 	<discussion-content
 		:value="value"
-		@removed="$emit('removed', value)"
-		@reply="$emit('reply', value.id)"
+		@removed="$emit('removed')"
+		@reply="$emit('reply')"
 	>
 		<template v-slot:footer>
 
+			<!-- TODO: this.$refs.replies is undefined -->
 			<template v-if="value.replyCount">
 				<button-paging-view
 					v-if="expend"
