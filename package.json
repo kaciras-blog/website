@@ -5,7 +5,7 @@
 	"license": "MIT",
 	"author": {
 		"name": "Kaciras",
-		"email": "Kaciras@outlook.com"
+		"email": "Kaciras@protonmail.com"
 	},
 	"scripts": {
 		"lint": "eslint --fix --ext .js,.vue src",
