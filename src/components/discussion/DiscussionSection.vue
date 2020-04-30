@@ -74,8 +74,9 @@
 import AtomSpinner from "epic-spinners/src/components/lib/AtomSpinner.vue";
 import api from "@/api";
 import InputHOC from "@/components/discussion/InputHOC";
-import DiscussionEditor from "./DiscussionEditor.vue";
+import { LOAD_DISCUSSION_OPTIONS } from "@/store/types";
 import DiscussionItem from "./DiscussionItem.vue";
+import DiscussionEditor from "./DiscussionEditor.vue";
 
 const ALL_SORTS = [
 	{ label: "最新", value: "id,DESC" },
@@ -138,7 +139,7 @@ export default {
 		initialize() {
 			const tasks = [
 				this.loadDiscussions(0, 20).then(view => this.data = view),
-				this.$store.dispatch("loadOptions"),
+				this.$store.dispatch(LOAD_DISCUSSION_OPTIONS),
 			];
 			Promise.all(tasks)
 				.catch(() => this.loadFail = true)

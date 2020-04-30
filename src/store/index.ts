@@ -1,8 +1,16 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import api from "../api";
-import { REFRESH_USER, LOGOUT, SET_PREFETCH_DATA, SET_USER, SET_SUN_PHASE, SET_DISCUSSION_OPTIONS } from "./types";
+import api from "@/api";
 import { SunPhases } from "@/sun-phase";
+import {
+	REFRESH_USER,
+	LOGOUT,
+	SET_PREFETCH_DATA,
+	SET_USER,
+	SET_SUN_PHASE,
+	SET_DISCUSSION_OPTIONS,
+	LOAD_DISCUSSION_OPTIONS
+} from "./types";
 
 Vue.use(Vuex);
 
@@ -22,7 +30,7 @@ export const SUN_PHASES = new SunPhases({
 const GUESTS = {
 	id: 0,
 	name: "(游客)",
-	head: "/static/akalin.jpg",
+	head: "/static/img/akalin.jpg",
 	authType: 0,
 }
 
@@ -57,7 +65,7 @@ export default function createVuexStore() {
 				return api.user.logout().then(() => commit(SET_USER, GUESTS));
 			},
 
-			async loadOptions({ commit, state }) {
+			async [LOAD_DISCUSSION_OPTIONS]({ commit, state }) {
 				if (typeof state.discussionOptions !== "undefined") {
 					return;
 				}
