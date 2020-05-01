@@ -1,14 +1,14 @@
 <template>
-	<div class="article">
-		<img class="cover" :src="value.cover" alt="封面">
+	<div :class="$style.article">
+		<img :class="$style.cover" :src="value.cover" alt="封面">
 
 		<div>
-			<span v-if="value.deleted" class="red note">已删除</span>
+			<span v-if="value.deleted" :class="$style.removed">已删除</span>
 			<h3 class="compact">{{value.title}}</h3>
 		</div>
 
-		<div class="info">
-			<div class="tag-group">
+		<div :class="$style.info_section">
+			<div :class="$style.tag_group">
 				<span
 					v-for="category of value.categories"
 					:key="category.id"
@@ -18,7 +18,7 @@
 				</span>
 			</div>
 
-			<div class="minor-text">
+			<div :class="$style.attrs">
 				<i class="far fa-edit" title="发表于"></i>
 				<time>{{value.create | localDateMinute}}</time>
 
@@ -33,28 +33,32 @@
 			</div>
 		</div>
 
-		<div class="vertical-btn-group ops">
+		<div :class="$style.buttons">
 			<kx-button
 				class="primary outline"
-				@click="edit">
+				@click="edit"
+			>
 				修改
 			</kx-button>
 			<kx-button
 				class="primary outline"
-				@click="addToCards">
+				@click="addToCards"
+			>
 				创建卡片
 			</kx-button>
 
 			<kx-button
 				v-if="value.deleted"
 				class="info"
-				@click="updateDeleteState(false)">
+				@click="updateDeleteState(false)"
+			>
 				恢复
 			</kx-button>
 			<kx-button
 				v-else
 				class="dangerous"
-				@click="updateDeleteState(true)">
+				@click="updateDeleteState(true)"
+			>
 				删除
 			</kx-button>
 		</div>
@@ -100,7 +104,7 @@ export default {
 };
 </script>
 
-<style scoped lang="less">
+<style module lang="less">
 @import "../../css/Imports";
 
 .article {
@@ -116,14 +120,19 @@ export default {
 	.size(100%);
 }
 
-.ops {
+.buttons {
+	composes: vertical-btn-group from global;
 	grid-area: buttons;
 }
 
-.info {
+.info_section {
 	align-self: end;
+}
 
-	& i {
+.attrs {
+	composes: minor-text from global;
+
+	& > i {
 		&:not(:first-of-type) {
 			margin-left: 1rem;
 		}
@@ -132,22 +141,21 @@ export default {
 	}
 }
 
-.note {
+.removed {
 	border-radius: .3rem;
 	padding: .2em .3em;
 	margin-right: .5em;
 
-	&.red {
-		background-color: #ed575a;
-		color: whitesmoke;
-	}
+	background-color: #ed575a;
+	color: whitesmoke;
 
 	& + h3 {
 		display: inline;
 	}
 }
 
-.tag-group {
+.tag_group {
+	composes: tag-group from global;
 	margin-bottom: 1rem;
 }
 </style>
