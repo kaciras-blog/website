@@ -32,6 +32,22 @@ class ClientPrefetchContext {
 	}
 }
 
+function prefetchComponents(to, activated, next) {
+
+	function nextWrapper(...args) {
+		if (to.meta.title) {
+			document.title = to.meta.title + " - Kaciras的博客";
+		}
+		return next(...args);
+	}
+
+	if (!activated.length) {
+		return nextWrapper();
+	}
+
+	prefetch(to, activated.filter(c => c.asyncData), nextWrapper);
+}
+
 /**
  * 处理预加载任务，包括显示加载指示器、错误页面、防止取消后跳转等。
  *
@@ -145,19 +161,7 @@ function initAppAndRouterHook() {
 		const previous = router.getMatchedComponents(from);
 		let diffed = false;
 		const activated = matched.filter((c, i) => diffed || (diffed = (previous[i] !== c)));
-
-		const nextWrapper = (...args) => {
-			if (to.meta.title) {
-				document.title = to.meta.title + " - Kaciras的博客";
-			}
-			next(...args);
-		};
-
-		if (!activated.length) {
-			return nextWrapper();
-		}
-
-		prefetch(to, activated.filter(c => c.asyncData), nextWrapper);
+		prefetchComponents(to, activated, next);
 	});
 
 	mediaQueryPlugin.observeWindow(store);
@@ -176,6 +180,7 @@ if (window.__INITIAL_STATE__) {
 	router.onReady(initAppAndRouterHook);
 	delete window.__INITIAL_STATE__;
 } else {
-	initAppAndRouterHook(); // 没有服务端渲染，直接初始化。
+	prefetchComponents(router.currentRoute, router.getMatchedComponents(), initAppAndRouterHook);
+	// initAppAndRouterHook(); // 没有服务端渲染，直接初始化。
 	store.dispatch(REFRESH_USER); // AppShell 模式不会在服务端加载用户
 }
