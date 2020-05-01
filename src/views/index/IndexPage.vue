@@ -126,9 +126,14 @@ export default {
 		},
 	},
 	methods: {
-		/** 开始切换大图，太阳位置改变时都要通过这个方法来触发过渡动画 */
+		/**
+		 * 开始切换大图，太阳位置改变时都要通过这个方法来触发过渡动画。
+		 * 该方法中先使用 HTMLImageElement 预载图片，防止网速慢的时候白屏。
+		 */
 		switchSunPhase(sunPhase) {
-			this.transitionSunPhase = sunPhase;
+			const image = document.createElement("img");
+			image.src = this.bannerMap[sunPhase];
+			image.addEventListener("load", () => this.transitionSunPhase = sunPhase);
 		},
 		/** 在图片切换效果结束后调用 */
 		transitionEnd() {
