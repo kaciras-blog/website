@@ -16,18 +16,13 @@ declare const serviceWorkerOption: {
 const STATIC_CACHE_NAME = "Static";
 const APP_SHELL_NAME = "/app-shell.html";
 
+const cache = new CacheWrapper(STATIC_CACHE_NAME);
 const router = new Router();
+const handler = new CacheFirstHandler(cache);
 
-async function initRouteService() {
-	const cache = new CacheWrapper(STATIC_CACHE_NAME);
-	const handler = new CacheFirstHandler(cache);
-
-	router.addRoute(new WebpUpgradeRoute(handler, new RegExp("^/static/img/.+\\.(?:jpg|png)$")));
-	router.addRoute(new RegexRoute("/static/", handler));
-
-	await cache.put(APP_SHELL_NAME, await fetch(APP_SHELL_NAME));
-	router.addRoute(new AppShellRoute(cache, APP_SHELL_NAME));
-}
+router.addRoute(new WebpUpgradeRoute(handler, new RegExp("^/static/img/.+\\.(?:jpg|png)$")));
+router.addRoute(new RegexRoute("/static/", handler));
+router.addRoute(new AppShellRoute(cache, APP_SHELL_NAME));
 
 self.addEventListener("fetch", router.route.bind(router));
 
@@ -40,7 +35,8 @@ self.addEventListener("fetch", router.route.bind(router));
  * 有副作用的代码应当在 activate 事件里执行。
  */
 self.addEventListener("install", (event: ExtendableEvent) => {
-	event.waitUntil(initRouteService());
+	event.waitUntil(fetch(APP_SHELL_NAME)
+		.then(appShell => cache.put(APP_SHELL_NAME, appShell)));
 
 	event.waitUntil(caches.open(STATIC_CACHE_NAME)
 		.then(cache => cache.addAll(serviceWorkerOption.assets))
