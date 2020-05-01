@@ -89,8 +89,11 @@ export class AppShellRoute implements Route {
 		return request.mode === "navigate";
 	}
 
+	// 【坑】Request 默认缓存是不去服务端检查的，而AppShell文件名不带Hash，必须禁用缓存防止无法更新
+	// https://developer.mozilla.org/zh-CN/docs/Web/API/Request/cache
 	handle(event: FetchEvent) {
-		event.respondWith(this.handler.handle(this.path))
+		const request = new Request(this.path, { cache: "no-cache" });
+		event.respondWith(this.handler.handle(request));
 	}
 }
 
