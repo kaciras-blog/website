@@ -76,7 +76,7 @@ export default {
 		BlogSection,
 	},
 	asyncData: (session) => Promise.all([
-		api.recommend.getCards().then(slides => session.data.slides = slides.map(attachRandomId)),
+		api.recommend.getCards().then(cards => session.data.cards = cards.map(attachRandomId)),
 		api.friend.getFriends().then(friends => session.data.friends = friends.map(attachRandomId)),
 	]),
 	/*
@@ -135,7 +135,7 @@ export default {
 			image.src = this.bannerMap[sunPhase];
 			image.addEventListener("load", () => this.transitionSunPhase = sunPhase);
 		},
-		/** 在图片切换效果结束后调用 */
+		/** 在图片切换效果结束后调用，替换图片 */
 		transitionEnd() {
 			this.$_lock = false;
 			this.visibleSunPhase = this.transitionSunPhase;

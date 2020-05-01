@@ -41,9 +41,9 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import api from "@/api";
 import MakeFriendDialog from "@/views/index/MakeFriendDialog";
-import { mapState } from "vuex";
 import { deleteOn, errorMessage } from "@/utils";
 
 export default {

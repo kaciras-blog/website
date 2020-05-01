@@ -1,8 +1,8 @@
 <template>
-	<base-page-layout>
+	<base-page-layout :nav-class="navClass" :nav-style="navStyle">
 
 		<template v-if="$mediaQuery.match('tablet+')" v-slot:nav>
-			<div :style="navStyle" :class="navClass">
+			<div :style="desktopNavStyle" :class="desktopNavClass">
 				<top-nav-glass :image-class="$style.image_resolver"/>
 				<div :class="$style.banner" role="banner"></div>
 			</div>
@@ -20,16 +20,18 @@ export default {
 			type: Object,
 			required: false,
 		},
+		navClass: {},
+		navStyle: {},
 	},
 	computed: {
-		navStyle () {
+		desktopNavStyle () {
 			const { banner } = this;
 			if (banner) {
 				return { "--background": `url(${banner.image})` };
 			}
 			return null;
 		},
-		navClass () {
+		desktopNavClass () {
 			const { banner } = this;
 			if (!banner) {
 				return "default-banner";

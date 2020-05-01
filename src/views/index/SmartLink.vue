@@ -4,7 +4,7 @@
  -->
 <script>
 export default {
-	name: "AutoLink",
+	name: "SmartLink",
 	functional: true,
 	render(h, ctx) {
 		const { href } = ctx.props;

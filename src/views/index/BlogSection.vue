@@ -11,9 +11,9 @@
 		</header>
 
 		<!-- 因为 figure 也是单个容器元素，懒得再套一层 li 了，所以没用 ul -->
-		<div v-if="slides.length" :class="$style.card_list">
-			<auto-link
-				v-for="card of slides"
+		<div v-if="cards.length" :class="$style.card_list">
+			<smart-link
+				v-for="card of cards"
 				:key="card.id"
 				:href="card.link"
 				class="clean-link"
@@ -30,7 +30,7 @@
 						<span class="loose">{{card.description}}</span>
 					</figcaption>
 				</figure>
-			</auto-link>
+			</smart-link>
 		</div>
 
 	</section>
@@ -38,15 +38,15 @@
 
 <script>
 import { mapState } from "vuex";
-import AutoLink from "./AutoLink";
+import SmartLink from "./SmartLink";
 
 export default {
 	name: "BlogSection",
 	components: {
-		AutoLink,
+		SmartLink,
 	},
 	computed: mapState({
-		slides: state => state.prefetch.slides,
+		cards: state => state.prefetch.cards,
 	}),
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-	<kx-base-dialog title="友链信息">
+	<kx-base-dialog title="输入友链信息">
 
 		<img
 			:src="favicon"
