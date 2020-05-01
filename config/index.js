@@ -112,6 +112,17 @@ module.exports = {
 		 * 把此项设置为 true 可以关闭 NodeJS 的 HTTP 证书检查。
 		 */
 		// serverCert: "/etc/letsencrypt/live/api.example.com/cert.pem",
+
+		/** 是否启用ServiceWorker，true表示启用，否则卸载 */
+		// serviceWorker: true,
+
+		/** 该项设为true表示使用 X-Forwarded-* 头，在有反向代理时使用 */
+		// useForwardedHeaders: true,
+
+		logging: {
+			level: "info",
+			file: "website.log",
+		},
 	},
 
 	/** 该对象由 process.env 传递到构建的脚本里 */
