@@ -41,14 +41,14 @@ export function register(config: ServiceWorkerConfig = {}) {
 			const { data } = message;
 			if (data.type === "ERROR" || data.type === "REJECTION") report(data);
 		});
-		console.log("[ServiceWorker] 注册成功");
+		console.debug("[ServiceWorker] 注册成功");
 	}
 
 	// 等到 window.load 事件时再注册，以免 ServiceWorker 里加载的资源占用首屏宽带
 	window.addEventListener("load", async () => {
 		const response = await fetch("/sw-check", { method: "HEAD" });
 		if (response.status !== 200) {
-			console.debug("[ServiceWorker] 预检请求返回非200，注销ServiceWorker");
+			console.debug("[ServiceWorker] 已注销");
 			return unregister();
 		}
 		navigator.serviceWorker.register(ServiceWorkerPath)
