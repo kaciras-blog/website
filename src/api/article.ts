@@ -1,4 +1,4 @@
-import { AbstractApi } from "./core";
+import { AbstractResource } from "./core";
 import { getLocation } from "./common";
 
 export enum DeletionState {
@@ -28,7 +28,7 @@ interface PublishRequest {
 	destroy?: boolean;
 }
 
-export default class extends AbstractApi {
+export default class ArticleResource extends AbstractResource {
 
 	get(id: number) {
 		return this.servers.content.get("/articles/" + id).then(r => r.data);
@@ -57,9 +57,5 @@ export default class extends AbstractApi {
 
 	updateDeletion(id: number, deletion: boolean) {
 		return this.servers.content.patch(`/articles/${id}`, { deletion });
-	}
-
-	changeCategories(id: number, category: number) {
-		return this.servers.content.patch(`/articles/${id}`, { category });
 	}
 }

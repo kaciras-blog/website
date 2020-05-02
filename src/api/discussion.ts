@@ -1,4 +1,4 @@
-import { AbstractApi } from "./core";
+import { AbstractResource } from "./core";
 
 export interface DiscussionListRequest {
 	objectId: number;
@@ -17,7 +17,7 @@ export enum DiscussionState {
 	Moderation = "Moderation", // 等待审核
 }
 
-export default class extends AbstractApi {
+export default class DiscussionResource extends AbstractResource {
 
 	/**
 	 * 添加评论，返回服务端保存的对象。

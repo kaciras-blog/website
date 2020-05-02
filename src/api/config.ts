@@ -1,6 +1,6 @@
-import { AbstractApi } from "./core";
+import { AbstractResource } from "./core";
 
-export default class extends AbstractApi {
+export default class ConfigResource extends AbstractResource {
 
 	get(namespace: string) {
 		return this.servers.content.get(`/config/${namespace}`).then(r => r.data);

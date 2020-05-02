@@ -5,7 +5,7 @@ export interface ServerList {
 	content: AxiosInstance;
 }
 
-type RequestConfigProcessor = (config: AxiosRequestConfig) => void;
+export type RequestConfigProcessor = (config: AxiosRequestConfig) => void;
 
 /**
  * 使用ES6代理Axios，以便在请求前修改设置。
@@ -21,7 +21,7 @@ class AxiosProxy implements ProxyHandler<AxiosInstance> {
 		this.processor = processor;
 	}
 
-	private prepare(config: AxiosRequestConfig) {
+	private prepare(config?: AxiosRequestConfig) {
 		config = config || {};
 		this.processor(config);
 		return config;
@@ -66,8 +66,11 @@ export class ServerListFilter implements ServerList {
 	}
 }
 
+/**
+ * 继承这个类可以省略写构造方法
+ */
 // @formatter:off
-export class AbstractApi {
-	constructor(readonly servers: ServerList) {}
+export class AbstractResource {
+	constructor(protected readonly servers: ServerList) {}
 }
 // @formatter:on

@@ -1,12 +1,19 @@
-import { AbstractApi } from "./core";
+import { AbstractResource } from "./core";
 
-export default class extends AbstractApi {
+export interface Card {
+	name: string;
+	link: string;
+	picture: string;
+	description: string;
+}
+
+export default class CardResource extends AbstractResource {
 
 	getCards() {
-		return this.servers.content.get("/recommendation/cards").then(r => r.data);
+		return this.servers.content.get<Card[]>("/recommendation/cards").then(r => r.data);
 	}
 
-	setCards(cards: any[]) {
+	setCards(cards: Card[]) {
 		return this.servers.content.put("/recommendation/cards", cards);
 	}
 }

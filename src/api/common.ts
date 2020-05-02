@@ -7,7 +7,7 @@ import { AxiosResponse } from "axios";
  * @param status 状态码
  * @return 是否算作正常回复
  */
-export function normalResponse(status: number) {
+export function standardRange(status: number) {
 	return status >= 0 && status < 500;
 }
 

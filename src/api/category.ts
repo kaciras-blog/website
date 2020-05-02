@@ -1,6 +1,18 @@
-import { AbstractApi } from "./core";
+import { AbstractResource } from "./core";
 
-export default class CategoryApi extends AbstractApi {
+export enum CategoryTheme {
+	Default = 0, Light = 1, Dark = 2,
+}
+
+export interface Category {
+	name: string;
+	cover: string;
+	description: string;
+	background: string;
+	theme: CategoryTheme;
+}
+
+export default class CategoryResource extends AbstractResource {
 
 	getChildren(id: number) {
 		return this.servers.content.get(`/categories/${id}/children`).then(r => r.data);
@@ -18,7 +30,7 @@ export default class CategoryApi extends AbstractApi {
 		return this.servers.content.post("/categories/transfer", { params: { id, parent, treeMode } });
 	}
 
-	create(data: any, parent: number) {
+	create(data: Category, parent: number) {
 		return this.servers.content.post("/categories/", data, { params: { parent } });
 	}
 

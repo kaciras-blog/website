@@ -1,20 +1,30 @@
-import { AbstractApi } from "./core";
-import { normalResponse } from "./common";
+import { AbstractResource } from "./core";
+import { standardRange } from "./common";
 
-interface AccountLoginRequest {
+export interface AccountLoginRequest {
 	name: string;
 	password: string;
 	remember: boolean;
 }
 
-interface AccountSignUpRequest {
+export interface AccountSignUpRequest {
 	name: string;
 	password: string;
 	email?: string;
 	captcha: string;
 }
 
-export default class extends AbstractApi {
+export interface UserProfile {
+	name: string;
+	head: string;
+}
+
+export interface User extends UserProfile {
+	id: number;
+	authType: number;
+}
+
+export default class UserResource extends AbstractResource {
 
 	/** 用户登录，登录成功后会添加相应的Cookie */
 	login(form: AccountLoginRequest) {
@@ -31,14 +41,14 @@ export default class extends AbstractApi {
 	}
 
 	getCurrent() {
-		return this.servers.content.get("/session/user", { validateStatus: normalResponse });
+		return this.servers.content.get<User>("/session/user", { validateStatus: standardRange });
 	}
 
 	get(id: number) {
-		return this.servers.content.get("/users/" + id);
+		return this.servers.content.get<User>("/users/" + id);
 	}
 
-	updateProfile(profile: object) {
+	updateProfile(profile: UserProfile) {
 		return this.servers.content.patch("/session/user", profile);
 	}
 }

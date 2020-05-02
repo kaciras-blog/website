@@ -1,8 +1,8 @@
 import { openFile } from "@kaciras-blog/uikit";
-import { AbstractApi } from "./core";
+import { AbstractResource } from "./core";
 import { getLocation } from "./common";
 
-export default class extends AbstractApi {
+export default class extends AbstractResource {
 
 	/**
 	 * 上传图片文件
@@ -11,7 +11,7 @@ export default class extends AbstractApi {
 	 * @param progress 进度回调
 	 * @returns Promise<String>
 	 */
-	uploadImage(file: File, progress?: (progressEvent: any) => void) {
+	uploadImage(file: File, progress?: (progressEvent: ProgressEvent) => void) {
 		const data = new FormData();
 		data.append("file", file);
 		return this.servers.web.post("/image", data, { onUploadProgress: progress }).then(getLocation());

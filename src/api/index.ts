@@ -1,7 +1,8 @@
 import axios, { AxiosRequestConfig, CancelToken } from "axios";
-import { CancellationToken } from "@kaciras-blog/uikit/src/cancellation";
-import { ServerList, ServerListFilter } from "./core";
+import { CancellationToken } from "@kaciras-blog/uikit";
+import { RequestConfigProcessor, ServerList, ServerListFilter } from "./core";
 
+// 为了让IDE能够分析类型只能一个个导入再导出
 import ArticleApi from "./article";
 import DraftApi from "./draft";
 import CategoryApi from "./category";
@@ -82,6 +83,10 @@ export class Api {
 		});
 	}
 
+	withConfigProcessor(processor: RequestConfigProcessor) {
+		return new Api(new ServerListFilter(this.serverList, processor));
+	}
+
 	/**
 	 * 设置原请求，发送的请求将使用原请求的 Cookie 和一些 Header 以表现出与原请求相同的身份。
 	 * 该方法仅用于服务端渲染，在浏览器中无效。
@@ -89,7 +94,7 @@ export class Api {
 	 * @param proto 原请求
 	 * @return API集
 	 */
-	withPrototype(proto: any) {
+	withPrototype(proto?: any) {
 		if (!proto) {
 			return this;
 		}
@@ -114,7 +119,7 @@ export class Api {
 			config.headers["X-Forwarded-For"] = proto.ip;
 		}
 
-		return new Api(new ServerListFilter(this.serverList, setProto));
+		return this.withConfigProcessor(setProto);
 	}
 
 	/**
@@ -124,16 +129,12 @@ export class Api {
 	 * @return API集
 	 */
 	withCancelToken(token: CancelToken | CancellationToken) {
-		if (!token) {
-			return this;
-		}
 		if ("addListener" in token) {
 			const axiosTokenSource = axios.CancelToken.source();
 			token.addListener(axiosTokenSource.cancel);
 			token = axiosTokenSource.token;
 		}
-		return new Api(new ServerListFilter(this.serverList,
-			(config) => config.cancelToken = token as CancelToken));
+		return this.withConfigProcessor(config => config.cancelToken = token as CancelToken);
 	}
 }
 
@@ -147,7 +148,7 @@ Api.register("config", ConfigApi);
 Api.register("recommend", RecommendApi);
 Api.register("misc", MiscApi);
 
-// 为了让IDE能够提示
+// 也是为了让IDE能够提示
 export interface Api {
 	article: ArticleApi;
 	draft: DraftApi;

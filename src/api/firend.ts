@@ -1,23 +1,23 @@
-import { AbstractApi } from "./core";
+import { AbstractResource } from "./core";
 
-interface FriendLink {
+interface Friend {
 	name: string;
 	url: string;
 	favicon: string;
 }
 
-export default class extends AbstractApi {
+export default class FriendResource extends AbstractResource {
 
 	getFriends() {
-		return this.servers.content.get("/friends").then(r => r.data);
+		return this.servers.content.get<Friend[]>("/friends").then(r => r.data);
 	}
 
-	makeFriends(link: FriendLink) {
-		return this.servers.content.post("/friends", link).then(r => r.data);
+	makeFriends(link: Friend) {
+		return this.servers.content.post<Friend>("/friends", link).then(r => r.data);
 	}
 
-	rupture(link: FriendLink) {
+	rupture(link: Friend) {
 		const host = new URL(link.url).hostname;
-		return this.servers.content.delete("/friends/" + host);
+		return this.servers.content.delete(`/friends/${host}`);
 	}
 }
