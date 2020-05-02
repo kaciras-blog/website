@@ -128,7 +128,10 @@ export class Api {
 	 * @param token 取消令牌
 	 * @return API集
 	 */
-	withCancelToken(token: CancelToken | CancellationToken) {
+	withCancelToken(token?: CancelToken | CancellationToken) {
+		if(!token) {
+			return this;
+		}
 		if ("addListener" in token) {
 			const axiosTokenSource = axios.CancelToken.source();
 			token.addListener(axiosTokenSource.cancel);
