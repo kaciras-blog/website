@@ -106,8 +106,7 @@ export default {
 			return; // 重定向来的，文章已经加载过了，这里假定重定向后的urlTitle一定是正确的。
 		}
 
-		await api
-			.withPrototype(session.request)
+		await session.api
 			.withCancelToken(session.cancelToken)
 			.article.get(id)
 			.then(session.dataSetter("article"));
@@ -143,7 +142,7 @@ export default {
 
 .article {
 	margin: 0 auto;
-	padding: 30px 1em 0;
+	padding: 30px 20px 0;
 
 	@media screen {
 		@media (min-width: @length-screen-mobile) {

@@ -53,8 +53,8 @@ export default function createVuexStore() {
 			sunPhase: null,
 		},
 		actions: {
-			async [REFRESH_USER]({ commit }, prototype) {
-				const res = await api.withPrototype(prototype).user.getCurrent();
+			async [REFRESH_USER]({ commit }, ssrApi) {
+				const res = await (process.env.VUE_ENV === "server" ? ssrApi : api).user.getCurrent();
 				if (res.status < 300) {
 					commit(SET_USER, res.data);
 				}

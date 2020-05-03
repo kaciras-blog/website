@@ -1,17 +1,19 @@
 import Vue from "vue";
 import { CancellationToken } from "@kaciras-blog/uikit";
 import { SET_WIDTH } from "@kaciras-blog/uikit/src/media-query/index";
+import { configureForProxy } from "@kaciras-blog/server/lib/axios-helper";
+import api from "@/api";
 import createApp, { mediaBreakpoints } from "./main";
 import { REFRESH_USER, SET_PREFETCH_DATA } from "./store/types";
 
 
 class ServerPrefetchContext {
 
-	constructor(store, route, request) {
+	constructor(store, route, api) {
 		this.store = store;
 		this.route = route;
-		this.request = request;
 		this.data = {};
+		this.api = api;
 	}
 
 	get cancelToken() {
@@ -55,6 +57,7 @@ export default async (context) => {
 	}
 
 	const { vue, router, store } = createApp();
+	const ssrApi = api.withConfigProcessor(config => configureForProxy(request, config));
 
 	// 从 UserAgent 中检测是否手机，从而设定渲染的屏幕宽度
 	const userAgent = request && request.headers["user-agent"];
@@ -66,12 +69,12 @@ export default async (context) => {
 	// 控制台配置了拦截，必须先登陆，否则后面的路由直接跳到错误页
 	const userCheckNeeded = /^\/console\/?/.test(url.pathname);
 	if (userCheckNeeded) {
-		await store.dispatch(REFRESH_USER, request);
+		await store.dispatch(REFRESH_USER, ssrApi);
 	}
 
 	router.push(url.pathname);
 	await onReadyAsync(router);
-	const session = new ServerPrefetchContext(store, router.currentRoute, request);
+	const session = new ServerPrefetchContext(store, router.currentRoute, ssrApi);
 
 	/*
 	 * 路由配置里最后一条把所有未匹配的路由都转到错误页，
@@ -83,7 +86,7 @@ export default async (context) => {
 		.map(c => c.asyncData(session));
 
 	if (!userCheckNeeded) {
-		componentTasks.push(store.dispatch(REFRESH_USER, request));
+		componentTasks.push(store.dispatch(REFRESH_USER, ssrApi));
 	}
 
 	try {
@@ -104,7 +107,7 @@ export default async (context) => {
 	const { title } = router.currentRoute.meta;
 	if (title) {
 		context.title = title + " - Kaciras的博客";
-		context.meta = "<meta name='description' content='Kaciras个人博客'>";
+		context.meta = "<meta name='description' content='Kaciras的博客'>";
 	}
 	context.state = store.state;
 

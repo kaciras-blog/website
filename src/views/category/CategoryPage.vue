@@ -27,9 +27,8 @@ export default {
 		FamilySection,
 	},
 	asyncData (session) {
-		return api
+		return session.api
 			.withCancelToken(session.cancelToken)
-			.withPrototype(session.request)
 			.category
 			.get(session.route.params.id, true)
 			.then(session.dataSetter("item"));

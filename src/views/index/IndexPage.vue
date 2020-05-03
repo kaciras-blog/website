@@ -75,13 +75,10 @@ export default {
 		FriendsSection,
 		BlogSection,
 	},
-	asyncData: (session) => {
-		const localApi = api.withPrototype(session.request);
-		return Promise.all([
-			localApi.recommend.getCards().then(cards => session.data.cards = cards.map(attachRandomId)),
-			localApi.friend.getFriends().then(friends => session.data.friends = friends.map(attachRandomId)),
-		]);
-	},
+	asyncData: (session) => Promise.all([
+		session.api.recommend.getCards().then(cards => session.data.cards = cards.map(attachRandomId)),
+		session.api.friend.getFriends().then(friends => session.data.friends = friends.map(attachRandomId)),
+	]),
 	/*
 	 * 三个状态与过渡动画的关系：
 	 *   currentSunPhase：当前的太阳位置，过渡一开始它就立即变为下一个太阳位置。
@@ -166,7 +163,7 @@ export default {
 }
 
 .nav {
-	position: absolute !important;
+	position: fixed !important;
 	top: 0;
 }
 

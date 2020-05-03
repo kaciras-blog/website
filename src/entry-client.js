@@ -1,12 +1,13 @@
 import "./error-report";
 import "./analytics";
-import createApp, { mediaQueryPlugin } from "./main";
+import "./serviceWorker";
 import Vue from "vue";
 import { CancellationToken } from "@kaciras-blog/uikit";
-import * as loadingIndicator from "./loading-indicator";
-import { REFRESH_USER, SET_PREFETCH_DATA, SET_SUN_PHASE } from "./store/types";
-import "./serviceWorker";
+import api from "@/api";
 import { SUN_PHASES } from "@/store";
+import { REFRESH_USER, SET_PREFETCH_DATA, SET_SUN_PHASE } from "./store/types";
+import * as loadingIndicator from "./loading-indicator";
+import createApp, { mediaQueryPlugin } from "./main";
 
 
 let cancelToken = CancellationToken.NEVER;
@@ -17,6 +18,7 @@ class ClientPrefetchContext {
 		this.route = route;
 		this.cancelToken = cancelToken;
 		this.data = {};
+		this.api = api;
 	}
 
 	get store() {

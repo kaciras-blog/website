@@ -88,41 +88,6 @@ export class Api {
 	}
 
 	/**
-	 * 设置原请求，发送的请求将使用原请求的 Cookie 和一些 Header 以表现出与原请求相同的身份。
-	 * 该方法仅用于服务端渲染，在浏览器中无效。
-	 *
-	 * @param proto 原请求
-	 * @return API集
-	 */
-	withPrototype(proto?: any) {
-		if (!proto) {
-			return this;
-		}
-
-		function setProto(config: AxiosRequestConfig) {
-			config.headers = config.headers || {};
-
-			// UA可以随便改，没啥实际用，还不如穿透了统计下客户端类型
-			if (proto.headers["user-agent"]) {
-				config.headers["User-Agent"] = proto.headers["user-agent"];
-			}
-			if (proto.headers.cookie) {
-				config.headers.Cookie = proto.headers.cookie;
-			}
-
-			const csrfToken = proto.cookies.get(CSRF_COOKIE_NAME);
-			if (csrfToken) {
-				config.headers[CSRF_HEADER_NAME] = csrfToken;
-			}
-
-			// SSR 也属于反向代理，记得带上原始IP
-			config.headers["X-Forwarded-For"] = proto.ip;
-		}
-
-		return this.withConfigProcessor(setProto);
-	}
-
-	/**
 	 * 设置取消令牌，使请求能够取消。
 	 *
 	 * @param token 取消令牌
