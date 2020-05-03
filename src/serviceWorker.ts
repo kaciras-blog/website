@@ -1,6 +1,7 @@
 import { UPDATE_CHANNEL_NAME } from "./service-worker/cache";
 import { report } from "./error-report";
 
+const SCRIPT_PATH = "/sw.js";
 
 export interface ErrorRecordMessage {
 	type: "ERROR" | "REJECTION",
@@ -8,19 +9,11 @@ export interface ErrorRecordMessage {
 	message: string | null;
 }
 
-const ServiceWorkerPath = "/sw.js";
-
-
 export interface ServiceWorkerConfig {
 	onResourceUpdate?: (data: any) => void;
 }
 
 export function register(config: ServiceWorkerConfig = {}) {
-
-	const publicUrl = new URL(process.env.PUBLIC_URL!, window.location.href);
-	if (publicUrl.origin !== window.location.origin) {
-		return console.error("service worker won't work when PUBLIC_URL is on a different origin");
-	}
 
 	/**
 	 * 注册成功后调用，添加资源更新的监听。
@@ -46,17 +39,23 @@ export function register(config: ServiceWorkerConfig = {}) {
 
 	// 等到 window.load 事件时再注册，以免 ServiceWorker 里加载的资源占用首屏宽带
 	window.addEventListener("load", async () => {
+
+		const publicUrl = new URL(process.env.PUBLIC_URL!, window.location.href);
+		if (publicUrl.origin !== window.location.origin) {
+			return console.error("service worker won't work when PUBLIC_URL is on a different origin");
+		}
+
 		const response = await fetch("/sw-check", { method: "HEAD" });
 		if (response.status !== 200) {
 			console.debug("[ServiceWorker] 已注销");
 			return unregister();
 		}
-		navigator.serviceWorker.register(ServiceWorkerPath)
+
+		navigator.serviceWorker.register(SCRIPT_PATH)
 			.then(afterRegister)
 			.catch((err) => console.error("[ServiceWorker] 注册失败：", err));
 	});
 }
-
 
 /**
  * 注销 ServiceWorker，没有检查 ServiceWorker 是否注销完成，因为就算注销失败也没有什么办法处理。
@@ -67,8 +66,10 @@ export function unregister() {
 		.catch(() => console.error("Service worker failed to unregister."));
 }
 
-
-/* 生产模式下注册 ServiceWorker，开发模式禁用 */
+/*
+ * 生产模式下注册 ServiceWorker，开发模式禁用。
+ * 禁用不能只是不注册，而必须得注销！
+ */
 if ("serviceWorker" in navigator) {
 	if (process.env.NODE_ENV === "production") {
 		register();
