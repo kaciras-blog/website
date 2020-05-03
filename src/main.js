@@ -1,9 +1,11 @@
+import "@fortawesome/fontawesome-free/css/all.css";
+import "vue-multiselect/dist/vue-multiselect.min.css";
+import "@kaciras-blog/uikit/src/css/Index";
 import "./css/Main.less";
 import Vue from "vue";
 import createRouter from "./router";
 import createStore from "./store";
 import App from "./App";
-
 import { MediaQueryManager } from "@kaciras-blog/uikit/src/media-query";
 import KxUI from "@kaciras-blog/uikit";
 import KxMarkdown from "./markdown";
