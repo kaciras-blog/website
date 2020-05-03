@@ -1,5 +1,5 @@
 <template>
-	<component :is="tag" class="top-nav" :class="$style.container">
+	<component :is="tag" class="top-nav" :class="[$style.container, { [$style.colored]: colored }]">
 
 		<router-link to="/" title="回到首页">
 			<img src="@/assets/img/logo-kaciras-wide.svg" alt="logo" :class="$style.logo">
@@ -35,7 +35,8 @@
 				<router-link
 					v-if="user.id === 2"
 					to="/console"
-					class="nav-item">
+					class="nav-item"
+				>
 					管理
 				</router-link>
 
@@ -67,13 +68,27 @@ export default {
 	},
 	data: () => ({
 		showNavMenu: false,
+		colored: false,
 	}),
 	computed: mapState(["user"]),
 	methods: {
+		...mapActions({ logout: LOGOUT }),
+
 		showMenu() {
 			this.$dialog.show(NavMenuFrame);
 		},
-		...mapActions({ logout: LOGOUT }),
+
+		scrollFunction() {
+			this.colored = document.body.scrollTop > 60 || document.documentElement.scrollTop > 60;
+		},
+	},
+	beforeMount() {
+		if (this.$mediaQuery.match("mobile")) {
+			window.addEventListener("scroll", this.scrollFunction);
+		}
+	},
+	beforeDestroy() {
+		window.removeEventListener("scroll", this.scrollFunction);
 	},
 };
 </script>
@@ -84,14 +99,20 @@ export default {
 .container {
 	display: flex;
 	background-color: rgba(255, 255, 255, .4);
+	transition: background-color .3s;
 
 	@media screen and (min-width: @length-screen-mobile) {
 		padding: 0 5vw;
 	}
+
 	@media screen and (max-width: @length-screen-mobile) {
 		position: sticky;
 		top: 0;
 	}
+}
+
+.colored {
+	background-color: white;
 }
 
 // 外层套了个<a>所以宽高不能用百分比，只能写死图片的大小

@@ -1,6 +1,6 @@
 <!-- TODO: 这一版的设计以rem长度单位为主，对宽屏不友好，但由于我没有那么宽的屏幕来做调试，所以搞不了 -->
 <template>
-	<base-page-layout nav-class="login-header" :footer="false">
+	<base-page-layout nav-class="login-header">
 		<div :class="$style.body">
 			<div :class="$style.picture_box">
 				<img
@@ -67,10 +67,10 @@ export default {
 
 	max-width: 980px;
 	margin: 0 auto;
-	padding-top: 30px;
+	padding: 40px 0 40px 0;
 
 	@media screen and (min-width: @length-screen-mobile) {
-		padding-top: 80px
+		padding: 70px 0 40px 0;
 	}
 }
 

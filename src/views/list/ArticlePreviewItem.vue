@@ -83,18 +83,17 @@ export default {
 	grid-template-columns: 1fr;
 	grid-gap: 1rem;
 
-	padding: 1rem;
+	padding: 15px 0;
 	margin: 1rem 0;
 	border-bottom: solid 1px @color-border;
 
-	@media screen and (max-width: (@length-screen-mobile - 1px)) {
+	@media screen and (max-width: @length-screen-mobile) {
+		padding: 10px 30px;
 		text-align: center;
 		justify-items: center;
 	}
 
 	@media screen and (min-width: @length-screen-mobile) {
-		padding-left: 0;
-		padding-right: 0;
 		grid-template-columns: auto 1fr;
 		grid-template-areas: "cover title" "cover summary" "cover keywords" "category category" "meta meta";
 	}
@@ -139,8 +138,8 @@ export default {
 	height: 9rem;
 
 	@media screen and (max-width: @length-screen-mobile) {
-		width: 60vw;
-		height: 54vw;
+		width: 50vw;
+		height: 45vw;
 		border-radius: 10px;
 	}
 }

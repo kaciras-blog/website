@@ -7,10 +7,6 @@
 				网站代码开源：
 				<a class="highlight" href="https://github.com/kaciras-blog">https://github.com/kaciras-blog</a>
 			</icon-paragraph>
-			<icon-paragraph src="../../assets/img/logo-tor.png" title="no-js">
-				本站支持服务端渲染，能够在禁止JS的情况下浏览。
-				禁用JS仅会导致首页背景无法加载，以及无法看到评论。
-			</icon-paragraph>
 			<icon-paragraph src="../../assets/img/html-code.svg" title="browsers">
 				兼容性（以Grid布局为基准）：
 				<ul>
