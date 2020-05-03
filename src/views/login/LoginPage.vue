@@ -70,7 +70,7 @@ export default {
 	padding: 40px 0 40px 0;
 
 	@media screen and (min-width: @length-screen-mobile) {
-		padding: 70px 0 40px 0;
+		padding: 80px 0 50px 0;
 	}
 }
 

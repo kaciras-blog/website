@@ -111,15 +111,14 @@ export default {
 }
 
 .favicon {
-	width: 120px;
-	height: 120px;
+	width: 140px;
+	height: 140px;
 }
 
 .name {
-	width: 120px;
-	padding: 10px 0;
+	width: 100%;
+	padding: 20px 0;
 
-	font-size: 16px;
 	text-align: center;
 	word-wrap: break-word;
 }

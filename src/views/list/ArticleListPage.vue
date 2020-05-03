@@ -149,7 +149,7 @@ export default {
 			padding-top: 50px;
 		}
 		@media (min-width: @length-screen-wide) {
-			max-width: 82%;
+			max-width: 84%;
 		}
 	}
 }
@@ -178,7 +178,7 @@ export default {
 	@media screen {
 		@media (min-width: @length-screen-pad) {
 			display: block;
-			margin-left: 6%;
+			margin-left: 8%;
 		}
 	}
 }

@@ -2,7 +2,7 @@
 	<div class="about-tab-page">
 
 		<section class="about-section">
-			<div :class="$style.blogger">
+			<div :class="$style.profile">
 				<img
 					src="../../assets/img/logo-kaciras-circle.svg"
 					alt="头像"
@@ -13,6 +13,9 @@
 					<address>Kaciras@protonmail.com</address>
 				</div>
 			</div>
+			<p>
+				GitHub: <a class="highlight" href="https://github.com/Kaciras">https://github.com/Kaciras</a>
+			</p>
 			<ul class="clean-list" :class="$style.tag_list">
 				<li>热爱技术</li>
 				<li>全栈开发</li>
@@ -37,7 +40,7 @@
 </template>
 
 <style module lang="less">
-.blogger {
+.profile {
 	display: grid;
 	grid-template-columns: auto 1fr;
 	grid-gap: 20px;

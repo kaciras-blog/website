@@ -146,7 +146,7 @@ export default {
 	display: flex;
 	align-items: flex-end;
 	padding: 10px;
-	background: #f0f0f5;
+	background: #ebebeb;
 }
 
 .input {

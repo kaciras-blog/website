@@ -163,8 +163,12 @@ export default {
 }
 
 .nav {
-	position: fixed !important;
+	position: absolute !important;
 	top: 0;
+
+	@media screen and (max-width: @length-screen-mobile) {
+		position: fixed !important;
+	}
 }
 
 .banner {
@@ -202,9 +206,14 @@ export default {
 
 .blog {
 	padding: 0 5vw;
+
+	@media screen and (max-width: @length-screen-mobile) {
+		padding: 0 10vw;
+	}
 }
 
 .friends {
 	padding: 60px 5vw;
+	font-size: 16px;
 }
 </style>

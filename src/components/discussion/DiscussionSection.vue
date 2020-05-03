@@ -46,6 +46,7 @@
 		</input-h-o-c>
 
 		<component
+			v-if="data.total"
 			:is="$mediaQuery.match('mobile') ? 'ScrollPagingView' : 'ButtonPagingView'"
 			ref="discussions"
 			v-model="data"
@@ -64,9 +65,9 @@
 						@removed="refresh"
 					/>
 				</ol>
-				<div :class="$style.empty" v-else>还没有评论呢</div>
 			</template>
 		</component>
+		<div v-else :class="$style.empty">还没有评论呢</div>
 	</div>
 </template>
 

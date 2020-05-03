@@ -119,9 +119,12 @@ module.exports = {
 		/** 该项设为true表示使用 X-Forwarded-* 头，在有反向代理时使用 */
 		// useForwardedHeaders: true,
 
+		/** 日志等级和文件 */
 		logging: {
+
 			level: "info",
-			file: "website.log",
+
+			// file: "website.log",
 		},
 	},
 
