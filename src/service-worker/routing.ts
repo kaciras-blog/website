@@ -73,20 +73,30 @@ export class AppShellRoute implements Route {
 
 	private readonly handler: StaleWhileRevalidateHandler;
 	private readonly path: string;
+	private readonly exclude?: RegExp;
 
 	/**
 	 * 新建应用外壳路由，其将使用指定URI路径的页面作为应用的外壳，并将其缓存。
 	 *
 	 * @param cache 缓存
 	 * @param path 应用外壳的URI路径
+	 * @param exclude 排除路径
 	 */
-	constructor(cache: ManagedCache, path: string) {
+	constructor(cache: ManagedCache, path: string, exclude?: RegExp) {
 		this.path = path;
 		this.handler = new StaleWhileRevalidateHandler(cache);
+		this.exclude = exclude;
 	}
 
 	match(request: Request) {
-		return request.mode === "navigate";
+		if (request.mode !== "navigate") {
+			return false;
+		}
+		if (!this.exclude) {
+			return true;
+		}
+		const url = new URL(request.url);
+		return !this.exclude.test(url.pathname);
 	}
 
 	// 【坑】Request 默认缓存是不去服务端检查的，而AppShell文件名不带Hash，必须禁用缓存防止无法更新

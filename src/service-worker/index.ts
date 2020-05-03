@@ -22,7 +22,7 @@ const handler = new CacheFirstHandler(cache);
 
 router.addRoute(new WebpUpgradeRoute(handler, new RegExp("^/static/img/.+\\.(?:jpg|png)$")));
 router.addRoute(new RegexRoute("/static/", handler));
-router.addRoute(new AppShellRoute(cache, APP_SHELL_NAME));
+router.addRoute(new AppShellRoute(cache, APP_SHELL_NAME, new RegExp("^/(?:feed|sitemap)")));
 
 self.addEventListener("fetch", router.route.bind(router));
 
