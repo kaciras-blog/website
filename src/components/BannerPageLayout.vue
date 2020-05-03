@@ -50,7 +50,7 @@ export default {
 </script>
 
 <style module lang="less">
-@import "../css/Imports.less";
+@import "../css/imports";
 
 // 使用变量设置背景图，只要在外层元素设置即可
 .image_resolver {

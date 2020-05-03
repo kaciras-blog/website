@@ -16,7 +16,7 @@ export default {
 </script>
 
 <style module lang="less">
-@import "../../css/Imports.less";
+@import "../../css/imports";
 
 .container {
 	composes: top-nav from global;

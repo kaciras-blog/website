@@ -95,7 +95,7 @@ export default {
 </script>
 
 <style module lang="less">
-@import "../../css/Imports";
+@import "../../css/imports";
 
 .body {
 	width: 480px;

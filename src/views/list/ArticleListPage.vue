@@ -133,7 +133,7 @@ export default {
 </script>
 
 <style module lang="less">
-@import "../../css/Imports";
+@import "../../css/imports";
 
 :global(#index-page) {
 	display: flex;

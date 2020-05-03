@@ -114,7 +114,7 @@ export default {
 </script>
 
 <style module lang="less">
-@import "../../css/Imports";
+@import "../../css/imports";
 
 .buttons {
 	composes: global(console-toolbar);

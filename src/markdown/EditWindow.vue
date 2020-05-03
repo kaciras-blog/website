@@ -111,7 +111,7 @@ export default {
 </script>
 
 <style lang="less">
-@import "../css/Imports";
+@import "../css/imports";
 
 .kx-markdown-main {
 	flex: 1;

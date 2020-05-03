@@ -61,7 +61,7 @@ export default {
 </script>
 
 <style module lang="less">
-@import "../../css/Imports";
+@import "../../css/imports";
 
 .shore {
 	padding: 3rem 0 4rem 0 !important;

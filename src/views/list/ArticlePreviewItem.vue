@@ -76,7 +76,7 @@ export default {
 </script>
 
 <style module lang="less">
-@import "../../css/Imports.less";
+@import "../../css/imports";
 
 .container {
 	display: grid;
