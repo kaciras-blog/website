@@ -77,13 +77,15 @@ export default {
 
 <style module lang="less">
 .list {
-	display: flex;
-	flex-wrap: wrap;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, 140px);
+	grid-gap: 20px;
+	justify-content: center;
+	justify-items: center;
 }
 
 .item {
 	position: relative;
-	padding: 20px;
 
 	&:hover, &:focus {
 		& > .remove {
@@ -95,8 +97,8 @@ export default {
 
 .remove {
 	position: absolute;
-	top: 10px;
-	right: 10px;
+	top: -10px;
+	right: -10px;
 	width: 30px;
 	height: 30px;
 	border-radius: 100%;

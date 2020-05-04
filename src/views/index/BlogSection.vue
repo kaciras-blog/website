@@ -69,14 +69,11 @@ export default {
 .card_list {
 	display: grid;
 	grid-auto-rows: auto;
-	grid-gap: 50px 20px;
-	justify-items: center;
+	grid-gap: 50px 30px;
+	justify-content: center;
 
 	@media screen and (min-width: @length-screen-mobile) {
-		grid-template-columns: 1fr 1fr;
-	}
-	@media screen and (min-width: @length-screen-pad) {
-		grid-template-columns: 1fr 1fr 1fr;
+		grid-template-columns: repeat(auto-fit, 320px);
 	}
 }
 
