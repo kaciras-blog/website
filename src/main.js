@@ -1,6 +1,6 @@
 import "@fortawesome/fontawesome-free/css/all.css";
 import "vue-multiselect/dist/vue-multiselect.min.css";
-import "@kaciras-blog/uikit/src/css/Index.less";
+import "@kaciras-blog/uikit/src/css/index.less";
 import "./css/index.less";
 import Vue from "vue";
 import createRouter from "./router";
