@@ -1,13 +1,14 @@
+// 注意导入顺序，因为打包后CSS里元素的顺序跟导入顺序一致
 import "./error-report";
 import "./analytics";
 import "./serviceWorker";
 import Vue from "vue";
+import createApp, { mediaQueryPlugin } from "./main";
 import { CancellationToken } from "@kaciras-blog/uikit";
 import api from "@/api";
 import { SUN_PHASES } from "@/store";
 import { REFRESH_USER, SET_PREFETCH_DATA, SET_SUN_PHASE } from "./store/types";
 import * as loadingIndicator from "./loading-indicator";
-import createApp, { mediaQueryPlugin } from "./main";
 
 
 let cancelToken = CancellationToken.NEVER;
