@@ -73,30 +73,30 @@ export class AppShellRoute implements Route {
 
 	private readonly handler: StaleWhileRevalidateHandler;
 	private readonly path: string;
-	private readonly exclude?: RegExp;
+	private readonly include?: RegExp;
 
 	/**
 	 * 新建应用外壳路由，其将使用指定URI路径的页面作为应用的外壳，并将其缓存。
 	 *
 	 * @param cache 缓存
 	 * @param path 应用外壳的URI路径
-	 * @param exclude 排除路径
+	 * @param include 包含的路径，没有表示全部都拦截
 	 */
-	constructor(cache: ManagedCache, path: string, exclude?: RegExp) {
+	constructor(cache: ManagedCache, path: string, include?: RegExp) {
 		this.path = path;
 		this.handler = new StaleWhileRevalidateHandler(cache);
-		this.exclude = exclude;
+		this.include = include;
 	}
 
 	match(request: Request) {
 		if (request.mode !== "navigate") {
 			return false;
 		}
-		if (!this.exclude) {
+		if (!this.include) {
 			return true;
 		}
 		const url = new URL(request.url);
-		return !this.exclude.test(url.pathname);
+		return this.include.test(url.pathname);
 	}
 
 	// 【坑】Request 默认缓存是不去服务端检查的，而AppShell文件名不带Hash，必须禁用缓存防止无法更新
@@ -139,7 +139,10 @@ export class NavigatePreloadRoute implements Route {
 }
 
 /**
- * 如果浏览器支持 webp 格式，则把图片请求的文件扩展名改为 webp
+ * 如果浏览器支持WebP格式，则把图片请求的文件扩展名改为.webp。
+ *
+ * 【存在的问题】
+ * WebP格式不一定就比原格式小，但哪个更优只能在服务端判断，该类只能一律使用WebP。
  *
  * TODO: 没有找到怎么在worker里检测webp支持的方法，只能使用Accept请求头判断
  */

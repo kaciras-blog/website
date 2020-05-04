@@ -13,8 +13,12 @@ declare const serviceWorkerOption: {
 	assets: string[];
 };
 
-const STATIC_CACHE_NAME = "Static";
+const STATIC_CACHE_NAME = "static";
 const APP_SHELL_NAME = "/app-shell.html";
+
+// Twitter 的代码里也是这样一个个写的
+// https://abs.twimg.com/responsive-web/serviceworker/main.e531acd4.js 格式化后的第6200行
+const APP_SHELL_RE = new RegExp("^/(?:$|list|category|login|article|edit|profile|about|console|error)")
 
 const cache = new CacheWrapper(STATIC_CACHE_NAME);
 const router = new Router();
@@ -22,7 +26,7 @@ const handler = new CacheFirstHandler(cache);
 
 router.addRoute(new WebpUpgradeRoute(handler, new RegExp("^/static/img/.+\\.(?:jpg|png)$")));
 router.addRoute(new RegexRoute("/static/", handler));
-router.addRoute(new AppShellRoute(cache, APP_SHELL_NAME, new RegExp("^/(?:feed|sitemap)")));
+router.addRoute(new AppShellRoute(cache, APP_SHELL_NAME, APP_SHELL_RE));
 
 self.addEventListener("fetch", router.route.bind(router));
 
@@ -40,8 +44,7 @@ self.addEventListener("install", (event: ExtendableEvent) => {
 
 	event.waitUntil(caches.open(STATIC_CACHE_NAME)
 		.then(cache => cache.addAll(serviceWorkerOption.assets))
-		.catch(err => console.error("静态资源预加载失败", err))
-	);
+		.catch(err => console.error("静态资源预加载失败", err)));
 
 	return self.skipWaiting();
 });
@@ -52,7 +55,7 @@ self.addEventListener("install", (event: ExtendableEvent) => {
  * 在这个事件里应当清理旧版的缓存。
  */
 self.addEventListener("activate", (event: ExtendableEvent) => {
-	console.log("[ServiceWorker]: Activate");
+	console.info("[ServiceWorker]: Activate");
 
 	/*
 	 * 浏览器会停止没有相关页面打开的 ServiceWorker 以节约资源，如果ServiceWorker里有拦截请求的配置，
@@ -73,8 +76,9 @@ self.addEventListener("activate", (event: ExtendableEvent) => {
 
 	// 删除当前版本用不到的缓存
 	event.waitUntil(async () => {
-		const keys = (await caches.keys()).filter(k => !cacheNames.has(k));
-		await Promise.all(keys.map(k => caches.delete(k)));
+		const names = (await caches.keys()).filter(k => !cacheNames.has(k));
+		await Promise.all(names.map(k => caches.delete(k)));
+		console.info("删除了过期的缓存");
 	});
 
 	return self.clients.claim();
