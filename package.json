@@ -12,7 +12,8 @@
 		"test": "jest",
 		"serve": "blog-devtool serve",
 		"build": "blog-devtool build",
-		"start": "blog-server run"
+		"start": "blog-server run",
+		"build-cache": "blog-server build-image-cache"
 	},
 	"browserslist": [
 		"Chrome >= 57",

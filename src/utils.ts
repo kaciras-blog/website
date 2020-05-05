@@ -24,7 +24,7 @@ export function escapeHtml(text: string) {
  */
 export function errorMessage(object: any) {
 	const res = object.response;
-	if (res && res.data && res.data.message) {
+	if (res?.data?.message) {
 		return res.data.message;
 	}
 	return object.message || "未知的错误";

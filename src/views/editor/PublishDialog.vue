@@ -85,7 +85,7 @@ export default {
 					article = await api.article.publish(data);
 				}
 				this.$dialog.confirm();
-				await this.$router.push(`/article/${article}`);
+				this.$router.push(`/article/${article}`);
 			} catch (e) {
 				this.$dialog.alertError("发表失败", errorMessage(e));
 			}

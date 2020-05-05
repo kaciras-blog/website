@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"target": "esnext",
+		"target": "es2019",
 		"module": "esnext",
 		"moduleResolution": "node",
 
@@ -9,11 +9,9 @@
 			"@/*": ["src/*"]
 		},
 
+		"resolveJsonModule": true,
 		"strict": true,
 		"esModuleInterop": true,
-		"allowSyntheticDefaultImports": true,
-		"forceConsistentCasingInFileNames": true,
-		"resolveJsonModule": true,
 		"experimentalDecorators": true,
 
 		"jsx": "preserve",
