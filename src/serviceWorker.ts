@@ -60,7 +60,7 @@ export function register(config: ServiceWorkerConfig = {}) {
 /**
  * 注销 ServiceWorker，没有检查 ServiceWorker 是否注销完成，因为就算注销失败也没有什么办法处理。
  */
-export function unregister() {
+function unregister() {
 	navigator.serviceWorker.getRegistrations()
 		.then(regs => regs.forEach(reg => reg.unregister()))
 		.catch(() => console.error("Service worker failed to unregister."));
@@ -70,10 +70,8 @@ export function unregister() {
  * 生产模式下注册 ServiceWorker，开发模式禁用。
  * 禁用不能只是不注册，而必须得注销！
  */
-if ("serviceWorker" in navigator) {
-	if (process.env.NODE_ENV === "production") {
-		register();
-	} else {
-		unregister();
+export function useServiceWorker() {
+	if ("serviceWorker" in navigator) {
+		process.env.NODE_ENV === "production" ? register() : unregister();
 	}
 }
