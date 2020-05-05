@@ -100,8 +100,12 @@ module.exports = {
 		 */
 		host: "localhost",
 
-		/** 【环境】上传的图片保存的位置 */
-		imageRoot: "/var/blog/images",
+		/**
+		 * 【环境】保存应用数据的目录，数据包括：
+		 * image/ 上传的图片
+		 * cache/ 优化后的图片
+		 */
+		dataDir: "/var/lib/blog",
 
 		/** 【环境】内容服务器的内部访问 URL，用于服务端渲染和内部通信 */
 		serverAddress: "http://localhost:12345",
