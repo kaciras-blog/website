@@ -99,9 +99,10 @@ export default {
 			api.misc.uploadImageFile().then(name => this.item.background = name);
 		},
 		async move() {
-			const target = await this.$dialog.show(SelectCategoryDialog);
-			const moveType = await this.$dialog.show(MoveCategoryDialog);
-			api.category.move(this.item.id, target.id, moveType);
+			const target = await this.$dialog.show(SelectCategoryDialog).confirmPromise;
+			const treeMode = await this.$dialog.show(MoveCategoryDialog).confirmPromise;
+			await api.category.move(this.item.id, target.id, treeMode);
+			this.$emit("moved", target);
 		},
 		async remove() {
 			await api.category.remove(this.item.id, false);

@@ -30,6 +30,7 @@
 			v-if="current"
 			:editable="true"
 			:item="current"
+			@moved="goto"
 			@removed="gotoParent"
 			@change="submit"
 		/>

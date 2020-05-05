@@ -31,7 +31,7 @@ export default class CategoryResource extends AbstractResource {
 	}
 
 	move(id: number, parent: number, treeMode: boolean) {
-		return this.servers.content.post("/categories/transfer", { params: { id, parent, treeMode } });
+		return this.servers.content.post("/categories/transfer", { id, parent, treeMode });
 	}
 
 	create(data: Category, parent: number) {
