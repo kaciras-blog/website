@@ -7,6 +7,20 @@ export enum DeletionState {
 	ALL = "ALL",
 }
 
+interface ArticleMeta {
+	title: string;
+	keywords: string[];
+	cover: string;
+	summary: string;
+	content: string;
+	category: number;
+	urlTitle: string;
+}
+
+export interface Article extends ArticleMeta {
+	id: number;
+}
+
 interface ArticleListQuery {
 	start: number;
 	count: number;
@@ -15,16 +29,8 @@ interface ArticleListQuery {
 	recursive?: boolean; // 是否递归子分类
 }
 
-interface PublishRequest {
-	title: string;
-	keywords: string[];
-	cover: string;
-	summary: string;
-	content: string;
-
+interface PublishRequest extends ArticleMeta {
 	draftId: number;
-	category: number;
-	urlTitle: string;
 	destroy?: boolean;
 }
 
