@@ -27,7 +27,7 @@
 				:style="titleStyle"
 			>
 				<h1 @click.middle="toNextPhase">Kaciras' Blog</h1>
-				<p :class="$style.sub_title">程序 • 生活 • 梦想</p>
+				<p :class="$style.sub_title">编程 • 生活 • 梦想</p>
 			</div>
 		</section>
 
@@ -80,9 +80,10 @@ export default {
 		session.api.friend.getFriends().then(friends => session.data.friends = friends.map(attachRandomId)),
 	]),
 	/*
-	 * 三个状态与过渡动画的关系：
+	 * 四个状态与过渡动画的关系：
 	 *   currentSunPhase：当前的太阳位置，过渡一开始它就立即变为下一个太阳位置。
-	 *   transitionSunPhase：过渡开始时，下一个太阳位置，过渡完成后为null。
+	 *   transitionSunPhase：过渡开始时下一个太阳位置，过渡完成后为null。
+	 *   targetSunPhase: 过渡开始时下一个太阳位置，过渡完成后不变直到下次切换。
 	 *   visibleSunPhase：过渡开始时等于上一个太阳位置，过渡完成后替换为transitionSunPhase。
 	 *
 	 * 切换流程：
@@ -101,6 +102,9 @@ export default {
 		currentSunPhase() {
 			return this.$store.state.sunPhase;
 		},
+		targetSunPhase() {
+			return this.transitionSunPhase || this.visibleSunPhase;
+		},
 		bannerMap() {
 			return this.$mediaQuery.match("mobile") ? BANNER_MAP_MOBILE : BANNER_MAP;
 		},
@@ -111,7 +115,7 @@ export default {
 			return [this.$style.nav];
 		},
 		titleStyle() {
-			return this.currentSunPhase === "Night" && { color: "deeppink" };
+			return this.targetSunPhase === "Night" && { color: "deeppink" };
 		},
 		bannerStyle() {
 			const imageFile = this.bannerMap[this.visibleSunPhase];
