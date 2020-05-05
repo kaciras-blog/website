@@ -76,17 +76,17 @@ export default {
 		async goto(category) {
 			this.stack.push(this.current);
 			this.current = category;
-			this.children = api.category.getChildren(category.id);
+			this.children = await api.category.getChildren(category.id);
 		},
 		async gotoTop() {
 			this.current = this.stack[0];
 			this.stack.splice(0);
-			this.children = api.category.getChildren(0);
+			this.children = await api.category.getChildren(0);
 		},
 		async gotoParent() {
 			this.current = this.stack.pop();
 			const id = this.current ? this.current.id : 0;
-			this.children = api.category.getChildren(id);
+			this.children = await api.category.getChildren(id);
 		},
 		createNew() {
 			this.stack.push(this.current);
