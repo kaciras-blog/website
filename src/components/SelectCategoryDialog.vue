@@ -20,7 +20,7 @@
 					@click="gotoParent"
 				>
 					<i class="fa fa-arrow-left"></i>
-					<span>回到父级</span>
+					<span> 回到父级</span>
 				</kx-button>
 
 				<kx-button
@@ -28,13 +28,13 @@
 					@click="gotoTop"
 				>
 					<i class="fas fa-arrow-up"></i>
-					<span>返回顶层</span>
+					<span> 返回顶层</span>
 				</kx-button>
 			</div>
 		</div>
 
-		<div :class="$style.cards">
-			<div
+		<ul class="clean-list" :class="$style.cards">
+			<li
 				v-for="cate of categories"
 				:key="cate.id"
 				:class="{ [$style.category]: true, selected: cate.selected }"
@@ -54,8 +54,8 @@
 					>
 					<h3 :class="$style.name">{{cate.name}}</h3>
 				</div>
-			</div>
-		</div>
+			</li>
+		</ul>
 
 		<div :class="$style.footer">
 
@@ -86,15 +86,24 @@ export default {
 			type: Boolean,
 			default: false,
 		},
+		filter: {
+			type: Function,
+			default: () => true,
+		},
 	},
 	data: () => ({
 		selected: [],
-		categories: [],
+		children: [],
 		current: null,
 		stack: [],
 	}),
+	computed: {
+		categories() {
+			return this.children.filter(this.filter);
+		},
+	},
 	methods: {
-		select (category) {
+		select(category) {
 			if (category.selected) {
 				deleteOn(this.selected, cate => cate.id === category.id);
 				category.selected = false;
@@ -109,14 +118,14 @@ export default {
 				this.$set(category, "selected", true);
 			}
 		},
-		ok () {
+		ok() {
 			const { multiple, selected } = this;
 			this.$dialog.confirm(multiple ? selected : selected[0]);
 		},
-		cancel () {
+		cancel() {
 			this.$dialog.close();
 		},
-		clear () {
+		clear() {
 			this.selected.forEach(cate => cate.selected = false);
 			this.selected = [];
 		},
@@ -124,23 +133,23 @@ export default {
 		 * TODO:一部分逻辑跟 CategoryConsole 是重合的，但是Vue没有像ReactHooks
 		 * 这样的复用方法，用Mixin又不太好毕竟要被废弃了。
 		 */
-		showChild (category) {
+		showChild(category) {
 			this.stack.push(this.current);
 			this.current = category;
-			api.category.getChildren(category.id).then(res => this.categories = res);
+			api.category.getChildren(category.id).then(res => this.children = res);
 		},
-		gotoTop () {
+		gotoTop() {
 			this.current = null;
-			api.category.getChildren(0).then(r => this.categories = r);
+			api.category.getChildren(0).then(r => this.children = r);
 		},
-		gotoParent () {
+		gotoParent() {
 			this.current = this.stack.pop();
 			const id = this.current ? this.current.id : 0;
-			api.category.getChildren(id).then(r => this.categories = r);
+			api.category.getChildren(id).then(r => this.children = r);
 		},
 	},
-	created () {
-		api.category.getChildren(0).then(res => this.categories = res);
+	created() {
+		api.category.getChildren(0).then(res => this.children = res);
 	},
 };
 </script>
@@ -148,14 +157,29 @@ export default {
 <style module lang="less">
 @import "../css/imports";
 
+.buttons {
+	display: flex;
+	align-items: center;
+
+	& > .name {
+		flex: 1;
+	}
+
+	& > .head {
+		margin: 0 .5rem;
+	}
+}
+
 .cards {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, 9rem);
+	grid-gap: .8rem;
+	justify-content: center;
+	align-items: start;
+
 	width: 50vmax;
 	height: 50vmin;
-
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	align-items: flex-start; // [PostCss] start value has mixed support, consider using flex-start instead
+	margin: 1rem 0;
 	overflow: auto;
 }
 
@@ -167,11 +191,12 @@ export default {
 }
 
 .category {
-	margin: .5rem;
-	width: 9rem;
-
 	.click-item;
 	border: solid 1px #d7d7d7;
+
+	&:hover, &:focus {
+		border-color: @color-primary;
+	}
 
 	&.selected {
 		border-color: @color-primary;
@@ -203,20 +228,6 @@ export default {
 .head {
 	display: inline-block;
 	margin-bottom: 1rem;
-}
-
-.buttons {
-	display: flex;
-	padding-bottom: 1rem;
-	align-items: center;
-
-	& > .name {
-		flex: 1;
-	}
-
-	& > .head {
-		margin: 0 .5rem;
-	}
 }
 
 .hold {

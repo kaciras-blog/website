@@ -79,7 +79,7 @@ export default {
 		},
 
 		scrollFunction() {
-			this.colored = document.body.scrollTop > 48 || document.documentElement.scrollTop > 48;
+			this.colored = document.body.scrollTop > 16 || document.documentElement.scrollTop > 16;
 		},
 	},
 	beforeMount() {
@@ -99,7 +99,7 @@ export default {
 .container {
 	display: flex;
 	background-color: rgba(255, 255, 255, .4);
-	transition: background-color .2s;
+	transition: background-color .3s;
 
 	@media screen and (min-width: @length-screen-mobile) {
 		padding: 0 5vw;
