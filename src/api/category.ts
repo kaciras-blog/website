@@ -4,7 +4,7 @@ export enum CategoryTheme {
 	Default = 0, Light = 1, Dark = 2,
 }
 
-export interface CategoryMeta {
+export interface CategoryContent {
 	name: string;
 	cover: string;
 	description: string;
@@ -12,8 +12,9 @@ export interface CategoryMeta {
 	theme: CategoryTheme;
 }
 
-export interface Category extends CategoryMeta{
+export interface Category extends CategoryContent {
 	id: number;
+	parent: number;
 }
 
 export default class CategoryResource extends AbstractResource {

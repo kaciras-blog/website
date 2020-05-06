@@ -1,4 +1,4 @@
-import { AbstractResource } from "./core";
+import { AbstractResource, Pageable } from "./core";
 import { getLocation } from "./common";
 
 export interface Draft {
@@ -9,6 +9,10 @@ export interface Draft {
 	lastSaveCount: number;
 	createTime: number;
 	updateTime: number;
+}
+
+export interface DraftListQuery extends Pageable {
+	userId: number;
 }
 
 export interface DraftHistoryInput {
@@ -36,8 +40,7 @@ export default class DraftResource extends AbstractResource {
 		}).then(getLocation("/drafts/"));
 	}
 
-	getList(userId: number, start = 0, count = 10) {
-		const params = { userId, start, count };
+	getList(params: DraftListQuery) {
 		return this.servers.content.get<Draft[]>("/drafts", { params }).then(r => r.data);
 	}
 

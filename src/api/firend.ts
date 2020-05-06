@@ -1,6 +1,6 @@
 import { AbstractResource } from "./core";
 
-interface Friend {
+export interface Friend {
 	name: string;
 	url: string;
 	favicon: string;

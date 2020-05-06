@@ -1,4 +1,4 @@
-import { AbstractResource } from "./core";
+import { AbstractResource, Pageable } from "./core";
 import { getLocation } from "./common";
 
 export enum DeletionState {
@@ -13,6 +13,7 @@ interface ArticleMeta {
 	cover: string;
 	summary: string;
 	content: string;
+
 	category: number;
 	urlTitle: string;
 }
@@ -21,12 +22,16 @@ export interface Article extends ArticleMeta {
 	id: number;
 }
 
-interface ArticleListQuery {
-	start: number;
-	count: number;
+interface ArticleListQuery extends Pageable {
+
+	/** 删除状态过滤 */
+	deletion?: DeletionState;
+
+	/** 过滤分类 */
 	category?: number;
-	deletion?: DeletionState; // 删除状态
-	recursive?: boolean; // 是否递归子分类
+
+	/** 是否包含下级分类的文章 */
+	recursive?: boolean;
 }
 
 interface PublishRequest extends ArticleMeta {
@@ -49,19 +54,15 @@ export default class ArticleResource extends AbstractResource {
 	}
 
 	getList(params: ArticleListQuery) {
-		params = Object.assign({
-			start: 0,
-			count: 20,
-			deletion: DeletionState.ALIVE,
-		}, params);
+		params = Object.assign({ start: 0, count: 20, }, params);
 		return this.servers.content.get("/articles", { params }).then(r => r.data);
-	}
-
-	getHots() {
-		return this.servers.content.get("/recommendation/articles").then(r => r.data);
 	}
 
 	updateDeletion(id: number, deletion: boolean) {
 		return this.servers.content.patch(`/articles/${id}`, { deletion });
+	}
+
+	getHots() {
+		return this.servers.content.get("/recommendation/articles").then(r => r.data);
 	}
 }

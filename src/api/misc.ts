@@ -9,7 +9,6 @@ export default class extends AbstractResource {
 	 *
 	 * @param file 文件
 	 * @param progress 进度回调
-	 * @returns Promise<String>
 	 */
 	uploadImage(file: File, progress?: (progressEvent: ProgressEvent) => void) {
 		const data = new FormData();
@@ -21,7 +20,7 @@ export default class extends AbstractResource {
 	 * openFile 和 uploadImage 的封装方法，弹出文件选择框(只能单选)
 	 * 用户选择后上传服务器，并返回用于访问图片的文件名
 	 *
-	 * @returns Promise<String> 保存的图片文件名
+	 * @returns 保存的图片文件名
 	 */
 	async uploadImageFile() {
 		return this.uploadImage((await openFile(false, "image/*"))[0]);

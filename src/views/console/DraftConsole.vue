@@ -36,7 +36,7 @@
 <script>
 import { MessageBoxType } from "@kaciras-blog/uikit/src/dialog/index";
 import api from "@/api";
-import { deleteOn , errorMessage} from "@/utils";
+import { deleteOn, errorMessage } from "@/utils";
 import DraftConsoleItem from "./DraftConsoleItem";
 
 export default {
@@ -65,7 +65,7 @@ export default {
 		},
 		loadPage(start, count) {
 			const userId = this.$store.state.user.id;
-			return api.draft.getList(userId, start, count);
+			return api.draft.getList({ userId, start, count });
 		},
 		removeItem(id) {
 			deleteOn(this.draftList.items, d => d.id === id);

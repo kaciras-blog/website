@@ -18,5 +18,5 @@ export function standardRange(status: number) {
  * @return 截取的函数
  */
 export function getLocation(prefix: string = "") {
-	return (response: AxiosResponse) => response.headers.location.substring(prefix.length);
+	return (response: AxiosResponse) => response.headers.location.substring(prefix.length) as string;
 }

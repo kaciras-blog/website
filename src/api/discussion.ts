@@ -1,13 +1,8 @@
-import { AbstractResource } from "./core";
+import { AbstractResource, Pageable } from "./core";
 
-export interface DiscussionListRequest {
+export interface DiscussionListRequest extends Pageable {
 	objectId: number;
 	type: number;
-
-	start: number;
-	count: number;
-	sort?: string;
-
 	replySize?: number;
 }
 
