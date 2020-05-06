@@ -35,9 +35,9 @@ export default {
 		}
 		return { hots: null };
 	},
-	beforeMount() {
+	async beforeMount() {
 		if (!this.hots) {
-			api.article.getHots().then(hots => this.hots = hots);
+			this.hots = await api.article.getHots();
 		}
 	},
 };

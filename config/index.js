@@ -132,7 +132,7 @@ module.exports = {
 		},
 	},
 
-	/** 该对象由 process.env 传递到构建的脚本里 */
+	/** 该对象由 process.env.CONFIG 传递到构建的脚本里 */
 	envConfig: {
 
 		/** 【环境】内容服务器的公网 URL，如果是对象则依据页面使用HTTP还是HTTPS选择 */
