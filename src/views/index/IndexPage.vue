@@ -26,7 +26,7 @@
 				:class="$style.banner_content"
 				:style="titleStyle"
 			>
-				<h1 @click.middle="toNextPhase">Kaciras' Blog</h1>
+				<h1 title="滚轮点击切换背景" @click.middle="toNextPhase">Kaciras' Blog</h1>
 				<p :class="$style.sub_title">编程 • 生活 • 梦想</p>
 			</div>
 		</section>
@@ -38,7 +38,6 @@
 
 <script>
 import { attachRandomId } from "@/utils";
-import api from "@/api";
 import { SUN_PHASES } from "@/store";
 import BlogSection from "./BlogSection";
 import FriendsSection from "./FriendsSection";
