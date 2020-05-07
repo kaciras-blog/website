@@ -116,10 +116,12 @@ export default {
 @import "../../css/imports";
 
 .infoSection {
-	background-image: var(--background);
-	background-size: cover;
 	padding: 2.5rem;
 	cursor: var(--cursor);
+
+	background-image: var(--background);
+	background-size: cover;
+	background-position-x: center;
 }
 
 .optionSection {

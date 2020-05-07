@@ -109,7 +109,7 @@ export default {
 			return this.$mediaQuery.match("mobile") ? BANNER_MAP_MOBILE : BANNER_MAP;
 		},
 		navClass() {
-			if (this.currentSunPhase === "Night") {
+			if (this.targetSunPhase === "Night") {
 				return [this.$style.nav, "dark"];
 			}
 			return [this.$style.nav];

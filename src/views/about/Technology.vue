@@ -18,6 +18,7 @@
 					<li>IE 全都不支持</li>
 				</ul>
 			</icon-paragraph>
+			<p>本站的服务器位于美国，中国的访问者可能有较高的延迟</p>
 		</section>
 
 		<section class="about-section">
@@ -29,7 +30,7 @@
 				本站拥有PWA支持，大幅提升了加载速度。使用了自己写的一个ServiceWorker，主要参考了workbox项目
 			</icon-paragraph>
 			<icon-paragraph src="../../assets/img/logo-sentry.png" title="sentry">
-				由Sentry提供的的免费服务来监控和统计页面里发生的异常
+				由Sentry.io提供的的免费服务来监控和统计页面里发生的异常
 			</icon-paragraph>
 			<icon-paragraph src="../../assets/img/logo-webpack.svg" title="sentry">
 				使用Webpack4打包代码和资源，并提供开发时的热重载
@@ -42,7 +43,7 @@
 				页面服务器使用NodeJS编写，使用了Koa全家桶
 			</icon-paragraph>
 			<icon-paragraph src="../../assets/img/browser-gears.svg" title="ssr">
-				支持由Vue提供的服务端渲染功能，让网站能够被搜索引擎抓取，并减少白屏时间
+				支持由Vue提供的服务端渲染功能，让网站能够被搜索引擎抓取，并减少首次访问的白屏时间
 			</icon-paragraph>
 			<icon-paragraph src="../../assets/img/photo.svg" title="webp">
 				支持图片自动优化、压缩，转码为最新的WebP格式，节约了76.2%的流量（根据文章里的图片计算）
@@ -59,6 +60,9 @@
 			</icon-paragraph>
 			<icon-paragraph src="../../assets/img/logo-mariadb.png" title="mariadb">
 				文章、评论、分类、用户等数据存储在Mariadb数据库中
+			</icon-paragraph>
+			<icon-paragraph src="../../assets/img/icons8-nginx.svg" title="nginx">
+				使用NGINX做反向代理，统一访问入口
 			</icon-paragraph>
 		</section>
 	</div>

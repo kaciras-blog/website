@@ -12,6 +12,15 @@
 					www.flaticon.com
 				</a>
 			</p>
+			<p>
+				<a
+					class="highlight"
+					href="https://icons8.com"
+					title="Flaticon"
+				>
+					icons8.com
+				</a>
+			</p>
 			<p>首页的大图</p>
 			<p>
 				<a
