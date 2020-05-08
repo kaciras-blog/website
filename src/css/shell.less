@@ -1,0 +1,61 @@
+@import "imports";
+
+@loading-size: 140px;
+@logo-size: 100px;
+
+// 可以在 App-Shell 模式下数据还没来的情况下先显示个加载动画？
+// 代码来自：https://github.com/epicmaxco/epic-spinners
+.shell-loading {
+	position: absolute;
+	top: calc(50% - (@loading-size / 2));
+	left: calc(50% - (@loading-size / 2));
+	width: @loading-size;
+	height: @loading-size;
+	border-radius: 100%;
+
+	background: url("../../src/assets/img/logo-kaciras-circle.svg") no-repeat center center;
+	background-size: @logo-size @logo-size;
+
+	&::before, &::after {
+		content: "";
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		border-radius: 100%;
+		border: 8px solid transparent;
+	}
+
+	&::before {
+		border-top-color: rgba(0, 182, 238, 0.5);
+		animation: half-circle-spinner-animation 1s infinite;
+	}
+
+	&::after{
+		border-bottom-color: rgba(0, 182, 238, 0.5);
+		animation: half-circle-spinner-animation 1s infinite alternate;
+	}
+}
+
+@keyframes half-circle-spinner-animation {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+// 最顶上警告框，在浏览器不支持和未开启JS情况下显示
+.ealert {
+	display: block;
+	position: relative;
+	left: 0;
+	right: 0;
+	top: 0;
+	z-index: 99999;
+	padding: 14px;
+	text-align: center;
+	font-size: 18px;
+	color: #e62e2e;
+	background-color: #f0efe9;
+}
