@@ -58,7 +58,6 @@
 		</ul>
 
 		<div :class="$style.footer">
-
 			<div v-if="multiple" :class="$style.tip">
 				已选择{{ selected.length }}个分类
 			</div>
@@ -67,9 +66,24 @@
 			</div>
 
 			<div class="btn-group">
-				<kx-button class="second" @click="clear">清空选择</kx-button>
-				<kx-button @click="cancel">取消</kx-button>
-				<kx-button class="primary" @click="ok">确定</kx-button>
+				<kx-button
+					class="second"
+					@click="clear"
+				>
+					清空选择
+				</kx-button>
+				<kx-button
+					@click="cancel"
+				>
+					取消
+				</kx-button>
+				<kx-button
+					class="primary"
+					:disabled="!selected.length"
+					@click="ok"
+				>
+					确定
+				</kx-button>
 			</div>
 		</div>
 	</kx-base-dialog>

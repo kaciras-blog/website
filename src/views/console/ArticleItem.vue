@@ -1,13 +1,12 @@
 <template>
-	<div :class="$style.article">
+	<div :class="$style.container">
 		<img :class="$style.cover" :src="value.cover" alt="封面">
 
-		<div>
-			<span v-if="value.deleted" :class="$style.removed">已删除</span>
-			<h3 class="compact">{{value.title}}</h3>
-		</div>
-
 		<div :class="$style.info_section">
+			<div :class="$style.header">
+				<span v-if="value.deleted" :class="$style.removed">已删除</span>
+				<h3>{{value.title}}</h3>
+			</div>
 			<div :class="$style.tag_group">
 				<span
 					v-for="category of value.categories"
@@ -36,17 +35,24 @@
 		<div :class="$style.buttons">
 			<kx-button
 				class="primary outline"
-				@click="edit"
-			>
-				修改
-			</kx-button>
-			<kx-button
-				class="primary outline"
 				@click="addToCards"
 			>
 				创建卡片
 			</kx-button>
-
+			<kx-button
+				class="primary outline"
+				@click="changeCategory"
+			>
+				更改分类
+			</kx-button>
+		</div>
+		<div :class="$style.buttons">
+			<kx-button
+				class="primary outline"
+				@click="edit"
+			>
+				修改
+			</kx-button>
 			<kx-button
 				v-if="value.deleted"
 				class="info"
@@ -70,6 +76,7 @@ import api from "@/api";
 import { articleLink } from "@/blog-plugin";
 import { errorMessage } from "@/utils";
 import CardsConsole from "./CardsConsole";
+import SelectCategoryDialog from "@/components/SelectCategoryDialog";
 
 export default {
 	name: "ArticleItem",
@@ -96,8 +103,13 @@ export default {
 		},
 		updateDeleteState(deletion) {
 			const { value } = this;
-			api.article.updateDeletion(value.id, deletion)
+			api.article.changeDeletion(value.id, deletion)
 				.then(() => value.deleted = deletion)
+				.catch(e => this.$dialog.alertError("设置失败", errorMessage(e)));
+		},
+		async changeCategory() {
+			const target = await this.$dialog.show(SelectCategoryDialog).confirmPromise;
+			api.article.changeCategory(this.value.id, target.id)
 				.catch(e => this.$dialog.alertError("设置失败", errorMessage(e)));
 		},
 	},
@@ -107,26 +119,29 @@ export default {
 <style module lang="less">
 @import "../../css/imports";
 
-.article {
-	display: grid;
-	grid-template-areas: "img title buttons" "img meta  buttons";
-	grid-template-columns: 8rem 1fr auto;
-	grid-template-rows: 3.5rem 3.5rem;
-	grid-column-gap: 1rem;
+.container {
+	display: flex;
 }
 
 .cover {
-	grid-area: img;
-	.size(100%);
+	width: 8rem;
+	height: 7.2rem;
 }
 
 .buttons {
 	composes: vertical-btn-group from global;
-	grid-area: buttons;
+	margin-left: 10px;
 }
 
 .info_section {
-	align-self: end;
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	margin-left: 1rem;
+}
+
+.header {
+	flex: 1;
 }
 
 .attrs {

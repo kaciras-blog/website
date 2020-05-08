@@ -58,8 +58,12 @@ export default class ArticleResource extends AbstractResource {
 		return this.servers.content.get("/articles", { params }).then(r => r.data);
 	}
 
-	updateDeletion(id: number, deletion: boolean) {
+	changeDeletion(id: number, deletion: boolean) {
 		return this.servers.content.patch(`/articles/${id}`, { deletion });
+	}
+
+	changeCategory(id: number, category: number) {
+		return this.servers.content.patch(`/articles/${id}`, { category });
 	}
 
 	getHots() {
