@@ -1,4 +1,13 @@
-// Google Analytics
+/* 一些乱七八糟的小功能直接写一起了 */
+
+// 检查是否从指定的域名访问，如果不是可能网站被镜像了
+// const { webHost } = process.env.CONFIG;
+// if (webHost && location.host !== webHost) {
+// 	location.href = location.href.replace(location.host, webHost);
+// }
+
+// =========================== Google Analytics ===========================
+
 declare const dataLayer: any[];
 
 interface Window {
@@ -22,14 +31,8 @@ if (GOOGLE_ANALYTICS_ID) {
 	document.head.append(script)
 }
 
-// TODO: 暂不使用
-// 检查是否从指定的域名访问，如果不是可能网站被镜像了
-// const { webHost } = process.env.CONFIG;
-// if (webHost && location.host !== webHost) {
-// 	location.href = location.href.replace(location.host, webHost);
-// }
+// ==================== 检测不支持的浏览器，显示一个提示栏 ====================
 
-// 检测不支持的浏览器，显示一个提示栏
 function checkBrowserSupport() {
 	if (typeof CSS === "undefined") {
 		return false;

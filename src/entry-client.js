@@ -1,6 +1,6 @@
 // 注意导入顺序，因为打包后CSS里元素的顺序跟导入顺序一致，所以 main.js 必须靠前
 import "./error-report";
-import "./analytics";
+import "./misc";
 import Vue from "vue";
 import createApp, { mediaQueryPlugin } from "./main";
 import { CancellationToken } from "@kaciras-blog/uikit";
