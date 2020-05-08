@@ -15,7 +15,7 @@
 
 <script>
 import AddLinkDialog from "./AddLinkDialog";
-import VideoDialog from "@/markdown/VideoDialog";
+import VideoDialog from "./VideoDialog";
 
 export default {
 	name: "KxMarkdownBasicToolbar",

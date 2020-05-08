@@ -12,7 +12,7 @@ import loadingImage from "../assets/img/loading.gif";
  *
  * @param markdownIt MarkdownIt的实例
  */
-function inlineCodePlugin (markdownIt) {
+function inlineCodePlugin(markdownIt) {
 	markdownIt.core.ruler.push("inline_code_class", state => state.tokens
 		.filter(token => token.type === "inline")
 		.forEach(token => token.children
@@ -27,7 +27,7 @@ function inlineCodePlugin (markdownIt) {
  *
  * @param markdownIt MarkdownIt的实例
  */
-function customImagePlugin(markdownIt) {
+function lazyImagePlugin(markdownIt) {
 	const defaultImageRenderer = markdownIt.renderer.rules.image;
 
 	markdownIt.renderer.rules.image = (tokens, idx, options, env, self) => {
@@ -64,19 +64,30 @@ converter.use(Anchor, {
 converter.use(tableOfContent);
 converter.use(katex);
 converter.use(inlineCodePlugin);
-converter.use(customImagePlugin);
+converter.use(lazyImagePlugin);
 
-export default {
-	install (Vue) {
-		Vue.filter("markdownToHtml", text => converter.render(text));
-	},
-	/**
-	 * 添加一些额外的交互状态，只能在浏览器端调用。
-	 */
-	afterConvert (el) {
-		lozad(el.querySelectorAll("img")).observe();
-	},
-	renderHtml (text) {
-		return converter.render(text);
-	},
-};
+/**
+ * 将 Markdown 渲染为 HTML.
+ *
+ * @param markdown Markdown文本
+ * @return {string} HTML文本
+ */
+export function renderMarkdown(markdown) {
+	return converter.render(markdown);
+}
+
+/**
+ * 对指定容器元素内的媒体启用懒加载，该函数只能在浏览器端调用。
+ *
+ * @param el 容器元素
+ */
+export function enableLazyLoad(el) {
+	lozad(el.querySelectorAll("img")).observe();
+
+	const videos = new IntersectionObserver((entries) => {
+		for (const { target, intersectionRatio } of entries) {
+			intersectionRatio > 0 ? target.play() : target.pause();
+		}
+	});
+	el.querySelectorAll("video").forEach(video => videos.observe(video));
+}

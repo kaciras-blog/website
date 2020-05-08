@@ -1,6 +1,6 @@
 <!-- 虽然只有脚本代码，但因为是组件所以用vue文件 -->
 <script>
-import KxMarkdown from ".";
+import { renderMarkdown, enableLazyLoad } from ".";
 
 export default {
 	name: "MarkdownView",
@@ -8,11 +8,11 @@ export default {
 		value: { type: String, required: true },
 	},
 	render(h) {
-		const innerHTML = KxMarkdown.renderHtml(this.value);
+		const innerHTML = renderMarkdown(this.value);
 		return h("div", { staticClass: "markdown", domProps: { innerHTML } });
 	},
 	mounted() {
-		KxMarkdown.afterConvert(this.$el);
+		enableLazyLoad(this.$el);
 	},
 };
 </script>

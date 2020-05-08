@@ -8,7 +8,6 @@ import createStore from "./store";
 import App from "./App";
 import { MediaQueryManager } from "@kaciras-blog/uikit/src/media-query";
 import UIKit from "@kaciras-blog/uikit";
-import KxMarkdown from "./markdown";
 import BlogPlugin from "./blog-plugin";
 import Croppa from "vue-croppa";
 import VueMultiselect from "vue-multiselect";
@@ -17,7 +16,6 @@ Vue.config.productionTip = false;
 
 Vue.use(Croppa);
 Vue.use(UIKit);
-Vue.use(KxMarkdown);
 Vue.use(BlogPlugin);
 
 export const mediaBreakpoints = {

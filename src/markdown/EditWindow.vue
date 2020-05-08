@@ -17,25 +17,25 @@
 		<article
 			v-if="renderMode === 'MD'"
 			v-show="viewMode !== 1"
+			v-html="html"
 			ref="preview"
 			class="text-view preview markdown"
 			:class="{ split:viewMode === 0, single:viewMode === 2 }"
-			v-html="htmlText"
 		/>
 
 		<pre
 			v-else-if="renderMode === 'PLAIN'"
 			v-show="viewMode !== 1"
+			v-text="text"
 			ref="preview"
 			class="text-view preview markdown"
 			:class="{ split:viewMode === 0, single:viewMode === 2 }"
-			v-text="text"
 		/>
 	</div>
 </template>
 
 <script>
-import kxMarkdown, { converter } from "./index";
+import { renderMarkdown, enableLazyLoad } from "./index";
 
 export default {
 	name: "kxMarkdownEditWindow",
@@ -57,11 +57,23 @@ export default {
 			default: "MD",
 		},
 	},
-	computed: {
-		// TODO: 计算属性里有副作用不太好？
-		htmlText() {
-			this.$nextTick(() => kxMarkdown.afterConvert(this.$refs.preview));
-			return converter.render(this.text);
+	data() {
+		return {
+			html: renderMarkdown(this.text),
+		};
+	},
+	watch: {
+		// 加个防抖免得右边老闪
+		text(newValue) {
+			const render = async () => {
+				this.html = renderMarkdown(newValue);
+				await this.$nextTick();
+				enableLazyLoad(this.$refs.preview);
+			};
+			if (this.$_timer) {
+				clearTimeout(this.$_timer);
+			}
+			this.$_timer = setTimeout(render, 500);
 		},
 	},
 	methods: {
