@@ -26,6 +26,10 @@ export default class extends AbstractResource {
 		return this.uploadImage((await openFile(false, "image/*"))[0]);
 	}
 
+	async uploadVideoFile() {
+		return this.uploadImage((await openFile(false, "video/*"))[0]);
+	}
+
 	/**
 	 * 生成一个验证码URL，该函数返回的不是Promise。
 	 *

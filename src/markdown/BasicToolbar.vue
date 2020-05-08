@@ -9,11 +9,13 @@
 		<kx-button title="引用块" icon="fa fa-quote-left" @click="addPrefixToLines('>')"/>
 		<kx-button title="列表" icon="fas fa-list-ul" @click="addPrefixToLines('* ')"/>
 		<kx-button title="插入链接" icon="fa fa-link" @click="addLink"/>
+		<kx-button title="插入视频" icon="fa fa-file-video" @click="addVideo"/>
 	</div>
 </template>
 
 <script>
 import AddLinkDialog from "./AddLinkDialog";
+import VideoDialog from "@/markdown/VideoDialog";
 
 export default {
 	name: "KxMarkdownBasicToolbar",
@@ -28,7 +30,7 @@ export default {
 		},
 	},
 	methods: {
-		getSelectedRange (extend) {
+		getSelectedRange(extend) {
 			let [s, e] = this.selection;
 			if (extend) {
 				if (s > 0) {
@@ -39,21 +41,21 @@ export default {
 			}
 			return [s, e];
 		},
-		changeTextArea (start, end, text) {
+		changeTextArea(start, end, text) {
 			const v = this.text;
 			this.$emit("update:text", v.substring(0, start) + text + v.substring(end, v.length));
 		},
-		reselect (start, end) {
+		reselect(start, end) {
 			if (!end) {
 				end = start;
 			}
 			this.$emit("update:selection", [start, end]);
 		},
-		addHeader (level) {
+		addHeader(level) {
 			const prefix = new Array(level + 1).join("#") + " ";
 			this.addPrefixToLines(prefix);
 		},
-		addNewLine (text) {
+		addNewLine(text) {
 			const v = this.text;
 			const index = this.getSelectedRange(false)[0];
 
@@ -67,7 +69,7 @@ export default {
 			this.changeTextArea(index, index, text);
 			this.reselect(index + text.length);
 		},
-		addPrefixToLines (prefix) {
+		addPrefixToLines(prefix) {
 			const [selStart, selEnd] = this.getSelectedRange(true);
 			const lines = this.text.substring(selStart, selEnd).split("\n");
 
@@ -85,7 +87,7 @@ export default {
 			this.changeTextArea(selStart, selEnd, text);
 			this.reselect(selStart, selEnd + lines.length);
 		},
-		switchWrapper (prefix) {
+		switchWrapper(prefix) {
 			const v = this.text;
 			const [selStart, selEnd] = this.getSelectedRange(false);
 			const totalLength = prefix.length + prefix.length;
@@ -103,16 +105,34 @@ export default {
 			this.changeTextArea(selStart, selEnd, text);
 			this.reselect(selStart, end);
 		},
-		async addLink () {
-			const res = await this.$dialog.show(AddLinkDialog);
-			if (res.isConfirm) {
-				const { text, href } = res.data;
-				const str = `[${text}](${href})`;
+		async addLink() {
+			const res = await this.$dialog.show(AddLinkDialog).confirmPromise;
+			const { text, href } = res.data;
+			const str = `[${text}](${href})`;
 
-				const selEnd = this.getSelectedRange(false)[1];
-				this.changeTextArea(selEnd, selEnd, str);
-				this.reselect(selEnd, selEnd + str.length);
+			const selEnd = this.getSelectedRange(false)[1];
+			this.changeTextArea(selEnd, selEnd, str);
+			this.reselect(selEnd, selEnd + str.length);
+		},
+		async addVideo() {
+			const res = await this.$dialog.show(VideoDialog).confirmPromise;
+			const attrs = [];
+
+			for (const [k, v] of Object.entries(res)) {
+				if (!v) {
+					continue;
+				}
+				if (v === true) {
+					attrs.push(k);
+				} else {
+					attrs.push(`${k}="${v}"`);
+				}
 			}
+
+			const str = `<video ${attrs.join(" ")}></video>`;
+			const selEnd = this.getSelectedRange(false)[1];
+			this.changeTextArea(selEnd, selEnd, str);
+			this.reselect(selEnd, selEnd + str.length);
 		},
 	},
 };

@@ -42,6 +42,7 @@ function customImagePlugin(markdownIt) {
 }
 
 export const converter = new MarkdownIt({
+	html: true,
 	highlight: function (str, lang) {
 		let result;
 		if (lang && highlight.getLanguage(lang)) {
