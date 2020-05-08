@@ -13,7 +13,7 @@ declare const serviceWorkerOption: {
 	assets: string[];
 };
 
-const STATIC_CACHE_NAME = "static";
+const STATIC_CACHE_NAME = "static-v0";
 const APP_SHELL_NAME = "/app-shell.html";
 
 // Twitter 的代码里也是这样一个个写的
@@ -26,7 +26,7 @@ const handler = new CacheFirstHandler(cache);
 
 router.addRoute(new WebpUpgradeRoute(handler, new RegExp("^/static/img/.+\\.(?:jpg|png)$")));
 router.addRoute(new RegexRoute("/static/", handler));
-router.addRoute(new AppShellRoute(cache, APP_SHELL_NAME, APP_SHELL_RE));
+// router.addRoute(new AppShellRoute(cache, APP_SHELL_NAME, APP_SHELL_RE));
 
 self.addEventListener("fetch", router.route.bind(router));
 
@@ -55,7 +55,7 @@ self.addEventListener("install", (event: ExtendableEvent) => {
  * 在这个事件里应当清理旧版的缓存。
  */
 self.addEventListener("activate", (event: ExtendableEvent) => {
-	console.info("[ServiceWorker]: Activate");
+	console.info("[ServiceWorker] Activate");
 
 	/*
 	 * 浏览器会停止没有相关页面打开的 ServiceWorker 以节约资源，如果ServiceWorker里有拦截请求的配置，
@@ -77,7 +77,11 @@ self.addEventListener("activate", (event: ExtendableEvent) => {
 	// 删除当前版本用不到的缓存
 	event.waitUntil(async () => {
 		const names = (await caches.keys()).filter(k => !cacheNames.has(k));
-		await Promise.all(names.map(k => caches.delete(k)));
+		await Promise.all(names.map(async k => {
+			if(!(await caches.delete(k))) {
+				console.debug("无法删除不存在的缓存：" + k);
+			}
+		}));
 		console.info("删除了过期的缓存");
 	});
 

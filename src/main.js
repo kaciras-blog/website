@@ -7,7 +7,7 @@ import createRouter from "./router";
 import createStore from "./store";
 import App from "./App";
 import { MediaQueryManager } from "@kaciras-blog/uikit/src/media-query";
-import KxUI from "@kaciras-blog/uikit";
+import UIKit from "@kaciras-blog/uikit";
 import KxMarkdown from "./markdown";
 import BlogPlugin from "./blog-plugin";
 import Croppa from "vue-croppa";
@@ -16,7 +16,7 @@ import VueMultiselect from "vue-multiselect";
 Vue.config.productionTip = false;
 
 Vue.use(Croppa);
-Vue.use(KxUI);
+Vue.use(UIKit);
 Vue.use(KxMarkdown);
 Vue.use(BlogPlugin);
 
