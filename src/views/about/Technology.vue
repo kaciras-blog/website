@@ -4,7 +4,7 @@
 		<section class="about-section">
 			<icon-section-header title="Kaciras的个人博客" icon="../../assets/img/logo-kaciras.svg"/>
 			<icon-paragraph src="../../assets/img/github-logo.svg" title="github">
-				网站代码开源：
+				网站源码：
 				<a class="highlight" href="https://github.com/kaciras-blog">https://github.com/kaciras-blog</a>
 			</icon-paragraph>
 			<icon-paragraph src="../../assets/img/html-code.svg" title="browsers">
@@ -26,14 +26,18 @@
 			<icon-paragraph src="../../assets/img/logo-vue.svg" title="sentry">
 				网页端是用Vue全家桶编写的单页应用，目前共有9个页面，纯手撸组件未使用UI库。
 			</icon-paragraph>
-			<icon-paragraph src="../../assets/img/logo-pwa.png" title="pwa">
-				本站拥有PWA支持，大幅提升了加载速度。使用了自己写的一个ServiceWorker，主要参考了workbox项目
+			<icon-paragraph src="../../assets/img/tools-and-utensils.svg" title="write">
+				自己撸了个Markdown编辑器，支持图片、视频、LaTeX等。
 			</icon-paragraph>
 			<icon-paragraph src="../../assets/img/logo-sentry.png" title="sentry">
-				由Sentry.io提供的的免费服务来监控和统计页面里发生的异常
+				由Sentry.io提供的的免费服务来监控和统计页面里发生的异常。
 			</icon-paragraph>
 			<icon-paragraph src="../../assets/img/logo-webpack.svg" title="sentry">
-				使用Webpack4打包代码和资源，并提供开发时的热重载
+				使用Webpack4打包代码和资源，并提供开发时的热重载。
+			</icon-paragraph>
+			<icon-paragraph src="../../assets/img/logo-pwa.png" title="pwa">
+				本站拥有PWA支持，大幅提升了加载速度（反正服务器在国外也快不到哪去）。
+				使用了自己写的一个ServiceWorker，主要参考了workbox项目。
 			</icon-paragraph>
 		</section>
 
