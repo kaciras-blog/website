@@ -185,6 +185,5 @@ if (window.__INITIAL_STATE__) {
 	delete window.__INITIAL_STATE__;
 } else {
 	prefetchComponents(router.currentRoute, router.getMatchedComponents(), initAppAndRouterHook);
-	// initAppAndRouterHook(); // 没有服务端渲染，直接初始化。
 	store.dispatch(REFRESH_USER); // AppShell 模式不会在服务端加载用户
 }

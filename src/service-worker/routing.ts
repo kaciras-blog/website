@@ -144,7 +144,8 @@ export class NavigatePreloadRoute implements Route {
  * 【存在的问题】
  * WebP格式不一定就比原格式小，但哪个更优只能在服务端判断，该类只能一律使用WebP。
  *
- * TODO: 没有找到怎么在worker里检测webp支持的方法，只能使用Accept请求头判断
+ * 【其他方案】
+ * 在HTML里使用<picture>元素是最好的，但是CSS里没有类似的功能。
  */
 export class WebpUpgradeRoute implements Route {
 

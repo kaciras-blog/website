@@ -30,6 +30,13 @@ export default {
 		},
 	},
 	methods: {
+
+		/**
+		 * 获取用户选择的范围，也可以将范围扩大到整行。
+		 *
+		 * @param extend 是否扩展到整行
+		 * @return [number, number] 起点和终点
+		 */
 		getSelectedRange(extend) {
 			let [s, e] = this.selection;
 			if (extend) {
@@ -41,20 +48,37 @@ export default {
 			}
 			return [s, e];
 		},
+
+		/**
+		 * 替换一段区域内的文本。
+		 *
+		 * @param start 替换起点
+		 * @param end 替换终点
+		 * @param text 替换的文本
+		 */
 		changeTextArea(start, end, text) {
 			const v = this.text;
 			this.$emit("update:text", v.substring(0, start) + text + v.substring(end, v.length));
 		},
+
+		/**
+		 * 更改选择的文本范围。
+		 *
+		 * @param start 起点
+		 * @param end 终点
+		 */
 		reselect(start, end) {
 			if (!end) {
 				end = start;
 			}
 			this.$emit("update:selection", [start, end]);
 		},
+
 		addHeader(level) {
 			const prefix = new Array(level + 1).join("#") + " ";
 			this.addPrefixToLines(prefix);
 		},
+
 		addNewLine(text) {
 			const v = this.text;
 			const index = this.getSelectedRange(false)[0];
@@ -69,6 +93,7 @@ export default {
 			this.changeTextArea(index, index, text);
 			this.reselect(index + text.length);
 		},
+
 		addPrefixToLines(prefix) {
 			const [selStart, selEnd] = this.getSelectedRange(true);
 			const lines = this.text.substring(selStart, selEnd).split("\n");
@@ -87,6 +112,7 @@ export default {
 			this.changeTextArea(selStart, selEnd, text);
 			this.reselect(selStart, selEnd + lines.length);
 		},
+
 		switchWrapper(prefix) {
 			const v = this.text;
 			const [selStart, selEnd] = this.getSelectedRange(false);
@@ -105,6 +131,7 @@ export default {
 			this.changeTextArea(selStart, selEnd, text);
 			this.reselect(selStart, end);
 		},
+
 		async addLink() {
 			const res = await this.$dialog.show(AddLinkDialog).confirmPromise;
 			const { text, href } = res.data;
@@ -114,6 +141,8 @@ export default {
 			this.changeTextArea(selEnd, selEnd, str);
 			this.reselect(selEnd, selEnd + str.length);
 		},
+
+		// TODO: 暂不支持<source>指定多个源，以后考虑七牛云？
 		async addVideo() {
 			const res = await this.$dialog.show(VideoDialog).confirmPromise;
 			const attrs = [];
