@@ -11,6 +11,7 @@ import { useServiceWorker } from "./serviceWorker";
 import * as loadingIndicator from "./loading-indicator";
 
 useServiceWorker();
+loadingIndicator.mount();
 
 let cancelToken = CancellationToken.NEVER;
 
