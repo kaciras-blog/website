@@ -63,13 +63,18 @@ export default {
 		};
 	},
 	watch: {
-		// 加个防抖免得右边老闪
+		// 加个防抖免得右边老闪，另外注意刷新后清理监听器防止内存泄漏
 		text(newValue) {
 			const render = async () => {
 				this.html = renderMarkdown(newValue);
 				await this.$nextTick();
-				enableLazyLoad(this.$refs.preview);
+
+				if (this.$_lazyWatcher) {
+					this.$_lazyWatcher();
+				}
+				this.$_lazyWatcher = enableLazyLoad(this.$refs.preview);
 			};
+
 			if (this.$_timer) {
 				clearTimeout(this.$_timer);
 			}

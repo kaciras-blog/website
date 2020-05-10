@@ -4,8 +4,8 @@ import Anchor from "markdown-it-anchor";
 import tableOfContent from "markdown-it-toc-done-right";
 import katex from "@iktakahiro/markdown-it-katex";
 import lozad from "lozad";
+import loadingImage from "@/assets/img/loading.gif";
 import highlight from "./highlight";
-import loadingImage from "../assets/img/loading.gif";
 
 /**
  * 给行内代码加个 inline-code 类以便跟代码块区别开
@@ -41,6 +41,11 @@ function lazyImagePlugin(markdownIt) {
 	};
 }
 
+/*
+ * 【html:true 用于支持视频等】
+ * Markdown 原生就不支持视频，而且视频这种属性很多（特别是多个<source>的情况）的元素也不方便设计语法，
+ * 故选择直接插入HTML来实现。
+ */
 export const converter = new MarkdownIt({
 	html: true,
 	highlight: function (str, lang) {
@@ -80,9 +85,11 @@ export function renderMarkdown(markdown) {
  * 对指定容器元素内的媒体启用懒加载，该函数只能在浏览器端调用。
  *
  * @param el 容器元素
+ * @return 取消监听的函数，应当在被监视的内容被删除后调用，以避免内存泄漏。
  */
 export function enableLazyLoad(el) {
-	lozad(el.querySelectorAll("img")).observe();
+	const images = lozad(el.querySelectorAll("img"));
+	images.observe();
 
 	const videos = new IntersectionObserver((entries) => {
 		for (const { target, intersectionRatio } of entries) {
@@ -90,4 +97,9 @@ export function enableLazyLoad(el) {
 		}
 	});
 	el.querySelectorAll("video").forEach(video => videos.observe(video));
+
+	return function disconnect() {
+		videos.disconnect();
+		images.observer.disconnect();
+	};
 }
