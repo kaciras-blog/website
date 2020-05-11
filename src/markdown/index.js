@@ -1,3 +1,4 @@
+import "katex/dist/katex.css";
 import "./markdown.less";
 import MarkdownIt from "markdown-it";
 import Anchor from "markdown-it-anchor";

@@ -1,6 +1,5 @@
 @import "../css/imports";
 @import "./monokai-sublime.css";
-@import "~katex/dist/katex.css";
 
 @quote-padding: #bfbfbf; // 引用块左边装饰颜色
 @quote-background: #f8f8f8; // 引用块背景颜色
@@ -9,6 +8,10 @@
 
 	font-size: 16px;
 	line-height: 1.75;
+
+	video {
+		max-width: 100%;
+	}
 
 	ol, ul {
 		margin: 1em 0;
@@ -66,17 +69,13 @@
 		word-break: break-all;
 		.highlight-color(@color-link, @color-link);
 	}
-
-	video {
-		max-width: 100%;
-	}
 }
 
 .header-anchor {
 	opacity: 0;
 
 	&:hover {
-		color: #3fb3ff;
+		color: @color-link;
 		opacity: 1;
 		text-decoration: none;
 	}
