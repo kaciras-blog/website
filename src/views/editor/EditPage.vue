@@ -104,9 +104,11 @@ export default {
 				.onConfirm(data => this.metadata = data);
 		},
 
-		/** 监视文本的改变，当改变时开始计时10分钟，到点自动保存 */
+		/** 监视文本的改变，当改变时开始计时5分钟，到点自动保存 */
 		watchChanges() {
-			const callback = () => setTimeout(this.autoSave, 10 * 60 * 1000);
+			const callback = () => {
+				setTimeout(this.autoSave, 5 * 60 * 1000);
+			};
 			new VueMultiWatcher(this, ["metadata", "content"], callback, { once: true });
 		},
 
@@ -180,6 +182,8 @@ export default {
 		if (!draft.articleId && draft.saveCount === 0) {
 			await this.metadataDialog();
 		}
+
+		this.changes = false;
 		this.watchChanges();
 	},
 	mounted() {
