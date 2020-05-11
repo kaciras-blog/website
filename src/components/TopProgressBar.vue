@@ -85,16 +85,18 @@ export default {
 	&::before {
 		content: '';
 		position: absolute;
-		width: 40px;
+		width: 100px;
 		height: 100%;
 
 		background-image: linear-gradient(
 			90deg,
 			transparent 0,
-			rgba(255, 255, 255, .7) 30%,
-			rgba(255, 255, 255, .9) 60%,
-			transparent 100%);
+			rgba(255, 255, 255, .7) 20%,
+			#FFF 60%,
+			transparent 100%
+		);
 
+		// 恒定时间
 		animation: highlight linear calc(50ms * var(--progress)) infinite;
 	}
 }

@@ -89,7 +89,7 @@ export default {
 	min-height: 3rem; // 谷歌的浏览器必须用min-height
 	z-index: 1;
 
-	border-bottom: solid 1px #c9c9c9;
+	border-bottom: solid 1px @color-border;
 	box-shadow: 0 0 @length-border-shadow 1px fade(@color-border, 30%);
 }
 
