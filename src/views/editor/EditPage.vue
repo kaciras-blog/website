@@ -8,7 +8,7 @@
 			<div>
 				<view-mode-toolbar :view-mode.sync="viewMode"/>
 				<kx-button class="primary" title="修改简介" icon="far fa-address-card" @click="metadataDialog"/>
-				<kx-button class="primary" title="保存" icon="far fa-save" @click="saveManually"/>
+				<kx-button class="primary" title="保存" icon="far fa-save" @click="manualSave"/>
 				<kx-button class="primary" title="发布!" icon="far fa-paper-plane" @click="publish"/>
 			</div>
 		</div>
@@ -38,7 +38,7 @@
 <script>
 import { VueMultiWatcher } from "@kaciras-blog/uikit";
 import api from "@/api";
-import { assignUpdate } from "@/utils";
+import { assignUpdate, errorMessage } from "@/utils";
 import KxMarkdownEditWindow from "@/markdown/EditWindow";
 import KxMarkdownBasicToolbar from "@/markdown/BasicToolbar";
 import TextStateGroup from "@/markdown/TextStateGroup";
@@ -78,8 +78,16 @@ export default {
 		content: "",
 		selection: [0, 0],
 		viewMode: 0,
+
+		/** 是否有在未保存的改动 */
+		changes: false,
+
 		autoSaveError: null,
 	}),
+	watch: {
+		metadata() { this.changes = true; },
+		content() { this.changes = true; },
+	},
 	methods: {
 		async addImage() {
 			const res = await api.misc.uploadImageFile();
@@ -92,18 +100,8 @@ export default {
 		},
 
 		metadataDialog() {
-			this.$dialog.show(MetadataDialog, { metadata: this.metadata }).onConfirm(data => this.metadata = data);
-		},
-
-		async saveManually() {
-			const { archive } = this;
-			try {
-				await api.draft.saveNewHistory(archive.id, convertToTransfer(this.$data));
-				archive.saveTime = new Date();
-				this.$dialog.alertSuccess("保存成功");
-			} catch (e) {
-				this.$dialog.alertError("保存失败，请手动备份", e.message);
-			}
+			this.$dialog.show(MetadataDialog, { metadata: this.metadata })
+				.onConfirm(data => this.metadata = data);
 		},
 
 		/** 监视文本的改变，当改变时开始计时10分钟，到点自动保存 */
@@ -112,18 +110,32 @@ export default {
 			new VueMultiWatcher(this, ["metadata", "content"], callback, { once: true });
 		},
 
-		autoSave() {
+		async autoSave() {
 			const { archive } = this;
-			api.draft.save(archive.id, archive.saveCount, convertToTransfer(this.$data))
-				.then(() => {
-					this.watchChanges();
-					archive.saveTime = new Date();
-					this.autoSaveError = null;
-				})
-				.catch((err) => {
-					console.error(err);
-					this.autoSaveError = err;
-				});
+			try {
+				const data = convertToTransfer(this.$data);
+				await api.draft.save(archive.id, archive.saveCount, data);
+
+				archive.saveTime = new Date();
+				this.watchChanges();
+				this.changes = false;
+				this.autoSaveError = null;
+			} catch (e) {
+				this.$dialog.alertError("保存失败", errorMessage(e));
+				this.autoSaveError = e;
+			}
+		},
+
+		async manualSave() {
+			const { archive } = this;
+			try {
+				await api.draft.saveNewHistory(archive.id, convertToTransfer(this.$data));
+				archive.saveTime = new Date();
+				this.changes = false;
+				this.$dialog.alertSuccess("保存成功");
+			} catch (e) {
+				this.$dialog.alertError("保存失败，请手动备份", errorMessage(e));
+			}
 		},
 
 		publish() {
@@ -139,6 +151,21 @@ export default {
 			archive.saveCount = history.saveCount;
 			this.content = history.content;
 		},
+
+		onPageExit(event) {
+			if (this.changes) {
+				return event.returnValue = "Sure?";
+			}
+		},
+	},
+	beforeRouteLeave(to, from, next) {
+		if (this.changes) {
+			const exit = confirm("有未保存的改动，是否退出？");
+			if (exit === false) {
+				return next(false);
+			}
+		}
+		return next();
 	},
 	async beforeMount() {
 		const id = this.$route.params["id"];
@@ -154,6 +181,12 @@ export default {
 			await this.metadataDialog();
 		}
 		this.watchChanges();
+	},
+	mounted() {
+		window.addEventListener("beforeunload", this.onPageExit);
+	},
+	beforeDestroy() {
+		window.removeEventListener("beforeunload", this.onPageExit);
 	},
 };
 </script>
