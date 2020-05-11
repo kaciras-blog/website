@@ -43,21 +43,16 @@
 		<div class="minor-text" :class="$style.meta">
 
 			<span title="发表于" class="meta">
-				<i class="fa fa-edit"></i>
+				<i class="fa fa-edit"/>
 				<time>{{item.create | localDate}}</time>
 			</span>
 
-			<span title="最后更新" class="hide-mobile meta">
-				<i class="fas fa-sync"></i>
-				<time>{{item.update | localDate}}</time>
-			</span>
-
 			<span title="浏览数" class="meta">
-				<i class="fa fa-eye"></i>{{item.viewCount}}
+				<i class="fa fa-eye"/>{{item.viewCount}}
 			</span>
 
 			<span title="评论数" class="meta">
-				<i class="fas fa-comment-dots"></i>{{item.discussionCount}}
+				<i class="fas fa-comment-dots"/>{{item.discussionCount}}
 			</span>
 		</div>
 	</li>
