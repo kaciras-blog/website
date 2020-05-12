@@ -37,7 +37,7 @@ function lazyImagePlugin(markdownIt) {
 		token.attrPush(["data-src", srcValue]);
 		token.attrSet("src", loadingImage);
 
-		const wrapper = `<a href="${srcValue}" class="image-wrapper" target="_blank">`;
+		const wrapper = `<a href="${srcValue}" class="center-wrapper" target="_blank">`;
 		return wrapper + defaultImageRenderer(tokens, idx, options, env, self) + "</a>";
 	};
 }
@@ -97,7 +97,10 @@ export function enableLazyLoad(el) {
 			intersectionRatio > 0 ? target.play() : target.pause();
 		}
 	});
-	el.querySelectorAll("video").forEach(video => videos.observe(video));
+	el.querySelectorAll("video").forEach(video => {
+		videos.observe(video);
+		video.parentElement.classList.add("center-wrapper");
+	});
 
 	return function disconnect() {
 		videos.disconnect();
