@@ -4,6 +4,7 @@ import MarkdownIt from "markdown-it";
 import Anchor from "markdown-it-anchor";
 import tableOfContent from "markdown-it-toc-done-right";
 import katex from "@iktakahiro/markdown-it-katex";
+import media from "@kaciras-blog/server/lib/markdown-media";
 import lozad from "lozad";
 import loadingImage from "@/assets/img/loading.gif";
 import highlight from "./highlight";
@@ -42,13 +43,7 @@ function lazyImagePlugin(markdownIt) {
 	};
 }
 
-/*
- * 【html:true 用于支持视频等】
- * Markdown 原生就不支持视频，而且视频这种属性很多（特别是多个<source>的情况）的元素也不方便设计语法，
- * 故选择直接插入HTML来实现。
- */
 export const converter = new MarkdownIt({
-	html: true,
 	highlight: function (str, lang) {
 		let result;
 		if (lang && highlight.getLanguage(lang)) {
@@ -67,6 +62,7 @@ converter.use(Anchor, {
 	permalinkClass: "fas fa-link header-anchor",
 	permalinkSymbol: "",
 });
+converter.use(media);
 converter.use(tableOfContent);
 converter.use(katex);
 converter.use(inlineCodePlugin);
@@ -99,6 +95,8 @@ export function enableLazyLoad(el) {
 	});
 	el.querySelectorAll("video").forEach(video => {
 		videos.observe(video);
+
+		// TODO: 累了不想改编译器，以后再说
 		video.parentElement.classList.add("center-wrapper");
 	});
 

@@ -148,7 +148,7 @@ export default {
 			const attrs = [];
 
 			for (const [k, v] of Object.entries(res)) {
-				if (!v) {
+				if (!v || k === "src") {
 					continue;
 				}
 				if (v === true) {
@@ -158,7 +158,7 @@ export default {
 				}
 			}
 
-			const str = `<video ${attrs.join(" ")}></video>`;
+			const str = `@video[](${res.src}){ ${attrs.join(" ")} }`;
 			const selEnd = this.getSelectedRange(false)[1];
 			this.changeTextArea(selEnd, selEnd, str);
 			this.reselect(selEnd, selEnd + str.length);
