@@ -13,12 +13,7 @@ declare const serviceWorkerOption: {
 	assets: string[];
 };
 
-const STATIC_CACHE_NAME = "static-v0";
-const APP_SHELL_NAME = "/app-shell.html";
-
-// Twitter 的代码里也是这样一个个写的
-// https://abs.twimg.com/responsive-web/serviceworker/main.e531acd4.js 格式化后的第6200行
-const APP_SHELL_RE = new RegExp("^/(?:$|list|category|login|article|edit|profile|about|console|error)")
+const STATIC_CACHE_NAME = "static-v1";
 
 const cache = new CacheWrapper(STATIC_CACHE_NAME);
 const router = new Router();
@@ -26,7 +21,12 @@ const handler = new CacheFirstHandler(cache);
 
 router.addRoute(new WebpUpgradeRoute(handler, new RegExp("^/static/img/.+\\.(?:jpg|png)$")));
 router.addRoute(new RegexRoute("/static/", handler));
-// router.addRoute(new AppShellRoute(cache, APP_SHELL_NAME, APP_SHELL_RE));
+
+// Twitter 的代码里也是这样一个个写死的
+// https://abs.twimg.com/responsive-web/serviceworker/main.e531acd4.js 格式化后的第6200行
+const APP_SHELL_RE = new RegExp("^/(?:$|list|category|login|article|edit|profile|about|console|error)")
+const APP_SHELL_NAME = "/app-shell.html";
+router.addRoute(new AppShellRoute(cache, APP_SHELL_NAME, APP_SHELL_RE));
 
 self.addEventListener("fetch", router.route.bind(router));
 

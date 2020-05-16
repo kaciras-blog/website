@@ -12,12 +12,16 @@
 		<aside :class="$style.tabs">
 			<h1>控制台</h1>
 			<ul class="clean-list" role="tablist">
-				<li v-for="link of views"
+				<li
+					v-for="link of views"
 					:key="link.label"
 					role="tab"
 					tabindex="2"
 					:aria-selected="active === link.view"
-					:class="{ [$style.active]: active === link.view, [$style.tabItem]: true}"
+					:class="{
+						[$style.active]: active === link.view,
+						[$style.tabItem]: true,
+					}"
 					@click="active = link.view"
 					@keyup.enter="active = link.view"
 				>
@@ -47,7 +51,7 @@ export default {
 			{ view: ArticleConsole, label: "文章列表" },
 			{ view: DraftConsole, label: "草稿" },
 			{ view: DiscussionConsole, label: "评论" },
-			{ view: CardsConsole, label: "卡片" },
+			{ view: CardsConsole, label: "首页卡片" },
 			{ view: CategoryConsole, label: "管理分类" },
 		],
 		active: ArticleConsole,

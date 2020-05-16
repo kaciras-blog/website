@@ -77,7 +77,7 @@ export default {
 .card_list {
 	display: grid;
 	grid-auto-rows: auto;
-	grid-gap: 40px 40px;
+	grid-gap: 40px;
 	justify-content: center;
 
 	@media screen and (min-width: @length-screen-mobile) {

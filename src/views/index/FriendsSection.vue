@@ -79,7 +79,7 @@ export default {
 .list {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, 140px);
-	grid-gap: 20px;
+	grid-gap: 40px;
 	justify-content: center;
 	justify-items: center;
 }
