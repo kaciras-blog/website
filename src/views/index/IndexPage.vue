@@ -209,10 +209,6 @@ export default {
 
 .blog {
 	padding: 0 5vw;
-
-	@media screen and (max-width: @length-screen-mobile) {
-		padding: 0 10vw;
-	}
 }
 
 .friends {

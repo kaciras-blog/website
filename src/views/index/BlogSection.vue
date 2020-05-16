@@ -10,26 +10,25 @@
 			</router-link>
 		</header>
 
-		<!-- 因为 figure 也是单个容器元素，懒得再套一层 li 了，所以没用 ul -->
+		<!-- 懒得再套一层 li 了没用 ul -->
 		<div v-if="cards.length" :class="$style.card_list">
 			<smart-link
 				v-for="card of cards"
 				:key="card.id"
 				:href="card.link"
 				class="clean-link"
-				:class="$style.card_link"
 			>
-				<figure :class="$style.figure">
-					<img
-						:src="card.picture"
-						alt="封面"
-						:class="$style.image"
-					>
-					<figcaption :class="$style.content">
-						<h2>{{card.name}}</h2>
-						<span class="loose">{{card.description}}</span>
-					</figcaption>
-				</figure>
+				<article :class="$style.figure">
+					<div :class="$style.card_header">
+						<img
+							:src="card.picture"
+							alt="封面"
+							:class="$style.picture"
+						>
+						<h3 :class="$style.name"> {{card.name}} </h3>
+					</div>
+					<div :class="$style.content"> {{card.description}}</div>
+				</article>
 			</smart-link>
 		</div>
 
@@ -66,49 +65,86 @@ export default {
 	font-size: 30px;
 }
 
+// ================================ Cards ================================
+
+@pic-width: 400px;
+@pic-height: @pic-width * 0.75;
+
+// 左右各5vw间距，再乘以0.75比例
+// 或者直接裁剪图片到指定比例？
+@pic-height-mobile: 63vw;
+
 .card_list {
 	display: grid;
 	grid-auto-rows: auto;
-	grid-gap: 50px 30px;
+	grid-gap: 40px 40px;
 	justify-content: center;
 
 	@media screen and (min-width: @length-screen-mobile) {
-		grid-template-columns: repeat(auto-fit, 320px);
-	}
-}
-
-@media screen and (max-width: @length-screen-mobile) {
-	.card_link {
-		width: 100%;
-		max-width: 500px;
+		grid-template-columns: repeat(auto-fit, @pic-width);
 	}
 }
 
 .figure {
-	margin: 0;
-
-	border-radius: 8px;
-	box-shadow: 0 2px 3px rgba(10, 10, 10, .1),
-	0 0 0 1px rgba(10, 10, 10, .1);
 	font-size: 16px;
 	overflow: hidden;
+	box-shadow: 0 8px 16px rgba(0, 0, 0, .15);
+}
 
-	@media screen and (min-width: @length-screen-mobile) {
-		width: 320px;
-		height: 480px;
+// 这个效果抄自：
+// https://github.com/chanshiyucx/aurora/blob/master/src/views/Home/index.scss
+.card_header {
+	position: relative;
+	overflow: hidden;
+
+	&::before {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: hsla(0, 0%, 100%, .6);
+		transition: transform .6s;
+		z-index: 2;
+		will-change: transform;
+		transform: scale3d(1.9, 1.4, 1) rotate(45deg) translate3d(0, -120%, 0);
+	}
+
+	&:hover::before {
+		transform: scale3d(1.9, 1.4, 1) rotate(45deg) translate3d(0, 120%, 0);
 	}
 }
 
-.image {
+.picture {
 	width: 100%;
-	height: 250px;
+	height: @pic-height;
 
 	@media screen and (max-width: @length-screen-mobile) {
-		height: 65vw;
+		height: @pic-height-mobile;
 	}
+}
+
+.name {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: 0;
+	padding: 16px;
+	background: rgba(255, 255, 255, .8);
 }
 
 .content {
-	padding: 20px;
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+
+	margin: 16px;
+	line-height: 1.5;
+	height: 4.5em;
+	box-sizing: content-box;
 }
 </style>
