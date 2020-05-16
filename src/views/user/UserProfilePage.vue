@@ -10,7 +10,7 @@
 						alt="头像"
 						title="点击换头像"
 						:src="user.head"
-						@click="editHead"
+						@click="changeAvatar"
 					>
 				</div>
 
@@ -39,8 +39,8 @@
 <script>
 import api from "@/api";
 import { errorMessage } from "@/utils";
-import ImageCropper from "@/components/ImageCropper";
 import AuthTypeTag from "./AuthTypeTag";
+import { openFile } from "@kaciras-blog/uikit/src/index";
 
 export default {
 	name: "UserProfilePage",
@@ -51,11 +51,14 @@ export default {
 		return { user: this.$store.state.user };
 	},
 	methods: {
-		async editHead() {
-			const result = await this.$dialog.show(ImageCropper, { width: 300, height: 300, circle: true });
-			if (result.isConfirm) {
-				this.user.head = await api.misc.uploadImage(result.data);
-			}
+		async changeAvatar() {
+			const image = await openFile("image/*");
+			const session = this.$dialog.cropImage({
+				image,
+				aspectRatio: 1,
+			});
+			const cropped = await session.confirmPromise;
+			this.user.head = await api.misc.uploadImage(cropped);
 		},
 		async save() {
 			try {

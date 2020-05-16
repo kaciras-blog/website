@@ -4,17 +4,24 @@ import { getLocation } from "./common";
 
 export default class extends AbstractResource {
 
-	/**
-	 * 上传文件，返回保存的文件的相对路径。
-	 *
-	 * @param path 上传到哪个目录
-	 * @param file 文件
-	 * @param progress 进度回调
-	 */
-	upload(path: string, file: File, progress?: (progressEvent: ProgressEvent) => void) {
+	private upload(path: string, file: Blob, progress?: (progressEvent: ProgressEvent) => void) {
 		const data = new FormData();
 		data.append("file", file);
 		return this.servers.web.post(path, data, { onUploadProgress: progress }).then(getLocation());
+	}
+
+	/**
+	 * 上传图片文件，返回保存的文件的路径。
+	 *
+	 * @param file 文件数据
+	 * @param progress 进度回调
+	 */
+	async uploadImage(file: Blob, progress?: (progressEvent: ProgressEvent) => void) {
+		return this.upload("/image", file, progress);
+	}
+
+	async uploadVideo(file: Blob, progress?: (progressEvent: ProgressEvent) => void) {
+		return this.upload("/video", file, progress);
 	}
 
 	/**
@@ -24,11 +31,11 @@ export default class extends AbstractResource {
 	 * @returns 保存的图片文件名
 	 */
 	async uploadImageFile() {
-		return this.upload("/image", (await openFile(false, "image/*"))[0]);
+		return this.uploadImage((await openFile(false, "image/*"))[0]);
 	}
 
 	async uploadVideoFile() {
-		return this.upload("/video", (await openFile(false, "video/*"))[0]);
+		return this.uploadVideo((await openFile(false, "video/*"))[0]);
 	}
 
 	/**

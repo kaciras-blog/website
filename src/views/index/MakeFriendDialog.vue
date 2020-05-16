@@ -1,6 +1,5 @@
 <template>
 	<kx-base-dialog title="输入友链信息">
-
 		<img
 			:src="favicon"
 			alt="网站图标"
@@ -32,16 +31,6 @@
 <script>
 import { openFile } from "@kaciras-blog/uikit";
 import api from "@/api";
-import ImageCropper from "@/components/ImageCropper";
-
-function blobToString(blob) {
-	return new Promise((resolve, reject) => {
-		const reader = new FileReader();
-		reader.onloadend = () => resolve(reader.result);
-		reader.onerror = reject;
-		reader.readAsDataURL(blob);
-	});
-}
 
 export default {
 	name: "MakeFriendDialog",
@@ -52,14 +41,15 @@ export default {
 	}),
 	methods: {
 		async uploadFavicon() {
-			let favicon = (await openFile(false, "image/*"))[0];
-			const src = await blobToString(favicon);
+			let favicon = await openFile("image/*");
 
-			const cropping = await this.$dialog.show(ImageCropper, { width: 300, height: 300, initialImage: src });
+			const cropping = await this.$dialog.cropImage({
+				image: favicon,
+				aspectRatio: 1,
+			});
 			if (cropping.isConfirm) {
 				favicon = cropping.data;
 			}
-
 			this.favicon = await api.misc.uploadImage(favicon);
 		},
 	},

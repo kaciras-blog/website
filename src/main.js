@@ -3,18 +3,16 @@ import "vue-multiselect/dist/vue-multiselect.min.css";
 import "@kaciras-blog/uikit/src/css/index.less";
 import "./css/index.less";
 import Vue from "vue";
-import createRouter from "./router";
-import createStore from "./store";
-import App from "./App";
+import VueMultiselect from "vue-multiselect";
 import { MediaQueryManager } from "@kaciras-blog/uikit/src/media-query";
 import UIKit from "@kaciras-blog/uikit";
 import BlogPlugin from "./blog-plugin";
-import Croppa from "vue-croppa";
-import VueMultiselect from "vue-multiselect";
+import createStore from "./store";
+import createRouter from "./router";
+import App from "./App";
 
 Vue.config.productionTip = false;
 
-Vue.use(Croppa);
 Vue.use(UIKit);
 Vue.use(BlogPlugin);
 
