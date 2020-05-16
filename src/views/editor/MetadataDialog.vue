@@ -67,8 +67,8 @@ export default {
 
 .cover {
 	grid-area: cover;
-	width: 12rem;
-	height: 10rem;
+	width: 14rem;
+	height: 10.5rem;
 	cursor: pointer;
 }
 

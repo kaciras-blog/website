@@ -119,13 +119,15 @@ export default {
 <style module lang="less">
 @import "../../css/imports";
 
+@cover-width: 10rem;
+
 .container {
 	display: flex;
 }
 
 .cover {
-	width: 8rem;
-	height: 7.2rem;
+	width: @cover-width;
+	height: @cover-width * 0.75;
 }
 
 .buttons {

@@ -129,11 +129,11 @@ export default {
 }
 
 .cover {
-	width: 10rem;
+	width: 12rem;
 	height: 9rem;
 
 	@media screen and (max-width: @length-screen-mobile) {
-		width: 50vw;
+		width: 60vw;
 		height: 45vw;
 		border-radius: 10px;
 	}

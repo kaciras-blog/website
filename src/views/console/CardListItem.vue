@@ -147,7 +147,7 @@ textarea.inputBox {
 
 .inputBox {
 	width: 100%;
-	margin-top: .5rem;
+	margin-top: 5px;
 }
 
 .pictureWrapper {
@@ -155,8 +155,8 @@ textarea.inputBox {
 	overflow: hidden;
 	grid-row: ~"1/4";
 
-	width: 27vw;
-	height: 20vw;
+	width: 24vw;
+	height: 18vw;
 	cursor: pointer;
 
 	&:hover > .tip {
