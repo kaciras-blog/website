@@ -1,4 +1,4 @@
-// 注意导入顺序，因为打包后CSS里元素的顺序跟导入顺序一致，所以 main.js 必须靠前
+// 注意导入顺序，因为打包后CSS里元素的顺序跟导入顺序一致，所以 main.ts 必须靠前
 import "./error-report";
 import "./misc";
 import Vue from "vue";
@@ -9,19 +9,23 @@ import { SUN_PHASES } from "@/store";
 import { REFRESH_USER, SET_PREFETCH_DATA, SET_SUN_PHASE } from "@/store/types";
 import { useServiceWorker } from "./serviceWorker";
 import * as loadingIndicator from "./loading-indicator";
+import { PrefetchContext } from "@/prefetch";
 
 useServiceWorker();
 loadingIndicator.mount();
 
 let cancelToken = CancellationToken.NEVER;
 
-class ClientPrefetchContext {
+class ClientPrefetchContext extends PrefetchContext {
 
 	constructor(route, cancelToken) {
+		super();
 		this.route = route;
 		this.cancelToken = cancelToken;
-		this.data = {};
-		this.api = api;
+	}
+
+	get api() {
+		return api;
 	}
 
 	get store() {
@@ -30,10 +34,6 @@ class ClientPrefetchContext {
 
 	get isServer() {
 		return false;
-	}
-
-	dataSetter(name) {
-		return value => this.data[name] = value;
 	}
 }
 

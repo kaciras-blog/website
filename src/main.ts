@@ -4,12 +4,12 @@ import "@kaciras-blog/uikit/src/css/index.less";
 import "./css/index.less";
 import Vue from "vue";
 import VueMultiselect from "vue-multiselect";
-import { MediaQueryManager } from "@kaciras-blog/uikit/src/media-query";
 import UIKit from "@kaciras-blog/uikit";
+import { MediaQueryManager } from "@kaciras-blog/uikit/src/media-query";
 import BlogPlugin from "./blog-plugin";
 import createStore from "./store";
 import createRouter from "./router";
-import App from "./App";
+import App from "./App.vue";
 
 Vue.config.productionTip = false;
 
@@ -37,7 +37,7 @@ Vue.component(VueMultiselect.name, VueMultiselect);
  * @param initState Vuex的初始状态
  * @return {*} Vue全家桶
  */
-export default function createApp(initState = undefined) {
+export default function createApp(initState: any = undefined) {
 	const store = createStore();
 	const router = createRouter();
 

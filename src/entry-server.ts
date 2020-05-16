@@ -1,31 +1,35 @@
 import Vue from "vue";
+import { Store } from "vuex";
+import { Route, VueRouter } from "vue-router/types/router";
 import { CancellationToken } from "@kaciras-blog/uikit";
 import { SET_WIDTH } from "@kaciras-blog/uikit/src/media-query/index";
 import { configureForProxy } from "@kaciras-blog/server/lib/axios-helper";
-import api from "@/api";
-import createApp, { mediaBreakpoints } from "./main";
+import { RenderContext } from "@kaciras-blog/server/lib/ssr-middleware";
+import api, { Api } from "./api";
+import { PrefetchContext } from "./prefetch";
 import { REFRESH_USER, SET_PREFETCH_DATA } from "./store/types";
+import createApp, { mediaBreakpoints } from "./main";
 
 
-class ServerPrefetchContext {
+class ServerPrefetchContext extends PrefetchContext {
 
-	constructor(store, route, api) {
+	readonly store: Store<any>;
+	readonly route: Route;
+	readonly api: Api;
+
+	constructor(store: Store<any>, route: Route, api: Api) {
+		super();
 		this.store = store;
 		this.route = route;
-		this.data = {};
 		this.api = api;
-	}
-
-	get cancelToken() {
-		return CancellationToken.NEVER;
 	}
 
 	get isServer() {
 		return true;
 	}
 
-	dataSetter(name) {
-		return value => this.data[name] = value;
+	get cancelToken() {
+		return CancellationToken.NEVER;
 	}
 }
 
@@ -35,7 +39,7 @@ class ServerPrefetchContext {
  * @param router Vue的路由
  * @return {Promise<any>} 在路由准备好了之后resolve
  */
-function onReadyAsync(router) {
+function onReadyAsync(router: VueRouter) {
 	return new Promise((resolve, reject) => router.onReady(resolve, reject));
 }
 
@@ -43,13 +47,13 @@ function onReadyAsync(router) {
  * 简单地通过 User-Agent 判断客户端的设备是不是手机
  *
  * @param userAgent User-Agent
- * @return {boolean} 如果是手机返回true，否则false
+ * @return 如果是手机返回true，否则false
  */
-function isMobile(userAgent) {
+function isMobile(userAgent: string) {
 	return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
 }
 
-export default async (context) => {
+export default async (context: RenderContext) => {
 	const { request, url } = context;
 
 	if (/^\/edit\//.test(url.pathname)) {
@@ -81,7 +85,7 @@ export default async (context) => {
 	 * 故 router.getMatchedComponents() 不会返回空数组，也无法用其区分404.
 	 * 目前的方案是在 ErrorPage.vue 里设置一个标识表示 NotFound.
 	 */
-	const componentTasks = router.getMatchedComponents()
+	const componentTasks = (router.getMatchedComponents() as any[])
 		.filter(c => c.asyncData)
 		.map(c => c.asyncData(session));
 
@@ -109,7 +113,9 @@ export default async (context) => {
 		context.title = title + " - Kaciras的博客";
 		context.meta = "<meta name='description' content='Kaciras的博客'>";
 	}
-	context.state = store.state;
+
+	// Vue2的类型定义......
+	(context as any).state = store.state;
 
 	return vue;
 };
