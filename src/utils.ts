@@ -32,8 +32,7 @@ export function errorMessage(object: any) {
 
 
 /**
- * 删除并返回数组中符合条件的元素，删除使用splice()函数，能够触发Vue的更新。
- * TODO: lodash 里叫 drop
+ * 删除并返回数组中符合条件的元素，使用splice()函数删除能够触发Vue的更新。
  *
  * @param array 数组
  * @param predicate 判断函数
