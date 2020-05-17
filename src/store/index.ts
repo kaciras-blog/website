@@ -30,7 +30,7 @@ export const SUN_PHASES = new SunPhases({
 const GUESTS = {
 	id: 0,
 	name: "(游客)",
-	head: "/static/img/akalin.jpg",
+	avatar: "/static/img/akalin.jpg",
 	authType: 0,
 }
 

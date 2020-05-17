@@ -24,7 +24,7 @@
 
 				<router-link to="/profile">
 					<img
-						:src="user.head"
+						:src="user.avatar"
 						alt="用户头像"
 						title="就是一个头像而已"
 						class="small head"

@@ -15,7 +15,7 @@
 		</div>
 
 		<img
-			:src="item.user.head"
+			:src="item.user.avatar"
 			alt="头像"
 			:class="$style.head"
 			class="small head"

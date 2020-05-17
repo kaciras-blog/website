@@ -8,7 +8,7 @@
 		<img
 			:src="props.cover"
 			alt="分类图标"
-			:class="$style.head"
+			:class="$style.cover"
 		>
 		<span :class="$style.name">{{props.name}}</span>
 	</li>
@@ -34,7 +34,7 @@
 	}
 }
 
-.head {
+.cover {
 	display: inline-block;
 	margin: 0 1rem 1rem;
 	.size(5rem);

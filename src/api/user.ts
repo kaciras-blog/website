@@ -16,7 +16,7 @@ export interface AccountSignUpRequest {
 
 export interface UserProfile {
 	name: string;
-	head: string;
+	avatar: string;
 }
 
 export interface User extends UserProfile {

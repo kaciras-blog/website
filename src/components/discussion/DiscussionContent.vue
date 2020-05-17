@@ -1,7 +1,7 @@
 <template>
 	<component :is="tag">
 		<img
-			:src="value.user.head"
+			:src="value.user.avatar"
 			alt="头像"
 			class="small head"
 			:class="$style.head"

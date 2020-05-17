@@ -5,7 +5,7 @@
 			<div :class="$style.profile">
 				<img
 					src="../../assets/img/logo-kaciras-circle.svg"
-					alt="头像"
+					alt="logo"
 					class="head"
 				>
 				<div>

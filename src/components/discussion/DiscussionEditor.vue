@@ -10,7 +10,7 @@
 
 	<div v-else>
 		<div>
-			<img :src="user.head" alt="头像" class="small head">
+			<img :src="user.avatar" alt="头像" class="small head">
 			<span :class="$style.name">{{user.name}}</span>
 		</div>
 

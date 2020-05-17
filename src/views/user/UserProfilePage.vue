@@ -9,7 +9,7 @@
 						:class="$style.head"
 						alt="头像"
 						title="点击换头像"
-						:src="user.head"
+						:src="user.avatar"
 						@click="changeAvatar"
 					>
 				</div>
@@ -58,7 +58,7 @@ export default {
 				aspectRatio: 1,
 			});
 			const cropped = await session.confirmPromise;
-			this.user.head = await api.misc.uploadImage(cropped);
+			this.user.avatar = await api.misc.uploadImage(cropped);
 		},
 		async save() {
 			try {

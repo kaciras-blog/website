@@ -6,7 +6,7 @@
 				<h3 class="compact minor-text">当前分类：</h3>
 				<img
 					class="small head"
-					:class="$style.head"
+					:class="$style.cover"
 					:src="current.cover"
 					alt="分类图标"
 				>
@@ -48,7 +48,7 @@
 				<div :class="$style.categoryWrapper">
 					<img
 						class="head"
-						:class="$style.head"
+						:class="$style.cover"
 						:src="cate.cover"
 						alt="分类图标"
 					>
@@ -179,7 +179,7 @@ export default {
 		flex: 1;
 	}
 
-	& > .head {
+	& > .cover {
 		margin: 0 .5rem;
 	}
 }
@@ -239,7 +239,7 @@ export default {
 	line-height: 1.8;
 }
 
-.head {
+.cover {
 	display: inline-block;
 	margin-bottom: 1rem;
 }
