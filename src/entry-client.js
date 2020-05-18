@@ -9,10 +9,9 @@ import { SUN_PHASES } from "@/store";
 import { REFRESH_USER, SET_PREFETCH_DATA, SET_SUN_PHASE } from "@/store/types";
 import { useServiceWorker } from "./serviceWorker";
 import * as loadingIndicator from "./loading-indicator";
-import { PrefetchContext } from "@/prefetch";
+import { PrefetchContext } from "./prefetch";
 
 useServiceWorker();
-loadingIndicator.mount();
 
 let cancelToken = CancellationToken.NEVER;
 
@@ -136,6 +135,9 @@ function isOnlyHashChange(to, from) {
  */
 function initAppAndRouterHook() {
 
+	vue.$mount("#app");
+	loadingIndicator.mount();
+
 	// 切换视图后应该关掉所有弹窗
 	router.afterEach(vue.$dialog.clear);
 
@@ -171,8 +173,6 @@ function initAppAndRouterHook() {
 
 	mediaQueryPlugin.observeWindow(store);
 	SUN_PHASES.observe().subscribe(value => store.commit(SET_SUN_PHASE, value));
-
-	vue.$mount("#app");
 }
 
 /*
