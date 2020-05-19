@@ -88,7 +88,7 @@ export default {
 .figure {
 	font-size: 16px;
 	overflow: hidden;
-	box-shadow: 0 8px 16px rgba(0, 0, 0, .15);
+	box-shadow: 0 6px 12px rgba(0, 0, 0, .15);
 }
 
 // 这个效果抄自：

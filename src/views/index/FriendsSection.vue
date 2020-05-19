@@ -7,14 +7,25 @@
 				:key="friend.id"
 				:class="$style.item"
 			>
-				<a :href="friend.url" class="clean-link">
+				<a
+					:href="friend.url"
+					target="_blank"
+					:class="$style.friend_container"
+				>
+					<img
+						:src="friend.background"
+						alt="favicon"
+						:class="$style.background"
+					>
 					<img
 						:src="friend.favicon"
 						alt="favicon"
 						:class="$style.favicon"
 					>
-					<div :class="$style.name">{{friend.name}}</div>
+					<span :class="$style.name">{{friend.name}}</span>
 				</a>
+
+				<!-- 没有更新按钮，更新 = 删除 + 添加 -->
 				<button
 					v-if="user.id === 2"
 					title="删除"
@@ -33,7 +44,7 @@
 					title="添加友链"
 					role="button"
 					:class="$style.hexagon_add_image"
-					@click="makeFriends"
+					@click="makeFriend"
 				>
 			</li>
 		</ul>
@@ -43,8 +54,15 @@
 <script>
 import { mapState } from "vuex";
 import api from "@/api";
-import MakeFriendDialog from "@/views/index/MakeFriendDialog";
 import { deleteOn, errorMessage } from "@/utils";
+import FriendInfoDialog from "./FriendInfoDialog";
+
+const DEFAULT_INFO = {
+	name: "",
+	url: "",
+	background: "/static/img/placeholder.png",
+	favicon: "/static/img/akalin.jpg",
+};
 
 export default {
 	name: "FriendsSection",
@@ -55,16 +73,21 @@ export default {
 	},
 	computed: mapState(["user"]),
 	methods: {
-		async makeFriends() {
-			const result = await this.$dialog.show(MakeFriendDialog);
-			if (!result.isConfirm) {
-				return;
-			}
-			try {
-				const friend = await api.friend.makeFriends(result.data);
-				this.friends.push(friend);
-			} catch (e) {
-				this.$dialog.alertError("添加失败", errorMessage(e));
+		async makeFriend() {
+			let info = DEFAULT_INFO;
+			for (; ;) {
+				const result = await this.$dialog.show(FriendInfoDialog, info);
+				if (!result.isConfirm) {
+					return;
+				}
+				info = result.data;
+
+				try {
+					const friend = await api.friend.makeFriend(info);
+					return this.friends.push(friend);
+				} catch (e) {
+					await this.$dialog.alertError("添加失败", errorMessage(e));
+				}
 			}
 		},
 		async rupture(friend) {
@@ -76,9 +99,16 @@ export default {
 </script>
 
 <style module lang="less">
+@import "../../css/imports";
+
+@background-width: 260px;
+@background-height: @background-width * 9 / 16;
+@favicon-size: 70px;
+@transition: transform .5s;
+
 .list {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, 140px);
+	grid-template-columns: repeat(auto-fit, @background-width);
 	grid-gap: 40px;
 	justify-content: center;
 	justify-items: center;
@@ -101,8 +131,9 @@ export default {
 	right: -10px;
 	width: 30px;
 	height: 30px;
-	border-radius: 100%;
+	z-index: 5;
 
+	border-radius: 50%;
 	background-image: url("~@kaciras-blog/uikit/src/assets/icon-close.svg");
 	background-position: 50%;
 	opacity: 0;
@@ -112,18 +143,76 @@ export default {
 	transition: .3s;
 }
 
+// =====================================================
+
+.friend_container {
+	display: block;
+	position: relative;
+	width: @background-width;
+	height: @background-height;
+
+	border-radius: 4px;
+	overflow: hidden;
+
+	&::before {
+		content: "";
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+		height: 50%;
+		z-index: 1;
+		background: rgba(255, 255, 255, .5);
+		transition: @transition;
+	}
+
+	&:hover::before {
+		transform: translateY((@background-height + @favicon-size) / -2);
+	}
+
+	&:hover > .favicon {
+		transform: translateY((@background-height + @favicon-size) / -2);
+	}
+
+	&:hover > .name {
+		transform: translateY(100%);
+	}
+}
+
+.background {
+	composes: full-vertex from global;
+	width: 100%;
+	height: 100%;
+}
+
 .favicon {
-	width: 140px;
-	height: 140px;
+	position: absolute;
+	left: (@background-width - @favicon-size) / 2;
+	top: (@background-height - @favicon-size) / 2;
+	.circle(@favicon-size);
+	z-index: 3;
+	box-shadow: 0 0 10px rgba(0, 0, 0, .3);
+	transition: @transition;
 }
 
 .name {
-	width: 100%;
-	padding: 20px 0;
-
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 50%;
+	padding-top: @background-height / 2 - 28px;
+	padding-bottom: 8px;
+	font-size: 16px;
 	text-align: center;
-	word-wrap: break-word;
+
+	color: black;
+	background: rgba(255, 255, 255, .9);
+	box-shadow: 0 0 10px rgba(0, 0, 0, .3);
+	transition: @transition;
 }
+
+// =====================================================
 
 .hexagon_add {
 	composes: item;
