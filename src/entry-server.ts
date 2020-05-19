@@ -4,7 +4,7 @@ import { Route, VueRouter } from "vue-router/types/router";
 import { CancellationToken } from "@kaciras-blog/uikit";
 import { SET_WIDTH } from "@kaciras-blog/uikit/src/media-query/index";
 import { configureForProxy } from "@kaciras-blog/server/lib/axios-helper";
-import { RenderContext } from "@kaciras-blog/server/lib/ssr-middleware";
+import { RenderContext } from "@kaciras-blog/server/lib/koa/vue-ssr";
 import api, { Api } from "./api";
 import { PrefetchContext } from "./prefetch";
 import { REFRESH_USER, SET_PREFETCH_DATA } from "./store/types";

@@ -101,6 +101,8 @@ export default {
 <style module lang="less">
 @import "../../css/imports";
 
+// 手机屏是否需要缩小点，一排两个？
+
 @background-width: 260px;
 @background-height: @background-width * 9 / 16;
 @favicon-size: 70px;
@@ -161,21 +163,20 @@ export default {
 		right: 0;
 		top: 0;
 		height: 50%;
+
 		z-index: 1;
 		background: rgba(255, 255, 255, .5);
 		transition: @transition;
 	}
 
-	&:hover::before {
-		transform: translateY((@background-height + @favicon-size) / -2);
-	}
+	@media screen and (min-width: @length-screen-mobile) {
+		@ty: (@background-height + @favicon-size) / -2;
 
-	&:hover > .favicon {
-		transform: translateY((@background-height + @favicon-size) / -2);
-	}
+		&:hover::before { transform: translateY(@ty); }
 
-	&:hover > .name {
-		transform: translateY(100%);
+		&:hover > .favicon { transform: translateY(@ty); }
+
+		&:hover > .name { transform: translateY(100%); }
 	}
 }
 
@@ -190,6 +191,7 @@ export default {
 	left: (@background-width - @favicon-size) / 2;
 	top: (@background-height - @favicon-size) / 2;
 	.circle(@favicon-size);
+
 	z-index: 3;
 	box-shadow: 0 0 10px rgba(0, 0, 0, .3);
 	transition: @transition;
@@ -201,14 +203,16 @@ export default {
 	right: 0;
 	bottom: 0;
 	height: 50%;
+
+	font-size: 16px;
 	padding-top: @background-height / 2 - 28px;
 	padding-bottom: 8px;
-	font-size: 16px;
 	text-align: center;
 
 	color: black;
 	background: rgba(255, 255, 255, .9);
 	box-shadow: 0 0 10px rgba(0, 0, 0, .3);
+
 	transition: @transition;
 }
 

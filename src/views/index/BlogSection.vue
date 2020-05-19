@@ -25,9 +25,9 @@
 							alt="封面"
 							:class="$style.picture"
 						>
-						<h3 :class="$style.name"> {{card.name}} </h3>
+						<h3 :class="$style.name">{{card.name}} </h3>
 					</div>
-					<div :class="$style.content"> {{card.description}}</div>
+					<div :class="$style.content">{{card.description}}</div>
 				</article>
 			</smart-link>
 		</div>
@@ -88,7 +88,7 @@ export default {
 .figure {
 	font-size: 16px;
 	overflow: hidden;
-	box-shadow: 0 6px 12px rgba(0, 0, 0, .15);
+	box-shadow: 0 6px 12px rgba(0, 0, 0, .2);
 }
 
 // 这个效果抄自：
@@ -97,22 +97,24 @@ export default {
 	position: relative;
 	overflow: hidden;
 
-	&::before {
-		content: "";
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background-color: hsla(0, 0%, 100%, .6);
-		transition: transform .6s;
-		z-index: 2;
-		will-change: transform;
-		transform: scale3d(1.9, 1.4, 1) rotate(45deg) translate3d(0, -120%, 0);
-	}
+	@media screen and (min-width: @length-screen-mobile) {
+		&::before {
+			content: "";
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: hsla(0, 0%, 100%, .6);
+			transition: transform .6s;
+			z-index: 2;
+			will-change: transform;
+			transform: scale3d(1.9, 1.4, 1) rotate(45deg) translate3d(0, -120%, 0);
+		}
 
-	&:hover::before {
-		transform: scale3d(1.9, 1.4, 1) rotate(45deg) translate3d(0, 120%, 0);
+		&:hover::before {
+			transform: scale3d(1.9, 1.4, 1) rotate(45deg) translate3d(0, 120%, 0);
+		}
 	}
 }
 

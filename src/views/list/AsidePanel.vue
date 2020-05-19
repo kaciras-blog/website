@@ -1,8 +1,5 @@
 <template>
 	<div>
-		<h3 class="padding">置顶</h3>
-		<p :class="$style.noContent">暂无</p>
-
 		<h3 class="padding">浏览排行</h3>
 		<ol v-if="hots" class="rank-list">
 
