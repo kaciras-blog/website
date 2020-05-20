@@ -55,12 +55,14 @@ export const converter = new MarkdownIt({
 	},
 });
 
-// NOTICE: 由 Markdown 渲染的标题链接会触发 Vue-Router 的路由流程，需要在路由钩子里做检查以跳过预载，
-//		   具体见 entry-client.js 中的 router.beforeEach 钩子。
+// 【注意】
+// 由 Markdown 渲染的标题链接会触发 Vue-Router 的路由流程，需要在路由钩子里做检查以跳过预载，
+// 具体见 entry-client.js 中的 router.beforeEach 钩子。
 converter.use(Anchor, {
 	permalink: true,
-	permalinkClass: "fas fa-link header-anchor",
-	permalinkSymbol: "",
+	permalinkAttrs: () => ({ "aria-hidden": "true" }),
+	permalinkClass: "fas header-anchor",
+	permalinkSymbol: "\uf0c1", // content of fa-link
 });
 converter.use(media);
 converter.use(tableOfContent);
