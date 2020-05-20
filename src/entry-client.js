@@ -135,10 +135,14 @@ function isOnlyHashChange(to, from) {
  */
 function initAppAndRouterHook() {
 
+	// 这俩要放在挂载的前面，因为它们影响关键的元素
+	mediaQueryPlugin.observeWindow(store);
+	SUN_PHASES.observe().subscribe(value => store.commit(SET_SUN_PHASE, value));
+
 	vue.$mount("#app");
 	loadingIndicator.mount();
 
-	// 切换视图后应该关掉所有弹窗
+	// 切换视图后关掉所有弹窗
 	router.afterEach(vue.$dialog.clear);
 
 	/**
@@ -170,9 +174,6 @@ function initAppAndRouterHook() {
 		const activated = matched.filter((c, i) => diffed || (diffed = (previous[i] !== c)));
 		prefetchComponents(to, activated, next);
 	});
-
-	mediaQueryPlugin.observeWindow(store);
-	SUN_PHASES.observe().subscribe(value => store.commit(SET_SUN_PHASE, value));
 }
 
 /*
