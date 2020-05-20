@@ -119,11 +119,12 @@ export default {
 }
 
 .tabItem {
+	composes: click-item from global;
+
 	padding: .8rem 0;
 	transform: rotateZ(0);
 
 	font-size: 1rem;
-	.click-item;
 	border: none;
 	background-color: transparent;
 	color: whitesmoke;

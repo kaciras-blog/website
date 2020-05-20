@@ -205,7 +205,7 @@ export default {
 }
 
 .category {
-	.click-item;
+	composes: click-item from global;
 	border: solid 1px #d7d7d7;
 
 	&:hover, &:focus {

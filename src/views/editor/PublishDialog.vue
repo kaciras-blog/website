@@ -11,7 +11,7 @@
 						:src="category.cover"
 						alt="分类图标"
 					>
-					<h3 class="compact">{{category.name}}</h3>
+					<h3 :class="$style.name">{{category.name}}</h3>
 				</div>
 
 				<div v-else :class="$style.selected"></div>
@@ -115,13 +115,13 @@ export default {
 .selected {
 	flex-grow: 1;
 	display: contents;
+}
 
-	& > h3 {
-		.ellipsis;
+.name {
+	composes: compact ellipsis from global;
 
-		display: inline-block;
-		margin: 0 .5rem;
-	}
+	display: inline-block;
+	padding: 0 .5rem;
 }
 
 .select_button {

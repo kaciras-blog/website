@@ -1160,9 +1160,9 @@
     vue-server-renderer "2.6.11"
 
 "@kaciras-blog/uikit@^0.3.2":
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/@kaciras-blog/uikit/-/uikit-0.3.2.tgz#8f5b59768a91581400938d9d4a4115523806b271"
-  integrity sha512-7xFsxj+UNkMfKX+KhcMjrCV9lUW5qUIIgOMTB7W/AO1f2M/TxX5GIJR3mQ3xFVvLI9rR96vHk7qZjL4wMrqs0A==
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/@kaciras-blog/uikit/-/uikit-0.3.3.tgz#410b93479684e253fba65a9f8ff75329816cd22a"
+  integrity sha512-CmgQ1l7YaoFTxSzrl/II2u97wDG4NzWk/BsXbLrnSakcEZ8hxXoFHzVtLg8fVbPv2UrxX/t5Jkqq1q+lL884rQ==
   dependencies:
     "@fortawesome/fontawesome-free" "^5.13.0"
     animejs "^3.2.0"
