@@ -34,9 +34,7 @@
 				>
 			</label>
 
-			<kx-check-box v-model="destroy">
-				发表后删除草稿
-			</kx-check-box>
+			<kx-check-box v-model="destroy"> 发表后删除草稿</kx-check-box>
 		</div>
 
 		<kx-standard-dialog-buttons @confirm="accept"/>
@@ -58,7 +56,7 @@ export default {
 	data: () => ({
 		url: "",
 		category: null,
-		destroy: false,
+		destroy: true,
 	}),
 	methods: {
 		selectCategory() {
@@ -73,19 +71,22 @@ export default {
 				data.draftId = archive.id; // 文章API里是draftId
 				data.destroy = this.destroy;
 
-				let article = archive.articleId;
+				let id = archive.articleId;
+				let returnUrl;
 
-				if (article) {
-					await api.article.update(article, data);
+				if (id) {
+					// TODO：returnUrl 不一致
+					await api.article.update(id, data);
+					returnUrl = id;
 				} else if (!this.category) {
 					return this.$dialog.alertError("发表失败", "必须选择一个分类");
 				} else {
 					data.category = this.category.id;
 					data.urlTitle = this.url.length ? this.url : data.title;
-					article = await api.article.publish(data);
+					returnUrl = await api.article.publish(data);
 				}
-				this.$dialog.confirm();
-				this.$router.push(`/article/${article}`);
+
+				this.$dialog.confirm(returnUrl);
 			} catch (e) {
 				this.$dialog.alertError("发表失败", errorMessage(e));
 			}
