@@ -1,6 +1,9 @@
 <!-- TODO: 这一版的设计以rem长度单位为主，对宽屏不友好，但由于我没有那么宽的屏幕来做调试，所以搞不了 -->
 <template>
-	<base-page-layout nav-class="login-header">
+	<base-page-layout
+		:class="$style.container"
+		nav-class="login-header"
+	>
 		<div :class="$style.body">
 			<div :class="$style.picture_box">
 				<img
@@ -54,6 +57,12 @@ export default {
 <style module lang="less">
 @import "../../css/imports";
 
+.container {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
 :global(.login-header) {
 	& .content {
 		color: white;
@@ -64,6 +73,8 @@ export default {
 .body {
 	display: flex;
 	align-items: flex-start;
+
+	flex: 1;
 
 	max-width: 980px;
 	margin: 0 auto;

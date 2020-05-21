@@ -137,7 +137,9 @@ export default {
 
 :global(#index-page) {
 	display: flex;
+	justify-content: center;
 	align-items: flex-start;
+
 	min-height: 100vh;
 	margin: 0 auto;
 	padding-top: 30px;
@@ -156,6 +158,7 @@ export default {
 
 .list {
 	flex-grow: 1;
+	max-width: 64rem;
 }
 
 .listTitle {
@@ -172,6 +175,8 @@ export default {
 	top: 30px;
 
 	width: 29%;
+	max-width: 30em;
+
 	flex: 0 0 auto;
 	display: none;
 

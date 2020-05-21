@@ -58,7 +58,6 @@
 <script>
 import { mapState } from "vuex";
 import { scrollToElementStart } from "@kaciras-blog/uikit";
-import api from "@/api";
 import TitleMixin from "@/title-mixin";
 import { articleLink } from "@/blog-plugin";
 import { escapeHtml } from "@/utils";
@@ -146,14 +145,15 @@ export default {
 
 	@media screen {
 		@media (min-width: @length-screen-mobile) {
-			max-width: 90vw;
+			width: 90vw;
 			padding-top: 50px;
 		}
 		@media (min-width: @length-screen-pad) {
-			max-width: 78vw;
+			width: 78vw;
 		}
 		@media (min-width: @length-screen-wide) {
-			max-width: 66vw;
+			width: 66vw;
+			max-width: 1400px;
 		}
 	}
 }
@@ -179,10 +179,11 @@ export default {
 			padding: 30px;
 		}
 		@media (min-width: @length-screen-pad) {
-			max-width: 85vw;
+			width: 85vw;
 		}
 		@media (min-width: @length-screen-wide) {
-			max-width: 75vw;
+			width: 75vw;
+			max-width: 1500px;
 		}
 	}
 }

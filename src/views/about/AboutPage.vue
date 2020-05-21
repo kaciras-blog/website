@@ -1,5 +1,8 @@
 <template>
-	<base-page-layout :nav-class="$style.top_nav">
+	<base-page-layout
+		:class="$style.container"
+		:nav-class="$style.top_nav"
+	>
 		<slide-nav :class="$style.header" :tabs="tabs"/>
 		<router-view/>
 	</base-page-layout>
@@ -26,9 +29,17 @@ export default {
 <style module lang="less">
 @import "../../css/imports";
 
+.container {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	background: whitesmoke;
+}
+
 .top_nav {
 	position: static;
 	box-shadow: none;
+	background: white;
 }
 
 .header {

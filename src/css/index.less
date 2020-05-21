@@ -44,15 +44,18 @@ html {
 }
 
 .about-tab-page {
-	padding: 20px 0;
+	flex: 1;
+	margin: 20px 0;
 	font-size: initial;
-	background-color: whitesmoke;
 
 	@media screen and (min-width: @length-screen-mobile) {
-		padding: 80px 15vw;
+		margin: 80px 15vw;
 	}
+
 	@media screen and (min-width: @length-screen-wide) {
-		padding: 80px 22vw;
+		margin: 80px auto;
+		width: 56vw;
+		max-width: 1200px;
 	}
 }
 

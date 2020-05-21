@@ -26,7 +26,13 @@
 				:class="$style.banner_content"
 				:style="titleStyle"
 			>
-				<h1 title="滚轮点击切换背景" @click.middle="toNextPhase">Kaciras' Blog</h1>
+				<h1
+					title="滚轮点击切换背景"
+					:class="$style.title"
+					@click.middle="toNextPhase"
+				>
+					Kaciras' Blog
+				</h1>
 				<p :class="$style.sub_title">编程 • 生活 • 梦想</p>
 			</div>
 		</section>
@@ -194,17 +200,21 @@ export default {
 	left: 30px;
 	right: 30px;
 
-	text-align: center;
-	transition: all 1s cubic-bezier(.25, .7, .7, .8);
-
-	& > h1 {
-		font-size: 5rem;
-		margin-bottom: 40px;
+	@media screen and (min-width: @length-screen-wide) {
+		font-size: 1vw;
 	}
+
+	text-align: center;
+	transition: color 1s cubic-bezier(.25, .7, .7, .8);
+}
+
+.title {
+	font-size: 5em;
+	margin-bottom: .5em;
 }
 
 .sub_title {
-	font-size: 2rem;
+	font-size: 2em;
 }
 
 .blog {
