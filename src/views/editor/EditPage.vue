@@ -107,7 +107,7 @@ export default {
 		/** 监视文本的改变，当改变时开始计时5分钟，到点自动保存 */
 		watchChanges() {
 			const callback = () => {
-				setTimeout(this.autoSave, 5 * 60 * 1000);
+				this.$_autoSaveTimer = setTimeout(this.autoSave, 5 * 60 * 1000);
 			};
 			new VueMultiWatcher(this, ["metadata", "content"], callback, { once: true });
 		},
@@ -192,6 +192,7 @@ export default {
 		window.addEventListener("beforeunload", this.onPageExit);
 	},
 	beforeDestroy() {
+		clearTimeout(this.$_autoSaveTimer);
 		window.removeEventListener("beforeunload", this.onPageExit);
 	},
 };
