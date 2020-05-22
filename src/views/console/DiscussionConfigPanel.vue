@@ -1,6 +1,6 @@
 <template>
 	<section class="panel" :class="$style.config_section">
-		<h2>评论系统设置</h2>
+		<h2>设置</h2>
 
 		<div :class="$style.config_row">
 			<kx-check-box

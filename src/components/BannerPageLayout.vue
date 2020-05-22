@@ -64,7 +64,9 @@ export default {
 
 .banner {
 	composes: image_resolver;
-	height: 12rem;
+
+	min-height: 192px;
+	height: 10vw;
 	margin-top: -50px;
 }
 
