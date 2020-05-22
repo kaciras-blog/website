@@ -1,6 +1,5 @@
 <template>
 	<component :is="tag" class="top-nav" :class="[$style.container, { [$style.colored]: colored }]">
-
 		<router-link to="/" title="回到首页">
 			<img src="@/assets/img/logo-kaciras-wide.svg" alt="logo" :class="$style.logo">
 		</router-link>
@@ -111,10 +110,6 @@ export default {
 	}
 }
 
-.colored {
-	background-color: white;
-}
-
 // 外层套了个<a>所以宽高不能用百分比，只能写死图片的大小
 .logo {
 	display: block;
@@ -141,5 +136,10 @@ export default {
 
 :global(.dark) .container {
 	background-color: rgba(255, 255, 255, .1);
+}
+
+// 懒得改了重构整个TopNav，先用 !important 凑合过吧
+.colored {
+	background-color: white !important;
 }
 </style>
