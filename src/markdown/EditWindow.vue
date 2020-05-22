@@ -4,7 +4,10 @@
 			v-show="viewMode !== 2"
 			ref="textarea"
 			class="text-view"
-			:class="{ split:viewMode === 0, single:viewMode === 1 }"
+			:class="{
+				split:viewMode === 0,
+				single:viewMode === 1,
+			}"
 			title="编辑区"
 			spellcheck="false"
 			:value="text"
@@ -20,7 +23,10 @@
 			v-html="html"
 			ref="preview"
 			class="text-view preview markdown"
-			:class="{ split:viewMode === 0, single:viewMode === 2 }"
+			:class="{
+				split:viewMode === 0,
+				single:viewMode === 2,
+			}"
 		/>
 
 		<pre
@@ -29,7 +35,10 @@
 			v-text="text"
 			ref="preview"
 			class="text-view preview markdown"
-			:class="{ split:viewMode === 0, single:viewMode === 2 }"
+			:class="{
+				split:viewMode === 0,
+				single:viewMode === 2,
+			}"
 		/>
 	</div>
 </template>
@@ -56,6 +65,10 @@ export default {
 			type: String,
 			default: "MD",
 		},
+		debounce: {
+			type: Number,
+			default: 500,
+		},
 	},
 	data() {
 		return {
@@ -78,7 +91,7 @@ export default {
 			if (this.$_timer) {
 				clearTimeout(this.$_timer);
 			}
-			this.$_timer = setTimeout(render, 500);
+			this.$_timer = setTimeout(render, this.debounce);
 		},
 	},
 	methods: {
@@ -141,6 +154,7 @@ export default {
 
 	margin: 0;
 	padding: .5rem 1rem 0 1rem;
+	vertical-align: top;
 
 	overflow-y: scroll;
 	overflow-x: hidden;

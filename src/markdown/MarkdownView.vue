@@ -5,7 +5,10 @@ import { renderMarkdown, enableLazyLoad } from ".";
 export default {
 	name: "MarkdownView",
 	props: {
-		value: { type: String, required: true },
+		value: {
+			type: String,
+			required: true,
+		},
 	},
 	render(h) {
 		const innerHTML = renderMarkdown(this.value);

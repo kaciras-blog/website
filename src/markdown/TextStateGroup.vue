@@ -1,11 +1,11 @@
 <template>
 	<div class="el-wrapper">
 		<span v-if="selected" :class="$style.item">
-			选择：{{selection[0] + " - " + selection[1]}} | {{selection[1] - selection[0]}} 字
+			选择：
+			{{selection[0] + " - " + selection[1]}}
+			| {{ selection[1] - selection[0] }} 字
 		</span>
-		<span :class="$style.item">
-			总字数：{{text.length}}
-		</span>
+		<span :class="$style.item">总字数：{{ text.length }}</span>
 	</div>
 </template>
 
@@ -23,7 +23,7 @@ export default {
 		},
 	},
 	computed: {
-		selected () {
+		selected() {
 			return this.selection[0] !== this.selection[1];
 		},
 	},

@@ -1,21 +1,26 @@
 <template>
 	<kx-base-dialog title="插入视频">
 		<form :class="$style.form" @keyup.enter="enterKey">
+
+			<label for="video_url">视频URL（必需）</label>
 			<div :class="$style.field">
-				<input v-model="src" :class="$style.text_box">
-				<kx-task-button :on-click="uploadVideo">上传视频</kx-task-button>
+				<input id="video_url" v-model="src" :class="$style.text_box">
+				<kx-task-button :on-click="uploadVideo">上传</kx-task-button>
 			</div>
+
+			<label for="video_poster">视频封面</label>
 			<div :class="$style.field">
-				<input v-model="poster" :class="$style.text_box">
-				<kx-task-button :on-click="uploadPoster">上传封面</kx-task-button>
+				<input id="video_poster" v-model="poster" :class="$style.text_box">
+				<kx-task-button :on-click="uploadPoster">上传</kx-task-button>
 			</div>
+
 			<fieldset :class="$style.field">
 				<kx-check-box v-model="autoplay">自动播放</kx-check-box>
 				<kx-check-box v-model="loop">循环</kx-check-box>
 				<kx-check-box v-model="muted">静音</kx-check-box>
 			</fieldset>
 		</form>
-		<kx-standard-dialog-buttons @confirm="$dialog.confirm($data)"/>
+		<kx-standard-dialog-buttons :acceptable="src.length" @confirm="$dialog.confirm($data)"/>
 	</kx-base-dialog>
 </template>
 
@@ -25,7 +30,7 @@ import api from "@/api";
 export default {
 	name: "VideoDialog",
 	data: () => ({
-		src: null,
+		src: "",
 		poster: null,
 		autoplay: false,
 		loop: true,
@@ -59,6 +64,8 @@ export default {
 	border: none;
 	padding: 0;
 
+	// margin-top 针对上面的 label
+	margin-top: 4px;
 	margin-bottom: @margin;
 
 	& > :global(.kx-check-box) {
