@@ -142,4 +142,8 @@ export default {
 .colored {
 	background-color: white !important;
 }
+
+.colored :global(.nav-item) {
+	color: black !important;
+}
 </style>

@@ -23,7 +23,7 @@
 				</div>
 			</div>
 			<ul class="clean-list">
-				<discussion-check-item v-for="item of pendingList" :key="item.id" v-bind="item"/>
+				<discussion-check-item v-for="item of pendingList" :key="item.id" :item="item"/>
 			</ul>
 		</div>
 	</div>
