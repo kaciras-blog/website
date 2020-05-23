@@ -60,6 +60,7 @@ export default {
 <style module lang="less">
 .container {
 	composes: full-vertex from global;
+
 	position: fixed;
 	z-index: 1000;
 	background: rgba(0, 0, 0, .5);
@@ -69,6 +70,7 @@ export default {
 	max-width: 400px;
 	width: 68vw;
 	height: 100vh;
+	will-change: transform;
 }
 
 .enter_before > .navMenu {

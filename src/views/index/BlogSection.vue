@@ -91,39 +91,26 @@ export default {
 	box-shadow: 0 6px 12px rgba(0, 0, 0, .2);
 }
 
-// 这个效果抄自：
-// https://github.com/chanshiyucx/aurora/blob/master/src/views/Home/index.scss
+// ==============================================================================
+
+// Update: 博客上的图还是白底的多，擦亮动画效果不好，还是用放大吧
+
 .card_header {
 	position: relative;
 	overflow: hidden;
-
-	@media screen and (min-width: @length-screen-mobile) {
-		&::before {
-			content: "";
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			background-color: hsla(0, 0%, 100%, .6);
-			transition: transform .6s;
-			z-index: 2;
-			will-change: transform;
-			transform: scale3d(1.9, 1.4, 1) rotate(45deg) translate3d(0, -120%, 0);
-		}
-
-		&:hover::before {
-			transform: scale3d(1.9, 1.4, 1) rotate(45deg) translate3d(0, 120%, 0);
-		}
-	}
 }
 
 .picture {
 	width: 100%;
-	height: @pic-height;
+	height: @pic-height-mobile;
 
-	@media screen and (max-width: @length-screen-mobile) {
-		height: @pic-height-mobile;
+	@media screen and (min-width: @length-screen-mobile) {
+		height: @pic-height;
+		transition: transform .3s;
+
+		&:hover {
+			transform: scale(1.1);
+		}
 	}
 }
 
