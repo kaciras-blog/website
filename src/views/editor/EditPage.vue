@@ -36,9 +36,9 @@
 </template>
 
 <script>
-import { VueMultiWatcher } from "@kaciras-blog/uikit";
 import api from "@/api";
-import { assignUpdate, errorMessage } from "@/utils";
+import { VueMultiWatcher, openFile } from "@kaciras-blog/uikit";
+import { assignUpdate, errorMessage, getImageSize } from "@/utils";
 import KxMarkdownEditWindow from "@/markdown/EditWindow";
 import KxMarkdownBasicToolbar from "@/markdown/BasicToolbar";
 import TextStateGroup from "@/markdown/TextStateGroup";
@@ -90,7 +90,12 @@ export default {
 	},
 	methods: {
 		async addImage() {
-			const res = await api.misc.uploadImageFile();
+			const file = await openFile("image/*");
+
+			// 加上宽高便于确定占位图的尺寸，从 https://chanshiyu.com/#/post/41 学到的
+			const { width, height } = await getImageSize(file);
+			const res = await api.misc.uploadImage(file) + `?vw=${width}&vh=${height}`;
+
 			const [selStart, selEnd] = this.selection;
 			const p = selStart + 2;
 			const v = this.content;

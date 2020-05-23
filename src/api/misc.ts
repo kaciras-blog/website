@@ -31,11 +31,11 @@ export default class extends AbstractResource {
 	 * @returns 保存的图片文件名
 	 */
 	async uploadImageFile() {
-		return this.uploadImage((await openFile(false, "image/*"))[0]);
+		return this.uploadImage(await openFile("image/*"));
 	}
 
 	async uploadVideoFile() {
-		return this.uploadVideo((await openFile(false, "video/*"))[0]);
+		return this.uploadVideo(await openFile("video/*"));
 	}
 
 	/**
