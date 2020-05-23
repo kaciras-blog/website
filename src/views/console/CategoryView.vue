@@ -81,6 +81,8 @@ export default {
 			}
 			if (item.background) {
 				vars["--background"] = `url(${item.background})`;
+			} else {
+				vars["--background"] = `url(${item.banner.image})`;
 			}
 			return vars;
 		},
