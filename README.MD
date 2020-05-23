@@ -12,11 +12,13 @@
 
 🌱  支持Vue的服务端渲染，SEO友好，首屏无白屏
 
+🔧 自带后台和Markdown编辑器
+
 # 使用
 
 系统需求：
 
-* NodeJS >= 13.6.0
+* NodeJS >= 14.0.0
 * 运行时需要和后端服务通信，故先要启动 [content-server](https://github.com/kaciras-blog/content-server)
 
 浏览器支持：
@@ -47,5 +49,3 @@ yarn start
 ```
 
 `serve`, `build` 和 `start`, 默认使用 config/index.js 作为配置，可使用 `--profile=prod` 参数来指定配置文件为 config/prod.js
-
-

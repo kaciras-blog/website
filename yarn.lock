@@ -1159,10 +1159,10 @@
     sitemap "^6.1.4"
     vue-server-renderer "2.6.11"
 
-"@kaciras-blog/uikit@^0.3.2":
-  version "0.3.3"
-  resolved "https://registry.yarnpkg.com/@kaciras-blog/uikit/-/uikit-0.3.3.tgz#410b93479684e253fba65a9f8ff75329816cd22a"
-  integrity sha512-CmgQ1l7YaoFTxSzrl/II2u97wDG4NzWk/BsXbLrnSakcEZ8hxXoFHzVtLg8fVbPv2UrxX/t5Jkqq1q+lL884rQ==
+"@kaciras-blog/uikit@^0.3.4":
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/@kaciras-blog/uikit/-/uikit-0.3.4.tgz#a1bdd297ea2ceb4cab62b7afa1b0a9e9b573710f"
+  integrity sha512-q0nq9/u8Zsxk3E3reI4MRYHk0erlP2/PxYfbxVLO3YMaZbgFxj6e38LdkeXOqWP9ZzKlSLwCyFgmOK4lbscnlA==
   dependencies:
     "@fortawesome/fontawesome-free" "^5.13.0"
     animejs "^3.2.0"
@@ -1171,7 +1171,7 @@
     cropperjs "^1.5.6"
     rxjs "^6.5.5"
     vue "^2.6.11"
-    vue-router "^3.1.6"
+    vue-router "^3.2.0"
     vuex "^3.4.0"
 
 "@koa/cors@^3.1.0":
@@ -4177,10 +4177,10 @@ eslint-visitor-keys@^1.0.0, eslint-visitor-keys@^1.1.0:
   resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-1.1.0.tgz#e2a82cea84ff246ad6fb57f9bde5b46621459ec2"
   integrity sha512-8y9YjtM1JBJU/A9Kc+SbaOV4y29sSWckBwMHa+FGtVj5gN/sbnKDf6xJUl+8g7FAij9LVaP8C24DUiH/f/2Z9A==
 
-eslint@^7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/eslint/-/eslint-7.0.0.tgz#c35dfd04a4372110bd78c69a8d79864273919a08"
-  integrity sha512-qY1cwdOxMONHJfGqw52UOpZDeqXy8xmD0u8CT6jIstil72jkhURC704W8CFyTPDPllz4z4lu0Ql1+07PG/XdIg==
+eslint@^7.1.0:
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/eslint/-/eslint-7.1.0.tgz#d9a1df25e5b7859b0a3d86bb05f0940ab676a851"
+  integrity sha512-DfS3b8iHMK5z/YLSme8K5cge168I8j8o1uiVmFCgnnjxZQbCGyraF8bMl7Ju4yfBmCuxD7shOF7eqGkcuIHfsA==
   dependencies:
     "@babel/code-frame" "^7.0.0"
     ajv "^6.10.0"
@@ -6877,10 +6877,10 @@ lowercase-keys@^1.0.0:
   resolved "https://registry.yarnpkg.com/lowercase-keys/-/lowercase-keys-1.0.1.tgz#6f9e30b47084d971a7c820ff15a6c5167b74c26f"
   integrity sha512-G2Lj61tXDnVFFOi8VZds+SoQjtQC3dgokKdDG2mTm1tx4m50NUHBOZSBwQQHyy0V12A0JTG4icfZQH+xPyh8VA==
 
-lozad@^1.14.0:
-  version "1.14.0"
-  resolved "https://registry.yarnpkg.com/lozad/-/lozad-1.14.0.tgz#91d51d57e53187e95c5b7f4029d7a28a0e940e10"
-  integrity sha512-uMGxpXBW15JDGVly3p121Y4jlb/OwmXpnMQR5vnb4GxMeK45NGcmlMrRr47fmLxtSdnGRFm0YdJaVXuudPKDaA==
+lozad@^1.15.0:
+  version "1.15.0"
+  resolved "https://registry.yarnpkg.com/lozad/-/lozad-1.15.0.tgz#cdab34e0e00eaecd3972129880560f5885a1a7bf"
+  integrity sha512-P60iyIiud4XSH5SXxrgPCXoebEaT6SYAvRBgeMBZPYmWVRSfOhQks8ZmyZ/WFgDgwvrHnWffXw9HMg8G0gvt0w==
 
 lpad-align@^1.0.1:
   version "1.1.2"
@@ -10677,7 +10677,7 @@ vue-multiselect@^2.1.6:
   resolved "https://registry.yarnpkg.com/vue-multiselect/-/vue-multiselect-2.1.6.tgz#5be5d811a224804a15c43a4edbb7485028a89c7f"
   integrity sha512-s7jmZPlm9FeueJg1RwJtnE9KNPtME/7C8uRWSfp9/yEN4M8XcS/d+bddoyVwVnvFyRh9msFo0HWeW0vTL8Qv+w==
 
-vue-router@^3.1.6, vue-router@^3.2.0:
+vue-router@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.2.0.tgz#da35195ffe37fdf0bec9f5f8f72781d2a7718815"
   integrity sha512-khkrcUIzMcI1rDcNtqkvLwfRFzB97GmJEsPAQdj7t/VvpGhmXLOkUfhc+Ah8CvpSXGXwuWuQO+x8Sy/xDhXZIA==

@@ -3,7 +3,7 @@
  */
 import Vue from "vue";
 import { CancellationToken } from "@kaciras-blog/uikit";
-import TopProgressBar from "./components/TopProgressBar.vue";
+import TopProgressBar from "@kaciras-blog/uikit/src/components/KxProgress.vue";
 
 // Vue2对TS的支持真的不行
 const progressBar = new Vue(TopProgressBar) as any;
