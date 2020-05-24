@@ -75,7 +75,7 @@ export function attachRandomId(object: any) {
 }
 
 /**
- * 获取图片的尺寸，该函数基于 HtmlImageElement 只能在浏览器端使用。
+ * 获取图片的尺寸，该函数基于 HTMLImageElement 只能在浏览器端使用。
  *
  * @param image 图片文件或URL
  * @return 尺寸 { width, height }，单位像素

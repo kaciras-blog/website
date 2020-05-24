@@ -68,7 +68,7 @@ function unregister() {
 
 /*
  * 生产模式下注册 ServiceWorker，开发模式禁用。
- * 禁用不能只是不注册，而必须得注销！
+ * 注意：要禁用的话不能只是不注册，而必须得注销！
  */
 export function useServiceWorker() {
 	if ("serviceWorker" in navigator) {
