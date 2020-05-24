@@ -34,12 +34,17 @@ function lazyImagePlugin(markdownIt) {
 
 	markdownIt.renderer.rules.image = (tokens, idx, options, env, self) => {
 		const token = tokens[idx];
-		const srcValue = token.attrGet("src");
-		token.attrPush(["data-src", srcValue]);
+		const src = token.attrGet("src");
+		token.attrPush(["data-src", src]);
 		token.attrSet("src", loadingImage);
 
-		const wrapper = `<a href="${srcValue}" class="center-wrapper" target="_blank">`;
-		return wrapper + defaultImageRenderer(tokens, idx, options, env, self) + "</a>";
+		const img = defaultImageRenderer(tokens, idx, options, env, self);
+
+		return `
+			<span class="center-wrapper">
+				<a href="${src}" target="_blank">${img}</a>
+				<span class="md-alt">${token.content}</span>
+			</span>`;
 	};
 }
 
