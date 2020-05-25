@@ -1159,10 +1159,10 @@
     sitemap "^6.1.4"
     vue-server-renderer "2.6.11"
 
-"@kaciras-blog/uikit@^0.3.4":
-  version "0.3.4"
-  resolved "https://registry.yarnpkg.com/@kaciras-blog/uikit/-/uikit-0.3.4.tgz#a1bdd297ea2ceb4cab62b7afa1b0a9e9b573710f"
-  integrity sha512-q0nq9/u8Zsxk3E3reI4MRYHk0erlP2/PxYfbxVLO3YMaZbgFxj6e38LdkeXOqWP9ZzKlSLwCyFgmOK4lbscnlA==
+"@kaciras-blog/uikit@^0.3.5":
+  version "0.3.5"
+  resolved "https://registry.yarnpkg.com/@kaciras-blog/uikit/-/uikit-0.3.5.tgz#fbe874c717562d99233ca960165642fa6aaf7290"
+  integrity sha512-iOEUC+jLoUrmRc13a4lnZmAW/eHYtDxs/WsUseCskjTOydCTUlwu5jiGBqNp3YMj/b3REWbo6TA0saU1dEeEEw==
   dependencies:
     "@fortawesome/fontawesome-free" "^5.13.0"
     animejs "^3.2.0"

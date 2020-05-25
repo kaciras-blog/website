@@ -37,8 +37,8 @@
 
 <script>
 import api from "@/api";
-import { VueMultiWatcher, openFile } from "@kaciras-blog/uikit";
-import { assignUpdate, errorMessage, getImageSize } from "@/utils";
+import { VueMultiWatcher, openFile, getImageSize } from "@kaciras-blog/uikit";
+import { assignUpdate, errorMessage  } from "@/utils";
 import KxMarkdownEditWindow from "@/markdown/EditWindow";
 import KxMarkdownBasicToolbar from "@/markdown/BasicToolbar";
 import TextStateGroup from "@/markdown/TextStateGroup";

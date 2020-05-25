@@ -73,28 +73,3 @@ export function attachRandomId(object: any) {
 	object.id = object.id || Math.random();
 	return object;
 }
-
-/**
- * 获取图片的尺寸，该函数基于 HTMLImageElement 只能在浏览器端使用。
- *
- * @param image 图片文件或URL
- * @return 尺寸 { width, height }，单位像素
- */
-export function getImageSize(image: string | Blob) {
-	type Size = { width: number, height: number };
-
-	const el = document.createElement("img");
-
-	const promise = new Promise<Size>((resolve, reject) => {
-		el.onerror = reject;
-		el.onload = () => resolve({ width: el.width, height: el.height });
-	});
-
-	if (typeof image === "string") {
-		el.src = image;
-		return promise;
-	} else {
-		el.src = URL.createObjectURL(image);
-		return promise.finally(() => URL.revokeObjectURL(el.src));
-	}
-}
