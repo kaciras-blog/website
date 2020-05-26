@@ -42,7 +42,7 @@ function checkBrowserSupport() {
 
 if (!checkBrowserSupport()) {
 	const alert = document.createElement("div");
-	alert.setAttribute("class", "ealert");
+	alert.className = "global-error";
 	alert.innerText = "您的浏览器版本太旧，或是非主流内核，可能无法正常浏览本站。" +
 		"请使用最新版的Edge、Firefox、Chrome、Safari等浏览器（本站不支持IE）";
 	document.body.insertBefore(alert, document.body.firstChild);

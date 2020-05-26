@@ -1,7 +1,9 @@
+/* HTML模板和App-Shell里的元素所用的样式 */
 @import "imports";
 
 @loading-size: 140px;
 @logo-size: 100px;
+@circle-color: rgba(0, 170, 255, 0.5);
 
 // 可以在 App-Shell 模式下数据还没来的情况下先显示个加载动画？
 // 代码来自：https://github.com/epicmaxco/epic-spinners
@@ -26,12 +28,12 @@
 	}
 
 	&::before {
-		border-top-color: rgba(0, 182, 238, 0.5);
+		border-top-color: @circle-color;
 		animation: half-circle-spinner-animation 1s infinite;
 	}
 
 	&::after{
-		border-bottom-color: rgba(0, 182, 238, 0.5);
+		border-bottom-color: @circle-color;
 		animation: half-circle-spinner-animation 1s infinite alternate;
 	}
 }
@@ -46,7 +48,7 @@
 }
 
 // 最顶上警告框，在浏览器不支持和未开启JS情况下显示
-.ealert {
+.global-error {
 	display: block;
 	position: relative;
 	left: 0;
@@ -57,5 +59,5 @@
 	text-align: center;
 	font-size: 18px;
 	color: #e62e2e;
-	background-color: #f0efe9;
+	background-color: #f9f9fa;
 }
