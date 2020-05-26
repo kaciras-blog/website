@@ -133,8 +133,7 @@ export default {
 		},
 
 		async addLink() {
-			const res = await this.$dialog.show(AddLinkDialog).confirmPromise;
-			const { text, href } = res.data;
+			const { text, href } = await this.$dialog.show(AddLinkDialog).confirmPromise;
 			const str = `[${text}](${href})`;
 
 			const selEnd = this.getSelectedRange(false)[1];
