@@ -1,5 +1,5 @@
 <template>
-	<div class="el-wrapper">
+	<div class="fragment">
 		<span v-if="selected" :class="$style.item">
 			选择：
 			{{selection[0] + " - " + selection[1]}}

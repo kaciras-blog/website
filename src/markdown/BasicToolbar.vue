@@ -1,5 +1,5 @@
 <template>
-	<div class="el-wrapper">
+	<div>
 		<kx-button title="标题" icon="fas fa-heading" @click="addHeader(2)"/>
 		<kx-button title="粗体" icon="fa fa-bold" @click="switchWrapper('**')"/>
 		<kx-button title="斜体" icon="fa fa-italic" @click="switchWrapper('_')"/>
@@ -9,16 +9,19 @@
 		<kx-button title="引用块" icon="fa fa-quote-left" @click="addPrefixToLines('>')"/>
 		<kx-button title="列表" icon="fas fa-list-ul" @click="addPrefixToLines('* ')"/>
 		<kx-button title="插入链接" icon="fa fa-link" @click="addLink"/>
+		<kx-button class="minor" title="插入图片" icon="far fa-file-image" @click="addImage"/>
 		<kx-button title="插入视频" icon="fa fa-file-video" @click="addVideo"/>
 	</div>
 </template>
 
 <script>
-import AddLinkDialog from "./AddLinkDialog";
+import { getImageSize, openFile } from "@kaciras-blog/uikit/src/index";
+import api from "@/api";
 import VideoDialog from "./VideoDialog";
+import AddLinkDialog from "./AddLinkDialog";
 
 export default {
-	name: "KxMarkdownBasicToolbar",
+	name: "BasicToolbar",
 	props: {
 		text: {
 			type: String,
@@ -139,6 +142,21 @@ export default {
 			const selEnd = this.getSelectedRange(false)[1];
 			this.changeTextArea(selEnd, selEnd, str);
 			this.reselect(selEnd, selEnd + str.length);
+		},
+
+		async addImage() {
+			const file = await openFile("image/*");
+
+			// 加上宽高便于确定占位图的尺寸，从 https://chanshiyu.com/#/post/41 学到的
+			const { width, height } = await getImageSize(file);
+			const res = await api.misc.uploadImage(file) + `?vw=${width}&vh=${height}`;
+
+			const [selStart, selEnd] = this.selection;
+			const p = selStart + 2;
+			const v = this.content;
+
+			this.content = v.substring(0, selEnd) + `![](${res})` + v.substring(selEnd);
+			this.selection = [p, p];
 		},
 
 		// TODO: 暂不支持<source>指定多个源，以后考虑七牛云？

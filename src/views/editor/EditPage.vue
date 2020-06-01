@@ -89,21 +89,6 @@ export default {
 		content() { this.changes = true; },
 	},
 	methods: {
-		async addImage() {
-			const file = await openFile("image/*");
-
-			// 加上宽高便于确定占位图的尺寸，从 https://chanshiyu.com/#/post/41 学到的
-			const { width, height } = await getImageSize(file);
-			const res = await api.misc.uploadImage(file) + `?vw=${width}&vh=${height}`;
-
-			const [selStart, selEnd] = this.selection;
-			const p = selStart + 2;
-			const v = this.content;
-
-			this.content = v.substring(0, selEnd) + `![](${res})` + v.substring(selEnd);
-			this.selection = [p, p];
-		},
-
 		metadataDialog() {
 			this.$dialog.show(MetadataDialog, { metadata: this.metadata })
 				.onConfirm(data => this.metadata = data);
@@ -214,22 +199,4 @@ export default {
 	height: calc(100% - 48px - .8rem);
 }
 
-.errMsg {
-	color: #ff6b6b;
-	font-weight: 600;
-}
-
-.toolbar {
-	display: flex;
-	justify-content: space-between;
-	background-color: whitesmoke;
-}
-
-.stateBar {
-	display: flex;
-	justify-content: space-between;
-	padding: .4rem;
-	color: white;
-	background-color: #003ee7;
-}
 </style>
