@@ -33,7 +33,7 @@
 				<h3 class="padding">设置</h3>
 				<label :class="$style.switch_option">
 					<span :class="$style.switch_label">滚动加载</span>
-					<kx-switch v-model="autoLoad"/>
+					<kx-switch name="auto-load" v-model="autoLoad"/>
 				</label>
 
 			</aside>

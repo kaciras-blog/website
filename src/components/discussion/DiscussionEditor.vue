@@ -18,6 +18,7 @@
 		<textarea
 			:value="content"
 			placeholder='说点什么吧'
+			aria-label="输入评论"
 			class='input'
 			:class="$style.textarea"
 			v-ime-input="(event) => $emit('input', event.target.value)"

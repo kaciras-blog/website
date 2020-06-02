@@ -16,6 +16,7 @@
 				v-for="card of cards"
 				:key="card.id"
 				:href="card.link"
+				:aria-label="card.name"
 				class="clean-link"
 			>
 				<article :class="$style.figure">
@@ -25,7 +26,7 @@
 							alt="封面"
 							:class="$style.picture"
 						>
-						<h3 :class="$style.name">{{card.name}} </h3>
+						<h1 :class="$style.name">{{card.name}} </h1>
 					</div>
 					<div :class="$style.content">{{card.description}}</div>
 				</article>
@@ -120,6 +121,10 @@ export default {
 	right: 0;
 	bottom: 0;
 	margin: 0;
+
+	// 虽然浏览器默认 article 下的 h1 是这个大小，但还是写上保险些
+	font-size: 1.17em;
+
 	padding: 16px;
 	background: rgba(255, 255, 255, .8);
 }

@@ -19,7 +19,7 @@
 		<div :class="$style.summary">{{item.summary}}</div>
 
 		<div :class="$style.keywords">
-			<h4 class="inline compact">关键词：</h4>
+			<span :class="$style.keyword_header">关键词：</span>
 			<ul class="inline clean-list">
 				<li
 					v-for="kw in item.keywords"
@@ -35,7 +35,8 @@
 				v-for="c in item.categories"
 				:key="c.id"
 				:to="c | categoryLink"
-				class="tag-group-item">
+				class="tag-group-item"
+			>
 				{{c.name}}
 			</span>
 		</div>
@@ -98,6 +99,10 @@ export default {
 	display: inline;
 	margin-left: .3em;
 	margin-right: .3em;
+}
+
+.keyword_header {
+	font-weight: 600;
 }
 
 @media screen and (min-width: @length-screen-mobile) {

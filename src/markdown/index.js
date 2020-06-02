@@ -65,9 +65,11 @@ export const converter = new MarkdownIt({
 // 具体见 entry-client.js 中的 router.beforeEach 钩子。
 converter.use(Anchor, {
 	permalink: true,
-	permalinkAttrs: () => ({ "aria-hidden": "true" }),
-	permalinkClass: "fas header-anchor",
-	permalinkSymbol: "\uf0c1", // content of fa-link
+	permalinkClass: "fas fa-link header-anchor",
+	permalinkSymbol: "",
+
+	// 参考 MSDN 的做法，有 aria-labelledby 情况下不再需要内容
+	permalinkAttrs: (slug) => ({ "aria-labelledby": slug }),
 });
 converter.use(media);
 converter.use(tableOfContent);
