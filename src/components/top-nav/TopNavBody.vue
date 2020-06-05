@@ -43,6 +43,8 @@
 			</template>
 
 			<router-link v-else to="/login" class="nav-item">登录</router-link>
+
+			<router-link to="/list" class="nav-item">文章</router-link>
 			<router-link to="/about" class="nav-item">关于</router-link>
 
 			<a href="/feed/atom" class="nav-item" title="Feed订阅">
