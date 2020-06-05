@@ -1,10 +1,11 @@
 import { broadcastMessage, ManagedCache } from "./cache";
 
-export interface RequestHandler {
-	handle(request: RequestInfo): Promise<Response>;
+export interface CachedFetcher {
+
+	fetch(request: RequestInfo): Promise<Response>;
 }
 
-export abstract class BaseRequestHandler implements RequestHandler {
+export abstract class BaseCachedFetcher implements CachedFetcher {
 
 	protected readonly cache: ManagedCache;
 
@@ -20,15 +21,15 @@ export abstract class BaseRequestHandler implements RequestHandler {
 		return response;
 	}
 
-	abstract async handle(request: RequestInfo): Promise<Response>;
+	abstract async fetch(request: RequestInfo): Promise<Response>;
 }
 
 /**
  * 网络优先，适用于频繁更新但又需要离线访问的内容。
  */
-export class NetworkFirstHandler extends BaseRequestHandler {
+export class NetworkFirstFetcher extends BaseCachedFetcher {
 
-	async handle(request: RequestInfo) {
+	async fetch(request: RequestInfo) {
 		try {
 			return await this.fetchAndCache(request);
 		} catch (err) {
@@ -47,9 +48,9 @@ export class NetworkFirstHandler extends BaseRequestHandler {
  * 该策略能够保证最快的速度且允许离线访问，同时也能够更新资源，但是在后台更新需要用户下一次访问才能生效，
  * 通常给用户显示一个提示，让其刷新页面查看最新的内容。
  */
-export class StaleWhileRevalidateHandler extends BaseRequestHandler {
+export class StaleWhileRevalidateFetcher extends BaseCachedFetcher {
 
-	async handle(request: RequestInfo) {
+	async fetch(request: RequestInfo) {
 		const cached = await this.cache.match(request);
 		if (cached) {
 			this.fetchAndCache(request).then(newResp => this.broadcastUpdate(cached, newResp));
@@ -72,9 +73,9 @@ export class StaleWhileRevalidateHandler extends BaseRequestHandler {
  * 缓存优先，尝试从缓存里加载响应，如果缓存中没有则发送请求，并将成功的响应加入缓存。
  * 适用于永不更新的资源，如带名字里带 Hash 的文件。
  */
-export class CacheFirstHandler extends BaseRequestHandler {
+export class CacheFirstFetcher extends BaseCachedFetcher {
 
-	async handle(request: RequestInfo) {
+	async fetch(request: RequestInfo) {
 		const cached = await this.cache.match(request);
 		if (cached) {
 			return cached;
