@@ -165,7 +165,7 @@ export default {
 		height: 50%;
 
 		z-index: 1;
-		background: rgba(255, 255, 255, .5);
+		background: rgba(255, 255, 255, .4);
 		transition: @transition;
 	}
 
@@ -193,7 +193,7 @@ export default {
 	.circle(@favicon-size);
 
 	z-index: 3;
-	box-shadow: 0 0 10px rgba(0, 0, 0, .3);
+	box-shadow: 0 0 10px rgba(0, 0, 0, .4);
 	transition: @transition;
 }
 

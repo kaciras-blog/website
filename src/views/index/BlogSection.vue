@@ -89,7 +89,16 @@ export default {
 .figure {
 	font-size: 16px;
 	overflow: hidden;
-	box-shadow: 0 6px 12px rgba(0, 0, 0, .2);
+	box-shadow: 0 4px 8px rgba(0, 0, 0, .2);
+
+	@media screen and (min-width: @length-screen-mobile) {
+		transition: .5s;
+
+		&:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 6px 8px rgba(0, 0, 0, .3);
+		}
+	}
 }
 
 // ==============================================================================
@@ -107,11 +116,6 @@ export default {
 
 	@media screen and (min-width: @length-screen-mobile) {
 		height: @pic-height;
-		transition: transform .3s;
-
-		&:hover {
-			transform: scale(1.1);
-		}
 	}
 }
 
