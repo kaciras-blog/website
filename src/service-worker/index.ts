@@ -3,7 +3,7 @@
  */
 import { cacheNames, CacheWrapper } from "./cache";
 import { AppShellRoute, RegexRoute, Router, WebpUpgradeRoute } from "./routing";
-import { CacheFirstHandler } from "./cache-strategy";
+import { CacheFirstFetcher } from "./cache-strategy";
 
 // 默认是 WebWorker，需要声明一下ServiceWorker，其他文件里也一样。
 declare const self: ServiceWorkerGlobalScope;
@@ -13,11 +13,11 @@ declare const serviceWorkerOption: {
 	assets: string[];
 };
 
-const STATIC_CACHE_NAME = "static-v1";
+const STATIC_CACHE_NAME = "static-v1.1";
 
 const cache = new CacheWrapper(STATIC_CACHE_NAME);
 const router = new Router();
-const handler = new CacheFirstHandler(cache);
+const handler = new CacheFirstFetcher(cache);
 
 router.addRoute(new WebpUpgradeRoute(handler, new RegExp("^/static/img/.+\\.(?:jpg|png)$")));
 router.addRoute(new RegexRoute("/static/", handler));

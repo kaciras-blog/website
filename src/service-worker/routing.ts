@@ -143,9 +143,10 @@ export class NavigatePreloadRoute implements Route {
  *
  * 【存在的问题】
  * WebP格式不一定就比原格式小，但哪个更优只能在服务端判断，该类只能一律使用WebP。
+ * 首次访问网站时，因为ServiceWorker未安装而导致首屏的资源无法拦截，在Lighthouse等工具里会拉低评分。
  *
  * 【其他方案】
- * 在HTML里使用<picture>元素是最好的，但是CSS里没有类似的功能。
+ * 在HTML里使用<picture> + <source>是最好的，但是CSS里没有类似的功能。
  */
 export class WebpUpgradeRoute implements Route {
 
