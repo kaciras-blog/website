@@ -1,48 +1,12 @@
 <template>
-	<main :class="$style.container">
-		<div :class="$style.toolbar" role="toolbar">
-			<div>
-				<kx-markdown-basic-toolbar :text.sync="content" :selection.sync="selection"/>
-				<kx-button class="minor" title="插入图片" icon="far fa-file-image" @click="addImage"/>
-			</div>
-			<div>
-				<view-mode-toolbar :view-mode.sync="viewMode"/>
-				<kx-button class="primary" title="修改简介" icon="far fa-address-card" @click="metadataDialog"/>
-				<kx-button class="primary" title="保存" icon="far fa-save" @click="manualSave"/>
-				<kx-button class="primary" title="发布!" icon="far fa-paper-plane" @click="publish"/>
-			</div>
-		</div>
-
-		<kx-markdown-edit-window
-			:text.sync="content"
-			:selection.sync="selection"
-			:view-mode="viewMode"
-		/>
-
-		<div :class="$style.stateBar">
-			<div>
-				<span v-if="autoSaveError" :class="$style.errMsg">
-					自动保存出错！
-				</span>
-				<span v-else-if="archive.saveTime">
-					上次保存：{{archive.saveTime | localDateMinute}}
-				</span>
-			</div>
-			<div>
-				<text-state-group :text="content" :selection="selection"/>
-			</div>
-		</div>
-	</main>
+	<kx-markdown-edit-window :class="$style.editor" :text.sync="content"/>
 </template>
 
 <script>
 import api from "@/api";
-import { VueMultiWatcher, openFile, getImageSize } from "@kaciras-blog/uikit";
-import { assignUpdate, errorMessage  } from "@/utils";
+import { VueMultiWatcher } from "@kaciras-blog/uikit";
+import { assignUpdate, errorMessage } from "@/utils";
 import KxMarkdownEditWindow from "@/markdown/EditWindow";
-import KxMarkdownBasicToolbar from "@/markdown/BasicToolbar";
-import TextStateGroup from "@/markdown/TextStateGroup";
-import ViewModeToolbar from "@/markdown/ViewModeToolbar";
 import PublishDialog from "./PublishDialog";
 import MetadataDialog from "./MetadataDialog";
 
@@ -57,10 +21,7 @@ function convertToTransfer(data) {
 export default {
 	name: "EditPage",
 	components: {
-		ViewModeToolbar,
-		KxMarkdownBasicToolbar,
 		KxMarkdownEditWindow,
-		TextStateGroup,
 	},
 	data: () => ({
 		archive: {
@@ -76,8 +37,6 @@ export default {
 			summary: "",
 		},
 		content: "",
-		selection: [0, 0],
-		viewMode: 0,
 
 		/** 是否有在未保存的改动 */
 		changes: false,
@@ -189,14 +148,7 @@ export default {
 </script>
 
 <style module lang="less">
-.container {
-	display: flex;
-	flex-direction: column;
+.editor {
 	height: 100vh;
 }
-
-.mainWindow {
-	height: calc(100% - 48px - .8rem);
-}
-
 </style>

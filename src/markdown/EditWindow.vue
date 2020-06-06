@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div :class="$style.container">
 		<div :class="$style.toolbar" role="toolbar">
 			<basic-toolbar :text.sync="content" :selection.sync="selection"/>
 			<div>
@@ -9,14 +9,14 @@
 			</div>
 		</div>
 
-		<div class="kx-markdown-main">
+		<div :class="$style.main">
 			<textarea
 				v-show="viewMode !== 2"
 				ref="textarea"
-				class="text-view"
 				:class="{
-					split:viewMode === 0,
-					single:viewMode === 1,
+					[$style.textbox]: true,
+					[$style.split]:viewMode === 0,
+					[$style.single]:viewMode === 1,
 				}"
 				title="编辑区"
 				spellcheck="false"
@@ -27,38 +27,27 @@
 				@input="$emit('update:text', $event.target.value)"
 			/>
 			<article
-				v-if="renderMode === 'MD'"
 				v-show="viewMode !== 1"
 				v-html="html"
 				ref="preview"
-				class="text-view preview markdown"
+				class="markdown"
 				:class="{
-					split:viewMode === 0,
-					single:viewMode === 2,
-			}"
-			/>
-			<pre
-				v-else-if="renderMode === 'PLAIN'"
-				v-show="viewMode !== 1"
-				v-text="text"
-				ref="preview"
-				class="text-view preview markdown"
-				:class="{
-					split:viewMode === 0,
-					single:viewMode === 2,
+					[$style.textbox]: true,
+					[$style.split]:viewMode === 0,
+					[$style.single]:viewMode === 2,
 				}"
 			/>
 		</div>
 
 		<div :class="$style.stateBar">
-			<div>
-				<span v-if="autoSaveError" :class="$style.errMsg">
-					自动保存出错！
-				</span>
-				<span v-else-if="archive.saveTime">
-					上次保存：{{archive.saveTime | localDateMinute}}
-				</span>
-			</div>
+			<!--<div>-->
+			<!--	<span v-if="autoSaveError" :class="$style.errMsg">-->
+			<!--		自动保存出错！-->
+			<!--	</span>-->
+			<!--	<span v-else-if="archive.saveTime">-->
+			<!--		上次保存：{{archive.saveTime | localDateMinute}}-->
+			<!--	</span>-->
+			<!--</div>-->
 			<div>
 				<span v-if="selected" :class="$style.item">
 					选择：
@@ -72,6 +61,7 @@
 </template>
 
 <script>
+import { syncScroll } from "@kaciras-blog/uikit";
 import { renderMarkdown, enableLazyLoad } from "./index";
 import BasicToolbar from "./BasicToolbar";
 
@@ -84,10 +74,6 @@ export default {
 		text: {
 			type: String,
 			default: "",
-		},
-		renderMode: {
-			type: String,
-			default: "MD",
 		},
 		debounce: {
 			type: Number,
@@ -153,30 +139,49 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style module lang="less">
 @import "../css/imports";
 
-.kx-markdown-main {
+.container {
+	display: flex;
+	flex-direction: column;
+}
+
+.main {
+	display: flex;
 	flex: 1;
 	overflow: hidden;
 }
 
-.text-view {
-	display: inline-block;
-	height: 100%;
+.errMsg {
+	color: #ff6b6b;
+	font-weight: 600;
+}
 
+.toolbar {
+	display: flex;
+	justify-content: space-between;
+	background-color: whitesmoke;
+}
+
+.stateBar {
+	display: flex;
+	justify-content: space-between;
+	padding: .4rem;
+	color: white;
+	background-color: #003ee7;
+}
+
+.textbox {
 	margin: 0;
 	padding: .5rem 1rem 0 1rem;
-	vertical-align: top;
-
-	overflow-y: scroll;
-	overflow-x: hidden;
-
 	border: none;
+
 	background-color: white;
 	resize: none;
+	overflow-y: scroll;
 
-	font-size: 1rem;
+	font-size: initial;
 	word-break: break-all;
 	line-height: 27px;
 }
@@ -197,27 +202,5 @@ export default {
 		padding-left: 16%;
 		padding-right: 16%;
 	}
-}
-</style>
-
-<style module lang="less">
-.errMsg {
-	color: #ff6b6b;
-	font-weight: 600;
-}
-
-
-.toolbar {
-	display: flex;
-	justify-content: space-between;
-	background-color: whitesmoke;
-}
-
-.stateBar {
-	display: flex;
-	justify-content: space-between;
-	padding: .4rem;
-	color: white;
-	background-color: #003ee7;
 }
 </style>
