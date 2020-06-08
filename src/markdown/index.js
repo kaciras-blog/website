@@ -58,26 +58,29 @@ converter.renderer.rules.image = (tokens, idx) => {
 	const vw = urlParams.get("vw");
 	const vh = urlParams.get("vh");
 
+	let sized = "";
 	let style = "";
+
 	if (vw && vh) {
 		const ratio = parseInt(vh) / parseInt(vw) * 100;
+		sized = "sized";
 		style = `--width:${vw}px; --aspect-ratio:${ratio}%`;
 	}
 
 	return `
-		<span class="md-img-container" style="${style}">
-			<span class="full-vertex md-image-loading">
-    			<span class="dot"></span>
-    			<span class="dot"></span>
-    			<span class="dot"></span>
-    			<span class="dot"></span>
-    			<span class="dot"></span>
-    		</span>
-    		<a href="${src}" target="_blank" class="full-vertex">
+		<span class="center-wrapper">
+			<a href="${src}" target="_blank" class="md-img-stack ${sized}" style="${style}">
+				<span class="full-vertex md-loading">
+    				<span class="dot"></span>
+    				<span class="dot"></span>
+    				<span class="dot"></span>
+    				<span class="dot"></span>
+    				<span class="dot"></span>
+    			</span>
 				<img data-src="${src}" alt="${alt}" class="md-img">
 			</a>
+			<span class="md-alt">${alt}</span>
     	</span>
-    	<span class="md-alt">${alt}</span>
 	`;
 };
 

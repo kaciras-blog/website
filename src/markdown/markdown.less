@@ -5,10 +5,6 @@
 @quote-padding: #bfbfbf; // 引用块左边装饰颜色
 @quote-background: #f8f8f8; // 引用块背景颜色
 
-// 默认占位图的
-@image-width: 480px;
-@image-aspect-ratio: 0.5625%;
-
 .markdown {
 
 	font-size: initial;
@@ -81,31 +77,39 @@
 	}
 }
 
-.md-img-container {
-	display: block;
+// ====================== image ======================
+
+.md-img-stack {
 	position: relative;
-	width: var(--width, 480px);
 	margin: 0 auto;
 	max-width: 100%;
 
-	&::before {
-		content: "";
-		display: block;
-		width: 100%;
-		padding-top: var(--aspect-ratio, 0.5625%);
+	&.sized {
+		width: var(--width, 480px);
+
+		&::before {
+			content: "";
+			display: block;
+			width: 100%;
+			padding-top: var(--aspect-ratio, 0.5625%);
+		}
 	}
 }
 
-.md-img {
-	display: block;
+.md-img:not([data-loaded]) {
+	width: 480px;
+	height: 270px;
+}
+
+.sized > .md-img {
+	position: absolute;
+	top: 0;
+	left: 0;
 	width: 100%;
 	height: 100%;
-	resize: none;
 }
 
 .md-alt {
-	display: block;
-	text-align: center;
 	padding-top: .5em;
 	font-style: italic;
 
