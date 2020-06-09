@@ -1,12 +1,12 @@
 @import "../css/imports";
 @import "~highlight.js/styles/monokai-sublime.css";
+@import "./image";
 @import "./loading";
 
 @quote-padding: #bfbfbf; // 引用块左边装饰颜色
 @quote-background: #f8f8f8; // 引用块背景颜色
 
 .markdown {
-
 	font-size: initial;
 	line-height: 1.75;
 
@@ -31,19 +31,6 @@
 		-moz-tab-size: 4;
 	}
 
-	.inline-code {
-		margin: 0 .2em;
-		padding: 2px 5px;
-		line-height: 20px;
-
-		border-radius: 5px;
-		background-color: #23241f;
-		color: #efefe9;
-
-		word-wrap: break-word;
-		word-break: break-all;
-	}
-
 	blockquote {
 		margin: 0 0 20px;
 		padding: 1em;
@@ -55,16 +42,29 @@
 		border-left: .5em solid @quote-padding;
 	}
 
-	.center-wrapper {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-	}
-
 	a:not(.header-anchor) {
 		word-break: break-all;
 		.highlight-color(@color-link, @color-link);
 	}
+}
+
+.center-wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.inline-code {
+	margin: 0 .2em;
+	padding: 2px 5px;
+	line-height: 20px;
+
+	border-radius: 5px;
+	background-color: #23241f;
+	color: #efefe9;
+
+	word-wrap: break-word;
+	word-break: break-all;
 }
 
 .header-anchor {
@@ -74,50 +74,5 @@
 		color: @color-link;
 		opacity: 1;
 		text-decoration: none;
-	}
-}
-
-// ====================== image ======================
-
-.md-img-stack {
-	position: relative;
-	margin: 0 auto;
-	max-width: 100%;
-
-	&.sized {
-		width: var(--width, 480px);
-
-		&::before {
-			content: "";
-			display: block;
-			width: 100%;
-			padding-top: var(--aspect-ratio, 0.5625%);
-		}
-	}
-}
-
-.md-img:not([data-loaded]) {
-	width: 480px;
-	height: 270px;
-}
-
-.sized > .md-img {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-}
-
-.md-alt {
-	padding-top: .5em;
-	font-style: italic;
-
-	&::before {
-		content: "「 ";
-	}
-
-	&::after {
-		content: " 」";
 	}
 }
