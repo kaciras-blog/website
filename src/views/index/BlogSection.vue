@@ -89,14 +89,14 @@ export default {
 .figure {
 	font-size: 16px;
 	overflow: hidden;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, .2);
+	box-shadow: 0 3px 6px rgba(0, 0, 0, .2);
 
 	@media screen and (min-width: @length-screen-mobile) {
-		transition: .5s;
+		transition: .4s;
 
 		&:hover {
-			transform: translateY(-5px);
-			box-shadow: 0 6px 8px rgba(0, 0, 0, .3);
+			transform: translateY(-4px);
+			box-shadow: 0 4px 10px rgba(0, 0, 0, .3);
 		}
 	}
 }

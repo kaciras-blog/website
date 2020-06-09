@@ -1,10 +1,13 @@
+@default-width: 480px;
+@default-height: 270px;
+
 .md-loading-stack {
 	position: relative;
-	max-width: 100%;
 
 	// 使用伪元素 + padding 实现固定宽高比
 	&.sized {
 		width: var(--width);
+		max-width: 100%;
 
 		&::before {
 			content: "";
@@ -22,8 +25,8 @@
 }
 
 .md-img:not([data-loaded]) {
-	width: 480px;
-	height: 270px;
+	width: @default-width;
+	height: @default-height;
 }
 
 // 这个必须放在下面以覆盖 width & height
