@@ -1,6 +1,7 @@
 /*
  * 虽然 ServiceWorker 对 Edge 版本要求比 CSS Grid 更高，但这是一项非必需的功能，即便没有 PWA 网页也能正常运行。
  */
+import "./error-report";
 import { cacheNames, CacheWrapper } from "./cache";
 import { AppShellRoute, RegexRoute, Router, WebpUpgradeRoute } from "./routing";
 import { CacheFirstFetcher } from "./cache-strategy";
@@ -86,30 +87,4 @@ self.addEventListener("activate", (event: ExtendableEvent) => {
 	});
 
 	return self.clients.claim();
-});
-
-// ===================================== 错误上报 =====================================
-
-function anycastMessage(message: any) {
-	self.clients.matchAll().then((clients) => {
-		if (clients && clients.length) {
-			clients[0].postMessage(message);
-		}
-	});
-}
-
-self.addEventListener('error', (err) => {
-	anycastMessage({
-		type: 'ERROR',
-		message: err.message || null,
-		stack: err.error ? err.error.stack : null
-	});
-});
-
-self.addEventListener('unhandledrejection', (err: any) => {
-	anycastMessage({
-		type: 'REJECTION',
-		message: err.reason ? err.reason.message : null,
-		stack: err.reason ? err.reason.stack : null
-	});
 });
