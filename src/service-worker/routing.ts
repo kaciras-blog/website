@@ -1,4 +1,4 @@
-import { CachedFetcher, StaleWhileRevalidateFetcher } from "./cache-strategy";
+import { FetchFn, staleWhileRevalidate } from "./fetch-strategy";
 import { ManagedCache } from "./cache";
 
 export class Router {
@@ -43,16 +43,16 @@ export interface Route {
 
 export class RegexRoute implements Route {
 
-	private pattern: RegExp;
-	private fetcher: CachedFetcher;
-	private blacklist: RegExp[];
+	private readonly pattern: RegExp;
+	private readonly fetch: FetchFn;
+	private readonly blacklist: RegExp[];
 
-	constructor(pattern: string | RegExp, handler: CachedFetcher, blacklist: RegExp[] = []) {
+	constructor(pattern: string | RegExp, handler: FetchFn, blacklist: RegExp[] = []) {
 		if (typeof pattern === "string") {
 			pattern = new RegExp(pattern);
 		}
 		this.pattern = pattern;
-		this.fetcher = handler;
+		this.fetch = handler;
 		this.blacklist = blacklist;
 	}
 
@@ -65,13 +65,13 @@ export class RegexRoute implements Route {
 	}
 
 	handle(event: FetchEvent) {
-		event.respondWith(this.fetcher.fetch(event.request));
+		event.respondWith(this.fetch(event.request));
 	}
 }
 
 export class AppShellRoute implements Route {
 
-	private readonly fetcher: StaleWhileRevalidateFetcher;
+	private readonly fetch: FetchFn;
 	private readonly path: string;
 	private readonly include?: RegExp;
 
@@ -84,7 +84,7 @@ export class AppShellRoute implements Route {
 	 */
 	constructor(cache: ManagedCache, path: string, include?: RegExp) {
 		this.path = path;
-		this.fetcher = new StaleWhileRevalidateFetcher(cache);
+		this.fetch = staleWhileRevalidate(cache);
 		this.include = include;
 	}
 
@@ -103,7 +103,7 @@ export class AppShellRoute implements Route {
 	// https://developer.mozilla.org/zh-CN/docs/Web/API/Request/cache
 	handle(event: FetchEvent) {
 		const request = new Request(this.path, { cache: "no-cache" });
-		event.respondWith(this.fetcher.fetch(request));
+		event.respondWith(this.fetch(request));
 	}
 }
 
@@ -150,11 +150,11 @@ export class NavigatePreloadRoute implements Route {
  */
 export class WebpUpgradeRoute implements Route {
 
-	private readonly fetcher: CachedFetcher;
+	private readonly fetch: FetchFn;
 	private readonly pathPattern: RegExp;
 
-	constructor(handler: CachedFetcher, pathPattern: RegExp) {
-		this.fetcher = handler;
+	constructor(handler: FetchFn, pathPattern: RegExp) {
+		this.fetch = handler;
 		this.pathPattern = pathPattern;
 	}
 
@@ -174,6 +174,6 @@ export class WebpUpgradeRoute implements Route {
 		url.pathname = path.substring(0, path.lastIndexOf(".")) + ".webp";
 		const request = new Request(url.href, event.request);
 
-		event.respondWith(this.fetcher.fetch(request));
+		event.respondWith(this.fetch(request));
 	}
 }

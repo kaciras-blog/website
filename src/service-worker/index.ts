@@ -3,8 +3,8 @@
  */
 import "./error-report";
 import { cacheNames, CacheWrapper } from "./cache";
-import { AppShellRoute, RegexRoute, Router, WebpUpgradeRoute } from "./routing";
-import { CacheFirstFetcher } from "./cache-strategy";
+import { AppShellRoute, HostRoute, RegexRoute, Router, WebpUpgradeRoute } from "./routing";
+import { cacheFirst, networkFirst, timeout } from "./fetch-strategy";
 
 // 默认是 WebWorker，需要声明一下ServiceWorker，其他文件里也一样。
 declare const self: ServiceWorkerGlobalScope;
@@ -18,10 +18,10 @@ const STATIC_CACHE_NAME = "static-v1.1";
 
 const cache = new CacheWrapper(STATIC_CACHE_NAME);
 const router = new Router();
-const handler = new CacheFirstFetcher(cache);
+const fetcher = cacheFirst(cache);
 
-router.addRoute(new WebpUpgradeRoute(handler, new RegExp("^/static/img/.+\\.(?:jpg|png)$")));
-router.addRoute(new RegexRoute("/static/", handler));
+router.addRoute(new WebpUpgradeRoute(fetcher, new RegExp("^/static/img/.+\\.(?:jpg|png)$")));
+router.addRoute(new RegexRoute("/static/", fetcher));
 
 // Twitter 的代码里也是这样一个个写死的
 // https://abs.twimg.com/responsive-web/serviceworker/main.e531acd4.js 格式化后的第6200行
