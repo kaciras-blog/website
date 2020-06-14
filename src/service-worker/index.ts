@@ -15,6 +15,7 @@ declare const serviceWorkerOption: {
 };
 
 const STATIC_CACHE_NAME = "static-v1.1";
+const API_CACHE_NAME = "api-v1.0";
 
 const cache = new CacheWrapper(STATIC_CACHE_NAME);
 const router = new Router();
@@ -22,6 +23,17 @@ const fetcher = cacheFirst(cache);
 
 router.addRoute(new WebpUpgradeRoute(fetcher, new RegExp("^/static/img/.+\\.(?:jpg|png)$")));
 router.addRoute(new RegexRoute("/static/", fetcher));
+
+// Api Server cache
+const apiOrigin = (process.env.CONFIG as any).CONTENT_SERVER_URI;
+const BASE_URL = typeof apiOrigin === "string"
+	? apiOrigin
+	: apiOrigin[location.protocol.substring(0, location.protocol.length - 1)];
+
+const apiHost = new URL(BASE_URL).hostname;
+const apiCache = new CacheWrapper(API_CACHE_NAME)
+
+router.addRoute(new HostRoute(apiHost, networkFirst(apiCache, timeout(4000))));
 
 // Twitter 的代码里也是这样一个个写死的
 // https://abs.twimg.com/responsive-web/serviceworker/main.e531acd4.js 格式化后的第6200行
@@ -79,7 +91,7 @@ self.addEventListener("activate", (event: ExtendableEvent) => {
 	event.waitUntil(async () => {
 		const names = (await caches.keys()).filter(k => !cacheNames.has(k));
 		await Promise.all(names.map(async k => {
-			if(!(await caches.delete(k))) {
+			if (!(await caches.delete(k))) {
 				console.debug("无法删除不存在的缓存：" + k);
 			}
 		}));
