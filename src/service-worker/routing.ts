@@ -180,11 +180,11 @@ export class WebpUpgradeRoute implements Route {
 
 export class HostRoute implements Route {
 
-	private readonly hostname: string;
+	private readonly host: string;
 	private readonly fetch: FetchFn;
 
-	constructor(hostname: string, fetch: FetchFn) {
-		this.hostname = hostname;
+	constructor(host: string, fetch: FetchFn) {
+		this.host = host;
 		this.fetch = fetch;
 	}
 
@@ -193,6 +193,6 @@ export class HostRoute implements Route {
 	}
 
 	match(request: Request) {
-		return new URL(request.url).hostname === this.hostname;
+		return new URL(request.url).host === this.host;
 	}
 }

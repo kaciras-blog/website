@@ -30,7 +30,7 @@ const BASE_URL = typeof apiOrigin === "string"
 	? apiOrigin
 	: apiOrigin[location.protocol.substring(0, location.protocol.length - 1)];
 
-const apiHost = new URL(BASE_URL).hostname;
+const apiHost = new URL(BASE_URL).host;
 const apiCache = new CacheWrapper(API_CACHE_NAME)
 
 router.addRoute(new HostRoute(apiHost, networkFirst(apiCache, timeout(4000))));
