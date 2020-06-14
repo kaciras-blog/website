@@ -20,7 +20,7 @@
 		"Safari >= 10.1",
 		"iOS >= 10.3",
 		"Firefox >= 52",
-		"Edge >= 16"
+		"Edge >= 79"
 	],
 	"dependencies": {
 		"@iktakahiro/markdown-it-katex": "^3.1.0",

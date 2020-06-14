@@ -34,7 +34,9 @@ if (GOOGLE_ANALYTICS_ID) {
 // ==================== 检测不支持的浏览器，显示一个提示栏 ====================
 
 function checkBrowserSupport() {
-	if (typeof CSS === "undefined") {
+	try {
+		new ReadableStream({ start() {} });
+	} catch (error) {
 		return false;
 	}
 	return CSS.supports("display", "grid");

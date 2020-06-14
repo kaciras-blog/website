@@ -10,7 +10,7 @@
 			<icon-paragraph src="../../assets/img/html-code.svg" title="browsers">
 				兼容性（以Grid布局为基准）：
 				<ul>
-					<li>MicrosoftEdge 16</li>
+					<li>MicrosoftEdge 79</li>
 					<li>Firefox 52</li>
 					<li>Chrome 57</li>
 					<li>Safari 10.3</li>
