@@ -2,12 +2,37 @@ import { broadcastMessage, ManagedCache } from "./cache";
 
 export type FetchFn = (input: RequestInfo) => Promise<Response>;
 
-async function fetchAndCache(request: RequestInfo, cache: ManagedCache, fetchFn: FetchFn) {
-	const response = await fetchFn(request);
-	if (response.status == 200) {
-		cache.put(request, response.clone());
+/**
+ * 发送请求，如果响应是可以缓存的则缓存响应。
+ *
+ * 缓存的响应会添加一个头部 X-Service-Worker: cached
+ *
+ * @param input 请求
+ * @param cache 缓存
+ * @param fetchFn 发送请求的函数
+ */
+async function fetchAndCache(input: RequestInfo, cache: ManagedCache, fetchFn: FetchFn) {
+	const rawResponse = await fetchFn(input);
+
+	if (rawResponse.status === 200) {
+
+		// Edge 79 之前的版本有BUG，不能用 body 属性来创建新请求。
+		// 该情况下可以用 body = await rawResponse.clone().arrayBuffer();
+		// see https://github.com/GoogleChrome/workbox/issues/1473
+		const { body } = rawResponse.clone();
+
+		const headers = new Headers(rawResponse.headers);
+		headers.set("X-Service-Worker", "cached");
+
+		const response = new Response(body, {
+			headers,
+			status: rawResponse.status,
+			statusText: rawResponse.statusText
+		});
+		cache.put(input, response).catch(e => console.error(e));
 	}
-	return response;
+
+	return rawResponse;
 }
 
 function broadcastUpdate(cached: Response, newResp: Response) {
