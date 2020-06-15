@@ -24,23 +24,28 @@ const fetcher = cacheFirst(cache);
 router.addRoute(new WebpUpgradeRoute(fetcher, new RegExp("^/static/img/.+\\.(?:jpg|png)$")));
 router.addRoute(new RegexRoute("/static/", fetcher));
 
-// Api Server cache
-const apiOrigin = (process.env.CONFIG as any).CONTENT_SERVER_URI;
-const BASE_URL = typeof apiOrigin === "string"
-	? apiOrigin
-	: apiOrigin[location.protocol.substring(0, location.protocol.length - 1)];
-
-const apiHost = new URL(BASE_URL).host;
-const apiCache = new CacheWrapper(API_CACHE_NAME)
-
-router.addRoute(new HostRoute(apiHost, networkFirst(apiCache, timeout(4000))));
-
 // Twitter 的代码里也是这样一个个写死的
 // https://abs.twimg.com/responsive-web/serviceworker/main.e531acd4.js 格式化后的第6200行
 const APP_SHELL_RE = new RegExp("^/(?:$|list|category|login|article|edit|profile|about|console|error)")
 const APP_SHELL_NAME = "/app-shell.html";
 router.addRoute(new AppShellRoute(cache, APP_SHELL_NAME, APP_SHELL_RE));
 
+/**
+ * 对内容服务接口使用网络优先缓存，保证在网络不通的情况下也能显示旧的内容。
+ */
+function enableApiServerCache() {
+	const apiOrigin = (process.env.CONFIG as any).CONTENT_SERVER_URI;
+	const BASE_URL = typeof apiOrigin === "string"
+		? apiOrigin
+		: apiOrigin[location.protocol.substring(0, location.protocol.length - 1)];
+
+	const apiHost = new URL(BASE_URL).host;
+	const apiCache = new CacheWrapper(API_CACHE_NAME)
+
+	router.addRoute(new HostRoute(apiHost, networkFirst(apiCache, timeout(4000))));
+}
+
+enableApiServerCache();
 self.addEventListener("fetch", router.route.bind(router));
 
 /**
@@ -49,9 +54,11 @@ self.addEventListener("fetch", router.route.bind(router));
  * 在这个事件里应当做一些没有副作用的初始化工作，比如初始化缓存机制等，但是不要做会影响
  * 其他ServiceWorker的事，比如清理旧缓存。
  *
- * 有副作用的代码应当在 activate 事件里执行。
+ * 该事件只运行一次；有副作用的代码应当在 activate 事件里执行。
  */
-self.addEventListener("install", (event: ExtendableEvent) => {
+self.addEventListener("install", event => {
+	console.info("[ServiceWorker] Install new version");
+
 	event.waitUntil(fetch(APP_SHELL_NAME)
 		.then(appShell => cache.put(APP_SHELL_NAME, appShell)));
 
@@ -59,6 +66,7 @@ self.addEventListener("install", (event: ExtendableEvent) => {
 		.then(cache => cache.addAll(serviceWorkerOption.assets))
 		.catch(err => console.error("静态资源预加载失败", err)));
 
+	// 新版本安装后会等待旧版控制的页面全部关闭，以确保同时只有一个版本在运行，使用该语句将跳过等待。
 	return self.skipWaiting();
 });
 
@@ -67,7 +75,7 @@ self.addEventListener("install", (event: ExtendableEvent) => {
  *
  * 在这个事件里应当清理旧版的缓存。
  */
-self.addEventListener("activate", (event: ExtendableEvent) => {
+self.addEventListener("activate", event => {
 	console.info("[ServiceWorker] Activate");
 
 	/*

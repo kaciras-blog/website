@@ -31,6 +31,9 @@ export class Router {
 				return route.handle(event);
 			}
 		}
+
+		// 没有处理器就放过，走默认请求流程，请勿添加下列代码：
+		// event.respondWith(fetch(event.request));
 	}
 }
 
