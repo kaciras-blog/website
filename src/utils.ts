@@ -1,3 +1,5 @@
+import { Route } from "vue-router";
+
 /**
  * 转义HTML文本中的特殊字符
  *
@@ -29,7 +31,6 @@ export function errorMessage(object: any) {
 	}
 	return object.message || "未知的错误";
 }
-
 
 /**
  * 删除并返回数组中符合条件的元素，使用splice()函数删除能够触发Vue的更新。
@@ -72,4 +73,21 @@ export function assignUpdate(src: any, dist: any) {
 export function attachRandomId(object: any) {
 	object.id = object.id || Math.random();
 	return object;
+}
+
+/**
+ * 检查两个路由是否仅仅是 HASH 不同而 URL 的其它部分是一样的。
+ *
+ * 【自己实现】
+ * Route.path 不带查询参数，Route.query 对象比较又麻烦还不如自己写。
+ *
+ * @param to 路由记录
+ * @param from 另一个路由记录
+ * @return 两个路由除了HASH部分外是否一样
+ */
+export function isOnlyHashChange(to: Route, from: Route) {
+	const fPath = from.fullPath, tPath = to.fullPath;
+	const fp = fPath.substring(0, fPath.length - from.hash.length);
+	const tp = tPath.substring(0, tPath.length - to.hash.length);
+	return fp === tp;
 }

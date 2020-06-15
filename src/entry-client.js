@@ -10,6 +10,7 @@ import { REFRESH_USER, SET_PREFETCH_DATA, SET_SUN_PHASE } from "@/store/types";
 import { useServiceWorker } from "./serviceWorker";
 import * as loadingIndicator from "./loading-indicator";
 import { PrefetchContext } from "./prefetch";
+import { isOnlyHashChange } from "./utils";
 
 useServiceWorker();
 
@@ -111,21 +112,6 @@ Vue.mixin({
 });
 
 const { vue, router, store } = createApp(window.__INITIAL_STATE__);
-
-/**
- * 检查两个路由是否仅仅是 HASH 不同而 URL 的其它部分是一样的。
- *
- * @param to 路由记录
- * @param from 路由记录
- * @return {boolean} 两个路由除了HASH部分外是否一样
- */
-function isOnlyHashChange(to, from) {
-	const fPath = from.fullPath, tPath = to.fullPath;
-	const i = fPath.indexOf("#"), j = tPath.indexOf("#");
-	const fp = i < 0 ? fPath : fPath.substring(0, i);
-	const tp = j < 0 ? tPath : tPath.substring(0, j);
-	return fp === tp;
-}
 
 /**
  * 导航前加载数据，在官方教程的基础上修改而来，增加了以下功能：
