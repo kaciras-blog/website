@@ -1,5 +1,10 @@
-import { broadcastMessage, ManagedCache } from "./cache";
+import { ManagedCache, UPDATE_CHANNEL_NAME } from "./cache";
 
+declare const self: ServiceWorkerGlobalScope;
+
+/**
+ * 发送请求的函数，就是 fetch 的类型，不过为了简洁省略掉了 init 参数
+ */
 export type FetchFn = (input: RequestInfo) => Promise<Response>;
 
 /**
@@ -10,6 +15,7 @@ export type FetchFn = (input: RequestInfo) => Promise<Response>;
  * @param input 请求
  * @param cache 缓存
  * @param fetchFn 发送请求的函数
+ * @return 原始响应
  */
 async function fetchAndCache(input: RequestInfo, cache: ManagedCache, fetchFn: FetchFn) {
 	const rawResponse = await fetchFn(input);
@@ -33,6 +39,21 @@ async function fetchAndCache(input: RequestInfo, cache: ManagedCache, fetchFn: F
 	}
 
 	return rawResponse;
+}
+
+// TODO: 目前只有一种消息，所以直接搞个全局信道
+let broadcastChannel: BroadcastChannel;
+if ("BroadcastChannel" in self) {
+	broadcastChannel = new BroadcastChannel(UPDATE_CHANNEL_NAME);
+}
+
+export function broadcastMessage(message: any) {
+	if (broadcastChannel) {
+		broadcastChannel.postMessage(message);
+	} else {
+		self.clients.matchAll({ type: "window" })
+			.then(windows => windows.forEach(win => win.postMessage(message)));
+	}
 }
 
 function broadcastUpdate(cached: Response, newResp: Response) {
@@ -80,20 +101,19 @@ export function networkFirst(cache: ManagedCache, fetchFn: FetchFn = fetch) {
 }
 
 /**
- * 缓存优先，后台更新。
+ * 缓存优先，后台更新。该策略能够保证立即响应且允许离线访问，同时也能更新资源。
  *
- * 该策略能够保证最快的速度且允许离线访问，同时也能够更新资源，但是在后台更新需要用户下一次访问才能生效，
- * 通常给用户显示一个提示，让其刷新页面查看最新的内容。
+ * 因为在后台更新需要用户下一次访问才能生效，通常给用户显示一个提示，让其刷新页面查看最新的内容。
  */
 export function staleWhileRevalidate(cache: ManagedCache, fetchFn: FetchFn = fetch) {
 
-	return async (request: RequestInfo) => {
-		const cached = await cache.match(request);
+	return async (input: RequestInfo) => {
+		const cached = await cache.match(input);
 		if (cached) {
-			fetchAndCache(request, cache, fetchFn).then(newResp => broadcastUpdate(cached, newResp));
+			fetchAndCache(input, cache, fetchFn).then(newResp => broadcastUpdate(cached, newResp));
 			return cached;
 		}
-		return fetchAndCache(request, cache, fetchFn);
+		return fetchAndCache(input, cache, fetchFn);
 	};
 }
 
@@ -103,11 +123,11 @@ export function staleWhileRevalidate(cache: ManagedCache, fetchFn: FetchFn = fet
  */
 export function cacheFirst(cache: ManagedCache, fetchFn: FetchFn = fetch) {
 
-	return async (request: RequestInfo) => {
-		const cached = await cache.match(request);
+	return async (input: RequestInfo) => {
+		const cached = await cache.match(input);
 		if (cached) {
 			return cached;
 		}
-		return fetchAndCache(request, cache, fetchFn);
+		return fetchAndCache(input, cache, fetchFn);
 	}
 }

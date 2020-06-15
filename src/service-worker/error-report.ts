@@ -1,23 +1,17 @@
+declare const clients: Clients;
+
 function anycastMessage(message: any) {
-	self.clients.matchAll().then((clients) => {
-		if (clients && clients.length) {
-			clients[0].postMessage(message);
-		}
-	});
+	clients.matchAll().then(clients => clients[0]?.postMessage(message));
 }
 
-self.addEventListener('error', (err) => {
-	anycastMessage({
-		type: 'ERROR',
-		message: err.message || null,
-		stack: err.error ? err.error.stack : null
-	});
-});
+self.addEventListener("error", (event) => anycastMessage({
+	type: "ERROR",
+	message: event.message,
+	stack: event.error?.stack,
+}));
 
-self.addEventListener('unhandledrejection', (err: any) => {
-	anycastMessage({
-		type: 'REJECTION',
-		message: err.reason ? err.reason.message : null,
-		stack: err.reason ? err.reason.stack : null
-	});
-});
+self.addEventListener("unhandledrejection", (event) => anycastMessage({
+	type: "REJECTION",
+	message: event.reason?.message,
+	stack: event.reason?.stack,
+}));

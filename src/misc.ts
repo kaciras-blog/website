@@ -33,7 +33,15 @@ if (GOOGLE_ANALYTICS_ID) {
 
 // ==================== 检测不支持的浏览器，显示一个提示栏 ====================
 
-function checkBrowserSupport() {
+/**
+ * 判断浏览器是否支持，根据：
+ *
+ * 1.ServiceWorker 里 fetchAndCache() 使用了 Response.body 创建新响应。
+ * 2.页面大量使用 grid 布局。
+ *
+ * @return 如果支持则为true，否则false
+ */
+function isSupportedBrowser() {
 	try {
 		new ReadableStream({ start() {} });
 	} catch (error) {
@@ -42,7 +50,7 @@ function checkBrowserSupport() {
 	return CSS.supports("display", "grid");
 }
 
-if (!checkBrowserSupport()) {
+if (!isSupportedBrowser()) {
 	const alert = document.createElement("div");
 	alert.className = "global-error";
 	alert.innerText = "您的浏览器版本太旧，或是非主流内核，可能无法正常浏览本站。" +

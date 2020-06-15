@@ -1,8 +1,5 @@
 import { AsyncIndexedDB } from "./asyncdb";
 
-declare const self: ServiceWorkerGlobalScope;
-
-
 const EXPIATION_STORE_NAME = "cache-expiration";
 const URL_KEY = "url";
 const TIMESTAMP_KEY = "time";
@@ -10,21 +7,6 @@ const TIMESTAMP_KEY = "time";
 export const UPDATE_CHANNEL_NAME = "PWA-UPDATE";
 
 export const cacheNames = new Set<string>();
-
-// TODO: 目前只有一种消息，所以直接搞个全局信道
-let broadcastChannel: BroadcastChannel;
-if ("BroadcastChannel" in self) {
-	broadcastChannel = new BroadcastChannel(UPDATE_CHANNEL_NAME);
-}
-
-export function broadcastMessage(message: any) {
-	if (broadcastChannel) {
-		broadcastChannel.postMessage(message);
-	} else {
-		self.clients.matchAll({ type: "window" })
-			.then(windows => windows.forEach(win => win.postMessage(message)));
-	}
-}
 
 export interface ManagedCache {
 

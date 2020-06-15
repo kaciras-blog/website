@@ -8,7 +8,7 @@
 				<a class="highlight" href="https://github.com/kaciras-blog">https://github.com/kaciras-blog</a>
 			</icon-paragraph>
 			<icon-paragraph src="../../assets/img/html-code.svg" title="browsers">
-				兼容性（以Grid布局为基准）：
+				兼容性：
 				<ul>
 					<li>MicrosoftEdge 79</li>
 					<li>Firefox 52</li>
