@@ -69,7 +69,12 @@ renderer.renderer.rules.image = (tokens, idx) => {
 
 	return `
 		<span class="center-wrapper">
-			<a href="${src}" target="_blank" class="md-loading-stack ${sized}" style="${style}">
+			<a
+				class="md-loading-stack ${sized}"
+				style="${style}"
+				href="${src}" target="_blank"
+			>
+				<img data-src="${src}" alt="${alt}" class="md-img">
 				<span class="full-vertex md-loading">
     				<span class="dot"></span>
     				<span class="dot"></span>
@@ -77,9 +82,8 @@ renderer.renderer.rules.image = (tokens, idx) => {
     				<span class="dot"></span>
     				<span class="dot"></span>
     			</span>
-				<img data-src="${src}" alt="${alt}" class="md-img">
 			</a>
-			${ alt ? `<span class="md-img-alt">${alt}</span>` : "" }
+			${alt ? `<span class="md-img-alt">${alt}</span>` : ""}
     	</span>
 	`;
 };
@@ -108,7 +112,7 @@ export function renderMarkdown(markdown) {
 export function enableLazyLoad(el) {
 	const images = lozad(el.querySelectorAll("img"), {
 		loaded(el) {
-			el.previousElementSibling.remove();
+			el.nextElementSibling.remove();
 			el.removeAttribute("data-src");
 		},
 	});

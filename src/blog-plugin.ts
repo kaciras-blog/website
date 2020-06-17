@@ -14,7 +14,7 @@ import IconParagraph from "./components/IconParagraph.vue";
 import IconSectionHeader from "./components/IconSectionHeader.vue";
 
 /**
- * 获取该文章所在页面的的完整路径。
+ * 获取文章所在页面的的完整路径。
  * 格式：/article/{id}/{url}
  *
  * @param id 文章ID

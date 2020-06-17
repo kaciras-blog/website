@@ -30,11 +30,11 @@ Vue.component(VueMultiselect.name, VueMultiselect);
 /**
  * 服务端和客户端公共的初始化逻辑。
  *
- * 由于创建Vue实例后就立即渲染，而此时可能就需要初始状态（比如控制台页面鉴权），所以不能等到创建之后再
- * 替换服务端渲染出的初始状态，而要在创建Vue实例之前就调用 store.replaceState(...)
+ * 由于创建Vue实例后就立即渲染，而此时可能就需要初始状态（比如控制台页面鉴权），
+ * 所以不能等到创建之后再替换服务端渲染出的初始状态，而要在创建Vue实例之前就调用 store.replaceState(...)
  *
  * @param initState Vuex的初始状态
- * @return {*} Vue全家桶
+ * @return Vue全家桶
  */
 export default function createApp(initState: any = undefined) {
 	const store = createStore();
