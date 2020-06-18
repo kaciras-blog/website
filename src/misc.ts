@@ -1,11 +1,5 @@
 /* 一些乱七八糟的小功能直接写一起了 */
 
-// 检查是否从指定的域名访问，如果不是可能网站被镜像了
-// const { webHost } = process.env.CONFIG;
-// if (webHost && location.host !== webHost) {
-// 	location.href = location.href.replace(location.host, webHost);
-// }
-
 // =========================== Google Analytics ===========================
 
 declare const dataLayer: any[];

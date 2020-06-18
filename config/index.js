@@ -90,38 +90,29 @@ module.exports = {
 			certFile: "/etc/letsencrypt/live/www.example.com/cert.pem",
 			keyFile: "/etc/letsencrypt/live/www.example.com/privkey.pem",
 		},
+
+		/** 该项设为true表示使用 X-Forwarded-* 头，在有反向代理时使用 */
+		// useForwardedHeaders: true,
 	},
 
-	blog: {
+	app: {
 
 		/**
-		 * 【环境】网页所在的域，该项用于CORS和防镜像检测。
-		 * CORS 包含端口，但目前不支持端口限制。
+		 * 网站标题和站长名字
 		 */
-		host: "localhost",
+		title: "Kaciras的博客",
+		author: "Kaciras",
 
 		/**
 		 * 【环境】保存应用数据的目录，数据包括：
 		 * image/ 上传的图片
 		 * cache/ 优化后的图片
+		 * video/ 上传的视频
 		 */
 		dataDir: "/var/lib/blog",
 
-		/** 【环境】内容服务器的内部访问 URL，用于服务端渲染和内部通信 */
-		serverAddress: "http://localhost:12345",
-
-		/**
-		 * 【环境】【可选】内容服务器的证书，如果它启用了HTTPS的话可能需要添加额外的信任。
-		 * 如果内容服务器没有使用HTTPS，或是从 serverAddress 访问的证书没问题则此项可以去掉。
-		 * 把此项设置为 true 可以关闭 NodeJS 的 HTTP 证书检查。
-		 */
-		// serverCert: "/etc/letsencrypt/live/api.example.com/cert.pem",
-
 		/** 是否启用ServiceWorker，true表示启用，否则卸载 */
 		// serviceWorker: true,
-
-		/** 该项设为true表示使用 X-Forwarded-* 头，在有反向代理时使用 */
-		// useForwardedHeaders: true,
 
 		/** 日志等级和文件 */
 		logging: {
@@ -132,15 +123,31 @@ module.exports = {
 		},
 	},
 
-	/** 该对象由 process.env.CONFIG 传递到构建的脚本里 */
-	envConfig: {
+	contentServer: {
+
+		/** 【环境】内容服务器的内部访问 URL，用于服务端渲染和内部通信 */
+		internalOrigin: "http://localhost:12345",
+
+		/**
+		 * 【环境】【可选】内容服务器的证书，如果它启用了HTTPS的话可能需要添加额外的信任。
+		 * 如果内容服务器没有使用HTTPS，或是从 serverAddress 访问的证书没问题则此项可以去掉。
+		 * 把此项设置为 true 可以关闭 NodeJS 的 HTTP 证书检查。
+		 */
+		// cert: "/etc/letsencrypt/live/api.example.com/cert.pem",
 
 		/** 【环境】内容服务器的公网 URL，如果是对象则依据页面使用HTTP还是HTTPS选择 */
-		CONTENT_SERVER_URI: "https://api.example.com",
-		// CONTENT_SERVER_URI: {
+		publicOrigin: "https://api.example.com",
+		// publicOrigin: {
 		// 	http: "http://api.example.com:54321",
 		// 	https: "https://api.example.com:12345",
 		// },
+	},
+
+	/** 该对象由 process.env.CONFIG 传递到构建的脚本里 */
+	envConfig: {
+
+		/** 请求超时时间（毫秒） */
+		REQUEST_TIMEOUT: 5000,
 
 		/** 【可选】Google Analytics 的ID，不填则不启用 Google Analytics */
 		GOOGLE_ANALYTICS_ID: "UA-12345678-1",
