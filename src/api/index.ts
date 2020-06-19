@@ -37,7 +37,7 @@ axios.defaults.xsrfCookieName = CSRF_COOKIE_NAME;
 axios.defaults.xsrfHeaderName = CSRF_HEADER_NAME;
 
 if (process.env.NODE_ENV === "production") {
-	axios.defaults.timeout = 10000;
+	axios.defaults.timeout = 5000;
 }
 
 // axios 不能全局配置拦截？
