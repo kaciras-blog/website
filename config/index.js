@@ -75,23 +75,30 @@ module.exports = {
 		/** 服务器绑定的地址，默认是localhost */
 		hostname: "0.0.0.0",
 
-		http: {
-			// port: 80,
+		connectors: [
+			{
+				/** HTTP的版本，1 = HTTP1.1，2 = HTTP2 */
+				version: 1,
 
-			/**
-			 * 【可选】如果该项为true，则该端口将发送301重定向到HTTPS端口。
-			 * 该选项也可以为整数，表示重定向目的地的端口号。
-			 */
-			redirect: true,
-		},
+				/** 监听的端口 */
+				port: 80,
 
-		https: {
-			// port: 443,
-			certFile: "/etc/letsencrypt/live/www.example.com/cert.pem",
-			keyFile: "/etc/letsencrypt/live/www.example.com/privkey.pem",
-		},
+				/**
+				 * 【可选】该端口将发送301重定向到指定origin。
+				 */
+				// redirect: "https://localhost",
+			},
+			{
+				version: 2,
+				port: 443,
 
-		/** 该项设为true表示使用 X-Forwarded-* 头，在有反向代理时使用 */
+				/** HTTPS 的证书和私钥，如果存在这两项则启用TLS */
+				certFile: "/etc/letsencrypt/live/www.example.com/cert.pem",
+				keyFile: "/etc/letsencrypt/live/www.example.com/privkey.pem",
+			},
+		],
+
+		/** 【可选】该项设为true表示使用 X-Forwarded-* 头，在有反向代理时使用 */
 		// useForwardedHeaders: true,
 	},
 
@@ -111,7 +118,7 @@ module.exports = {
 		 */
 		dataDir: "/var/lib/blog",
 
-		/** 是否启用ServiceWorker，true表示启用，否则卸载 */
+		/** 【可选】是否启用ServiceWorker，true表示启用，否则卸载 */
 		// serviceWorker: true,
 
 		/** 日志等级和文件 */
@@ -125,7 +132,10 @@ module.exports = {
 
 	contentServer: {
 
-		/** 【环境】内容服务器的内部访问 URL，用于服务端渲染和内部通信 */
+		/**
+		 * 【环境】内容服务器的内部访问 URL，用于服务端渲染和内部通信
+		 * process.env.API_ORIGIN
+		 */
 		internalOrigin: "http://localhost:12345",
 
 		/**

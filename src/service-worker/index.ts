@@ -34,7 +34,7 @@ router.addRoute(new AppShellRoute(cache, APP_SHELL_NAME, APP_SHELL_RE));
  * 对内容服务接口使用网络优先缓存，保证在网络不通的情况下也能显示旧的内容。
  */
 function enableApiServerCache() {
-	const apiOrigin = (process.env.CONFIG as any).CONTENT_SERVER_URI;
+	const apiOrigin = process.env.API_ORIGIN as any;
 	const BASE_URL = typeof apiOrigin === "string"
 		? apiOrigin
 		: apiOrigin[location.protocol.substring(0, location.protocol.length - 1)];

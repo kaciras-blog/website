@@ -55,7 +55,7 @@ function createAxios(config?: AxiosRequestConfig) {
 	return instance;
 }
 
-const apiOrigin = (process.env.CONFIG as any).CONTENT_SERVER_URI;
+const apiOrigin = process.env.API_ORIGIN as any;
 const BASE_URL = typeof apiOrigin === "string"
 	? apiOrigin
 	: apiOrigin[location.protocol.substring(0, location.protocol.length - 1)];
