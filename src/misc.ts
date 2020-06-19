@@ -8,7 +8,7 @@ interface Window {
 	dataLayer: any[];
 }
 
-const { GOOGLE_ANALYTICS_ID } = process.env.CONFIG as any;
+const { GOOGLE_ANALYTICS_ID } = process.env;
 if (GOOGLE_ANALYTICS_ID) {
 	window.dataLayer = window.dataLayer || [];
 

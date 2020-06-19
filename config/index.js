@@ -77,7 +77,10 @@ module.exports = {
 
 		connectors: [
 			{
-				/** HTTP的版本，1 = HTTP1.1，2 = HTTP2 */
+				/**
+				 * HTTP的版本，1 = HTTP1.1，2 = HTTP2。
+				 * HTTP2 也同时支持 HTTP1.1 连接。
+				 */
 				version: 1,
 
 				/** 监听的端口 */
@@ -134,7 +137,7 @@ module.exports = {
 
 		/**
 		 * 【环境】内容服务器的内部访问 URL，用于服务端渲染和内部通信
-		 * process.env.API_ORIGIN
+		 * 在服务端构建时用 process.env.API_ORIGIN 访问
 		 */
 		internalOrigin: "http://localhost:12345",
 
@@ -145,7 +148,10 @@ module.exports = {
 		 */
 		// cert: "/etc/letsencrypt/live/api.example.com/cert.pem",
 
-		/** 【环境】内容服务器的公网 URL，如果是对象则依据页面使用HTTP还是HTTPS选择 */
+		/**
+		 * 【环境】内容服务器的公网 URL，如果是对象则依据页面使用HTTP还是HTTPS选择
+		 * 在客户端构建时用 process.env.API_ORIGIN 访问
+		 */
 		publicOrigin: "https://api.example.com",
 		// publicOrigin: {
 		// 	http: "http://api.example.com:54321",
@@ -153,16 +159,13 @@ module.exports = {
 		// },
 	},
 
-	/** 该对象由 process.env.CONFIG 传递到构建的脚本里 */
-	envConfig: {
-
-		/** 请求超时时间（毫秒） */
-		REQUEST_TIMEOUT: 5000,
+	/** 一些第三方服务，所有项均可由 process.env 访问 */
+	thirdParty: {
 
 		/** 【可选】Google Analytics 的ID，不填则不启用 Google Analytics */
-		GOOGLE_ANALYTICS_ID: "UA-12345678-1",
+		// GOOGLE_ANALYTICS_ID: "UA-12345678-1",
 
 		/** 【可选】本站使用 Sentry 来上报异常，填写该项后将启用 */
-		SENTRY_DSN: "https://foobar@sentry.io/123456",
+		// SENTRY_DSN: "https://foobar@sentry.io/123456",
 	},
 };
