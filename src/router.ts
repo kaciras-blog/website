@@ -72,8 +72,9 @@ export default function CreateRouter() {
 			component: () => import(/* webpackChunkName: "article" */ "./views/article/ArticlePage.vue"),
 		},
 		{
-			path: "/edit/:id",
+			path: "/edit/:draftId",
 			component: () => import(/* webpackChunkName: "edit" */ "./views/editor/EditPage.vue"),
+			props: true,
 			meta: { title: "文章编辑器" },
 		},
 		{

@@ -15,6 +15,12 @@ export default {
 	components: {
 		MarkdownEditor,
 	},
+	props: {
+		draftId: {
+			type: String,
+			required: true,
+		},
+	},
 	data: () => ({
 		// Vue2的TS支持不好，只能写上以便IDE提示，下面的current也是
 		draft: {
@@ -43,7 +49,7 @@ export default {
 		content() { this.changes = true; },
 	},
 	methods: {
-		async metadataDialog() {
+		async showMetadataDialog() {
 			const result = await this.$dialog.show(MetadataDialog, this.current).confirmPromise;
 			Object.assign(this.current, result);
 		},
@@ -110,19 +116,16 @@ export default {
 		return next();
 	},
 	async beforeMount() {
-		const id = this.$route.params["id"];
-		if (!id) {
-			return; // 必须先创建草稿
-		}
-		const draft = this.draft = await api.draft.get(id);
+		this.draft = await api.draft.get(parseInt(this.draftId));
+		const { lastSaveCount, articleId } = this.draft;
 
-		await this.loadHistory(draft.lastSaveCount);
+		await this.loadHistory(lastSaveCount);
 
 		this.changes = false;
 		this.watchChanges();
 
-		if (!draft.articleId && this.current.saveCount === 0) {
-			await this.metadataDialog();
+		if (!articleId && this.current.saveCount === 0) {
+			await this.showMetadataDialog();
 		}
 	},
 	mounted() {
