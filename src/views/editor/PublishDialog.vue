@@ -1,5 +1,5 @@
 <template>
-	<kx-base-dialog :title='archive.articleId ? "更新文章": "发表文章"'>
+	<kx-base-dialog :title='draft.articleId ? "更新文章": "发表文章"'>
 
 		<div :class="$style.body">
 			<div :class="$style.category" class="segment">
@@ -27,10 +27,10 @@
 			<label>
 				文章的URL（发表后不能修改，尽量使用英文）
 				<input
-					v-model="url"
+					v-model="urlTitle"
 					title="URL，尽量用英文"
 					:class="$style.input"
-					:placeholder="metadata.title"
+					:placeholder="current.title"
 				>
 			</label>
 
@@ -49,12 +49,11 @@ import { errorMessage } from "@/utils";
 export default {
 	name: "PublishDialog",
 	props: {
-		archive: Object,
-		metadata: Object,
-		content: String,
+		draft: Object,
+		current: Object,
 	},
 	data: () => ({
-		url: "",
+		urlTitle: "",
 		category: null,
 		destroy: true,
 	}),
@@ -63,15 +62,14 @@ export default {
 			this.$dialog.show(SelectCategoryDialog).onConfirm(data => this.category = data);
 		},
 		async accept() {
-			const { archive, metadata, content } = this;
+			const { draft, current } = this;
 			try {
-				const data = Object.assign({}, metadata);
-				data.content = content;
-				data.keywords = data.keywords.split(" ");
-				data.draftId = archive.id; // 文章API里是draftId
+				const data = Object.assign({}, current);
+				data.keywords = current.keywords.split(" ");
+				data.draftId = draft.id; // 文章API里是draftId
 				data.destroy = this.destroy;
 
-				let id = archive.articleId;
+				let id = draft.articleId;
 				let returnUrl;
 
 				if (id) {

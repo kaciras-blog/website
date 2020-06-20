@@ -50,20 +50,6 @@ export function deleteOn<T>(array: T[], predicate: (value: T) => boolean) {
 }
 
 /**
- * 使用src对象中的值更新dest对象中相应的字段，该方法与
- * Object.assign不同之处在于不会在目标对象中添加新字段，仅复制
- * 目标对象已存在的字段。
- *
- * @param src 源对象
- * @param dist 目标对象
- * @return 目标对象
- */
-export function assignUpdate(src: any, dist: any) {
-	Object.keys(dist).forEach(k => dist[k] = src[k]);
-	return dist;
-}
-
-/**
  * 给对象附加一个随机的 id 字段，作为列表渲染时的 key。
  * 该方法可以对一个对象重复调用，其 id 字段在生成后不会改变。
  *

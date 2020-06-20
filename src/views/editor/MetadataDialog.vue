@@ -3,24 +3,24 @@
 		<div :class="$style.content">
 			<img
 				:class="$style.cover"
-				:src="cover"
+				:src="local.cover"
 				alt="封面"
 				@click="changeCover"
 			/>
 			<input
-				v-model="title"
+				v-model="local.title"
 				title="标题"
 				:class="$style.title"
 				placeholder="标题最多50个字"
 			/>
 			<textarea
-				v-model="summary"
+				v-model="local.summary"
 				:class="$style.summary"
 				class="input"
-				placeholder="摘要，别写太多"
+				placeholder="100字以内，留空则使用文章前50字"
 			/>
 			<input
-				v-model="keywords"
+				v-model="local.keywords"
 				title="关键字"
 				:class="$style.keywords"
 				placeholder="关键字,空格隔开"
@@ -36,18 +36,21 @@ import api from "@/api";
 export default {
 	name: "MetadataDialog",
 	props: {
-		metadata: Object,
+		title: String,
+		cover: String,
+		keywords: String,
+		summary: String,
 	},
 	data () {
 		// metadata 是直接传的，复制一份防止影响原数据
-		return Object.assign({}, this.metadata);
+		return { local: Object.assign({}, this.$props) };
 	},
 	methods: {
 		ok () {
-			this.$dialog.confirm(this.$data);
+			this.$dialog.confirm(this.local);
 		},
-		changeCover () {
-			api.misc.uploadImageFile().then(name => this.cover = name);
+		async changeCover () {
+			this.local.cover = await api.misc.uploadImageFile();
 		},
 	},
 };
