@@ -1,42 +1,37 @@
 <template>
-	<kx-markdown-edit-window :class="$style.editor" :text.sync="content"/>
+	<markdown-editor :class="$style.editor" v-model="current.content"></markdown-editor>
 </template>
 
 <script>
-import api from "@/api";
 import { VueMultiWatcher } from "@kaciras-blog/uikit";
-import { assignUpdate, errorMessage } from "@/utils";
-import KxMarkdownEditWindow from "@/markdown/EditWindow";
+import api from "@/api";
+import { errorMessage } from "@/utils";
+import MarkdownEditor from "@/markdown/MarkdownEditor";
 import PublishDialog from "./PublishDialog";
 import MetadataDialog from "./MetadataDialog";
-
-function convertToTransfer(data) {
-	return Object.assign({
-		id: data.archive.id,
-		articleId: data.archive.articleId,
-		content: data.content,
-	}, data.metadata);
-}
 
 export default {
 	name: "EditPage",
 	components: {
-		KxMarkdownEditWindow,
+		MarkdownEditor,
 	},
 	data: () => ({
-		archive: {
+		// Vue2的TS支持不好，只能写上以便IDE提示，下面的current也是
+		draft: {
 			id: null,
 			articleId: null,
-			saveCount: 0,
-			saveTime: null,
+			userId: 0,
+			updateTime: null,
 		},
-		metadata: {
+
+		current: {
 			title: "",
 			cover: "",
 			keywords: "",
 			summary: "",
+			content: "",
+			saveCount: 0,
 		},
-		content: "",
 
 		/** 是否有在未保存的改动 */
 		changes: false,
@@ -48,9 +43,9 @@ export default {
 		content() { this.changes = true; },
 	},
 	methods: {
-		metadataDialog() {
-			this.$dialog.show(MetadataDialog, { metadata: this.metadata })
-				.onConfirm(data => this.metadata = data);
+		async metadataDialog() {
+			const result = await this.$dialog.show(MetadataDialog, this.current).confirmPromise;
+			Object.assign(this.current, result);
 		},
 
 		/** 监视文本的改变，当改变时开始计时5分钟，到点自动保存 */
@@ -62,26 +57,24 @@ export default {
 		},
 
 		async autoSave() {
-			const { archive } = this;
+			const { draft, current } = this;
 			try {
-				const data = convertToTransfer(this.$data);
-				await api.draft.save(archive.id, archive.saveCount, data);
+				await api.draft.save(draft.id, current.saveCount, current);
+				draft.updateTime = new Date();
 
-				archive.saveTime = new Date();
 				this.watchChanges();
 				this.changes = false;
 				this.autoSaveError = null;
 			} catch (e) {
-				this.$dialog.alertError("保存失败", errorMessage(e));
 				this.autoSaveError = e;
 			}
 		},
 
 		async manualSave() {
-			const { archive } = this;
+			const { draft, current } = this;
 			try {
-				await api.draft.saveNewHistory(archive.id, convertToTransfer(this.$data));
-				archive.saveTime = new Date();
+				await api.draft.saveNewHistory(draft.id, current);
+				draft.updateTime = new Date();
 				this.changes = false;
 				this.$dialog.alertSuccess("保存成功");
 			} catch (e) {
@@ -96,13 +89,9 @@ export default {
 		},
 
 		async loadHistory(saveCount) {
-			const { archive } = this;
-			const history = await api.draft.getHistory(archive.id, saveCount);
-
-			assignUpdate(history, this.metadata);
-			archive.saveTime = history.time;
-			archive.saveCount = history.saveCount;
-			this.content = history.content;
+			const { draft } = this;
+			this.current = await api.draft.getHistory(draft.id, saveCount);
+			draft.updateTime = this.current.time;
 		},
 
 		onPageExit(event) {
@@ -125,17 +114,16 @@ export default {
 		if (!id) {
 			return; // 必须先创建草稿
 		}
-		const draft = await api.draft.get(id);
-		assignUpdate(draft, this.archive);
+		const draft = this.draft = await api.draft.get(id);
 
 		await this.loadHistory(draft.lastSaveCount);
 
-		if (!draft.articleId && draft.saveCount === 0) {
-			await this.metadataDialog();
-		}
-
 		this.changes = false;
 		this.watchChanges();
+
+		if (!draft.articleId && this.current.saveCount === 0) {
+			await this.metadataDialog();
+		}
 	},
 	mounted() {
 		window.addEventListener("beforeunload", this.onPageExit);
