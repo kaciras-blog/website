@@ -45,6 +45,7 @@
 import api from "@/api";
 import SelectCategoryDialog from "@/components/SelectCategoryDialog";
 import { errorMessage } from "@/utils";
+import { articleLink } from "@/blog-plugin";
 
 export default {
 	name: "PublishDialog",
@@ -73,9 +74,8 @@ export default {
 				let returnUrl;
 
 				if (id) {
-					// TODO：returnUrl 不一致
-					await api.article.update(id, data);
-					returnUrl = id;
+					const article = await api.article.update(id, data);
+					returnUrl = articleLink(article);
 				} else if (!this.category) {
 					return this.$dialog.alertError("发表失败", "必须选择一个分类");
 				} else {

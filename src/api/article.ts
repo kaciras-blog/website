@@ -50,7 +50,7 @@ export default class ArticleResource extends AbstractResource {
 	}
 
 	update(id: number, data: any) {
-		return this.servers.content.put("/articles/" + id, data);
+		return this.servers.content.put("/articles/" + id, data).then(r => r.data);
 	}
 
 	getList(params: ArticleListQuery) {

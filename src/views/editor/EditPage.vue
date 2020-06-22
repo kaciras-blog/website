@@ -118,9 +118,9 @@ export default {
 		},
 
 		async publish() {
-			const article = await this.$dialog.show(PublishDialog, this.$data).confirmPromise;
+			const targetUrl = await this.$dialog.show(PublishDialog, this.$data).confirmPromise;
 			this.changes = false;
-			return this.$router.push(`/article/${article}`);
+			return this.$router.push(targetUrl);
 		},
 
 		async loadHistory(saveCount) {
