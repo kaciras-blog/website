@@ -1,12 +1,9 @@
 <template>
 	<div :class="$style.container">
+
 		<div :class="$style.toolbar" role="toolbar">
-			<basic-toolbar :text.sync="content" :selection.sync="selection"/>
-			<div>
-				<kx-button class="info" title="双列视图" icon="fas fa-columns" @click="viewMode = 0"/>
-				<kx-button class="info" title="Markdown视图" icon="far fa-edit" @click="viewMode = 1"/>
-				<kx-button class="info" title="Html视图" icon="fas fa-eye" @click="viewMode = 2"/>
-			</div>
+			<div :class="$style.left_items"><slot name="tools-left" :ctx="this"/></div>
+			<div :class="$style.right_items"><slot name="tools-right" :ctx="this"/></div>
 		</div>
 
 		<div :class="$style.main">
@@ -20,11 +17,11 @@
 				}"
 				title="编辑区"
 				spellcheck="false"
-				:value="text"
+				:value="value"
 				v-bind-selection.focus="selection"
 				v-on-selection-changed="handleSelect"
 				@keydown.tab.prevent="insertTab"
-				@input="$emit('update:text', $event.target.value)"
+				@input="$emit('input', $event.target.value)"
 			/>
 			<article
 				v-show="viewMode !== 1"
@@ -39,23 +36,9 @@
 			/>
 		</div>
 
-		<div :class="$style.stateBar">
-			<!--<div>-->
-			<!--	<span v-if="autoSaveError" :class="$style.errMsg">-->
-			<!--		自动保存出错！-->
-			<!--	</span>-->
-			<!--	<span v-else-if="archive.saveTime">-->
-			<!--		上次保存：{{archive.saveTime | localDateMinute}}-->
-			<!--	</span>-->
-			<!--</div>-->
-			<div>
-				<span v-if="selected" :class="$style.item">
-					选择：
-					{{selection[0] + " - " + selection[1]}}
-					| {{ selection[1] - selection[0] }} 字
-				</span>
-				<span :class="$style.item">总字数：{{ text.length }}</span>
-			</div>
+		<div :class="$style.statebar">
+			<div :class="$style.left_items"><slot name="state-left" :ctx="this"/></div>
+			<div :class="$style.right_items"><slot name="state-right" :ctx="this"/></div>
 		</div>
 	</div>
 </template>
@@ -63,15 +46,11 @@
 <script>
 import { syncScroll } from "@kaciras-blog/uikit";
 import { renderMarkdown, enableLazyLoad } from "./index";
-import BasicToolbar from "./BasicToolbar";
 
 export default {
-	name: "kxMarkdownEditWindow",
-	components: {
-		BasicToolbar,
-	},
+	name: "MarkdownEditor",
 	props: {
-		text: {
+		value: {
 			type: String,
 			default: "",
 		},
@@ -84,18 +63,18 @@ export default {
 		return {
 			selection: [0, 0],
 			viewMode: 0,
-			html: renderMarkdown(this.text),
+			html: renderMarkdown(this.value),
 		};
 	},
 	computed: {
 		content: {
-			get() { return this.text; },
-			set(value) { this.$emit("update:text", value); },
+			get() { return this.value; },
+			set(value) { this.$emit("input", value); },
 		},
 	},
 	watch: {
 		// 加个防抖免得右边老闪，另外注意刷新后清理监听器防止内存泄漏
-		text(newValue) {
+		value(newValue) {
 			const render = async () => {
 				this.html = renderMarkdown(newValue);
 				await this.$nextTick();
@@ -122,7 +101,7 @@ export default {
 			const selStart = this.selection[0];
 			const selEnd = this.selection[1];
 
-			const v = this.text;
+			const v = this.value;
 			const newEnd = selStart + 1;
 
 			this.content = v.substring(0, selStart) + "\t" + v.substring(selEnd, v.length);
@@ -147,29 +126,36 @@ export default {
 	flex-direction: column;
 }
 
+.toolbar {
+	display: flex;
+	background-color: whitesmoke;
+}
+
+.statebar {
+	display: flex;
+	line-height: 24px;
+	padding: 0 .5em;
+	color: white;
+	background-color: #003ee7;
+}
+
+.left_items {
+	display: flex;
+	flex-grow: 1;
+}
+
+/*.right_items {*/
+/*	display: flex;*/
+/*	flex-direction: row-reverse;*/
+/*	flex-wrap: wrap;*/
+/*}*/
+
+// =========================================
+
 .main {
 	display: flex;
 	flex: 1;
 	overflow: hidden;
-}
-
-.errMsg {
-	color: #ff6b6b;
-	font-weight: 600;
-}
-
-.toolbar {
-	display: flex;
-	justify-content: space-between;
-	background-color: whitesmoke;
-}
-
-.stateBar {
-	display: flex;
-	justify-content: space-between;
-	padding: .4rem;
-	color: white;
-	background-color: #003ee7;
 }
 
 .textbox {

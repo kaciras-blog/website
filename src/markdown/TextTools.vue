@@ -9,26 +9,24 @@
 		<kx-button title="引用块" icon="fa fa-quote-left" @click="addPrefixToLines('>')"/>
 		<kx-button title="列表" icon="fas fa-list-ul" @click="addPrefixToLines('* ')"/>
 		<kx-button title="插入链接" icon="fa fa-link" @click="addLink"/>
-		<kx-button class="minor" title="插入图片" icon="far fa-file-image" @click="addImage"/>
+
+		<kx-button title="插入图片" icon="far fa-file-image" @click="addImage"/>
 		<kx-button title="插入视频" icon="fa fa-file-video" @click="addVideo"/>
 	</div>
 </template>
 
 <script>
-import { getImageSize, openFile } from "@kaciras-blog/uikit/src/index";
+import { getImageSize, openFile } from "@kaciras-blog/uikit";
 import api from "@/api";
 import VideoDialog from "./VideoDialog";
 import AddLinkDialog from "./AddLinkDialog";
 
 export default {
-	name: "BasicToolbar",
+	name: "TextTools",
+	// functional: true,
 	props: {
-		text: {
-			type: String,
-			required: true,
-		},
-		selection: {
-			type: Array,
+		ctx: {
+			type: Object,
 			required: true,
 		},
 	},

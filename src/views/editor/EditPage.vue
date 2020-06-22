@@ -1,5 +1,33 @@
 <template>
-	<markdown-editor :class="$style.editor" v-model="current.content"></markdown-editor>
+	<markdown-editor :class="$style.editor" v-model="current.content">
+
+		<template v-slot:tools-left="{ ctx }">
+			<text-tools :ctx="ctx"/>
+		</template>
+
+		<template v-slot:tools-right="{ ctx }">
+			<kx-button class="info" title="双列视图" icon="fas fa-columns" @click="ctx.viewMode = 0"/>
+			<kx-button class="info" title="Markdown视图" icon="far fa-edit" @click="ctx.viewMode = 1"/>
+			<kx-button class="info" title="Html视图" icon="fas fa-eye" @click="ctx.viewMode = 2"/>
+
+			<kx-button class="primary" title="修改简介" icon="far fa-address-card" @click="showMetadataDialog"/>
+			<kx-button class="primary" title="保存" icon="far fa-save" @click="manualSave"/>
+			<kx-button class="primary" title="发布!" icon="far fa-paper-plane" @click="publish"/>
+		</template>
+
+		<template v-slot:state-left>
+			<span v-if="autoSaveError" :class="$style.errMsg">
+				自动保存出错！
+			</span>
+			<span v-else-if="draft.updateTime">
+				上次保存：{{draft.updateTime | localDateMinute}}
+			</span>
+		</template>
+
+		<template v-slot:state-right="{ ctx }">
+			<text-state-group :selection="ctx.selection" :content="ctx.content"/>
+		</template>
+	</markdown-editor>
 </template>
 
 <script>
@@ -9,10 +37,14 @@ import { errorMessage } from "@/utils";
 import MarkdownEditor from "@/markdown/MarkdownEditor";
 import PublishDialog from "./PublishDialog";
 import MetadataDialog from "./MetadataDialog";
+import TextTools from "@/markdown/TextTools";
+import TextStateGroup from "@/markdown/TextStateGroup";
 
 export default {
 	name: "EditPage",
 	components: {
+		TextStateGroup,
+		TextTools,
 		MarkdownEditor,
 	},
 	props: {
@@ -141,5 +173,10 @@ export default {
 <style module lang="less">
 .editor {
 	height: 100vh;
+}
+
+.errMsg {
+	color: #ff6b6b;
+	font-weight: 600;
 }
 </style>

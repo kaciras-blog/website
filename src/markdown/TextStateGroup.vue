@@ -1,11 +1,11 @@
 <template>
-	<div class="fragment">
+	<div>
 		<span v-if="selected" :class="$style.item">
 			选择：
 			{{selection[0] + " - " + selection[1]}}
 			| {{ selection[1] - selection[0] }} 字
 		</span>
-		<span :class="$style.item">总字数：{{ text.length }}</span>
+		<span :class="$style.item">总字数：{{ content.length }}</span>
 	</div>
 </template>
 
@@ -13,7 +13,7 @@
 export default {
 	name: "TextStateGroup",
 	props: {
-		text: {
+		content: {
 			type: String,
 			required: true,
 		},
