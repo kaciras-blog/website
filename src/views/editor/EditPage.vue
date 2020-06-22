@@ -39,8 +39,6 @@ import PublishDialog from "./PublishDialog";
 import MetadataDialog from "./MetadataDialog";
 import TextTools from "@/markdown/TextTools";
 import TextStateGroup from "@/markdown/TextStateGroup";
-import { getImageSize, openFile } from "@kaciras-blog/uikit/src/index";
-import VideoDialog from "@/markdown/VideoDialog";
 
 export default {
 	name: "EditPage",
@@ -78,10 +76,6 @@ export default {
 
 		autoSaveError: null,
 	}),
-	watch: {
-		metadata() { this.changes = true; },
-		content() { this.changes = true; },
-	},
 	methods: {
 		async showMetadataDialog() {
 			const result = await this.$dialog.show(MetadataDialog, this.current).confirmPromise;
@@ -89,11 +83,12 @@ export default {
 		},
 
 		/** 监视文本的改变，当改变时开始计时5分钟，到点自动保存 */
-		watchChanges() {
+		watchForAutoSave() {
 			const callback = () => {
+				unwatch();
 				this.$_autoSaveTimer = setTimeout(this.autoSave, 5 * 60 * 1000);
 			};
-			new VueMultiWatcher(this, ["metadata", "content"], callback, { once: true });
+			const unwatch = this.$watch("current", callback, { deep: true });
 		},
 
 		async autoSave() {
@@ -102,7 +97,7 @@ export default {
 				await api.draft.save(draft.id, current.saveCount, current);
 				draft.updateTime = new Date();
 
-				this.watchChanges();
+				this.watchForAutoSave();
 				this.changes = false;
 				this.autoSaveError = null;
 			} catch (e) {
@@ -156,7 +151,8 @@ export default {
 		await this.loadHistory(lastSaveCount);
 
 		this.changes = false;
-		this.watchChanges();
+		this.$watch("current", () => this.changes = true, { deep: true });
+		this.watchForAutoSave();
 
 		if (!articleId && this.current.saveCount === 0) {
 			await this.showMetadataDialog();

@@ -1,4 +1,4 @@
-import { UPDATE_CHANNEL_NAME } from "./service-worker/cache";
+import { UPDATE_CHANNEL_NAME } from "./service-worker/fetch-strategy";
 import { report } from "./error-report";
 
 const SCRIPT_PATH = "/sw.js";
