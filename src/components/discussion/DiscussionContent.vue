@@ -22,7 +22,10 @@
 					<span
 						:title="value.voted ? '取消点赞' : '点赞'"
 						class="meta"
-						:class="[$style.clickable, { [$style.active]: value.voted }]"
+						:class="{
+							[$style.clickable]:true,
+							[$style.active]: value.voted
+						}"
 						@click="vote"
 					>
 						<i class="far fa-thumbs-up"/>

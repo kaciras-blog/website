@@ -178,7 +178,7 @@ export default {
 }
 
 .errMsg {
-	color: #ff6b6b;
+	color: #ff4f4f;
 	font-weight: 600;
 }
 </style>

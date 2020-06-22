@@ -14,7 +14,6 @@
 			<span :class="$style.name">{{user.name}}</span>
 		</div>
 
-		<!--suppress CheckEmptyScriptTag 什么垃圾IDE支持 -->
 		<textarea
 			:value="content"
 			placeholder='说点什么吧'
