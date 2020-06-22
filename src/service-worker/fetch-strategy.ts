@@ -1,4 +1,4 @@
-import { ManagedCache, UPDATE_CHANNEL_NAME } from "./cache";
+import { ManagedCache } from "./cache";
 
 declare const self: ServiceWorkerGlobalScope;
 
@@ -40,6 +40,8 @@ async function fetchAndCache(input: RequestInfo, cache: ManagedCache, fetchFn: F
 
 	return rawResponse;
 }
+
+export const UPDATE_CHANNEL_NAME = "PWA-UPDATE";
 
 // TODO: 目前只有一种消息，所以直接搞个全局信道
 let broadcastChannel: BroadcastChannel;
