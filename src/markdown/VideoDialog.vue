@@ -20,7 +20,11 @@
 				<kx-check-box v-model="muted">静音</kx-check-box>
 			</fieldset>
 		</form>
-		<kx-standard-dialog-buttons :acceptable="src.length" @confirm="$dialog.confirm($data)"/>
+
+		<kx-standard-dialog-buttons
+			:acceptable="src.length > 0"
+			@confirm="$dialog.confirm($data)"
+		/>
 	</kx-base-dialog>
 </template>
 

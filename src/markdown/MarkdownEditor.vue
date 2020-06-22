@@ -108,6 +108,19 @@ export default {
 			this.selection = [newEnd, newEnd];
 		},
 
+		/**
+		 * 替换一段区域内的文本，并选中替换的部分。
+		 *
+		 * @param start 替换起点
+		 * @param end 替换终点
+		 * @param value 替换的文本
+		 */
+		replaceArea(start, end, value) {
+			const v = this.value;
+			this.content = v.substring(0, start) + value + v.substring(end, v.length);
+			this.selection = [start, start + value.length];
+		},
+
 		handleSelect(s, e) {
 			this.selection = [s, e];
 		},
@@ -133,7 +146,7 @@ export default {
 
 .statebar {
 	display: flex;
-	line-height: 24px;
+	line-height: 22px;
 	padding: 0 .5em;
 	color: white;
 	background-color: #003ee7;
@@ -169,7 +182,7 @@ export default {
 
 	font-size: initial;
 	word-break: break-all;
-	line-height: 27px;
+	line-height: 1.67;
 }
 
 .split {

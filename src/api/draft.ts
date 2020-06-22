@@ -48,18 +48,6 @@ export default class DraftResource extends AbstractResource {
 		return this.servers.content.get<Draft>(`/drafts/${id}`).then(r => r.data);
 	}
 
-	getHistory(id: number, saveCount: number) {
-		return this.servers.content.get<DraftHistory>(`/drafts/${id}/histories/${saveCount}`).then(r => r.data);
-	}
-
-	saveNewHistory(id: number, data: DraftHistoryInput) {
-		return this.servers.content.post(`/drafts/${id}/histories`, data);
-	}
-
-	save(id: number, saveCount: number, data: any) {
-		return this.servers.content.put(`/drafts/${id}/histories/${saveCount}`, data);
-	}
-
 	/** 删除一个草稿 */
 	remove(id: number) {
 		return this.servers.content.delete("/drafts/" + id);
@@ -68,5 +56,17 @@ export default class DraftResource extends AbstractResource {
 	/** 清空所有草稿 */
 	clear() {
 		return this.servers.content.delete("/drafts");
+	}
+
+	getHistory(id: number, saveCount: number) {
+		return this.servers.content.get<DraftHistory>(`/drafts/${id}/histories/${saveCount}`).then(r => r.data);
+	}
+
+	saveNewHistory(id: number, data: DraftHistoryInput) {
+		return this.servers.content.post(`/drafts/${id}/histories`, data);
+	}
+
+	save(id: number, saveCount: number, data: DraftHistoryInput) {
+		return this.servers.content.put(`/drafts/${id}/histories/${saveCount}`, data);
 	}
 }

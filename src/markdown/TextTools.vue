@@ -2,7 +2,7 @@
 	<div>
 		<kx-button title="标题" icon="fas fa-heading" @click="addHeader(2)"/>
 		<kx-button title="粗体" icon="fa fa-bold" @click="switchWrapper('**')"/>
-		<kx-button title="斜体" icon="fa fa-italic" @click="switchWrapper('_')"/>
+		<kx-button title="斜体" icon="fa fa-italic" @click="switchWrapper('*')"/>
 		<kx-button title="删除线" icon="fa fa-strikethrough" @click="switchWrapper('~~')"/>
 		<kx-button title="行内代码" icon="fa fa-code" @click="switchWrapper('`')"/>
 		<kx-button title="横线" icon="fa fa-minus" @click="addNewLine('- - -')"/>
@@ -29,6 +29,13 @@ export default {
 			type: Object,
 			required: true,
 		},
+		// uploadImage: Function,
+		// uploadVideo: Function,
+	},
+	computed: {
+		text() {
+			return this.ctx.content;
+		},
 	},
 	methods: {
 
@@ -39,7 +46,7 @@ export default {
 		 * @return [number, number] 起点和终点
 		 */
 		getSelectedRange(extend) {
-			let [s, e] = this.selection;
+			let [s, e] = this.ctx.selection;
 			if (extend) {
 				if (s > 0) {
 					s = this.text.lastIndexOf("\n", s - 1) + 1;
@@ -48,31 +55,6 @@ export default {
 				if (e === -1) e = this.text.length;
 			}
 			return [s, e];
-		},
-
-		/**
-		 * 替换一段区域内的文本。
-		 *
-		 * @param start 替换起点
-		 * @param end 替换终点
-		 * @param text 替换的文本
-		 */
-		changeTextArea(start, end, text) {
-			const v = this.text;
-			this.$emit("update:text", v.substring(0, start) + text + v.substring(end, v.length));
-		},
-
-		/**
-		 * 更改选择的文本范围。
-		 *
-		 * @param start 起点
-		 * @param end 终点
-		 */
-		reselect(start, end) {
-			if (!end) {
-				end = start;
-			}
-			this.$emit("update:selection", [start, end]);
 		},
 
 		addHeader(level) {
@@ -91,8 +73,7 @@ export default {
 				text += "\n";
 			}
 
-			this.changeTextArea(index, index, text);
-			this.reselect(index + text.length);
+			this.ctx.replaceArea(index, index, text);
 		},
 
 		addPrefixToLines(prefix) {
@@ -110,8 +91,7 @@ export default {
 			}
 			text = text.substring(1);
 
-			this.changeTextArea(selStart, selEnd, text);
-			this.reselect(selStart, selEnd + lines.length);
+			this.ctx.replaceArea(selStart, selEnd, text);
 		},
 
 		switchWrapper(prefix) {
@@ -129,8 +109,7 @@ export default {
 				text = prefix + text + prefix;
 			}
 
-			this.changeTextArea(selStart, selEnd, text);
-			this.reselect(selStart, end);
+			this.ctx.replaceArea(selStart, selEnd, text);
 		},
 
 		async addLink() {
@@ -138,8 +117,7 @@ export default {
 			const str = `[${text}](${href})`;
 
 			const selEnd = this.getSelectedRange(false)[1];
-			this.changeTextArea(selEnd, selEnd, str);
-			this.reselect(selEnd, selEnd + str.length);
+			this.ctx.replaceArea(selEnd, selEnd, str);
 		},
 
 		async addImage() {
@@ -149,12 +127,8 @@ export default {
 			const { width, height } = await getImageSize(file);
 			const res = await api.misc.uploadImage(file) + `?vw=${width}&vh=${height}`;
 
-			const [selStart, selEnd] = this.selection;
-			const p = selStart + 2;
-			const v = this.content;
-
-			this.content = v.substring(0, selEnd) + `![](${res})` + v.substring(selEnd);
-			this.selection = [p, p];
+			const [, selEnd] = this.ctx.selection;
+			this.ctx.replaceArea(selEnd, selEnd, `![](${res})`);
 		},
 
 		// TODO: 暂不支持<source>指定多个源，以后考虑七牛云？
@@ -174,9 +148,8 @@ export default {
 			}
 
 			const str = `@video[](${res.src}){ ${attrs.join(" ")} }`;
-			const selEnd = this.getSelectedRange(false)[1];
-			this.changeTextArea(selEnd, selEnd, str);
-			this.reselect(selEnd, selEnd + str.length);
+			const selEnd = this.ctx.selection[1];
+			this.ctx.replaceArea(selEnd, selEnd, str);
 		},
 	},
 };

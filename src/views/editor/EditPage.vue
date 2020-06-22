@@ -39,6 +39,8 @@ import PublishDialog from "./PublishDialog";
 import MetadataDialog from "./MetadataDialog";
 import TextTools from "@/markdown/TextTools";
 import TextStateGroup from "@/markdown/TextStateGroup";
+import { getImageSize, openFile } from "@kaciras-blog/uikit/src/index";
+import VideoDialog from "@/markdown/VideoDialog";
 
 export default {
 	name: "EditPage",
