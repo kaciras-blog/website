@@ -4,31 +4,33 @@ import { DBSchema, IDBPDatabase, openDB } from "idb";
 /*
  * 缓存过期信息的存储，使用 IndexedDB 实现。
  *
- * Table "expiration"
- * +-------------+----------------+
- * | url(string) | 🔑time(number) |
- * +-------------+----------------+
+ * Table "expiration";
+ * +---------------+--------------+
+ * | 🔑url(string) | time(number) |
+ * +---------------+--------------+
+ * Index "by-time" on column "time";
  */
 
 const STORE_NAME = "expiration";
-const URL_KEY = "url";
-const TIMESTAMP_KEY = "time";
+const INDEX = "by-time";
+const URL_COLUMN = "url";
+const TIME_COLUMN = "time";
 
 interface Schema extends DBSchema {
-	expiration: {
+	[STORE_NAME]: {
 		key: string;
 		value: {
-			url: string;
-			time: number;
+			[URL_COLUMN]: string;
+			[TIME_COLUMN]: number;
 		};
 		indexes: {
-			time: number;
+			[INDEX]: number;
 		};
 	};
 }
 
 function valueOf(response: Response) {
-	return { [URL_KEY]: response.url, [TIMESTAMP_KEY]: Date.now() };
+	return { [URL_COLUMN]: response.url, [TIME_COLUMN]: Date.now() };
 }
 
 /**
@@ -41,8 +43,8 @@ function valueOf(response: Response) {
  * @param db 升级事件
  */
 function createStore(db: IDBPDatabase<Schema>) {
-	db.createObjectStore(STORE_NAME, { keyPath: URL_KEY })
-		.createIndex(TIMESTAMP_KEY, TIMESTAMP_KEY, { unique: false });
+	db.createObjectStore(STORE_NAME, { keyPath: URL_COLUMN })
+		.createIndex(INDEX, TIME_COLUMN, { unique: false });
 }
 
 /**
@@ -57,11 +59,6 @@ export class LastAdded implements ManagedCache {
 	readonly maxAge?: number;
 
 	protected constructor(db: IDBPDatabase<Schema>, maxSize?: number, maxAge?: number) {
-		if (cacheNames.has(db.name)) {
-			throw new Error(`ManagedCache ${name} already exists`);
-		}
-		cacheNames.add(db.name);
-
 		this.db = db;
 		this.maxSize = maxSize;
 		this.maxAge = maxAge;
@@ -73,14 +70,15 @@ export class LastAdded implements ManagedCache {
 
 		const limit = maxSize || Number.MAX_SAFE_INTEGER;
 		const period = maxAge ? Date.now() - maxAge * 1000 : 0;
-
-		let cursor = await db.transaction(STORE_NAME).store.openCursor();
 		let count = 0;
+
+		const tx = db.transaction(STORE_NAME, "readwrite");
+		let cursor = await tx.store.index(INDEX).openCursor();
 
 		while (cursor) {
 			const { value } = cursor;
 
-			if (count < limit && value[TIMESTAMP_KEY] > period) {
+			if (count < limit && value[TIME_COLUMN] > period) {
 				count++;
 				cursor = await cursor.continue();
 			} else {
@@ -93,7 +91,6 @@ export class LastAdded implements ManagedCache {
 		await db.add(STORE_NAME, valueOf(response));
 	}
 
-	// TODO 可以搞个LRU？
 	async match(request: RequestInfo, options?: CacheQueryOptions) {
 		return (await caches.open(this.db.name)).match(request, options);
 	}
@@ -104,7 +101,7 @@ export class LRU extends LastAdded {
 	async match(request: RequestInfo, options?: CacheQueryOptions) {
 		const response = await super.match(request, options);
 		if (response) {
-			this.db.put(STORE_NAME, valueOf(response))
+			this.db.put(STORE_NAME, valueOf(response)).catch(e => console.error(e));
 		}
 		return response;
 	}
@@ -132,6 +129,12 @@ interface ExpirationOptions {
  */
 export async function expiration(options: ExpirationOptions) {
 	const { name, maxSize, maxAge, strategy = LastAdded } = options;
+
+	if (cacheNames.has(name)) {
+		throw new Error(`ManagedCache ${name} already exists`);
+	}
+	cacheNames.add(name);
+
 	const db = await openDB<Schema>(name, 1, { upgrade: createStore });
 	return new strategy(db, maxSize, maxAge)
 }
