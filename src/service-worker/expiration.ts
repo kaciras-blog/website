@@ -9,6 +9,11 @@ import { DBSchema, IDBPDatabase, openDB } from "idb";
  * | url(string) | 🔑time(number) |
  * +-------------+----------------+
  */
+
+const STORE_NAME = "expiration";
+const URL_KEY = "url";
+const TIMESTAMP_KEY = "time";
+
 interface Schema extends DBSchema {
 	expiration: {
 		key: string;
@@ -22,9 +27,9 @@ interface Schema extends DBSchema {
 	};
 }
 
-const STORE_NAME = "expiration";
-const URL_KEY = "url";
-const TIMESTAMP_KEY = "time";
+function valueOf(response: Response) {
+	return { [URL_KEY]: response.url, [TIMESTAMP_KEY]: Date.now() };
+}
 
 /**
  * 如果数据库结构有变动则需要升级版本号，并在这个方法里创建新结构。
@@ -42,16 +47,16 @@ function createStore(db: IDBPDatabase<Schema>) {
 
 /**
  * 有过期功能的缓存，过期信息记录在 IndexedDB 里。
- * 使用 await ExpirationCache.create(...) 来创建该类的实例。
+ * 使用 await LastAdded.create(...) 来创建该类的实例。
  */
-export default class ExpirationCache implements ManagedCache {
+export class LastAdded implements ManagedCache {
 
 	readonly db: IDBPDatabase<Schema>;
 
 	readonly maxSize?: number;
 	readonly maxAge?: number;
 
-	private constructor(db: IDBPDatabase<Schema>, maxSize?: number, maxAge?: number) {
+	protected constructor(db: IDBPDatabase<Schema>, maxSize?: number, maxAge?: number) {
 		if (cacheNames.has(db.name)) {
 			throw new Error(`ManagedCache ${name} already exists`);
 		}
@@ -85,23 +90,48 @@ export default class ExpirationCache implements ManagedCache {
 		}
 
 		await cache.put(request, response);
-		await db.add(STORE_NAME, { [URL_KEY]: response.url, [TIMESTAMP_KEY]: Date.now() });
+		await db.add(STORE_NAME, valueOf(response));
 	}
 
 	// TODO 可以搞个LRU？
 	async match(request: RequestInfo, options?: CacheQueryOptions) {
 		return (await caches.open(this.db.name)).match(request, options);
 	}
+}
 
-	/**
-	 * 创建一个 ExpirationCache。
-	 *
-	 * @param name 缓存存储的名字
-	 * @param maxSize 缓存数量上限
-	 * @param maxAge 过期时间（毫秒）
-	 */
-	static async create(name: string, maxSize = undefined, maxAge = undefined) {
-		const db = await openDB<Schema>(name, 1, { upgrade: createStore });
-		return new ExpirationCache(db, maxSize, maxAge)
+export class LRU extends LastAdded {
+
+	async match(request: RequestInfo, options?: CacheQueryOptions) {
+		const response = await super.match(request, options);
+		if (response) {
+			this.db.put(STORE_NAME, valueOf(response))
+		}
+		return response;
 	}
+}
+
+interface ExpirationOptions {
+
+	/** 缓存存储的名字 */
+	name: string;
+
+	/** 缓存数量上限 */
+	maxSize?: number;
+
+	/** 过期时间（毫秒 */
+	maxAge?: number;
+
+	/** 缓存策略 */
+	strategy?: LastAdded;
+}
+
+/**
+ * 创建一个具有过期功能的缓存存储。
+ *
+ * @param options 选项
+ */
+export async function expiration(options: ExpirationOptions) {
+	const { name, maxSize, maxAge, strategy = LastAdded } = options;
+	const db = await openDB<Schema>(name, 1, { upgrade: createStore });
+	return new strategy(db, maxSize, maxAge)
 }
