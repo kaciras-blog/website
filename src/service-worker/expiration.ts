@@ -1,9 +1,10 @@
-import { cacheNames, ManagedCache } from "./cache";
 import { DBSchema, IDBPDatabase, openDB } from "idb";
+import { cacheNames, ManagedCache } from "./cache";
 
 /*
  * 缓存过期信息的存储，使用 IndexedDB 实现。
  *
+ * 等价的关系数据库结构：
  * Table "expiration";
  * +---------------+--------------+
  * | 🔑url(string) | time(number) |
@@ -49,16 +50,17 @@ function createStore(db: IDBPDatabase<Schema>) {
 
 /**
  * 有过期功能的缓存，过期信息记录在 IndexedDB 里。
- * 使用 await LastAdded.create(...) 来创建该类的实例。
+ *
+ * 该类使用FIFO方法淘汰缓存。
  */
-export class LastAdded implements ManagedCache {
+export class ExpirationCache implements ManagedCache {
 
 	readonly db: IDBPDatabase<Schema>;
 
 	readonly maxSize?: number;
 	readonly maxAge?: number;
 
-	protected constructor(db: IDBPDatabase<Schema>, maxSize?: number, maxAge?: number) {
+	constructor(db: IDBPDatabase<Schema>, maxSize?: number, maxAge?: number) {
 		this.db = db;
 		this.maxSize = maxSize;
 		this.maxAge = maxAge;
@@ -73,8 +75,8 @@ export class LastAdded implements ManagedCache {
 		let count = 0;
 
 		const tx = db.transaction(STORE_NAME, "readwrite");
-		let cursor = await tx.store.index(INDEX).openCursor();
 
+		let cursor = await tx.store.index(INDEX).openCursor();
 		while (cursor) {
 			const { value } = cursor;
 
@@ -96,7 +98,7 @@ export class LastAdded implements ManagedCache {
 	}
 }
 
-export class LRU extends LastAdded {
+export class LRU extends ExpirationCache {
 
 	async match(request: RequestInfo, options?: CacheQueryOptions) {
 		const response = await super.match(request, options);
@@ -119,7 +121,7 @@ interface ExpirationOptions {
 	maxAge?: number;
 
 	/** 缓存策略 */
-	strategy?: LastAdded;
+	strategy?: typeof ExpirationCache;
 }
 
 /**
@@ -128,7 +130,7 @@ interface ExpirationOptions {
  * @param options 选项
  */
 export async function expiration(options: ExpirationOptions) {
-	const { name, maxSize, maxAge, strategy = LastAdded } = options;
+	const { name, maxSize, maxAge, strategy = ExpirationCache } = options;
 
 	if (cacheNames.has(name)) {
 		throw new Error(`ManagedCache ${name} already exists`);
@@ -136,5 +138,5 @@ export async function expiration(options: ExpirationOptions) {
 	cacheNames.add(name);
 
 	const db = await openDB<Schema>(name, 1, { upgrade: createStore });
-	return new strategy(db, maxSize, maxAge)
+	return new strategy(db, maxSize, maxAge);
 }
