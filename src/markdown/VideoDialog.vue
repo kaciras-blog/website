@@ -4,14 +4,26 @@
 
 			<label for="video_url">视频URL（必需）</label>
 			<div :class="$style.field">
-				<input id="video_url" v-model="src" :class="$style.text_box">
-				<kx-task-button :on-click="uploadVideo">上传</kx-task-button>
+				<input
+					id="video_url"
+					v-model="src"
+					:class="$style.text_box"
+				>
+				<kx-task-button :on-click="uploadVideo">
+					上传
+				</kx-task-button>
 			</div>
 
 			<label for="video_poster">视频封面</label>
 			<div :class="$style.field">
-				<input id="video_poster" v-model="poster" :class="$style.text_box">
-				<kx-task-button :on-click="uploadPoster">上传</kx-task-button>
+				<input
+					id="video_poster"
+					v-model="poster"
+					:class="$style.text_box"
+				>
+				<kx-task-button :on-click="uploadPoster">
+					上传
+				</kx-task-button>
 			</div>
 
 			<fieldset :class="$style.field">

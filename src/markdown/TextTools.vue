@@ -29,8 +29,6 @@ export default {
 			type: Object,
 			required: true,
 		},
-		// uploadImage: Function,
-		// uploadVideo: Function,
 	},
 	computed: {
 		text() {
@@ -97,15 +95,11 @@ export default {
 		switchWrapper(prefix) {
 			const v = this.text;
 			const [selStart, selEnd] = this.getSelectedRange(false);
-			const totalLength = prefix.length + prefix.length;
 
 			let text = v.substring(selStart, selEnd);
-			let end;
 			if (text.startsWith(prefix) && text.endsWith(prefix)) {
-				end = selEnd - totalLength;
 				text = text.substring(prefix.length, text.length - prefix.length);
 			} else {
-				end = selEnd + totalLength;
 				text = prefix + text + prefix;
 			}
 

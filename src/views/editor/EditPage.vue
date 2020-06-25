@@ -31,14 +31,13 @@
 </template>
 
 <script>
-import { VueMultiWatcher } from "@kaciras-blog/uikit";
 import api from "@/api";
 import { errorMessage } from "@/utils";
 import MarkdownEditor from "@/markdown/MarkdownEditor";
-import PublishDialog from "./PublishDialog";
-import MetadataDialog from "./MetadataDialog";
 import TextTools from "@/markdown/TextTools";
 import TextStateGroup from "@/markdown/TextStateGroup";
+import PublishDialog from "./PublishDialog";
+import MetadataDialog from "./MetadataDialog";
 
 export default {
 	name: "EditPage",

@@ -80,7 +80,7 @@ export default {
 					return this.$dialog.alertError("发表失败", "必须选择一个分类");
 				} else {
 					data.category = this.category.id;
-					data.urlTitle = this.url.length ? this.url : data.title;
+					data.urlTitle = this.urlTitle || data.title;
 					returnUrl = await api.article.publish(data);
 				}
 
