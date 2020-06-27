@@ -57,7 +57,7 @@ self.addEventListener("fetch", router.route.bind(router));
  * 该事件只运行一次；有副作用的代码应当在 activate 事件里执行。
  */
 self.addEventListener("install", event => {
-	console.info("[ServiceWorker] Install new version");
+	console.info("[SW] Install new version");
 
 	event.waitUntil(fetch(APP_SHELL_NAME)
 		.then(appShell => cache.put(APP_SHELL_NAME, appShell)));
@@ -76,7 +76,7 @@ self.addEventListener("install", event => {
  * 在这个事件里应当清理旧版的缓存。
  */
 self.addEventListener("activate", event => {
-	console.info("[ServiceWorker] Activate");
+	console.info("[SW] Activate");
 
 	/*
 	 * 浏览器会停止没有相关页面打开的 ServiceWorker 以节约资源，如果ServiceWorker里有拦截请求的配置，
@@ -100,10 +100,10 @@ self.addEventListener("activate", event => {
 		const names = (await caches.keys()).filter(k => !cacheNames.has(k));
 		await Promise.all(names.map(async k => {
 			if (!(await caches.delete(k))) {
-				console.debug("无法删除不存在的缓存：" + k);
+				console.warn("[SW] 无法删除不存在的缓存：" + k);
 			}
 		}));
-		console.info("删除了过期的缓存");
+		console.debug("[SW] 删除了过期的缓存");
 	});
 
 	return self.clients.claim();

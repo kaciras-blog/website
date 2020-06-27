@@ -20,6 +20,7 @@ export function register(config: ServiceWorkerConfig = {}) {
 	 */
 	function afterRegister() {
 		const { onResourceUpdate } = config;
+
 		if (onResourceUpdate) {
 			if ("BroadcastChannel" in window) {
 				const channel = new BroadcastChannel(UPDATE_CHANNEL_NAME);
@@ -30,11 +31,13 @@ export function register(config: ServiceWorkerConfig = {}) {
 				});
 			}
 		}
+
 		navigator.serviceWorker.addEventListener("message", (message) => {
 			const { data } = message;
 			if (data.type === "ERROR" || data.type === "REJECTION") report(data);
 		});
-		console.debug("[ServiceWorker] 注册成功");
+
+		console.debug("[Init] ServiceWorker 注册成功");
 	}
 
 	// 等到 window.load 事件时再注册，以免 ServiceWorker 里加载的资源占用首屏宽带
@@ -47,13 +50,13 @@ export function register(config: ServiceWorkerConfig = {}) {
 
 		const response = await fetch("/sw-check", { method: "HEAD" });
 		if (response.status !== 200) {
-			console.debug("[ServiceWorker] 已注销");
+			console.debug("[Init] ServiceWorker 已注销");
 			return unregister();
 		}
 
 		navigator.serviceWorker.register(SCRIPT_PATH)
 			.then(afterRegister)
-			.catch((err) => console.error("[ServiceWorker] 注册失败：", err));
+			.catch((err) => console.error("[Init] ServiceWorker 注册失败：", err));
 	});
 }
 
