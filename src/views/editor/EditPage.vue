@@ -81,7 +81,9 @@ export default {
 			Object.assign(this.current, result);
 		},
 
-		/** 监视文本的改变，当改变时开始计时5分钟，到点自动保存 */
+		/**
+		 * 监视文本的改变，当改变时开始计时5分钟，到点自动保存
+		 */
 		watchForAutoSave() {
 			const callback = () => {
 				unwatch();
@@ -92,11 +94,11 @@ export default {
 
 		async autoSave() {
 			const { draft, current } = this;
+			this.watchForAutoSave();
+
 			try {
 				await api.draft.save(draft.id, current.saveCount, current);
 				draft.updateTime = new Date();
-
-				this.watchForAutoSave();
 				this.changes = false;
 				this.autoSaveError = null;
 			} catch (e) {
@@ -111,6 +113,10 @@ export default {
 				draft.updateTime = new Date();
 				this.changes = false;
 				this.$dialog.alertSuccess("保存成功");
+
+				// 刷新自动保存的计时
+				clearTimeout(this.$_autoSaveTimer);
+				this.watchForAutoSave();
 			} catch (e) {
 				this.$dialog.alertError("保存失败，请手动备份", errorMessage(e));
 			}
