@@ -2,12 +2,20 @@ import { openFile } from "@kaciras-blog/uikit";
 import { AbstractResource } from "./core";
 import { getLocation } from "./common";
 
+type ProgressHandler = (event: ProgressEvent) => void;
+
 export default class extends AbstractResource {
 
-	private upload(path: string, file: Blob, progress?: (progressEvent: ProgressEvent) => void) {
+	private upload(path: string, file: Blob, progress?: ProgressHandler) {
 		const data = new FormData();
 		data.append("file", file);
-		return this.servers.web.post(path, data, { onUploadProgress: progress }).then(getLocation());
+
+		// 媒体文件大，需要跟 API 的超时分开
+		const config = {
+			timeout: Infinity,
+			onUploadProgress: progress,
+		};
+		return this.servers.web.post(path, data, config).then(getLocation());
 	}
 
 	/**
@@ -16,11 +24,11 @@ export default class extends AbstractResource {
 	 * @param file 文件数据
 	 * @param progress 进度回调
 	 */
-	async uploadImage(file: Blob, progress?: (progressEvent: ProgressEvent) => void) {
+	async uploadImage(file: Blob, progress?: ProgressHandler) {
 		return this.upload("/image", file, progress);
 	}
 
-	async uploadVideo(file: Blob, progress?: (progressEvent: ProgressEvent) => void) {
+	async uploadVideo(file: Blob, progress?: ProgressHandler) {
 		return this.upload("/video", file, progress);
 	}
 
@@ -43,7 +51,7 @@ export default class extends AbstractResource {
 	 *
 	 * @return {string} 验证码URL
 	 */
-	newCaptchaAddress() {
+	randomCaptchaAddress() {
 		return this.servers.content.defaults.baseURL + "/captcha?r=" + Math.random();
 	}
 }
