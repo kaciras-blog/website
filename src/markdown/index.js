@@ -72,7 +72,8 @@ renderer.renderer.rules.image = (tokens, idx) => {
 			<a
 				class="md-loading-stack ${sized}"
 				style="${style}"
-				href="${src}" target="_blank"
+				href="${src}"
+				target="_blank"
 			>
 				<img data-src="${src}" alt="${alt}" class="md-img">
 				<span class="full-vertex md-loading">
