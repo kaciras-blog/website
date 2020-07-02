@@ -42,7 +42,7 @@ function enableApiServerCache() {
 	const apiHost = new URL(BASE_URL).host;
 	const apiCache = new CacheWrapper(API_CACHE_NAME)
 
-	router.addRoute(new HostRoute(apiHost, networkFirst(apiCache, timeout(4000))));
+	router.addRoute(new HostRoute(apiHost, networkFirst(apiCache, timeout(7500))));
 }
 
 enableApiServerCache();

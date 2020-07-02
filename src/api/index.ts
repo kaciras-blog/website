@@ -1,7 +1,6 @@
 import axios, { AxiosRequestConfig, CancelToken } from "axios";
 import { CancellationToken } from "@kaciras-blog/uikit";
 import { RequestConfigProcessor, ServerList, ServerListFilter } from "./core";
-
 // 为了让IDE能够分析类型只能一个个导入再导出
 import ArticleApi from "./article";
 import DraftApi from "./draft";
@@ -37,7 +36,7 @@ axios.defaults.xsrfCookieName = CSRF_COOKIE_NAME;
 axios.defaults.xsrfHeaderName = CSRF_HEADER_NAME;
 
 if (process.env.NODE_ENV === "production") {
-	axios.defaults.timeout = 5000;
+	axios.defaults.timeout = 8000;
 }
 
 // axios 不能全局配置拦截？
