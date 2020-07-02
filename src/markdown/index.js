@@ -44,10 +44,23 @@ renderer.core.ruler.push("inline_code_class", state => state.tokens
 		.filter(child => child.type === "code_inline")
 		.forEach(child => child.attrs = [["class", "inline-code"]])));
 
+const LOADING_EL = `
+<span class="full-vertex md-loading">
+	<span class="dot"></span>
+	<span class="dot"></span>
+	<span class="dot"></span>
+	<span class="dot"></span>
+	<span class="dot"></span>
+</span>`;
+
 /**
  * 自定义图片的渲染，具有加载指示器。
  *
  * 当图片的URL里带有 vw & vh 时设定加载指示器的尺寸与图片相同，以避免图片载入后的布局改变。
+ *
+ * 【边界情况】
+ * 1）没有尺寸信息：使用一个默认尺寸
+ * 2）图片过小：不添加加载指示器
  */
 renderer.renderer.rules.image = (tokens, idx) => {
 	const token = tokens[idx];
@@ -55,14 +68,21 @@ renderer.renderer.rules.image = (tokens, idx) => {
 	const alt = token.content;
 
 	const urlParams = new URLSearchParams(src.split("?")[1]);
-	const vw = urlParams.get("vw");
-	const vh = urlParams.get("vh");
+	const vw = parseFloat(urlParams.get("vw"));
+	const vh = parseFloat(urlParams.get("vh"));
 
 	let sized = "";
 	let style = "";
+	let loadingCover = true;
 
 	if (vw && vh) {
-		const ratio = parseFloat(vh) / parseFloat(vw) * 100;
+
+		// 如果图片过小容不下加载指示器，就不添加它
+		if (vw < 200 || vh < 50) {
+			loadingCover = false;
+		}
+
+		const ratio = vh / vw * 100;
 		sized = "sized";
 		style = `--width:${vw}px; --aspect-ratio:${ratio}%`;
 	}
@@ -76,13 +96,7 @@ renderer.renderer.rules.image = (tokens, idx) => {
 				target="_blank"
 			>
 				<img data-src="${src}" alt="${alt}" class="md-img">
-				<span class="full-vertex md-loading">
-    				<span class="dot"></span>
-    				<span class="dot"></span>
-    				<span class="dot"></span>
-    				<span class="dot"></span>
-    				<span class="dot"></span>
-    			</span>
+				${loadingCover ? LOADING_EL : ""}
 			</a>
 			${alt ? `<span class="md-img-alt">${alt}</span>` : ""}
     	</span>
@@ -111,28 +125,33 @@ export function renderMarkdown(markdown) {
  * @return 取消监听的函数，应当在被监视的内容被删除后调用，以避免内存泄漏。
  */
 export function enableLazyLoad(el) {
-	const images = lozad(el.querySelectorAll("img"), {
-		loaded(el) {
-			el.nextElementSibling.remove();
-			el.removeAttribute("data-src");
-		},
-	});
-	images.observe();
+	const images = el.querySelectorAll("img");
 
-	const videos = new IntersectionObserver((entries) => {
+	for (const img of images) {
+		img.onload = () => {
+			img.nextElementSibling?.remove();
+			img.removeAttribute("data-src");
+		};
+	}
+
+	const lozadImages = lozad(images);
+	lozadImages.observe();
+
+	const autoPlay = new IntersectionObserver(entries => {
 		for (const { target, intersectionRatio } of entries) {
 			intersectionRatio > 0 ? target.play() : target.pause();
 		}
 	});
+
 	el.querySelectorAll("video").forEach(video => {
-		videos.observe(video);
+		autoPlay.observe(video);
 
 		// TODO: 累了不想改编译器，以后再说
 		video.parentElement.classList.add("center-wrapper");
 	});
 
 	return function disconnect() {
-		videos.disconnect();
-		images.observer.disconnect();
+		autoPlay.disconnect();
+		lozadImages.observer.disconnect();
 	};
 }
