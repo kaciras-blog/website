@@ -69,10 +69,15 @@
 
 .header-anchor {
 	opacity: 0;
+}
 
-	&:hover {
-		color: @color-link;
-		opacity: 1;
-		text-decoration: none;
-	}
+h1:hover > .header-anchor,
+h2:hover > .header-anchor,
+h3:hover > .header-anchor,
+h4:hover > .header-anchor,
+h5:hover > .header-anchor,
+h6:hover > .header-anchor {
+	color: @color-link;
+	opacity: 1;
+	text-decoration: none;
 }
