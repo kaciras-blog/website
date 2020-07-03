@@ -1,5 +1,5 @@
 <template>
-	<form-base>
+	<form class="login-form" @keyup.enter="login">
 		<h1 class="center segment">登录</h1>
 
 		<label for="name">用户名:</label>
@@ -59,7 +59,7 @@
 				:return-uri="returnUri"
 			/>
 		</div>
-	</form-base>
+	</form>
 </template>
 
 <script>
@@ -67,13 +67,11 @@ import api from "@/api";
 import { errorMessage } from "@/utils";
 import { REFRESH_USER } from "@/store/types";
 import OauthIcon from "@/components/OauthIcon";
-import FormBase from "./FormBase";
 
 export default {
 	name: "LoginPanel",
 	components: {
 		OauthIcon,
-		FormBase,
 	},
 	props: {
 		returnUri: String,
@@ -87,7 +85,9 @@ export default {
 		},
 	}),
 	methods: {
-		async login() {
+		async login(event) {
+			event.stopPropagation();
+
 			try {
 				await api.user.login(this.form);
 				await this.$store.dispatch(REFRESH_USER);

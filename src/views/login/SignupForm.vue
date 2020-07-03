@@ -1,5 +1,5 @@
 <template>
-	<form-base>
+	<form class="login-form" @keyup.enter="signUp">
 		<h1 class="center segment">注册</h1>
 
 		<label for="name">用户名:</label>
@@ -51,29 +51,27 @@
 		<div class="buttons">
 			<kx-task-button
 				class="primary outline"
-				:on-click="signUp">
+				:on-click="signUp"
+			>
 				确定
 			</kx-task-button>
 			<kx-button
 				class="second outline"
-				@click="switchPanel">
+				@click="switchPanel"
+			>
 				登录
 			</kx-button>
 		</div>
-	</form-base>
+	</form>
 </template>
 
 <script>
 import api from "@/api";
 import { REFRESH_USER } from "@/store/types";
 import { errorMessage } from "@/utils";
-import FormBase from "./FormBase";
 
 export default {
 	name: "SignupPanel",
-	components: {
-		FormBase,
-	},
 	props: {
 		returnUri: String,
 	},
@@ -88,7 +86,8 @@ export default {
 		},
 	}),
 	methods: {
-		async signUp() {
+		async signUp(event) {
+			event.stopPropagation();
 			try {
 				await api.user.signUp(this.form);
 				await this.$store.dispatch(REFRESH_USER);
