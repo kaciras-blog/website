@@ -45,7 +45,7 @@
 
 <script>
 import { syncScroll } from "@kaciras-blog/uikit";
-import { renderMarkdown, enableLazyLoad } from "./index";
+import { initLazyLoading, renderMarkdown } from "./index";
 
 export default {
 	name: "MarkdownEditor",
@@ -82,7 +82,7 @@ export default {
 				if (this.$_lazyWatcher) {
 					this.$_lazyWatcher();
 				}
-				this.$_lazyWatcher = enableLazyLoad(this.$refs.preview);
+				this.$_lazyWatcher = initLazyLoading(this.$refs.preview);
 			};
 
 			if (this.$_timer) {

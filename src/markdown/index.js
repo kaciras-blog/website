@@ -124,15 +124,19 @@ export function renderMarkdown(markdown) {
  * @param el 容器元素
  * @return 取消监听的函数，应当在被监视的内容被删除后调用，以避免内存泄漏。
  */
-export function enableLazyLoad(el) {
+export function initLazyLoading(el) {
 	const images = el.querySelectorAll("img");
 
 	for (const img of images) {
 		img.onload = () => {
 
-			// TODO: Webpack4 不支持 OptionalChaining，且服务端构建未使用 Babel 导致会报错
-			// 而且 Webpack4 不准备升级 acorn 7.x：
-			// https://github.com/webpack/webpack/issues/10227#issuecomment-642734920
+			/*
+			 * TODO: Webpack4 使用的 acorn6.x 不支持 OptionalChaining，
+			 *  且服务端构建未使用 Babel 导致会报错
+			 *
+			 * 而且 Webpack4 不准备升级 acorn 7.x：
+			 * https://stackoverflow.com/a/59972726
+			 */
 			const placeholder = img.nextElementSibling;
 			if (placeholder) {
 				placeholder.remove();
