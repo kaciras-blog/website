@@ -111,6 +111,7 @@ export default {
 }
 
 .picture {
+	display: block;
 	width: 100%;
 	height: @pic-height-mobile;
 

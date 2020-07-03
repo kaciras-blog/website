@@ -134,6 +134,7 @@ export default {
 }
 
 .cover {
+	display: block;
 	width: 12rem;
 	height: 9rem;
 
