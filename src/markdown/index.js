@@ -73,13 +73,13 @@ renderer.renderer.rules.image = (tokens, idx) => {
 
 	let sized = "";
 	let style = "";
-	let loadingCover = true;
+	let placeholder = true;
 
 	if (vw && vh) {
 
 		// 如果图片过小容不下加载指示器，就不添加它
 		if (vw < 200 || vh < 50) {
-			loadingCover = false;
+			placeholder = false;
 		}
 
 		const ratio = vh / vw * 100;
@@ -96,7 +96,7 @@ renderer.renderer.rules.image = (tokens, idx) => {
 				target="_blank"
 			>
 				<img data-src="${src}" alt="${alt}" class="md-img">
-				${loadingCover ? LOADING_EL : ""}
+				${placeholder ? LOADING_EL : ""}
 			</a>
 			${alt ? `<span class="md-img-alt">${alt}</span>` : ""}
     	</span>
@@ -129,7 +129,15 @@ export function enableLazyLoad(el) {
 
 	for (const img of images) {
 		img.onload = () => {
-			img.nextElementSibling?.remove();
+
+			// TODO: Webpack4 不支持 OptionalChaining，且服务端构建未使用 Babel 导致会报错
+			// 而且 Webpack4 不准备升级 acorn 7.x：
+			// https://github.com/webpack/webpack/issues/10227#issuecomment-642734920
+			const placeholder = img.nextElementSibling;
+			if (placeholder) {
+				placeholder.remove();
+			}
+
 			img.removeAttribute("data-src");
 		};
 	}
