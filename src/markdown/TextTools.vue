@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { getImageSize, openFile } from "@kaciras-blog/uikit";
+import { getImageResolution, openFile } from "@kaciras-blog/uikit";
 import api from "@/api";
 import VideoDialog from "./VideoDialog";
 import AddLinkDialog from "./AddLinkDialog";
@@ -118,7 +118,7 @@ export default {
 			const file = await openFile("image/*");
 
 			// 加上宽高便于确定占位图的尺寸，从 https://chanshiyu.com/#/post/41 学到的
-			const { width, height } = await getImageSize(file);
+			const { width, height } = await getImageResolution(file);
 			const res = await api.misc.uploadImage(file) + `?vw=${width}&vh=${height}`;
 
 			const [, selEnd] = this.ctx.selection;

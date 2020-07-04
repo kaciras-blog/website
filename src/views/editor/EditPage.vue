@@ -17,7 +17,7 @@
 
 		<template v-slot:state-left>
 			<span v-if="autoSaveError" :class="$style.errMsg">
-				自动保存出错！
+				自动保存出错
 			</span>
 			<span v-else-if="draft.updateTime">
 				上次保存：{{draft.updateTime | localDateMinute}}
