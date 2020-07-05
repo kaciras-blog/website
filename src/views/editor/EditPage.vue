@@ -110,8 +110,11 @@ export default {
 			const { draft, current } = this;
 			try {
 				await api.draft.saveNewHistory(draft.id, current);
+
 				draft.updateTime = new Date();
 				this.changes = false;
+				this.autoSaveError = null;
+
 				this.$dialog.alertSuccess("保存成功");
 
 				// 刷新自动保存的计时
