@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { getImageResolution, openFile } from "@kaciras-blog/uikit";
+import { getImageResolution, getVideoResolution, openFile } from "@kaciras-blog/uikit";
 import api from "@/api";
 import VideoDialog from "./VideoDialog";
 import AddLinkDialog from "./AddLinkDialog";
@@ -125,25 +125,19 @@ export default {
 			this.ctx.replaceArea(selEnd, selEnd, `![](${res})`);
 		},
 
-		// TODO: 暂不支持<source>指定多个源，以后考虑七牛云？
 		async addVideo() {
-			const res = await this.$dialog.show(VideoDialog).confirmPromise;
-			const attrs = [];
+			const { src, label, isVideo } = await this.$dialog.show(VideoDialog).confirmPromise;
+			let text;
 
-			for (const [k, v] of Object.entries(res)) {
-				if (!v || k === "src") {
-					continue;
-				}
-				if (v === true) {
-					attrs.push(k);
-				} else {
-					attrs.push(`${k}="${v}"`);
-				}
+			if (isVideo) {
+				text = `@video[${label}](${src})`;
+			} else {
+				const { width, height } = await getVideoResolution(src);
+				text = `@gif[${label}](${src}?vw=${width}&vh=${height})`;
 			}
 
-			const str = `@video[](${res.src}){ ${attrs.join(" ")} }`;
 			const selEnd = this.ctx.selection[1];
-			this.ctx.replaceArea(selEnd, selEnd, str);
+			this.ctx.replaceArea(selEnd, selEnd, text);
 		},
 	},
 };
