@@ -1340,13 +1340,13 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@kaciras-blog/devtool@^0.9.1":
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/@kaciras-blog/devtool/-/devtool-0.9.1.tgz#01989439496150b481f0c9a84e809be85f76577a"
-  integrity sha512-D6GmoiNV+0mX2/yWihRVhC+XEzIWA9eoC/uJFsQ4mwxU4D61H3nbr1LN0jDGNrxsr5QIWYv66c/DihEsu+VJTg==
+"@kaciras-blog/devtool@^0.10.1":
+  version "0.10.1"
+  resolved "https://registry.yarnpkg.com/@kaciras-blog/devtool/-/devtool-0.10.1.tgz#d336caa5eb9b40ab42a2686e10b2f4f12ec25293"
+  integrity sha512-FrgtjWljnmb3j7FCi+0XOum21ooj/nQDrnvV7iJHDFwdcmqoerheqV0Mp+EK4NRfvLT9dNN7S+0sNox9z3vAcw==
   dependencies:
-    "@kaciras-blog/image" "^0.9.0"
-    "@kaciras-blog/server" "^0.9.1"
+    "@kaciras-blog/image" "^0.10.0"
+    "@kaciras-blog/server" "^0.10.1"
     babel-loader "^8.1.0"
     cache-loader "^4.1.0"
     case-sensitive-paths-webpack-plugin "^2.3.0"
@@ -1359,7 +1359,7 @@
     hash-sum "^2.0.0"
     html-webpack-plugin "^4.3.0"
     koa-webpack "^5.3.0"
-    less-loader "^6.1.3"
+    less-loader "^6.2.0"
     loader-utils "^2.0.0"
     log4js "^6.3.0"
     memory-fs "^0.5.0"
@@ -1383,10 +1383,10 @@
     webpack-merge "^4.2.2"
     webpack-node-externals "^1.7.2"
 
-"@kaciras-blog/image@^0.9.0":
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/@kaciras-blog/image/-/image-0.9.0.tgz#285b03ec5aa04524290cb21a27f6d6103d38968c"
-  integrity sha512-EcfuHgrlv+N0MABAqUnRTAWNkOnk5Vv4546LAA/bdy4W8tAFngbaPMpo26ZJbT1ZhQsJz3szoMbxWfGhdxjS+w==
+"@kaciras-blog/image@^0.10.0":
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/@kaciras-blog/image/-/image-0.10.0.tgz#37d080f17dc77feaa1cedadaa54eaaf4a7f538ad"
+  integrity sha512-OeGdgVGZanO31M0dQ3nF/QLa6nRNpiM/uX++Cxg8lu38wwynFRZh0lhiBhWsd1TWFNM7MJYC7Qvr7RzysqCZpg==
   dependencies:
     execa "^4.0.2"
     imagemin-gifsicle "^7.0.0"
@@ -1397,23 +1397,23 @@
     sharp "^0.25.4"
     svgo "^1.3.2"
 
-"@kaciras-blog/server@^0.9.1":
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/@kaciras-blog/server/-/server-0.9.1.tgz#2af7ab1b4d6a84742fd8b736e7c0aaf70ab1dab8"
-  integrity sha512-AWF+idVoCjvfLT1KNgWq8y9p92R1zZw4VvK0Tw9ccSEcJpFduSGfu+ZjJkB+Kulik07l8bU8Czjj4D5uJVNs+Q==
+"@kaciras-blog/server@^0.10.1":
+  version "0.10.1"
+  resolved "https://registry.yarnpkg.com/@kaciras-blog/server/-/server-0.10.1.tgz#82d19527f39c96eede9627411976de7dbb94942b"
+  integrity sha512-RfdR7R3kp+7KKJAxT9NnyLG9pENb0tCkglNgpTpUz8xtUTusY4gDFX9Oh4vwgi/o3ed/gbKVELtu9k6cLiIx4A==
   dependencies:
     "@iktakahiro/markdown-it-katex" "^3.1.0"
-    "@kaciras-blog/image" "^0.9.0"
+    "@kaciras-blog/image" "^0.10.0"
     "@koa/multer" "^3.0.0"
-    "@koa/router" "^9.1.0"
+    "@koa/router" "^9.3.1"
     axios "^0.19.2"
     combined-stream "^1.0.8"
-    feed "^4.2.0"
+    feed "^4.2.1"
     fs-extra "^9.0.1"
     koa "^2.13.0"
     koa-bodyparser "^4.3.0"
     koa-compose "^4.1.0"
-    koa-compress "^4.0.1"
+    koa-compress "^5.0.0"
     koa-conditional-get "^2.0.0"
     log4js "^6.3.0"
     markdown-it "^11.0.0"
@@ -1447,10 +1447,10 @@
   resolved "https://registry.yarnpkg.com/@koa/multer/-/multer-3.0.0.tgz#439777949f28097d7b329c0b4ce3048074c862f8"
   integrity sha512-y+OQBmex5D1jIl723gAEUYcAWPEicIXppaAKw/zCMfpllQ08ZNweDPwoCLxEoatqd5pCu2XG6V8dl67JRq3RJw==
 
-"@koa/router@^9.1.0":
-  version "9.1.0"
-  resolved "https://registry.yarnpkg.com/@koa/router/-/router-9.1.0.tgz#1bb1b5a219e8004e649c8f9acfe4bc58f066dfec"
-  integrity sha512-inFHybP7SYntAlziQ5gr6aVJIiBgVA+fW97+26Z8crqyUVRLXiKDbaU5NtE2yxbg9KA5YyiBakGhtYXCgMOLWQ==
+"@koa/router@^9.3.1":
+  version "9.3.1"
+  resolved "https://registry.yarnpkg.com/@koa/router/-/router-9.3.1.tgz#814b0f357da616b99ee22259644cd928f2c9e60e"
+  integrity sha512-OOy4pOEO+Zz5vy+zqc8mWRGKYIpDqjgbVTF/U41fCwBwVWHGmkedvcJ9V5MLI7Ivy0iTv8o0XLDtGWtYHquvxg==
   dependencies:
     debug "^4.1.1"
     http-errors "^1.7.3"
@@ -1652,10 +1652,10 @@
     "@types/istanbul-lib-coverage" "*"
     "@types/istanbul-lib-report" "*"
 
-"@types/jest@^26.0.3":
-  version "26.0.3"
-  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-26.0.3.tgz#79534e0e94857171c0edc596db0ebe7cb7863251"
-  integrity sha512-v89ga1clpVL/Y1+YI0eIu1VMW+KU7Xl8PhylVtDKVWaSUHBHYPLXMQGBdrpHewaKoTvlXkksbYqPgz8b4cmRZg==
+"@types/jest@^26.0.4":
+  version "26.0.4"
+  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-26.0.4.tgz#d2e513e85aca16992816f192582b5e67b0b15efb"
+  integrity sha512-4fQNItvelbNA9+sFgU+fhJo8ZFF+AS4Egk3GWwCW2jFtViukXbnztccafAdLhzE/0EiCogljtQQXP8aQ9J7sFg==
   dependencies:
     jest-diff "^25.2.1"
     pretty-format "^25.2.1"
@@ -4402,10 +4402,10 @@ eslint-plugin-import@^2.22.0:
     resolve "^1.17.0"
     tsconfig-paths "^3.9.0"
 
-eslint-plugin-jest@^23.17.1:
-  version "23.17.1"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-23.17.1.tgz#c0f39ba78e0f33b7ee1ce4ec92b773e39026ea3f"
-  integrity sha512-/o36fw67qNbJGWbSBIBMfseMsNP/d88WUHAGHCi1xFwsNB3XXZGdvxbOw49j3iQz6MCW/yw8OeOsuQhi6mM5ZA==
+eslint-plugin-jest@^23.18.0:
+  version "23.18.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-23.18.0.tgz#4813eacb181820ed13c5505f400956d176b25af8"
+  integrity sha512-wLPM/Rm1SGhxrFQ2TKM/BYsYPhn7ch6ZEK92S2o/vGkAAnDXM0I4nTIo745RIX+VlCRMFgBuJEax6XfTHMdeKg==
   dependencies:
     "@typescript-eslint/experimental-utils" "^2.5.0"
 
@@ -4468,10 +4468,10 @@ eslint-visitor-keys@^1.0.0, eslint-visitor-keys@^1.1.0, eslint-visitor-keys@^1.2
   resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-1.3.0.tgz#30ebd1ef7c2fdff01c3a4f151044af25fab0523e"
   integrity sha512-6J72N8UNa462wa/KFODt/PJ3IU60SDpC3QXC1Hjc1BXXpfL2C9R5+AU7jhe0F6GREqVMh4Juu+NY7xn+6dipUQ==
 
-eslint@^7.3.1:
-  version "7.3.1"
-  resolved "https://registry.yarnpkg.com/eslint/-/eslint-7.3.1.tgz#76392bd7e44468d046149ba128d1566c59acbe19"
-  integrity sha512-cQC/xj9bhWUcyi/RuMbRtC3I0eW8MH0jhRELSvpKYkWep3C6YZ2OkvcvJVUeO6gcunABmzptbXBuDoXsjHmfTA==
+eslint@^7.4.0:
+  version "7.4.0"
+  resolved "https://registry.yarnpkg.com/eslint/-/eslint-7.4.0.tgz#4e35a2697e6c1972f9d6ef2b690ad319f80f206f"
+  integrity sha512-gU+lxhlPHu45H3JkEGgYhWhkR9wLHHEXC9FbWFnTlEkbKyZKWgWRLgf61E8zWmBuI6g5xKBph9ltg3NtZMVF8g==
   dependencies:
     "@babel/code-frame" "^7.0.0"
     ajv "^6.10.0"
@@ -4818,10 +4818,10 @@ fd-slicer@~1.1.0:
   dependencies:
     pend "~1.2.0"
 
-feed@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/feed/-/feed-4.2.0.tgz#9f6dbc476f6a5925a6e040ef377c7fafbfbc2cf6"
-  integrity sha512-nLU4Fn+5TCJ1Zu9kBDqXPxsaTXaL/hZgZ3pmT87TUzS1kfaL91iIKJ+DFWygL8CrOeYw80z7QWxabkMV/x+g2g==
+feed@^4.2.1:
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/feed/-/feed-4.2.1.tgz#b246ef891051c7dbf088ca203341d9fb0444baee"
+  integrity sha512-l28KKcK1J/u3iq5dRDmmoB2p7dtBfACC2NqJh4dI2kFptxH0asfjmOfcxqh5Sv8suAlVa73gZJ4REY5RrafVvg==
   dependencies:
     xml-js "^1.6.11"
 
@@ -6798,10 +6798,10 @@ koa-compose@^4.1.0:
   resolved "https://registry.yarnpkg.com/koa-compose/-/koa-compose-4.1.0.tgz#507306b9371901db41121c812e923d0d67d3e877"
   integrity sha512-8ODW8TrDuMYvXRwra/Kh7/rJo9BtOfPc6qO8eAfC80CnCvSjSl0bkRM24X6/XBBEyj0v1nRUQ1LyOy3dbqOWXw==
 
-koa-compress@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/koa-compress/-/koa-compress-4.0.1.tgz#7a7ed52ce7c3e0cbe918e99e1eaaeba87ec11d48"
-  integrity sha512-It4WYfsBb9HegnFgcBhiRbPeh1LDjXhRM4+xi2jMp8ujwaVAdqhFzHpbDWuTxbLxuBwStn+Bwdwn2zDZxeNChg==
+koa-compress@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/koa-compress/-/koa-compress-5.0.0.tgz#7b25bd66c98c013c89a303ae72934d6d15d644b5"
+  integrity sha512-hzvlkocbzPPTmxJdYRbdAZOmHL0ga3brQWqDT7Gwc8lJiTNsFUm2ba0D6SzWyZGKno+1hgGTPHStw2faWVcH8A==
   dependencies:
     bytes "^3.0.0"
     compressible "^2.0.0"
@@ -6877,10 +6877,10 @@ last-call-webpack-plugin@^3.0.0:
     lodash "^4.17.5"
     webpack-sources "^1.1.0"
 
-less-loader@^6.1.3:
-  version "6.1.3"
-  resolved "https://registry.yarnpkg.com/less-loader/-/less-loader-6.1.3.tgz#f1d46e69158da1282e26f738117dd891cb13fc50"
-  integrity sha512-gzG3gQd3da+E06yasOB1zR6klEEyfXp/kYZ+5Su89AVE656klCilD58QFYALqky6yL1d/ZSEKgVjkwH3meIpIQ==
+less-loader@^6.2.0:
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/less-loader/-/less-loader-6.2.0.tgz#8b26f621c155b342eefc24f5bd6e9dc40c42a719"
+  integrity sha512-Cl5h95/Pz/PWub/tCBgT1oNMFeH1WTD33piG80jn5jr12T4XbxZcjThwNXDQ7AG649WEynuIzO4b0+2Tn9Qolg==
   dependencies:
     clone "^2.1.2"
     less "^3.11.3"
