@@ -18,8 +18,7 @@
 				title="编辑区"
 				spellcheck="false"
 				:value="value"
-				v-bind-selection.focus="selection"
-				v-on-selection-changed="handleSelect"
+				v-selection-model.focus="selection"
 				@keydown.tab.prevent="insertTab"
 				@input="$emit('input', $event.target.value)"
 			/>
@@ -119,10 +118,6 @@ export default {
 			const v = this.value;
 			this.content = v.substring(0, start) + value + v.substring(end, v.length);
 			this.selection = [start, start + value.length];
-		},
-
-		handleSelect(s, e) {
-			this.selection = [s, e];
 		},
 	},
 	mounted() {
