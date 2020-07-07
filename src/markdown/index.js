@@ -31,9 +31,34 @@ renderer.use(Anchor, {
 	// 参考 MSDN 网站的做法，有 aria-labelledby 情况下不再需要内容
 	permalinkAttrs: (slug) => ({ "aria-labelledby": slug }),
 });
-renderer.use(media);
 renderer.use(tableOfContent);
 renderer.use(katex);
+
+renderer.use(media, {
+	gif(href, alt) {
+		const urlParams = new URLSearchParams(href.split("?")[1]);
+		const vw = parseFloat(urlParams.get("vw"));
+		const vh = parseFloat(urlParams.get("vh"));
+
+		let sized = "";
+		let style = "";
+
+		if (vw && vh) {
+			const ratio = vh / vw * 100;
+			sized = "sized";
+			style = `--width:${vw}px; --aspect-ratio:${ratio}%`;
+		}
+
+		return `
+			<div class="center-wrapper">
+				<div class="md-loading-stack ${sized}" style="${style}">
+					<video class="md-img gif" src="${href}" loop muted></video>
+				</div>
+				${alt ? `<span class="md-img-alt">${alt}</span>` : ""}
+    		</div>
+		`;
+	},
+});
 
 /**
  * 给行内代码加个 inline-code 类以便跟代码块区别开
@@ -155,12 +180,7 @@ export function initLazyLoading(el) {
 		}
 	});
 
-	el.querySelectorAll("video").forEach(video => {
-		autoPlay.observe(video);
-
-		// TODO: 累了不想改编译器，以后再说
-		video.parentElement.classList.add("center-wrapper");
-	});
+	el.querySelectorAll(".gif").forEach(video => autoPlay.observe(video));
 
 	return function disconnect() {
 		autoPlay.disconnect();
