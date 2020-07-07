@@ -89,7 +89,7 @@ export default {
 </script>
 
 <style module lang="less">
-@margin: 15px;
+@margin: 14px;
 
 .form {
 	width: 28em;
@@ -97,14 +97,15 @@ export default {
 
 .field {
 	display: flex;
+
+	// 单选按钮高度不够，需要居中一下
 	align-items: center;
 
-	// 这两个针对 fieldset
-	border: none;
-	padding: 0;
+	// 跟按钮大小一致，避免右边没按钮时高度改变
+	height: calc(2rem + 2px);
 
 	// margin-top 针对上面的 label
-	margin-top: 4px;
+	margin-top: 5px;
 	margin-bottom: @margin;
 
 	& > :global(.kx-check-box) {

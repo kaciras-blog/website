@@ -1427,10 +1427,10 @@
     source-map-support "^0.5.19"
     vue-server-renderer "2.6.11"
 
-"@kaciras-blog/uikit@^0.5.1":
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/@kaciras-blog/uikit/-/uikit-0.5.1.tgz#3b7a8e4780bca3e4b12baa6a32643ecd68368a5a"
-  integrity sha512-2kiMPgVrYiPe/XYZKSv0O+9pQQ32s+3xxML3kKHAjmDMQ0c5Fp8g0JzN11Nd99MCXaL71zA3/VhNYY7g8TKmzQ==
+"@kaciras-blog/uikit@^0.5.2":
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/@kaciras-blog/uikit/-/uikit-0.5.2.tgz#4df1f8d59af42dc4b7576d5a39ca73dcd611d870"
+  integrity sha512-I/g5eESRWyZeFomYqM7BKrvXcBq6zxnj4C4ZaieyNSFyeaG3RAvJvZtAlTFYE2vcv+XlYYAkwylod9mytoVBkQ==
   dependencies:
     "@fortawesome/fontawesome-free" "^5.13.1"
     animejs "^3.2.0"
