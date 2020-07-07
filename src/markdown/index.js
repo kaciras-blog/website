@@ -34,6 +34,9 @@ renderer.use(Anchor, {
 renderer.use(tableOfContent);
 renderer.use(katex);
 
+// 使用URL里的宽高参数避免内容加载后布局移动，下面图片的渲染也是。
+// 原理讲解：
+// https://blog.kaciras.com/article/15/preventing-content-reflow-from-lazy-loaded-images-by-pure-css
 renderer.use(media, {
 	gif(href, alt) {
 		const urlParams = new URLSearchParams(href.split("?")[1]);
@@ -50,7 +53,7 @@ renderer.use(media, {
 		}
 
 		return `
-			<div class="center-wrapper">
+			<div class="center-wrapper md-media">
 				<div class="md-loading-stack ${sized}" style="${style}">
 					<video class="md-img gif" src="${href}" loop muted></video>
 				</div>
