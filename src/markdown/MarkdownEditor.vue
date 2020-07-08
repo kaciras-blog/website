@@ -168,7 +168,7 @@ export default {
 
 .textbox {
 	margin: 0;
-	padding: .5rem 1rem 0 1rem;
+	padding: .5rem .8rem 0 .8rem;
 	border: none;
 
 	background-color: white;

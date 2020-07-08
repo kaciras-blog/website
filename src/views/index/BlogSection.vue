@@ -86,24 +86,21 @@ export default {
 	}
 }
 
+// 博客上的图还是白底的多，擦亮动画效果不好，还是用放大吧
 .figure {
 	font-size: 16px;
 	overflow: hidden;
-	box-shadow: 0 3px 6px rgba(0, 0, 0, .2);
+	box-shadow: 0 4px 8px rgba(0, 0, 0, .2);
 
 	@media screen and (min-width: @length-screen-mobile) {
 		transition: .4s;
 
 		&:hover {
-			transform: translateY(-4px);
-			box-shadow: 0 4px 10px rgba(0, 0, 0, .3);
+			transform: translateY(-5px);
+			box-shadow: 0 8px 16px rgba(0, 0, 0, .25);
 		}
 	}
 }
-
-// ==============================================================================
-
-// Update: 博客上的图还是白底的多，擦亮动画效果不好，还是用放大吧
 
 .card_header {
 	position: relative;
