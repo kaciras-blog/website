@@ -6,7 +6,7 @@
 				to="/list"
 				class="outline primary kx-btn"
 			>
-				还有更多 >
+				更多文章 >
 			</router-link>
 		</header>
 
@@ -75,9 +75,10 @@ export default {
 // 或者直接裁剪图片到指定比例？
 @pic-height-mobile: 63vw;
 
+// 自动网格的卡片布局
+// https://blog.kaciras.com/article/14/use-pure-CSS-to-implement-center+wrap+left-alignment-layout
 .card_list {
 	display: grid;
-	grid-auto-rows: auto;
 	grid-gap: 40px;
 	justify-content: center;
 

@@ -108,6 +108,8 @@ export default {
 @favicon-size: 70px;
 @transition: transform .5s;
 
+// 自动网格的卡片布局
+// https://blog.kaciras.com/article/14/use-pure-CSS-to-implement-center+wrap+left-alignment-layout
 .list {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, @background-width);
