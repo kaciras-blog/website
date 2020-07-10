@@ -7,6 +7,10 @@
 		"name": "Kaciras",
 		"email": "Kaciras@protonmail.com"
 	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/kaciras-blog/website"
+	},
 	"scripts": {
 		"lint": "eslint --fix --ext .js,.vue src",
 		"test": "jest",
