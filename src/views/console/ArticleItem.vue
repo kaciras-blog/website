@@ -3,10 +3,12 @@
 		<img :class="$style.cover" :src="value.cover" alt="封面">
 
 		<div :class="$style.info_section">
+
 			<div :class="$style.header">
 				<span v-if="value.deleted" :class="$style.removed">已删除</span>
 				<h3>{{value.title}}</h3>
 			</div>
+
 			<div :class="$style.tag_group">
 				<span
 					v-for="category of value.categories"
@@ -160,10 +162,10 @@ export default {
 
 .removed {
 	border-radius: .3rem;
-	padding: .2em .3em;
+	padding: .3em .5em;
 	margin-right: .5em;
 
-	background-color: #ed575a;
+	background-color: #E42B21;
 	color: whitesmoke;
 
 	& + h3 {

@@ -52,7 +52,7 @@ export default {
 			{ view: DraftConsole, label: "草稿" },
 			{ view: DiscussionConsole, label: "评论" },
 			{ view: CardsConsole, label: "首页卡片" },
-			{ view: CategoryConsole, label: "管理分类" },
+			{ view: CategoryConsole, label: "分类" },
 		],
 		active: ArticleConsole,
 	}),
