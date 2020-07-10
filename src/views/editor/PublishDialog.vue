@@ -1,11 +1,11 @@
 <template>
 	<kx-base-dialog :title='draft.articleId ? "更新文章": "发表文章"'>
-
 		<div :class="$style.body">
-			<div :class="$style.category" class="segment">
-				<span class="label">发表到：</span>
 
-				<div v-if="category" :class="$style.selected">
+			<div :class="$style.category" class="segment">
+				<span class="label">发布到：</span>
+
+				<div v-if="category" :class="$style.input">
 					<img
 						class="small head"
 						:src="category.cover"
@@ -13,28 +13,26 @@
 					>
 					<h3 :class="$style.name">{{category.name}}</h3>
 				</div>
+				<div v-else :class="$style.input"></div>
 
-				<div v-else :class="$style.selected"></div>
-
-				<kx-button
-					:class="$style.select_button"
-					@click="selectCategory"
-				>
-					选择分类
-				</kx-button>
+				<kx-button @click="selectCategory">选择分类</kx-button>
 			</div>
 
-			<label>
-				文章的URL（发表后不能修改，尽量使用英文）
+			<label for="urlTitle" :class="$style.block_label">
+				URL里的标题（尽量使用英文）
+			</label>
+			<div :class="$style.field">
 				<input
 					v-model="urlTitle"
+					id="urlTitle"
 					title="URL，尽量用英文"
-					:class="$style.input"
 					:placeholder="current.title"
+					:class="$style.input"
 				>
-			</label>
+				<kx-button @click="replace">替换空格</kx-button>
+			</div>
 
-			<kx-check-box v-model="destroy"> 发表后删除草稿</kx-check-box>
+			<kx-check-box v-model="destroy">发表后删除草稿</kx-check-box>
 		</div>
 
 		<kx-standard-dialog-buttons @confirm="accept"/>
@@ -61,6 +59,9 @@ export default {
 	methods: {
 		selectCategory() {
 			this.$dialog.show(SelectCategoryDialog).onConfirm(data => this.category = data);
+		},
+		replace() {
+			this.urlTitle = this.urlTitle.replace(/ +/g, "-");
 		},
 		async accept() {
 			const { draft, current } = this;
@@ -94,14 +95,24 @@ export default {
 </script>
 
 <style module lang="less">
-@import "../../css/imports";
+/*@import "../../css/imports";*/
 
 .body {
-	width: 480px;
+	width: 32rem;
+}
+
+.field {
+	display: flex;
+	margin-bottom: 1em;
+}
+
+.input {
+	margin-right: 1em;
+	flex: 1;
 }
 
 .category {
-	display: flex;
+	composes: field;
 	align-items: center;
 	margin-bottom: 2rem;
 
@@ -111,29 +122,16 @@ export default {
 	}
 }
 
-.selected {
-	flex-grow: 1;
-	display: contents;
-}
-
 .name {
 	composes: compact ellipsis from global;
 
 	display: inline-block;
 	padding: 0 .5rem;
+	vertical-align: middle;
 }
 
-.select_button {
-	margin-left: auto;
-}
-
-.input {
-	margin: 5px 0 14px 0;
-	width: 100%;
-}
-
-.footer {
-	text-align: right;
-	padding-right: 1rem;
+.block_label {
+	display: block;
+	margin-bottom: 8px;
 }
 </style>
