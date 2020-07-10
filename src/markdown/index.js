@@ -156,7 +156,7 @@ export function initLazyLoading(el) {
 	const images = el.querySelectorAll("img");
 
 	for (const img of images) {
-		img.onload = () => {
+		img.onerror = img.onload = () => {
 
 			/*
 			 * TODO: Webpack4 使用的 acorn6.x 不支持 OptionalChaining，
