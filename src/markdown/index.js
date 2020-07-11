@@ -34,22 +34,28 @@ renderer.use(Anchor, {
 renderer.use(tableOfContent);
 renderer.use(katex);
 
+function getResourceSize(url) {
+	const urlParams = new URLSearchParams(url.split("?")[1]);
+	const width = parseFloat(urlParams.get("vw"));
+	const height = parseFloat(urlParams.get("vh"));
+	return width && height ? { width, height } : null;
+}
+
 // 使用URL里的宽高参数避免内容加载后布局移动，下面图片的渲染也是。
 // 原理讲解：
 // https://blog.kaciras.com/article/15/preventing-content-reflow-from-lazy-loaded-images-by-pure-css
 renderer.use(media, {
 	gif(href, alt) {
-		const urlParams = new URLSearchParams(href.split("?")[1]);
-		const vw = parseFloat(urlParams.get("vw"));
-		const vh = parseFloat(urlParams.get("vh"));
+		const size = getResourceSize(href);
 
 		let sized = "";
 		let style = "";
 
-		if (vw && vh) {
-			const ratio = vh / vw * 100;
+		if (size) {
+			const { width, height } = size;
+			const ratio = height / width * 100;
 			sized = "sized";
-			style = `--width:${vw}px; --aspect-ratio:${ratio}%`;
+			style = `--width:${width}px; --aspect-ratio:${ratio}%`;
 		}
 
 		return `
@@ -95,24 +101,23 @@ renderer.renderer.rules.image = (tokens, idx) => {
 	const src = token.attrGet("src");
 	const alt = token.content;
 
-	const urlParams = new URLSearchParams(src.split("?")[1]);
-	const vw = parseFloat(urlParams.get("vw"));
-	const vh = parseFloat(urlParams.get("vh"));
+	const size = getResourceSize(src);
 
 	let sized = "";
 	let style = "";
 	let placeholder = true;
 
-	if (vw && vh) {
+	if (size) {
+		const { width, height } = size;
 
 		// 如果图片过小容不下加载指示器，就不添加它
-		if (vw < 200 || vh < 50) {
+		if (width < 200 || height < 50) {
 			placeholder = false;
 		}
 
-		const ratio = vh / vw * 100;
+		const ratio = height / width * 100;
 		sized = "sized";
-		style = `--width:${vw}px; --aspect-ratio:${ratio}%`;
+		style = `--width:${width}px; --aspect-ratio:${ratio}%`;
 	}
 
 	return `
