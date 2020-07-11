@@ -27,7 +27,13 @@
 
 		<section class="about-section">
 			<h2>友链</h2>
-			加友链的在下面评论即可，需要图片、名称、地址三项。
+			<p>
+				本站的图标：
+				<a class="highlight" :href='require("../../assets/img/logo-kaciras.svg")'>方形图标</a>
+				&nbsp;
+				<a class="highlight" :href='require("../../assets/img/logo-kaciras-circle.svg")'>圆形图标</a>
+			</p>
+			<p>加友链的在下面评论即可，需要图片、名称、地址三项。</p>
 		</section>
 
 		<discussion-section

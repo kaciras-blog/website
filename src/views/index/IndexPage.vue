@@ -218,11 +218,11 @@ export default {
 }
 
 .blog {
-	padding: 0 5vw;
+	padding: 50px 5vw 0 5vw;
 }
 
 .friends {
-	padding: 60px 5vw;
+	padding: 50px 5vw;
 	font-size: 16px;
 }
 </style>

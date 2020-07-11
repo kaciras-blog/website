@@ -58,12 +58,10 @@ export default {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	padding: 2rem 0;
 }
 
 .title {
-	margin: 0;
-	font-size: 30px;
+	font-size: 2rem;
 }
 
 // ================================ Cards ================================
@@ -91,14 +89,14 @@ export default {
 .figure {
 	font-size: 16px;
 	overflow: hidden;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, .2);
+	box-shadow: 0 3px 6px rgba(0, 0, 0, .2);
 
 	@media screen and (min-width: @length-screen-mobile) {
 		transition: .4s;
 
 		&:hover {
-			transform: translateY(-5px);
-			box-shadow: 0 8px 16px rgba(0, 0, 0, .25);
+			transform: translateY(-4px);
+			box-shadow: 0 10px 14px rgba(0, 0, 0, .25);
 		}
 	}
 }
@@ -123,6 +121,7 @@ export default {
 	left: 0;
 	right: 0;
 	bottom: 0;
+
 	margin: 0;
 
 	// 虽然浏览器默认 article 下的 h1 是这个大小，但还是写上保险些

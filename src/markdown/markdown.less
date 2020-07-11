@@ -8,11 +8,15 @@
 
 .markdown {
 	font-size: initial;
-	line-height: 1.75;
+	line-height: 1.8;
 
-	video {
-		max-width: 100%;
-	}
+	// 跟 GitHub 的大小一样，不过用的是em
+	h1 { font-size: 2em; }
+	h2 { font-size: 1.5em; }
+	h3 { font-size: 1.25em; }
+	h4 { font-size: 1em; }
+	h5 { font-size: .875em; }
+	h6 { font-size: .75em; }
 
 	ol, ul {
 		margin: 1em 0;
@@ -48,6 +52,10 @@
 	}
 }
 
+.table-of-contents ol {
+	margin: 0;
+}
+
 .md-media {
 	margin-top: 1em;
 	margin-bottom: 1em;
@@ -76,6 +84,8 @@
 	opacity: 0;
 }
 
+// 【新写法】
+//:is(h1 h2 h3 h4 h5 h6):hover > .header-anchor
 h1:hover > .header-anchor,
 h2:hover > .header-anchor,
 h3:hover > .header-anchor,

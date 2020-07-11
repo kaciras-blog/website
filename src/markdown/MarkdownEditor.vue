@@ -2,8 +2,12 @@
 	<div :class="$style.container">
 
 		<div :class="$style.toolbar" role="toolbar">
-			<div :class="$style.left_items"><slot name="tools-left" :ctx="this"/></div>
-			<div :class="$style.right_items"><slot name="tools-right" :ctx="this"/></div>
+			<div :class="$style.left_items">
+				<slot name="tools-left" :ctx="this"/>
+			</div>
+			<div :class="$style.right_items">
+				<slot name="tools-right" :ctx="this"/>
+			</div>
 		</div>
 
 		<div :class="$style.main">
@@ -11,7 +15,8 @@
 				v-show="viewMode !== 2"
 				ref="textarea"
 				:class="{
-					[$style.textbox]: true,
+					[$style.textarea]: true,
+					[$style.window]: true,
 					[$style.split]:viewMode === 0,
 					[$style.single]:viewMode === 1,
 				}"
@@ -28,7 +33,7 @@
 				ref="preview"
 				class="markdown"
 				:class="{
-					[$style.textbox]: true,
+					[$style.window]: true,
 					[$style.split]:viewMode === 0,
 					[$style.single]:viewMode === 2,
 				}"
@@ -36,8 +41,12 @@
 		</div>
 
 		<div :class="$style.statebar">
-			<div :class="$style.left_items"><slot name="state-left" :ctx="this"/></div>
-			<div :class="$style.right_items"><slot name="state-right" :ctx="this"/></div>
+			<div :class="$style.left_items">
+				<slot name="state-left" :ctx="this"/>
+			</div>
+			<div :class="$style.right_items">
+				<slot name="state-right" :ctx="this"/>
+			</div>
 		</div>
 	</div>
 </template>
@@ -134,6 +143,16 @@ export default {
 	flex-direction: column;
 }
 
+.window {
+	margin: 0;
+	padding: .5rem .8rem 0 .8rem;
+	border: none;
+
+	background-color: white;
+	resize: none;
+	overflow-y: scroll;
+}
+
 .toolbar {
 	display: flex;
 	background-color: whitesmoke;
@@ -158,26 +177,16 @@ export default {
 /*	flex-wrap: wrap;*/
 /*}*/
 
-// =========================================
-
 .main {
 	display: flex;
 	flex: 1;
 	overflow: hidden;
 }
 
-.textbox {
-	margin: 0;
-	padding: .5rem .8rem 0 .8rem;
-	border: none;
-
-	background-color: white;
-	resize: none;
-	overflow-y: scroll;
-
+.textarea {
 	font-size: initial;
 	word-break: break-all;
-	line-height: 1.67;
+	line-height: 1.8;
 }
 
 .split {

@@ -1,6 +1,6 @@
 <template>
 	<section>
-		<h1>友情链接</h1>
+		<h1 :class="$style.title">友情链接</h1>
 		<ul class="clean-list" :class="$style.list">
 			<li
 				v-for="friend of friends"
@@ -107,6 +107,10 @@ export default {
 @background-height: @background-width * 9 / 16;
 @favicon-size: 70px;
 @transition: transform .5s;
+
+.title {
+	font-size: 2rem;
+}
 
 // 自动网格的卡片布局
 // https://blog.kaciras.com/article/14/use-pure-CSS-to-implement-center+wrap+left-alignment-layout
