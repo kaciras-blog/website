@@ -67,6 +67,20 @@ renderer.use(media, {
     		</div>
 		`;
 	},
+	video(src, poster, md) {
+		poster = md.normalizeLink(poster);
+		if (!md.validateLink(poster)) {
+			poster = "";
+		}
+		return `
+			<p class="md-video-container md-loading-stack sized">
+				<video poster="${poster}" src="${src}" controls></video>
+			</p>
+		`;
+	},
+	audio(src) {
+		return `<p class="center-wrapper"><audio controls src=${src}></audio></p>`;
+	},
 });
 
 /**
