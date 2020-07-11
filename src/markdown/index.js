@@ -45,8 +45,8 @@ function getResourceSize(url) {
 // 原理讲解：
 // https://blog.kaciras.com/article/15/preventing-content-reflow-from-lazy-loaded-images-by-pure-css
 renderer.use(media, {
-	gif(href, alt) {
-		const size = getResourceSize(href);
+	gif(src, alt) {
+		const size = getResourceSize(src);
 
 		let sized = "";
 		let style = "";
@@ -59,12 +59,12 @@ renderer.use(media, {
 		}
 
 		return `
-			<div class="center-wrapper md-media">
-				<div class="md-loading-stack ${sized}" style="${style}">
-					<video class="md-img gif" src="${href}" loop muted></video>
-				</div>
+			<p class="center-wrapper">
+				<span class="md-loading-stack ${sized}" style="${style}">
+					<video class="md-img gif" src="${src}" loop muted></video>
+				</span>
 				${alt ? `<span class="md-img-alt">${alt}</span>` : ""}
-    		</div>
+    		</p>
 		`;
 	},
 	video(src, poster, md) {
