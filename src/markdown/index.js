@@ -34,7 +34,7 @@ renderer.use(Anchor, {
 renderer.use(tableOfContent);
 renderer.use(katex);
 
-function getResourceSize(url) {
+function getMediaResolution(url) {
 	const urlParams = new URLSearchParams(url.split("?")[1]);
 	const width = parseFloat(urlParams.get("vw"));
 	const height = parseFloat(urlParams.get("vh"));
@@ -46,7 +46,7 @@ function getResourceSize(url) {
 // https://blog.kaciras.com/article/15/preventing-content-reflow-from-lazy-loaded-images-by-pure-css
 renderer.use(media, {
 	gif(src, alt) {
-		const size = getResourceSize(src);
+		const size = getMediaResolution(src);
 
 		let sized = "";
 		let style = "";
@@ -60,7 +60,7 @@ renderer.use(media, {
 
 		return `
 			<p class="center-wrapper">
-				<span class="md-loading-stack ${sized}" style="${style}">
+				<span class="md-media-container ${sized}" style="${style}">
 					<video class="md-img gif" src="${src}" loop muted></video>
 				</span>
 				${alt ? `<span class="md-img-alt">${alt}</span>` : ""}
@@ -73,7 +73,7 @@ renderer.use(media, {
 			poster = "";
 		}
 		return `
-			<p class="md-video-container md-loading-stack sized">
+			<p class="md-video-container md-media-container sized">
 				<video poster="${poster}" src="${src}" controls></video>
 			</p>
 		`;
@@ -115,7 +115,7 @@ renderer.renderer.rules.image = (tokens, idx) => {
 	const src = token.attrGet("src");
 	const alt = token.content;
 
-	const size = getResourceSize(src);
+	const size = getMediaResolution(src);
 
 	let sized = "";
 	let style = "";
@@ -137,7 +137,7 @@ renderer.renderer.rules.image = (tokens, idx) => {
 	return `
 		<span class="center-wrapper">
 			<a
-				class="md-loading-stack ${sized}"
+				class="md-media-container ${sized}"
 				style="${style}"
 				href="${src}"
 				target="_blank"
