@@ -72,8 +72,8 @@ module.exports = {
 	/** 连接设置，可以配置接受HTTP和HTTPS连接 */
 	server: {
 
-		/** 服务器绑定的地址，默认是localhost */
-		hostname: "0.0.0.0",
+		/** 服务器绑定的地址，即 net.server.listen 的 hostname 参数 */
+		// hostname: "::",
 
 		connectors: [
 			{
