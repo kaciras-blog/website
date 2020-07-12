@@ -153,7 +153,7 @@ export default {
 		}
 		@media (min-width: @length-screen-wide) {
 			width: 66vw;
-			max-width: 1400px;
+			max-width: 1000px;
 		}
 	}
 }
