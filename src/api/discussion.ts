@@ -1,29 +1,46 @@
 import { AbstractResource, Pageable } from "./core";
 
-export interface DiscussionListRequest extends Pageable {
-	objectId: number;
+export interface DiscussionTarget {
+
+	/** 被评论对象的类型 */
 	type: number;
+
+	/** 被评论对象的ID */
+	objectId: number;
+}
+
+export interface DiscussionListRequest extends Pageable, DiscussionTarget {
 	replySize?: number;
 }
 
+export interface DiscussionInput extends DiscussionTarget {
+
+	/** 父评论，如果没有则为0 */
+	parent: number;
+
+	/** 评论内容 */
+	content: string;
+
+	/** 游客也可以随意填写的昵称 */
+	nickname?: string;
+}
+
 export enum DiscussionState {
-	Visible = "Visible", // 正常显示
-	Deleted = "Deleted", // 已删除
-	Moderation = "Moderation", // 等待审核
+
+	/** 正常显示 */
+	Visible = "Visible",
+
+	/** 已删除 */
+	Deleted = "Deleted",
+
+	/** 等待审核 */
+	Moderation = "Moderation",
 }
 
 export default class DiscussionResource extends AbstractResource {
 
-	/**
-	 * 添加评论，返回服务端保存的对象。
-	 *
-	 * @param objectId 被评论对象的ID
-	 * @param type 被评论对象的类型
-	 * @param parent 父评论，如果没有则填0
-	 * @param content 评论内容
-	 */
-	add(objectId: number, type: number, parent: number, content: string) {
-		return this.servers.content.post("/discussions", { objectId, type, parent, content }).then(r => r.data);
+	add(data: DiscussionInput) {
+		return this.servers.content.post("/discussions", data).then(r => r.data);
 	}
 
 	getList(query: DiscussionListRequest) {
@@ -32,7 +49,9 @@ export default class DiscussionResource extends AbstractResource {
 	}
 
 	/**
-	 * 获取评论的回复（楼中楼）
+	 * 获取评论的回复（楼中楼）。
+	 *
+	 * 因为 parent -> id 已经可以确定查询范围，故单独用一个方法省略 objectId & type。
 	 *
 	 * @param parent 评论id
 	 * @param start 起始位置
@@ -40,9 +59,8 @@ export default class DiscussionResource extends AbstractResource {
 	 * @return 回复列表
 	 */
 	getReplies(parent: number, start: number, count: number) {
-		return this.servers.content.get("/discussions", {
-			params: { parent, start, count }
-		}).then(r => r.data);
+		const params = { parent, start, count };
+		return this.servers.content.get("/discussions", { params }).then(r => r.data);
 	}
 
 	getModeration() {

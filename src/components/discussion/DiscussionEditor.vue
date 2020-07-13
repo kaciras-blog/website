@@ -11,7 +11,15 @@
 	<div v-else>
 		<div>
 			<img :src="user.avatar" alt="头像" class="small head">
-			<span :class="$style.name">{{user.name}}</span>
+
+			<label :class="$style.name">
+				名字（可选）
+				<input
+					v-model="nickname"
+					:placeholder="user.name"
+					:class="$style.nickname"
+				>
+			</label>
 		</div>
 
 		<textarea
@@ -30,7 +38,7 @@
 			<kx-task-button
 				class='primary'
 				:class="$style.buttons"
-				:on-click='onSubmit'
+				:on-click='submit'
 			>
 				发表评论
 			</kx-task-button>
@@ -53,10 +61,20 @@ export default {
 			required: true,
 		},
 	},
+	data: () => ({
+		nickname: localStorage.getItem("nickname"),
+	}),
 	computed: mapState({
 		user: "user",
 		options: "discussionOptions",
 	}),
+	methods: {
+		submit() {
+			const { nickname } = this;
+			localStorage.setItem("nickname", nickname);
+			return this.onSubmit(nickname);
+		},
+	},
 };
 </script>
 
@@ -79,9 +97,14 @@ export default {
 }
 
 .name {
-	font-size: 16px;
-	font-weight: 600;
-	margin-left: .5em;
+	display: inline-flex;
+	flex-direction: column;
+	margin-left: 1rem;
+	vertical-align: middle;
+}
+
+.nickname {
+	margin-top: 4px;
 }
 
 .bottom_toolbar {

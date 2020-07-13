@@ -8,10 +8,12 @@
 		>
 
 		<div :class="$style.main">
-
-			<!-- 评论者的用户名和右上角的楼层号 -->
 			<header :class="$style.header">
-				<span :class="$style.name">{{value.user.name}}</span>
+
+				<!-- 评论者的名字 -->
+				<span :class="$style.name">{{value.nickname || value.user.name}}</span>
+
+				<!-- 右上角的楼层号 -->
 				<span v-if="!value.parent" class="minor-text">#{{value.floor}}</span>
 			</header>
 
@@ -121,7 +123,13 @@ export default {
 	margin-left: 4rem;
 }
 
+.header {
+	display: flex;
+	align-items: center;
+}
+
 .name {
+	margin-right: auto;
 	font-size: 16px;
 	font-weight: 600;
 }
@@ -145,11 +153,5 @@ export default {
 	margin-bottom: 1rem;
 	white-space: pre-wrap;
 	word-wrap: break-word;
-}
-
-.header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
 }
 </style>

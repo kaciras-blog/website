@@ -44,14 +44,14 @@ export default {
 			}
 			this.content = newContent;
 		},
-		async submit() {
+		async submit(nickname) {
 			const { type, objectId, parent, key, content } = this;
 
 			if (/^\s*$/.test(content)) {
 				return; // 没写评论就按发表按钮
 			}
 			try {
-				const entity = await api.discuss.add(objectId, type, parent, content);
+				const entity = await api.discuss.add({ objectId, type, parent, content, nickname });
 				this.content = "";
 				localStorage.removeItem(key);
 				this.$emit("submitted", entity);
