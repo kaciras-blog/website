@@ -3,8 +3,9 @@
 
 		<section class="about-section">
 			<div :class="$style.profile">
+				<!-- 本人帅气的头像绝不能压缩 -->
 				<img
-					src="../../assets/img/logo-kaciras-circle.svg"
+					src="/static/img/avatar.png"
 					alt="logo"
 					class="head"
 				>
@@ -27,13 +28,33 @@
 
 		<section class="about-section">
 			<h2>友链</h2>
+			<p>本站名称：Kaciras' Blog 或 Kaciras的博客</p>
 			<p>
-				本站的图标：
-				<a class="highlight" :href='require("../../assets/img/logo-kaciras.svg")'>方形图标</a>
-				&nbsp;
-				<a class="highlight" :href='require("../../assets/img/logo-kaciras-circle.svg")'>圆形图标</a>
+				本站链接：
+				<a class="highlight" href="https://blog.kaciras.com">https://blog.kaciras.com</a>
 			</p>
-			<p>加友链的在下面评论即可，需要图片、名称、地址三项。</p>
+			<p>
+				本站图标：
+				<a
+					:class="$style.inlineLink"
+					href='/static/img/avatar.png'
+				>
+					Kaciras的头像
+				</a>
+				<a
+					:class="$style.inlineLink"
+					:href='require("../../assets/img/logo-kaciras.svg")'
+				>
+					网站图标（方形）
+				</a>
+				<a :class="$style.inlineLink"
+				   :href='require("../../assets/img/logo-kaciras-circle.svg")'
+				>
+					网站图标（圆形）
+				</a>
+			</p>
+
+			<p>加友链在下面评论即可，需要图标（头像）的链接、名称、地址三项。</p>
 		</section>
 
 		<discussion-section
@@ -62,6 +83,11 @@
 		content: "/";
 		padding: 0 5px;
 	}
+}
+
+.inlineLink {
+	composes: highlight from global;
+	margin-right: .5em;
 }
 
 .discussion {
