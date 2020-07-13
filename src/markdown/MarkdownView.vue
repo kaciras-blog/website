@@ -14,8 +14,12 @@ export default {
 		const innerHTML = renderMarkdown(this.value);
 		return h("div", { staticClass: "markdown", domProps: { innerHTML } });
 	},
-	mounted() {
-		initLazyLoading(this.$el);
+	async mounted() {
+		await this.$nextTick();
+		this.$_disconnect = initLazyLoading(this.$el);
+	},
+	destroyed() {
+		this.$_disconnect();
 	},
 };
 </script>
