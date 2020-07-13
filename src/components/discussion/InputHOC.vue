@@ -50,13 +50,17 @@ export default {
 			if (/^\s*$/.test(content)) {
 				return; // 没写评论就按发表按钮
 			}
+			if (nickname && nickname.length > 16) {
+				return this.$dialog.alertError("评论失败", "名字最多16个字");
+			}
+
 			try {
 				const entity = await api.discuss.add({ objectId, type, parent, content, nickname });
 				this.content = "";
 				localStorage.removeItem(key);
 				this.$emit("submitted", entity);
 			} catch (e) {
-				this.$dialog.alertError("发表失败", errorMessage(e));
+				this.$dialog.alertError("评论失败", errorMessage(e));
 			}
 		},
 	},
