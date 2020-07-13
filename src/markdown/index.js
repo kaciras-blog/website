@@ -169,7 +169,7 @@ export function renderMarkdown(markdown) {
  * 故不建议使用阅读视图浏览本站的文章，本站的文章页面已经足够简洁。
  *
  * @param el 容器元素
- * @return 取消监听的函数，应当在被监视的内容被删除后调用，以避免内存泄漏。
+ * @return 取消监听的函数，应当在被监视的元素移除后调用，以避免内存泄漏。
  */
 export function initLazyLoading(el) {
 	const images = el.querySelectorAll("img");

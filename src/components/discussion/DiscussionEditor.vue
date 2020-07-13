@@ -105,6 +105,7 @@ export default {
 
 .nickname {
 	margin-top: 4px;
+	font-weight: 600;
 }
 
 .bottom_toolbar {
