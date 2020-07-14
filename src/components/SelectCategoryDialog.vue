@@ -16,16 +16,16 @@
 
 			<div class="btn-group">
 				<kx-button
-					:disabled="current === null"
-					@click="gotoParent"
+					:disabled="!hasAncestor"
+					@click="walker.gotoParent()"
 				>
 					<i class="fa fa-arrow-left"></i>
 					<span> 回到父级</span>
 				</kx-button>
 
 				<kx-button
-					:disabled="current === null"
-					@click="gotoTop"
+					:disabled="!hasAncestor"
+					@click="walker.goto(0)"
 				>
 					<i class="fas fa-arrow-up"></i>
 					<span> 返回顶层</span>
@@ -35,24 +35,24 @@
 
 		<ul class="clean-list" :class="$style.cards">
 			<li
-				v-for="cate of categories"
-				:key="cate.id"
-				:class="{ [$style.category]: true, selected: cate.selected }"
-				@click="showChild(cate)"
+				v-for="category of categories"
+				:key="category.id"
+				:class="{ [$style.category]: true, selected: category.selected }"
+				@click="walker.goto(category)"
 			>
 				<kx-check-box
-					:value="cate.selected"
+					:value="category.selected"
 					@click.native.stop
-					@changed="select(cate)"
+					@changed="select(category)"
 				/>
 				<div :class="$style.categoryWrapper">
 					<img
 						class="head"
 						:class="$style.cover"
-						:src="cate.cover"
+						:src="category.cover"
 						alt="分类图标"
 					>
-					<h3 :class="$style.name">{{cate.name}}</h3>
+					<h3 :class="$style.name">{{category.name}}</h3>
 				</div>
 			</li>
 		</ul>
@@ -90,8 +90,8 @@
 </template>
 
 <script>
-import api from "@/api";
 import { deleteOn } from "@/utils";
+import CachedCategoryWalker from "./CachedCategoryWalker";
 
 export default {
 	name: "SelectCategoryDialog",
@@ -107,13 +107,19 @@ export default {
 	},
 	data: () => ({
 		selected: [],
-		children: [],
-		current: null,
-		stack: [],
+		walker: new CachedCategoryWalker(),
 	}),
 	computed: {
+		current() {
+			return this.walker.current;
+		},
 		categories() {
-			return this.children.filter(this.filter);
+			const { children } = this.walker;
+			return children ? children.filter(this.filter) : [];
+		},
+		hasAncestor() {
+			const { current } = this.walker;
+			return current && current.id !== 0;
 		},
 	},
 	methods: {
@@ -143,27 +149,9 @@ export default {
 			this.selected.forEach(cate => cate.selected = false);
 			this.selected = [];
 		},
-		/*
-		 * TODO:一部分逻辑跟 CategoryConsole 是重合的，但是Vue没有像ReactHooks
-		 * 这样的复用方法，用Mixin又不太好毕竟要被废弃了。
-		 */
-		showChild(category) {
-			this.stack.push(this.current);
-			this.current = category;
-			api.category.getChildren(category.id).then(res => this.children = res);
-		},
-		gotoTop() {
-			this.current = null;
-			api.category.getChildren(0).then(r => this.children = r);
-		},
-		gotoParent() {
-			this.current = this.stack.pop();
-			const id = this.current ? this.current.id : 0;
-			api.category.getChildren(id).then(r => this.children = r);
-		},
 	},
 	created() {
-		api.category.getChildren(0).then(res => this.children = res);
+		this.walker.goto(0);
 	},
 };
 </script>

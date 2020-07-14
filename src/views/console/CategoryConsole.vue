@@ -3,16 +3,16 @@
 		<div :class="$style.buttons">
 			<div class="btn-group">
 				<kx-button
-					:disabled="!stack.length"
-					@click="gotoTop"
 					icon="fas fa-arrow-up"
+					:disabled="!hasAncestor"
+					@click="$data.gotoId(0)"
 				>
 					返回顶层
 				</kx-button>
 				<kx-button
-					:disabled="!stack.length"
-					@click="gotoParent"
 					icon="fa fa-arrow-left"
+					:disabled="!hasAncestor"
+					@click="$data.gotoParent()"
 				>
 					回到父级
 				</kx-button>
@@ -30,8 +30,8 @@
 			v-if="current"
 			:editable="true"
 			:item="current"
-			@moved="goto"
-			@removed="gotoParent"
+			@moved="$data.gotoParent()"
+			@removed="$data.gotoParent()"
 			@change="submit"
 		/>
 
@@ -44,7 +44,7 @@
 				v-for="item of children"
 				:key="item.id"
 				v-bind="item"
-				@click="goto(item)"
+				@click="$data.goto(item)"
 			/>
 		</ul>
 		<div v-else :class="$style.empty_holder">没有下级分类了</div>
@@ -54,9 +54,10 @@
 <script>
 import api from "@/api";
 import CategoryCard from "@/components/CategoryCard";
+import CachedCategoryWalker from "@/components/CachedCategoryWalker";
 import CategoryView from "./CategoryView";
 
-const CATEGORY_TEMPLATE = {
+const TEMPLATE = {
 	name: "新建分类",
 	cover: "/static/img/category.png",
 	description: "没有",
@@ -70,52 +71,33 @@ export default {
 		CategoryCard,
 		CategoryView,
 	},
-	data: () => ({
-		current: null,
-		children: null,
-		stack: [],
-	}),
+	data: () => new CachedCategoryWalker(),
+	computed: {
+		hasAncestor() {
+			return this.current && this.current.id !== 0;
+		},
+	},
 	methods: {
-		async goto(category) {
-			this.stack.push(this.current);
-			this.current = category;
-			this.children = await api.category.getChildren(category.id);
-		},
-		async gotoTop() {
-			this.current = this.stack[0];
-			this.stack.splice(0);
-			this.children = null;
-
-			this.children = await api.category.getChildren(0);
-		},
-		async gotoParent() {
-			this.current = this.stack.pop();
-			const id = this.current ? this.current.id : 0;
-			this.children = null;
-
-			this.children = await api.category.getChildren(id);
-		},
 		createNew() {
-			this.stack.push(this.current);
-			this.current = Object.assign({ banner: this.current.banner }, CATEGORY_TEMPLATE);
+			const { id, banner } = this.current;
+			this.current = Object.assign({ parent: id, banner }, TEMPLATE);
 			this.children = [];
 		},
 		async submit() {
-			const { current, stack } = this;
+			const { current } = this;
 
 			if (typeof current.id === "number") {
 				await api.category.update(current.id, current);
 			} else {
-				const parent = stack.length ? stack[stack.length - 1].id : 0;
-				await api.category.create(current, parent);
+				await api.category.create(current, current.parent);
 			}
 
+			this.$data.invalidCache(current);
 			this.$dialog.alertSuccess("保存成功");
 		},
 	},
-	async beforeMount() {
-		this.current = await api.category.get(0, true);
-		this.children = this.current.children;
+	beforeMount() {
+		this.$data.goto(0);
 	},
 };
 </script>

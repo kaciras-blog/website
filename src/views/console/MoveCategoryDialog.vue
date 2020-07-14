@@ -41,7 +41,6 @@ export default {
 
 	&:hover, &:focus {
 		box-shadow: 0 0 4px 4px #dcdcdc;
-		transition: box-shadow .3s;
 	}
 }
 
