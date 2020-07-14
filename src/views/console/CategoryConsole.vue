@@ -37,7 +37,9 @@
 
 		<div :class="$style.childrenTitle" v-if="current">下级分类</div>
 
-		<ul v-if="children.length" :class="$style.cards">
+		<div v-if="!children">正在加载中</div>
+
+		<ul v-else-if="children.length" :class="$style.cards">
 			<category-card
 				v-for="item of children"
 				:key="item.id"
@@ -70,7 +72,7 @@ export default {
 	},
 	data: () => ({
 		current: null,
-		children: [],
+		children: null,
 		stack: [],
 	}),
 	methods: {
@@ -82,16 +84,20 @@ export default {
 		async gotoTop() {
 			this.current = this.stack[0];
 			this.stack.splice(0);
+			this.children = null;
+
 			this.children = await api.category.getChildren(0);
 		},
 		async gotoParent() {
 			this.current = this.stack.pop();
 			const id = this.current ? this.current.id : 0;
+			this.children = null;
+
 			this.children = await api.category.getChildren(id);
 		},
 		createNew() {
 			this.stack.push(this.current);
-			this.current = Object.assign({}, CATEGORY_TEMPLATE);
+			this.current = Object.assign({ banner: this.current.banner }, CATEGORY_TEMPLATE);
 			this.children = [];
 		},
 		async submit() {

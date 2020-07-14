@@ -103,6 +103,7 @@ export default {
 		async move() {
 			const target = await this.$dialog.show(SelectCategoryDialog).confirmPromise;
 			const treeMode = await this.$dialog.show(MoveCategoryDialog).confirmPromise;
+
 			await api.category.move(this.item.id, target.id, treeMode);
 			this.$emit("moved", target);
 		},
