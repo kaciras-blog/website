@@ -27,8 +27,8 @@
 		"Edge >= 79"
 	],
 	"dependencies": {
-		"@iktakahiro/markdown-it-katex": "^3.1.0",
-		"@kaciras-blog/server": "^0.10.3",
+		"@iktakahiro/markdown-it-katex": "^4.0.0",
+		"@kaciras-blog/server": "^0.10.4",
 		"@kaciras-blog/uikit": "^0.5.3",
 		"axios": "^0.19.2",
 		"date-fns": "^2.14.0",
@@ -56,7 +56,7 @@
 		"@babel/preset-env": "^7.10.4",
 		"@babel/runtime": "^7.10.4",
 		"@fortawesome/fontawesome-free": "^5.13.1",
-		"@kaciras-blog/devtool": "^0.10.3",
+		"@kaciras-blog/devtool": "^0.10.4",
 		"@sentry/browser": "5.19.1",
 		"@sentry/integrations": "^5.19.1",
 		"@types/jest": "^26.0.4",
@@ -76,7 +76,7 @@
 		"eslint-plugin-standard": "^4.0.1",
 		"eslint-plugin-vue": "^6.2.2",
 		"jest": "^26.1.0",
-		"ts-jest": "^26.1.1",
+		"ts-jest": "^26.1.2",
 		"typescript": "^3.9.6",
 		"vue-template-compiler": "^2.6.11"
 	},
