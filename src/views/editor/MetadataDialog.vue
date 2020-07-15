@@ -35,6 +35,7 @@ import api from "@/api";
 
 export default {
 	name: "MetadataDialog",
+	inheritAttrs: false,
 	props: {
 		title: String,
 		cover: String,
