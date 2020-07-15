@@ -8,9 +8,6 @@ function getMediaResolution(url) {
 	return width && height ? { width, height } : null;
 }
 
-// 使用URL里的宽高参数避免内容加载后布局移动，下面图片的渲染也是。
-// 原理讲解：
-// https://blog.kaciras.com/article/15/preventing-content-reflow-from-lazy-loaded-images-by-pure-css
 const directiveMap =  {
 	gif(src, alt) {
 		const size = getMediaResolution(src);
@@ -49,8 +46,6 @@ const directiveMap =  {
 		return `<p class="center-wrapper"><audio controls src=${src}></audio></p>`;
 	},
 };
-
-
 
 const LOADING_EL = `
 <span class="full-vertex md-loading">
@@ -100,6 +95,7 @@ function renderImage(tokens, idx){
 				class="md-media-container ${sized}"
 				style="${style}"
 				href="${src}"
+				rel="nofollow"
 				target="_blank"
 			>
 				<img data-src="${src}" alt="${alt}" class="md-img">
