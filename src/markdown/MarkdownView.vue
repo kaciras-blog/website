@@ -1,6 +1,6 @@
 <!-- 虽然只有脚本代码，但因为是组件所以用vue文件 -->
 <script>
-import { initLazyLoading, renderMarkdown } from ".";
+import { articleRenderer, initLazyLoading } from ".";
 
 export default {
 	name: "MarkdownView",
@@ -11,7 +11,7 @@ export default {
 		},
 	},
 	render(h) {
-		const innerHTML = renderMarkdown(this.value);
+		const innerHTML = articleRenderer.render(this.value);
 		return h("div", { staticClass: "markdown", domProps: { innerHTML } });
 	},
 	async mounted() {

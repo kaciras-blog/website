@@ -53,7 +53,7 @@
 
 <script>
 import { syncScroll } from "@kaciras-blog/uikit";
-import { initLazyLoading, renderMarkdown } from "./index";
+import { articleRenderer, initLazyLoading } from ".";
 
 export default {
 	name: "MarkdownEditor",
@@ -71,7 +71,7 @@ export default {
 		return {
 			selection: [0, 0],
 			viewMode: 0,
-			html: renderMarkdown(this.value),
+			html: articleRenderer.render(this.value),
 		};
 	},
 	computed: {
@@ -84,13 +84,13 @@ export default {
 		// 加个防抖免得右边老闪，另外注意刷新后清理监听器防止内存泄漏
 		value(newValue) {
 			const render = async () => {
-				this.html = renderMarkdown(newValue);
+				this.html = articleRenderer.render(newValue);
 				await this.$nextTick();
 
-				if (this.$_lazyWatcher) {
-					this.$_lazyWatcher();
+				if (this.$_disconnect) {
+					this.$_disconnect();
 				}
-				this.$_lazyWatcher = initLazyLoading(this.$refs.preview);
+				this.$_disconnect = initLazyLoading(this.$refs.preview);
 			};
 
 			if (this.$_timer) {
@@ -131,6 +131,9 @@ export default {
 	},
 	mounted() {
 		syncScroll(this.$refs.textarea, this.$refs.preview);
+	},
+	destroyed() {
+		this.$_disconnect();
 	},
 };
 </script>
