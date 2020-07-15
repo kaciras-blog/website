@@ -43,7 +43,6 @@
 import api from "@/api";
 import SelectCategoryDialog from "@/components/SelectCategoryDialog";
 import { errorMessage } from "@/utils";
-import { articleLink } from "@/blog-plugin";
 
 export default {
 	name: "PublishDialog",
@@ -72,20 +71,19 @@ export default {
 				data.destroy = this.destroy;
 
 				let id = draft.articleId;
-				let returnUrl;
+				let article;
 
 				if (id) {
-					const article = await api.article.update(id, data);
-					returnUrl = articleLink(article);
+					article = await api.article.update(id, data);
 				} else if (!this.category) {
 					return this.$dialog.alertError("发表失败", "必须选择一个分类");
 				} else {
 					data.category = this.category.id;
 					data.urlTitle = this.urlTitle || data.title;
-					returnUrl = await api.article.publish(data);
+					article = await api.article.publish(data);
 				}
 
-				this.$dialog.confirm(returnUrl);
+				this.$dialog.confirm(article);
 			} catch (e) {
 				this.$dialog.alertError("发表失败", errorMessage(e));
 			}

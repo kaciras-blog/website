@@ -12,11 +12,11 @@
 
 			<kx-button class="primary" title="修改简介" icon="far fa-address-card" @click="showMetadataDialog"/>
 			<kx-button class="primary" title="保存" icon="far fa-save" @click="manualSave"/>
-			<kx-button class="primary" title="发布!" icon="far fa-paper-plane" @click="publish"/>
+			<kx-button class="primary" title="发布!" icon="far fa-paper-plane" @click="showPublishDialog"/>
 		</template>
 
 		<template v-slot:state-left>
-			<span v-if="autoSaveError" :class="$style.errMsg">
+			<span v-if="autoSaveError" :class="$style.error">
 				自动保存出错
 			</span>
 			<span v-else-if="draft.updateTime">
@@ -32,10 +32,11 @@
 
 <script>
 import api from "@/api";
-import { errorMessage } from "@/utils";
 import MarkdownEditor from "@/markdown/MarkdownEditor";
 import TextTools from "@/markdown/TextTools";
 import TextStateGroup from "@/markdown/TextStateGroup";
+import { articleLink } from "@/blog-plugin";
+import { errorMessage } from "@/utils";
 import PublishDialog from "./PublishDialog";
 import MetadataDialog from "./MetadataDialog";
 
@@ -76,11 +77,6 @@ export default {
 		autoSaveError: null,
 	}),
 	methods: {
-		async showMetadataDialog() {
-			const result = await this.$dialog.show(MetadataDialog, this.current).confirmPromise;
-			Object.assign(this.current, result);
-		},
-
 		/**
 		 * 监视文本的改变，当改变时开始计时5分钟，到点自动保存
 		 */
@@ -125,10 +121,15 @@ export default {
 			}
 		},
 
-		async publish() {
-			const targetUrl = await this.$dialog.show(PublishDialog, this.$data).confirmPromise;
+		async showMetadataDialog() {
+			const result = await this.$dialog.show(MetadataDialog, this.current).confirmPromise;
+			Object.assign(this.current, result);
+		},
+
+		async showPublishDialog() {
+			const article = await this.$dialog.show(PublishDialog, this.$data).confirmPromise;
 			this.changes = false;
-			return this.$router.push(targetUrl);
+			return this.$router.push(articleLink(article));
 		},
 
 		async loadHistory(saveCount) {
@@ -181,7 +182,7 @@ export default {
 	height: 100vh;
 }
 
-.errMsg {
+.error {
 	color: #ff4f4f;
 	font-weight: 600;
 }

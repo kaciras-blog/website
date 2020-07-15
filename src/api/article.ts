@@ -1,5 +1,4 @@
 import { AbstractResource, Pageable } from "./core";
-import { getLocation } from "./common";
 
 export enum DeletionState {
 	ALIVE = "ALIVE",
@@ -46,11 +45,11 @@ export default class ArticleResource extends AbstractResource {
 	}
 
 	publish(data: PublishRequest) {
-		return this.servers.content.post("/articles", data).then(getLocation("/articles/"));
+		return this.servers.content.post<Article>("/articles", data).then(r => r.data);
 	}
 
 	update(id: number, data: any) {
-		return this.servers.content.put("/articles/" + id, data).then(r => r.data);
+		return this.servers.content.put<Article>("/articles/" + id, data).then(r => r.data);
 	}
 
 	getList(params: ArticleListQuery) {
