@@ -8,7 +8,7 @@ function getMediaResolution(url) {
 	return width && height ? { width, height } : null;
 }
 
-const directiveMap =  {
+const directiveMap = {
 	gif(src, alt) {
 		const size = getMediaResolution(src);
 
@@ -65,7 +65,7 @@ const LOADING_EL = `
  * 1）没有尺寸信息：使用一个默认尺寸
  * 2）图片过小：不添加加载指示器
  */
-function renderImage(tokens, idx){
+function renderImage(tokens, idx) {
 	const token = tokens[idx];
 	const src = token.attrGet("src");
 	const alt = token.content;
@@ -104,6 +104,16 @@ function renderImage(tokens, idx){
 			${alt ? `<span class="md-img-alt">${alt}</span>` : ""}
     	</span>
 	`;
+}
+
+/**
+ * MarkdownIt 的插件，使用方式：markdownIt.use(clientMediaPlugin)
+ *
+ * @param markdownIt 要安装的实例
+ */
+export function clientMediaPlugin(markdownIt) {
+	markdownIt.use(media, directiveMap);
+	markdownIt.renderer.rules.image = renderImage;
 }
 
 /**
@@ -154,9 +164,4 @@ export function initLazyLoading(el) {
 		autoPlay.disconnect();
 		lozadImages.observer.disconnect();
 	};
-}
-
-export function clientMediaPlugin(markdownIt) {
-	markdownIt.use(media, directiveMap);
-	markdownIt.renderer.rules.image= renderImage;
 }
