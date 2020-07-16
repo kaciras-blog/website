@@ -9,7 +9,7 @@
 	</div>
 
 	<div v-else>
-		<div>
+		<div :class="$style.header">
 			<img :src="user.avatar" alt="头像" class="small head">
 
 			<label :class="$style.name">
@@ -20,37 +20,71 @@
 					:class="$style.nickname"
 				>
 			</label>
+
+			<!--<span :class="$style.guide" @click="showGuide">-->
+			<!--	<span class="hide-m">编辑器指南 </span>-->
+			<!--	<i class="far fa-question-circle"></i>-->
+			<!--</span>-->
 		</div>
 
-		<textarea
-			:value="content"
-			placeholder='说点什么吧'
-			aria-label="输入评论"
-			class='input'
-			:class="$style.textarea"
-			v-ime-input="(event) => $emit('input', event.target.value)"
-		/>
+		<div :class="$style.textarea" class="input">
+			<markdown-view
+				v-if="preview"
+				class="textarea"
+				:class="$style.preview"
+				:value="content"
+				:is-article="false"
+			/>
+			<textarea
+				v-else
+				:class="$style.textbox"
+				:value="content"
+				placeholder='说点什么吧'
+				aria-label="输入评论"
+				v-ime-input="(event) => $emit('input', event.target.value)"
+			/>
+		</div>
 
 		<div :class='$style.bottom_toolbar'>
-			<span v-if="options.moderation" class="minor-text">
-				为防止恶意刷评论，评论将在审核后显示
-			</span>
+			<kx-button
+				v-if="preview"
+				icon="far fa-edit"
+				title="编辑"
+				@click="preview=false"
+			>
+				<span class="hide-m"> 编辑</span>
+			</kx-button>
+			<kx-button
+				v-else
+				icon="fas fa-eye"
+				title="预览"
+				@click="preview=true"
+			>
+				<span class="hide-m"> 预览</span>
+			</kx-button>
+
 			<kx-task-button
 				class='primary'
-				:class="$style.buttons"
+				:class="$style.submit"
 				:on-click='submit'
 			>
 				发表评论
 			</kx-task-button>
 		</div>
+
+		<div v-if="options.moderation" :class="$style.warn">为防止滥用，评论将在审核后显示</div>
 	</div>
 </template>
 
 <script>
 import { mapState } from "vuex";
+import MarkdownView from "@/markdown/MarkdownView";
 
 export default {
 	name: "DiscussEditor",
+	components: {
+		MarkdownView,
+	},
 	props: {
 		content: {
 			type: String,
@@ -63,6 +97,7 @@ export default {
 	},
 	data: () => ({
 		nickname: localStorage.getItem("nickname"),
+		preview: false,
 	}),
 	computed: mapState({
 		user: "user",
@@ -73,6 +108,12 @@ export default {
 			const { nickname } = this;
 			localStorage.setItem("nickname", nickname);
 			return this.onSubmit(nickname);
+		},
+		showGuide() {
+
+		},
+		togglePrevicw(value) {
+
 		},
 	},
 };
@@ -90,17 +131,30 @@ export default {
 
 .textarea {
 	width: 100%;
-	min-height: 8em;
-	margin-top: 1rem;
-	margin-bottom: 1rem;
+	min-height: 10em;
+	margin: 1rem 0;
+	padding: .5em;
+
+	border: solid 1px #dcdee0;
+
+	overflow-y: auto;
 	resize: vertical;
+}
+
+.textbox {
+	border: none;
+	width: 100%;
+	overflow: auto;
+}
+
+.header {
+	display: flex;
 }
 
 .name {
 	display: inline-flex;
 	flex-direction: column;
 	margin-left: 1rem;
-	vertical-align: middle;
 }
 
 .nickname {
@@ -108,12 +162,34 @@ export default {
 	font-weight: 600;
 }
 
+.guide {
+	margin-left: auto;
+
+	font-size: 1rem;
+	cursor: pointer;
+	align-self: flex-end;
+
+	&:hover, &.active {
+		color: #f785d7;
+	}
+
+	@media screen and (max-width: @length-screen-mobile) {
+		font-size: 22px;
+	}
+}
+
 .bottom_toolbar {
 	display: flex;
 	align-items: center;
 }
 
-.buttons {
+.submit {
 	margin-left: auto;
+}
+
+.warn {
+	margin-top: 1.5rem;
+	color: red;
+	text-align: center;
 }
 </style>
