@@ -23,21 +23,6 @@ function highlightCodeBlock(str, lang) {
 
 function createRenderer() {
 	const markdownIt = new MarkdownIt({ highlight: highlightCodeBlock });
-
-	/*
-	 * 【Vue-Router 兼容性】
-	 * 由 Markdown 渲染的标题链接会触发 Vue-Router 的路由流程，需要在路由钩子里做检查以跳过预载，
-	 * 具体见 entry-client.js 中的 router.beforeEach 钩子。
-	 */
-	markdownIt.use(Anchor, {
-		permalink: true,
-		permalinkClass: "fas fa-link header-anchor",
-		permalinkSymbol: "",
-
-		// 参考 MSDN 网站的做法，有 aria-labelledby 情况下不再需要内容
-		permalinkAttrs: (slug) => ({ "aria-labelledby": slug }),
-	});
-	markdownIt.use(tableOfContent);
 	markdownIt.use(katex);
 	markdownIt.use(clientMediaPlugin);
 
@@ -54,6 +39,25 @@ function createRenderer() {
 }
 
 export const articleRenderer = createRenderer();
+
+// 评论一般也不长，不需要TOC
+articleRenderer.use(tableOfContent);
+
+/*
+ * 只有文章才添加导航锚，评论就不用了。
+ *
+ * 【Vue-Router 兼容性】
+ * 由 Markdown 渲染的标题链接会触发 Vue-Router 的路由流程，需要在路由钩子里做检查以跳过预载，
+ * 具体见 entry-client.js 中的 router.beforeEach 钩子。
+ */
+articleRenderer.use(Anchor, {
+	permalink: true,
+	permalinkClass: "fas fa-link header-anchor",
+	permalinkSymbol: "",
+
+	// 参考 MSDN 网站的做法，有 aria-labelledby 情况下不再需要内容
+	permalinkAttrs: (slug) => ({ "aria-labelledby": slug }),
+});
 
 export const discussionRenderer = createRenderer();
 
