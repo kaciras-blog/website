@@ -24,12 +24,16 @@ export default class extends AbstractResource {
 	 * @param file 文件数据
 	 * @param progress 进度回调
 	 */
-	async uploadImage(file: Blob, progress?: ProgressHandler) {
+	uploadImage(file: Blob, progress?: ProgressHandler) {
 		return this.upload("/image", file, progress);
 	}
 
-	async uploadVideo(file: Blob, progress?: ProgressHandler) {
+	uploadVideo(file: Blob, progress?: ProgressHandler) {
 		return this.upload("/video", file, progress);
+	}
+
+	uploadAudio(file: Blob, progress?: ProgressHandler) {
+		return this.upload("/audio", file, progress);
 	}
 
 	/**
@@ -47,7 +51,7 @@ export default class extends AbstractResource {
 	}
 
 	/**
-	 * 生成一个验证码URL，该函数返回的不是Promise。
+	 * 生成一个随机的验证码URL。
 	 *
 	 * @return {string} 验证码URL
 	 */

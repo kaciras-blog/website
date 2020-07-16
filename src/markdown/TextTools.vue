@@ -12,6 +12,7 @@
 
 		<kx-button title="插入图片" icon="far fa-file-image" @click="addImage"/>
 		<kx-button title="插入视频" icon="fa fa-file-video" @click="addVideo"/>
+		<kx-button title="插入音频" icon="fas fa-file-audio" @click="addAudio"/>
 	</div>
 </template>
 
@@ -138,6 +139,13 @@ export default {
 
 			const selEnd = this.ctx.selection[1];
 			this.ctx.replaceArea(selEnd, selEnd, text);
+		},
+
+		async addAudio() {
+			const file = await openFile("audio/*");
+			const res = await api.misc.uploadAudio(file);
+			const selEnd = this.ctx.selection[1];
+			this.ctx.replaceArea(selEnd, selEnd, `@audio[](${res})`);
 		},
 	},
 };
