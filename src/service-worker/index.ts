@@ -2,9 +2,10 @@
  * 虽然 ServiceWorker 对 Edge 版本要求比 CSS Grid 更高，但这是一项非必需的功能，即便没有 PWA 网页也能正常运行。
  */
 import "./error-report";
+import apiCacheRoute from "./api-cache";
 import { cacheNames, CacheWrapper } from "./cache";
-import { AppShellRoute, HostRoute, RegexRoute, Router, WebpUpgradeRoute } from "./routing";
-import { cacheFirst, networkFirst, timeout } from "./fetch-strategy";
+import { AppShellRoute, RegexRoute, Router, WebpUpgradeRoute } from "./routing";
+import { cacheFirst } from "./fetch-strategy";
 
 // 默认是 WebWorker，需要声明一下ServiceWorker，其他文件里也一样。
 declare const self: ServiceWorkerGlobalScope;
@@ -14,8 +15,7 @@ declare const serviceWorkerOption: {
 	assets: string[];
 };
 
-const STATIC_CACHE_NAME = "static-v1.1";
-const API_CACHE_NAME = "api-v1.0";
+const STATIC_CACHE_NAME = "static-v1.2";
 
 const cache = new CacheWrapper(STATIC_CACHE_NAME);
 const router = new Router();
@@ -30,22 +30,8 @@ const APP_SHELL_RE = new RegExp("^/(?:$|list|category|login|article|edit|profile
 const APP_SHELL_NAME = "/app-shell.html";
 router.addRoute(new AppShellRoute(cache, APP_SHELL_NAME, APP_SHELL_RE));
 
-/**
- * 对内容服务接口使用网络优先缓存，保证在网络不通的情况下也能显示旧的内容。
- */
-function enableApiServerCache() {
-	const apiOrigin = process.env.API_ORIGIN as any;
-	const BASE_URL = typeof apiOrigin === "string"
-		? apiOrigin
-		: apiOrigin[location.protocol.substring(0, location.protocol.length - 1)];
+router.addRoute(apiCacheRoute());
 
-	const apiHost = new URL(BASE_URL).host;
-	const apiCache = new CacheWrapper(API_CACHE_NAME)
-
-	router.addRoute(new HostRoute(apiHost, networkFirst(apiCache, timeout(7500))));
-}
-
-enableApiServerCache();
 self.addEventListener("fetch", router.route.bind(router));
 
 /**
@@ -76,7 +62,7 @@ self.addEventListener("install", event => {
  * 在这个事件里应当清理旧版的缓存。
  */
 self.addEventListener("activate", event => {
-	console.info("[SW] Activate");
+	console.debug("[SW] Activate");
 
 	/*
 	 * 浏览器会停止没有相关页面打开的 ServiceWorker 以节约资源，如果ServiceWorker里有拦截请求的配置，
