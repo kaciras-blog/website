@@ -5,11 +5,11 @@ import { escapeHtml } from "markdown-it/lib/common/utils";
 import Anchor from "markdown-it-anchor";
 import tableOfContent from "markdown-it-toc-done-right";
 import katex from "@iktakahiro/markdown-it-katex";
-import { clientMediaPlugin } from "./media";
 import highlight from "./highlight";
-import guestPlugin from "@/markdown/renderer-guest";
+import { clientMediaPlugin, initLazyLoading } from "./media";
+import guestPlugin from "./renderer-guest";
 
-export { initLazyLoading } from "./media";
+export { initLazyLoading };
 
 function highlightCodeBlock(str, lang) {
 	let result;
