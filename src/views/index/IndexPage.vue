@@ -196,7 +196,7 @@ export default {
 
 .banner_content {
 	position: absolute;
-	top: 34vh;
+	top: 35vh;
 	left: 30px;
 	right: 30px;
 

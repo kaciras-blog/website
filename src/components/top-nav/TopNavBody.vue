@@ -99,12 +99,8 @@ export default {
 
 .container {
 	display: flex;
-	background-color: rgba(255, 255, 255, .4);
+	background-color: rgba(255, 255, 255, .5);
 	transition: background-color .3s;
-
-	@media screen and (min-width: @length-screen-mobile) {
-		padding: 0 5vw;
-	}
 
 	@media screen and (max-width: @length-screen-mobile) {
 		position: sticky;
