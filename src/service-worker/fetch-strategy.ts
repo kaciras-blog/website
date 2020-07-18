@@ -98,6 +98,9 @@ export function networkFirst(cache: ManagedCache, fetchFn: FetchFn = fetch) {
 				return cached;
 			}
 			throw err;
+
+			// 都抄了OptionalChaining，咋就不能抄全了，把ThrowExpression也拿来。
+			// return (await cache.match(input)) ?? throw err;
 		}
 	}
 }

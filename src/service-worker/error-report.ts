@@ -1,3 +1,4 @@
+// 把ServiceWorker里的错误发送到任意一个页面，然后提交到Sentry
 declare const clients: Clients;
 
 function anycastMessage(message: any) {
