@@ -110,12 +110,18 @@ export function networkFirst(cache: ManagedCache, fetchFn: FetchFn = fetch) {
 export function staleWhileRevalidate(cache: ManagedCache, fetchFn: FetchFn = fetch) {
 
 	return async (input: RequestInfo) => {
-		const cached = await cache.match(input);
-		if (cached) {
-			fetchAndCache(input, cache, fetchFn).then(newResp => broadcastUpdate(cached, newResp));
-			return cached;
+		const fromCache = cache.match(input);
+		const fromFetch = fetchAndCache(input, cache, fetchFn);
+
+		// 假定缓存永远比网络快
+		const cached = await fromCache;
+		if (!cached) {
+			return fromFetch;
 		}
-		return fetchAndCache(input, cache, fetchFn);
+
+		// TODO: 是否需要 event.waitUtil?
+		fromFetch.then(response => broadcastUpdate(cached, response));
+		return cached;
 	};
 }
 
