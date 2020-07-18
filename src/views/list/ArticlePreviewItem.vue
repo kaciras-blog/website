@@ -139,8 +139,8 @@ export default {
 	height: 9rem;
 
 	@media screen and (max-width: @length-screen-mobile) {
-		width: 60vw;
-		height: 45vw;
+		width: 72vw;
+		height: 54vw;
 		border-radius: 10px;
 	}
 }

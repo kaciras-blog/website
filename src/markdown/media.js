@@ -1,6 +1,12 @@
 import lozad from "lozad";
 import media from "@kaciras-blog/server/lib/markdown-media";
 
+/**
+ * 从资源的链接参数（?vw=...&vh=...）里读取媒体的尺寸。
+ *
+ * @param url 资源的链接
+ * @return {object} 媒体的尺寸
+ */
 function getMediaResolution(url) {
 	const urlParams = new URLSearchParams(url.split("?")[1]);
 	const width = parseFloat(urlParams.get("vw"));
@@ -144,6 +150,7 @@ export function initLazyLoading(el) {
 			if (placeholder) {
 				placeholder.remove();
 			}
+			// img.nextElementSibling?.remove();
 
 			img.removeAttribute("data-src");
 		};
