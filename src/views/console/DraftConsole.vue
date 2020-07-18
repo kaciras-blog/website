@@ -2,6 +2,13 @@
 	<div>
 		<div class="btn-group console-toolbar">
 			<kx-button
+				icon="fa fa-edit"
+				class="primary"
+				@click="newArticle"
+			>
+				新文章
+			</kx-button>
+			<kx-button
 				class="dangerous"
 				icon="far fa-trash-alt"
 				@click="deleteAll"
@@ -49,6 +56,11 @@ export default {
 		showHistory: null,
 	}),
 	methods: {
+		newArticle() {
+			return api.draft.createNew()
+				.then(id => this.$router.push("/edit/" + id))
+				.catch(e => this.$dialog.alertError("创建失败", errorMessage(e)));
+		},
 		async deleteAll() {
 			const result = await this.$dialog.alert({
 				title: "删除所有草稿",
