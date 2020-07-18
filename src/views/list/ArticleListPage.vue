@@ -28,14 +28,10 @@
 			</section>
 
 			<aside :class="$style.aside">
-				<aside-panel/>
+				<aside-panel></aside-panel>
 
 				<h3 class="padding">设置</h3>
-				<label :class="$style.switch_option">
-					<span :class="$style.switch_label">滚动加载</span>
-					<kx-switch name="auto-load" v-model="autoLoad"/>
-				</label>
-
+				<kx-switch-box name="auto-load" v-model="autoLoad">滚动加载</kx-switch-box>
 			</aside>
 		</div>
 	</banner-page-layout>
@@ -125,7 +121,7 @@ export default {
 		}
 	},
 	mounted() {
-		if(!this.articleList) {
+		if (!this.articleList) {
 			this.$refs.pagingView.reload();
 		}
 	},
@@ -186,16 +182,5 @@ export default {
 			margin-left: 8%;
 		}
 	}
-}
-
-.switch_option {
-	display: flex;
-	align-items: center;
-	cursor: pointer;
-}
-
-.switch_label {
-	margin-right: auto;
-	font-size: 16px;
 }
 </style>
