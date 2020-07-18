@@ -3,11 +3,7 @@ import { ManagedCache } from "./cache";
 
 export class Router {
 
-	private readonly routes: Route[];
-
-	constructor() {
-		this.routes = [];
-	}
+	private readonly routes: Route[] = [];
 
 	/**
 	 * 添加一个路由，注意没有删除方法，先添加的优先匹配。
@@ -48,23 +44,26 @@ export class RegexRoute implements Route {
 
 	private readonly pattern: RegExp;
 	private readonly fetch: FetchFn;
-	private readonly blacklist: RegExp[];
+	private readonly exclude?: RegExp;
 
-	constructor(pattern: string | RegExp, handler: FetchFn, blacklist: RegExp[] = []) {
+	constructor(pattern: string | RegExp, fetchFn: FetchFn, exclude?: RegExp) {
 		if (typeof pattern === "string") {
 			pattern = new RegExp(pattern);
 		}
 		this.pattern = pattern;
-		this.fetch = handler;
-		this.blacklist = blacklist;
+		this.fetch = fetchFn;
+		this.exclude = exclude;
 	}
 
 	match(request: Request) {
-		const { pattern, blacklist } = this;
+		const { pattern, exclude } = this;
 		if (!pattern.test(request.url)) {
 			return false;
 		}
-		return !blacklist.some(v => v.test(request.url));
+		if (!exclude) {
+			return true;
+		}
+		return exclude.test(request.url);
 	}
 
 	handle(event: FetchEvent) {
@@ -76,7 +75,7 @@ export class AppShellRoute implements Route {
 
 	private readonly fetch: FetchFn;
 	private readonly path: string;
-	private readonly include?: RegExp;
+	private readonly include: RegExp;
 
 	/**
 	 * 新建应用外壳路由，其将使用指定URI路径的页面作为应用的外壳，并将其缓存。
@@ -88,15 +87,12 @@ export class AppShellRoute implements Route {
 	constructor(cache: ManagedCache, path: string, include?: RegExp) {
 		this.path = path;
 		this.fetch = staleWhileRevalidate(cache);
-		this.include = include;
+		this.include = include || new RegExp("");
 	}
 
 	match(request: Request) {
 		if (request.mode !== "navigate") {
 			return false;
-		}
-		if (!this.include) {
-			return true;
 		}
 		const url = new URL(request.url);
 		return this.include.test(url.pathname);
@@ -128,16 +124,16 @@ export class NavigatePreloadRoute implements Route {
 
 	/**
 	 * 检查下是否已经预载了，如果是就回复预载的响应，不是的话不管它让浏览器自己走网络加载。
+	 *
 	 * 特别注意 event.preloadResponse 一定要 await 之后再判断，不能直接 if(event.preloadResponse)。
 	 *
 	 * @param event 加载事件
 	 */
 	handle(event: FetchEvent) {
-		const possiblePreload = async () => {
-			const loaded = await event.preloadResponse;
-			if (loaded) event.respondWith(loaded);
-		};
-		event.waitUntil(possiblePreload());
+		event.waitUntil(async () => {
+			const preloaded = await event.preloadResponse;
+			if (preloaded) event.respondWith(preloaded);
+		});
 	}
 }
 
@@ -156,8 +152,8 @@ export class WebpUpgradeRoute implements Route {
 	private readonly fetch: FetchFn;
 	private readonly pathPattern: RegExp;
 
-	constructor(handler: FetchFn, pathPattern: RegExp) {
-		this.fetch = handler;
+	constructor(fetchFn: FetchFn, pathPattern: RegExp) {
+		this.fetch = fetchFn;
 		this.pathPattern = pathPattern;
 	}
 
