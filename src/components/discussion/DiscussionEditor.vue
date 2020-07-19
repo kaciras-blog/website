@@ -62,7 +62,7 @@ export default {
 		},
 	},
 	data: () => ({
-		nickname: localStorage.getItem("nickname"),
+		nickname: JSON.parse(localStorage.getItem("nickname")),
 	}),
 	computed: mapState({
 		user: "user",
@@ -71,7 +71,7 @@ export default {
 	methods: {
 		submit() {
 			const { nickname } = this;
-			localStorage.setItem("nickname", nickname);
+			localStorage.setItem("nickname", JSON.stringify(nickname));
 			return this.onSubmit(nickname);
 		},
 	},
