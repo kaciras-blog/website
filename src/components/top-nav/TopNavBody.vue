@@ -106,6 +106,10 @@ export default {
 		position: sticky;
 		top: 0;
 	}
+
+	@media screen and (min-width: @length-screen-mobile) {
+		padding: 0 5vw;
+	}
 }
 
 // 外层套了个<a>所以宽高不能用百分比，只能写死图片的大小
