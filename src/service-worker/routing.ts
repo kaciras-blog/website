@@ -176,22 +176,3 @@ export class WebpUpgradeRoute implements Route {
 		event.respondWith(this.fetch(request));
 	}
 }
-
-export class HostRoute implements Route {
-
-	private readonly host: string;
-	private readonly fetch: FetchFn;
-
-	constructor(host: string, fetch: FetchFn) {
-		this.host = host;
-		this.fetch = fetch;
-	}
-
-	handle(event: FetchEvent) {
-		event.respondWith(this.fetch(event.request));
-	}
-
-	match(request: Request) {
-		return new URL(request.url).host === this.host;
-	}
-}

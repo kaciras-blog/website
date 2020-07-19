@@ -1,8 +1,50 @@
-import { CacheWrapper } from "./cache";
-import { HostRoute } from "./routing";
-import { networkFirst, timeout } from "./fetch-strategy";
+import { get } from 'idb-keyval';
+import { CacheWrapper, ManagedCache } from "./cache";
+import { Route } from "./routing";
+import { FetchFn, networkFirst, staleWhileRevalidate, timeout } from "./fetch-strategy";
 
 const API_CACHE_NAME = "api-v1.1";
+
+class ApiOfflineRoute implements Route {
+
+	private readonly host: string;
+	private readonly cache: ManagedCache;
+
+	private initPromise: Promise<void>;
+
+	private fetchFn!: FetchFn;
+
+	constructor(host: string, cache: ManagedCache) {
+		this.host = host;
+		this.cache = cache;
+
+		this.initPromise = get("StaleApi").then(value => {
+			this.setStaleStrategy(value === "Y");
+			delete this.initPromise;
+			this.handle = this.directHandle;
+		});
+	}
+
+	setStaleStrategy(isEnable: boolean) {
+		if (isEnable) {
+			this.fetchFn = staleWhileRevalidate(this.cache);
+		} else {
+			this.fetchFn = networkFirst(this.cache, timeout(7500))
+		}
+	}
+
+	match(request: Request) {
+		return new URL(request.url).host === this.host;
+	}
+
+	handle(event: FetchEvent) {
+		event.waitUntil(this.initPromise.then(() => this.directHandle(event)));
+	}
+
+	private directHandle(event: FetchEvent) {
+		event.respondWith(this.fetchFn(event.request));
+	}
+}
 
 /**
  * 对内容服务接口使用网络优先缓存，保证在网络不通的情况下也能显示旧的内容。
@@ -13,8 +55,8 @@ export default function apiCacheRoute() {
 		? apiOrigin
 		: apiOrigin[location.protocol.substring(0, location.protocol.length - 1)];
 
-	const apiHost = new URL(BASE_URL).host;
-	const apiCache = new CacheWrapper(API_CACHE_NAME)
+	const { host } = new URL(BASE_URL);
+	const cache = new CacheWrapper(API_CACHE_NAME);
 
-	return new HostRoute(apiHost, networkFirst(apiCache, timeout(7500)));
+	return new ApiOfflineRoute(host, cache);
 }
