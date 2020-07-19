@@ -62,7 +62,7 @@ export default {
 		},
 	},
 	data: () => ({
-		nickname: JSON.parse(localStorage.getItem("nickname")),
+		nickname: localStorage.getItem("nickname"),
 	}),
 	computed: mapState({
 		user: "user",
@@ -71,7 +71,11 @@ export default {
 	methods: {
 		submit() {
 			const { nickname } = this;
-			localStorage.setItem("nickname", JSON.stringify(nickname));
+
+			// null 会被转换为 "null" 所以要检查一下
+			if (nickname) {
+				localStorage.setItem("nickname", nickname);
+			}
 			return this.onSubmit(nickname);
 		},
 	},
