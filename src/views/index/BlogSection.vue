@@ -57,7 +57,7 @@ export default {
 .header {
 	display: flex;
 	justify-content: space-between;
-	align-items: center;
+	align-items: flex-start;
 }
 
 .title {
@@ -127,20 +127,16 @@ export default {
 	// 虽然浏览器默认 article 下的 h1 是这个大小，但还是写上保险些
 	font-size: 1.17em;
 
-	padding: 16px;
+	padding: 14px;
 	background: rgba(255, 255, 255, .8);
 }
 
 .content {
-	display: -webkit-box;
-	-webkit-line-clamp: 3;
-	-webkit-box-orient: vertical;
-	overflow: hidden;
-	text-overflow: ellipsis;
-
-	margin: 16px;
+	margin: 14px;
 	line-height: 1.5;
 	height: 4.5em;
 	box-sizing: content-box;
+
+	.line-clamp(3);
 }
 </style>

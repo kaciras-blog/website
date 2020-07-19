@@ -18,6 +18,7 @@
 				GitHub: <a class="highlight" href="https://github.com/Kaciras">https://github.com/Kaciras</a>
 			</p>
 			<ul class="clean-list" :class="$style.tag_list">
+				<li>自学码农</li>
 				<li>热爱技术</li>
 				<li>全栈开发</li>
 				<li>冻鳗</li>
