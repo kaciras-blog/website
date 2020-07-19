@@ -48,8 +48,12 @@
 			<router-link to="/about" class="nav-item">关于</router-link>
 
 			<a href="/feed/atom" class="nav-item" title="Feed订阅">
-				<i class="fas fa-rss" :class="$style.icon_only"></i>
+				<i class="fas fa-rss" :class="$style.fontIcon"></i>
 			</a>
+
+			<span class="nav-item" title="设置" @click="showSettings">
+				<img alt="settings" src="../../assets/img/adjust.svg" :class="$style.imgIcon">
+			</span>
 		</div>
 	</component>
 </template>
@@ -58,6 +62,7 @@
 import { mapActions, mapState } from "vuex";
 import { LOGOUT } from "@/store/types";
 import NavMenuFrame from "./NavMenuFrame";
+import SettingDialog from "./SettingDialog";
 
 export default {
 	name: "TopNavBody",
@@ -81,6 +86,10 @@ export default {
 
 		scrollFunction() {
 			this.colored = document.body.scrollTop > 16 || document.documentElement.scrollTop > 16;
+		},
+
+		showSettings() {
+			this.$dialog.show(SettingDialog);
 		},
 	},
 	beforeMount() {
@@ -106,6 +115,10 @@ export default {
 		position: sticky;
 		top: 0;
 	}
+
+	@media screen and (min-width: @length-screen-pad) {
+		padding: 0 5vw;
+	}
 }
 
 // 外层套了个<a>所以宽高不能用百分比，只能写死图片的大小
@@ -127,9 +140,13 @@ export default {
 	margin: 0 10px;
 }
 
-.icon_only {
+.fontIcon {
 	font-size: 20px;
 	vertical-align: middle;
+}
+
+.imgIcon {
+	.size(20px);
 }
 
 :global(.dark) .container {

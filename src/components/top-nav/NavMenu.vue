@@ -19,13 +19,16 @@
 			<side-menu-link to="/about" icon="far fa-copyright">关于</side-menu-link>
 			<side-menu-link to="/login" icon="fas fa-sign-in-alt">登录</side-menu-link>
 			<side-menu-link :direct="true" to="/feed/rss" icon="fa fa-rss">Feed订阅</side-menu-link>
+
+			<kx-switch-box v-model="offline" :class="$style.switcher">离线模式</kx-switch-box>
 		</div>
 
 		<div :class="$style.footer">
 			<kx-button
 				v-if="user.id > 0"
 				class="second"
-				@click="logout">
+				@click="logout"
+			>
 				退出登录
 			</kx-button>
 		</div>
@@ -40,6 +43,7 @@ import SideMenuLink from "./SideMenuLink";
 export default {
 	name: "NavMenu",
 	components: { SideMenuLink },
+	data: () => ({ offline: false }),
 	computed: mapState(["user"]),
 	methods: mapActions({ logout: LOGOUT }),
 };
@@ -71,10 +75,13 @@ export default {
 	margin: 10px 0 0 0;
 }
 
-
 .body {
 	flex-grow: 1;
 	padding: 10px 0;
+}
+
+.switcher {
+	padding: 10px 1pc;
 }
 
 .footer {
