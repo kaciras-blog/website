@@ -44,7 +44,7 @@
 				:key="friend.id"
 				:class="$style.item"
 			>
-				<span
+				<div
 					v-if="friend.isPlaceholder"
 					:class="$style.placeholder"
 				/>
@@ -52,7 +52,10 @@
 					v-else
 					:href="friend.url"
 					target="_blank"
-					:class="$style.friend_container"
+					:class="[
+						{ [$style.active]: !sorting },
+						$style.friend_container,
+					]"
 					@mousedown="drag($event, friend)"
 				>
 					<img
@@ -100,10 +103,10 @@
 
 <script>
 import { mapState } from "vuex";
+import { elementPosition, observeMouseMove } from "@kaciras-blog/uikit/src/index";
 import api from "@/api";
 import { deleteOn, errorMessage } from "@/utils";
 import FriendInfoDialog from "./FriendInfoDialog";
-import { elementPosition, observeMouseMove } from "@kaciras-blog/uikit/src/index";
 
 const DEFAULT_INFO = {
 	name: "",
@@ -149,10 +152,11 @@ export default {
 			this.$_backup = this.friends.slice();
 		},
 		sortFinish(save) {
-			this.sorting = false;
 			if (!save) {
 				this.friends = this.$_backup;
 			}
+			this.sorting = false;
+
 			// TODO 保存排序
 		},
 		drag(event, current) {
@@ -176,15 +180,15 @@ export default {
 			this.dragging = {
 				...current,
 				style: {
-					width: rect.width + "px",
 					position: "absolute",
-					top: rect.top + "px",
-					left: rect.left + "px",
+					top: rect.top + pageYOffset + "px",
+					left: rect.left + pageXOffset + "px",
+					cursor: "grabbing",
 				},
 			};
 
 			friends[i] = { isPlaceholder: true };
-			console.log(region)
+
 			function insertInto(k) {
 				if (i === k) return;
 				const holder = friends.splice(i, 1)[0];
@@ -245,8 +249,8 @@ export default {
 	.size(2.8rem);
 	margin-right: .5rem;
 	padding: .5rem;
-	border-radius: .25rem;
 
+	border-radius: .25rem;
 	cursor: pointer;
 	transition: background-color .15s;
 
@@ -318,6 +322,9 @@ export default {
 	width: @background-width;
 	height: @background-height;
 
+	// 默认是拖动状态
+	cursor: grab;
+
 	border-radius: 4px;
 	overflow: hidden;
 
@@ -333,6 +340,10 @@ export default {
 		background: rgba(255, 255, 255, .4);
 		transition: @transition;
 	}
+}
+
+&.active {
+	cursor: revert;
 
 	@media screen and (min-width: @length-screen-mobile) {
 		@ty: (@background-height + @favicon-size) / -2;
@@ -382,6 +393,8 @@ export default {
 }
 
 .placeholder {
+	width: @background-width;
+	height: @background-height;
 	border: solid 3px #94f2ca;
 }
 </style>
