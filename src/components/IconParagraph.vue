@@ -30,6 +30,5 @@ export default {
 
 .text {
 	padding-top: .5em;
-	line-height: 1.5;
 }
 </style>
