@@ -175,10 +175,13 @@ export default {
 			const gap = 40;
 			const rect = el.getBoundingClientRect();
 			const columns = Math.floor((region.width + gap) / (rect.width + gap));
+			const rows = Math.ceil(friends.length / columns);
+
 			const lrPadding = (region.width - (columns * rect.width) - (columns - 1) * gap) / 2;
 
 			this.dragging = {
 				...current,
+				id: Symbol(),
 				style: {
 					position: "absolute",
 					top: rect.top + pageYOffset + "px",
@@ -211,18 +214,12 @@ export default {
 					this.dragging.style.left = x + "px";
 					this.dragging.style.top = y + "px";
 
-					const c = Math.round((x - region.left - lrPadding) / 300);
-					const r = Math.round((y - region.top - pageYOffset) / (146.25 + 40));
+					let c = Math.round((x - region.left - lrPadding) / 300);
+					let r = Math.round((y - region.top - pageYOffset) / (146.25 + 40));
 
-					// 索引必须取整为了后面的对比
-					const k = r * columns + c;
-					if (k <= 0) {
-						insertInto(0);
-					} else if (k < friends.length) {
-						insertInto(k);
-					} else {
-						insertInto(friends.length - 1);
-					}
+					c = Math.max(0, Math.min(columns - 1, c));
+					r = Math.max(0, Math.min(rows - 1, r));
+					insertInto(Math.min(r * columns + c, friends.length - 1));
 				},
 				complete: () => {
 					this.dragging = null;
