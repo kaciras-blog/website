@@ -1,20 +1,63 @@
 <template>
 	<section>
-		<h1 :class="$style.title">友情链接</h1>
-		<ul class="clean-list" :class="$style.list">
+		<header :class="$style.header">
+			<h1 :class="$style.title">友情链接</h1>
+
+			<div v-if="sorting" :class="$style.toolbar">
+				<img
+					src="../../assets/icon/close.svg"
+					alt="sort"
+					title="取消"
+					:class="$style.iconButton"
+					@click="sortFinish(false)"
+				>
+				<img
+					src="../../assets/icon/correct.svg"
+					alt="make friend"
+					title="确定"
+					:class="$style.iconButton"
+					@click="sortFinish(true)"
+				>
+			</div>
+
+			<div v-else-if="user.id === 2" :class="$style.toolbar">
+				<img
+					src="../../assets/icon/sort.svg"
+					alt="sort"
+					title="调整顺序"
+					:class="$style.iconButton"
+					@click="sort"
+				>
+				<img
+					src="../../assets/icon/plus.svg"
+					alt="make friend"
+					title="添加"
+					:class="$style.iconButton"
+					@click="makeFriend"
+				>
+			</div>
+		</header>
+
+		<ul :class="$style.list" ref="list">
 			<li
 				v-for="friend of friends"
 				:key="friend.id"
 				:class="$style.item"
 			>
+				<span
+					v-if="friend.isPlaceholder"
+					:class="$style.placeholder"
+				/>
 				<a
+					v-else
 					:href="friend.url"
 					target="_blank"
 					:class="$style.friend_container"
+					@mousedown="drag($event, friend)"
 				>
 					<img
 						:src="friend.background"
-						alt="favicon"
+						alt="background"
 						:class="$style.background"
 					>
 					<img
@@ -27,27 +70,31 @@
 
 				<!-- 没有更新按钮，更新 = 删除 + 添加 -->
 				<button
-					v-if="user.id === 2"
+					v-if="user.id === 2 && !sorting"
 					title="删除"
 					:class="$style.remove"
-					@click="() => rupture(friend)"
+					@click="rupture(friend)"
 				/>
 			</li>
-
-			<li
-				v-if="user.id === 2"
-				:class="$style.hexagon_add"
-			>
-				<img
-					src="../../assets/img/hexagon-add.svg"
-					alt="添加友链"
-					title="添加友链"
-					role="button"
-					:class="$style.hexagon_add_image"
-					@click="makeFriend"
-				>
-			</li>
 		</ul>
+
+		<div
+			v-if="dragging"
+			:class="$style.friend_container"
+			:style="dragging.style"
+		>
+			<img
+				:src="dragging.background"
+				alt="background"
+				:class="$style.background"
+			>
+			<img
+				:src="dragging.favicon"
+				alt="favicon"
+				:class="$style.favicon"
+			>
+			<span :class="$style.name">{{dragging.name}}</span>
+		</div>
 	</section>
 </template>
 
@@ -56,6 +103,7 @@ import { mapState } from "vuex";
 import api from "@/api";
 import { deleteOn, errorMessage } from "@/utils";
 import FriendInfoDialog from "./FriendInfoDialog";
+import { elementPosition, observeMouseMove } from "@kaciras-blog/uikit/src/index";
 
 const DEFAULT_INFO = {
 	name: "",
@@ -69,6 +117,8 @@ export default {
 	data() {
 		return {
 			friends: this.$store.state.prefetch.friends,
+			sorting: false,
+			dragging: null,
 		};
 	},
 	computed: mapState(["user"]),
@@ -94,6 +144,88 @@ export default {
 			await api.friend.rupture(friend);
 			deleteOn(this.friends, v => v === friend);
 		},
+		sort() {
+			this.sorting = true;
+			this.$_backup = this.friends.slice();
+		},
+		sortFinish(save) {
+			this.sorting = false;
+			if (!save) {
+				this.friends = this.$_backup;
+			}
+			// TODO 保存排序
+		},
+		drag(event, current) {
+			if (!this.sorting) {
+				return;
+			}
+			const { friends } = this;
+			event.preventDefault();
+
+			const listEl = this.$refs.list;
+			let i = friends.indexOf(current);
+
+			const region = listEl.getBoundingClientRect();
+			const el = listEl.children[i];
+
+			const gap = 40;
+			const rect = el.getBoundingClientRect();
+			const columns = Math.floor((region.width + gap) / (rect.width + gap));
+			const lrPadding = (region.width - (columns * rect.width) - (columns - 1) * gap) / 2;
+
+			this.dragging = {
+				...current,
+				style: {
+					width: rect.width + "px",
+					position: "absolute",
+					top: rect.top + "px",
+					left: rect.left + "px",
+				},
+			};
+
+			friends[i] = { isPlaceholder: true };
+			console.log(region)
+			function insertInto(k) {
+				if (i === k) return;
+				const holder = friends.splice(i, 1)[0];
+				i = k;
+				friends.splice(k, 0, holder);
+			}
+
+			observeMouseMove().pipe(elementPosition(event, el)).subscribe({
+
+				/**
+				 * 置换取决于被拖动元素的纵坐标：
+				 *     小于 cards 中第一个元素中心：插入到最前
+				 *     大于第N个元素中心、小于第N+1个： 插入到N之后
+				 *     大于最后一个元素中心：添加到最后
+				 *
+				 * @param x 被拖动元素新的横坐标
+				 * @param y 被拖动元素新的纵坐标
+				 */
+				next: ({ x, y }) => {
+					this.dragging.style.left = x + "px";
+					this.dragging.style.top = y + "px";
+
+					const c = Math.round((x - region.left - lrPadding) / 300);
+					const r = Math.round((y - region.top - pageYOffset) / (146.25 + 40));
+
+					// 索引必须取整为了后面的对比
+					const k = r * columns + c;
+					if (k <= 0) {
+						insertInto(0);
+					} else if (k < friends.length) {
+						insertInto(k);
+					} else {
+						insertInto(friends.length - 1);
+					}
+				},
+				complete: () => {
+					this.dragging = null;
+					friends[i] = current;
+				},
+			});
+		},
 	},
 };
 </script>
@@ -101,8 +233,29 @@ export default {
 <style module lang="less">
 @import "../../css/imports";
 
-// 手机屏是否需要缩小点，一排两个？
+.header {
+	display: flex;
+}
 
+.toolbar {
+	margin-left: auto;
+}
+
+.iconButton {
+	.size(2.8rem);
+	margin-right: .5rem;
+	padding: .5rem;
+	border-radius: .25rem;
+
+	cursor: pointer;
+	transition: background-color .15s;
+
+	&:hover, &:focus {
+		background: #f0f0f0;
+	}
+}
+
+// 手机屏是否需要缩小点，一排两个？
 @background-width: 260px;
 @background-height: @background-width * 9 / 16;
 @favicon-size: 70px;
@@ -115,6 +268,8 @@ export default {
 // 自动网格的卡片布局
 // https://blog.kaciras.com/article/14/use-pure-CSS-to-implement-center+wrap+left-alignment-layout
 .list {
+	composes: clean-list from global;
+
 	display: grid;
 	grid-template-columns: repeat(auto-fit, @background-width);
 	grid-gap: 40px;
@@ -131,6 +286,10 @@ export default {
 			transform: scale(1);
 		}
 	}
+}
+
+.sorting {
+	cursor: move;
 }
 
 .remove {
@@ -222,21 +381,7 @@ export default {
 	transition: @transition;
 }
 
-// =====================================================
-
-.hexagon_add {
-	composes: item;
-	padding: 35px;
-}
-
-.hexagon_add_image {
-	width: 90px;
-	height: 90px;
-
-	opacity: .15;
-	cursor: pointer;
-	transition: opacity .3s ease;
-
-	&:hover, &:active { opacity: .8; }
+.placeholder {
+	border: solid 3px #94f2ca;
 }
 </style>
