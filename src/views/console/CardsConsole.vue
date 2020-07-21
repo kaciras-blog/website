@@ -182,7 +182,6 @@ export default {
 .holder {
 	composes: card;
 	height: 2.6rem;
-	border: solid 3px #94f2ca;
 }
 
 .toolbar {
