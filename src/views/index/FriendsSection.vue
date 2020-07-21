@@ -44,7 +44,10 @@
 				:key="friend.id"
 				:class="$style.item"
 			>
-				<div v-if="friend.isPlaceholder"/>
+				<div
+					v-if="friend.isPlaceholder"
+					:class="$style.placeholder"
+				/>
 				<friend-card
 					v-else
 					:disabled="sorting"
@@ -212,6 +215,7 @@ export default {
 
 // TODO: 能否从 FriendCard 里引入？
 @friend-width: 260px;
+@friend-height: @friend-width / 16 * 9;
 
 .header {
 	display: flex;
@@ -282,5 +286,11 @@ export default {
 
 	transform: scale(0.25);
 	transition: .3s;
+}
+
+// 这个占位是必要的，用于保持新行
+.placeholder {
+	width: @friend-width;
+	height: @friend-height;
 }
 </style>
