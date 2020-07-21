@@ -26,6 +26,7 @@
 
 		<template v-slot:state-right="{ ctx }">
 			<text-state-group :selection="ctx.selection" :content="ctx.content"/>
+			<sync-scroll-toggle :ctx="ctx"/>
 		</template>
 	</markdown-editor>
 </template>
@@ -39,10 +40,12 @@ import { articleLink } from "@/blog-plugin";
 import { errorMessage } from "@/utils";
 import PublishDialog from "./PublishDialog";
 import MetadataDialog from "./MetadataDialog";
+import SyncScrollToggle from "@/markdown/SyncScrollToggle";
 
 export default {
 	name: "EditPage",
 	components: {
+		SyncScrollToggle,
 		TextStateGroup,
 		TextTools,
 		MarkdownEditor,

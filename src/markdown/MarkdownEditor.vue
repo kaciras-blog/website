@@ -72,12 +72,16 @@ export default {
 			selection: [0, 0],
 			viewMode: 0,
 			html: articleRenderer.render(this.value),
+			disableSyncScroll: null,
 		};
 	},
 	computed: {
 		content: {
 			get() { return this.value; },
 			set(value) { this.$emit("input", value); },
+		},
+		isSyncScroll() {
+			return !!this.disableSyncScroll;
 		},
 	},
 	watch: {
@@ -128,9 +132,20 @@ export default {
 			this.content = v.substring(0, start) + value + v.substring(end, v.length);
 			this.selection = [start, start + value.length];
 		},
+
+		setSyncScroll(enabled) {
+			const { disableSyncScroll, $refs } = this;
+
+			if (!enabled && disableSyncScroll) {
+				disableSyncScroll();
+				this.disableSyncScroll = null;
+			} else if (enabled && !disableSyncScroll) {
+				this.disableSyncScroll = syncScroll($refs.textarea, $refs.preview);
+			}
+		},
 	},
 	mounted() {
-		syncScroll(this.$refs.textarea, this.$refs.preview);
+		this.setSyncScroll(true);
 	},
 	destroyed() {
 		this.$_disconnect();
