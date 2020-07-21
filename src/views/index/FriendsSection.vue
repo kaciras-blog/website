@@ -44,32 +44,13 @@
 				:key="friend.id"
 				:class="$style.item"
 			>
-				<div
-					v-if="friend.isPlaceholder"
-					:class="$style.placeholder"
-				/>
-				<a
+				<div v-if="friend.isPlaceholder"/>
+				<friend-card
 					v-else
-					:href="friend.url"
-					target="_blank"
-					:class="[
-						{ [$style.active]: !sorting },
-						$style.friend_container,
-					]"
-					@mousedown="drag($event, friend)"
-				>
-					<img
-						:src="friend.background"
-						alt="background"
-						:class="$style.background"
-					>
-					<img
-						:src="friend.favicon"
-						alt="favicon"
-						:class="$style.favicon"
-					>
-					<span :class="$style.name">{{friend.name}}</span>
-				</a>
+					:disabled="sorting"
+					:friend="friend"
+					@dragstart="drag($event, friend)"
+				/>
 
 				<!-- 没有更新按钮，更新 = 删除 + 添加 -->
 				<button
@@ -81,23 +62,14 @@
 			</li>
 		</ul>
 
-		<div
+		<!-- 函数组件事件监听还不能为undefined，非得搞个空函数不可 -->
+		<friend-card
 			v-if="dragging"
-			:class="$style.friend_container"
+			:friend="dragging.item"
+			:disabled="true"
 			:style="dragging.style"
-		>
-			<img
-				:src="dragging.background"
-				alt="background"
-				:class="$style.background"
-			>
-			<img
-				:src="dragging.favicon"
-				alt="favicon"
-				:class="$style.favicon"
-			>
-			<span :class="$style.name">{{dragging.name}}</span>
-		</div>
+			@dragstart="() => {}"
+		/>
 	</section>
 </template>
 
@@ -106,6 +78,7 @@ import { mapState } from "vuex";
 import { elementPosition, observeMouseMove } from "@kaciras-blog/uikit/src/index";
 import api from "@/api";
 import { deleteOn, errorMessage } from "@/utils";
+import FriendCard from "./FriendCard";
 import FriendInfoDialog from "./FriendInfoDialog";
 
 const DEFAULT_INFO = {
@@ -117,6 +90,9 @@ const DEFAULT_INFO = {
 
 export default {
 	name: "FriendsSection",
+	components: {
+		FriendCard,
+	},
 	data() {
 		return {
 			friends: this.$store.state.prefetch.friends,
@@ -180,17 +156,17 @@ export default {
 			const lrPadding = (region.width - (columns * rect.width) - (columns - 1) * gap) / 2;
 
 			this.dragging = {
-				...current,
-				id: Symbol(),
+				item: current,
 				style: {
 					position: "absolute",
 					top: rect.top + pageYOffset + "px",
 					left: rect.left + pageXOffset + "px",
+					zIndex: 10,
 					cursor: "grabbing",
 				},
 			};
 
-			friends[i] = { isPlaceholder: true };
+			friends[i] = { id: Symbol(), isPlaceholder: true };
 
 			function insertInto(k) {
 				if (i === k) return;
@@ -234,6 +210,9 @@ export default {
 <style module lang="less">
 @import "../../css/imports";
 
+// TODO: 能否从 FriendCard 里引入？
+@friend-width: 260px;
+
 .header {
 	display: flex;
 }
@@ -256,12 +235,6 @@ export default {
 	}
 }
 
-// 手机屏是否需要缩小点，一排两个？
-@background-width: 260px;
-@background-height: @background-width * 9 / 16;
-@favicon-size: 70px;
-@transition: transform .5s;
-
 .title {
 	font-size: 2rem;
 }
@@ -272,7 +245,7 @@ export default {
 	composes: clean-list from global;
 
 	display: grid;
-	grid-template-columns: repeat(auto-fit, @background-width);
+	grid-template-columns: repeat(auto-fit, @friend-width);
 	grid-gap: 40px;
 	justify-content: center;
 	justify-items: center;
@@ -309,89 +282,5 @@ export default {
 
 	transform: scale(0.25);
 	transition: .3s;
-}
-
-// =====================================================
-
-.friend_container {
-	display: block;
-	position: relative;
-	width: @background-width;
-	height: @background-height;
-
-	// 默认是拖动状态
-	cursor: grab;
-
-	border-radius: 4px;
-	overflow: hidden;
-
-	&::before {
-		content: "";
-		position: absolute;
-		left: 0;
-		right: 0;
-		top: 0;
-		height: 50%;
-
-		z-index: 1;
-		background: rgba(255, 255, 255, .4);
-		transition: @transition;
-	}
-}
-
-&.active {
-	cursor: revert;
-
-	@media screen and (min-width: @length-screen-mobile) {
-		@ty: (@background-height + @favicon-size) / -2;
-
-		&:hover::before { transform: translateY(@ty); }
-
-		&:hover > .favicon { transform: translateY(@ty); }
-
-		&:hover > .name { transform: translateY(100%); }
-	}
-}
-
-.background {
-	composes: full-vertex from global;
-	width: 100%;
-	height: 100%;
-}
-
-.favicon {
-	position: absolute;
-	left: (@background-width - @favicon-size) / 2;
-	top: (@background-height - @favicon-size) / 2;
-	.circle(@favicon-size);
-
-	z-index: 3;
-	box-shadow: 0 0 10px rgba(0, 0, 0, .4);
-	transition: @transition;
-}
-
-.name {
-	position: absolute;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	height: 50%;
-
-	font-size: 16px;
-	padding-top: @background-height / 2 - 28px;
-	padding-bottom: 8px;
-	text-align: center;
-
-	color: black;
-	background: rgba(255, 255, 255, .9);
-	box-shadow: 0 0 10px rgba(0, 0, 0, .3);
-
-	transition: @transition;
-}
-
-.placeholder {
-	width: @background-width;
-	height: @background-height;
-	border: solid 3px #94f2ca;
 }
 </style>
