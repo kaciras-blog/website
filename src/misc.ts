@@ -8,7 +8,8 @@ interface Window {
 	dataLayer: any[];
 }
 
-const { GOOGLE_ANALYTICS_ID } = process.env;
+// 【坑爹】读取 DefinePlugin 中的值不能使用对象展开语法
+const GOOGLE_ANALYTICS_ID = process.env.GOOGLE_ANALYTICS_ID;
 if (GOOGLE_ANALYTICS_ID) {
 	window.dataLayer = window.dataLayer || [];
 
