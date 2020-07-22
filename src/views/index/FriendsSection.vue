@@ -159,18 +159,20 @@ export default {
 			await api.friend.rupture(friend);
 			deleteOn(this.friends, v => v === friend);
 		},
+
+		// GridDraggingRegion 的构造方法有点耗时，在进入排序模式时就计算好，让拖动更流畅。
+		// 注意不能更早去计算，因为非排序模式下可能因添加删除等改变布局。
 		sort() {
 			this.sorting = true;
 			this.$_draggingRegion = new GridDraggingRegion(this.$refs.list);
 			this.$_backup = this.friends.slice();
 		},
+
 		sortFinish(save) {
 			if (!save) {
 				this.friends = this.$_backup;
 			}
 			this.sorting = false;
-			delete this.$_draggingRegion;
-			delete this.$_backup;
 
 			// TODO 保存排序
 		},
@@ -180,8 +182,7 @@ export default {
 			}
 			event.preventDefault();
 
-			const { friends } = this;
-			const area = new GridDraggingRegion(this.$refs.list);
+			const { friends, $_draggingRegion } = this;
 			const listEl = this.$refs.list;
 
 			let i = friends.indexOf(current);
@@ -215,7 +216,7 @@ export default {
 				next: ({ x, y }) => {
 					this.dragging.style.left = x + "px";
 					this.dragging.style.top = y + "px";
-					insertInto(Math.min(area.flatIndex(x, y), friends.length - 1));
+					insertInto(Math.min($_draggingRegion.flatIndex(x,y), friends.length - 1));
 				},
 				complete: () => {
 					this.dragging = null;
