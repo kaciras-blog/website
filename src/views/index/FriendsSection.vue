@@ -46,7 +46,7 @@
 			>
 				<div
 					v-if="friend.isPlaceholder"
-					:class="$style.placeholder"
+					:style="friend.style"
 				/>
 				<friend-card
 					v-else
@@ -109,7 +109,7 @@ class GridDraggingRegion {
 		this.rows = Math.ceil((region.height + G) / (card.height + G));
 	}
 
-	flatIndex(x, y) {
+	getIndex(x, y) {
 		return this.getRow(y) * this.columns + this.getColumn(x);
 	}
 
@@ -201,8 +201,14 @@ export default {
 			};
 
 			friends[i] = {
-				id: Symbol(),
 				isPlaceholder: true,
+				id: Symbol(),
+
+				// 这个占位是必要的，用于保持新行
+				style: {
+					width: rect.width + "px",
+					height: rect.height + "px",
+				},
 			};
 
 			function insertInto(k) {
@@ -216,7 +222,7 @@ export default {
 				next: ({ x, y }) => {
 					this.dragging.style.left = x + "px";
 					this.dragging.style.top = y + "px";
-					insertInto(Math.min($_draggingRegion.flatIndex(x,y), friends.length - 1));
+					insertInto(Math.min($_draggingRegion.getIndex(x,y), friends.length - 1));
 				},
 				complete: () => {
 					this.dragging = null;
@@ -233,7 +239,6 @@ export default {
 
 // TODO: 能否从 FriendCard 里引入？
 @friend-width: 260px;
-@friend-height: @friend-width / 16 * 9;
 
 .header {
 	display: flex;
@@ -304,11 +309,5 @@ export default {
 
 	transform: scale(0.25);
 	transition: .3s;
-}
-
-// 这个占位是必要的，用于保持新行
-.placeholder {
-	width: @friend-width;
-	height: @friend-height;
 }
 </style>
