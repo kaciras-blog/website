@@ -91,6 +91,39 @@ const DEFAULT_INFO = {
 	favicon: "/static/img/akalin.jpg",
 };
 
+class GridDraggingRegion {
+
+	constructor(container) {
+		const region = container.getBoundingClientRect();
+		const card = container.children[0].getBoundingClientRect();
+
+		const G = getComputedStyle(container).gridGap;
+
+		this.xOffset = card.left + pageXOffset;
+		this.territoryW = card.width + G;
+
+		this.yOffset = card.top + pageYOffset;
+		this.territoryH = card.height + G;
+
+		this.columns = Math.floor((region.width + G) / (card.width + G));
+		this.rows = Math.ceil((region.height + G) / (card.height + G));
+	}
+
+	flatIndex(x, y) {
+		return this.getRow(y) * this.columns + this.getColumn(x);
+	}
+
+	getColumn(x) {
+		const c = Math.round((x - this.xOffset) / this.territoryW);
+		return Math.max(0, Math.min(c, this.columns - 1));
+	}
+
+	getRow(y) {
+		let r = Math.round((y - this.yOffset) / this.territoryH);
+		return Math.max(0, Math.min(r, this.rows - 1));
+	}
+}
+
 export default {
 	name: "FriendsSection",
 	components: {
@@ -128,6 +161,7 @@ export default {
 		},
 		sort() {
 			this.sorting = true;
+			this.$_draggingRegion = new GridDraggingRegion(this.$refs.list);
 			this.$_backup = this.friends.slice();
 		},
 		sortFinish(save) {
@@ -135,6 +169,8 @@ export default {
 				this.friends = this.$_backup;
 			}
 			this.sorting = false;
+			delete this.$_draggingRegion;
+			delete this.$_backup;
 
 			// TODO 保存排序
 		},
@@ -142,21 +178,15 @@ export default {
 			if (!this.sorting) {
 				return;
 			}
-			const { friends } = this;
 			event.preventDefault();
 
+			const { friends } = this;
+			const area = new GridDraggingRegion(this.$refs.list);
 			const listEl = this.$refs.list;
+
 			let i = friends.indexOf(current);
-
-			const region = listEl.getBoundingClientRect();
 			const el = listEl.children[i];
-
-			const gap = 40;
 			const rect = el.getBoundingClientRect();
-			const columns = Math.floor((region.width + gap) / (rect.width + gap));
-			const rows = Math.ceil(friends.length / columns);
-
-			const lrPadding = (region.width - (columns * rect.width) - (columns - 1) * gap) / 2;
 
 			this.dragging = {
 				item: current,
@@ -169,7 +199,10 @@ export default {
 				},
 			};
 
-			friends[i] = { id: Symbol(), isPlaceholder: true };
+			friends[i] = {
+				id: Symbol(),
+				isPlaceholder: true,
+			};
 
 			function insertInto(k) {
 				if (i === k) return;
@@ -179,26 +212,10 @@ export default {
 			}
 
 			observeMouseMove().pipe(elementPosition(event, el)).subscribe({
-
-				/**
-				 * 置换取决于被拖动元素的纵坐标：
-				 *     小于 cards 中第一个元素中心：插入到最前
-				 *     大于第N个元素中心、小于第N+1个： 插入到N之后
-				 *     大于最后一个元素中心：添加到最后
-				 *
-				 * @param x 被拖动元素新的横坐标
-				 * @param y 被拖动元素新的纵坐标
-				 */
 				next: ({ x, y }) => {
 					this.dragging.style.left = x + "px";
 					this.dragging.style.top = y + "px";
-
-					let c = Math.round((x - region.left - lrPadding) / 300);
-					let r = Math.round((y - region.top - pageYOffset) / (146.25 + 40));
-
-					c = Math.max(0, Math.min(columns - 1, c));
-					r = Math.max(0, Math.min(rows - 1, r));
-					insertInto(Math.min(r * columns + c, friends.length - 1));
+					insertInto(Math.min(area.flatIndex(x, y), friends.length - 1));
 				},
 				complete: () => {
 					this.dragging = null;
