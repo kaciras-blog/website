@@ -13,6 +13,28 @@ export interface ServiceWorkerConfig {
 	onResourceUpdate?: (data: any) => void;
 }
 
+const callbacks = new Map<number, object>();
+let messageCounter = 0;
+
+export function setConfig<T>(key: string, value: T) {
+	const id = messageCounter++;
+	navigator.serviceWorker.controller?.postMessage({ type: 1, id, key, value });
+	return new Promise<T>((resolve, reject) => callbacks.set(id, { resolve, reject }));
+}
+
+interface ReplyMessage {
+	type: "REPLY",
+	id: number;
+}
+
+interface SuccessReplyMessage extends ReplyMessage {
+	resolve: any;
+}
+
+interface ErrorReplyMessage extends ReplyMessage {
+	reject: Error;
+}
+
 export function register(config: ServiceWorkerConfig = {}) {
 
 	/**
@@ -35,6 +57,9 @@ export function register(config: ServiceWorkerConfig = {}) {
 		navigator.serviceWorker.addEventListener("message", (message) => {
 			const { data } = message;
 			if (data.type === "ERROR" || data.type === "REJECTION") report(data);
+			if (data.type === 1) {
+
+			}
 		});
 
 		console.debug("[Init] ServiceWorker 注册成功");

@@ -1,4 +1,3 @@
-import { get } from 'idb-keyval';
 import { CacheWrapper, ManagedCache } from "./cache";
 import { Route } from "./routing";
 import { FetchFn, networkFirst, staleWhileRevalidate, timeout } from "./fetch-strategy";

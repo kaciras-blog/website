@@ -33,7 +33,7 @@ export function set(key: string, value: any) {
 
 export function bind(key: string, callback: (value: any) => void) {
 	callback(current.get(key));
-	listeners.addEventListener(key, event => callback(event.target.value))
+	// listeners.addEventListener(key, event => callback(event.target.value))
 }
 
 function handleEvent(event: ExtendableMessageEvent) {
@@ -54,9 +54,15 @@ export function loadSettings() {
 
 async function loadSettingsAsync() {
 	database = await openDB<Schema>(name, 1, { upgrade: upgradeDatabase });
-	database.transaction()
+	// database.transaction()
 	const kvs = await database.getAll("settings");
 	kvs.forEach(entity => current.set(entity.key, entity.value));
 
 	self.addEventListener("message", handleEvent);
+}
+
+export interface SetConfigMessage {
+	type: 1,
+	key: string;
+	value: any;
 }
