@@ -160,6 +160,7 @@ export default {
 .listTitle {
 	font-size: 1.8rem;
 	text-align: center;
+
 	@media screen and (min-width: @length-screen-mobile) {
 		text-align: left;
 	}

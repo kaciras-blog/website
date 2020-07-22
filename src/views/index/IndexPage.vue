@@ -37,8 +37,8 @@
 			</div>
 		</section>
 
-		<blog-section :class="$style.blog"/>
-		<friends-section :class="$style.friends"/>
+		<blog-section :class="$style.section"/>
+		<friends-section :class="$style.section"/>
 	</base-page-layout>
 </template>
 
@@ -217,12 +217,11 @@ export default {
 	font-size: 2em;
 }
 
-.blog {
-	padding: 50px 5vw 0 5vw;
-}
+.section {
+	padding: 25px 12px;
 
-.friends {
-	padding: 50px 5vw;
-	font-size: 16px;
+	@media screen and(min-width: @length-screen-mobile) {
+		padding: 50px 5vw;
+	}
 }
 </style>

@@ -151,6 +151,8 @@ export default {
 .content {
 	margin-top: 1rem;
 	margin-bottom: 1rem;
+	line-height: 1.5;
+
 	white-space: pre-wrap;
 	word-wrap: break-word;
 }

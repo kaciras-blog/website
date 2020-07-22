@@ -35,9 +35,9 @@
 </template>
 
 <script>
-import { observeMouseMove, elementPosition } from "@kaciras-blog/uikit";
+import { elementPosition, observeMouseMove } from "@kaciras-blog/uikit";
 import api from "@/api";
-import { deleteOn, attachRandomId } from "@/utils";
+import { attachRandomId, deleteOn } from "@/utils";
 import CardListItem from "./CardListItem";
 
 const CARD_TEMPLATE = {
@@ -116,14 +116,14 @@ export default {
 			this.dragging = {
 				item,
 				style: {
-					width: container.width + "px",
+					width: rect.width + "px",
 					position: "absolute",
 					top: rect.top + "px",
 					left: rect.left + "px",
 				},
 			};
 
-			// 原轮播页的位置替换为占位元素
+			// 原来的位置替换为占位元素
 			cards[holderIndex] = { holder: true };
 
 			function insertInto(i) {
@@ -182,7 +182,6 @@ export default {
 .holder {
 	composes: card;
 	height: 2.6rem;
-	border: solid 3px #94f2ca;
 }
 
 .toolbar {

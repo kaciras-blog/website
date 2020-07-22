@@ -71,7 +71,11 @@ export default {
 	methods: {
 		submit() {
 			const { nickname } = this;
-			localStorage.setItem("nickname", nickname);
+
+			// null 会被转换为 "null" 所以要检查一下
+			if (nickname) {
+				localStorage.setItem("nickname", nickname);
+			}
 			return this.onSubmit(nickname);
 		},
 	},

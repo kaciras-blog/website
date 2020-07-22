@@ -3,10 +3,9 @@ import * as Sentry from '@sentry/browser';
 import { Vue as VueIntegration } from '@sentry/integrations';
 import { ErrorRecordMessage } from "./serviceWorker";
 
-const { SENTRY_DSN } = process.env;
-if (SENTRY_DSN) {
+if (process.env.SENTRY_DSN) {
 	Sentry.init({
-		dsn: SENTRY_DSN,
+		dsn: process.env.SENTRY_DSN,
 		integrations: [new VueIntegration({ Vue, attachProps: true })],
 	});
 }

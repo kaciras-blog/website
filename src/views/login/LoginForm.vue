@@ -36,7 +36,6 @@
 				确定
 			</kx-task-button>
 			<kx-button
-				disabled
 				class="second outline"
 				@click="switchPanel"
 			>

@@ -17,7 +17,7 @@
 			v-model="form.password"
 			required
 			title="密码"
-			placeholder="至少有个6位"
+			placeholder="至少有个8位"
 		/>
 
 		<label for="email">邮箱:</label>

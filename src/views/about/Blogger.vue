@@ -18,6 +18,7 @@
 				GitHub: <a class="highlight" href="https://github.com/Kaciras">https://github.com/Kaciras</a>
 			</p>
 			<ul class="clean-list" :class="$style.tag_list">
+				<li>自学码农</li>
 				<li>热爱技术</li>
 				<li>全栈开发</li>
 				<li>冻鳗</li>
@@ -27,34 +28,29 @@
 		</section>
 
 		<section class="about-section">
-			<h2>友链</h2>
-			<p>本站名称：Kaciras' Blog 或 Kaciras的博客</p>
+			<h2>友情链接</h2>
+			<img alt="example" src="../../assets/img/friend-example.png" :class="$style.example">
 			<p>
-				本站链接：
+				加友链在下面评论即可，填写以下几项：
+			</p>
+			<ul>
+				<li>网站地址（必需）</li>
+				<li>名字，如果没有则使用您网站的标题</li>
+				<li>背景，16：9 的图片，如果没有则使用您首页的截图</li>
+				<li>图标，如果没有则使用您网站的图标或GitHub头像</li>
+			</ul>
+
+			<h2>本站信息</h2>
+			<p>
+				网站地址：
 				<a class="highlight" href="https://blog.kaciras.com">https://blog.kaciras.com</a>
 			</p>
 			<p>
-				本站图标：
-				<a
-					:class="$style.inlineLink"
-					href='/static/img/avatar.png'
-				>
-					Kaciras的头像
-				</a>
-				<a
-					:class="$style.inlineLink"
-					:href='require("../../assets/img/logo-kaciras.svg")'
-				>
-					网站图标（方形）
-				</a>
-				<a :class="$style.inlineLink"
-				   :href='require("../../assets/img/logo-kaciras-circle.svg")'
-				>
-					网站图标（圆形）
-				</a>
+				图标：
+				<a :class="$style.inlineLink" href='/static/img/avatar.png'>avatar.png</a>
 			</p>
-
-			<p>加友链在下面评论即可，需要图标（头像）的链接、名称、地址三项。</p>
+			<p>名字：Kaciras' Blog 或 Kaciras的博客</p>
+			<p>描述：编程 • 生活 • 梦想</p>
 		</section>
 
 		<discussion-section
@@ -83,6 +79,13 @@
 		content: "/";
 		padding: 0 5px;
 	}
+}
+
+.example {
+	display: block;
+	width: 442px;
+	max-width: 100%;
+	margin: 0 auto 1em auto;
 }
 
 .inlineLink {
