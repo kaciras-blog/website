@@ -83,7 +83,7 @@ export default {
 /* TODO: 去除高亮样式的链接元素很多地方都要用 */
 .text {
 	display: block;
-	padding: 15px;
+	padding: 10px 16px;
 
 	&:hover, &:active, &:visited, &:focus {
 		color: inherit;

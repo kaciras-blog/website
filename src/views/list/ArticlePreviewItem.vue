@@ -85,7 +85,6 @@ export default {
 
 	@media screen and (max-width: @length-screen-mobile) {
 		padding: 10px 30px;
-		text-align: center;
 		justify-items: center;
 	}
 
@@ -97,8 +96,7 @@ export default {
 
 .keyword {
 	display: inline;
-	margin-left: .3em;
-	margin-right: .3em;
+	margin-right: .4em;
 }
 
 .keyword_header {
@@ -148,9 +146,9 @@ export default {
 .title {
 	font-size: 1.5em;
 	font-weight: 500;
-}
 
-.summary {
-	line-height: 1.5;
+	@media screen and (max-width: @length-screen-mobile) {
+		text-align: center;
+	}
 }
 </style>

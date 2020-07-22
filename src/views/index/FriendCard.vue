@@ -101,7 +101,7 @@ a.container {
 	height: 50%;
 
 	font-size: 16px;
-	padding-top: @height / 2 - 28px;
+	padding-top: @height / 2 - 30px;
 	padding-bottom: 8px;
 	text-align: center;
 

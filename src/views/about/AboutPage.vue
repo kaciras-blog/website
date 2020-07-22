@@ -45,7 +45,7 @@ export default {
 .header {
 	position: sticky;
 	top: 0;
-	box-shadow: 0 3px 2px 0 rgba(0, 0, 0, 0.05);
+	border-bottom: solid 1px #eee;
 	z-index: 90; // 比TopNav小一点
 }
 </style>

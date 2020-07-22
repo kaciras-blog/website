@@ -218,6 +218,10 @@ export default {
 }
 
 .section {
-	padding: 50px 5vw;
+	padding: 25px 12px;
+
+	@media screen and(min-width: @length-screen-mobile) {
+		padding: 50px 5vw;
+	}
 }
 </style>

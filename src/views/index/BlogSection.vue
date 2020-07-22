@@ -57,10 +57,13 @@ export default {
 .header {
 	display: flex;
 	justify-content: space-between;
-	align-items: flex-start;
+	align-items: center;
+
+	margin-bottom: 2rem;
 }
 
 .title {
+	margin: 0;
 	font-size: 2rem;
 }
 
@@ -127,6 +130,7 @@ export default {
 	// 虽然浏览器默认 article 下的 h1 是这个大小，但还是写上保险些
 	font-size: 1.17em;
 
+
 	padding: 14px;
 	background: rgba(255, 255, 255, .8);
 }
@@ -138,5 +142,24 @@ export default {
 	box-sizing: content-box;
 
 	.line-clamp(3);
+}
+
+@media screen and (max-width: @length-screen-mobile) {
+	.header {
+		margin-bottom: 25px;
+	}
+
+	.card_list {
+		grid-gap: 20px;
+	}
+
+	.name {
+		padding: 10px;
+	}
+
+	.content {
+		margin: 10px;
+		font-size: 14px;
+	}
 }
 </style>

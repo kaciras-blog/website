@@ -28,7 +28,7 @@
 		</section>
 
 		<section class="about-section">
-			<h2>友链</h2>
+			<h2>友情链接</h2>
 			<img alt="example" src="../../assets/img/friend-example.png" :class="$style.example">
 			<p>
 				加友链在下面评论即可，填写以下几项：
@@ -36,7 +36,7 @@
 			<ul>
 				<li>网站地址（必需）</li>
 				<li>名字，如果没有则使用您网站的标题</li>
-				<li>背景，16：9的图片，如果没有则使用您首页的截图</li>
+				<li>背景，16：9 的图片，如果没有则使用您首页的截图</li>
 				<li>图标，如果没有则使用您网站的图标或GitHub头像</li>
 			</ul>
 
@@ -45,14 +45,12 @@
 				网站地址：
 				<a class="highlight" href="https://blog.kaciras.com">https://blog.kaciras.com</a>
 			</p>
-			<p>名字：Kaciras' Blog 或 Kaciras的博客</p>
-			<p>描述：编程 • 生活 • 梦想</p>
 			<p>
 				图标：
-				<a :class="$style.inlineLink" href='/static/img/avatar.png'>
-					https://blog.kaciras.com/static/img/avatar.png
-				</a>
+				<a :class="$style.inlineLink" href='/static/img/avatar.png'>avatar.png</a>
 			</p>
+			<p>名字：Kaciras' Blog 或 Kaciras的博客</p>
+			<p>描述：编程 • 生活 • 梦想</p>
 		</section>
 
 		<discussion-section
