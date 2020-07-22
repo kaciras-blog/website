@@ -68,11 +68,13 @@ a.container {
 	@media screen and (min-width: @length-screen-mobile) {
 		@ty: (@height + @favicon-size) / -2;
 
-		&:hover::before { transform: translateY(@ty); }
+		&:hover, &:focus {
+			&::before { transform: translateY(@ty); }
 
-		&:hover > .favicon { transform: translateY(@ty); }
+			& > .favicon { transform: translateY(@ty); }
 
-		&:hover > .name { transform: translateY(100%); }
+			& > .name { transform: translateY(100%); }
+		}
 	}
 }
 

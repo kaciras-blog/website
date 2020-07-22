@@ -1,6 +1,6 @@
 <template>
 	<component :is="tag" class="top-nav" :class="[$style.container, { [$style.colored]: colored }]">
-		<router-link to="/" title="回到首页">
+		<router-link to="/" title="回到首页" :class="$style.logoLink">
 			<img src="@/assets/img/logo-kaciras-wide.svg" alt="logo" :class="$style.logo">
 		</router-link>
 
@@ -121,9 +121,13 @@ export default {
 	object-fit: cover;
 	object-position: top;
 
-	&:hover, &:focus {
+	&:hover{
 		object-position: bottom;
 	}
+}
+
+.logoLink:focus > .logo {
+	object-position: bottom;
 }
 
 .head {

@@ -18,8 +18,9 @@
 				:href="card.link"
 				:aria-label="card.name"
 				class="clean-link"
+				:class="$style.figure"
 			>
-				<article :class="$style.figure">
+				<article>
 					<div :class="$style.card_header">
 						<img
 							:src="card.picture"
@@ -97,9 +98,9 @@ export default {
 	@media screen and (min-width: @length-screen-mobile) {
 		transition: .4s;
 
-		&:hover {
-			transform: translateY(-4px);
-			box-shadow: 0 10px 14px rgba(0, 0, 0, .25);
+		&:hover, &:focus {
+			transform: translateY(-5px);
+			box-shadow: 0 10px 16px rgba(0, 0, 0, .25);
 		}
 	}
 }

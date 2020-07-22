@@ -9,6 +9,7 @@
 					alt="sort"
 					title="取消"
 					:class="$style.iconButton"
+					tabindex="0"
 					@click="sortFinish(false)"
 				>
 				<img
@@ -16,6 +17,7 @@
 					alt="make friend"
 					title="确定"
 					:class="$style.iconButton"
+					tabindex="0"
 					@click="sortFinish(true)"
 				>
 			</div>
@@ -26,6 +28,7 @@
 					alt="sort"
 					title="调整顺序"
 					:class="$style.iconButton"
+					tabindex="0"
 					@click="sort"
 				>
 				<img
@@ -33,6 +36,7 @@
 					alt="make friend"
 					title="添加"
 					:class="$style.iconButton"
+					tabindex="0"
 					@click="makeFriend"
 				>
 			</div>
@@ -189,15 +193,17 @@ export default {
 			const el = listEl.children[i];
 			const rect = el.getBoundingClientRect();
 
+			const dragEl = {
+				position: "absolute",
+				top: rect.top + pageYOffset + "px",
+				left: rect.left + pageXOffset + "px",
+				zIndex: 10,
+				cursor: "grabbing",
+			};
+
 			this.dragging = {
 				item: current,
-				style: {
-					position: "absolute",
-					top: rect.top + pageYOffset + "px",
-					left: rect.left + pageXOffset + "px",
-					zIndex: 10,
-					cursor: "grabbing",
-				},
+				style: dragEl,
 			};
 
 			friends[i] = {
@@ -212,7 +218,9 @@ export default {
 			};
 
 			function insertInto(k) {
-				if (i === k) return;
+				if (i === k) {
+					return;
+				}
 				const holder = friends.splice(i, 1)[0];
 				i = k;
 				friends.splice(k, 0, holder);
@@ -220,9 +228,9 @@ export default {
 
 			observeMouseMove().pipe(elementPosition(event, el)).subscribe({
 				next: ({ x, y }) => {
-					this.dragging.style.left = x + "px";
-					this.dragging.style.top = y + "px";
-					insertInto(Math.min($_draggingRegion.getIndex(x,y), friends.length - 1));
+					dragEl.left = x + "px";
+					dragEl.top = y + "px";
+					insertInto(Math.min($_draggingRegion.getIndex(x, y), friends.length - 1));
 				},
 				complete: () => {
 					this.dragging = null;
@@ -275,13 +283,12 @@ export default {
 	grid-template-columns: repeat(auto-fit, @friend-width);
 	grid-gap: 40px;
 	justify-content: center;
-	justify-items: center;
 }
 
 .item {
 	position: relative;
 
-	&:hover, &:focus {
+	&:hover, &:focus-within {
 		& > .remove {
 			opacity: 1;
 			transform: scale(1);
