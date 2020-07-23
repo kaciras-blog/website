@@ -49,7 +49,7 @@
 				:class="$style.item"
 			>
 				<div
-					v-if="friend.isPlaceholder"
+					v-if="friend.placeholder"
 					:style="friend.style"
 				/>
 				<friend-card
@@ -68,19 +68,11 @@
 				/>
 			</li>
 		</ul>
-
-		<!-- 函数组件事件监听还不能为undefined，非得搞个空函数不可 -->
-		<friend-card
-			v-if="dragging"
-			:friend="dragging.item"
-			:disabled="true"
-			:style="dragging.style"
-			@dragstart="() => {}"
-		/>
 	</section>
 </template>
 
 <script>
+import Vue from "vue";
 import { mapState } from "vuex";
 import { elementPosition, observeMouseMove } from "@kaciras-blog/uikit/src/index";
 import api from "@/api";
@@ -128,6 +120,48 @@ class GridDraggingRegion {
 	}
 }
 
+class VueArrayInsertSort {
+
+	constructor(array, index) {
+		this.array = array;
+		this.index = index;
+		this.data = array[index];
+	}
+
+	dragOver(k) {
+		const { index, array } = this;
+		k = Math.min(k, array.length - 1);
+
+		if (index === k) {
+			return;
+		}
+		const holder = array.splice(index, 1)[0];
+		this.index = k;
+		array.splice(k, 0, holder);
+	}
+
+	dragEnd() {
+		Vue.set(this.array, this.index, this.data);
+	}
+}
+
+function dragSort(region, sort, event, el) {
+
+	const observer = {
+		next({ x, y }) {
+			el.style.left = x + "px";
+			el.style.top = y + "px";
+			sort.dragOver(region.getIndex(x, y));
+		},
+		complete() {
+			el.remove();
+			sort.dragEnd();
+		},
+	};
+
+	observeMouseMove().pipe(elementPosition(event, el)).subscribe(observer);
+}
+
 export default {
 	name: "FriendsSection",
 	components: {
@@ -137,7 +171,6 @@ export default {
 		return {
 			friends: this.$store.state.prefetch.friends,
 			sorting: false,
-			dragging: null,
 		};
 	},
 	computed: mapState(["user"]),
@@ -187,27 +220,29 @@ export default {
 			event.preventDefault();
 
 			const { friends, $_draggingRegion } = this;
-			const listEl = this.$refs.list;
+			const i = friends.indexOf(current);
 
-			let i = friends.indexOf(current);
+			const listEl = this.$refs.list;
 			const el = listEl.children[i];
 			const rect = el.getBoundingClientRect();
 
-			const dragEl = {
+			const dragEl = el.firstElementChild.cloneNode(true);
+
+			// 不能使用 dragEl.style = {...}
+			Object.assign(dragEl.style, {
 				position: "absolute",
 				top: rect.top + pageYOffset + "px",
 				left: rect.left + pageXOffset + "px",
 				zIndex: 10,
 				cursor: "grabbing",
-			};
+			});
 
-			this.dragging = {
-				item: current,
-				style: dragEl,
-			};
+			document.body.appendChild(dragEl);
 
-			friends[i] = {
-				isPlaceholder: true,
+			const sort = new VueArrayInsertSort(friends, i);
+
+			this.$set(friends, i, {
+				placeholder: true,
 				id: Symbol(),
 
 				// 这个占位是必要的，用于保持新行
@@ -215,28 +250,9 @@ export default {
 					width: rect.width + "px",
 					height: rect.height + "px",
 				},
-			};
-
-			function insertInto(k) {
-				if (i === k) {
-					return;
-				}
-				const holder = friends.splice(i, 1)[0];
-				i = k;
-				friends.splice(k, 0, holder);
-			}
-
-			observeMouseMove().pipe(elementPosition(event, el)).subscribe({
-				next: ({ x, y }) => {
-					dragEl.left = x + "px";
-					dragEl.top = y + "px";
-					insertInto(Math.min($_draggingRegion.getIndex(x, y), friends.length - 1));
-				},
-				complete: () => {
-					this.dragging = null;
-					friends[i] = current;
-				},
 			});
+
+			dragSort($_draggingRegion, sort, event, dragEl);
 		},
 	},
 };

@@ -37,11 +37,14 @@ if (GOOGLE_ANALYTICS_ID) {
  * @return 如果支持则为true，否则false
  */
 function isSupportedBrowser() {
+
+	// https://github.com/GoogleChrome/workbox/issues/1473
 	try {
 		new ReadableStream({ start() {} });
 	} catch (error) {
 		return false;
 	}
+
 	return CSS.supports("display", "grid");
 }
 

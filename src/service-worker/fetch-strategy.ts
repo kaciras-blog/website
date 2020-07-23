@@ -21,20 +21,19 @@ async function fetchAndCache(input: RequestInfo, cache: ManagedCache, fetchFn: F
 	const rawResponse = await fetchFn(input);
 
 	if (rawResponse.status === 200) {
-
-		// Edge 79 之前的版本有BUG，不能用 body 属性来创建新请求。
-		// 该情况下可以用 body = await rawResponse.clone().arrayBuffer();
-		// see https://github.com/GoogleChrome/workbox/issues/1473
-		const { body } = rawResponse.clone();
-
 		const headers = new Headers(rawResponse.headers);
 		headers.set("X-Service-Worker", "cached");
 
+		// Edge 79 之前的版本有BUG，不能用 body 属性来创建新请求。
+		// 该情况下可以用 body = await rawResponse.clone().arrayBuffer();
+		// https://stackoverflow.com/a/42846899/7065321
+		const { body } = rawResponse.clone();
 		const response = new Response(body, {
 			headers,
 			status: rawResponse.status,
 			statusText: rawResponse.statusText
 		});
+
 		cache.put(input, response).catch(e => console.error(e));
 	}
 
@@ -99,7 +98,7 @@ export function networkFirst(cache: ManagedCache, fetchFn: FetchFn = fetch) {
 			}
 			throw err;
 
-			// 都抄了OptionalChaining，咋就不能抄全了，把ThrowExpression也拿来。
+			// 都抄了 OptionalChaining，咋就不能抄全了，把 ThrowExpression 也拿来。
 			// return (await cache.match(input)) ?? throw err;
 		}
 	}

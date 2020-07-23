@@ -37,10 +37,10 @@ class ServerPrefetchContext extends PrefetchContext {
  * 等待路由准备好，都什么时代了 vue-router 还在用回调式的API。
  *
  * @param router Vue的路由
- * @return {Promise<any>} 在路由准备好了之后resolve
+ * @return 在路由准备好了之后resolve
  */
 function onReadyAsync(router: VueRouter) {
-	return new Promise((resolve, reject) => router.onReady(resolve, reject));
+	return new Promise<void>((resolve, reject) => router.onReady(resolve, reject));
 }
 
 /**
