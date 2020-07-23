@@ -68,15 +68,6 @@
 				/>
 			</li>
 		</ul>
-
-		<!-- 函数组件事件监听还不能为undefined，非得搞个空函数不可 -->
-		<friend-card
-			v-if="dragging"
-			:friend="dragging.item"
-			:disabled="true"
-			:style="dragging.style"
-			@dragstart="() => {}"
-		/>
 	</section>
 </template>
 
@@ -137,7 +128,6 @@ export default {
 		return {
 			friends: this.$store.state.prefetch.friends,
 			sorting: false,
-			dragging: null,
 		};
 	},
 	computed: mapState(["user"]),
@@ -193,20 +183,20 @@ export default {
 			const el = listEl.children[i];
 			const rect = el.getBoundingClientRect();
 
-			const dragEl = {
+			const dragEl = el.firstElementChild.cloneNode(true);
+
+			// 不能使用 dragEl.style = {...}
+			Object.assign(dragEl.style, {
 				position: "absolute",
 				top: rect.top + pageYOffset + "px",
 				left: rect.left + pageXOffset + "px",
 				zIndex: 10,
 				cursor: "grabbing",
-			};
+			});
 
-			this.dragging = {
-				item: current,
-				style: dragEl,
-			};
+			document.body.appendChild(dragEl);
 
-			friends[i] = {
+			this.$set(friends, i, {
 				isPlaceholder: true,
 				id: Symbol(),
 
@@ -215,7 +205,7 @@ export default {
 					width: rect.width + "px",
 					height: rect.height + "px",
 				},
-			};
+			});
 
 			function insertInto(k) {
 				if (i === k) {
@@ -228,13 +218,13 @@ export default {
 
 			observeMouseMove().pipe(elementPosition(event, el)).subscribe({
 				next: ({ x, y }) => {
-					dragEl.left = x + "px";
-					dragEl.top = y + "px";
+					dragEl.style.left = x + "px";
+					dragEl.style.top = y + "px";
 					insertInto(Math.min($_draggingRegion.getIndex(x, y), friends.length - 1));
 				},
 				complete: () => {
-					this.dragging = null;
-					friends[i] = current;
+					dragEl.remove();
+					this.$set(friends, i, current);
 				},
 			});
 		},
