@@ -72,6 +72,7 @@
 </template>
 
 <script>
+import Vue from "vue";
 import { mapState } from "vuex";
 import { elementPosition, observeMouseMove } from "@kaciras-blog/uikit/src/index";
 import api from "@/api";
@@ -117,6 +118,41 @@ class GridDraggingRegion {
 		let r = Math.round((y - this.yOffset) / this.territoryH);
 		return Math.max(0, Math.min(r, this.rows - 1));
 	}
+}
+
+class VueArrayInsertSort {
+
+	constructor(array, index) {
+		this.array = array;
+		this.index = index;
+		this.data = array[index];
+	}
+
+	dragOver(k) {
+		const { index, array } = this;
+		k = Math.min(k, array.length - 1);
+
+		if (index === k) {
+			return;
+		}
+		const holder = array.splice(index, 1)[0];
+		this.index = k;
+		array.splice(k, 0, holder);
+	}
+
+	dragEnd() {
+		Vue.set(this.array, this.index, this.data);
+	}
+}
+
+class DragSortObserver {
+
+	constructor(region, sort) {
+		this.region = region;
+		this.sort = sort;
+	}
+
+
 }
 
 export default {
@@ -177,9 +213,9 @@ export default {
 			event.preventDefault();
 
 			const { friends, $_draggingRegion } = this;
-			const listEl = this.$refs.list;
+			const i = friends.indexOf(current);
 
-			let i = friends.indexOf(current);
+			const listEl = this.$refs.list;
 			const el = listEl.children[i];
 			const rect = el.getBoundingClientRect();
 
@@ -196,6 +232,8 @@ export default {
 
 			document.body.appendChild(dragEl);
 
+			const sort = new VueArrayInsertSort(friends, i);
+
 			this.$set(friends, i, {
 				isPlaceholder: true,
 				id: Symbol(),
@@ -207,24 +245,15 @@ export default {
 				},
 			});
 
-			function insertInto(k) {
-				if (i === k) {
-					return;
-				}
-				const holder = friends.splice(i, 1)[0];
-				i = k;
-				friends.splice(k, 0, holder);
-			}
-
 			observeMouseMove().pipe(elementPosition(event, el)).subscribe({
-				next: ({ x, y }) => {
+				next({ x, y }) {
 					dragEl.style.left = x + "px";
 					dragEl.style.top = y + "px";
-					insertInto(Math.min($_draggingRegion.getIndex(x, y), friends.length - 1));
+					sort.dragOver($_draggingRegion.getIndex(x, y));
 				},
-				complete: () => {
+				complete() {
 					dragEl.remove();
-					this.$set(friends, i, current);
+					sort.dragEnd();
 				},
 			});
 		},
