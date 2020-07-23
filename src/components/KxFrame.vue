@@ -18,8 +18,11 @@
 </template>
 
 <script>
+import { PreventScrollMixin } from "@kaciras-blog/uikit";
+
 export default {
 	name: "KxFrame",
+	mixins: [PreventScrollMixin],
 	props: {
 		title: String,
 	},
