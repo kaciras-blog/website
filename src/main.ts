@@ -48,6 +48,8 @@ export default function createApp(initState: any = undefined) {
 
 	/**
 	 * 阻止未登录用户访问后台页面。
+	 *
+	 * TODO: 放在这好丑啊
 	 */
 	router.beforeEach((to, from, next) => {
 		if (!to.meta.requireAuth) {

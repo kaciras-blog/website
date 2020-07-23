@@ -5,7 +5,7 @@ import media from "@kaciras-blog/server/lib/markdown-media";
  * 从资源的链接参数（?vw=...&vh=...）里读取媒体的尺寸。
  *
  * @param url 资源的链接
- * @return {object} 媒体的尺寸
+ * @return { width, height } 媒体的尺寸
  */
 function getMediaResolution(url) {
 	const urlParams = new URLSearchParams(url.split("?")[1]);
@@ -126,7 +126,7 @@ export function clientMediaPlugin(markdownIt) {
  * 对指定容器元素内的媒体启用懒加载，该函数只能在浏览器端调用。
  *
  * 【Reader View 兼容性】
- * 自己实现的懒加载在浏览器的阅读视图里无法工作，唯一的方案是用 loading="lazy"，
+ * JS实现的懒加载在浏览器的阅读视图里无法工作，唯一的方案是用 loading="lazy"，
  * 但该属性兼容性还不行。
  * 故不建议使用阅读视图浏览本站的文章，本站的文章页面已经足够简洁。
  *
@@ -159,12 +159,12 @@ export function initLazyLoading(el) {
 	const lozadImages = lozad(images);
 	lozadImages.observe();
 
+	// gif 视频自动播放/暂停
 	const autoPlay = new IntersectionObserver(entries => {
 		for (const { target, intersectionRatio } of entries) {
 			intersectionRatio > 0 ? target.play() : target.pause();
 		}
 	});
-
 	el.querySelectorAll(".gif").forEach(video => autoPlay.observe(video));
 
 	return function disconnect() {
