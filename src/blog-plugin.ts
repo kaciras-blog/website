@@ -6,12 +6,14 @@ import SelectCategoryDialog from "./components/SelectCategoryDialog.vue";
 import TopNavBody from "./components/top-nav/TopNavBody.vue";
 import TopNav from "./components/top-nav/TopNav.vue";
 import TopNavGlass from "./components/top-nav/TopNavGlass.vue";
+import SettingPanel from "./components/top-nav/SettingPanel.vue";
 import PageFooter from "./components/PageFooter.vue";
 import BasePageLayout from "./components/BasePageLayout.vue";
 import BannerPageLayout from "./components/BannerPageLayout.vue";
 import DiscussionSection from "./components/discussion/DiscussionSection.vue";
 import IconParagraph from "./components/IconParagraph.vue";
 import IconSectionHeader from "./components/IconSectionHeader.vue";
+import KxFrame from "./components/KxFrame.vue";
 
 /**
  * 获取文章所在页面的的完整路径。
@@ -46,4 +48,8 @@ export default function install(Vue: VueConstructor) {
 	Vue.component(BannerPageLayout.name, BannerPageLayout);
 	Vue.component(IconParagraph.name, IconParagraph);
 	Vue.component(IconSectionHeader.name, IconSectionHeader);
+	Vue.component(KxFrame.name, KxFrame);
+
+	// Vue 函数组件里不能导入 component 只能在这全局挂载了
+	Vue.component(SettingPanel.name, SettingPanel);
 }
