@@ -49,7 +49,7 @@
 				:class="$style.item"
 			>
 				<div
-					v-if="friend.isPlaceholder"
+					v-if="friend.placeholder"
 					:style="friend.style"
 				/>
 				<friend-card
@@ -145,14 +145,21 @@ class VueArrayInsertSort {
 	}
 }
 
-class DragSortObserver {
+function dragSort(region, sort, event, el) {
 
-	constructor(region, sort) {
-		this.region = region;
-		this.sort = sort;
-	}
+	const observer = {
+		next({ x, y }) {
+			el.style.left = x + "px";
+			el.style.top = y + "px";
+			sort.dragOver(region.getIndex(x, y));
+		},
+		complete() {
+			el.remove();
+			sort.dragEnd();
+		},
+	};
 
-
+	observeMouseMove().pipe(elementPosition(event, el)).subscribe(observer);
 }
 
 export default {
@@ -235,7 +242,7 @@ export default {
 			const sort = new VueArrayInsertSort(friends, i);
 
 			this.$set(friends, i, {
-				isPlaceholder: true,
+				placeholder: true,
 				id: Symbol(),
 
 				// 这个占位是必要的，用于保持新行
@@ -245,17 +252,7 @@ export default {
 				},
 			});
 
-			observeMouseMove().pipe(elementPosition(event, el)).subscribe({
-				next({ x, y }) {
-					dragEl.style.left = x + "px";
-					dragEl.style.top = y + "px";
-					sort.dragOver($_draggingRegion.getIndex(x, y));
-				},
-				complete() {
-					dragEl.remove();
-					sort.dragEnd();
-				},
-			});
+			dragSort($_draggingRegion, sort, event, dragEl);
 		},
 	},
 };
