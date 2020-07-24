@@ -1,5 +1,6 @@
 import { UPDATE_CHANNEL_NAME } from "./service-worker/fetch-strategy";
 import { report } from "./error-report";
+import { MessageType } from "@/service-worker/message";
 
 const SCRIPT_PATH = "/sw.js";
 
@@ -13,26 +14,52 @@ export interface ServiceWorkerConfig {
 	onResourceUpdate?: (data: any) => void;
 }
 
-const callbacks = new Map<number, object>();
+interface PromiseController {
+	resolve(value?: any): void;
+
+	reject(reason?: any): void;
+}
+
+const callbacks = new Map<number, PromiseController>();
 let messageCounter = 0;
 
-export function setConfig<T>(key: string, value: T) {
+function sendMessage<T>(type: MessageType, data?: any) {
 	const id = messageCounter++;
-	navigator.serviceWorker.controller?.postMessage({ type: 1, id, key, value });
+	navigator.serviceWorker.controller?.postMessage({ type, id, data });
 	return new Promise<T>((resolve, reject) => callbacks.set(id, { resolve, reject }));
 }
 
+export function setConfig<T>(key: string, value: T) {
+	return sendMessage<T>(MessageType.setOption, { key, value });
+}
+
+export function getConfigs() {
+	return sendMessage(MessageType.GetSettings);
+}
+
+function setResult(data: SuccessReplyMessage | ErrorReplyMessage) {
+	const promise = callbacks.get(data.id);
+	if (!promise) {
+		return;
+	}
+	if ("error" in data) {
+		promise.reject(data.error);
+	} else {
+		promise.resolve(data.result);
+	}
+}
+
 interface ReplyMessage {
-	type: "REPLY",
 	id: number;
+	type: MessageType.Reply;
 }
 
 interface SuccessReplyMessage extends ReplyMessage {
-	resolve: any;
+	result: any;
 }
 
 interface ErrorReplyMessage extends ReplyMessage {
-	reject: Error;
+	error: Error;
 }
 
 export function register(config: ServiceWorkerConfig = {}) {
@@ -54,11 +81,16 @@ export function register(config: ServiceWorkerConfig = {}) {
 			}
 		}
 
-		navigator.serviceWorker.addEventListener("message", (message) => {
+		navigator.serviceWorker.addEventListener("message", message => {
 			const { data } = message;
-			if (data.type === "ERROR" || data.type === "REJECTION") report(data);
-			if (data.type === 1) {
-
+			switch (data.type) {
+				case MessageType.Reply:
+					setResult(data);
+					break;
+				case MessageType.Error:
+				case MessageType.Rejection:
+					report(data);
+					break;
 			}
 		});
 
