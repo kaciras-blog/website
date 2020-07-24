@@ -5,6 +5,7 @@ export interface Friend {
 	name: string;
 	background: string;
 	favicon: string;
+	friendPage: string;
 }
 
 export default class FriendResource extends AbstractResource {
@@ -15,6 +16,10 @@ export default class FriendResource extends AbstractResource {
 
 	makeFriend(friend: Friend) {
 		return this.servers.content.post<Friend>("/friends", friend).then(r => r.data);
+	}
+
+	updateAll(friends: Friend[]) {
+		return this.servers.content.put<void>("/friends", friends);
 	}
 
 	rupture(friend: Friend) {

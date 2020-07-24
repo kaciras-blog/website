@@ -205,14 +205,14 @@ export default {
 			this.$_backup = this.friends.slice();
 		},
 
-		sortFinish(save) {
+		async sortFinish(save) {
 			if (!save) {
 				this.friends = this.$_backup;
 			}
+			await api.friend.updateAll(this.friends);
 			this.sorting = false;
-
-			// TODO 保存排序
 		},
+
 		drag(event, current) {
 			if (!this.sorting) {
 				return;
