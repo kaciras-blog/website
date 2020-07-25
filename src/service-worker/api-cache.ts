@@ -1,7 +1,7 @@
 import { CacheWrapper, ManagedCache } from "./cache";
 import { Route } from "./routing";
 import { FetchFn, networkFirst, staleWhileRevalidate, timeout } from "./fetch-strategy";
-import { bind, initPromise } from "@/service-worker/settings";
+import { bind, initPromise } from "./settings";
 
 const API_CACHE_NAME = "api-v1.1";
 
@@ -28,10 +28,10 @@ class ApiOfflineRoute implements Route {
 	setStaleStrategy(isEnable: boolean) {
 		if (isEnable) {
 			this.fetchFn = staleWhileRevalidate(this.cache);
-			console.info("[SW] API请求模式切换为StaleWhileRevalidate");
+			console.info("[SW] API请求模式设置为StaleWhileRevalidate");
 		} else {
 			this.fetchFn = networkFirst(this.cache, timeout(7500));
-			console.info("[SW] API请求模式切换为NetworkFirst");
+			console.info("[SW] API请求模式设置为NetworkFirst");
 		}
 	}
 
@@ -39,6 +39,7 @@ class ApiOfflineRoute implements Route {
 		return new URL(request.url).host === this.host;
 	}
 
+	// 伪处理方法，该方法只为了等待配置加载，加载完后将被替换为 directHandle
 	handle(event: FetchEvent) {
 		event.waitUntil(this.initPromise.then(() => this.directHandle(event)));
 	}

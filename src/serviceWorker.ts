@@ -2,26 +2,23 @@ import { UPDATE_CHANNEL_NAME } from "./service-worker/fetch-strategy";
 import { report } from "./error-report";
 import { MessageType } from "@/service-worker/message";
 
-const SCRIPT_PATH = "/sw.js";
-
-export interface ErrorRecordMessage {
-	type: "ERROR" | "REJECTION",
-	stack: string | null;
-	message: string | null;
-}
-
-export interface ServiceWorkerConfig {
-	onResourceUpdate?: (data: any) => void;
+interface ReplyMessage {
+	id: number;
+	type: MessageType.Reply;
+	result?: any;
+	error?: Error;
 }
 
 interface PromiseController {
+
 	resolve(value?: any): void;
 
 	reject(reason?: any): void;
 }
 
-const callbacks = new Map<number, PromiseController>();
 let messageCounter = 0;
+
+const callbacks = new Map<number, PromiseController>();
 
 function sendMessage<T>(type: MessageType, data?: any) {
 	const id = messageCounter++;
@@ -37,7 +34,7 @@ export function getConfigs() {
 	return sendMessage(MessageType.GetSettings);
 }
 
-function setResult(data: SuccessReplyMessage | ErrorReplyMessage) {
+function setResult(data: ReplyMessage) {
 	const promise = callbacks.get(data.id);
 	if (!promise) {
 		return;
@@ -49,17 +46,21 @@ function setResult(data: SuccessReplyMessage | ErrorReplyMessage) {
 	}
 }
 
-interface ReplyMessage {
-	id: number;
-	type: MessageType.Reply;
+// ===================================================================================
+
+const SCRIPT_PATH = "/sw.js";
+
+export interface ErrorRecordMessage {
+	type: MessageType.Error;
+	data: {
+		type: "ERROR" | "REJECTION",
+		stack: string | null;
+		message: string | null;
+	};
 }
 
-interface SuccessReplyMessage extends ReplyMessage {
-	result: any;
-}
-
-interface ErrorReplyMessage extends ReplyMessage {
-	error: Error;
+export interface ServiceWorkerConfig {
+	onResourceUpdate?: (data: any) => void;
 }
 
 export function register(config: ServiceWorkerConfig = {}) {
@@ -88,7 +89,6 @@ export function register(config: ServiceWorkerConfig = {}) {
 					setResult(data);
 					break;
 				case MessageType.Error:
-				case MessageType.Rejection:
 					report(data);
 					break;
 			}
