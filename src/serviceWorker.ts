@@ -1,6 +1,5 @@
-import { UPDATE_CHANNEL_NAME } from "./service-worker/fetch-strategy";
-import { report } from "./error-report";
 import { MessageType } from "@/service-worker/message";
+import { report } from "./error-report";
 
 interface ReplyMessage {
 	id: number;
@@ -39,6 +38,8 @@ function setResult(data: ReplyMessage) {
 	if (!promise) {
 		return;
 	}
+	callbacks.delete(data.id)
+
 	if ("error" in data) {
 		promise.reject(data.error);
 	} else {
@@ -59,29 +60,12 @@ export interface ErrorRecordMessage {
 	};
 }
 
-export interface ServiceWorkerConfig {
-	onResourceUpdate?: (data: any) => void;
-}
-
-export function register(config: ServiceWorkerConfig = {}) {
+export function initialize() {
 
 	/**
 	 * 注册成功后调用，添加资源更新的监听。
 	 */
 	function afterRegister() {
-		const { onResourceUpdate } = config;
-
-		if (onResourceUpdate) {
-			if ("BroadcastChannel" in window) {
-				const channel = new BroadcastChannel(UPDATE_CHANNEL_NAME);
-				channel.onmessage = (message) => onResourceUpdate(message.data);
-			} else {
-				navigator.serviceWorker.addEventListener("message", (message) => {
-					if (message.data.type === "CACHE_UPDATE") onResourceUpdate(message.data);
-				});
-			}
-		}
-
 		navigator.serviceWorker.addEventListener("message", message => {
 			const { data } = message;
 			switch (data.type) {
@@ -105,15 +89,18 @@ export function register(config: ServiceWorkerConfig = {}) {
 			return console.error("service worker won't work when PUBLIC_URL is on a different origin");
 		}
 
-		const response = await fetch("/sw-check", { method: "HEAD" });
-		if (response.status !== 200) {
-			console.debug("[Init] ServiceWorker 已注销");
-			return unregister();
+		try {
+			const response = await fetch("/sw-check", { method: "HEAD" });
+			if (response.status !== 200) {
+				unregister();
+			} else {
+				navigator.serviceWorker.register(SCRIPT_PATH)
+					.then(afterRegister)
+					.catch(e => console.error("[Init] ServiceWorker 注册失败", e));
+			}
+		} catch (e) {
+			console.warn("[Init] 无法获取ServiceWorker注册指令，暂不更新ServiceWorker")
 		}
-
-		navigator.serviceWorker.register(SCRIPT_PATH)
-			.then(afterRegister)
-			.catch((err) => console.error("[Init] ServiceWorker 注册失败：", err));
 	});
 }
 
@@ -123,15 +110,16 @@ export function register(config: ServiceWorkerConfig = {}) {
 function unregister() {
 	navigator.serviceWorker.getRegistrations()
 		.then(regs => regs.forEach(reg => reg.unregister()))
-		.catch(() => console.error("Service worker failed to unregister."));
+		.then(() => console.debug("[Init] ServiceWorker 已注销"))
+		.catch(e => console.error("[Init] ServiceWorker 注销失败", + e));
 }
 
 /*
- * 生产模式下注册 ServiceWorker，开发模式禁用。
- * 注意：要禁用的话不能只是不注册，而必须得注销！
+ * 启用ServiceWorker功能，该函数只能在客户端使用。
+ *
+ * 【注意】
+ * 若之前启用过，要禁用的话必须得注销，该函数始终需要被调用。
  */
 export function useServiceWorker() {
-	if ("serviceWorker" in navigator) {
-		process.env.NODE_ENV === "production" ? register() : unregister();
-	}
+	if ("serviceWorker" in navigator) initialize();
 }

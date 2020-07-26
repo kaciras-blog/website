@@ -3,10 +3,9 @@
  */
 import "./error-report";
 import { initializeSettingManager } from "./settings";
-import appShellRoute from "./app-shell";
 import apiCacheRoute from "./api-cache";
 import { cacheNames, CacheWrapper } from "./cache";
-import { RegexRoute, Router, WebpUpgradeRoute } from "./routing";
+import { AppShellRoute, RegexRoute, Router, WebpUpgradeRoute } from "./routing";
 import { cacheFirst } from "./fetch-strategy";
 
 // 默认是 WebWorker，需要声明一下ServiceWorker，其他文件里也一样。
@@ -20,7 +19,6 @@ declare const serviceWorkerOption: {
 initializeSettingManager();
 
 const STATIC_CACHE_NAME = "static-v1.2";
-const APP_SHELL_NAME = "/app-shell.html";
 
 const cache = new CacheWrapper(STATIC_CACHE_NAME);
 const router = new Router();
@@ -29,7 +27,12 @@ const fetcher = cacheFirst(cache);
 router.addRoute(new WebpUpgradeRoute(fetcher, new RegExp("^/static/img/.+\\.(?:jpg|png)$")));
 router.addRoute(new RegexRoute("/static/", fetcher));
 
-router.addRoute(appShellRoute(cache, APP_SHELL_NAME));
+// Twitter 的代码里也是这样一个个写死的
+// https://abs.twimg.com/responsive-web/serviceworker/main.e531acd4.js 格式化后的第6200行
+const APP_SHELL_RE = new RegExp("^/(?:$|list|category|login|article|edit|profile|about|console|error)")
+const APP_SHELL_NAME = "/app-shell.html";
+router.addRoute(new AppShellRoute(cache, APP_SHELL_NAME, APP_SHELL_RE));
+
 router.addRoute(apiCacheRoute());
 
 self.addEventListener("fetch", router.route.bind(router));
@@ -76,9 +79,9 @@ self.addEventListener("activate", event => {
 	 *
 	 * 详情见：https://developers.google.com/web/updates/2017/02/navigation-preload
 	 */
-	if (self.registration.navigationPreload) {
-		event.waitUntil(self.registration.navigationPreload.enable());
-	}
+	// if (self.registration.navigationPreload) {
+	// 	event.waitUntil(self.registration.navigationPreload.enable());
+	// }
 
 	// 删除当前版本用不到的缓存
 	event.waitUntil(async () => {

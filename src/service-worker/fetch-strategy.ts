@@ -1,7 +1,5 @@
 import { ManagedCache } from "./cache";
 
-declare const self: ServiceWorkerGlobalScope;
-
 /**
  * 发送请求的函数，就是 fetch 的类型，不过为了简洁省略掉了 init 参数
  */
@@ -17,7 +15,7 @@ export type FetchFn = (input: RequestInfo) => Promise<Response>;
  * @param fetchFn 发送请求的函数
  * @return 原始响应
  */
-async function fetchAndCache(input: RequestInfo, cache: ManagedCache, fetchFn: FetchFn) {
+export async function fetchAndCache(input: RequestInfo, cache: ManagedCache, fetchFn: FetchFn) {
 	const rawResponse = await fetchFn(input);
 
 	if (rawResponse.status === 200) {
@@ -38,32 +36,6 @@ async function fetchAndCache(input: RequestInfo, cache: ManagedCache, fetchFn: F
 	}
 
 	return rawResponse;
-}
-
-export const UPDATE_CHANNEL_NAME = "PWA-UPDATE";
-
-// TODO: 目前只有一种消息，所以直接搞个全局信道
-let broadcastChannel: BroadcastChannel;
-if ("BroadcastChannel" in self) {
-	broadcastChannel = new BroadcastChannel(UPDATE_CHANNEL_NAME);
-}
-
-export function broadcastMessage(message: any) {
-	if (broadcastChannel) {
-		broadcastChannel.postMessage(message);
-	} else {
-		self.clients.matchAll({ type: "window" })
-			.then(windows => windows.forEach(win => win.postMessage(message)));
-	}
-}
-
-function broadcastUpdate(cached: Response, newResp: Response) {
-	if (!["content-length", "etag", "last-modified"].every(header => {
-		return cached.headers.has(header) === newResp.headers.has(header)
-			&& cached.headers.get(header) === newResp.headers.get(header);
-	})) {
-		broadcastMessage({ type: "CACHE_UPDATE", updatedUrl: newResp.url });
-	}
 }
 
 /**
@@ -121,8 +93,7 @@ export function staleWhileRevalidate(cache: ManagedCache, fetchFn: FetchFn = fet
 			return fromFetch;
 		}
 
-		// TODO: 是否需要 event.waitUtil?
-		fromFetch.then(response => broadcastUpdate(cached, response));
+		// TODO: 是否需要 event.waitUtil(fromFetch)?
 		return cached;
 	};
 }
