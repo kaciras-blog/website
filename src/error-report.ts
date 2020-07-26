@@ -19,6 +19,6 @@ class ServiceWorkerError extends Error {
 	}
 }
 
-export function report(data: ErrorRecordMessage["data"]) {
+export function reportSWError(data: ErrorRecordMessage["data"]) {
 	Sentry.captureException(new ServiceWorkerError(data));
 }
