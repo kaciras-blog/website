@@ -142,6 +142,15 @@ export class WebpUpgradeRoute implements Route {
 	}
 }
 
+/**
+ * 应用外壳模式（AppShell）的路由，拦截导航请求并返回缓存的HTML文件。
+ *
+ * 【关于竞速的讨论】
+ * 我曾设想让缓存读取AppShell与网络请求来竞速，以提升某些情况下的加载时间，并减少用户看到旧版页面的次数。
+ * 但这个尝试失败了，因为：
+ * 1）后端SSR返回的页面包含了数据，而AppShell没有，两者不对等不能直接竞速。
+ * 2）NavigationPreload 的兼容性还不行，在不支持的浏览器上发网络请求要等SW启动太慢。
+ */
 export class AppShellRoute implements Route {
 
 	private readonly fetch: FetchFn;

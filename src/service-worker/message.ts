@@ -3,5 +3,5 @@ export enum MessageType {
 	Error,
 
 	GetSettings,
-	setOption,
+	PutSetting,
 }

@@ -25,11 +25,11 @@ function sendMessage<T>(type: MessageType, data?: any) {
 	return new Promise<T>((resolve, reject) => callbacks.set(id, { resolve, reject }));
 }
 
-export function setConfig<T>(key: string, value: T) {
-	return sendMessage<T>(MessageType.setOption, { key, value });
+export function putSetting<T>(key: string, value: T) {
+	return sendMessage<T>(MessageType.PutSetting, { key, value });
 }
 
-export function getConfigs() {
+export function getSettings() {
 	return sendMessage(MessageType.GetSettings);
 }
 
@@ -111,7 +111,7 @@ function unregister() {
 	navigator.serviceWorker.getRegistrations()
 		.then(regs => regs.forEach(reg => reg.unregister()))
 		.then(() => console.debug("[Init] ServiceWorker 已注销"))
-		.catch(e => console.error("[Init] ServiceWorker 注销失败", + e));
+		.catch(e => console.error("[Init] ServiceWorker 注销失败", +e));
 }
 
 /*
