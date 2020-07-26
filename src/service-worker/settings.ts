@@ -52,7 +52,7 @@ export function get(key: string) {
  * @param handler 处理函数
  */
 export function bind(key: string, handler: (value: any) => void) {
-	handler(current.get(key));
+	handler(current[key]);
 	emitter.on(key, handler);
 }
 
