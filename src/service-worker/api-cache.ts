@@ -30,7 +30,8 @@ class ApiOfflineRoute implements Route {
 			this.fetchFn = staleWhileRevalidate(this.cache);
 			console.info("[SW] API请求模式设置为StaleWhileRevalidate");
 		} else {
-			this.fetchFn = networkFirst(this.cache, timeout(7500));
+			const ms = process.env.TIMEOUT as unknown as number;
+			this.fetchFn = networkFirst(this.cache, timeout(ms));
 			console.info("[SW] API请求模式设置为NetworkFirst");
 		}
 	}
