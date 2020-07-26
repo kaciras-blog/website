@@ -1,6 +1,6 @@
-import Vue from "vue";
 import * as Sentry from '@sentry/browser';
 import { Vue as VueIntegration } from '@sentry/integrations';
+import Vue from "vue";
 import { ErrorRecordMessage } from "./serviceWorker";
 
 if (process.env.SENTRY_DSN) {
@@ -10,9 +10,15 @@ if (process.env.SENTRY_DSN) {
 	});
 }
 
-class TransferredServiceWorkerError extends Error {}
+class ServiceWorkerError extends Error {
 
-export function report(message: ErrorRecordMessage) {
-	const container = new TransferredServiceWorkerError();
-	Sentry.captureException(Object.assign(container, message));
+	constructor(data: ErrorRecordMessage["data"]) {
+		super();
+		Object.assign(this, data);
+		this.name = "ServiceWorkerError";
+	}
+}
+
+export function reportSWError(data: ErrorRecordMessage["data"]) {
+	Sentry.captureException(new ServiceWorkerError(data));
 }

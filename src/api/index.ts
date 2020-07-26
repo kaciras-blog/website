@@ -35,8 +35,11 @@ axios.defaults.withCredentials = true;
 axios.defaults.xsrfCookieName = CSRF_COOKIE_NAME;
 axios.defaults.xsrfHeaderName = CSRF_HEADER_NAME;
 
-if (process.env.NODE_ENV === "production") {
-	axios.defaults.timeout = 8000;
+// ServiceWorker里已经对API设置了超时，如果支持则不在此处添加超时。
+if (process.env.TIMEOUT) {
+	if (process.env.VUE_ENV === "server" || !("serviceWorker" in navigator)) {
+		axios.defaults.timeout = process.env.TIMEOUT as unknown as number;
+	}
 }
 
 // axios 不能全局配置拦截？
@@ -93,7 +96,7 @@ export class Api {
 	 * @return API集
 	 */
 	withCancelToken(token?: CancelToken | CancellationToken) {
-		if(!token) {
+		if (!token) {
 			return this;
 		}
 		if ("addListener" in token) {

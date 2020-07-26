@@ -1,5 +1,5 @@
 import { FetchFn, staleWhileRevalidate } from "./fetch-strategy";
-import { ManagedCache } from "./cache";
+import { ManagedCache } from "@/service-worker/cache";
 
 export class Router {
 
@@ -68,41 +68,6 @@ export class RegexRoute implements Route {
 
 	handle(event: FetchEvent) {
 		event.respondWith(this.fetch(event.request));
-	}
-}
-
-export class AppShellRoute implements Route {
-
-	private readonly fetch: FetchFn;
-	private readonly path: string;
-	private readonly include: RegExp;
-
-	/**
-	 * 新建应用外壳路由，其将使用指定URI路径的页面作为应用的外壳，并将其缓存。
-	 *
-	 * @param cache 缓存
-	 * @param path 应用外壳的URI路径
-	 * @param include 包含的路径，没有表示全部都拦截
-	 */
-	constructor(cache: ManagedCache, path: string, include?: RegExp) {
-		this.path = path;
-		this.fetch = staleWhileRevalidate(cache);
-		this.include = include || new RegExp("");
-	}
-
-	match(request: Request) {
-		if (request.mode !== "navigate") {
-			return false;
-		}
-		const url = new URL(request.url);
-		return this.include.test(url.pathname);
-	}
-
-	// 【坑】Request 默认缓存是不去服务端检查的，而AppShell文件名不带Hash，必须禁用缓存防止无法更新
-	// https://developer.mozilla.org/zh-CN/docs/Web/API/Request/cache
-	handle(event: FetchEvent) {
-		const request = new Request(this.path, { cache: "no-cache" });
-		event.respondWith(this.fetch(request));
 	}
 }
 
@@ -177,21 +142,46 @@ export class WebpUpgradeRoute implements Route {
 	}
 }
 
-export class HostRoute implements Route {
+/**
+ * 应用外壳模式（AppShell）的路由，拦截导航请求并返回缓存的HTML文件。
+ *
+ * 【关于竞速的讨论】
+ * 我曾设想让缓存读取AppShell与网络请求来竞速，以提升某些情况下的加载时间，并减少用户看到旧版页面的次数。
+ * 但这个尝试失败了，因为：
+ * 1）后端SSR返回的页面包含了数据，而AppShell没有，两者不对等不能直接竞速。
+ * 2）NavigationPreload 的兼容性还不行，在不支持的浏览器上发网络请求要等SW启动太慢。
+ */
+export class AppShellRoute implements Route {
 
-	private readonly host: string;
 	private readonly fetch: FetchFn;
+	private readonly path: string;
+	private readonly include: RegExp;
 
-	constructor(host: string, fetch: FetchFn) {
-		this.host = host;
-		this.fetch = fetch;
-	}
-
-	handle(event: FetchEvent) {
-		event.respondWith(this.fetch(event.request));
+	/**
+	 * 新建应用外壳路由，其将使用指定URI路径的页面作为应用的外壳，并将其缓存。
+	 *
+	 * @param cache 缓存
+	 * @param path 应用外壳的URI路径
+	 * @param include 包含的路径，没有表示全部都拦截
+	 */
+	constructor(cache: ManagedCache, path: string, include?: RegExp) {
+		this.path = path;
+		this.fetch = staleWhileRevalidate(cache);
+		this.include = include || new RegExp("");
 	}
 
 	match(request: Request) {
-		return new URL(request.url).host === this.host;
+		if (request.mode !== "navigate") {
+			return false;
+		}
+		const url = new URL(request.url);
+		return this.include.test(url.pathname);
+	}
+
+	// 【坑】Request 默认缓存是不去服务端检查的，而AppShell文件名不带Hash，必须禁用缓存防止无法更新
+	// https://developer.mozilla.org/zh-CN/docs/Web/API/Request/cache
+	handle(event: FetchEvent) {
+		const request = new Request(this.path, { cache: "no-cache" });
+		event.respondWith(this.fetch(request));
 	}
 }

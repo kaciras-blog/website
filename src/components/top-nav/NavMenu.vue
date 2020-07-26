@@ -18,14 +18,18 @@
 			<side-menu-link to="/list" icon="far fa-list-alt">文章列表</side-menu-link>
 			<side-menu-link to="/about" icon="far fa-copyright">关于</side-menu-link>
 			<side-menu-link to="/login" icon="fas fa-sign-in-alt">登录</side-menu-link>
-			<side-menu-link :direct="true" to="/feed/rss" icon="fa fa-rss">Feed订阅</side-menu-link>
+
+			<side-menu-link tag="a" to="/feed/rss" icon="fa fa-rss">Feed订阅</side-menu-link>
+
+			<side-menu-link tag="div" icon="fas fa-sliders-h" @click="showSettingFrame">设置</side-menu-link>
 		</div>
 
 		<div :class="$style.footer">
 			<kx-button
 				v-if="user.id > 0"
 				class="second"
-				@click="logout">
+				@click="logout"
+			>
 				退出登录
 			</kx-button>
 		</div>
@@ -36,12 +40,18 @@
 import { mapActions, mapState } from "vuex";
 import { LOGOUT } from "@/store/types";
 import SideMenuLink from "./SideMenuLink";
+import SettingFrame from "./SettingFrame";
 
 export default {
 	name: "NavMenu",
 	components: { SideMenuLink },
 	computed: mapState(["user"]),
-	methods: mapActions({ logout: LOGOUT }),
+	methods: {
+		showSettingFrame() {
+			this.$dialog.show(SettingFrame);
+		},
+		...mapActions({ logout: LOGOUT }),
+	},
 };
 </script>
 
@@ -71,10 +81,18 @@ export default {
 	margin: 10px 0 0 0;
 }
 
-
 .body {
 	flex-grow: 1;
 	padding: 10px 0;
+}
+
+.button {
+	padding: 12px 1pc;
+	cursor: pointer;
+
+	&:hover, &:focus {
+		background-color: rgba(0, 0, 0, .05);
+	}
 }
 
 .footer {

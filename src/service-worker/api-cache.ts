@@ -1,8 +1,54 @@
-import { CacheWrapper } from "./cache";
-import { HostRoute } from "./routing";
-import { networkFirst, timeout } from "./fetch-strategy";
+import { CacheWrapper, ManagedCache } from "./cache";
+import { Route } from "./routing";
+import { FetchFn, networkFirst, staleWhileRevalidate, timeout } from "./fetch-strategy";
+import { bind, initPromise } from "./settings";
 
 const API_CACHE_NAME = "api-v1.1";
+
+class ApiOfflineRoute implements Route {
+
+	private readonly host: string;
+	private readonly cache: ManagedCache;
+
+	private initPromise: Promise<void>;
+
+	private fetchFn!: FetchFn;
+
+	constructor(host: string, cache: ManagedCache) {
+		this.host = host;
+		this.cache = cache;
+
+		this.initPromise = initPromise.then(() => {
+			bind("StaleApi", this.setStaleStrategy.bind(this));
+			delete this.initPromise;
+			this.handle = this.directHandle;
+		});
+	}
+
+	setStaleStrategy(isEnable: boolean) {
+		if (isEnable) {
+			this.fetchFn = staleWhileRevalidate(this.cache);
+			console.info("[SW] API请求模式设置为StaleWhileRevalidate");
+		} else {
+			const ms = process.env.TIMEOUT as unknown as number;
+			this.fetchFn = networkFirst(this.cache, timeout(ms));
+			console.info("[SW] API请求模式设置为NetworkFirst");
+		}
+	}
+
+	match(request: Request) {
+		return new URL(request.url).host === this.host;
+	}
+
+	// 伪处理方法，该方法只为了等待配置加载，加载完后将被替换为 directHandle
+	handle(event: FetchEvent) {
+		event.waitUntil(this.initPromise.then(() => this.directHandle(event)));
+	}
+
+	private directHandle(event: FetchEvent) {
+		event.respondWith(this.fetchFn(event.request));
+	}
+}
 
 /**
  * 对内容服务接口使用网络优先缓存，保证在网络不通的情况下也能显示旧的内容。
@@ -13,8 +59,8 @@ export default function apiCacheRoute() {
 		? apiOrigin
 		: apiOrigin[location.protocol.substring(0, location.protocol.length - 1)];
 
-	const apiHost = new URL(BASE_URL).host;
-	const apiCache = new CacheWrapper(API_CACHE_NAME)
+	const { host } = new URL(BASE_URL);
+	const cache = new CacheWrapper(API_CACHE_NAME);
 
-	return new HostRoute(apiHost, networkFirst(apiCache, timeout(7500)));
+	return new ApiOfflineRoute(host, cache);
 }

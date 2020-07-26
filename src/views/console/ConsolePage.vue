@@ -9,6 +9,7 @@
 				返回首页
 			</router-link>
 		</nav>
+
 		<aside :class="$style.tabs">
 			<h1>控制台</h1>
 			<ul class="clean-list" role="tablist">
@@ -29,7 +30,9 @@
 				</li>
 			</ul>
 		</aside>
+
 		<main :class="$style.body_wrapper">
+			<!-- 多面板联动必须要 keep-alive 一下 -->
 			<keep-alive>
 				<component :is="active" ref="panel" :class="$style.body"/>
 			</keep-alive>
