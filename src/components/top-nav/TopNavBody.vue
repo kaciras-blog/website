@@ -48,11 +48,11 @@
 			<router-link to="/about" class="nav-item">关于</router-link>
 
 			<a href="/feed/atom" class="nav-item" title="Feed订阅">
-				<i class="fas fa-rss" :class="$style.fontIcon"></i>
+				<i class="fas fa-rss" :class="$style.fontIcon"/>
 			</a>
 
 			<span class="nav-item" title="设置" @click="showSettings">
-				<img alt="settings" src="../../assets/img/adjust.svg" :class="$style.imgIcon">
+				<i class="fas fa-cogs" :class="$style.fontIcon"/>
 			</span>
 		</div>
 	</component>
@@ -147,10 +147,6 @@ export default {
 .fontIcon {
 	font-size: 20px;
 	vertical-align: middle;
-}
-
-.imgIcon {
-	.size(20px);
 }
 
 :global(.dark) .container {
