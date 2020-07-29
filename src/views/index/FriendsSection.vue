@@ -59,7 +59,12 @@
 					@dragstart="drag($event, friend)"
 				/>
 
-				<!-- 没有更新按钮，更新 = 删除 + 添加 -->
+				<button
+					v-if="user.id === 2 && !sorting"
+					title="修改"
+					:class="$style.edit"
+					@click="edit(friend)"
+				/>
 				<button
 					v-if="user.id === 2 && !sorting"
 					title="删除"
@@ -199,7 +204,7 @@ export default {
 		},
 
 		async edit(friend) {
-			const updated = await this.$dialog.show(FriendInfoDialog, friend);
+			const updated = await this.$dialog.show(FriendInfoDialog, friend).confirmPromise;
 			await api.friend.updateFriend(friend, updated);
 		},
 
@@ -316,7 +321,7 @@ export default {
 	position: relative;
 
 	&:hover, &:focus-within {
-		& > .remove {
+		& > .rightTopButton {
 			opacity: 1;
 			transform: scale(1);
 		}
@@ -327,21 +332,40 @@ export default {
 	cursor: move;
 }
 
-.remove {
+@button-size: 40px;
+
+.rightTopButton {
 	position: absolute;
-	top: -10px;
-	right: -10px;
-	width: 30px;
-	height: 30px;
+	top: -@button-size / 2;
+	width: @button-size;
+	height: @button-size;
 	z-index: 5;
 
 	border-radius: 50%;
-	background-image: url("~@kaciras-blog/uikit/src/assets/icon-close.svg");
 	background-position: 50%;
+	background-repeat: no-repeat;
+
 	opacity: 0;
 	cursor: pointer;
 
 	transform: scale(0.25);
 	transition: .3s;
+
+	&:hover {
+		border: solid 1px #222;
+	}
+}
+
+.edit {
+	composes: rightTopButton;
+	right: @button-size - 10px;
+	background-image: url("../../assets/icon/edit.svg");
+	background-size: 20px;
+}
+
+.remove {
+	composes: rightTopButton;
+	right: -@button-size / 2;
+	background-image: url("~@kaciras-blog/uikit/src/assets/icon-close.svg");
 }
 </style>
