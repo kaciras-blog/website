@@ -28,14 +28,22 @@
 		</label>
 
 		<label :class="$style.material">
-			<span :class="$style.material_label">标题（16字以内）</span>
+			<span :class="$style.material_label">名字（16字以内）</span>
 			<input
-				v-model="value.name"
+				v-model.trim="value.name"
 				:class="$style.material_input"
 			>
 		</label>
 
-		<kx-standard-dialog-buttons @confirm="$dialog.confirm(value)"/>
+		<label :class="$style.material">
+			<span :class="$style.material_label">对方的友链页（可选，用于检查互友）</span>
+			<input
+				v-model="value.friendPage"
+				:class="$style.material_input"
+			>
+		</label>
+
+		<kx-standard-dialog-buttons @confirm="confirm"/>
 	</kx-base-dialog>
 </template>
 
@@ -50,6 +58,10 @@ export default {
 		url: String,
 		background: String,
 		favicon: String,
+		friendPage: {
+			type: String,
+			default: "",
+		},
 	},
 	// 这写法真你🐎丑陋，希望Vue3能改改
 	data() {
@@ -71,6 +83,15 @@ export default {
 				image = cropping.data;
 			}
 			return api.misc.uploadImage(image);
+		},
+
+		// 烦人的空字符串与 null 的问题
+		confirm() {
+			const { value } = this;
+			if (!value.friendPage) {
+				delete value.friendPage;
+			}
+			this.$dialog.confirm(value);
 		},
 	},
 };

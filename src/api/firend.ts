@@ -18,8 +18,14 @@ export default class FriendResource extends AbstractResource {
 		return this.servers.content.post<Friend>("/friends", friend).then(r => r.data);
 	}
 
-	updateAll(friends: Friend[]) {
-		return this.servers.content.put<void>("/friends", friends);
+	updateFriend(old: Friend, new_: Friend) {
+		const oldHost = new URL(old.url).host;
+		return this.servers.content.put<void>(`/friends/${oldHost}`, new_);
+	}
+
+	updateSort(friends: Friend[]) {
+		const hostList = friends.map(friend => new URL(friend.url).host);
+		return this.servers.content.put<void>("/friends", hostList);
 	}
 
 	rupture(friend: Friend) {

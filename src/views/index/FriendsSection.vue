@@ -192,9 +192,15 @@ export default {
 				}
 			}
 		},
+
 		async rupture(friend) {
 			await api.friend.rupture(friend);
 			deleteOn(this.friends, v => v === friend);
+		},
+
+		async edit(friend) {
+			const updated = await this.$dialog.show(FriendInfoDialog, friend);
+			await api.friend.updateFriend(friend, updated);
 		},
 
 		// GridDraggingRegion 的构造方法有点耗时，在进入排序模式时就计算好，让拖动更流畅。
@@ -208,9 +214,14 @@ export default {
 		async sortFinish(save) {
 			if (!save) {
 				this.friends = this.$_backup;
+				return this.sorting = false;
 			}
-			await api.friend.updateAll(this.friends);
-			this.sorting = false;
+			try {
+				await api.friend.updateSort(this.friends);
+				this.sorting = false;
+			} catch (e) {
+				this.$dialog.alertError("更新失败", errorMessage(e));
+			}
 		},
 
 		drag(event, current) {
