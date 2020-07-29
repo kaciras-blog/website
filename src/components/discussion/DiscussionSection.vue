@@ -15,7 +15,7 @@
 	<div v-else>
 		<header class="segment" :class="$style.header">
 			<h2 :class="$style.title">
-				评论区({{data.total}})
+				评论区({{ data.total }})
 			</h2>
 			<vue-multiselect
 				v-model="sort"

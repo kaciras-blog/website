@@ -1,68 +1,69 @@
 <template>
 	<component :is="tag">
-		<img
-			:src="value.user.avatar"
-			alt="头像"
-			class="small head"
-			:class="$style.head"
-		>
 
-		<div :class="$style.main">
-			<header :class="$style.header">
+		<header :class="$style.header">
+			<img
+				:src="value.user.avatar"
+				alt="头像"
+				class="small head"
+				:class="$style.head"
+			>
 
-				<!-- 评论者的名字 -->
-				<span :class="$style.name">{{value.nickname || value.user.name}}</span>
+			<!-- 评论者的名字和时间 -->
+			<div :class="$style.nameGroup">
+				<div :class="$style.name">{{ value.nickname || value.user.name }}</div>
+				<time class="minor-text">{{ value.time | localDateMinute }}</time>
+			</div>
 
-				<!-- 右上角的楼层号 -->
-				<span v-if="!value.parent" class="minor-text">#{{value.floor}}</span>
-			</header>
+			<!-- 右上角的楼层号 -->
+			<span class="minor-text">#{{ value.floor }}</span>
+		</header>
 
-			<div :class="$style.content">{{value.content}}</div>
+		<div :class="$style.content">{{ value.content }}</div>
 
-			<div class="minor-text" :class="$style.metas">
-				<div>
-					<span
-						:title="value.voted ? '取消点赞' : '点赞'"
-						class="meta"
-						:class="{
+		<div class="minor-text" :class="$style.metas">
+			<div>
+				<span
+					:title="value.voted ? '取消点赞' : '点赞'"
+					class="meta"
+					:class="{
 							[$style.clickable]:true,
 							[$style.active]: value.voted
 						}"
-						@click="vote"
-					>
-						<i class="far fa-thumbs-up"/>
-						{{value.voteCount}}
-					</span>
-
-					<span
-						v-if="!value.parent"
-						class="meta"
-						:class="$style.clickable"
-						@click="$emit('reply', value.id)"
-					>
-						<i class="far fa-comment"/>
-						回复({{value.replyCount}})
-					</span>
-				</div>
-
-				<div>
-					<span
-						v-if="removable"
-						class="meta"
-						:class="$style.clickable"
-						@click="remove"
-					>
-						<i class="far fa-trash-alt"/>
-						删除
-					</span>
-					<time>
-						{{value.time | localDateMinute}}
-					</time>
-				</div>
+					@click="vote"
+				>
+					<i class="far fa-thumbs-up"/>
+					{{ value.voteCount }}
+				</span>
+				<span
+					v-if="!value.parent"
+					class="meta"
+				>
+					<i class="far fa-comment"/>
+					回复({{ value.replyCount }})
+				</span>
+				<span
+					v-if="removable"
+					class="meta"
+					:class="$style.clickable"
+					@click="remove"
+				>
+					<i class="far fa-trash-alt"/>删除
+				</span>
 			</div>
 
-			<slot name="footer"></slot>
+			<span
+				v-if="!value.parent"
+				class="meta"
+				:class="$style.clickable"
+				@click="$emit('reply', value.id)"
+			>
+				<i class="fas fa-plus"/>
+				添加回复
+			</span>
 		</div>
+
+		<slot name="footer"></slot>
 	</component>
 </template>
 
@@ -112,20 +113,19 @@ export default {
 </script>
 
 <style module lang="less">
+.header {
+	display: flex;
+}
+
 .head {
 	display: block;
 	float: left;
 	position: relative;
 }
 
-.main {
-	position: relative;
-	margin-left: 4rem;
-}
-
-.header {
-	display: flex;
-	align-items: center;
+.nameGroup {
+	flex: 1;
+	margin-left: 1rem;
 }
 
 .name {

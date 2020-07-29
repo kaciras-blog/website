@@ -6,28 +6,28 @@
 	>
 		<template v-slot:footer>
 
-			<!-- TODO: this.$refs.replies is undefined -->
-			<template v-if="value.replyCount">
-				<button-paging-view
-					v-if="expend"
-					ref="replies"
-					v-model="replies"
-					theme="text"
-					:class="$style.replyList"
-					:loader="loadNext"
-					:page-size="10"
-				>
-					<!-- removed 事件必须包装一下，因为创建时还不存在 $refs.replies，下同 -->
-					<template v-slot="{ items }">
-						<reply-list :items="items" @removed="refresh"/>
-					</template>
-				</button-paging-view>
+			<div :class="$style.replyList">
+				<template v-if="value.replyCount">
+					<button-paging-view
+						v-if="expend"
+						ref="replies"
+						v-model="replies"
+						theme="text"
+						:loader="loadNext"
+						:page-size="10"
+					>
+						<!-- removed 事件必须包装一下，因为创建时还不存在 $refs.replies，下同 -->
+						<template v-slot="{ items }">
+							<reply-list :items="items" @removed="refresh"/>
+						</template>
+					</button-paging-view>
 
-				<template v-else>
-					<reply-list :items="value.replies" @removed="refresh"/>
-					<a class="hd-link" @click="showAllReplies">查看全部</a>
+					<template v-else>
+						<reply-list :items="value.replies" @removed="refresh"/>
+						<a class="hd-link" @click="showAllReplies">查看全部</a>
+					</template>
 				</template>
-			</template>
+			</div>
 
 			<input-h-o-c
 				v-if="replying === value.id"
@@ -109,6 +109,9 @@ export default {
 }
 
 .replyList {
-	padding-top: 2rem;
+	margin: 1rem 0 0 3rem;
+	padding: 1rem;
+	border-radius: 8px;
+	background: #f7f7f7;
 }
 </style>

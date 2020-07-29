@@ -1,5 +1,5 @@
 <template functional>
-	<ol class="clean-list" :class="$style.replies">
+	<ol class="clean-list" :class="$style.list">
 		<discussion-content
 			v-for="item of props.items"
 			:key="item.id"
@@ -21,6 +21,11 @@ export default {
 </script>
 
 <style module lang="less">
-.replies { padding-top: 2rem; }
-.reply { margin-bottom: 1.5rem; }
+.list:not(:first-child) {
+	margin-top: 1.5rem;
+}
+
+.reply {
+	margin-bottom: 1.5rem;
+}
 </style>
