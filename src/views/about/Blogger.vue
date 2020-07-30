@@ -83,7 +83,7 @@
 
 .example {
 	display: block;
-	width: 442px;
+	width: 380px;
 	max-width: 100%;
 	margin: 0 auto 1em auto;
 }
