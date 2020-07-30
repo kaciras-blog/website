@@ -83,7 +83,7 @@ async function handleEvent(event: ExtendableMessageEvent) {
 async function loadSettings() {
 	database = await openDB<Schema>("app", 1, { upgrade: upgradeDatabase });
 	const kvs = await database.getAll("settings");
-	kvs.forEach(entity => current.set(entity.key, entity.value));
+	kvs.forEach(({ key, value }) => current[key] = value);
 }
 
 /**
