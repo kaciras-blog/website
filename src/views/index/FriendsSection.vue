@@ -44,7 +44,7 @@
 
 		<ul :class="$style.list" ref="list">
 			<li
-				v-for="friend of friends"
+				v-for="(friend, i) of friends"
 				:key="friend.id"
 				:class="$style.item"
 			>
@@ -56,7 +56,7 @@
 					v-else
 					:disabled="sorting"
 					:friend="friend"
-					@dragstart="drag($event, friend)"
+					@dragstart="drag($event, i)"
 				/>
 
 				<button
@@ -69,7 +69,7 @@
 					v-if="user.id === 2 && !sorting"
 					title="删除"
 					:class="$style.remove"
-					@click="rupture(friend)"
+					@click="rupture(i)"
 				/>
 			</li>
 		</ul>
@@ -81,7 +81,7 @@ import Vue from "vue";
 import { mapState } from "vuex";
 import { elementPosition, observeMouseMove } from "@kaciras-blog/uikit/src/index";
 import api from "@/api";
-import { deleteOn, errorMessage } from "@/utils";
+import { errorMessage } from "@/utils";
 import FriendCard from "./FriendCard";
 import FriendInfoDialog from "./FriendInfoDialog";
 
@@ -198,14 +198,15 @@ export default {
 			}
 		},
 
-		async rupture(friend) {
-			await api.friend.rupture(friend);
-			deleteOn(this.friends, v => v === friend);
+		async rupture(index) {
+			await api.friend.rupture(this.friends[index]);
+			this.friends.splice(index, 1);
 		},
 
 		async edit(friend) {
 			const updated = await this.$dialog.show(FriendInfoDialog, friend).confirmPromise;
 			await api.friend.updateFriend(friend, updated);
+			Object.assign(friend, updated);
 		},
 
 		// GridDraggingRegion 的构造方法有点耗时，在进入排序模式时就计算好，让拖动更流畅。
@@ -229,14 +230,13 @@ export default {
 			}
 		},
 
-		drag(event, current) {
+		drag(event, i) {
 			if (!this.sorting) {
 				return;
 			}
 			event.preventDefault();
 
 			const { friends, $_draggingRegion } = this;
-			const i = friends.indexOf(current);
 
 			const listEl = this.$refs.list;
 			const el = listEl.children[i];
@@ -252,7 +252,6 @@ export default {
 				zIndex: 10,
 				cursor: "grabbing",
 			});
-
 			document.body.appendChild(dragEl);
 
 			const sort = new VueArrayInsertSort(friends, i);
