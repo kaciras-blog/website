@@ -6,26 +6,24 @@
 	>
 		<template v-slot:footer>
 
-			<div :class="$style.replyList">
-				<template v-if="value.replyCount">
-					<button-paging-view
-						v-if="expend"
-						ref="replies"
-						v-model="replies"
-						theme="text"
-						:loader="loadNext"
-						:page-size="10"
-					>
-						<!-- removed 事件必须包装一下，因为创建时还不存在 $refs.replies，下同 -->
-						<template v-slot="{ items }">
-							<reply-list :items="items" @removed="refresh"/>
-						</template>
-					</button-paging-view>
-
-					<template v-else>
-						<reply-list :items="value.replies" @removed="refresh"/>
-						<a class="hd-link" @click="showAllReplies">查看全部</a>
+			<div :class="$style.replyList" v-if="value.replyCount">
+				<button-paging-view
+					v-if="expend"
+					ref="replies"
+					v-model="replies"
+					theme="text"
+					:loader="loadNext"
+					:page-size="10"
+				>
+					<!-- removed 事件必须包装一下，因为创建时还不存在 $refs.replies，下同 -->
+					<template v-slot="{ items }">
+						<reply-list :items="items" @removed="refresh"/>
 					</template>
+				</button-paging-view>
+
+				<template v-else>
+					<reply-list :items="value.replies" @removed="refresh"/>
+					<a class="hd-link" @click="showAllReplies">查看全部</a>
 				</template>
 			</div>
 
@@ -76,11 +74,14 @@ export default {
 	}),
 	methods: {
 		async submitReply(reply) {
+			this.value.replyCount++;
 			this.expend = true;
-			if (this.replies) {
+			await this.$nextTick();
+
+			if (this.value.replies.length) {
 				this.$refs.replies.switchToLast();
 			} else {
-				this.replies = [reply.data]; // 对没有过回复的处理
+				this.replies = { total: 1, items: [reply] };
 			}
 		},
 		showAllReplies: debounceFirst(function () {
@@ -104,12 +105,14 @@ export default {
 </script>
 
 <style module lang="less">
+@import "../../css/imports";
+
 .input {
 	margin-top: 20px;
 }
 
 .replyList {
-	margin: 1rem 0 0 3rem;
+	margin-top: 1rem;
 	padding: 1rem;
 	border-radius: 8px;
 	background: #f7f7f7;
