@@ -69,35 +69,34 @@ function prefetch(route, components, next) {
 	Promise.all(tasks).then(() => {
 		if (cancelToken.isCancelled) {
 			next(false);
+			console.debug(`导航被取消：${route.path}`);
 		} else {
 			store.commit(SET_PREFETCH_DATA, context.data);
 			next();
 		}
 		loadingIndicator.finishSuccessful();
-	})
-		.catch((err) => handleError(err, next));
-}
-
-function handleError(err, next) {
-	if (cancelToken.isCancelled) {
-		return next(false);
-	}
-	switch (err.code) {
-		case -1:
-			break;
-		case 301:
-		case 302:
-			loadingIndicator.finishSuccessful();
-			return next(err.location);
-		case 404:
-		case 410:
-			next({ path: "/error/" + err.code, replace: true });
-			break;
-		default:
-			console.error(err);
-			next("/error/500");
-	}
-	loadingIndicator.finishWithError();
+	}).catch((err) => {
+		if (cancelToken.isCancelled) {
+			next(false);
+			return console.debug(`导航被取消：${route.path}`);
+		}
+		switch (err.code) {
+			case -1:
+				break;
+			case 301:
+			case 302:
+				loadingIndicator.finishSuccessful();
+				return next(err.location);
+			case 404:
+			case 410:
+				next({ path: "/error/" + err.code, replace: true });
+				break;
+			default:
+				console.error(err);
+				next("/error/500");
+		}
+		loadingIndicator.finishWithError();
+	});
 }
 
 // mixin 必须在创建 Vue 实例之前
@@ -150,6 +149,7 @@ function initAppAndRouterHook() {
 	// 使用 router.beforeResolve()，以便确保所有异步组件都 resolve。
 	router.beforeResolve((to, from, next) => {
 		if (cancelToken.isCancelled) {
+			console.debug(`导航被取消：${to.path}`);
 			return next(false);
 		}
 
