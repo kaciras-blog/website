@@ -12,9 +12,9 @@
 		<div v-if="loading" :class="$style.alert">
 			正在等待ServiceWorker……
 		</div>
-		<div v-else>
+		<div v-else class="minor-text">
 			该选项将对动态内容使用 stale-while-revalidate 缓存策略，
-			这使访问过的内容无需网络立即加载，但新内容在下一次才能看到。
+			这能让访问过的内容无需网络立即加载，但新内容会被延迟到下一次访问。
 		</div>
 	</div>
 </template>

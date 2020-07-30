@@ -196,16 +196,18 @@ export default {
 
 .banner_content {
 	position: absolute;
-	top: 35vh;
+	top: 30vh;
 	left: 30px;
 	right: 30px;
 
-	@media screen and (min-width: @length-screen-wide) {
-		font-size: 1vw;
-	}
-
+	font-size: 12px;
 	text-align: center;
 	transition: color 1s cubic-bezier(.25, .7, .7, .8);
+
+	@media screen and (min-width: @length-screen-wide) {
+		top: 35vh;
+		font-size: 1vw;
+	}
 }
 
 .title {

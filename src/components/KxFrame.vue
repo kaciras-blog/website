@@ -10,7 +10,7 @@
 				<i class="fas fa-arrow-left"/>
 			</button>
 
-			<span :class="$style.title">{{title}}</span>
+			<span :class="$style.title">{{ title }}</span>
 		</header>
 
 		<slot></slot>
@@ -55,13 +55,14 @@ export default {
 .back_button {
 	position: absolute;
 	left: 0;
-	top: 0;
+	top: 2px; // 不知道咋的箭头位置就是有点高了
 	bottom: 0;
 
 	width: @headerHeight;
+	padding: 0 !important; // 屏蔽按钮点击凹陷效果
+
 	font-size: 20px;
 	background: none;
-	padding: 0 !important;
 
 	&:active {
 		background: whitesmoke;
