@@ -111,7 +111,7 @@ export default async (context: RenderContext) => {
 	const { title } = router.currentRoute.meta;
 	if (title) {
 		context.title = title + " - Kaciras的博客";
-		context.meta = "<meta name='description' content='Kaciras的博客'>";
+		context.meta = "<meta name='description' content='欢迎来到Kaciras的博客'>";
 	}
 
 	// Vue2的类型定义......

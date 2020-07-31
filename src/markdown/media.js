@@ -14,6 +14,11 @@ function getMediaResolution(url) {
 	return width && height ? { width, height } : null;
 }
 
+/**
+ * 各种自定义指令在本站页面的渲染实现。
+ *
+ * https://blog.kaciras.com/article/18/add-video-support-to-markdown
+ */
 const directiveMap = {
 	gif(src, alt) {
 		const size = getMediaResolution(src);
@@ -53,6 +58,7 @@ const directiveMap = {
 	},
 };
 
+/** 加载指示器动画元素，五个彩色的点比菊花还是好看些的 */
 const LOADING_EL = `
 <span class="full-vertex md-loading">
 	<span class="dot"></span>
