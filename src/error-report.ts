@@ -15,7 +15,6 @@ class ServiceWorkerError extends Error {
 	constructor(data: ErrorRecordMessage["data"]) {
 		super();
 		Object.assign(this, data);
-		this.name = "ServiceWorkerError";
 	}
 }
 

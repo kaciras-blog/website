@@ -10,12 +10,14 @@ function anycast(data: any) {
 
 self.addEventListener("error", (event) => anycast({
 	type: "ERROR",
+	name: event.error.name,
 	message: event.message,
-	stack: event.error?.stack,
+	stack: event.error.stack,
 }));
 
 self.addEventListener("unhandledrejection", (event) => anycast({
 	type: "REJECTION",
-	message: event.reason?.message,
-	stack: event.reason?.stack,
+	name: event.reason.name,
+	message: event.reason.message,
+	stack: event.reason.stack,
 }));

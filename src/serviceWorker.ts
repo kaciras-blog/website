@@ -56,8 +56,9 @@ export interface ErrorRecordMessage {
 	type: MessageType.Error;
 	data: {
 		type: "ERROR" | "REJECTION",
-		stack: string | null;
-		message: string | null;
+		name: string;
+		stack?: string;
+		message?: string;
 	};
 }
 
@@ -68,7 +69,7 @@ function dispatchMessage(message: MessageEvent) {
 			setResult(data);
 			break;
 		case MessageType.Error:
-			reportSWError(data);
+			reportSWError(data.data);
 			break;
 		default:
 			throw new Error("Unknown message type: " + data.type);
