@@ -70,7 +70,7 @@ export default {
 	props: {
 		code: String,
 	},
-	serverPrefetch() {
+	async serverPrefetch() {
 		this.$ssrContext.notFound = this.code === "404";
 	},
 };

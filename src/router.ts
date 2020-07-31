@@ -1,5 +1,5 @@
 import Vue from "vue";
-import Router from "vue-router";
+import Router, { RouteConfig } from "vue-router";
 import { Position, Route } from "vue-router/types/router";
 import IndexPage from "./views/index/IndexPage.vue";
 import ErrorPage from "./views/error/ErrorPage.vue";
@@ -35,7 +35,7 @@ function scrollBehavior(to: Route, from: Route, savedPosition: Position | void) 
 }
 
 export default function CreateRouter() {
-	const routes = [
+	const routes: RouteConfig[] = [
 		{
 			path: "/",
 			component: IndexPage,
