@@ -2,7 +2,7 @@
 	<discussion-content
 		:value="value"
 		@removed="$emit('removed')"
-		@reply="$emit('reply')"
+		@reply="showReplyEditor"
 	>
 		<template v-slot:footer>
 
@@ -28,7 +28,7 @@
 			</div>
 
 			<input-h-o-c
-				v-if="replying === value.id"
+				v-if="replying"
 				:type="value.type"
 				:object-id="value.objectId"
 				:parent="value.id"
@@ -36,7 +36,7 @@
 				@submitted="submitReply"
 			>
 				<template v-slot="{ content, onSubmit, onInput }">
-					<discussion-editor :content="content" :on-submit="onSubmit" @input="onInput"/>
+					<discussion-editor ref="editor" :content="content" :on-submit="onSubmit" @input="onInput"/>
 				</template>
 			</input-h-o-c>
 
@@ -46,6 +46,7 @@
 
 <script>
 import { debounceFirst } from "@kaciras-blog/server/lib/functions";
+import { scrollToElementEnd } from "@kaciras-blog/uikit";
 import api from "@/api";
 import ReplyFrame from "./ReplyFrame";
 import ReplyList from "./ReplyList";
@@ -60,7 +61,7 @@ export default {
 			type: Object,
 			required: true,
 		},
-		replying: Number,
+
 	},
 	components: {
 		InputHOC,
@@ -71,8 +72,14 @@ export default {
 	data: () => ({
 		replies: null,
 		expend: false,
+		replying: false,
 	}),
 	methods: {
+		async showReplyEditor() {
+			this.replying = true;
+			await this.$nextTick();
+			scrollToElementEnd(this.$refs.editor.$el);
+		},
 		async submitReply(reply) {
 			this.value.replyCount++;
 			this.expend = true;
