@@ -98,29 +98,40 @@ class GridDraggingRegion {
 		const region = container.getBoundingClientRect();
 		const card = container.children[0].getBoundingClientRect();
 
-		const G = getComputedStyle(container).gridGap;
+		// 不能使用 gridGap 属性，CSS 设置的 grid-gap 会转换为 gridRowGap & gridColumnGap。
+		const cStyle = getComputedStyle(container);
+		const rowGap = parseInt(cStyle.gridRowGap), columnGap = parseInt(cStyle.gridColumnGap);
 
 		this.xOffset = card.left + pageXOffset;
-		this.territoryW = card.width + G;
-
 		this.yOffset = card.top + pageYOffset;
-		this.territoryH = card.height + G;
 
-		this.columns = Math.floor((region.width + G) / (card.width + G));
-		this.rows = Math.ceil((region.height + G) / (card.height + G));
+		this.tW = card.width + columnGap;
+		this.tH = card.height + rowGap;
+
+		this.columns = Math.floor((region.width + columnGap) / (card.width + columnGap));
+		this.rows = Math.floor((region.height + rowGap) / (card.height + rowGap));
 	}
 
+	/**
+	 * 计算给定的点落在第几个元素的范围内。
+	 *
+	 * 注意该方法仅计算理论值，假定格子有无穷多个，返回值可能超出实际元素数量。
+	 *
+	 * @param x X坐标
+	 * @param y Y坐标
+	 * @return {number} 格子序号
+	 */
 	getIndex(x, y) {
 		return this.getRow(y) * this.columns + this.getColumn(x);
 	}
 
 	getColumn(x) {
-		const c = Math.round((x - this.xOffset) / this.territoryW);
+		const c = Math.floor((x - this.xOffset) / this.tW);
 		return Math.max(0, Math.min(c, this.columns - 1));
 	}
 
 	getRow(y) {
-		let r = Math.round((y - this.yOffset) / this.territoryH);
+		const r = Math.floor((y - this.yOffset) / this.tH);
 		return Math.max(0, Math.min(r, this.rows - 1));
 	}
 }
