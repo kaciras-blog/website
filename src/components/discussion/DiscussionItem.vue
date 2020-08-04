@@ -112,8 +112,8 @@ export default {
 }
 
 .replyList {
-	margin-top: 1rem;
-	padding: 1rem;
+	margin-top: 20px;
+	padding: 20px;
 	border-radius: 8px;
 	background: #f7f7f7;
 }

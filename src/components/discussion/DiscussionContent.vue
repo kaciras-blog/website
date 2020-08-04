@@ -145,7 +145,7 @@ export default {
 }
 
 .clickable:hover, .active {
-	color: #f785d7;
+	color: #fa5acd;
 }
 
 .content {

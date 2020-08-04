@@ -53,7 +53,7 @@ export default {
 	data: () => ({
 		urlTitle: "",
 		category: null,
-		destroy: true,
+		destroy: false,
 	}),
 	methods: {
 		selectCategory() {
