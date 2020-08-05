@@ -79,7 +79,7 @@
 <script>
 import Vue from "vue";
 import { mapState } from "vuex";
-import { elementPosition, observeMouseMove } from "@kaciras-blog/uikit/src/index";
+import { edgeScroll, moveElement, observeMouseMove } from "@kaciras-blog/uikit";
 import api from "@/api";
 import { errorMessage } from "@/utils";
 import FriendCard from "./FriendCard";
@@ -125,6 +125,7 @@ class GridDraggingRegion {
 		return this.getRow(y) * this.columns + this.getColumn(x);
 	}
 
+	// 这里不要用 round，而是要向下取整
 	getColumn(x) {
 		const c = Math.floor((x - this.xOffset) / this.tW);
 		return Math.max(0, Math.min(c, this.columns - 1));
@@ -165,8 +166,8 @@ function dragSort(region, sort, event, el) {
 
 	const observer = {
 		next({ x, y }) {
-			el.style.left = x + "px";
-			el.style.top = y + "px";
+			x += pageXOffset;
+			y += pageYOffset;
 			sort.dragOver(region.getIndex(x, y));
 		},
 		complete() {
@@ -175,7 +176,7 @@ function dragSort(region, sort, event, el) {
 		},
 	};
 
-	observeMouseMove().pipe(elementPosition(event, el)).subscribe(observer);
+	observeMouseMove().pipe(edgeScroll(), moveElement(event, el)).subscribe(observer);
 }
 
 export default {
@@ -257,10 +258,10 @@ export default {
 
 			// 不能使用 dragEl.style = {...}
 			Object.assign(dragEl.style, {
-				position: "absolute",
-				top: rect.top + pageYOffset + "px",
-				left: rect.left + pageXOffset + "px",
-				zIndex: 10,
+				position: "fixed",
+				top: rect.top  + "px",
+				left: rect.left + "px",
+				zIndex: 10000,
 				cursor: "grabbing",
 			});
 			document.body.appendChild(dragEl);

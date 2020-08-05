@@ -20,7 +20,7 @@
 					v-bind="item"
 					@switch-expand="item.expand = !item.expand"
 					@remove="remove"
-					@drag-start="e => drag(e, item)"
+					@drag-start="drag($event, item)"
 				/>
 			</template>
 		</div>
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { elementPosition, observeMouseMove } from "@kaciras-blog/uikit";
+import { moveElement, observeMouseMove } from "@kaciras-blog/uikit";
 import api from "@/api";
 import { attachRandomId, deleteOn } from "@/utils";
 import CardListItem from "./CardListItem";
@@ -52,7 +52,7 @@ class ListDraggingRegion {
 
 	// 索引必须要取整
 	getIndex(x, y) {
-		return Math.round((y - this.offset) / this.territory);
+		return Math.floor((y - this.offset) / this.territory);
 	}
 }
 
@@ -122,12 +122,12 @@ export default {
 			// 被拖动元素放到单独的位置，并设为绝对定位。
 			const dragEl = el.cloneNode(true);
 			Object.assign(dragEl.style, {
-				width: rect.width + "px",
-				position: "absolute",
-				top: rect.top + "px",
+				position: "fixed",
 				left: rect.left + "px",
-
-				margin: 0, // TODO: 怎么防止class里的间距干扰
+				top: rect.top + "px",
+				width: rect.width + "px",
+				zIndex: 10000,
+				margin: 0, // 防止间距干扰定位
 			});
 			document.body.appendChild(dragEl);
 
@@ -146,10 +146,8 @@ export default {
 				cards.splice(i, 0, holder);
 			}
 
-			observeMouseMove().pipe(elementPosition(event, el)).subscribe({
+			observeMouseMove().pipe(moveElement(event, dragEl)).subscribe({
 				next: ({ x, y }) => {
-					dragEl.style.left = x + "px";
-					dragEl.style.top = y + "px";
 					insertInto(Math.max(0, Math.min(region.getIndex(x, y), cards.length - 1)));
 				},
 				complete: () => {

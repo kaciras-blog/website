@@ -29,7 +29,7 @@
 	"dependencies": {
 		"@iktakahiro/markdown-it-katex": "^4.0.0",
 		"@kaciras-blog/server": "^0.10.7",
-		"@kaciras-blog/uikit": "^0.6.1",
+		"@kaciras-blog/uikit": "^0.6.3",
 		"axios": "^0.19.2",
 		"date-fns": "^2.15.0",
 		"epic-spinners": "^1.1.0",
@@ -67,7 +67,7 @@
 		"babel-eslint": "^10.1.0",
 		"babel-jest": "^26.2.2",
 		"core-js": "^3.6.5",
-		"eslint": "^7.5.0",
+		"eslint": "^7.6.0",
 		"eslint-config-standard": "^14.1.1",
 		"eslint-plugin-import": "^2.22.0",
 		"eslint-plugin-jest": "^23.20.0",
