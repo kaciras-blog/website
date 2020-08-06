@@ -220,7 +220,7 @@ export default {
 }
 
 .section {
-	padding: 25px 12px;
+	padding: 25px 14px;
 
 	@media screen and(min-width: @length-screen-mobile) {
 		padding: 50px 5vw;

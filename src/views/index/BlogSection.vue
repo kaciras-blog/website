@@ -151,7 +151,7 @@ export default {
 	}
 
 	.card_list {
-		grid-gap: 20px;
+		grid-gap: 14px;
 	}
 
 	.name {
