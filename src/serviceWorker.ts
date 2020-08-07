@@ -1,54 +1,6 @@
 import { MessageType } from "@/service-worker/message";
+import { setResult } from "./sw-config";
 import { reportSWError } from "./error-report";
-
-interface ReplyMessage {
-	id: number;
-	type: MessageType.Reply;
-	result?: any;
-	error?: Error;
-}
-
-interface PromiseController {
-
-	resolve(value?: any): void;
-
-	reject(reason?: any): void;
-}
-
-let messageCounter = 0;
-
-const callbacks = new Map<number, PromiseController>();
-
-// ServiceWorker 是否注册成功应当提前检查，这里认为 controller 一定不为 null。
-function sendMessage<T>(type: MessageType, data?: any) {
-	const id = messageCounter++;
-	navigator.serviceWorker.controller!.postMessage({ type, id, data });
-	return new Promise<T>((resolve, reject) => callbacks.set(id, { resolve, reject }));
-}
-
-export function putSetting<T>(key: string, value: T) {
-	return sendMessage<T>(MessageType.PutSetting, { key, value });
-}
-
-export function getSettings() {
-	return sendMessage(MessageType.GetSettings);
-}
-
-function setResult(data: ReplyMessage) {
-	const promise = callbacks.get(data.id);
-	if (!promise) {
-		return;
-	}
-	callbacks.delete(data.id)
-
-	if ("error" in data) {
-		promise.reject(data.error);
-	} else {
-		promise.resolve(data.result);
-	}
-}
-
-// ===================================================================================
 
 const SCRIPT_PATH = "/sw.js";
 
