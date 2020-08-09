@@ -1,7 +1,12 @@
 import { AbstractResource } from "./core";
 
+export enum FriendAccidentType {
+	AbandonedMe = "AbandonedMe",
+	Inaccessible = "Inaccessible",
+}
+
 export interface FriendAccident {
-	type: number;
+	type: FriendAccidentType;
 	name: string;
 	url: string;
 	time: number

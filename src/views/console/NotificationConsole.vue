@@ -19,8 +19,8 @@
 					{{ item.name }}
 				</a>
 
-				<template v-if="item.type === 0">删除了我的友链</template>
-				<template v-else-if="item.type === 1">无法访问</template>
+				<template v-if="item.type === 'AbandonedMe'">删除了我的友链</template>
+				<template v-else>无法访问</template>
 
 				<time :class="$style.time">
 					{{ item.time | localDateMinute }}
