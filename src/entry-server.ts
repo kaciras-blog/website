@@ -83,7 +83,7 @@ export default async (context: RenderContext) => {
 	/*
 	 * 路由配置里最后一条把所有未匹配的路由都转到错误页，
 	 * 故 router.getMatchedComponents() 不会返回空数组，也无法用其区分404.
-	 * 目前的方案是在 ErrorPage.vue 里设置一个标识表示 NotFound.
+	 * 目前的方案是在 error/Index.vue 里设置一个标识表示 NotFound.
 	 */
 	const componentTasks = (router.getMatchedComponents() as any[])
 		.filter(c => c.asyncData)

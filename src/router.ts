@@ -1,8 +1,8 @@
 import Vue from "vue";
 import Router, { RouteConfig } from "vue-router";
 import { Position, Route } from "vue-router/types/router";
-import IndexPage from "./views/index/IndexPage.vue";
-import ErrorPage from "./views/error/ErrorPage.vue";
+import IndexPage from "./views/index/Index.vue";
+import ErrorPage from "./views/error/Index.vue";
 
 Vue.use(Router);
 
@@ -47,46 +47,46 @@ export default function CreateRouter() {
 		},
 		{
 			path: "/list/:index",
-			component: () => import(/* webpackChunkName: "list" */ "./views/list/ArticleListPage.vue"),
+			component: () => import(/* webpackChunkName: "list" */ "./views/list/Index.vue"),
 			meta: { title: "所有文章" },
 		},
 		{
 			path: "/category/:id",
-			component: () => import(/* webpackChunkName: "category" */"./views/category/CategoryPage.vue"),
+			component: () => import(/* webpackChunkName: "category" */"./views/category/Index.vue"),
 		},
 		{
 			path: "/category/:id/:name",
-			component: () => import(/* webpackChunkName: "category" */ "./views/category/CategoryPage.vue"),
+			component: () => import(/* webpackChunkName: "category" */ "./views/category/Index.vue"),
 		},
 		{
 			path: "/login",
-			component: () => import(/* webpackChunkName: "login" */ "./views/login/LoginPage.vue"),
+			component: () => import(/* webpackChunkName: "login" */ "./views/login/Index.vue"),
 			meta: { title: "登录" },
 		},
 		{
 			path: "/article/:id",
-			component: () => import(/* webpackChunkName: "article" */ "./views/article/ArticlePage.vue"),
+			component: () => import(/* webpackChunkName: "article" */ "./views/article/Index.vue"),
 		},
 		{
 			path: "/article/:id/:urlTitle",
-			component: () => import(/* webpackChunkName: "article" */ "./views/article/ArticlePage.vue"),
+			component: () => import(/* webpackChunkName: "article" */ "./views/article/Index.vue"),
 		},
 		{
 			path: "/edit/:draftId",
-			component: () => import(/* webpackChunkName: "edit" */ "./views/editor/EditPage.vue"),
+			component: () => import(/* webpackChunkName: "edit" */ "./views/editor/Index.vue"),
 			props: true,
 			meta: { title: "文章编辑器" },
 		},
 		{
 			path: "/profile",
-			component: () => import(/* webpackChunkName: "profile" */ "./views/user/UserProfilePage.vue"),
+			component: () => import(/* webpackChunkName: "profile" */ "./views/user/Index.vue"),
 			meta: { title: "用户" },
 		},
 
 		// webpackChunkName 告诉 webpack 把他们打包在一个文件里
 		{
 			path: "/about",
-			component: () => import(/* webpackChunkName: "about" */ "./views/about/AboutPage.vue"),
+			component: () => import(/* webpackChunkName: "about" */ "./views/about/Index.vue"),
 			children: [
 
 				// TODO: Google把它也单独收录了，但实际应该只收录重定向后的

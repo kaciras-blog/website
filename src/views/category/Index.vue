@@ -14,7 +14,6 @@
 import { mapState } from "vuex";
 import PageHeader from "./PageHeader";
 import PageBody from "./PageBody";
-import api from "../../api";
 import TitleMixin from "../../title-mixin";
 import FamilySection from "./FamilySection";
 

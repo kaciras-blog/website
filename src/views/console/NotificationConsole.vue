@@ -5,7 +5,7 @@
 		</div>
 
 		<ul :class="$style.list">
-			<li v-for="item of friends" :key="item.url" class="segment">
+			<li v-for="item of friends" class="segment">
 				<span :class="$style.friendLabel">
 					友链
 				</span>
@@ -29,7 +29,7 @@
 		</ul>
 
 		<ul :class="$style.list">
-			<li v-for="item of discussions" :key="item.url" class="segment">
+			<li v-for="item of discussions" class="segment">
 				<header>
 					<span :class="$style.diasussionLabel">
 						评论

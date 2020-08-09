@@ -61,7 +61,7 @@ export async function initialize() {
 	}
 }
 
-/*
+/**
  * 启用ServiceWorker功能，该函数只能在客户端使用。
  *
  * 等到 window.load 事件时再注册，以免 ServiceWorker 里加载的资源占用首屏宽带。

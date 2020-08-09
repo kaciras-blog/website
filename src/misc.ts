@@ -26,8 +26,6 @@ if (GOOGLE_ANALYTICS_ID) {
 	document.head.append(script)
 }
 
-// ==================== 检测不支持的浏览器，显示一个提示栏 ====================
-
 /**
  * 判断浏览器是否支持，根据：
  *
@@ -48,6 +46,7 @@ function isSupportedBrowser() {
 	return CSS.supports("display", "grid");
 }
 
+// 检测不支持的浏览器，显示一个提示栏
 if (!isSupportedBrowser()) {
 	const alert = document.createElement("div");
 	alert.className = "global-error";

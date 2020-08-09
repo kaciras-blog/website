@@ -12,9 +12,7 @@ interface ReplyMessage {
  */
 interface PromiseController {
 	timer: number;
-
 	resolve(value?: any): void;
-
 	reject(reason?: any): void;
 }
 
