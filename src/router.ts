@@ -111,7 +111,7 @@ export default function CreateRouter() {
 		},
 		{
 			path: "/console",
-			component: () => import(/* webpackChunkName: "console" */ "./views/console/ConsolePage.vue"),
+			component: () => import(/* webpackChunkName: "console" */ "./views/console/Index.vue"),
 			meta: { title: "控制台", requireAuth: true },
 		},
 		{

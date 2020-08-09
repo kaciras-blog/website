@@ -1,7 +1,8 @@
 import axios, { AxiosRequestConfig, CancelToken } from "axios";
 import { CancellationToken } from "@kaciras-blog/uikit";
 import { RequestConfigProcessor, ServerList, ServerListFilter } from "./core";
-// 为了让IDE能够分析类型只能一个个导入再导出
+
+// 为了让IDE能够分析类型只能一个个导入再导出，这么写好啰嗦啊
 import ArticleApi from "./article";
 import DraftApi from "./draft";
 import CategoryApi from "./category";
@@ -11,6 +12,7 @@ import FriendApi from "./firend";
 import MiscApi from "./misc";
 import ConfigApi from "./config";
 import RecommendApi from "./cards";
+import NotificationApi from "./notification";
 
 export * from "./article";
 export * from "./draft";
@@ -21,6 +23,7 @@ export * from "./firend";
 export * from "./misc";
 export * from "./config";
 export * from "./cards";
+export * from "./notification";
 
 const CSRF_COOKIE_NAME = "CSRF-Token";
 const CSRF_HEADER_NAME = "X-CSRF-Token";
@@ -117,6 +120,7 @@ Api.register("user", UserApi);
 Api.register("config", ConfigApi);
 Api.register("recommend", RecommendApi);
 Api.register("misc", MiscApi);
+Api.register("notification", NotificationApi);
 
 // 也是为了让IDE能够提示
 export interface Api {
@@ -129,6 +133,7 @@ export interface Api {
 	config: ConfigApi;
 	recommend: RecommendApi;
 	misc: MiscApi;
+	notification: NotificationApi;
 }
 
 export default new Api(DEFAULT_SERVERS);

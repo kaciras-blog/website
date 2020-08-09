@@ -10,6 +10,10 @@
 			</router-link>
 		</nav>
 
+		<!--
+			如果用路由来导航面板，可以让URL更好看，而且能记住历史直接跳转到对应的面板上。
+			但是 VueRouter 要求初始化时就配置好子路由，这样就难以分离代码，所以这里还是用动态组件。
+		-->
 		<aside :class="$style.tabs">
 			<h1>控制台</h1>
 			<ul class="clean-list" role="tablist">
@@ -46,9 +50,9 @@ import DraftConsole from "./DraftConsole";
 import CategoryConsole from "./CategoryConsole";
 import CardsConsole from "./CardsConsole";
 import DiscussionConsole from "./DiscussionConsole";
+import NotificationConsole from "./NotificationConsole";
 
 export default {
-	name: "ConsolePage",
 	data: () => ({
 		views: [
 			{ view: ArticleConsole, label: "文章列表" },
@@ -56,6 +60,7 @@ export default {
 			{ view: DiscussionConsole, label: "评论" },
 			{ view: CardsConsole, label: "首页卡片" },
 			{ view: CategoryConsole, label: "分类" },
+			{ view: NotificationConsole, label: "消息通知" },
 		],
 		active: ArticleConsole,
 	}),
@@ -124,7 +129,7 @@ export default {
 .tabItem {
 	composes: click-item from global;
 
-	padding: .8rem 0;
+	padding: 10px 0;
 	transform: rotateZ(0);
 
 	font-size: 1rem;
