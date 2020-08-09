@@ -1,5 +1,5 @@
 // 把ServiceWorker里的错误发送到任意一个页面，然后提交到Sentry
-import { MessageType } from "@/service-worker/message";
+import { MessageType } from "./message";
 
 declare const clients: Clients;
 

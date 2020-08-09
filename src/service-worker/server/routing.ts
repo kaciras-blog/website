@@ -1,5 +1,5 @@
 import { FetchFn, staleWhileRevalidate } from "./fetch-strategy";
-import { ManagedCache } from "@/service-worker/cache";
+import { ManagedCache } from "./cache";
 
 export class Router {
 

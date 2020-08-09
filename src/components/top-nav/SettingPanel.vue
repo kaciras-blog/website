@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { getSettings, putSetting } from "@/sw-config";
+import { getSettings, putSetting } from "@/service-worker/client/settings";
 
 export default {
 	name: "SettingPanel",

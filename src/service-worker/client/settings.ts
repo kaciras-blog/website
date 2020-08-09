@@ -1,4 +1,4 @@
-import { MessageType } from "@/service-worker/message";
+import { MessageType } from "../server/message";
 
 interface ReplyMessage {
 	id: number;

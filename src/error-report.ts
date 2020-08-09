@@ -1,7 +1,7 @@
 import * as Sentry from '@sentry/browser';
 import { Vue as VueIntegration } from '@sentry/integrations';
 import Vue from "vue";
-import { ErrorRecordMessage } from "./serviceWorker";
+import { ErrorRecordMessage } from "@/service-worker/client/installer";
 
 if (process.env.SENTRY_DSN) {
 	Sentry.init({

@@ -1,6 +1,6 @@
-import { MessageType } from "@/service-worker/message";
-import { setResult } from "./sw-config";
-import { reportSWError } from "./error-report";
+import { MessageType } from "../server/message";
+import { setResult } from "./settings";
+import { reportSWError } from "@/error-report";
 
 const SCRIPT_PATH = "/sw.js";
 
