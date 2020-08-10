@@ -29,7 +29,7 @@ router.addRoute(new RegexRoute("/static/", fetcher));
 
 // Twitter 的代码里也是这样一个个写死的
 // https://abs.twimg.com/responsive-web/serviceworker/main.e531acd4.js 格式化后的第6200行
-const APP_SHELL_RE = new RegExp("^/(?:$|list|category|login|article|edit|profile|about|console|error)")
+const APP_SHELL_RE = new RegExp("^/(?:$|list|login|article|edit|profile|about|console|error)")
 const APP_SHELL_NAME = "/app-shell.html";
 router.addRoute(new AppShellRoute(cache, APP_SHELL_NAME, APP_SHELL_RE));
 

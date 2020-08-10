@@ -51,14 +51,6 @@ export default function CreateRouter() {
 			meta: { title: "所有文章" },
 		},
 		{
-			path: "/category/:id",
-			component: () => import(/* webpackChunkName: "category" */"./views/category/Index.vue"),
-		},
-		{
-			path: "/category/:id/:name",
-			component: () => import(/* webpackChunkName: "category" */ "./views/category/Index.vue"),
-		},
-		{
 			path: "/login",
 			component: () => import(/* webpackChunkName: "login" */ "./views/login/Index.vue"),
 			meta: { title: "登录" },

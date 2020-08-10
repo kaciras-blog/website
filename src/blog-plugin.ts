@@ -1,6 +1,6 @@
 import { VueConstructor } from "vue";
 import { format } from "date-fns";
-import { Article, Category } from "@/api";
+import { Article } from "@/api";
 
 import SelectCategoryDialog from "./components/SelectCategoryDialog.vue";
 import TopNavBody from "./components/top-nav/TopNavBody.vue";
@@ -27,16 +27,11 @@ export function articleLink({ id, urlTitle }: Article) {
 	return `/article/${id}/${urlTitle}`;
 }
 
-export function categoryLink({ id, name }: Category) {
-	return `/category/${id}/${name}`;
-}
-
 export default function install(Vue: VueConstructor) {
 	Vue.filter("localDate", (timestamp: number) => format(timestamp, "yyyy-M-d"));
 	Vue.filter("localDateMinute", (timestamp: number) => format(timestamp, "yyyy-M-d HH:mm"));
 
 	Vue.filter("articleLink", articleLink);
-	Vue.filter("categoryLink", categoryLink);
 
 	Vue.component(DiscussionSection.name, DiscussionSection);
 	Vue.component(TopNavBody.name, TopNavBody);

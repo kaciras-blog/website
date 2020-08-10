@@ -34,7 +34,6 @@
 			<span
 				v-for="c in item.categories"
 				:key="c.id"
-				:to="c | categoryLink"
 				class="tag-group-item"
 			>
 				{{c.name}}
@@ -49,11 +48,13 @@
 			</span>
 
 			<span title="浏览数" class="meta">
-				<i class="fa fa-eye"/>{{item.viewCount}}
+				<i class="fa fa-eye"/>
+				{{item.viewCount}}
 			</span>
 
 			<span title="评论数" class="meta">
-				<i class="fas fa-comment-dots"/>{{item.discussionCount}}
+				<i class="fas fa-comment-dots"/>
+				{{item.discussionCount}}
 			</span>
 		</div>
 	</li>
@@ -61,7 +62,7 @@
 
 <script>
 export default {
-	name: "ArticlePreviewItem",
+	name: "PreviewItem",
 	props: {
 		item: {
 			type: Object,

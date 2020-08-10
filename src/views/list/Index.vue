@@ -16,7 +16,7 @@
 				>
 					<template v-slot="{ items }">
 						<ul class="clean-list">
-							<article-preview-item
+							<preview-item
 								v-for="item of items"
 								:key="item.id"
 								:item="item"
@@ -41,14 +41,14 @@
 import { mapState } from "vuex";
 import api from "@/api";
 import AsidePanel from "./AsidePanel";
-import ArticlePreviewItem from "./ArticlePreviewItem";
+import PreviewItem from "./PreviewItem";
 
 const DEFAULT_PAGE_SIZE = 10;
 
 export default {
 	name: "ArticleListPage",
 	components: {
-		ArticlePreviewItem,
+		PreviewItem,
 		AsidePanel,
 	},
 	async asyncData(session) {
