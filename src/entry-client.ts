@@ -11,6 +11,14 @@ import { REFRESH_USER, SET_PREFETCH_DATA, SET_SUN_PHASE } from "@/store/types";
 import * as loadingIndicator from "./loading-indicator";
 import { PrefetchContext } from "./prefetch";
 import { isOnlyHashChange } from "./utils";
+import { Route } from "vue-router";
+import { Component, NavigationGuardNext } from "vue-router/types/router";
+
+interface SSRGlobalVariables {
+	__INITIAL_STATE__: any;
+}
+
+declare const window: Window & SSRGlobalVariables;
 
 useServiceWorker();
 
@@ -18,7 +26,10 @@ let cancelToken = CancellationToken.NEVER;
 
 class ClientPrefetchContext extends PrefetchContext {
 
-	constructor(route, cancelToken) {
+	readonly cancelToken: CancellationToken;
+	readonly route: Route;
+
+	constructor(route: Route, cancelToken: CancellationToken) {
 		super();
 		this.route = route;
 		this.cancelToken = cancelToken;
@@ -37,9 +48,9 @@ class ClientPrefetchContext extends PrefetchContext {
 	}
 }
 
-function prefetchComponents(to, activated, next) {
+function prefetchComponents(to: Route, activated: Component[], next: NavigationGuardNext) {
 
-	function nextWrapper(...args) {
+	function nextWrapper(...args: any[]) {
 		if (to.meta.title) {
 			document.title = to.meta.title + " - Kaciras的博客";
 		}
@@ -50,7 +61,7 @@ function prefetchComponents(to, activated, next) {
 		return nextWrapper();
 	}
 
-	prefetch(to, activated.filter(c => c.asyncData), nextWrapper);
+	prefetch(to, activated.filter(c => (c as any).asyncData), nextWrapper);
 }
 
 /**
@@ -60,11 +71,11 @@ function prefetchComponents(to, activated, next) {
  * @param components 需要预载数据的组件数组
  * @param next 进行管道中的下一个钩子
  */
-function prefetch(route, components, next) {
+function prefetch(route: Route, components: Component[], next: NavigationGuardNext) {
 	loadingIndicator.startPrefetch();
 
 	const context = new ClientPrefetchContext(route, cancelToken);
-	const tasks = components.map(c => c.asyncData(context));
+	const tasks = components.map(c => (c as any).asyncData(context));
 
 	Promise.all(tasks).then(() => {
 		if (cancelToken.isCancelled) {
@@ -101,8 +112,8 @@ function prefetch(route, components, next) {
 
 // mixin 必须在创建 Vue 实例之前
 Vue.mixin({
-	beforeRouteUpdate(to, from, next) {
-		if (!this.$options.asyncData) {
+	beforeRouteUpdate(this: Vue, to, from, next) {
+		if (!(this.$options as any).asyncData) {
 			return next();
 		}
 		cancelToken = loadingIndicator.start();
@@ -128,7 +139,7 @@ function initAppAndRouterHook() {
 	loadingIndicator.mount();
 
 	// 切换视图后关掉所有弹窗
-	router.afterEach(vue.$dialog.clear);
+	router.afterEach((vue as any).$dialog.clear);
 
 	/**
 	 * 相比于官网示例，这里把加载指示器提前到 beforeEach 钩子，以便在异步组件下载前就开始加载提示。

@@ -48,7 +48,7 @@ articleRenderer.use(tableOfContent);
  *
  * 【Vue-Router 兼容性】
  * 由 Markdown 渲染的标题链接会触发 Vue-Router 的路由流程，需要在路由钩子里做检查以跳过预载，
- * 具体见 entry-client.js 中的 router.beforeEach 钩子。
+ * 具体见 entry-client.ts 中的 router.beforeEach 钩子。
  */
 articleRenderer.use(Anchor, {
 
