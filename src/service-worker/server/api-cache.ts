@@ -3,7 +3,7 @@ import { Route } from "./routing";
 import { FetchFn, networkFirst, staleWhileRevalidate, timeout } from "./fetch-strategy";
 import { bind, initPromise } from "./settings";
 
-const API_CACHE_NAME = "api-v1.1";
+const API_CACHE_NAME = "api-v1.2";
 
 class ApiOfflineRoute implements Route {
 

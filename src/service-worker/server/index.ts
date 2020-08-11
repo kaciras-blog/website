@@ -18,7 +18,7 @@ declare const serviceWorkerOption: {
 
 initializeSettingManager();
 
-const STATIC_CACHE_NAME = "static-v1.3";
+const STATIC_CACHE_NAME = "static-v1.4";
 
 const cache = new CacheWrapper(STATIC_CACHE_NAME);
 const router = new Router();

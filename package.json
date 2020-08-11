@@ -1,6 +1,6 @@
 {
 	"name": "@kaciras-blog/website",
-	"version": "1.0.0",
+	"version": "1.4.0",
 	"description": "Kaciras Blog web pages",
 	"license": "MIT",
 	"author": {
@@ -68,7 +68,6 @@
 		"babel-jest": "^26.3.0",
 		"core-js": "^3.6.5",
 		"eslint": "^7.6.0",
-		"eslint-config-standard": "^14.1.1",
 		"eslint-plugin-import": "^2.22.0",
 		"eslint-plugin-jest": "^23.20.0",
 		"eslint-plugin-node": "^11.1.0",
