@@ -24,7 +24,7 @@ function scrollBehavior(to: Route, from: Route, savedPosition: Position | void) 
 	} else {
 		const position: any = {};
 		if (to.hash) {
-			position.selector = to.hash;
+			position.selector = decodeURIComponent(to.hash);
 		}
 		if (!to.matched.some(m => m.meta.retainScroll)) {
 			position.x = 0;
