@@ -1,18 +1,12 @@
 // 注意导入顺序，因为打包后CSS里元素的顺序跟导入顺序一致，所以 main.ts 必须靠前
 import "./error-report";
 import "./misc";
-import Vue from "vue";
 import createApp, { mediaQueryPlugin } from "./main";
-import { CancellationToken } from "@kaciras-blog/uikit";
-import api from "@/api";
 import { useServiceWorker } from "@/service-worker/client/installer";
 import { SUN_PHASES } from "@/store";
-import { REFRESH_USER, SET_PREFETCH_DATA, SET_SUN_PHASE } from "@/store/types";
+import { REFRESH_USER, SET_SUN_PHASE } from "@/store/types";
 import * as loadingIndicator from "./loading-indicator";
-import { PrefetchContext } from "./prefetch";
-import { isOnlyHashChange } from "./utils";
-import { Route } from "vue-router";
-import { Component, NavigationGuardNext } from "vue-router/types/router";
+import { installRouterHooks, prefetchComponents } from "./client-prefetch";
 
 interface SSRGlobalVariables {
 	__INITIAL_STATE__: any;
@@ -22,105 +16,6 @@ declare const window: Window & SSRGlobalVariables;
 
 useServiceWorker();
 
-let cancelToken = CancellationToken.NEVER;
-
-class ClientPrefetchContext extends PrefetchContext {
-
-	readonly cancelToken: CancellationToken;
-	readonly route: Route;
-
-	constructor(route: Route, cancelToken: CancellationToken) {
-		super();
-		this.route = route;
-		this.cancelToken = cancelToken;
-	}
-
-	get api() {
-		return api;
-	}
-
-	get store() {
-		return store;
-	}
-
-	get isServer() {
-		return false;
-	}
-}
-
-function prefetchComponents(to: Route, activated: Component[], next: NavigationGuardNext) {
-
-	function nextWrapper(...args: any[]) {
-		if (to.meta.title) {
-			document.title = to.meta.title + " - Kaciras的博客";
-		}
-		return next(...args);
-	}
-
-	if (!activated.length) {
-		return nextWrapper();
-	}
-
-	prefetch(to, activated.filter(c => (c as any).asyncData), nextWrapper);
-}
-
-/**
- * 处理预加载任务，包括显示加载指示器、错误页面、防止取消后跳转等。
- *
- * @param route 即将要进入的目标路由对象
- * @param components 需要预载数据的组件数组
- * @param next 进行管道中的下一个钩子
- */
-function prefetch(route: Route, components: Component[], next: NavigationGuardNext) {
-	loadingIndicator.startPrefetch();
-
-	const context = new ClientPrefetchContext(route, cancelToken);
-	const tasks = components.map(c => (c as any).asyncData(context));
-
-	Promise.all(tasks).then(() => {
-		if (cancelToken.isCancelled) {
-			next(false);
-			console.debug(`导航被取消：${route.path}`);
-		} else {
-			store.commit(SET_PREFETCH_DATA, context.data);
-			next();
-		}
-		loadingIndicator.finishSuccessful();
-	}).catch((err) => {
-		if (cancelToken.isCancelled) {
-			next(false);
-			return console.debug(`导航被取消：${route.path}`);
-		}
-		switch (err.code) {
-			case -1:
-				break;
-			case 301:
-			case 302:
-				loadingIndicator.finishSuccessful();
-				return next(err.location);
-			case 404:
-			case 410:
-				next({ path: "/error/" + err.code, replace: true });
-				break;
-			default:
-				console.error(err);
-				next("/error/500");
-		}
-		loadingIndicator.finishWithError();
-	});
-}
-
-// mixin 必须在创建 Vue 实例之前
-Vue.mixin({
-	beforeRouteUpdate(this: Vue, to, from, next) {
-		if (!(this.$options as any).asyncData) {
-			return next();
-		}
-		cancelToken = loadingIndicator.start();
-		prefetch(to, [this.$options], next);
-	},
-});
-
 const { vue, router, store } = createApp(window.__INITIAL_STATE__);
 
 /**
@@ -129,7 +24,7 @@ const { vue, router, store } = createApp(window.__INITIAL_STATE__);
  *   2.处理一些异常情况，例如跳转。在出现内部错误时显示错误页面。
  *   3.允许取消正在进行的预加载，并中止网络请求（需要预加载函数支持）。
  */
-function initAppAndRouterHook() {
+function init() {
 
 	// 这俩要放在挂载的前面，因为它们影响关键的元素
 	mediaQueryPlugin.observeWindow(store);
@@ -138,39 +33,10 @@ function initAppAndRouterHook() {
 	vue.$mount("#app");
 	loadingIndicator.mount();
 
+	installRouterHooks(store, router);
+
 	// 切换视图后关掉所有弹窗
 	router.afterEach((vue as any).$dialog.clear);
-
-	/**
-	 * 相比于官网示例，这里把加载指示器提前到 beforeEach 钩子，以便在异步组件下载前就开始加载提示。
-	 *
-	 * 另外，文章页面有 Markdown 生成的标题跳转链接，这些链接都是页内跳转不需要走预加载流程，所以
-	 * 这里检查下是否仅 HASH 变化，如果是则跳过预载流程。
-	 *
-	 * 在 isOnlyHashChange 为 true 时，应当直接返回而不是 return next(false)，否则浏览器URL不会改变。
-	 */
-	router.beforeEach((to, from, next) => {
-		if (isOnlyHashChange(to, from)) {
-			return;
-		}
-		cancelToken = loadingIndicator.start();
-		return next();
-	});
-
-	// 使用 router.beforeResolve()，以便确保所有异步组件都 resolve。
-	router.beforeResolve((to, from, next) => {
-		if (cancelToken.isCancelled) {
-			console.debug(`导航被取消：${to.path}`);
-			return next(false);
-		}
-
-		// （这段是官网给的）我们只关心非预渲染的组件，所以我们对比它们，找出两个匹配列表的差异组件。
-		const matched = router.getMatchedComponents(to);
-		const previous = router.getMatchedComponents(from);
-		let diffed = false;
-		const activated = matched.filter((c, i) => diffed || (diffed = (previous[i] !== c)));
-		prefetchComponents(to, activated, next);
-	});
 }
 
 /*
@@ -180,9 +46,9 @@ function initAppAndRouterHook() {
  * 路由 resolve 后执行，以便我们不会二次预取(double-fetch)已有的数据。
  */
 if (window.__INITIAL_STATE__) {
-	router.onReady(initAppAndRouterHook);
+	router.onReady(init);
 	delete window.__INITIAL_STATE__;
 } else {
-	prefetchComponents(router.currentRoute, router.getMatchedComponents(), initAppAndRouterHook);
+	prefetchComponents(store, router.currentRoute, router.getMatchedComponents(), init);
 	store.dispatch(REFRESH_USER); // AppShell 模式不会在服务端加载用户
 }

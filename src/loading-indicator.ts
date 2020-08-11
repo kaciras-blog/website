@@ -24,8 +24,9 @@ export function start() {
 	fetching = true;
 
 	cancelToken = CancellationToken.create();
-	setTimeout(() => cancelToken.cancel(), 10_000);
+	setTimeout(cancelToken.cancel.bind(cancelToken), 10_000);
 	cancelToken.addListener(progressBar.reset);
+
 	return cancelToken;
 }
 
