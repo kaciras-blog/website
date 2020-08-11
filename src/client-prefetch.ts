@@ -1,4 +1,10 @@
-import Vue from "vue";
+/*
+ * 导航前加载数据，在官方教程的基础上修改而来，增加了以下功能：
+ *   1.在异步组件解析前就显示加载指示器，让过渡更顺畅。
+ *   2.处理一些异常情况，例如跳转。在出现内部错误时显示错误页面。
+ *   3.允许取消正在进行的预加载，并中止网络请求（需要预加载函数支持）。
+ */
+import Vue, { ComponentOptions } from "vue";
 import { Route } from "vue-router";
 import { Component, NavigationGuardNext, VueRouter } from "vue-router/types/router";
 import { Store } from "vuex";
@@ -11,6 +17,7 @@ import { SET_PREFETCH_DATA } from "@/store/types";
 
 let cancelToken = CancellationToken.NEVER;
 
+// @ts-ignore api & isServer on prototype.
 class ClientPrefetchContext extends PrefetchContext {
 
 	readonly store: Store<any>;
@@ -23,15 +30,10 @@ class ClientPrefetchContext extends PrefetchContext {
 		this.route = route;
 		this.cancelToken = cancelToken;
 	}
-
-	get api() {
-		return api;
-	}
-
-	get isServer() {
-		return false;
-	}
 }
+
+ClientPrefetchContext.prototype.api = api;
+ClientPrefetchContext.prototype.isServer = false;
 
 export function prefetchComponents(
 	store: Store<any>,
@@ -56,7 +58,7 @@ export function prefetchComponents(
 /**
  * 处理预加载任务，包括显示加载指示器、错误页面、防止取消后跳转等。
  *
- * @param store
+ * @param store Vuex存储实例
  * @param route 即将要进入的目标路由对象
  * @param components 需要预载数据的组件数组
  * @param next 进行管道中的下一个钩子
@@ -101,7 +103,7 @@ function prefetch(store: Store<any>, route: Route, components: Component[], next
 }
 
 // mixin 必须在创建 Vue 实例之前
-Vue.mixin({
+export const ClientPrefetchMixin: ComponentOptions<Vue> = {
 	beforeRouteUpdate(this: Vue, to, from, next) {
 		if (!(this.$options as any).asyncData) {
 			return next();
@@ -109,7 +111,7 @@ Vue.mixin({
 		cancelToken = loadingIndicator.start();
 		prefetch(this.$store, to, [this.$options], next);
 	},
-});
+}
 
 export function installRouterHooks(store: Store<any>, router: VueRouter) {
 

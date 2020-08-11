@@ -1,5 +1,9 @@
 import { AbstractResource, Pageable } from "./core";
 
+/*
+ * 由于Vue的HTML模板里无法很方便地引用到外部导入的成员，并且后端不是JS写的无法保证枚举的一致，
+ * 故使用字符串作为值而不是整数，避免次序改变以及提升模板的可读性。其它 API 里的枚举也是一样。
+ */
 export enum DeletionState {
 	ALIVE = "ALIVE",
 	DELETED = "DELETED",

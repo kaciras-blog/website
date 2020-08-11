@@ -10,7 +10,7 @@ import { PrefetchContext } from "./prefetch";
 import { REFRESH_USER, SET_PREFETCH_DATA } from "./store/types";
 import createApp, { mediaBreakpoints } from "./main";
 
-
+// @ts-ignore isServer & cancelToken on prototype.
 class ServerPrefetchContext extends PrefetchContext {
 
 	readonly store: Store<any>;
@@ -23,15 +23,10 @@ class ServerPrefetchContext extends PrefetchContext {
 		this.route = route;
 		this.api = api;
 	}
-
-	get isServer() {
-		return true;
-	}
-
-	get cancelToken() {
-		return CancellationToken.NEVER;
-	}
 }
+
+ServerPrefetchContext.prototype.isServer = true;
+ServerPrefetchContext.prototype.cancelToken = CancellationToken.NEVER;
 
 /**
  * 等待路由准备好，都什么时代了 vue-router 还在用回调式的API。
@@ -85,16 +80,16 @@ export default async (context: RenderContext) => {
 	 * 故 router.getMatchedComponents() 不会返回空数组，也无法用其区分404.
 	 * 目前的方案是在 error/Index.vue 里设置一个标识表示 NotFound.
 	 */
-	const componentTasks = (router.getMatchedComponents() as any[])
+	const tasks = (router.getMatchedComponents() as any[])
 		.filter(c => c.asyncData)
 		.map(c => c.asyncData(session));
 
 	if (!userCheckNeeded) {
-		componentTasks.push(store.dispatch(REFRESH_USER, ssrApi));
+		tasks.push(store.dispatch(REFRESH_USER, ssrApi));
 	}
 
 	try {
-		await Promise.all(componentTasks);
+		await Promise.all(tasks);
 		store.commit(SET_PREFETCH_DATA, session.data);
 	} catch (e) {
 		switch (e.code) {
@@ -114,7 +109,7 @@ export default async (context: RenderContext) => {
 		context.meta = "<meta name='description' content='欢迎来到Kaciras的博客'>";
 	}
 
-	// Vue2的类型定义......
+	// Vue2 的类型定义......
 	(context as any).state = store.state;
 
 	return vue;

@@ -1,12 +1,13 @@
 // 注意导入顺序，因为打包后CSS里元素的顺序跟导入顺序一致，所以 main.ts 必须靠前
 import "./error-report";
 import "./misc";
+import Vue from "vue";
 import createApp, { mediaQueryPlugin } from "./main";
 import { useServiceWorker } from "@/service-worker/client/installer";
 import { SUN_PHASES } from "@/store";
 import { REFRESH_USER, SET_SUN_PHASE } from "@/store/types";
 import * as loadingIndicator from "./loading-indicator";
-import { installRouterHooks, prefetchComponents } from "./client-prefetch";
+import { ClientPrefetchMixin, installRouterHooks, prefetchComponents } from "./client-prefetch";
 
 interface SSRGlobalVariables {
 	__INITIAL_STATE__: any;
@@ -16,14 +17,10 @@ declare const window: Window & SSRGlobalVariables;
 
 useServiceWorker();
 
+Vue.mixin(ClientPrefetchMixin);
+
 const { vue, router, store } = createApp(window.__INITIAL_STATE__);
 
-/**
- * 导航前加载数据，在官方教程的基础上修改而来，增加了以下功能：
- *   1.在异步组件解析前就显示加载指示器，让过渡更顺畅。
- *   2.处理一些异常情况，例如跳转。在出现内部错误时显示错误页面。
- *   3.允许取消正在进行的预加载，并中止网络请求（需要预加载函数支持）。
- */
 function init() {
 
 	// 这俩要放在挂载的前面，因为它们影响关键的元素
