@@ -6,7 +6,13 @@ import { ErrorRecordMessage } from "@/service-worker/client/installer";
 if (process.env.SENTRY_DSN) {
 	Sentry.init({
 		dsn: process.env.SENTRY_DSN,
-		integrations: [new VueIntegration({ Vue, attachProps: true })],
+		integrations: [
+			new VueIntegration({
+				Vue,
+				logErrors: true,
+				attachProps: true,
+			}),
+		],
 	});
 }
 
@@ -19,5 +25,7 @@ class ServiceWorkerError extends Error {
 }
 
 export function reportSWError(data: ErrorRecordMessage["data"]) {
-	Sentry.captureException(new ServiceWorkerError(data));
+	const e = new ServiceWorkerError(data);
+	console.error(e);
+	Sentry.captureException(e);
 }
