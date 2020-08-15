@@ -168,13 +168,67 @@ export function initLazyLoading(el) {
 	// gif 视频自动播放/暂停
 	const autoPlay = new IntersectionObserver(entries => {
 		for (const { target, intersectionRatio } of entries) {
-			intersectionRatio > 0 ? target.play() : target.pause();
+			const { _controller } = target;
+			intersectionRatio > 0 ? _controller.play() : _controller.pause();
 		}
 	});
-	el.querySelectorAll(".gif").forEach(video => autoPlay.observe(video));
+
+	el.querySelectorAll(".gif").forEach(video => {
+		autoPlay.observe(video);
+		video._controller = new VideoController(video);
+	});
 
 	return function disconnect() {
 		autoPlay.disconnect();
 		lozadImages.observer.disconnect();
 	};
+}
+
+/*
+ * 下面是临时修复测试代码，先上线看看有没有问题。
+ *
+ * https://developers.google.com/web/updates/2017/06/play-request-was-interrupted
+ */
+const UNLOAD = 0;
+const LOADING = 1;
+const LOADED = 2;
+
+class VideoController {
+
+	constructor(video) {
+		this.video = video;
+		this.state = UNLOAD;
+	}
+
+	play() {
+		const { video, state } = this;
+		switch (state) {
+			case UNLOAD:
+				this.state = LOADING;
+				video.play().then(() => this.postInit());
+				break;
+			case LOADING:
+				this.paused = false;
+				break;
+			case LOADED:
+				video.play();
+				break;
+		}
+	}
+
+	pause() {
+		const { video, state } = this;
+		if (state === LOADING) {
+			this.paused = true;
+		} else if (state === LOADED) {
+			video.pause();
+		}
+	}
+
+	postInit() {
+		if (this.paused) {
+			this.video.pause();
+		}
+		this.state = LOADED;
+	}
 }
