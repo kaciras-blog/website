@@ -18,30 +18,21 @@
 			>
 		</div>
 
-		<label :class="$style.material">
-			<span :class="$style.material_label">URL</span>
-			<input
-				v-model="value.url"
-				:class="$style.material_input"
-				placeholder="http://example.com/index"
-			>
-		</label>
+		<material-text-input
+			v-model="value.url"
+			label="URL"
+			placeholder="http://example.com/index"
+		/>
 
-		<label :class="$style.material">
-			<span :class="$style.material_label">名字（16字以内）</span>
-			<input
-				v-model.trim="value.name"
-				:class="$style.material_input"
-			>
-		</label>
+		<material-text-input
+			v-model="value.name"
+			label="名字（16字以内）"
+		/>
 
-		<label :class="$style.material">
-			<span :class="$style.material_label">对方的友链页（可选，用于检查互友）</span>
-			<input
-				v-model="value.friendPage"
-				:class="$style.material_input"
-			>
-		</label>
+		<material-text-input
+			v-model="value.friendPage"
+			label="对方的友链页（可选，用于检查互友）"
+		/>
 
 		<kx-standard-dialog-buttons @confirm="confirm"/>
 	</kx-base-dialog>
@@ -50,9 +41,13 @@
 <script>
 import { openFile } from "@kaciras-blog/uikit";
 import api from "@/api";
+import MaterialTextInput from "@/views/index/MaterialTextInput";
 
 export default {
 	name: "FriendInfoDialog",
+	components: {
+		MaterialTextInput,
+	},
 	props: {
 		name: String,
 		url: String,
@@ -120,38 +115,5 @@ export default {
 	bottom: 0;
 	.circle(@favicon-size);
 	box-shadow: 0 0 10px rgba(0, 0, 0, .3)
-}
-
-// =====================================================
-
-.material {
-	display: block;
-	margin: 16px 8px 8px 8px;
-
-	&:focus-within > .material_label {
-		color: #1672f9;
-	}
-}
-
-.material_label {
-	display: block;
-	transition: all .2s ease;
-}
-
-.material_input {
-	display: block;
-	width: 100%;
-
-	border-radius: 0;
-	border: none;
-	border-bottom: 2px solid #d0d0d0;
-	padding: 6px 0;
-
-	box-shadow: none !important;
-	transition: all .2s ease;
-
-	&:focus {
-		border-bottom-color: #1175ff;
-	}
 }
 </style>
