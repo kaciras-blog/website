@@ -102,7 +102,9 @@ function prefetch(store: Store<any>, route: Route, components: Component[], next
 	});
 }
 
-// mixin 必须在创建 Vue 实例之前
+/**
+ * mixin 必须在创建 Vue 实例之前
+ */
 export const ClientPrefetchMixin: ComponentOptions<Vue> = {
 	beforeRouteUpdate(this: Vue, to, from, next) {
 		if (!(this.$options as any).asyncData) {

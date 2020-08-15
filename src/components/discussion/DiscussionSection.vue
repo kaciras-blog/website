@@ -3,7 +3,7 @@
 		<atom-spinner
 			:animation-duration="1200"
 			:size="64"
-			color="#0776df"
+			color="#33aaff"
 		/>
 		<span :class="$style.loading_text">评论加载中</span>
 	</div>

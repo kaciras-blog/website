@@ -33,6 +33,7 @@ const directiveMap = {
 			style = `--width:${width}px; --aspect-ratio:${ratio}%`;
 		}
 
+		// 大部分浏览器只允许无声视频自动播放，不过GIF视频本来就是无声的。
 		return `
 			<p class="center-wrapper">
 				<span class="md-media-container ${sized}" style="${style}">
