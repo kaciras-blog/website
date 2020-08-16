@@ -21,16 +21,19 @@
 		<material-text-input
 			v-model="value.url"
 			label="URL"
+			name="url"
 			placeholder="http://example.com/index"
 		/>
 
 		<material-text-input
 			v-model="value.name"
+			name="name"
 			label="名字（16字以内）"
 		/>
 
 		<material-text-input
 			v-model="value.friendPage"
+			name="friendPage"
 			label="对方的友链页（可选，用于检查互友）"
 		/>
 

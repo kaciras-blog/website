@@ -27,7 +27,7 @@
 			</ul>
 		</section>
 
-		<section class="about-section">
+		<section id="friend" class="about-section">
 			<h2>友情链接</h2>
 			<img alt="example" src="../../assets/img/friend-example.png" :class="$style.example">
 			<p>

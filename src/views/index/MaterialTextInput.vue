@@ -8,6 +8,7 @@
 		</span>
 		<input
 			:class="$style.input"
+			:name="props.name"
 			:placeholder="props.placeholder"
 			:value="props.value"
 			@input="listeners.input"

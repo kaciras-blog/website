@@ -1,7 +1,7 @@
 <template>
 	<base-page-layout :class="$style.pageLayout">
 		<div :class="$style.body">
-			<div :class="$style.card" class="panel">
+			<form :class="$style.card" class="panel">
 				<h2>修改用户信息</h2>
 
 				<div :class="[$style.headSection, $style.field]">
@@ -31,7 +31,7 @@
 				</div>
 
 				<kx-button class="primary" @click="save">保存</kx-button>
-			</div>
+			</form>
 		</div>
 	</base-page-layout>
 </template>

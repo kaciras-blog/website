@@ -6,6 +6,7 @@
 		<input
 			id="name"
 			v-model="form.name"
+			name="name"
 			placeholder="中英文数字和下划线"
 			required
 			v-autofocus
@@ -15,6 +16,7 @@
 		<kx-password-input
 			input-id="password"
 			v-model="form.password"
+			name="password"
 			required
 			title="密码"
 			placeholder="至少有个8位"
@@ -25,6 +27,7 @@
 			id="email"
 			v-model="form.email"
 			type="email"
+			name="email"
 			placeholder="（可选）不填也行"
 		>
 
@@ -34,6 +37,7 @@
 				id="captcha"
 				ref="captchaInput"
 				v-model="form.captcha"
+				name="captcha"
 				title="验证码"
 				:class="$style.inputCaptcha"
 				required

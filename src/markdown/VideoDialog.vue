@@ -7,6 +7,7 @@
 				<input
 					id="video_url"
 					v-model="src"
+					name="src"
 					:class="$style.text_box"
 				>
 				<kx-task-button
@@ -32,6 +33,7 @@
 					<input
 						id="video_poster"
 						v-model="label"
+						name="poster"
 						:class="$style.text_box"
 					>
 					<kx-task-button
@@ -48,6 +50,7 @@
 					<input
 						id="video_alt"
 						v-model="label"
+						name="alt"
 						:class="$style.text_box"
 					>
 				</div>

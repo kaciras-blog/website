@@ -6,6 +6,7 @@
 		<input
 			id="name"
 			v-model="form.name"
+			name="name"
 			title="用户名"
 			required
 			v-autofocus
@@ -15,6 +16,7 @@
 		<kx-password-input
 			input-id="password"
 			v-model="form.password"
+			name="password"
 			required
 			title="密码"
 		/>

@@ -8,7 +8,7 @@
 		<router-link class='highlight' to='/login'>登录</router-link>
 	</div>
 
-	<div v-else>
+	<form v-else>
 		<div>
 			<img :src="user.avatar" alt="头像" class="small head">
 
@@ -16,6 +16,7 @@
 				名字（可选）
 				<input
 					v-model="nickname"
+					name="nickname"
 					:placeholder="user.name"
 					:class="$style.nickname"
 				>
@@ -24,6 +25,7 @@
 
 		<textarea
 			:value="content"
+			name="content"
 			placeholder='说点什么吧'
 			aria-label="输入评论"
 			class='input'
@@ -43,7 +45,7 @@
 				发表评论
 			</kx-task-button>
 		</div>
-	</div>
+	</form>
 </template>
 
 <script>
