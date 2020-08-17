@@ -13,18 +13,24 @@
 					<address>Kaciras@protonmail.com</address>
 				</div>
 			</div>
+
 			<p>
-				GitHub:
-				<a class="highlight" href="https://github.com/Kaciras">https://github.com/Kaciras</a>
+				GitHub:<a class="highlight" href="https://github.com/Kaciras">https://github.com/Kaciras</a>
 			</p>
-			<ul class="clean-list" :class="$style.tag_list">
-				<li>自学码农</li>
-				<li>热爱技术</li>
-				<li>全栈开发</li>
-				<li>冻鳗</li>
-				<li>二刺螈</li>
-				<li>啥都想学</li>
-			</ul>
+
+			<p>
+				自学码农 / 热爱技术 / 全栈开发 / 冻鳗 / 二刺螈 / 啥都想学
+			</p>
+
+			<h3>名字和头像</h3>
+			<p>
+				Kaciras这个名字，是我初中玩网游时滚键盘打出来的，没有意义，我也不知道咋读。
+				后来在需要英文名的地方都用它，索性就一直用下去了。
+			</p>
+			<p>
+				头像是网上看到的，感觉挺不错就用了，原作者应该不会认识我我所以不用担心撞车……
+				不过以后还是自己做一个图好些，等我学画画……
+			</p>
 		</section>
 
 		<section id="friend" class="about-section">
@@ -55,8 +61,8 @@
 			<p>描述：编程 • 生活 • 梦想</p>
 
 			<h2>其它说明</h2>
-			<p>原则上只加技术类原创内容的站点，最好能互加友链。</p>
-			<p>本站会自动清理下线时间超过一个月的链接。</p>
+			<p>原则上只加计算机和ACG内容相关，并且是原创内容的站点。</p>
+			<p>友链最好能互加，本站会自动清理超过一个月无法访问的链接。</p>
 		</section>
 
 		<discussion-section
@@ -74,17 +80,6 @@
 	grid-template-columns: auto 1fr;
 	grid-gap: 20px;
 	margin-bottom: 1rem;
-}
-
-.tag_list {
-	display: flex;
-	flex-wrap: wrap;
-	line-height: 1.5;
-
-	& > li:not(:first-child)::before {
-		content: "/";
-		padding: 0 5px;
-	}
 }
 
 .example {
