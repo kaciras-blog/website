@@ -19,12 +19,24 @@
 					{{ item.name }}
 				</a>
 
-				<template v-if="item.type === 'AbandonedMe'">删除了我的友链</template>
-				<template v-else>无法访问</template>
+				<template v-if="item.type === 'Moved'">
+					重定向到
+					<a
+						:href="item.newUrl"
+						class="highlight"
+						target="_blank"
+					>
+						{{ item.newUrl }}
+					</a>
+				</template>
+				<template v-else-if="item.type === 'AbandonedMe'">
+					删除了我的友链
+				</template>
+				<template v-else-if="item.type === 'Inaccessible'">
+					无法访问
+				</template>
 
-				<time :class="$style.time">
-					{{ item.time | localDateMinute }}
-				</time>
+				<time :class="$style.time">{{ item.time | localDateMinute }}</time>
 			</li>
 		</ul>
 
