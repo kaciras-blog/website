@@ -13,12 +13,12 @@ props 说明:
 		@mousedown="listeners.dragstart"
 	>
 		<img
-			:src="props.friend.background"
+			:data-src="props.friend.background"
 			alt="background"
 			:class="$style.background"
 		>
 		<img
-			:src="props.friend.favicon"
+			:data-src="props.friend.favicon"
 			alt="favicon"
 			:class="$style.favicon"
 		>
