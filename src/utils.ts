@@ -78,3 +78,11 @@ export function isOnlyHashChange(to: Route, from: Route) {
 	const tp = tPath.substring(0, tPath.length - to.hash.length);
 	return fp === tp;
 }
+
+export function basename(name: string) {
+	const i = name.lastIndexOf(".");
+	if (i === -1) {
+		return name;
+	}
+	return name.slice(0, i);
+}

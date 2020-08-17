@@ -1,5 +1,5 @@
 import VueRouter from "vue-router";
-import { isOnlyHashChange } from "../src/utils";
+import { basename, isOnlyHashChange } from "../src/utils";
 
 describe('isOnlyHashChange', () => {
 	const router = new VueRouter();
@@ -16,4 +16,13 @@ describe('isOnlyHashChange', () => {
 
 	it('should support query string', () => test("/test?foo=bar", "/test?foo=bar#hash", true));
 	it('should detect query changes', () => test("/test?foo=bar", "/test?foo=___#hash", false));
+});
+
+test.each([
+	["foobar.jpg", "foobar"],
+	["foo.bar.jpg", "foo.bar"],
+	["", ""],
+	["foobar", "foobar"],
+])('basename of `%s`', (rawName, baseName) => {
+	expect(basename(rawName)).toBe(baseName);
 });

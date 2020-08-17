@@ -32,7 +32,7 @@
 				<div :class="$style.field">
 					<input
 						id="video_poster"
-						v-model="label"
+						v-model="poster"
 						name="poster"
 						:class="$style.text_box"
 					>
@@ -65,7 +65,9 @@
 </template>
 
 <script>
+import { openFile } from "@kaciras-blog/uikit";
 import api from "@/api";
+import { basename } from "@/utils";
 
 export default {
 	name: "VideoDialog",
@@ -73,13 +75,16 @@ export default {
 		src: "",
 		isVideo: false,
 		label: "",
+		poster: "",
 	}),
 	methods: {
 		async uploadVideo() {
-			this.src = await api.misc.uploadVideoFile();
+			const file = await openFile("video/*");
+			this.src = await api.misc.uploadVideo(file);
+			this.label = basename(file.name);
 		},
 		async uploadPoster() {
-			this.label = await api.misc.uploadImageFile();
+			this.poster = await api.misc.uploadImageFile();
 		},
 		enterKey() {
 			if (!this.src) {
