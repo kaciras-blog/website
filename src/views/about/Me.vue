@@ -3,7 +3,6 @@
 
 		<section class="about-section">
 			<div :class="$style.profile">
-				<!-- 本人帅气的头像绝不能压缩 -->
 				<img
 					src="/static/img/avatar.png"
 					alt="logo"
@@ -15,7 +14,8 @@
 				</div>
 			</div>
 			<p>
-				GitHub: <a class="highlight" href="https://github.com/Kaciras">https://github.com/Kaciras</a>
+				GitHub:
+				<a class="highlight" href="https://github.com/Kaciras">https://github.com/Kaciras</a>
 			</p>
 			<ul class="clean-list" :class="$style.tag_list">
 				<li>自学码农</li>
@@ -45,12 +45,18 @@
 				网站地址：
 				<a class="highlight" href="https://blog.kaciras.com">https://blog.kaciras.com</a>
 			</p>
+
+			<!-- 有些地方可能直接引用这个链接，所以要保证图标的URL不变，并且能在任意位置访问。-->
 			<p>
 				图标：
 				<a :class="$style.inlineLink" href='/static/img/avatar.png'>avatar.png</a>
 			</p>
-			<p>名字：Kaciras' Blog 或 Kaciras的博客</p>
+			<p>名字：Kaciras 或 Kaciras的博客</p>
 			<p>描述：编程 • 生活 • 梦想</p>
+
+			<h2>其它说明</h2>
+			<p>原则上只加技术类原创内容的站点，最好能互加友链。</p>
+			<p>本站会自动清理下线时间超过一个月的链接。</p>
 		</section>
 
 		<discussion-section

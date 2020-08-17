@@ -16,7 +16,7 @@
 		<div :class="$style.body">
 			<side-menu-link to="/" icon="fas fa-home">首页</side-menu-link>
 			<side-menu-link to="/list" icon="far fa-list-alt">文章</side-menu-link>
-			<side-menu-link to="/about/blogger" icon="far fa-copyright">关于</side-menu-link>
+			<side-menu-link to="/about/me" icon="far fa-copyright">关于</side-menu-link>
 
 			<side-menu-link tag="a" to="/feed/rss" icon="fa fa-rss">Feed订阅</side-menu-link>
 

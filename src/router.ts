@@ -82,11 +82,11 @@ export default function CreateRouter() {
 			children: [
 
 				// TODO: Google把它也单独收录了，但实际应该只收录重定向后的
-				{ path: "", redirect: "blogger" },
+				{ path: "", redirect: "me" },
 
 				{
-					path: "blogger",
-					component: () => import(/* webpackChunkName: "about" */ "./views/about/Blogger.vue"),
+					path: "me",
+					component: () => import(/* webpackChunkName: "about" */ "./views/about/Me.vue"),
 					meta: { title: "关于博主" },
 				},
 				{
