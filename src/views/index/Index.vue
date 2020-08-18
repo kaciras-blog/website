@@ -23,17 +23,13 @@
 			</transition>
 
 			<div
+				title="滚轮点击切换背景"
 				:class="$style.banner_content"
 				:style="titleStyle"
+				@click.middle="toNextPhase"
 			>
-				<h1
-					title="滚轮点击切换背景"
-					:class="$style.title"
-					@click.middle="toNextPhase"
-				>
-					Kaciras' Blog
-				</h1>
-				<p :class="$style.sub_title">编程 • 生活 • 梦想</p>
+				<h1 :class="$style.title">Kaciras' Blog</h1>
+				编程 • 生活 • 梦想
 			</div>
 		</section>
 
@@ -200,23 +196,23 @@ export default {
 	left: 30px;
 	right: 30px;
 
-	font-size: 12px;
+	font-size: 24px;
 	text-align: center;
 	transition: color 1s cubic-bezier(.25, .7, .7, .8);
 
 	@media screen and (min-width: @length-screen-wide) {
 		top: 35vh;
-		font-size: 1vw;
+		font-size: 2vw;
 	}
 }
 
 .title {
-	font-size: 5em;
-	margin-bottom: .5em;
-}
-
-.sub_title {
 	font-size: 2em;
+
+	@media screen and (min-width: @length-screen-wide) {
+		font-size: 2.5em;
+		margin-bottom: .4em;
+	}
 }
 
 .section {
