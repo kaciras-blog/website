@@ -51,6 +51,7 @@ module.exports = {
 
 				"icon-paragraph": "src",
 				"icon-section-header": "icon",
+				"social-link": "icon",
 				"error-content": "image",
 			},
 			compilerOptions: {

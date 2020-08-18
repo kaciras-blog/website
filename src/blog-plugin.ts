@@ -13,6 +13,7 @@ import BannerPageLayout from "./components/BannerPageLayout.vue";
 import DiscussionSection from "./components/discussion/DiscussionSection.vue";
 import IconParagraph from "./components/IconParagraph.vue";
 import IconSectionHeader from "./components/IconSectionHeader.vue";
+import SocialLink from "./components/SocialLink.vue";
 import KxFrame from "./components/KxFrame.vue";
 
 /**
@@ -43,6 +44,7 @@ export default function install(Vue: VueConstructor) {
 	Vue.component(BannerPageLayout.name, BannerPageLayout);
 	Vue.component(IconParagraph.name, IconParagraph);
 	Vue.component(IconSectionHeader.name, IconSectionHeader);
+	Vue.component(SocialLink.name, SocialLink);
 	Vue.component(KxFrame.name, KxFrame);
 
 	// Vue 函数组件里不能导入 component 只能在这全局挂载了

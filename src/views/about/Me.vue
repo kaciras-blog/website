@@ -1,3 +1,4 @@
+<!-- /about/me 更具通用性，必用自己名字做url更好，而且名字还可能变 -->
 <template functional>
 	<div class="about-tab-page">
 
@@ -8,19 +9,23 @@
 					alt="logo"
 					class="head"
 				>
-				<div>
-					<h2>Kaciras</h2>
-					<address>Kaciras@protonmail.com</address>
-				</div>
+
+				<h1 :class="$style.name">Kaciras</h1>
+				<p>自学码农 / 热爱技术 / 全栈开发 / 冻鳗 / 二刺螈 / 啥都想学</p>
+
+				<p :class="$style.socialLinks">
+					<social-link
+						href="mailto:Kaciras@protonmail.com"
+						name="Email"
+						icon="../../assets/img/email.svg"
+					/>
+					<social-link
+						href="https://github.com/Kaciras"
+						name="GitHub"
+						icon="../../assets/img/github-logo.svg"
+					/>
+				</p>
 			</div>
-
-			<p>
-				GitHub:<a class="highlight" href="https://github.com/Kaciras">https://github.com/Kaciras</a>
-			</p>
-
-			<p>
-				自学码农 / 热爱技术 / 全栈开发 / 冻鳗 / 二刺螈 / 啥都想学
-			</p>
 
 			<h3>名字和头像</h3>
 			<p>
@@ -28,7 +33,7 @@
 				后来在需要英文名的地方都用它，索性就一直用下去了。
 			</p>
 			<p>
-				头像是网上看到的，感觉挺不错就用了，原作者应该不会认识我我所以不用担心撞车……
+				头像是网上看到的，感觉挺不错就用了，原作者应该不会认识我所以不用担心撞车……
 				不过以后还是自己做一个图好些，等我学画画……
 			</p>
 		</section>
@@ -76,10 +81,18 @@
 
 <style module lang="less">
 .profile {
-	display: grid;
-	grid-template-columns: auto 1fr;
-	grid-gap: 20px;
+	text-align: center;
 	margin-bottom: 1rem;
+}
+
+.name {
+	margin: revert;
+}
+
+.socialLinks > a {
+	&[title="Email"] { --color: rgba(0, 205, 173, .7); }
+
+	&[title="GitHub"] { --color: rgba(109, 0, 205, .4); }
 }
 
 .example {
