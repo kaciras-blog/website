@@ -150,8 +150,9 @@ export default {
 		margin-bottom: 25px;
 	}
 
+	// 卡片下面阴影较大，需要更大的间隔才能看起来跟左右一致
 	.card_list {
-		grid-gap: 14px;
+		grid-gap: 16px;
 	}
 
 	.name {
