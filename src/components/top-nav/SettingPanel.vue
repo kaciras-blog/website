@@ -2,15 +2,18 @@
 	<div class="fragment">
 		<kx-switch-box
 			:class="$style.line"
-			:disabled="loading"
+			:disabled="unsupported || loading"
 			:value="StaleApi"
 			@input="v => setOption('StaleApi', v)"
 		>
 			动态内容缓存
 		</kx-switch-box>
 
-		<div v-if="loading" :class="$style.alert">
-			正在等待ServiceWorker……
+		<div v-if="unsupported" :class="$style.alert">
+			您的浏览器不支持 ServiceWorker，无法使用该功能
+		</div>
+		<div v-else-if="loading" :class="$style.alert">
+			正在连接 ServiceWorker……
 		</div>
 		<div v-else class="minor-text">
 			该选项将对动态内容使用 stale-while-revalidate 缓存策略，
@@ -28,6 +31,11 @@ export default {
 		loading: true,
 		StaleApi: false,
 	}),
+	computed: {
+		unsupported() {
+			return !("serviceWorker" in navigator);
+		},
+	},
 	methods: {
 		async setOption(key, value) {
 			await putSetting(key, value);
