@@ -2,7 +2,7 @@
 	<div class="about-tab-page">
 		<section class="about-section">
 			<icon-section-header title="Kaciras的个人博客" icon="../../assets/img/logo-kaciras.svg"/>
-			<icon-paragraph src="../../assets/img/github-logo.svg" title="github">
+			<icon-paragraph src="../../assets/img/logo-github.svg" title="github">
 				网站源码：
 				<a class="highlight" href="https://github.com/kaciras-blog">https://github.com/kaciras-blog</a>
 			</icon-paragraph>

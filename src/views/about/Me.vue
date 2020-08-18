@@ -22,7 +22,7 @@
 					<social-link
 						href="https://github.com/Kaciras"
 						name="GitHub"
-						icon="../../assets/img/github-logo.svg"
+						icon="../../assets/img/logo-github.svg"
 					/>
 				</p>
 			</div>

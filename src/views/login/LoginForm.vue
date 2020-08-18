@@ -49,13 +49,13 @@
 		<div class="center">
 			<oauth-icon
 				endpoint="github"
-				icon="github-logo.svg"
+				icon="logo-github.svg"
 				tip="Github登录"
 				:return-uri="returnUri"
 			/>
 			<oauth-icon
 				endpoint="google"
-				icon="google-logo.svg"
+				icon="logo-google.svg"
 				tip="Google登录"
 				:return-uri="returnUri"
 			/>
