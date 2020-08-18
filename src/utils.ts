@@ -79,6 +79,14 @@ export function isOnlyHashChange(to: Route, from: Route) {
 	return fp === tp;
 }
 
+/**
+ * 获取文件名去除了扩展名的部分，如果没有扩展名则原样返回。
+ *
+ * 这个函数比较简单就自己实现算了。
+ *
+ * @param name 文件名
+ * @return 去除了扩展名的部分
+ */
 export function basename(name: string) {
 	const i = name.lastIndexOf(".");
 	if (i === -1) {
