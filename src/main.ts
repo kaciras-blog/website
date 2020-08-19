@@ -57,13 +57,10 @@ export default function createApp(initState: any = undefined) {
 		}
 		const { user } = router.app.$store.state;
 
-		if (user.id === 0) {
-			next({ path: "/login", query: { return_uri: "/console" } });
-		} else if (user.id === 2) {
-			next();
-		} else {
-			next("/error/403");
+		if (user.id === 2) {
+			return next();
 		}
+		next({ path: "/login", query: { return_uri: "/console" } });
 	});
 
 	const vue = new Vue({
