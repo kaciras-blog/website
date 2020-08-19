@@ -42,7 +42,11 @@ class ApiOfflineRoute implements Route {
 
 	// 伪处理方法，该方法只为了等待配置加载，加载完后将被替换为 directHandle
 	handle(event: FetchEvent) {
-		event.waitUntil(this.initPromise.then(() => this.directHandle(event)));
+		const waitAndRespond = async () => {
+			await this.initPromise;
+			return this.fetchFn(event.request);
+		};
+		event.respondWith(waitAndRespond());
 	}
 
 	private directHandle(event: FetchEvent) {
