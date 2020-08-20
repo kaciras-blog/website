@@ -1,60 +1,89 @@
 <template>
 	<section>
-		<h1 :class="$style.title">友情链接</h1>
-		<ul class="clean-list" :class="$style.list">
+		<header :class="$style.header">
+			<h1 :class="$style.title">友情链接</h1>
+
+			<div v-if="sorting" :class="$style.toolbar">
+				<img
+					src="../../assets/icon/close.svg"
+					alt="sort"
+					title="取消"
+					:class="$style.iconButton"
+					tabindex="0"
+					@click="sortFinish(false)"
+				>
+				<img
+					src="../../assets/icon/correct.svg"
+					alt="make friend"
+					title="确定"
+					:class="$style.iconButton"
+					tabindex="0"
+					@click="sortFinish(true)"
+				>
+			</div>
+
+			<div v-else-if="user.id === 2" :class="$style.toolbar">
+				<img
+					src="../../assets/icon/sort.svg"
+					alt="sort"
+					title="调整顺序"
+					:class="$style.iconButton"
+					tabindex="0"
+					@click="sort"
+				>
+				<img
+					src="../../assets/icon/plus.svg"
+					alt="make friend"
+					title="添加"
+					:class="$style.iconButton"
+					tabindex="0"
+					@click="makeFriend"
+				>
+			</div>
+		</header>
+
+		<ul :class="$style.list" ref="list">
 			<li
-				v-for="friend of friends"
+				v-for="(friend, i) of friends"
 				:key="friend.id"
 				:class="$style.item"
 			>
-				<a
-					:href="friend.url"
-					target="_blank"
-					:class="$style.friend_container"
-				>
-					<img
-						:src="friend.background"
-						alt="favicon"
-						:class="$style.background"
-					>
-					<img
-						:src="friend.favicon"
-						alt="favicon"
-						:class="$style.favicon"
-					>
-					<span :class="$style.name">{{friend.name}}</span>
-				</a>
+				<div
+					v-if="friend.placeholder"
+					:style="friend.style"
+				/>
+				<friend-card
+					v-else
+					:disabled="sorting"
+					:friend="friend"
+					@dragstart="drag($event, i)"
+				/>
 
-				<!-- 没有更新按钮，更新 = 删除 + 添加 -->
 				<button
-					v-if="user.id === 2"
+					v-if="user.id === 2 && !sorting"
+					title="修改"
+					:class="$style.edit"
+					@click="edit(friend)"
+				/>
+				<button
+					v-if="user.id === 2 && !sorting"
 					title="删除"
 					:class="$style.remove"
-					@click="() => rupture(friend)"
+					@click="rupture(i)"
 				/>
-			</li>
-
-			<li
-				v-if="user.id === 2"
-				:class="$style.hexagon_add"
-			>
-				<img
-					src="../../assets/img/hexagon-add.svg"
-					alt="添加友链"
-					title="添加友链"
-					role="button"
-					:class="$style.hexagon_add_image"
-					@click="makeFriend"
-				>
 			</li>
 		</ul>
 	</section>
 </template>
 
 <script>
+import Vue from "vue";
 import { mapState } from "vuex";
+import lozad from "lozad";
+import { edgeScroll, moveElement, observeMouseMove } from "@kaciras-blog/uikit";
 import api from "@/api";
-import { deleteOn, errorMessage } from "@/utils";
+import { errorMessage } from "@/utils";
+import FriendCard from "./FriendCard";
 import FriendInfoDialog from "./FriendInfoDialog";
 
 const DEFAULT_INFO = {
@@ -64,11 +93,102 @@ const DEFAULT_INFO = {
 	favicon: "/static/img/akalin.jpg",
 };
 
+class GridDraggingRegion {
+
+	constructor(container) {
+		const region = container.getBoundingClientRect();
+		const card = container.children[0].getBoundingClientRect();
+
+		// 不能使用 gridGap 属性，CSS 设置的 grid-gap 会转换为 gridRowGap & gridColumnGap。
+		const cStyle = getComputedStyle(container);
+		const rowGap = parseInt(cStyle.gridRowGap), columnGap = parseInt(cStyle.gridColumnGap);
+
+		this.xOffset = card.left + pageXOffset;
+		this.yOffset = card.top + pageYOffset;
+
+		this.tW = card.width + columnGap;
+		this.tH = card.height + rowGap;
+
+		this.columns = Math.floor((region.width + columnGap) / (card.width + columnGap));
+		this.rows = Math.floor((region.height + rowGap) / (card.height + rowGap));
+	}
+
+	/**
+	 * 计算给定的点落在第几个元素的范围内。
+	 *
+	 * 注意该方法仅计算理论值，假定格子有无穷多个，返回值可能超出实际元素数量。
+	 *
+	 * @param x X坐标
+	 * @param y Y坐标
+	 * @return {number} 格子序号
+	 */
+	getIndex(x, y) {
+		return this.getRow(y) * this.columns + this.getColumn(x);
+	}
+
+	// 这里不要用 round，而是要向下取整
+	getColumn(x) {
+		const c = Math.floor((x - this.xOffset) / this.tW);
+		return Math.max(0, Math.min(c, this.columns - 1));
+	}
+
+	getRow(y) {
+		const r = Math.floor((y - this.yOffset) / this.tH);
+		return Math.max(0, Math.min(r, this.rows - 1));
+	}
+}
+
+class VueArrayInsertSort {
+
+	constructor(array, index) {
+		this.array = array;
+		this.index = index;
+		this.data = array[index];
+	}
+
+	dragOver(k) {
+		const { index, array } = this;
+		k = Math.min(k, array.length - 1);
+
+		if (index === k) {
+			return;
+		}
+		const holder = array.splice(index, 1)[0];
+		this.index = k;
+		array.splice(k, 0, holder);
+	}
+
+	dragEnd() {
+		Vue.set(this.array, this.index, this.data);
+	}
+}
+
+function dragSort(region, sort, event, el) {
+
+	const observer = {
+		next({ x, y }) {
+			x += pageXOffset;
+			y += pageYOffset;
+			sort.dragOver(region.getIndex(x, y));
+		},
+		complete() {
+			el.remove();
+			sort.dragEnd();
+		},
+	};
+
+	observeMouseMove().pipe(edgeScroll(), moveElement(event, el)).subscribe(observer);
+}
+
 export default {
 	name: "FriendsSection",
+	components: {
+		FriendCard,
+	},
 	data() {
 		return {
 			friends: this.$store.state.prefetch.friends,
+			sorting: false,
 		};
 	},
 	computed: mapState(["user"]),
@@ -90,10 +210,86 @@ export default {
 				}
 			}
 		},
-		async rupture(friend) {
-			await api.friend.rupture(friend);
-			deleteOn(this.friends, v => v === friend);
+
+		async rupture(index) {
+			await api.friend.rupture(this.friends[index]);
+			this.friends.splice(index, 1);
 		},
+
+		async edit(friend) {
+			const updated = await this.$dialog.show(FriendInfoDialog, friend).confirmPromise;
+			await api.friend.updateFriend(friend, updated);
+			Object.assign(friend, updated);
+		},
+
+		// GridDraggingRegion 的构造方法有点耗时，在进入排序模式时就计算好，让拖动更流畅。
+		// 注意不能更早去计算，因为非排序模式下可能因添加删除等改变布局。
+		sort() {
+			this.sorting = true;
+			this.$_draggingRegion = new GridDraggingRegion(this.$refs.list);
+			this.$_backup = this.friends.slice();
+		},
+
+		async sortFinish(save) {
+			if (!save) {
+				this.friends = this.$_backup;
+				return this.sorting = false;
+			}
+			try {
+				await api.friend.updateSort(this.friends);
+				this.sorting = false;
+			} catch (e) {
+				this.$dialog.alertError("更新失败", errorMessage(e));
+			}
+		},
+
+		drag(event, i) {
+			if (!this.sorting) {
+				return;
+			}
+			event.preventDefault();
+
+			const { friends, $_draggingRegion } = this;
+
+			const listEl = this.$refs.list;
+			const el = listEl.children[i];
+			const rect = el.getBoundingClientRect();
+
+			const dragEl = el.firstElementChild.cloneNode(true);
+
+			// 不能使用 dragEl.style = {...}
+			Object.assign(dragEl.style, {
+				position: "fixed",
+				top: rect.top  + "px",
+				left: rect.left + "px",
+				zIndex: 10000,
+				cursor: "grabbing",
+			});
+			document.body.appendChild(dragEl);
+
+			const sort = new VueArrayInsertSort(friends, i);
+
+			this.$set(friends, i, {
+				placeholder: true,
+				id: Symbol(),
+
+				// 这个占位是必要的，用于保持新行
+				style: {
+					width: rect.width + "px",
+					height: rect.height + "px",
+				},
+			});
+
+			dragSort($_draggingRegion, sort, event, dragEl);
+		},
+	},
+	mounted() {
+		const imgs = this.$el.querySelectorAll("img");
+		this.$_lazyLoader = lozad(imgs, { rootMargin: "35px" });
+		this.$_lazyLoader.observe();
+	},
+	destroyed() {
+		this.$_lazyLoader.observer.disconnect(); // 啊好想要 Hooks 啊
 	},
 };
 </script>
@@ -101,12 +297,30 @@ export default {
 <style module lang="less">
 @import "../../css/imports";
 
-// 手机屏是否需要缩小点，一排两个？
+// TODO: 能否从 FriendCard 里引入？
+@friend-width: 260px;
 
-@background-width: 260px;
-@background-height: @background-width * 9 / 16;
-@favicon-size: 70px;
-@transition: transform .5s;
+.header {
+	display: flex;
+}
+
+.toolbar {
+	margin-left: auto;
+}
+
+.iconButton {
+	.size(2.8rem);
+	margin-right: .5rem;
+	padding: .5rem;
+
+	border-radius: .25rem;
+	cursor: pointer;
+	transition: background-color .15s;
+
+	&:hover, &:focus {
+		background: #f0f0f0;
+	}
+}
 
 .title {
 	font-size: 2rem;
@@ -115,128 +329,63 @@ export default {
 // 自动网格的卡片布局
 // https://blog.kaciras.com/article/14/use-pure-CSS-to-implement-center+wrap+left-alignment-layout
 .list {
+	composes: clean-list from global;
+
 	display: grid;
-	grid-template-columns: repeat(auto-fit, @background-width);
+	grid-template-columns: repeat(auto-fit, @friend-width);
 	grid-gap: 40px;
 	justify-content: center;
-	justify-items: center;
 }
 
 .item {
 	position: relative;
 
-	&:hover, &:focus {
-		& > .remove {
+	&:hover, &:focus-within {
+		& > .rightTopButton {
 			opacity: 1;
 			transform: scale(1);
 		}
 	}
 }
 
-.remove {
+.sorting {
+	cursor: move;
+}
+
+@button-size: 40px;
+
+.rightTopButton {
 	position: absolute;
-	top: -10px;
-	right: -10px;
-	width: 30px;
-	height: 30px;
+	top: -@button-size / 2;
+	width: @button-size;
+	height: @button-size;
 	z-index: 5;
 
 	border-radius: 50%;
-	background-image: url("~@kaciras-blog/uikit/src/assets/icon-close.svg");
 	background-position: 50%;
+	background-repeat: no-repeat;
+
 	opacity: 0;
 	cursor: pointer;
 
 	transform: scale(0.25);
 	transition: .3s;
-}
 
-// =====================================================
-
-.friend_container {
-	display: block;
-	position: relative;
-	width: @background-width;
-	height: @background-height;
-
-	border-radius: 4px;
-	overflow: hidden;
-
-	&::before {
-		content: "";
-		position: absolute;
-		left: 0;
-		right: 0;
-		top: 0;
-		height: 50%;
-
-		z-index: 1;
-		background: rgba(255, 255, 255, .4);
-		transition: @transition;
-	}
-
-	@media screen and (min-width: @length-screen-mobile) {
-		@ty: (@background-height + @favicon-size) / -2;
-
-		&:hover::before { transform: translateY(@ty); }
-
-		&:hover > .favicon { transform: translateY(@ty); }
-
-		&:hover > .name { transform: translateY(100%); }
+	&:hover {
+		border: solid 1px #222;
 	}
 }
 
-.background {
-	composes: full-vertex from global;
-	width: 100%;
-	height: 100%;
+.edit {
+	composes: rightTopButton;
+	right: @button-size - 10px;
+	background-image: url("../../assets/icon/edit.svg");
+	background-size: 20px;
 }
 
-.favicon {
-	position: absolute;
-	left: (@background-width - @favicon-size) / 2;
-	top: (@background-height - @favicon-size) / 2;
-	.circle(@favicon-size);
-
-	z-index: 3;
-	box-shadow: 0 0 10px rgba(0, 0, 0, .4);
-	transition: @transition;
-}
-
-.name {
-	position: absolute;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	height: 50%;
-
-	font-size: 16px;
-	padding-top: @background-height / 2 - 28px;
-	padding-bottom: 8px;
-	text-align: center;
-
-	color: black;
-	background: rgba(255, 255, 255, .9);
-	box-shadow: 0 0 10px rgba(0, 0, 0, .3);
-
-	transition: @transition;
-}
-
-// =====================================================
-
-.hexagon_add {
-	composes: item;
-	padding: 35px;
-}
-
-.hexagon_add_image {
-	width: 90px;
-	height: 90px;
-
-	opacity: .15;
-	cursor: pointer;
-	transition: opacity .3s ease;
-
-	&:hover, &:active { opacity: .8; }
+.remove {
+	composes: rightTopButton;
+	right: -@button-size / 2;
+	background-image: url("~@kaciras-blog/uikit/src/assets/icon-close.svg");
 }
 </style>

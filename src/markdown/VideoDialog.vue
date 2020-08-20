@@ -7,6 +7,7 @@
 				<input
 					id="video_url"
 					v-model="src"
+					name="src"
 					:class="$style.text_box"
 				>
 				<kx-task-button
@@ -31,7 +32,8 @@
 				<div :class="$style.field">
 					<input
 						id="video_poster"
-						v-model="label"
+						v-model="poster"
+						name="poster"
 						:class="$style.text_box"
 					>
 					<kx-task-button
@@ -48,6 +50,7 @@
 					<input
 						id="video_alt"
 						v-model="label"
+						name="alt"
 						:class="$style.text_box"
 					>
 				</div>
@@ -62,7 +65,9 @@
 </template>
 
 <script>
+import { openFile } from "@kaciras-blog/uikit";
 import api from "@/api";
+import { basename } from "@/utils";
 
 export default {
 	name: "VideoDialog",
@@ -70,13 +75,16 @@ export default {
 		src: "",
 		isVideo: false,
 		label: "",
+		poster: "",
 	}),
 	methods: {
 		async uploadVideo() {
-			this.src = await api.misc.uploadVideoFile();
+			const file = await openFile("video/*");
+			this.src = await api.misc.uploadVideo(file);
+			this.label = basename(file.name);
 		},
 		async uploadPoster() {
-			this.label = await api.misc.uploadImageFile();
+			this.poster = await api.misc.uploadImageFile();
 		},
 		enterKey() {
 			if (!this.src) {

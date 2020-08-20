@@ -51,6 +51,7 @@ module.exports = {
 
 				"icon-paragraph": "src",
 				"icon-section-header": "icon",
+				"social-link": "icon",
 				"error-content": "image",
 			},
 			compilerOptions: {
@@ -107,9 +108,7 @@ module.exports = {
 
 	app: {
 
-		/**
-		 * 网站标题和站长名字
-		 */
+		/** 网站标题和站长名字 */
 		title: "Kaciras的博客",
 		author: "Kaciras",
 
@@ -118,11 +117,22 @@ module.exports = {
 		 * image/ 上传的图片
 		 * cache/ 优化后的图片
 		 * video/ 上传的视频
+		 * audio/ 上传的音频
 		 */
 		dataDir: "/var/lib/blog",
 
-		/** 【可选】是否启用ServiceWorker，true表示启用，否则卸载 */
+		/**
+		 * 【可选】是否启用ServiceWorker，true 表示启用，默认不启用。
+		 */
 		// serviceWorker: true,
+
+		/**
+		 * AJAX请求超时（毫秒），0表示无超时，不影响非AJAX请求。
+		 *
+		 * 【环境变量】
+		 * 该选项在构建时可由 process.env.TIMEOUT 访问
+		 */
+		requestTimeout: 10000,
 
 		/** 日志等级和文件 */
 		logging: {

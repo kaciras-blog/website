@@ -8,7 +8,8 @@ interface Window {
 	dataLayer: any[];
 }
 
-const { GOOGLE_ANALYTICS_ID } = process.env;
+// 【坑爹】读取 DefinePlugin 中的值不能使用对象展开语法
+const GOOGLE_ANALYTICS_ID = process.env.GOOGLE_ANALYTICS_ID;
 if (GOOGLE_ANALYTICS_ID) {
 	window.dataLayer = window.dataLayer || [];
 
@@ -25,8 +26,6 @@ if (GOOGLE_ANALYTICS_ID) {
 	document.head.append(script)
 }
 
-// ==================== 检测不支持的浏览器，显示一个提示栏 ====================
-
 /**
  * 判断浏览器是否支持，根据：
  *
@@ -36,14 +35,18 @@ if (GOOGLE_ANALYTICS_ID) {
  * @return 如果支持则为true，否则false
  */
 function isSupportedBrowser() {
+
+	// https://github.com/GoogleChrome/workbox/issues/1473
 	try {
 		new ReadableStream({ start() {} });
 	} catch (error) {
 		return false;
 	}
+
 	return CSS.supports("display", "grid");
 }
 
+// 检测不支持的浏览器，显示一个提示栏
 if (!isSupportedBrowser()) {
 	const alert = document.createElement("div");
 	alert.className = "global-error";

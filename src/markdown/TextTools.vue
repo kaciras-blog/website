@@ -21,6 +21,7 @@ import { getImageResolution, getVideoResolution, openFile } from "@kaciras-blog/
 import api from "@/api";
 import VideoDialog from "./VideoDialog";
 import AddLinkDialog from "./AddLinkDialog";
+import { basename } from "@/utils";
 
 export default {
 	name: "TextTools",
@@ -123,15 +124,15 @@ export default {
 			const res = await api.misc.uploadImage(file) + `?vw=${width}&vh=${height}`;
 
 			const [, selEnd] = this.ctx.selection;
-			this.ctx.replaceArea(selEnd, selEnd, `![](${res})`);
+			this.ctx.replaceArea(selEnd, selEnd, `![${basename(file.name)}](${res})`);
 		},
 
 		async addVideo() {
-			const { src, label, isVideo } = await this.$dialog.show(VideoDialog).confirmPromise;
+			const { src, label, poster, isVideo } = await this.$dialog.show(VideoDialog).confirmPromise;
 			let text;
 
 			if (isVideo) {
-				text = `@video[${label}](${src})`;
+				text = `@video[${poster}](${src})`;
 			} else {
 				const { width, height } = await getVideoResolution(src);
 				text = `@gif[${label}](${src}?vw=${width}&vh=${height})`;

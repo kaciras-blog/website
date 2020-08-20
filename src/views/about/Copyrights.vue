@@ -2,6 +2,10 @@
 	<div class="about-tab-page">
 		<section class="about-section">
 			<icon-section-header title="版权声明" :icon="require('../../assets/img/copyright.svg')"/>
+			<p>
+				本站的文章和文章内的资源，未经允许禁止转载。
+			</p>
+			<h2>第三方资源</h2>
 			<p>网站的图标来自</p>
 			<p>
 				<a

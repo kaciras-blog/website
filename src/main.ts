@@ -48,6 +48,8 @@ export default function createApp(initState: any = undefined) {
 
 	/**
 	 * 阻止未登录用户访问后台页面。
+	 *
+	 * TODO: 放在这好丑啊
 	 */
 	router.beforeEach((to, from, next) => {
 		if (!to.meta.requireAuth) {
@@ -55,13 +57,10 @@ export default function createApp(initState: any = undefined) {
 		}
 		const { user } = router.app.$store.state;
 
-		if (user.id === 0) {
-			next({ path: "/login", query: { return_uri: "/console" } });
-		} else if (user.id === 2) {
-			next();
-		} else {
-			next("/error/403");
+		if (user.id === 2) {
+			return next();
 		}
+		next({ path: "/login", query: { return_uri: "/console" } });
 	});
 
 	const vue = new Vue({

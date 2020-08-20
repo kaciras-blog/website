@@ -1,7 +1,8 @@
 import axios, { AxiosRequestConfig, CancelToken } from "axios";
 import { CancellationToken } from "@kaciras-blog/uikit";
 import { RequestConfigProcessor, ServerList, ServerListFilter } from "./core";
-// 为了让IDE能够分析类型只能一个个导入再导出
+
+// 为了让IDE能够分析类型只能一个个导入再导出，这么写好啰嗦啊
 import ArticleApi from "./article";
 import DraftApi from "./draft";
 import CategoryApi from "./category";
@@ -11,6 +12,7 @@ import FriendApi from "./firend";
 import MiscApi from "./misc";
 import ConfigApi from "./config";
 import RecommendApi from "./cards";
+import NotificationApi from "./notification";
 
 export * from "./article";
 export * from "./draft";
@@ -21,6 +23,7 @@ export * from "./firend";
 export * from "./misc";
 export * from "./config";
 export * from "./cards";
+export * from "./notification";
 
 const CSRF_COOKIE_NAME = "CSRF-Token";
 const CSRF_HEADER_NAME = "X-CSRF-Token";
@@ -35,8 +38,11 @@ axios.defaults.withCredentials = true;
 axios.defaults.xsrfCookieName = CSRF_COOKIE_NAME;
 axios.defaults.xsrfHeaderName = CSRF_HEADER_NAME;
 
-if (process.env.NODE_ENV === "production") {
-	axios.defaults.timeout = 8000;
+// ServiceWorker里已经对API设置了超时，如果支持则不在此处添加超时。
+if (process.env.TIMEOUT) {
+	if (process.env.VUE_ENV === "server" || !("serviceWorker" in navigator)) {
+		axios.defaults.timeout = process.env.TIMEOUT as unknown as number;
+	}
 }
 
 // axios 不能全局配置拦截？
@@ -93,7 +99,7 @@ export class Api {
 	 * @return API集
 	 */
 	withCancelToken(token?: CancelToken | CancellationToken) {
-		if(!token) {
+		if (!token) {
 			return this;
 		}
 		if ("addListener" in token) {
@@ -114,6 +120,7 @@ Api.register("user", UserApi);
 Api.register("config", ConfigApi);
 Api.register("recommend", RecommendApi);
 Api.register("misc", MiscApi);
+Api.register("notification", NotificationApi);
 
 // 也是为了让IDE能够提示
 export interface Api {
@@ -126,6 +133,7 @@ export interface Api {
 	config: ConfigApi;
 	recommend: RecommendApi;
 	misc: MiscApi;
+	notification: NotificationApi;
 }
 
 export default new Api(DEFAULT_SERVERS);

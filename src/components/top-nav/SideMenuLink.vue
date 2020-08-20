@@ -16,13 +16,13 @@ export default {
 	name: "SideMenuLink",
 	functional: true,
 	props: {
-		direct: {
-			type: Boolean,
-			default: false,
+		tag: {
+			type: String,
+			default: "router-link",
 		},
 		to: {
 			type: String,
-			required: true,
+			required: false,
 		},
 		icon: {
 			type: String,
@@ -30,26 +30,27 @@ export default {
 		},
 	},
 	render(h, ctx) {
-		const { direct, to, icon } = ctx.props;
+		const { tag, to, icon } = ctx.props;
+		const { $style, listeners } = ctx;
 
-		const innerElements = [
-			h("i", { class: [ctx.$style.icon, icon] }),
-			ctx.slots().default,
-		];
+		let data;
 
-		if (direct) {
-			return h("a", {
-				attrs: { href: to },
-				staticClass: "clean-link",
-				class: ctx.$style.link,
-			}, innerElements);
-		} else {
-			return h("router-link", {
-				attrs: { to },
-				staticClass: "clean-link",
-				class: ctx.$style.link,
-			}, innerElements);
+		switch (tag) {
+			case "router-link":
+				data = { attrs: { to }, staticClass: "clean-link", class: $style.link };
+				break;
+			case "div":
+				data = { class: $style.link, on: { click: listeners.click } };
+				break;
+			case "a":
+				data = { attrs: { href: to }, staticClass: "clean-link", class: $style.link };
+				break;
 		}
+
+		return h(tag, data, [
+			h("i", { class: [$style.icon, icon] }),
+			ctx.slots().default,
+		]);
 	},
 };
 </script>
@@ -57,7 +58,7 @@ export default {
 <style module lang="less">
 .link {
 	display: block;
-	padding: 12px 0;
+	padding: 10px 0;
 
 	&:hover, &:focus {
 		background-color: rgba(0, 0, 0, .05);

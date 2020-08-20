@@ -3,7 +3,7 @@
 		<atom-spinner
 			:animation-duration="1200"
 			:size="64"
-			color="#53bcff"
+			color="#33aaff"
 		/>
 		<span :class="$style.loading_text">评论加载中</span>
 	</div>
@@ -15,7 +15,7 @@
 	<div v-else>
 		<header class="segment" :class="$style.header">
 			<h2 :class="$style.title">
-				评论区({{data.total}})
+				评论区({{ data.total }})
 			</h2>
 			<vue-multiselect
 				v-model="sort"
@@ -58,9 +58,7 @@
 						v-for="item of items"
 						:key="item.id"
 						:value="item"
-						:replying="replying"
 						class="segment"
-						@reply="replying = item.id"
 						@removed="refresh"
 					/>
 				</ol>
@@ -108,7 +106,6 @@ export default {
 		loadFail: false,
 
 		data: null,
-		replying: null,
 		allSorts: ALL_SORTS,
 		sort: ALL_SORTS[0],
 	}),

@@ -1,12 +1,12 @@
 <template>
-	<div>
+	<span>
 		<span v-if="selected" :class="$style.item">
 			选择：
 			{{selection[0] + " - " + selection[1]}}
 			| {{ selection[1] - selection[0] }} 字
 		</span>
 		<span :class="$style.item">总字数：{{ content.length }}</span>
-	</div>
+	</span>
 </template>
 
 <script>

@@ -12,6 +12,8 @@ export interface SunPhasePoints {
 /**
  * 提供对太阳位置查询的类，太阳位置所对应的时间由用户定义，该类对其进行封装，
  * 提供查询和自动监听变化等功能。
+ *
+ * 该类目前用于首页大图，使其在不同的时间段切换不同的背景。
  */
 export class SunPhases {
 

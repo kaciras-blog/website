@@ -2,18 +2,16 @@
 	<discussion-content
 		:value="value"
 		@removed="$emit('removed')"
-		@reply="$emit('reply')"
+		@reply="showReplyEditor"
 	>
 		<template v-slot:footer>
 
-			<!-- TODO: this.$refs.replies is undefined -->
-			<template v-if="value.replyCount">
+			<div :class="$style.replyList" v-if="value.replyCount">
 				<button-paging-view
 					v-if="expend"
 					ref="replies"
 					v-model="replies"
 					theme="text"
-					:class="$style.replyList"
 					:loader="loadNext"
 					:page-size="10"
 				>
@@ -27,10 +25,10 @@
 					<reply-list :items="value.replies" @removed="refresh"/>
 					<a class="hd-link" @click="showAllReplies">查看全部</a>
 				</template>
-			</template>
+			</div>
 
 			<input-h-o-c
-				v-if="replying === value.id"
+				v-if="replying"
 				:type="value.type"
 				:object-id="value.objectId"
 				:parent="value.id"
@@ -38,7 +36,7 @@
 				@submitted="submitReply"
 			>
 				<template v-slot="{ content, onSubmit, onInput }">
-					<discussion-editor :content="content" :on-submit="onSubmit" @input="onInput"/>
+					<discussion-editor ref="editor" :content="content" :on-submit="onSubmit" @input="onInput"/>
 				</template>
 			</input-h-o-c>
 
@@ -48,6 +46,7 @@
 
 <script>
 import { debounceFirst } from "@kaciras-blog/server/lib/functions";
+import { scrollToElementEnd } from "@kaciras-blog/uikit";
 import api from "@/api";
 import ReplyFrame from "./ReplyFrame";
 import ReplyList from "./ReplyList";
@@ -62,7 +61,7 @@ export default {
 			type: Object,
 			required: true,
 		},
-		replying: Number,
+
 	},
 	components: {
 		InputHOC,
@@ -73,14 +72,23 @@ export default {
 	data: () => ({
 		replies: null,
 		expend: false,
+		replying: false,
 	}),
 	methods: {
+		async showReplyEditor() {
+			this.replying = true;
+			await this.$nextTick();
+			scrollToElementEnd(this.$refs.editor.$el);
+		},
 		async submitReply(reply) {
+			this.value.replyCount++;
 			this.expend = true;
-			if (this.replies) {
+			await this.$nextTick();
+
+			if (this.value.replies.length) {
 				this.$refs.replies.switchToLast();
 			} else {
-				this.replies = [reply.data]; // 对没有过回复的处理
+				this.replies = { total: 1, items: [reply] };
 			}
 		},
 		showAllReplies: debounceFirst(function () {
@@ -104,11 +112,16 @@ export default {
 </script>
 
 <style module lang="less">
+@import "../../css/imports";
+
 .input {
 	margin-top: 20px;
 }
 
 .replyList {
-	padding-top: 2rem;
+	margin-top: 20px;
+	padding: 20px;
+	border-radius: 8px;
+	background: #f7f7f7;
 }
 </style>

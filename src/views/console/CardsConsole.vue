@@ -9,9 +9,9 @@
 		<div ref="container">
 			<template v-for="item of cards">
 				<div
-					v-if="item.holder"
-					:class="$style.holder"
+					v-if="item.placeholder"
 					:key="item.id"
+					:class="$style.placeholder"
 				/>
 				<card-list-item
 					v-else
@@ -20,24 +20,17 @@
 					v-bind="item"
 					@switch-expand="item.expand = !item.expand"
 					@remove="remove"
-					@drag-start="e => drag(e, item)"
+					@drag-start="drag($event, item)"
 				/>
 			</template>
 		</div>
-
-		<!-- 拖动中的元素 -->
-		<card-list-item
-			v-if="dragging"
-			:style="dragging.style"
-			v-bind="dragging.item"
-		/>
 	</div>
 </template>
 
 <script>
-import { observeMouseMove, elementPosition } from "@kaciras-blog/uikit";
+import { moveElement, observeMouseMove } from "@kaciras-blog/uikit";
 import api from "@/api";
-import { deleteOn, attachRandomId } from "@/utils";
+import { attachRandomId, deleteOn } from "@/utils";
 import CardListItem from "./CardListItem";
 
 const CARD_TEMPLATE = {
@@ -46,6 +39,22 @@ const CARD_TEMPLATE = {
 	link: "",
 	description: "",
 };
+
+class ListDraggingRegion {
+
+	constructor(container) {
+		const region = container.getBoundingClientRect();
+		const item = container.children[0].getBoundingClientRect();
+
+		this.offset = region.top + 10;
+		this.territory = item.height + 20;
+	}
+
+	// 索引必须要取整
+	getIndex(x, y) {
+		return Math.floor((y - this.offset) / this.territory);
+	}
+}
 
 export default {
 	name: "CardsConsole",
@@ -106,61 +115,44 @@ export default {
 			 * 下面第一行Vue有BUG，不能使用组件的.$el，否则getBoundingClientRect()返回值是旧的。
 			 */
 			const el = this.$refs.container.children[holderIndex];
-			const container = this.$refs.container.getBoundingClientRect();
-
 			const rect = el.getBoundingClientRect();
-			const span = rect.height + 20;
-			const yOffset = container.top + 10; // 【坑】列表项的margin在垂直方向上超出容器
+
+			const region = new ListDraggingRegion(this.$refs.container);
 
 			// 被拖动元素放到单独的位置，并设为绝对定位。
-			this.dragging = {
-				item,
-				style: {
-					width: container.width + "px",
-					position: "absolute",
-					top: rect.top + "px",
-					left: rect.left + "px",
-				},
-			};
+			const dragEl = el.cloneNode(true);
+			Object.assign(dragEl.style, {
+				position: "fixed",
+				left: rect.left + "px",
+				top: rect.top + "px",
+				width: rect.width + "px",
+				zIndex: 10000,
+				margin: 0, // 防止间距干扰定位
+			});
+			document.body.appendChild(dragEl);
 
-			// 原轮播页的位置替换为占位元素
-			cards[holderIndex] = { holder: true };
+			// 原来的位置替换为占位元素
+			this.$set(cards, holderIndex, {
+				id: Symbol(),
+				placeholder: true,
+			});
 
 			function insertInto(i) {
-				if (holderIndex === i) return;
+				if (holderIndex === i) {
+					return;
+				}
 				const holder = cards.splice(holderIndex, 1)[0];
 				holderIndex = i;
 				cards.splice(i, 0, holder);
 			}
 
-			observeMouseMove().pipe(elementPosition(event, el)).subscribe({
-
-				/**
-				 * 置换取决于被拖动元素的纵坐标：
-				 *     小于 cards 中第一个元素中心：插入到最前
-				 *     大于第N个元素中心、小于第N+1个： 插入到N之后
-				 *     大于最后一个元素中心：添加到最后
-				 *
-				 * @param x 被拖动元素新的横坐标
-				 * @param y 被拖动元素新的纵坐标
-				 */
+			observeMouseMove().pipe(moveElement(event, dragEl)).subscribe({
 				next: ({ x, y }) => {
-					this.dragging.style.left = x + "px";
-					this.dragging.style.top = y + "px";
-
-					// 索引必须取整为了后面的对比
-					const i = Math.round((y - yOffset) / span);
-					if (i <= 0) {
-						insertInto(0);
-					} else if (i < cards.length) {
-						insertInto(i);
-					} else {
-						insertInto(cards.length - 1);
-					}
+					insertInto(Math.max(0, Math.min(region.getIndex(x, y), cards.length - 1)));
 				},
 				complete: () => {
-					this.dragging = null;
-					cards[holderIndex] = item;
+					dragEl.remove();
+					this.$set(cards, holderIndex, item);
 				},
 			});
 		},
@@ -179,10 +171,9 @@ export default {
 	margin: 20px 0;
 }
 
-.holder {
+.placeholder {
 	composes: card;
 	height: 2.6rem;
-	border: solid 3px #94f2ca;
 }
 
 .toolbar {

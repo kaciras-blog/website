@@ -1,5 +1,6 @@
 import { AxiosInstance, AxiosRequestConfig } from "axios";
 
+// TODO: 前端服务器的API好像不需要扩展
 export interface ServerList {
 	web: AxiosInstance;
 	content: AxiosInstance;

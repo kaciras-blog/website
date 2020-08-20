@@ -1,20 +1,6 @@
 <template>
-	<div :class="$style.container">
-
-		<header :class="$style.header">
-			<button
-				title="返回"
-				:class="$style.back_button"
-				class="nav-item"
-				@click="$dialog.close"
-			>
-				<i class="fas fa-arrow-left"/>
-			</button>
-			<span :class="$style.title">查看回复</span>
-		</header>
-
+	<kx-frame title="查看回复">
 		<div :class="$style.body">
-
 			<discussion-content
 				:value="value"
 				tag="div"
@@ -57,11 +43,10 @@
 				<kx-button class="primary" @click="onSubmit">回复</kx-button>
 			</template>
 		</input-h-o-c>
-	</div>
+	</kx-frame>
 </template>
 
 <script>
-import { PreventScrollMixin } from "@kaciras-blog/uikit";
 import api from "@/api";
 import InputHOC from "@/components/discussion/InputHOC";
 import DiscussionContent from "./DiscussionContent";
@@ -72,7 +57,6 @@ export default {
 		InputHOC,
 		DiscussionContent,
 	},
-	mixins: [PreventScrollMixin],
 	props: {
 		value: {
 			type: Object,
@@ -104,38 +88,9 @@ export default {
 </script>
 
 <style module lang="less">
-.container {
-	composes: full-vertex from global;
-	display: flex;
-	position: fixed;
-
-	flex-direction: column;
-	z-index: 900;
-	background-color: white;
-}
-
-.header {
-	position: relative;
-	text-align: center;
-	height: 48px;
-	box-shadow: rgba(0, 0, 0, .2) 0 0 3px 1px;
-}
-
 .body {
 	overflow-y: auto;
 	flex: 1;
-}
-
-.back_button {
-	position: absolute;
-	left: 0;
-	top: 0;
-	bottom: 0;
-}
-
-.title {
-	font-size: 16px;
-	line-height: 48px;
 }
 
 .item {
@@ -162,6 +117,7 @@ export default {
 
 	// hide scroll bar, support Firefox, Safari, and Chrome
 	scrollbar-width: none;
+
 	&::-webkit-scrollbar {
 		display: none;
 	}

@@ -21,7 +21,7 @@
 			</kx-button>
 		</div>
 
-		<div :class="$style.details">
+		<form :class="$style.details">
 			<div :class="$style.pictureWrapper" @click="setPicture">
 				<img
 					:src="card.picture"
@@ -37,6 +37,7 @@
 				</span>
 				<input
 					v-model="card.name"
+					name="name"
 					:class="$style.inputBox"
 				/>
 			</label>
@@ -47,6 +48,7 @@
 				</span>
 				<input
 					v-model="card.link"
+					name="link"
 					:class="$style.inputBox"
 				/>
 			</label>
@@ -57,12 +59,13 @@
 				</span>
 				<textarea
 					v-model="card.description"
+					name="description"
 					class="input"
 					:class="$style.inputBox"
 					placeholder="为卡片添加个描述吧"
 				/>
 			</label>
-		</div>
+		</form>
 	</section>
 </template>
 

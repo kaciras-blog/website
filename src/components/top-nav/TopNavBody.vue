@@ -1,6 +1,6 @@
 <template>
 	<component :is="tag" class="top-nav" :class="[$style.container, { [$style.colored]: colored }]">
-		<router-link to="/" title="回到首页">
+		<router-link to="/" title="回到首页" :class="$style.logoLink">
 			<img src="@/assets/img/logo-kaciras-wide.svg" alt="logo" :class="$style.logo">
 		</router-link>
 
@@ -45,11 +45,15 @@
 			<router-link v-else to="/login" class="nav-item">登录</router-link>
 
 			<router-link to="/list" class="nav-item">文章</router-link>
-			<router-link to="/about" class="nav-item">关于</router-link>
+			<router-link to="/about/me" class="nav-item">关于</router-link>
 
 			<a href="/feed/atom" class="nav-item" title="Feed订阅">
-				<i class="fas fa-rss" :class="$style.icon_only"></i>
+				<i class="fas fa-rss" :class="$style.fontIcon"/>
 			</a>
+
+			<span class="nav-item" title="设置" @click="showSettings">
+				<i class="fas fa-cogs" :class="$style.fontIcon"/>
+			</span>
 		</div>
 	</component>
 </template>
@@ -58,6 +62,7 @@
 import { mapActions, mapState } from "vuex";
 import { LOGOUT } from "@/store/types";
 import NavMenuFrame from "./NavMenuFrame";
+import SettingDialog from "./SettingDialog";
 
 export default {
 	name: "TopNavBody",
@@ -82,6 +87,10 @@ export default {
 		scrollFunction() {
 			this.colored = document.body.scrollTop > 16 || document.documentElement.scrollTop > 16;
 		},
+
+		showSettings() {
+			this.$dialog.show(SettingDialog);
+		},
 	},
 	beforeMount() {
 		if (this.$mediaQuery.match("mobile")) {
@@ -99,16 +108,16 @@ export default {
 
 .container {
 	display: flex;
-	background-color: rgba(255, 255, 255, .4);
+	background-color: rgba(255, 255, 255, .5);
 	transition: background-color .3s;
-
-	@media screen and (min-width: @length-screen-mobile) {
-		padding: 0 5vw;
-	}
 
 	@media screen and (max-width: @length-screen-mobile) {
 		position: sticky;
 		top: 0;
+	}
+
+	@media screen and (min-width: @length-screen-pad) {
+		padding: 0 5vw;
 	}
 }
 
@@ -121,9 +130,13 @@ export default {
 	object-fit: cover;
 	object-position: top;
 
-	&:hover, &:focus {
+	&:hover{
 		object-position: bottom;
 	}
+}
+
+.logoLink:focus > .logo {
+	object-position: bottom;
 }
 
 .head {
@@ -131,7 +144,7 @@ export default {
 	margin: 0 10px;
 }
 
-.icon_only {
+.fontIcon {
 	font-size: 20px;
 	vertical-align: middle;
 }

@@ -8,7 +8,7 @@
 		<router-link class='highlight' to='/login'>登录</router-link>
 	</div>
 
-	<div v-else>
+	<form v-else>
 		<div :class="$style.header">
 			<img :src="user.avatar" alt="头像" class="small head">
 
@@ -16,6 +16,7 @@
 				名字（可选）
 				<input
 					v-model="nickname"
+					name="nickname"
 					:placeholder="user.name"
 					:class="$style.nickname"
 				>
@@ -39,7 +40,7 @@
 				v-else
 				:class="$style.textbox"
 				:value="content"
-				placeholder='说点什么吧'
+				name="content"placeholder='说点什么吧'
 				aria-label="输入评论"
 				v-ime-input="(event) => $emit('input', event.target.value)"
 			/>
@@ -73,7 +74,7 @@
 		</div>
 
 		<div v-if="options.moderation" :class="$style.warn">为防止滥用，评论将在审核后显示</div>
-	</div>
+	</form>
 </template>
 
 <script>
@@ -106,7 +107,11 @@ export default {
 	methods: {
 		submit() {
 			const { nickname } = this;
-			localStorage.setItem("nickname", nickname);
+
+			// null 会被转换为 "null" 所以要检查一下
+			if (nickname) {
+				localStorage.setItem("nickname", nickname);
+			}
 			return this.onSubmit(nickname);
 		},
 		showGuide() {

@@ -1,8 +1,8 @@
 import Vue from "vue";
-import Router from "vue-router";
+import Router, { RouteConfig } from "vue-router";
 import { Position, Route } from "vue-router/types/router";
-import IndexPage from "./views/index/IndexPage.vue";
-import ErrorPage from "./views/error/ErrorPage.vue";
+import IndexPage from "./views/index/Index.vue";
+import ErrorPage from "./views/error/Index.vue";
 
 Vue.use(Router);
 
@@ -24,7 +24,7 @@ function scrollBehavior(to: Route, from: Route, savedPosition: Position | void) 
 	} else {
 		const position: any = {};
 		if (to.hash) {
-			position.selector = to.hash;
+			position.selector = decodeURIComponent(to.hash);
 		}
 		if (!to.matched.some(m => m.meta.retainScroll)) {
 			position.x = 0;
@@ -35,7 +35,7 @@ function scrollBehavior(to: Route, from: Route, savedPosition: Position | void) 
 }
 
 export default function CreateRouter() {
-	const routes = [
+	const routes: RouteConfig[] = [
 		{
 			path: "/",
 			component: IndexPage,
@@ -47,54 +47,46 @@ export default function CreateRouter() {
 		},
 		{
 			path: "/list/:index",
-			component: () => import(/* webpackChunkName: "list" */ "./views/list/ArticleListPage.vue"),
+			component: () => import(/* webpackChunkName: "list" */ "./views/list/Index.vue"),
 			meta: { title: "所有文章" },
 		},
 		{
-			path: "/category/:id",
-			component: () => import(/* webpackChunkName: "category" */"./views/category/CategoryPage.vue"),
-		},
-		{
-			path: "/category/:id/:name",
-			component: () => import(/* webpackChunkName: "category" */ "./views/category/CategoryPage.vue"),
-		},
-		{
 			path: "/login",
-			component: () => import(/* webpackChunkName: "login" */ "./views/login/LoginPage.vue"),
+			component: () => import(/* webpackChunkName: "login" */ "./views/login/Index.vue"),
 			meta: { title: "登录" },
 		},
 		{
 			path: "/article/:id",
-			component: () => import(/* webpackChunkName: "article" */ "./views/article/ArticlePage.vue"),
+			component: () => import(/* webpackChunkName: "article" */ "./views/article/Index.vue"),
 		},
 		{
 			path: "/article/:id/:urlTitle",
-			component: () => import(/* webpackChunkName: "article" */ "./views/article/ArticlePage.vue"),
+			component: () => import(/* webpackChunkName: "article" */ "./views/article/Index.vue"),
 		},
 		{
 			path: "/edit/:draftId",
-			component: () => import(/* webpackChunkName: "edit" */ "./views/editor/EditPage.vue"),
+			component: () => import(/* webpackChunkName: "edit" */ "./views/editor/Index.vue"),
 			props: true,
 			meta: { title: "文章编辑器" },
 		},
 		{
 			path: "/profile",
-			component: () => import(/* webpackChunkName: "profile" */ "./views/user/UserProfilePage.vue"),
+			component: () => import(/* webpackChunkName: "profile" */ "./views/user/Index.vue"),
 			meta: { title: "用户" },
 		},
 
 		// webpackChunkName 告诉 webpack 把他们打包在一个文件里
 		{
 			path: "/about",
-			component: () => import(/* webpackChunkName: "about" */ "./views/about/AboutPage.vue"),
+			component: () => import(/* webpackChunkName: "about" */ "./views/about/Index.vue"),
 			children: [
+
+				// TODO: Google把它也单独收录了，但实际应该只收录重定向后的
+				{ path: "", redirect: "me" },
+
 				{
-					path: "",
-					redirect: "blogger",
-				},
-				{
-					path: "blogger",
-					component: () => import(/* webpackChunkName: "about" */ "./views/about/Blogger.vue"),
+					path: "me",
+					component: () => import(/* webpackChunkName: "about" */ "./views/about/Me.vue"),
 					meta: { title: "关于博主" },
 				},
 				{
@@ -111,7 +103,7 @@ export default function CreateRouter() {
 		},
 		{
 			path: "/console",
-			component: () => import(/* webpackChunkName: "console" */ "./views/console/ConsolePage.vue"),
+			component: () => import(/* webpackChunkName: "console" */ "./views/console/Index.vue"),
 			meta: { title: "控制台", requireAuth: true },
 		},
 		{

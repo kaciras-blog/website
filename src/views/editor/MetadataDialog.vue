@@ -1,6 +1,6 @@
 <template>
 	<kx-base-dialog title="编辑描述信息">
-		<div :class="$style.content">
+		<form :class="$style.content">
 			<img
 				:class="$style.cover"
 				:src="local.cover"
@@ -25,7 +25,7 @@
 				:class="$style.keywords"
 				placeholder="关键字,空格隔开"
 			/>
-		</div>
+		</form>
 		<kx-standard-dialog-buttons @confirm="ok"/>
 	</kx-base-dialog>
 </template>

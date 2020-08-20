@@ -6,15 +6,11 @@ import { Api } from "./api";
 // 只是定义一下类型，实现在 entry-client 和 entry-server
 export abstract class PrefetchContext {
 
-	abstract readonly store: Store<any>;
-
-	abstract readonly route: Route;
-
-	abstract readonly api: Api;
-
-	abstract readonly cancelToken: CancellationToken;
-
-	abstract readonly isServer: boolean;
+	abstract store: Store<any>;
+	abstract route: Route;
+	abstract cancelToken: CancellationToken;
+	abstract api: Api;
+	abstract isServer: boolean;
 
 	readonly data: { [name: string]: any } = {};
 

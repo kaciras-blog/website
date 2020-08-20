@@ -1,6 +1,6 @@
 <template>
 	<kx-base-dialog :title='draft.articleId ? "更新文章": "发表文章"'>
-		<div :class="$style.body">
+		<form :class="$style.body">
 
 			<div :class="$style.category" class="segment">
 				<span class="label">发布到：</span>
@@ -33,7 +33,7 @@
 			</div>
 
 			<kx-check-box v-model="destroy">发表后删除草稿</kx-check-box>
-		</div>
+		</form>
 
 		<kx-standard-dialog-buttons @confirm="accept"/>
 	</kx-base-dialog>
@@ -53,7 +53,7 @@ export default {
 	data: () => ({
 		urlTitle: "",
 		category: null,
-		destroy: true,
+		destroy: false,
 	}),
 	methods: {
 		selectCategory() {
