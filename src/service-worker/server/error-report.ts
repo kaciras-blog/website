@@ -3,19 +3,20 @@ import { MessageType } from "./message";
 
 declare const clients: Clients;
 
-function anycast(data: any) {
+function reportError(data: any) {
 	const message = { type: MessageType.Error, data };
 	clients.matchAll().then(clients => clients[0]?.postMessage(message));
+	console.error(data);
 }
 
-self.addEventListener("error", (event) => anycast({
+self.addEventListener("error", (event) => reportError({
 	type: "ERROR",
 	name: event.error.name,
 	message: event.message,
 	stack: event.error.stack,
 }));
 
-self.addEventListener("unhandledrejection", (event) => anycast({
+self.addEventListener("unhandledrejection", (event) => reportError({
 	type: "REJECTION",
 	name: event.reason.name,
 	message: event.reason.message,

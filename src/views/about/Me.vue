@@ -90,9 +90,9 @@
 }
 
 .socialLinks > a {
-	&[title="Email"] { --color: rgba(0, 205, 173, .7); }
+	&[title="Email"] { --color: rgba(0, 212, 180, .7); }
 
-	&[title="GitHub"] { --color: rgba(109, 0, 205, .4); }
+	&[title="GitHub"] { --color: rgba(112, 0, 209, .4); }
 }
 
 .example {

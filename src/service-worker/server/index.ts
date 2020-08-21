@@ -45,7 +45,7 @@ self.addEventListener("fetch", router.route.bind(router));
  * 该事件只运行一次；有副作用的代码应当在 activate 事件里执行。
  */
 self.addEventListener("install", event => {
-	console.info("[SW] Install new version");
+	console.debug("[SW] Install new version");
 
 	event.waitUntil(fetch(APP_SHELL_NAME)
 		.then(appShell => cache.put(APP_SHELL_NAME, appShell)));
@@ -64,7 +64,7 @@ self.addEventListener("install", event => {
  * 在这个事件里应当清理旧版的缓存。
  */
 self.addEventListener("activate", event => {
-	console.debug("[SW] Activate");
+	console.info("[SW] New version activated");
 
 	/*
 	 * 浏览器会停止没有相关页面打开的 ServiceWorker 以节约资源，如果监听了 fetch 事件，
