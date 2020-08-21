@@ -4,80 +4,99 @@
 			<kx-button class="primary" @click="clear">清除全部</kx-button>
 		</div>
 
-		<ul :class="$style.list">
-			<li v-for="item of friends" class="segment">
+		<div
+			v-if="loading"
+			:class="$style.spinner"
+		>
+			<atom-spinner
+				:animation-duration="1200"
+				:size="64"
+				color="#33aaff"
+			/>
+			<span>加载中……</span>
+		</div>
+
+		<template v-else>
+			<ul :class="$style.list">
+				<li v-for="item of friends" class="segment">
 				<span :class="$style.friendLabel">
 					友链
 				</span>
 
-				检测到友链网站：
-				<a
-					:href="item.url"
-					class="highlight"
-					target="_blank"
-				>
-					{{ item.name }}
-				</a>
-
-				<template v-if="item.type === 'Moved'">
-					重定向到
-					<a
-						:href="item.newUrl"
-						class="highlight"
-						target="_blank"
-					>
-						{{ item.newUrl }}
-					</a>
-				</template>
-				<template v-else-if="item.type === 'AbandonedMe'">
-					删除了我的友链
-				</template>
-				<template v-else-if="item.type === 'Inaccessible'">
-					无法访问
-				</template>
-
-				<time :class="$style.time">{{ item.time | localDateMinute }}</time>
-			</li>
-		</ul>
-
-		<ul :class="$style.list">
-			<li v-for="item of discussions" class="segment">
-				<header>
-					<span :class="$style.diasussionLabel">
-						评论
-					</span>
-
+					检测到友链网站：
 					<a
 						:href="item.url"
 						class="highlight"
 						target="_blank"
 					>
-						{{ item.title }}
+						{{ item.name }}
 					</a>
 
-					<template v-if="item.parentFloor">
-						的 {{ item.parentFloor }} 楼
+					<template v-if="item.type === 'Moved'">
+						重定向到
+						<a
+							:href="item.newUrl"
+							class="highlight"
+							target="_blank"
+						>
+							{{ item.newUrl }}
+						</a>
+					</template>
+					<template v-else-if="item.type === 'AbandonedMe'">
+						删除了我的友链
+					</template>
+					<template v-else-if="item.type === 'Inaccessible'">
+						无法访问
 					</template>
 
-					有新的评论 #{{ item.floor }}
+					<time :class="$style.time">{{ item.time | localDateMinute }}</time>
+				</li>
+			</ul>
 
-					<time :class="$style.time">
-						{{ item.time | localDateMinute }}
-					</time>
-				</header>
+			<ul :class="$style.list">
+				<li v-for="item of discussions" class="segment">
+					<header>
+					<span :class="$style.diasussionLabel">
+						评论
+					</span>
 
-				<blockquote :class="$style.content">{{ item.preview }}</blockquote>
-			</li>
-		</ul>
+						<a
+							:href="item.url"
+							class="highlight"
+							target="_blank"
+						>
+							{{ item.title }}
+						</a>
+
+						<template v-if="item.parentFloor">
+							的 {{ item.parentFloor }} 楼
+						</template>
+
+						有新的评论 #{{ item.floor }}
+
+						<time :class="$style.time">
+							{{ item.time | localDateMinute }}
+						</time>
+					</header>
+
+					<blockquote :class="$style.content">{{ item.preview }}</blockquote>
+				</li>
+			</ul>
+		</template>
 	</div>
 </template>
 
 <script>
+import AtomSpinner from "epic-spinners/src/components/lib/AtomSpinner.vue";
 import api from "@/api";
 
 export default {
 	name: "NotificationConsole",
+	components: {
+		AtomSpinner,
+	},
 	data: () => ({
+		loading: true,
 		friends: [],
 		discussions: [],
 	}),
@@ -88,6 +107,7 @@ export default {
 		},
 		async refresh() {
 			Object.assign(this.$data, await api.notification.getAll());
+			this.loading = false;
 		},
 	},
 	created() {
@@ -97,6 +117,17 @@ export default {
 </script>
 
 <style module lang="less">
+.spinner {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	// 虽然浏览器支持还不好，但是后台自己先用用也行
+	gap: 10px;
+
+	font-size: 1.125rem;
+}
+
 .list {
 	composes: clean-list from global;
 	font-size: initial;
