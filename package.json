@@ -20,10 +20,10 @@
 		"build-cache": "blog-server build-image-cache"
 	},
 	"browserslist": [
-		"Chrome >= 57",
-		"Safari >= 10.1",
-		"iOS >= 10.3",
-		"Firefox >= 52",
+		"Chrome >= 66",
+		"Safari >= 12.1",
+		"iOS >= 11.3",
+		"Firefox >= 57",
 		"Edge >= 79"
 	],
 	"dependencies": {

@@ -30,7 +30,7 @@ if (GOOGLE_ANALYTICS_ID) {
  * 判断浏览器是否支持，根据：
  *
  * 1.ServiceWorker 里 fetchAndCache() 使用了 Response.body 创建新响应。
- * 2.页面大量使用 grid 布局。
+ * 2.使用 AbortController 控制超时。
  *
  * @return 如果支持则为true，否则false
  */
@@ -43,7 +43,7 @@ function isSupportedBrowser() {
 		return false;
 	}
 
-	return CSS.supports("display", "grid");
+	return "AbortController" in window;
 }
 
 // 检测不支持的浏览器，显示一个提示栏

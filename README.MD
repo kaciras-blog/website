@@ -26,10 +26,11 @@
 * 运行时需要和后端服务通信，故先要运行[content-server](https://github.com/kaciras-blog/content-server)
 
 浏览器支持：
-* Firefox >= 52
-* Chrome >= 57
-* Safari >= 10.3
-* Opera >= 44
+* Chrome >= 66
+* Firefox >= 57
+* Safari >= 12.1
+* IOS >= 11.3
+* Opera >= 53
 * MicrosoftEdge >= 79
 * IE 全部不支持
 
