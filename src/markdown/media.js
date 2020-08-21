@@ -169,15 +169,20 @@ export function initLazyLoading(el) {
 	// gif 视频自动播放/暂停
 	const autoPlay = new IntersectionObserver(entries => {
 		for (const { target, intersectionRatio } of entries) {
-			const { _controller } = target;
-			intersectionRatio > 0 ? _controller.play() : _controller.pause();
+
+			/*
+			 * play 返回 Promise 来加等待加载完成，如果元数据还未加载完就暂停会抛出异常。
+			 * 这个异常在 Chrome 里是 AbortError，Firefox 是 DomException，无法很好地跟其他情况区分。
+			 *
+			 * 但元数据的加载被中断是正常的，不影响下次播放，故直接屏蔽掉异常免得控制台里难看。
+			 *
+			 * https://developers.google.com/web/updates/2017/06/play-request-was-interrupted
+			 */
+			intersectionRatio > 0 ? silencePromise(target.play()) : target.pause();
 		}
 	});
 
-	el.querySelectorAll(".gif").forEach(video => {
-		autoPlay.observe(video);
-		video._controller = new VideoController(video);
-	});
+	el.querySelectorAll(".gif").forEach(video => autoPlay.observe(video));
 
 	return function disconnect() {
 		autoPlay.disconnect();
@@ -185,51 +190,14 @@ export function initLazyLoading(el) {
 	};
 }
 
-/*
- * 下面是临时修复测试代码，先上线看看有没有问题。
+/**
+ * 屏蔽 Promise 的错误，用来防止无关紧要的错误出现在控制台里。
  *
- * https://developers.google.com/web/updates/2017/06/play-request-was-interrupted
+ * 【本代码抄自】
+ * https://github.com/videojs/video.js/blob/main/src/js/utils/promise.js
+ *
+ * @param value An object that may or may not be `Promise`-like.
  */
-const UNLOAD = 0;
-const LOADING = 1;
-const LOADED = 2;
-
-class VideoController {
-
-	constructor(video) {
-		this.video = video;
-		this.state = UNLOAD;
-	}
-
-	play() {
-		const { video, state } = this;
-		switch (state) {
-			case UNLOAD:
-				this.state = LOADING;
-				video.play().then(() => this.postInit());
-				break;
-			case LOADING:
-				this.paused = false;
-				break;
-			case LOADED:
-				video.play();
-				break;
-		}
-	}
-
-	pause() {
-		const { video, state } = this;
-		if (state === LOADING) {
-			this.paused = true;
-		} else if (state === LOADED) {
-			video.pause();
-		}
-	}
-
-	postInit() {
-		if (this.paused) {
-			this.video.pause();
-		}
-		this.state = LOADED;
-	}
+function silencePromise(value) {
+	(typeof value.then === "function") && value.catch(() => {});
 }
