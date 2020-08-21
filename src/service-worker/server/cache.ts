@@ -1,7 +1,22 @@
 /**
- * 记录所有使用中的缓存名，用于清理未使用的缓存
+ * 记录所有使用中的缓存名，用于清理未使用的缓存。
+ *
+ * 【使用注意】
+ * 所以缓存必须在执行清理之前创建，以便这里能记录它们。
  */
 export const cacheNames = new Set<string>();
+
+export async function cleanUnusedCache() {
+	(await caches.keys()).filter(k => !cacheNames.has(k)).map(deleteCache);
+}
+
+async function deleteCache(name: string) {
+	if (await caches.delete(name)) {
+		console.warn("[SW] 无法删除过期的缓存：" + name);
+	} else {
+		console.debug("[SW] 删除了过期的缓存：" + name);
+	}
+}
 
 export interface ManagedCache {
 

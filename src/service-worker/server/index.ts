@@ -4,7 +4,7 @@
 import "./error-report";
 import { initializeSettingManager } from "./settings";
 import apiCacheRoute from "./api-cache";
-import { cacheNames, CacheWrapper } from "./cache";
+import { CacheWrapper, cleanUnusedCache } from "./cache";
 import { AppShellRoute, RegexRoute, Router } from "./routing";
 import { cacheFirst } from "./fetch-strategy";
 
@@ -18,7 +18,11 @@ declare const serviceWorkerOption: {
 
 initializeSettingManager();
 
+/** 代码和依赖有较大改动时增加版本号 */
 const STATIC_CACHE_NAME = "static-v1.4";
+
+/** 后端 API 有 Breaking Change 时增加版本号 */
+const API_CACHE_NAME = "api-v1.2";
 
 const cache = new CacheWrapper(STATIC_CACHE_NAME);
 const router = new Router();
@@ -26,7 +30,7 @@ const fetcher = cacheFirst(cache);
 
 router.addRoute(new RegexRoute("/static/", fetcher));
 
-router.addRoute(apiCacheRoute());
+router.addRoute(apiCacheRoute(API_CACHE_NAME));
 
 // Twitter 的代码里也是这样一个个写死的
 // https://abs.twimg.com/responsive-web/serviceworker/main.e531acd4.js 格式化后的第6200行
@@ -83,16 +87,7 @@ self.addEventListener("activate", event => {
 	// 	event.waitUntil(self.registration.navigationPreload.enable());
 	// }
 
-	// 删除当前版本用不到的缓存
-	event.waitUntil(async () => {
-		const names = (await caches.keys()).filter(k => !cacheNames.has(k));
-		await Promise.all(names.map(async k => {
-			if (!(await caches.delete(k))) {
-				console.warn("[SW] 无法删除不存在的缓存：" + k);
-			}
-		}));
-		console.debug("[SW] 删除了过期的缓存");
-	});
+	event.waitUntil(cleanUnusedCache);
 
 	return self.clients.claim();
 });

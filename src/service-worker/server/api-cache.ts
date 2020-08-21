@@ -3,7 +3,6 @@ import { Route } from "./routing";
 import { FetchFn, networkFirst, staleWhileRevalidate, timeout } from "./fetch-strategy";
 import { bind, initPromise } from "./settings";
 
-const API_CACHE_NAME = "api-v1.2";
 
 class ApiOfflineRoute implements Route {
 
@@ -57,14 +56,12 @@ class ApiOfflineRoute implements Route {
 /**
  * 对内容服务接口使用网络优先缓存，保证在网络不通的情况下也能显示旧的内容。
  */
-export default function apiCacheRoute() {
+export default function apiCacheRoute(cacheName: string) {
 	const apiOrigin = process.env.API_ORIGIN as any;
 	const BASE_URL = typeof apiOrigin === "string"
 		? apiOrigin
 		: apiOrigin[location.protocol.substring(0, location.protocol.length - 1)];
 
 	const { host } = new URL(BASE_URL);
-	const cache = new CacheWrapper(API_CACHE_NAME);
-
-	return new ApiOfflineRoute(host, cache);
+	return new ApiOfflineRoute(host, new CacheWrapper(cacheName));
 }
