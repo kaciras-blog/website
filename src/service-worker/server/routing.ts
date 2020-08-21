@@ -123,12 +123,18 @@ export class WebpUpgradeRoute implements Route {
 	}
 
 	match(request: Request) {
-		const path = new URL(request.url).pathname;
-
-		if (this.pathPattern.test(path)) {
-			return request.headers.get("Accept")!.includes("image/webp");
+		const { mode, url, headers } = request;
+		if (mode === "navigate") {
+			return false; // 新建标签页浏览图片
 		}
-		return false;
+
+		const path = new URL(url).pathname;
+		if (!this.pathPattern.test(path)) {
+			return false; // 只拦截特定路径的资源
+		}
+
+		// TODO: 升级浏览器到必须支持WebP?
+		return headers.get("Accept")!.includes("image/webp");
 	}
 
 	async handle(event: FetchEvent) {
