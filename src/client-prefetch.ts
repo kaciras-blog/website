@@ -6,14 +6,14 @@
  */
 import Vue, { ComponentOptions } from "vue";
 import { Route } from "vue-router";
-import { Component, NavigationGuardNext, VueRouter } from "vue-router/types/router";
+import { NavigationGuardNext, VueRouter } from "vue-router/types/router";
 import { Store } from "vuex";
 import { CancellationToken } from "@kaciras-blog/uikit";
 import api from "@/api";
-import { PrefetchContext } from "./prefetch";
-import * as loadingIndicator from "./loading-indicator";
-import { isOnlyHashChange } from "@/utils";
 import { SET_PREFETCH_DATA } from "@/store/types";
+import { isOnlyHashChange } from "./utils";
+import { MaybePrefetchComponent, PrefetchContext } from "./prefetch";
+import * as loadingIndicator from "./loading-indicator";
 
 let cancelToken = CancellationToken.NEVER;
 
@@ -35,44 +35,53 @@ class ClientPrefetchContext extends PrefetchContext {
 ClientPrefetchContext.prototype.api = api;
 ClientPrefetchContext.prototype.isServer = false;
 
-export function prefetchComponents(
+/**
+ * 预载下一个路由的组件数据，并更新页面标题等属性。
+ *
+ * @param store Vuex存储实例
+ * @param to 即将要进入的目标路由对象
+ * @param components 需要预载数据的组件数组
+ * @param next 进行管道中的下一个钩子
+ */
+export function prefetch(
 	store: Store<any>,
 	to: Route,
-	activated: Component[],
+	components: MaybePrefetchComponent[],
 	next: NavigationGuardNext) {
 
+	if (components.length === 0) {
+		return next();
+	}
+
 	function nextWrapper(...args: any[]) {
-		if (to.meta.title) {
-			document.title = to.meta.title + " - Kaciras的博客";
+		const { title } = to.meta;
+		if (title) {
+			document.title = title + " - Kaciras的博客";
 		}
 		return next(...args);
 	}
 
-	if (!activated.length) {
-		return nextWrapper();
-	}
-
-	prefetch(store, to, activated.filter(c => (c as any).asyncData), nextWrapper);
+	return doPrefetch(store, to, components, nextWrapper);
 }
 
 /**
  * 处理预加载任务，包括显示加载指示器、错误页面、防止取消后跳转等。
- *
- * @param store Vuex存储实例
- * @param route 即将要进入的目标路由对象
- * @param components 需要预载数据的组件数组
- * @param next 进行管道中的下一个钩子
  */
-function prefetch(store: Store<any>, route: Route, components: Component[], next: NavigationGuardNext) {
+function doPrefetch(
+	store: Store<any>,
+	to: Route,
+	components: MaybePrefetchComponent[],
+	next: NavigationGuardNext) {
+
 	loadingIndicator.startPrefetch();
+	const context = new ClientPrefetchContext(store, to, cancelToken);
 
-	const context = new ClientPrefetchContext(store, route, cancelToken);
-	const tasks = components.map(c => (c as any).asyncData(context));
+	const tasks = components.filter(c => c.asyncData).map(c => c.asyncData!(context));
 
-	Promise.all(tasks).then(() => {
+	return Promise.all(tasks).then(() => {
 		if (cancelToken.isCancelled) {
 			next(false);
-			console.debug(`导航被取消：${route.path}`);
+			console.debug(`导航被取消：${to.path}`);
 		} else {
 			store.commit(SET_PREFETCH_DATA, context.data);
 			next();
@@ -81,8 +90,9 @@ function prefetch(store: Store<any>, route: Route, components: Component[], next
 	}).catch((err) => {
 		if (cancelToken.isCancelled) {
 			next(false);
-			return console.debug(`导航被取消：${route.path}`);
+			return console.debug(`导航被取消：${to.path}`);
 		}
+
 		switch (err.code) {
 			case -1:
 				break;
@@ -98,6 +108,7 @@ function prefetch(store: Store<any>, route: Route, components: Component[], next
 				console.error(err);
 				next("/error/500");
 		}
+
 		loadingIndicator.finishWithError();
 	});
 }
@@ -146,6 +157,6 @@ export function installRouterHooks(store: Store<any>, router: VueRouter) {
 		let diffed = false;
 		const activated = matched.filter((c, i) => diffed || (diffed = (previous[i] !== c)));
 
-		prefetchComponents(store, to, activated, next);
+		prefetch(store, to, (activated as MaybePrefetchComponent[]), next);
 	});
 }
