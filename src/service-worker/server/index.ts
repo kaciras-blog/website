@@ -5,7 +5,7 @@ import "./error-report";
 import { initializeSettingManager } from "./settings";
 import apiCacheRoute from "./api-cache";
 import { cacheNames, CacheWrapper } from "./cache";
-import { AppShellRoute, RegexRoute, Router, WebpUpgradeRoute } from "./routing";
+import { AppShellRoute, RegexRoute, Router } from "./routing";
 import { cacheFirst } from "./fetch-strategy";
 
 // 默认是 WebWorker，需要声明一下ServiceWorker，其他文件里也一样。
@@ -24,7 +24,6 @@ const cache = new CacheWrapper(STATIC_CACHE_NAME);
 const router = new Router();
 const fetcher = cacheFirst(cache);
 
-router.addRoute(new WebpUpgradeRoute(fetcher, new RegExp("^/static/img/.+\\.(?:jpg|png)$")));
 router.addRoute(new RegexRoute("/static/", fetcher));
 
 router.addRoute(apiCacheRoute());

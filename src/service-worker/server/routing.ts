@@ -72,45 +72,16 @@ export class RegexRoute implements Route {
 }
 
 /**
- * 处理导航请求预载的路由，需要把ServiceWorker的导航预载功能打开：
- *
- * @example
- * self.addEventListener("activate", (event: ExtendableEvent) => {
- *     if (self.registration.navigationPreload) {
- *         event.waitUntil(self.registration.navigationPreload.enable());
- *     }
- * }
- */
-export class NavigatePreloadRoute implements Route {
-
-	match(request: Request) {
-		return request.mode === "navigate";
-	}
-
-	/**
-	 * 检查下是否已经预载了，如果是就回复预载的响应，不是的话不管它让浏览器自己走网络加载。
-	 *
-	 * 特别注意 event.preloadResponse 一定要 await 之后再判断，不能直接 if(event.preloadResponse)。
-	 *
-	 * @param event 加载事件
-	 */
-	handle(event: FetchEvent) {
-		event.waitUntil(async () => {
-			const preloaded = await event.preloadResponse;
-			if (preloaded) event.respondWith(preloaded);
-		});
-	}
-}
-
-/**
- * 如果浏览器支持WebP格式，则把图片请求的文件扩展名改为.webp。
+ * 如果浏览器支持 WebP 格式，则把图片请求的文件扩展名改为.webp。
  *
  * 【存在的问题】
- * WebP格式不一定就比原格式小，但哪个更优只能在服务端判断，该类只能一律使用WebP。
- * 首次访问网站时，因为ServiceWorker未安装而导致首屏的资源无法拦截，在Lighthouse等工具里会拉低评分。
+ * WebP 格式不一定就比原格式小，但哪个更优只能在服务端判断，该类只能一律使用 WebP。
+ * 首次访问网站时，因为 ServiceWorker 未安装而导致首屏的资源无法拦截。
+ *
+ * 所以尽量从后端来支持 WebP 升级功能，如果后端支持则不需要使用本类。
  *
  * 【其他方案】
- * 在HTML里使用<picture> + <source>是最好的，但是CSS里没有类似的功能。
+ * 在HTML里使用 <picture> + <source> 是最好的，但是 CSS 里没有类似的功能。
  */
 export class WebpUpgradeRoute implements Route {
 
