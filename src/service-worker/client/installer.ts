@@ -54,8 +54,8 @@ export async function initialize() {
 		return console.error("service worker won't work when PUBLIC_URL is on a different origin");
 	}
 	try {
-		const response = await fetch("/sw-check", { method: "HEAD" });
-		return response.status === 200 ? register() : unregister();
+		const { status } = await fetch("/sw-check", { method: "HEAD" });
+		return status === 200 ? register() : unregister();
 	} catch (e) {
 		console.warn("[Init] 无法获取ServiceWorker注册指令，暂不更新ServiceWorker");
 	}
@@ -70,7 +70,5 @@ export async function initialize() {
  * 若之前启用过，要禁用的话必须得注销，该函数始终需要被调用。
  */
 export function useServiceWorker() {
-	if ("serviceWorker" in navigator) {
-		window.addEventListener("load", initialize);
-	}
+	if ("serviceWorker" in navigator) initialize();
 }
