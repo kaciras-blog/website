@@ -17,12 +17,12 @@
 					<social-link
 						href="mailto:Kaciras@protonmail.com"
 						name="Email"
-						icon="../../assets/img/email.svg"
+						icon="@assets/img/email.svg"
 					/>
 					<social-link
 						href="https://github.com/Kaciras"
 						name="GitHub"
-						icon="../../assets/img/logo-github.svg"
+						icon="@assets/img/logo-github.svg"
 					/>
 				</p>
 			</div>
@@ -40,7 +40,7 @@
 
 		<section id="friend" class="about-section">
 			<h2>友情链接</h2>
-			<img alt="example" src="../../assets/img/friend-example.png" :class="$style.example">
+			<img alt="example" src="@assets/img/friend-example.png" :class="$style.example">
 			<p>
 				加友链在下面评论即可，填写以下几项：
 			</p>

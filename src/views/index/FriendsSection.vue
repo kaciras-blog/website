@@ -5,7 +5,7 @@
 
 			<div v-if="sorting" :class="$style.toolbar">
 				<img
-					src="../../assets/icon/close.svg"
+					src="@assets/icon/close.svg"
 					alt="sort"
 					title="取消"
 					:class="$style.iconButton"
@@ -13,7 +13,7 @@
 					@click="sortFinish(false)"
 				>
 				<img
-					src="../../assets/icon/correct.svg"
+					src="@assets/icon/correct.svg"
 					alt="make friend"
 					title="确定"
 					:class="$style.iconButton"
@@ -24,7 +24,7 @@
 
 			<div v-else-if="user.id === 2" :class="$style.toolbar">
 				<img
-					src="../../assets/icon/sort.svg"
+					src="@assets/icon/sort.svg"
 					alt="sort"
 					title="调整顺序"
 					:class="$style.iconButton"
@@ -32,7 +32,7 @@
 					@click="sort"
 				>
 				<img
-					src="../../assets/icon/plus.svg"
+					src="@assets/icon/plus.svg"
 					alt="make friend"
 					title="添加"
 					:class="$style.iconButton"
