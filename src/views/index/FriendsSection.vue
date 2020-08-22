@@ -79,7 +79,6 @@
 <script>
 import Vue from "vue";
 import { mapState } from "vuex";
-import lozad from "lozad";
 import { edgeScroll, moveElement, observeMouseMove } from "@kaciras-blog/uikit";
 import api from "@/api";
 import { errorMessage } from "@/utils";
@@ -282,14 +281,6 @@ export default {
 
 			dragSort($_draggingRegion, sort, event, dragEl);
 		},
-	},
-	mounted() {
-		const imgs = this.$el.querySelectorAll("img");
-		this.$_lazyLoader = lozad(imgs, { rootMargin: "35px" });
-		this.$_lazyLoader.observe();
-	},
-	destroyed() {
-		this.$_lazyLoader.observer.disconnect(); // 啊好想要 Hooks 啊
 	},
 };
 </script>

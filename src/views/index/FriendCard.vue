@@ -1,7 +1,11 @@
 <!--
-props 说明:
-	 disabled - 是否禁止点击跳转，以及 hover、focus 动效，在拖动排序时用
-	 friend	- 友链对象
+【props 说明】
+disabled - 是否禁止点击跳转，以及 hover、focus 动效，在拖动排序时用
+friend	 - 友链对象
+
+【懒加载的问题】
+拖动排序中会不断删除和添加元素，这会导致懒加载必须处理这些问题。
+目前友链也不多，每张图都很小，还是不做这功能了吧。
 -->
 <template functional>
 	<component
@@ -13,12 +17,12 @@ props 说明:
 		@mousedown="listeners.dragstart"
 	>
 		<img
-			:data-src="props.friend.background"
+			:src="props.friend.background"
 			alt="background"
 			:class="$style.background"
 		>
 		<img
-			:data-src="props.friend.favicon"
+			:src="props.friend.favicon"
 			alt="favicon"
 			:class="$style.favicon"
 		>
