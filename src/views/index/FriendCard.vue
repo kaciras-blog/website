@@ -35,6 +35,11 @@ export default {
 <style module lang="less">
 @import "../../css/imports";
 
+/*
+ * 友链卡片的样式模仿了 Aurora - https://github.com/chanshiyucx/aurora
+ *
+ * 原版 hover 的动画是整个上移，我这改成了上下两个方向开启。
+ */
 @width: 260px;
 @height: @width * 9 / 16;
 

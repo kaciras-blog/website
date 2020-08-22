@@ -9,7 +9,7 @@ class ApiOfflineRoute implements Route {
 	private readonly host: string;
 	private readonly cache: ManagedCache;
 
-	private initPromise: Promise<void>;
+	private initPromise?: Promise<void>;
 
 	private fetchFn!: FetchFn;
 
