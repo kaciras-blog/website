@@ -6,14 +6,16 @@ friend	 - 友链对象
 【懒加载的问题】
 拖动排序中会不断删除和添加元素，这会导致懒加载必须处理这些问题。
 目前友链也不多，每张图都很小，还是不做这功能了吧。
+
+【禁用的实现】
+改变 <component> 渲染的元素会导致整个子树更新，应该避免，改为其它禁用实现。
 -->
 <template functional>
-	<component
-		:is="props.disabled ? 'div' : 'a'"
+	<a
+		:disabled="props.disabled"
 		:href="props.friend.url"
 		target="_blank"
-		:class="[$style.container, data.class]"
-		:style="data.style"
+		:class="$style.container"
 		@mousedown="listeners.dragstart"
 	>
 		<img
@@ -27,7 +29,7 @@ friend	 - 友链对象
 			:class="$style.favicon"
 		>
 		<span :class="$style.name">{{props.friend.name}}</span>
-	</component>
+	</a>
 </template>
 
 <script>
@@ -76,7 +78,7 @@ export default {
 	}
 }
 
-a.container {
+.container:not([disabled]) {
 	cursor: revert;
 
 	@media screen and (min-width: @length-screen-mobile) {
