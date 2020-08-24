@@ -3,10 +3,21 @@ import { MessageType } from "./message";
 
 declare const clients: Clients;
 
-function reportError(data: any) {
-	const message = { type: MessageType.Error, data };
+export interface ServiceWorkerError {
+	type: "ERROR" | "REJECTION",
+	name: string;
+	stack?: string;
+	message?: string;
+}
+
+export interface SWErrorMessage {
+	type: MessageType.Error;
+	error: ServiceWorkerError
+}
+
+function reportError(error: ServiceWorkerError) {
+	const message: SWErrorMessage = { type: MessageType.Error, error };
 	clients.matchAll().then(clients => clients[0]?.postMessage(message));
-	console.error(data);
 }
 
 self.addEventListener("error", (event) => reportError({

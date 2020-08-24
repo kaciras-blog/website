@@ -87,7 +87,7 @@ self.addEventListener("activate", event => {
 	// 	event.waitUntil(self.registration.navigationPreload.enable());
 	// }
 
-	event.waitUntil(cleanUnusedCache);
+	event.waitUntil(cleanUnusedCache());
 
 	return self.clients.claim();
 });

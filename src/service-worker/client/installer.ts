@@ -1,18 +1,8 @@
 import { MessageType } from "../server/message";
 import { setResult } from "./settings";
-import { reportSWError } from "@/error-report";
+import { reportError } from "@/error-report";
 
 const SCRIPT_PATH = "/sw.js";
-
-export interface ErrorRecordMessage {
-	type: MessageType.Error;
-	data: {
-		type: "ERROR" | "REJECTION",
-		name: string;
-		stack?: string;
-		message?: string;
-	};
-}
 
 function dispatchMessage(message: MessageEvent) {
 	const { data } = message;
@@ -21,7 +11,7 @@ function dispatchMessage(message: MessageEvent) {
 			setResult(data);
 			break;
 		case MessageType.Error:
-			reportSWError(data.data);
+			reportError(data.error);
 			break;
 		default:
 			throw new Error("Unknown message type: " + data.type);
