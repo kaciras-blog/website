@@ -113,6 +113,8 @@ export default {
 </script>
 
 <style module lang="less">
+@import "../../css/imports";
+
 .header {
 	display: flex;
 }
@@ -145,7 +147,7 @@ export default {
 }
 
 .clickable:hover, .active {
-	color: #fa5acd;
+	color: @color-second;
 }
 
 .content {

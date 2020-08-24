@@ -32,6 +32,7 @@ export default {
 	transition: .3s;
 
 	&:hover, &:focus {
+		border-color: white;
 		background-color: var(--color);
 		box-shadow: 0 0 10px var(--color);
 	}

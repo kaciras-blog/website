@@ -27,7 +27,7 @@
 				</p>
 			</div>
 
-			<h3>名字和头像</h3>
+			<h2>名字和头像</h2>
 			<p>
 				Kaciras这个名字，是我初中玩网游时滚键盘打出来的，没有意义，我也不知道咋读。
 				后来在需要英文名的地方都用它，索性就一直用下去了。
@@ -39,7 +39,7 @@
 		</section>
 
 		<section id="friend" class="about-section">
-			<h2>友情链接</h2>
+			<h1>友情链接</h1>
 			<img alt="example" src="@assets/img/friend-example.png" :class="$style.example">
 			<p>
 				加友链在下面评论即可，填写以下几项：
@@ -90,9 +90,9 @@
 }
 
 .socialLinks > a {
-	&[title="Email"] { --color: rgba(0, 212, 180, .7); }
+	&[title="Email"] { --color: rgba(0, 217, 184, .7); }
 
-	&[title="GitHub"] { --color: rgba(112, 0, 209, .4); }
+	&[title="GitHub"] { --color: rgba(127, 0, 224, .4); }
 }
 
 .example {

@@ -67,13 +67,13 @@ export default {
 		left: 100%;
 		right: 0;
 		height: 3px;
-		background-color: #00b4eb;
+		background-color: @color-primary;
 		transition: .15s all linear;
 	}
 }
 
 .active {
-	color: #00b4eb;
+	color: @color-primary;
 
 	&::before {
 		left: 0;
