@@ -3,6 +3,7 @@
 		:title="props.name"
 		:href="props.href"
 		target="_blank"
+		rel="noopener"
 		:class="$style.container"
 	>
 		<img

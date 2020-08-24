@@ -15,6 +15,7 @@ friend	 - 友链对象
 		:disabled="props.disabled"
 		:href="props.friend.url"
 		target="_blank"
+		rel="noopener"
 		:class="$style.container"
 		@mousedown="listeners.dragstart"
 	>

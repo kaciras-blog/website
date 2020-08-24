@@ -108,8 +108,8 @@ function renderImage(tokens, idx) {
 				class="md-media-container ${sized}"
 				style="${style}"
 				href="${src}"
-				rel="nofollow"
 				target="_blank"
+				rel="noopener,nofollow"
 			>
 				<img data-src="${src}" alt="${alt}" class="md-img">
 				${placeholder ? LOADING_EL : ""}
