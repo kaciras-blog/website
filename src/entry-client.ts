@@ -21,8 +21,6 @@ Vue.mixin(ClientPrefetchMixin);
 const { vue, router, store } = createApp(window.__INITIAL_STATE__);
 
 function initApplication() {
-	console.info("initApplication");
-
 	// 这俩要放在挂载的前面，因为它们影响关键的元素
 	mediaQueryPlugin.observeWindow(store);
 	SUN_PHASES.observe().subscribe(value => store.commit(SET_SUN_PHASE, value));

@@ -12,9 +12,9 @@ export async function cleanUnusedCache() {
 
 async function deleteCache(name: string) {
 	if (await caches.delete(name)) {
-		console.warn("[SW] 无法删除过期的缓存：" + name);
-	} else {
 		console.debug("[SW] 删除了过期的缓存：" + name);
+	} else {
+		console.warn("[SW] 无法删除过期的缓存：" + name);
 	}
 }
 
