@@ -24,6 +24,7 @@
 		</div>
 
 		<textarea
+			ref="textarea"
 			:value="content"
 			name="content"
 			placeholder='说点什么吧'
@@ -71,6 +72,9 @@ export default {
 		options: "discussionOptions",
 	}),
 	methods: {
+		focus() {
+			this.$refs.textarea.focus();
+		},
 		submit() {
 			const { nickname } = this;
 

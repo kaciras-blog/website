@@ -46,7 +46,7 @@
 
 <script>
 import { debounceFirst } from "@kaciras-blog/server/lib/functions";
-import { scrollToElementEnd } from "@kaciras-blog/uikit";
+import { scrollToElement } from "@kaciras-blog/uikit";
 import api from "@/api";
 import ReplyFrame from "./ReplyFrame";
 import ReplyList from "./ReplyList";
@@ -78,7 +78,10 @@ export default {
 		async showReplyEditor() {
 			this.replying = true;
 			await this.$nextTick();
-			scrollToElementEnd(this.$refs.editor.$el);
+
+			const editor = this.$refs.editor;
+			scrollToElement(editor.$el);
+			editor.focus();
 		},
 		async submitReply(reply) {
 			this.value.replyCount++;
