@@ -29,7 +29,7 @@
 	"dependencies": {
 		"@iktakahiro/markdown-it-katex": "^4.0.0",
 		"@kaciras-blog/server": "^1.0.1",
-		"@kaciras-blog/uikit": "^0.6.4",
+		"@kaciras-blog/uikit": "^1.0.0",
 		"axios": "^0.20.0",
 		"date-fns": "^2.15.0",
 		"epic-spinners": "^1.1.0",
@@ -58,8 +58,8 @@
 		"@babel/runtime": "^7.11.2",
 		"@fortawesome/fontawesome-free": "^5.14.0",
 		"@kaciras-blog/devtool": "^1.0.1",
-		"@sentry/browser": "5.21.3",
-		"@sentry/integrations": "^5.21.3",
+		"@sentry/browser": "5.21.4",
+		"@sentry/integrations": "^5.21.4",
 		"@types/jest": "^26.0.10",
 		"@types/webpack-env": "^1.15.2",
 		"@vue/test-utils": "^1.0.4",
@@ -75,7 +75,7 @@
 		"eslint-plugin-standard": "^4.0.1",
 		"eslint-plugin-vue": "^6.2.2",
 		"jest": "^26.4.1",
-		"ts-jest": "^26.2.0",
+		"ts-jest": "^26.3.0",
 		"typescript": "^4.0.2",
 		"vue-template-compiler": "^2.6.12"
 	},
