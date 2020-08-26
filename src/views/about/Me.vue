@@ -7,7 +7,7 @@
 				<img
 					src="/static/img/avatar.png"
 					alt="logo"
-					class="head"
+					class="large head"
 				>
 
 				<h1 :class="$style.name">Kaciras</h1>

@@ -89,6 +89,7 @@
 <script>
 import AtomSpinner from "epic-spinners/src/components/lib/AtomSpinner.vue";
 import api from "@/api";
+import { errorMessage } from "@/utils";
 
 export default {
 	name: "NotificationConsole",
@@ -106,8 +107,12 @@ export default {
 			return this.refresh();
 		},
 		async refresh() {
-			Object.assign(this.$data, await api.notification.getAll());
-			this.loading = false;
+			try {
+				Object.assign(this.$data, await api.notification.getAll());
+				this.loading = false;
+			} catch (e) {
+				this.$dialog.alertError("加载文章失败", errorMessage(e));
+			}
 		},
 	},
 	created() {
