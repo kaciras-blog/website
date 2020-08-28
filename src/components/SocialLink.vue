@@ -27,7 +27,7 @@ export default {
 	padding: 10px;
 
 	border-radius: 50%;
-	border: solid 4px #f0f0f0;
+	border: solid 4px #eee;
 
 	transition: .3s;
 

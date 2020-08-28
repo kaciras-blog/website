@@ -4,19 +4,3 @@
  * 已经导入了所有的变量和函数，用于在.vue文件中导入。
  */
 @import "~@kaciras-blog/uikit/src/css/exports";
-
-.highlight-color(@textColor, @hoverColor) {
-	color: @textColor;
-	&:visited { color: @textColor; }
-	&:hover, &:focus { color: @hoverColor; }
-}
-
-.input-highlight-hover() {
-	border-color: lighten(@color-input-active, 16%);
-	box-shadow: 0 0 4px lighten(@color-input-active, 20%);
-}
-
-.input-highlight-focus() {
-	border-color: @color-input-active;
-	box-shadow: 0 0 4px lighten(@color-input-active, 12%);
-}
