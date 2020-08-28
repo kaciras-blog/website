@@ -12,6 +12,9 @@
 		<div v-if="unsupported" :class="$style.alert">
 			您的浏览器不支持 ServiceWorker，无法使用该功能
 		</div>
+		<div v-else-if="error" :class="$style.alert">
+			无法连接 ServiceWorker：{{ error }}
+		</div>
 		<div v-else-if="loading" :class="$style.alert">
 			正在连接 ServiceWorker……
 		</div>
@@ -29,6 +32,7 @@ export default {
 	name: "SettingPanel",
 	data: () => ({
 		loading: true,
+		error: null,
 		StaleApi: false,
 	}),
 	computed: {
@@ -45,8 +49,12 @@ export default {
 	async beforeMount() {
 		// 虽然说如果无法注册SW的话它永远不会resolve，但该组件用得不多，应该不至于内存泄漏。
 		await navigator.serviceWorker.ready;
-		Object.assign(this.$data, await getSettings());
-		this.loading = false;
+		try {
+			Object.assign(this.$data, await getSettings());
+			this.loading = false;
+		} catch (e) {
+			this.error = e.message;
+		}
 	},
 };
 </script>
