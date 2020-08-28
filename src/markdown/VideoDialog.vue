@@ -2,7 +2,9 @@
 	<kx-base-dialog title="插入视频">
 		<form :class="$style.form" @keyup.enter="enterKey">
 
-			<label for="video_url">视频URL（必需）</label>
+			<label for="video_url">
+				视频URL（必需）
+			</label>
 			<div :class="$style.field">
 				<input
 					id="video_url"
@@ -49,9 +51,10 @@
 				<div :class="$style.field">
 					<input
 						id="video_alt"
-						v-model="label"
 						name="alt"
 						:class="$style.text_box"
+						:value="label"
+						@input="inputLabel"
 					>
 				</div>
 			</template>
@@ -74,14 +77,22 @@ export default {
 	data: () => ({
 		src: "",
 		isVideo: false,
-		label: "",
 		poster: "",
+		label: "",
+		autoLabel: true,
 	}),
 	methods: {
+		// 用户的输入给设个标识，关闭 label 的自动填充
+		inputLabel(event) {
+			this.label = event.target.value;
+			this.autoLabel = false;
+		},
 		async uploadVideo() {
 			const file = await openFile("video/*");
 			this.src = await api.misc.uploadVideo(file);
-			this.label = basename(file.name);
+			if (this.autoLabel) {
+				this.label = basename(file.name);
+			}
 		},
 		async uploadPoster() {
 			this.poster = await api.misc.uploadImageFile();
