@@ -199,5 +199,7 @@ export function initLazyLoading(el) {
  * @param value An object that may or may not be `Promise`-like.
  */
 function silencePromise(value) {
-	(typeof value.then === "function") && value.catch(() => {});
+	if (value && typeof value.then === "function") {
+		value.catch(() => {});
+	}
 }
