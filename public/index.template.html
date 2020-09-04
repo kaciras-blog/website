@@ -13,11 +13,15 @@
 	<link rel="apple-touch-icon" href="/icons/192.png">
 	<link rel="manifest" href="/manifest.json">
 	{{{ meta }}}
+	{{{ renderResourceHints() }}}
+	{{{ renderCommonStyle() }}}
+	{{{ renderScripts() }}}
 </head>
 <body>
 <noscript class="global-error">
 	禁用JavaScript可能导致本站一些功能不正常
 </noscript>
 <!--vue-ssr-outlet-->
+{{{ renderState() }}}
 </body>
 </html>
