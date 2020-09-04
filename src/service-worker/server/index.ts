@@ -5,7 +5,7 @@ import "./error-report";
 import { initializeSettingManager } from "./settings";
 import apiCacheRoute from "./api-cache";
 import { CacheWrapper, cleanUnusedCache } from "./cache";
-import { AppShellRoute, RegexRoute, Router } from "./routing";
+import { NavigateRoute, RegexRoute, Router } from "./routing";
 import { cacheFirst } from "./fetch-strategy";
 
 // 默认是 WebWorker，需要声明一下ServiceWorker，其他文件里也一样。
@@ -36,7 +36,7 @@ router.addRoute(apiCacheRoute(API_CACHE_NAME));
 // https://abs.twimg.com/responsive-web/serviceworker/main.e531acd4.js 格式化后的第6200行
 const APP_SHELL_RE = new RegExp("^/(?:$|list|login|article|edit|profile|about|console|error)")
 const APP_SHELL_NAME = "/app-shell.html";
-router.addRoute(new AppShellRoute(cache, APP_SHELL_NAME, APP_SHELL_RE));
+router.addRoute(new NavigateRoute(cache, APP_SHELL_NAME, APP_SHELL_RE));
 
 self.addEventListener("fetch", router.route.bind(router));
 
@@ -75,7 +75,7 @@ self.addEventListener("activate", event => {
 	 * 那么任何请求都必须等到 ServiceWorker 启动完成后才能发送，保证其能够被拦截。
 	 *
 	 * 通过打开导航预载，可以允许 ServiceWorker 未启动时就发送导航请求，与其启动过程并行执行，
-	 * 待ServiceWorker启动完成后再激活拦截事件，使用 FetchEvent.preloadResponse 获取预载的响应。
+	 * 待 ServiceWorker 启动完成后再激活拦截事件，使用 FetchEvent.preloadResponse 获取预载的响应。
 	 *
 	 * 如果使用了 AppShell 模式，则不需要每次都从网络读取页面，可以不开启该功能。
 	 *
@@ -83,9 +83,9 @@ self.addEventListener("activate", event => {
 	 *
 	 * 详情见：https://developers.google.com/web/updates/2017/02/navigation-preload
 	 */
-	// if (self.registration.navigationPreload) {
-	// 	event.waitUntil(self.registration.navigationPreload.enable());
-	// }
+	if (self.registration.navigationPreload) {
+		event.waitUntil(self.registration.navigationPreload.enable());
+	}
 
 	event.waitUntil(cleanUnusedCache());
 

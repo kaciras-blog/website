@@ -120,22 +120,17 @@ export class WebpUpgradeRoute implements Route {
 }
 
 /**
- * 应用外壳模式（AppShell）的路由，拦截导航请求并返回缓存的HTML文件。
- *
- * 【关于竞速的讨论】
- * 我曾设想让缓存读取AppShell与网络请求来竞速，以提升某些情况下的加载时间，并减少用户看到旧版页面的次数。
- * 但这个尝试失败了，因为：
- * 1）后端SSR返回的页面包含了数据，而AppShell没有，两者不对等不能直接竞速。
- * 2）NavigationPreload 的兼容性还不行，在不支持的浏览器上发网络请求要等SW启动太慢。
+ * 处理导航请求的路由，根据情况返回网络请求或缓存的 AppShell。
+ * 记得打开 navigationPreload 功能。
  */
-export class AppShellRoute implements Route {
+export class NavigateRoute implements Route {
 
 	private readonly fetch: FetchFn;
 	private readonly path: string;
 	private readonly include: RegExp;
 
 	/**
-	 * 新建应用外壳路由，其将使用指定URI路径的页面作为应用的外壳，并将其缓存。
+	 * 新建导航路由，其将使用指定URI路径的页面作为应用的外壳，并将其缓存。
 	 *
 	 * @param cache 缓存
 	 * @param path 应用外壳的URI路径
@@ -155,10 +150,33 @@ export class AppShellRoute implements Route {
 		return this.include.test(url.pathname);
 	}
 
-	// 【坑】Request 默认缓存是不去服务端检查的，而AppShell文件名不带Hash，必须禁用缓存防止无法更新
-	// https://developer.mozilla.org/zh-CN/docs/Web/API/Request/cache
 	handle(event: FetchEvent) {
-		const request = new Request(this.path, { cache: "no-cache" });
-		event.respondWith(this.fetch(request));
+		event.respondWith(this.selectDocument(event));
+	}
+
+	/**
+	 * 选择最佳的 HTML 文件作为响应，如果支持导航预载则返回预载的请求，否则使用 AppShell。
+	 * 优先使用网络请求保证资源是最新的，不支持预载的使用 AppShell 确保尽快响应。
+	 *
+	 * 【AppShell的缓存问题】
+	 * Request 默认缓存是不去服务端检查的，而AppShell文件名不带Hash，必须禁用缓存防止无法更新
+	 * https://developer.mozilla.org/zh-CN/docs/Web/API/Request/cache
+	 *
+	 * 【关于竞速】
+	 * 我曾设想让缓存读取 AppShell 与网络请求来竞速，以提升某些情况下的加载时间，
+	 * 并减少用户看到旧版页面的次数，但这个尝试失败了，因为：
+	 *
+	 * 1）后端 SSR 返回的页面包含了数据，而 AppShell 没有，两者不对等不能直接竞速。
+	 * 2）NavigationPreload 的兼容性还不行，在不支持的浏览器上发网络请求要等SW启动太慢。
+	 *
+	 * @private
+	 * @param event 请求事件
+	 */
+	private async selectDocument(event: FetchEvent) {
+		const preload = await event.preloadResponse;
+		if (preload) {
+			return preload;
+		}
+		return this.fetch(new Request(this.path, { cache: "no-cache" }));
 	}
 }
