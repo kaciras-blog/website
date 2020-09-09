@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="btn-group console-toolbar">
-			<kx-button class="primary" @click="clear">清除全部</kx-button>
+			<kx-task-button class="primary" :on-click="clear">清除全部</kx-task-button>
 		</div>
 
 		<div
@@ -23,7 +23,7 @@
 					友链
 				</span>
 
-					检测到友链网站：
+					检测到网站：
 					<a
 						:href="item.url"
 						class="highlight"
@@ -43,7 +43,7 @@
 						</a>
 					</template>
 					<template v-else-if="item.type === 'AbandonedMe'">
-						删除了我的友链
+						的友链页不存在本站的链接，可能单方面删除了本站，或是使用了异步渲染。
 					</template>
 					<template v-else-if="item.type === 'Inaccessible'">
 						无法访问
@@ -111,7 +111,7 @@ export default {
 				Object.assign(this.$data, await api.notification.getAll());
 				this.loading = false;
 			} catch (e) {
-				this.$dialog.alertError("加载文章失败", errorMessage(e));
+				this.$dialog.alertError("加载失败", errorMessage(e));
 			}
 		},
 	},
