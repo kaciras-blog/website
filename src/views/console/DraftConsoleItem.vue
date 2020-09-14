@@ -1,48 +1,41 @@
 <template>
-	<li>
-		<div :class="$style.draft">
-			<h3 :class="$style.title">{{value.title}}</h3>
+	<li  :class="$style.container">
+		<div :class="$style.main">
+			<h3>{{value.title}}</h3>
 
-			<div
+			<span :class="$style.time">
+				<i class="fas fa-feather-alt"></i>
+				<time>{{value.createTime | localDateMinute}}</time>
+			</span>
+			<span :class="$style.time">
+				<i class="fas fa-sync-alt"></i>
+				<time>{{value.updateTime | localDateMinute}}</time>
+			</span>
+
+			<span
 				v-if="value.articleId"
 				title="修改现有的文章"
 				:class="$style.target"
 			>
-				<i class="fas fa-pencil-alt"/>
+				<i class="fas fa-edit"/>
 				{{value.articleId}}
-			</div>
-
-			<span class="minor-text">
-				<time :class="$style.time">
-					{{value.updateTime | localDateMinute}}
-				</time>
 			</span>
-
-			<div class="btn-group">
-				<kx-button
-					:route="'/edit/' + value.id"
-					class="primary outline"
-				>
-					编辑
-				</kx-button>
-				<kx-button
-					class="dangerous outline"
-					@click="deleteDraft"
-				>
-					删除
-				</kx-button>
-			</div>
 		</div>
 
-		<!--<div class="history">-->
-		<!--<div class="history-item" v-for="his in value.histories" :key="his.saveCount">-->
-		<!--<div>-->
-		<!--<span><i class="fa fa-save"></i>保存于：{{his.time}}</span>-->
-		<!--<span><i class="fa fa-pencil"></i>字数：{{his.contentSize}}</span>-->
-		<!--</div>-->
-		<!--<kx-button class="primary">编辑</kx-button>-->
-		<!--</div>-->
-		<!--</div>-->
+		<div class="btn-group">
+			<kx-button
+				:route="'/edit/' + value.id"
+				class="primary outline"
+			>
+				编辑
+			</kx-button>
+			<kx-button
+				class="dangerous outline"
+				@click="deleteDraft"
+			>
+				删除
+			</kx-button>
+		</div>
 	</li>
 </template>
 
@@ -75,12 +68,14 @@ export default {
 </script>
 
 <style module lang="less">
-.draft {
+@import "../../css/imports";
+
+.container {
 	display: flex;
 	align-items: center;
 }
 
-.title {
+.main {
 	flex: 1;
 	margin: 0;
 }
@@ -105,6 +100,11 @@ export default {
 }
 
 .time {
-	padding: 0 10px;
+	color: @color-text-minor;
+	padding-right: 15px;
+
+	& > i {
+		margin-right: 5px;
+	}
 }
 </style>
