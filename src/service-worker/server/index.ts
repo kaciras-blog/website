@@ -11,7 +11,9 @@ import { cacheFirst } from "./fetch-strategy";
 // 默认是 WebWorker，需要声明一下ServiceWorker，其他文件里也一样。
 declare const self: ServiceWorkerGlobalScope;
 
-/** ServiceWorkerWebpackPlugin 自动生成，包含静态资源的列表 . */
+/**
+ * ServiceWorkerWebpackPlugin 自动生成，包含静态资源的列表
+ */
 declare const serviceWorkerOption: {
 	assets: string[];
 };

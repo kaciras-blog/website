@@ -156,7 +156,7 @@ export class NavigateRoute implements Route {
 
 	/**
 	 * 选择最佳的 HTML 文件作为响应，如果支持导航预载则返回预载的请求，否则使用 AppShell。
-	 * 优先使用网络请求保证资源是最新的，不支持预载的使用 AppShell 确保尽快响应。
+	 * 优先使用网络请求保证资源是最新的，不支持预载或预载失败的使用 AppShell 确保尽快响应。
 	 *
 	 * 【AppShell的缓存问题】
 	 * Request 默认缓存是不去服务端检查的，而AppShell文件名不带Hash，必须禁用缓存防止无法更新
@@ -173,9 +173,13 @@ export class NavigateRoute implements Route {
 	 * @param event 请求事件
 	 */
 	private async selectDocument(event: FetchEvent) {
-		const preload = await event.preloadResponse;
-		if (preload) {
-			return preload;
+		try {
+			const preload = await event.preloadResponse;
+			if (preload) {
+				return preload;
+			}
+		} catch (e) {
+			console.warn("导航预载失败，尝试使用 AppShell");
 		}
 		return this.fetch(new Request(this.path, { cache: "no-cache" }));
 	}
