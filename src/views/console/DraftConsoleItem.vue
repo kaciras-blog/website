@@ -72,31 +72,17 @@ export default {
 
 .container {
 	display: flex;
-	align-items: center;
 }
 
 .main {
 	flex: 1;
-	margin: 0;
 }
 
 .target {
-	padding: 5px;
+	padding: 5px 8px;
 	border-radius: 4px;
 	color: white;
 	background: dodgerblue;
-}
-
-.history {
-	color: #c3c3c3;
-	background-color: #3a3a3a;
-	box-shadow: #0a0a0a 0 0 1px 1px inset;
-}
-
-.history-item {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
 }
 
 .time {
