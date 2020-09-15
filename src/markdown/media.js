@@ -2,41 +2,71 @@ import lozad from "lozad";
 import media from "@kaciras-blog/server/lib/markdown-media";
 
 /**
- * 从资源的链接参数（?vw=...&vh=...）里读取媒体的尺寸。
+ * 从资源的链接参数（?vw=...&vh=...）里读取媒体的尺寸，
+ * 生成防抖容器的 class 和 style 属性。
  *
  * @param url 资源的链接
- * @return { width, height } 媒体的尺寸
+ * @return {string} class 和 style 属性字符串
  */
-function getMediaResolution(url) {
+function getContainerClassAndStyle(url) {
 	const urlParams = new URLSearchParams(url.split("?")[1]);
 	const width = parseFloat(urlParams.get("vw"));
 	const height = parseFloat(urlParams.get("vh"));
-	return width && height ? { width, height } : null;
+
+	if (!(width && height)) {
+		return 'class="md-media-container"';
+	}
+
+	const ratio = height / width * 100;
+	const style = `--width:${width}px; --aspect-ratio:${ratio}%`;
+
+	return `class="md-media-container sized" style="${style}"`;
+}
+
+/**
+ * 自定义图片的渲染。
+ *
+ * 【防止布局抖动】
+ * 通过 URL 里携带的宽高信息，设置图片的大小和宽高比，防止加载后元素尺寸的变化。
+ * 下面的 GIF 视频同理。
+ *
+ * 详细的原理见：
+ * https://blog.kaciras.com/article/18/add-video-support-to-markdown
+ *
+ * 【关于加载菊花图】
+ * 图片本身就有在不完全加载的时的显示方式，比如从上往下显示或者渐进式图片。
+ * 对于完全无法加载的情况，下面的标签也能表明空白区域是图片。
+ * 所以没有必要使用加载指示器（菊花图）来让用户等到图片完全载入。
+ */
+function renderImage(tokens, idx) {
+	const token = tokens[idx];
+	const src = token.attrGet("src");
+	const alt = token.content;
+
+	return `
+		<span class="center-wrapper">
+			<a
+				${getContainerClassAndStyle(src)}
+				href="${src}"
+				target="_blank"
+				rel="noopener,nofollow"
+			>
+				<img data-src="${src}" alt="${alt}" class="md-img">
+			</a>
+			${alt ? `<span class="md-img-alt">${alt}</span>` : ""}
+    	</span>
+	`;
 }
 
 /**
  * 各种自定义指令在本站页面的渲染实现。
- *
- * https://blog.kaciras.com/article/18/add-video-support-to-markdown
  */
 const directiveMap = {
+	// 大部分浏览器只允许无声视频自动播放，不过GIF视频本来就是无声的。
 	gif(src, alt) {
-		const size = getMediaResolution(src);
-
-		let sized = "";
-		let style = "";
-
-		if (size) {
-			const { width, height } = size;
-			const ratio = height / width * 100;
-			sized = "sized";
-			style = `--width:${width}px; --aspect-ratio:${ratio}%`;
-		}
-
-		// 大部分浏览器只允许无声视频自动播放，不过GIF视频本来就是无声的。
 		return `
 			<p class="center-wrapper">
-				<span class="md-media-container ${sized}" style="${style}">
+				<span ${getContainerClassAndStyle(src)}>
 					<video class="md-img gif" src="${src}" loop muted></video>
 				</span>
 				${alt ? `<span class="md-img-alt">${alt}</span>` : ""}
@@ -60,45 +90,6 @@ const directiveMap = {
 };
 
 /**
- * 自定义图片的渲染。
- *
- * 【边界情况】
- * 1）没有尺寸信息：使用一个默认尺寸
- */
-function renderImage(tokens, idx) {
-	const token = tokens[idx];
-	const src = token.attrGet("src");
-	const alt = token.content;
-
-	const size = getMediaResolution(src);
-
-	let sized = "";
-	let style = "";
-
-	if (size) {
-		const { width, height } = size;
-		const ratio = height / width * 100;
-		sized = "sized";
-		style = `--width:${width}px; --aspect-ratio:${ratio}%`;
-	}
-
-	return `
-		<span class="center-wrapper">
-			<a
-				class="md-media-container ${sized}"
-				style="${style}"
-				href="${src}"
-				target="_blank"
-				rel="noopener,nofollow"
-			>
-				<img data-src="${src}" alt="${alt}" class="md-img">
-			</a>
-			${alt ? `<span class="md-img-alt">${alt}</span>` : ""}
-    	</span>
-	`;
-}
-
-/**
  * MarkdownIt 的插件，使用方式：markdownIt.use(clientMediaPlugin)
  *
  * @param markdownIt 要安装的实例
@@ -117,7 +108,7 @@ export function clientMediaPlugin(markdownIt) {
  * 故不建议使用阅读视图浏览本站的文章，本站的文章页面已经足够简洁。
  *
  * @param el 容器元素
- * @return 取消监听的函数，应当在被监视的元素移除后调用，以避免内存泄漏。
+ * @return {function} 取消监听的函数，在被监视的元素移除后调用，以避免内存泄漏。
  */
 export function initLazyLoading(el) {
 	const lozadImages = lozad(el.querySelectorAll("img"));
