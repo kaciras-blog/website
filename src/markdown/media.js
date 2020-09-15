@@ -59,24 +59,11 @@ const directiveMap = {
 	},
 };
 
-/** 加载指示器动画元素，五个彩色的点比菊花还是好看些的 */
-const LOADING_EL = `
-<span class="full-vertex md-loading">
-	<span class="dot"></span>
-	<span class="dot"></span>
-	<span class="dot"></span>
-	<span class="dot"></span>
-	<span class="dot"></span>
-</span>`;
-
 /**
- * 自定义图片的渲染，具有加载指示器。
- *
- * 当图片的URL里带有 vw & vh 时设定加载指示器的尺寸与图片相同，以避免图片载入后的布局改变。
+ * 自定义图片的渲染。
  *
  * 【边界情况】
  * 1）没有尺寸信息：使用一个默认尺寸
- * 2）图片过小：不添加加载指示器
  */
 function renderImage(tokens, idx) {
 	const token = tokens[idx];
@@ -87,16 +74,9 @@ function renderImage(tokens, idx) {
 
 	let sized = "";
 	let style = "";
-	let placeholder = true;
 
 	if (size) {
 		const { width, height } = size;
-
-		// 如果图片过小容不下加载指示器，就不添加它
-		if (width < 200 || height < 50) {
-			placeholder = false;
-		}
-
 		const ratio = height / width * 100;
 		sized = "sized";
 		style = `--width:${width}px; --aspect-ratio:${ratio}%`;
@@ -112,7 +92,6 @@ function renderImage(tokens, idx) {
 				rel="noopener,nofollow"
 			>
 				<img data-src="${src}" alt="${alt}" class="md-img">
-				${placeholder ? LOADING_EL : ""}
 			</a>
 			${alt ? `<span class="md-img-alt">${alt}</span>` : ""}
     	</span>
@@ -141,29 +120,7 @@ export function clientMediaPlugin(markdownIt) {
  * @return 取消监听的函数，应当在被监视的元素移除后调用，以避免内存泄漏。
  */
 export function initLazyLoading(el) {
-	const images = el.querySelectorAll("img");
-
-	for (const img of images) {
-		img.onerror = img.onload = () => {
-
-			/*
-			 * TODO: Webpack4 使用的 acorn6.x 不支持 OptionalChaining，
-			 *  且服务端构建未使用 Babel 导致会报错
-			 *
-			 * 而且 Webpack4 不准备升级 acorn 7.x：
-			 * https://stackoverflow.com/a/59972726
-			 */
-			const placeholder = img.nextElementSibling;
-			if (placeholder) {
-				placeholder.remove();
-			}
-			// img.nextElementSibling?.remove();
-
-			img.removeAttribute("data-src");
-		};
-	}
-
-	const lozadImages = lozad(images);
+	const lozadImages = lozad(el.querySelectorAll("img"));
 	lozadImages.observe();
 
 	// gif 视频自动播放/暂停
