@@ -45,7 +45,18 @@ export default {
 .header {
 	position: sticky;
 	top: 0;
-	border-bottom: solid 1px #eee;
 	z-index: 90; // 比TopNav小一点
+
+	// 用伪元素模拟边框，使按钮下面的蓝条能够覆盖它，
+	// 普通的 border 在元素内容之外无法覆盖。
+	&::before {
+		content: "";
+		position: absolute;
+		left: 0;
+		bottom: 0;
+		width: 100%;
+		height: 1px;
+		background-color: #eee;
+	}
 }
 </style>
