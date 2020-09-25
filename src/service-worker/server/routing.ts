@@ -81,7 +81,7 @@ export class RegexRoute implements Route {
  * 所以尽量从后端来支持 WebP 升级功能，如果后端支持则不需要使用本类。
  *
  * 【其他方案】
- * 在HTML里使用 <picture> + <source> 是最好的，但是 CSS 里没有类似的功能。
+ * 在 HTML 里使用 <picture> + <source> 更好，但是 CSS 对应的功能并没有广泛支持。
  */
 export class WebpUpgradeRoute implements Route {
 
@@ -104,7 +104,6 @@ export class WebpUpgradeRoute implements Route {
 			return false; // 只拦截特定路径的资源
 		}
 
-		// TODO: 升级浏览器到必须支持WebP?
 		return headers.get("Accept")!.includes("image/webp");
 	}
 
