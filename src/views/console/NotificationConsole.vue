@@ -1,7 +1,12 @@
 <template>
 	<div>
 		<div class="btn-group console-toolbar">
-			<kx-task-button class="primary" :on-click="clear">清除全部</kx-task-button>
+			<kx-task-button
+				class="primary"
+				:on-click="clear"
+			>
+				清除全部
+			</kx-task-button>
 		</div>
 
 		<div
@@ -16,73 +21,69 @@
 			<span>加载中……</span>
 		</div>
 
-		<template v-else>
-			<ul :class="$style.list">
-				<li v-for="item of friends" class="segment">
+		<ul v-else :class="$style.list">
+			<li v-for="item of friends" class="segment">
 				<span :class="$style.friendLabel">
 					友链
 				</span>
 
-					检测到网站：
+				检测到网站：
+				<a
+					:href="item.url"
+					class="highlight"
+					target="_blank"
+				>
+					{{ item.name }}
+				</a>
+
+				<template v-if="item.type === 'Moved'">
+					重定向到
+					<a
+						:href="item.newUrl"
+						class="highlight"
+						target="_blank"
+					>
+						{{ item.newUrl }}
+					</a>
+				</template>
+				<template v-else-if="item.type === 'AbandonedMe'">
+					的友链页不存在本站的链接，可能单方面删除了本站，或是使用了异步渲染。
+				</template>
+				<template v-else-if="item.type === 'Inaccessible'">
+					无法访问
+				</template>
+
+				<time :class="$style.time">{{ item.time | localDateMinute }}</time>
+			</li>
+
+			<li v-for="item of discussions" class="segment">
+				<header>
+					<span :class="$style.diasussionLabel">
+						评论
+					</span>
+
 					<a
 						:href="item.url"
 						class="highlight"
 						target="_blank"
 					>
-						{{ item.name }}
+						{{ item.title }}
 					</a>
 
-					<template v-if="item.type === 'Moved'">
-						重定向到
-						<a
-							:href="item.newUrl"
-							class="highlight"
-							target="_blank"
-						>
-							{{ item.newUrl }}
-						</a>
-					</template>
-					<template v-else-if="item.type === 'AbandonedMe'">
-						的友链页不存在本站的链接，可能单方面删除了本站，或是使用了异步渲染。
-					</template>
-					<template v-else-if="item.type === 'Inaccessible'">
-						无法访问
+					<template v-if="item.parentFloor">
+						的 {{ item.parentFloor }} 楼
 					</template>
 
-					<time :class="$style.time">{{ item.time | localDateMinute }}</time>
-				</li>
-			</ul>
+					有新的评论 #{{ item.floor }}
 
-			<ul :class="$style.list">
-				<li v-for="item of discussions" class="segment">
-					<header>
-					<span :class="$style.diasussionLabel">
-						评论
-					</span>
+					<time :class="$style.time">
+						{{ item.time | localDateMinute }}
+					</time>
+				</header>
 
-						<a
-							:href="item.url"
-							class="highlight"
-							target="_blank"
-						>
-							{{ item.title }}
-						</a>
-
-						<template v-if="item.parentFloor">
-							的 {{ item.parentFloor }} 楼
-						</template>
-
-						有新的评论 #{{ item.floor }}
-
-						<time :class="$style.time">
-							{{ item.time | localDateMinute }}
-						</time>
-					</header>
-
-					<blockquote :class="$style.content">{{ item.preview }}</blockquote>
-				</li>
-			</ul>
-		</template>
+				<blockquote :class="$style.content">{{ item.preview }}</blockquote>
+			</li>
+		</ul>
 	</div>
 </template>
 

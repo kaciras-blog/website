@@ -161,6 +161,6 @@ export default {
 
 <style lang="less">
 .console-toolbar {
-	margin-bottom: 1rem;
+	margin-bottom: 30px;
 }
 </style>
