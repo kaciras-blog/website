@@ -11,7 +11,10 @@
 
 			<!-- 评论者的名字和时间 -->
 			<div :class="$style.nameGroup">
-				<div :class="$style.name">{{ value.nickname || value.user.name }}</div>
+				<div>
+					<span :class="$style.stick" v-if="value.user.id === 2">博主</span>
+					<span :class="$style.name">{{ value.nickname || value.user.name }}</span>
+				</div>
 				<time class="minor-text">{{ value.time | localDateMinute }}</time>
 			</div>
 
@@ -130,8 +133,15 @@ export default {
 	margin-left: 1rem;
 }
 
+.stick {
+	margin-right: .5em;
+	border-radius: 3px;
+	padding: 4px;
+	color: white;
+	background-color: @color-button-primary;
+}
+
 .name {
-	margin-right: auto;
 	font-size: 16px;
 	font-weight: 600;
 }
