@@ -136,9 +136,9 @@ export default {
 .stick {
 	margin-right: .5em;
 	border-radius: 3px;
-	padding: 4px;
+	padding: 4px 6px;
 	color: white;
-	background-color: @color-button-primary;
+	background-color: @color-primary;
 }
 
 .name {

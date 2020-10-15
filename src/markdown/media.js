@@ -139,7 +139,7 @@ export function initLazyLoading(el) {
 }
 
 /**
- * 屏蔽 Promise 的错误，用来防止无关紧要的错误出现在控制台里。
+ * 屏蔽 Promise 的异常，防止某些无关紧要的错误出现在控制台里。
  *
  * 【本代码抄自】
  * https://github.com/videojs/video.js/blob/main/src/js/utils/promise.js
