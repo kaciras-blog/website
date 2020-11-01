@@ -57,7 +57,7 @@
 				<a class="highlight" href="https://blog.kaciras.com">https://blog.kaciras.com</a>
 			</p>
 
-			<!-- 有些地方可能直接引用这个链接，所以要保证图标的URL不变，并且能在任意位置访问。-->
+			<!-- 有些地方可能直接引用这个链接，所以要保证URL不变，并能在任意位置访问。-->
 			<p>
 				图标：
 				<a :class="$style.inlineLink" href='/static/img/avatar.png'>avatar.png</a>
