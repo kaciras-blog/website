@@ -35,6 +35,6 @@ export default {
 }
 
 .off {
-	color: #ff5847;
+	color: #ff7070;
 }
 </style>
