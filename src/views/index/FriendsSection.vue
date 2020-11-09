@@ -55,6 +55,7 @@
 				<friend-card
 					v-else
 					:disabled="sorting"
+					:active="active"
 					:friend="friend"
 					@dragstart="drag($event, i)"
 				/>
@@ -187,6 +188,7 @@ export default {
 	data() {
 		return {
 			friends: this.$store.state.prefetch.friends,
+			active: false,
 			sorting: false,
 		};
 	},
@@ -259,7 +261,7 @@ export default {
 			// 不能使用 dragEl.style = {...}
 			Object.assign(dragEl.style, {
 				position: "fixed",
-				top: rect.top  + "px",
+				top: rect.top + "px",
 				left: rect.left + "px",
 				zIndex: 10000,
 				cursor: "grabbing",
@@ -281,6 +283,23 @@ export default {
 
 			dragSort($_draggingRegion, sort, event, dragEl);
 		},
+	},
+	/*
+	 * 因为友链图片较多且首屏对性能要求高，所以做了个懒加载。
+	 * 目前仅以容器进入视区为准，若要精确到每个友链请注意拖动排序的重新生成元素问题。
+	 */
+	mounted() {
+		const callback = (entries, observer) => {
+			if (entries[0].isIntersecting) {
+				this.active = true;
+				observer.disconnect();
+			}
+		};
+		this.$_lazyLoader = new IntersectionObserver(callback, { rootMargin: "35px" });
+		this.$_lazyLoader.observe(this.$el);
+	},
+	destroyed() {
+		this.$_lazyLoader.disconnect(); // 啊好想要 Hooks 啊
 	},
 };
 </script>

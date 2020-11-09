@@ -1,5 +1,6 @@
 <!--
 【props 说明】
+active   - 是否加载图片等消耗性能的资源
 disabled - 是否禁止点击跳转，以及 hover、focus 动效，在拖动排序时用
 friend	 - 友链对象
 
@@ -20,12 +21,12 @@ friend	 - 友链对象
 		@mousedown="listeners.dragstart"
 	>
 		<img
-			:src="props.friend.background"
+			:src="props.active && props.friend.background"
 			alt="background"
 			:class="$style.background"
 		>
 		<img
-			:src="props.friend.favicon"
+			:src="props.active && props.friend.favicon"
 			alt="favicon"
 			:class="$style.favicon"
 		>
