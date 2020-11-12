@@ -19,20 +19,20 @@
 			</div>
 
 			<!-- 右上角的楼层号 -->
-			<span class="minor-text">#{{ value.floor }}</span>
+			<span class="minor-text"># {{ value.floor }}</span>
 		</header>
 
 		<div :class="$style.content">{{ value.content }}</div>
 
-		<div class="minor-text" :class="$style.metas">
+		<div :class="$style.metas">
 			<div>
 				<span
 					:title="value.voted ? '取消点赞' : '点赞'"
-					class="meta"
 					:class="{
-							[$style.clickable]:true,
-							[$style.active]: value.voted
-						}"
+						[$style.clickable]:true,
+						[$style.meta]: true,
+						[$style.active]: value.voted
+					}"
 					@click="vote"
 				>
 					<i class="far fa-thumbs-up"/>
@@ -40,15 +40,14 @@
 				</span>
 				<span
 					v-if="!value.parent"
-					class="meta"
+					:class="$style.meta"
 				>
 					<i class="far fa-comment"/>
 					回复({{ value.replyCount }})
 				</span>
 				<span
 					v-if="removable"
-					class="meta"
-					:class="$style.clickable"
+					:class="[$style.clickable, $style.meta]"
 					@click="remove"
 				>
 					<i class="far fa-trash-alt"/>删除
@@ -147,9 +146,15 @@ export default {
 }
 
 .metas {
+	composes: minor-text from global;
+
 	display: flex;
 	justify-content: space-between;
 	align-items: baseline;
+}
+
+.meta {
+	margin-right: 10px;
 }
 
 .clickable {

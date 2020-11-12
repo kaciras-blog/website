@@ -26,8 +26,7 @@
 				<span :class="$style.friendLabel">
 					友链
 				</span>
-
-				检测到网站：
+				检测到网站
 				<a
 					:href="item.url"
 					class="highlight"
@@ -47,7 +46,7 @@
 					</a>
 				</template>
 				<template v-else-if="item.type === 'AbandonedMe'">
-					的友链页不存在本站的链接，可能单方面删除了本站，或是使用了异步渲染。
+					的友链页不存在本站的链接，可能删除了本站，或是使用了异步渲染。
 				</template>
 				<template v-else-if="item.type === 'Inaccessible'">
 					无法访问
@@ -141,6 +140,7 @@ export default {
 
 .label {
 	display: inline-block;
+	margin-right: 8px;
 	padding: 4px 10px;
 	border-radius: 4px;
 }
