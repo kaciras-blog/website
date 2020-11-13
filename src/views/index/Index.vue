@@ -44,6 +44,16 @@ import { SUN_PHASES } from "@/store";
 import BlogSection from "./BlogSection";
 import FriendsSection from "./FriendsSection";
 
+import BannerDawn from "@/assets/img/IndexBannerDawn.png";
+import BannerDaytime from "@/assets/img/IndexBannerLight.png";
+import BannerDusk from "@/assets/img/IndexBannerDusk.png";
+import BannerNight from "@/assets/img/IndexBannerNight.png";
+
+import MobileBannerDawn from "@/assets/img/IndexBannerDawn.png?size=IndexBannerMobile";
+import MobileBannerDaytime from "@/assets/img/IndexBannerLight.png?size=IndexBannerMobile";
+import MobileBannerDusk from "@/assets/img/IndexBannerDusk.png?size=IndexBannerMobile";
+import MobileBannerNight from "@/assets/img/IndexBannerNight.png?size=IndexBannerMobile";
+
 /*
  * 由于服务端无法获取客户的时间，导致服务端渲染时无法获取太阳位置。
  *
@@ -56,17 +66,17 @@ import FriendsSection from "./FriendsSection";
  */
 
 const BANNER_MAP = {
-	Dawn: require("@/assets/img/IndexBannerDawn.png"),
-	Daytime: require("@/assets/img/IndexBannerLight.png"),
-	Dusk: require("@/assets/img/IndexBannerDusk.png"),
-	Night: require("@/assets/img/IndexBannerNight.png"),
+	Dawn: BannerDawn,
+	Daytime: BannerDaytime,
+	Dusk: BannerDusk,
+	Night: BannerNight,
 };
 
 const BANNER_MAP_MOBILE = {
-	Dawn: require("@/assets/img/IndexBannerDawn.png?size=IndexBannerMobile"),
-	Daytime: require("@/assets/img/IndexBannerLight.png?size=IndexBannerMobile"),
-	Dusk: require("@/assets/img/IndexBannerDusk.png?size=IndexBannerMobile"),
-	Night: require("@/assets/img/IndexBannerNight.png?size=IndexBannerMobile"),
+	Dawn: MobileBannerDawn,
+	Daytime: MobileBannerDaytime,
+	Dusk: MobileBannerDusk,
+	Night: MobileBannerNight,
 };
 
 export default {
