@@ -22,7 +22,11 @@
 			<span class="minor-text"># {{ value.floor }}</span>
 		</header>
 
-		<div :class="$style.content">{{ value.content }}</div>
+		<markdown-view
+			:class="$style.content"
+			:is-article="false"
+			:value="value.content"
+		/>
 
 		<div :class="$style.metas">
 			<div>
@@ -72,9 +76,13 @@
 <script>
 import api, { DiscussionState } from "@/api";
 import { errorMessage } from "@/utils";
+import MarkdownView from "@/markdown/MarkdownView";
 
 export default {
 	name: "DiscussionContent",
+	components: {
+		MarkdownView,
+	},
 	props: {
 		value: {
 			type: Object,
@@ -168,9 +176,5 @@ export default {
 .content {
 	margin-top: 1rem;
 	margin-bottom: 1rem;
-	line-height: 1.5;
-
-	white-space: pre-wrap;
-	word-wrap: break-word;
 }
 </style>

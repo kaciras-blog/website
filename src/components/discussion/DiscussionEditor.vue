@@ -22,29 +22,29 @@
 				>
 			</label>
 
-			<!--<span :class="$style.guide" @click="showGuide">-->
-			<!--	<span class="hide-m">编辑器指南 </span>-->
-			<!--	<i class="far fa-question-circle"></i>-->
-			<!--</span>-->
+			<button :class="$style.guide" @click="showGuide">
+				<span class="hide-m">帮助 </span>
+				<i class="far fa-question-circle"></i>
+			</button>
 		</div>
 
-		<div :class="$style.textarea" class="input">
-			<markdown-view
-				v-if="preview"
-				class="textarea"
-				:class="$style.preview"
-				:value="content"
-				:is-article="false"
-			/>
-			<textarea
-				v-else
-				:class="$style.textbox"
-				:value="content"
-				name="content"placeholder='说点什么吧'
-				aria-label="输入评论"
-				v-ime-input="(event) => $emit('input', event.target.value)"
-			/>
-		</div>
+		<markdown-view
+			v-if="preview"
+			:class="$style.preview"
+			:value="content"
+			:is-article="false"
+		/>
+		<textarea
+			v-else
+			ref="textarea"
+			:class="$style.textarea"
+			class="input"
+			:value="content"
+			name="content"
+			placeholder='说点什么吧'
+			aria-label="输入评论"
+			v-ime-input="(event) => $emit('input', event.target.value)"
+		/>
 
 		<div :class='$style.bottom_toolbar'>
 			<kx-button
@@ -80,6 +80,7 @@
 <script>
 import { mapState } from "vuex";
 import MarkdownView from "@/markdown/MarkdownView";
+import MarkdownGuideDialog from "@/components/discussion/MarkdownGuideDialog";
 
 export default {
 	name: "DiscussEditor",
@@ -118,10 +119,7 @@ export default {
 			return this.onSubmit(nickname);
 		},
 		showGuide() {
-
-		},
-		togglePrevicw(value) {
-
+			this.$dialog.show(MarkdownGuideDialog);
 		},
 	},
 };
@@ -139,7 +137,7 @@ export default {
 
 .textarea {
 	width: 100%;
-	min-height: 10em;
+	min-height: 12em;
 	margin: 1rem 0;
 	padding: .5em;
 
@@ -149,10 +147,10 @@ export default {
 	resize: vertical;
 }
 
-.textbox {
-	border: none;
+.preview {
 	width: 100%;
-	overflow: auto;
+	margin: 1rem 0;
+	overflow-y: auto;
 }
 
 .header {
@@ -172,11 +170,14 @@ export default {
 }
 
 .guide {
-	margin-left: auto;
+	composes: click-item from global;
+
+	float: right;
+	padding: 0;
 
 	font-size: 1rem;
-	cursor: pointer;
 	align-self: flex-end;
+	background: none;
 
 	&:hover, &.active {
 		color: #f785d7;
@@ -188,12 +189,10 @@ export default {
 }
 
 .bottom_toolbar {
+	composes: btn-group from global;
 	display: flex;
 	align-items: center;
-}
-
-.buttons {
-	margin-left: auto;
+	justify-content: flex-end;
 }
 
 .warn {
