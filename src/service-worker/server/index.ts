@@ -4,36 +4,44 @@
 import "./error-report";
 import { initializeSettingManager } from "./settings";
 import apiCacheRoute from "./api-cache";
-import { cacheNames, CacheWrapper } from "./cache";
-import { AppShellRoute, RegexRoute, Router, WebpUpgradeRoute } from "./routing";
+import { CacheWrapper, cleanUnusedCache } from "./cache";
+import { NavigateRoute, RegexRoute, Router } from "./routing";
 import { cacheFirst } from "./fetch-strategy";
 
 // 默认是 WebWorker，需要声明一下ServiceWorker，其他文件里也一样。
 declare const self: ServiceWorkerGlobalScope;
 
-/** ServiceWorkerWebpackPlugin 自动生成，包含静态资源的列表 . */
+/**
+ * ServiceWorkerWebpackPlugin 自动生成，包含静态资源的列表
+ */
 declare const serviceWorkerOption: {
 	assets: string[];
 };
 
 initializeSettingManager();
 
-const STATIC_CACHE_NAME = "static-v1.4";
+/**
+ * 代码和依赖有较大改动时增加版本号。
+ * TODO: 总觉得每次依赖更新清空缓存有点浪费，能不能更细粒度的删除？
+ */
+const STATIC_CACHE_NAME = "static-v1.7";
+
+/** 后端 API 有 Breaking Change 时增加版本号 */
+const API_CACHE_NAME = "api-v1.2";
 
 const cache = new CacheWrapper(STATIC_CACHE_NAME);
 const router = new Router();
 const fetcher = cacheFirst(cache);
 
-router.addRoute(new WebpUpgradeRoute(fetcher, new RegExp("^/static/img/.+\\.(?:jpg|png)$")));
 router.addRoute(new RegexRoute("/static/", fetcher));
 
-router.addRoute(apiCacheRoute());
+router.addRoute(apiCacheRoute(API_CACHE_NAME));
 
 // Twitter 的代码里也是这样一个个写死的
 // https://abs.twimg.com/responsive-web/serviceworker/main.e531acd4.js 格式化后的第6200行
 const APP_SHELL_RE = new RegExp("^/(?:$|list|login|article|edit|profile|about|console|error)")
 const APP_SHELL_NAME = "/app-shell.html";
-router.addRoute(new AppShellRoute(cache, APP_SHELL_NAME, APP_SHELL_RE));
+router.addRoute(new NavigateRoute(cache, APP_SHELL_NAME, APP_SHELL_RE));
 
 self.addEventListener("fetch", router.route.bind(router));
 
@@ -46,7 +54,7 @@ self.addEventListener("fetch", router.route.bind(router));
  * 该事件只运行一次；有副作用的代码应当在 activate 事件里执行。
  */
 self.addEventListener("install", event => {
-	console.info("[SW] Install new version");
+	console.debug("[SW] Install new version");
 
 	event.waitUntil(fetch(APP_SHELL_NAME)
 		.then(appShell => cache.put(APP_SHELL_NAME, appShell)));
@@ -65,14 +73,14 @@ self.addEventListener("install", event => {
  * 在这个事件里应当清理旧版的缓存。
  */
 self.addEventListener("activate", event => {
-	console.debug("[SW] Activate");
+	console.info("[SW] New version activated");
 
 	/*
 	 * 浏览器会停止没有相关页面打开的 ServiceWorker 以节约资源，如果监听了 fetch 事件，
 	 * 那么任何请求都必须等到 ServiceWorker 启动完成后才能发送，保证其能够被拦截。
 	 *
 	 * 通过打开导航预载，可以允许 ServiceWorker 未启动时就发送导航请求，与其启动过程并行执行，
-	 * 待ServiceWorker启动完成后再激活拦截事件，使用 FetchEvent.preloadResponse 获取预载的响应。
+	 * 待 ServiceWorker 启动完成后再激活拦截事件，使用 FetchEvent.preloadResponse 获取预载的响应。
 	 *
 	 * 如果使用了 AppShell 模式，则不需要每次都从网络读取页面，可以不开启该功能。
 	 *
@@ -80,20 +88,11 @@ self.addEventListener("activate", event => {
 	 *
 	 * 详情见：https://developers.google.com/web/updates/2017/02/navigation-preload
 	 */
-	// if (self.registration.navigationPreload) {
-	// 	event.waitUntil(self.registration.navigationPreload.enable());
-	// }
+	if (self.registration.navigationPreload) {
+		event.waitUntil(self.registration.navigationPreload.enable());
+	}
 
-	// 删除当前版本用不到的缓存
-	event.waitUntil(async () => {
-		const names = (await caches.keys()).filter(k => !cacheNames.has(k));
-		await Promise.all(names.map(async k => {
-			if (!(await caches.delete(k))) {
-				console.warn("[SW] 无法删除不存在的缓存：" + k);
-			}
-		}));
-		console.debug("[SW] 删除了过期的缓存");
-	});
+	event.waitUntil(cleanUnusedCache());
 
 	return self.clients.claim();
 });

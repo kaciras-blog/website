@@ -77,6 +77,9 @@ export default {
 // 或者直接裁剪图片到指定比例？
 @pic-height-mobile: 63vw;
 
+// 简介行数上限，超出显示省略号
+@max-lines: 4;
+
 // 自动网格的卡片布局
 // https://blog.kaciras.com/article/14/use-pure-CSS-to-implement-center+wrap+left-alignment-layout
 .card_list {
@@ -93,14 +96,15 @@ export default {
 .figure {
 	font-size: 16px;
 	overflow: hidden;
-	box-shadow: 0 3px 6px rgba(0, 0, 0, .2);
+	border-radius: 3px;
+	box-shadow: 0 4px 4px rgba(0, 0, 0, .15);
 
 	@media screen and (min-width: @length-screen-mobile) {
-		transition: .4s;
+		transition: .3s;
 
 		&:hover, &:focus {
-			transform: translateY(-5px);
-			box-shadow: 0 10px 16px rgba(0, 0, 0, .25);
+			transform: translateY(-4px);
+			box-shadow: 0 7px 10px rgba(0, 0, 0, .25);
 		}
 	}
 }
@@ -127,22 +131,21 @@ export default {
 	bottom: 0;
 
 	margin: 0;
+	padding: 14px;
 
 	// 虽然浏览器默认 article 下的 h1 是这个大小，但还是写上保险些
 	font-size: 1.17em;
-
-
-	padding: 14px;
 	background: rgba(255, 255, 255, .8);
 }
 
 .content {
-	margin: 14px;
-	line-height: 1.5;
-	height: 4.5em;
 	box-sizing: content-box;
+	margin: 14px;
 
-	.line-clamp(3);
+	line-height: 1.6;
+	height: @max-lines * 1.6em;
+
+	.line-clamp(@max-lines);
 }
 
 @media screen and (max-width: @length-screen-mobile) {

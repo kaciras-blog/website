@@ -1,7 +1,6 @@
 import * as Sentry from '@sentry/browser';
 import { Vue as VueIntegration } from '@sentry/integrations';
 import Vue from "vue";
-import { ErrorRecordMessage } from "@/service-worker/client/installer";
 
 if (process.env.SENTRY_DSN) {
 	Sentry.init({
@@ -18,14 +17,12 @@ if (process.env.SENTRY_DSN) {
 
 class ServiceWorkerError extends Error {
 
-	constructor(data: ErrorRecordMessage["data"]) {
+	constructor(data: any) {
 		super();
 		Object.assign(this, data);
 	}
 }
 
-export function reportSWError(data: ErrorRecordMessage["data"]) {
-	const e = new ServiceWorkerError(data);
-	console.error(e);
-	Sentry.captureException(e);
+export function reportError(data: any) {
+	Sentry.captureException(new ServiceWorkerError(data));
 }

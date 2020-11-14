@@ -9,7 +9,7 @@
 	</div>
 
 	<form v-else>
-		<div :class="$style.header">
+		<div>
 			<img :src="user.avatar" alt="头像" class="small head">
 
 			<label :class="$style.name">
@@ -105,6 +105,9 @@ export default {
 		options: "discussionOptions",
 	}),
 	methods: {
+		focus() {
+			this.$refs.textarea.focus();
+		},
 		submit() {
 			const { nickname } = this;
 
@@ -160,6 +163,7 @@ export default {
 	display: inline-flex;
 	flex-direction: column;
 	margin-left: 1rem;
+	vertical-align: middle;
 }
 
 .nickname {
@@ -188,7 +192,7 @@ export default {
 	align-items: center;
 }
 
-.submit {
+.buttons {
 	margin-left: auto;
 }
 

@@ -13,6 +13,7 @@ module.exports = {
 	resolve: {
 		alias: {
 			"@": resolve("src"),
+			"@assets": resolve("src/assets"),
 		},
 	},
 };

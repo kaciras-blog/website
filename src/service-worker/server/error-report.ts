@@ -3,19 +3,31 @@ import { MessageType } from "./message";
 
 declare const clients: Clients;
 
-function anycast(data: any) {
-	const message = { type: MessageType.Error, data };
+export interface ServiceWorkerError {
+	type: "ERROR" | "REJECTION",
+	name: string;
+	stack?: string;
+	message?: string;
+}
+
+export interface SWErrorMessage {
+	type: MessageType.Error;
+	error: ServiceWorkerError
+}
+
+function reportError(error: ServiceWorkerError) {
+	const message: SWErrorMessage = { type: MessageType.Error, error };
 	clients.matchAll().then(clients => clients[0]?.postMessage(message));
 }
 
-self.addEventListener("error", (event) => anycast({
+self.addEventListener("error", (event) => reportError({
 	type: "ERROR",
 	name: event.error.name,
 	message: event.message,
 	stack: event.error.stack,
 }));
 
-self.addEventListener("unhandledrejection", (event) => anycast({
+self.addEventListener("unhandledrejection", (event) => reportError({
 	type: "REJECTION",
 	name: event.reason.name,
 	message: event.reason.message,

@@ -58,7 +58,7 @@ export function deleteOn<T>(array: T[], predicate: (value: T) => boolean) {
  * @return 原样返回输入的对象
  */
 export function attachRandomId(object: any) {
-	object.id = object.id || Math.random();
+	object.id ||= Math.random();
 	return object;
 }
 

@@ -26,6 +26,7 @@
 				v-selection-model.focus="selection"
 				@keydown.tab.prevent="insertTab"
 				@input="$emit('input', $event.target.value)"
+				@scroll="lastScrollPreview = false"
 			/>
 			<article
 				v-show="viewMode !== 1"
@@ -37,6 +38,7 @@
 					[$style.split]:viewMode === 0,
 					[$style.single]:viewMode === 2,
 				}"
+				@scroll="lastScrollPreview = true"
 			/>
 		</div>
 
@@ -72,6 +74,7 @@ export default {
 			selection: [0, 0],
 			viewMode: 0,
 			html: articleRenderer.render(this.value),
+			lastScrollPreview: false,
 			disableSyncScroll: null,
 		};
 	},
@@ -133,14 +136,24 @@ export default {
 			this.selection = [start, start + value.length];
 		},
 
+		/**
+		 * 设置是否启用同步滚动，如果由关闭变为开启则会立即触发同步。
+		 *
+		 * 立即同步时以最后滚动的一方作为目标，另一方调整滚动位置与对方同步。
+		 *
+		 * @param enabled 是否启用
+		 */
 		setSyncScroll(enabled) {
-			const { disableSyncScroll, $refs } = this;
+			const { disableSyncScroll } = this;
+			const { textarea, preview } = this.$refs;
 
 			if (!enabled && disableSyncScroll) {
 				disableSyncScroll();
 				this.disableSyncScroll = null;
 			} else if (enabled && !disableSyncScroll) {
-				this.disableSyncScroll = syncScroll($refs.textarea, $refs.preview);
+				this.disableSyncScroll = this.lastScrollPreview
+					? syncScroll(preview, textarea)
+					: syncScroll(textarea, preview);
 			}
 		},
 	},

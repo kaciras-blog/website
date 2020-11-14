@@ -3,7 +3,7 @@ module.exports = {
 	env: {
 		node: true
 	},
-	"extends": [
+	extends: [
 		"plugin:vue/essential",
 		"plugin:jest/recommended",
 		"eslint:recommended"
@@ -19,9 +19,9 @@ module.exports = {
 		"semi": ["error", "always"],
 		"no-mixed-spaces-and-tabs": ["warn", "smart-tabs"],
 		"no-unused-vars": "warn",
-		"quotes": ["error", "double"],
-		'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-		'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+		"quotes": ["error", "double", { avoidEscape: true }],
+		"no-console": process.env.NODE_ENV === 'production' ? 'error' : 'off',
+		"no-debugger": process.env.NODE_ENV === 'production' ? 'error' : 'off',
 	},
 	parserOptions: {
 		parser: 'babel-eslint'

@@ -23,7 +23,7 @@ class AxiosProxy implements ProxyHandler<AxiosInstance> {
 	}
 
 	private prepare(config?: AxiosRequestConfig) {
-		config = config || {};
+		config ??= {};
 		this.processor(config);
 		return config;
 	}

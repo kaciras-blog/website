@@ -3,6 +3,7 @@
 		:title="props.name"
 		:href="props.href"
 		target="_blank"
+		rel="noopener"
 		:class="$style.container"
 	>
 		<img
@@ -26,11 +27,12 @@ export default {
 	padding: 10px;
 
 	border-radius: 50%;
-	border: solid 4px #f0f0f0;
+	border: solid 4px #eee;
 
 	transition: .3s;
 
 	&:hover, &:focus {
+		border-color: white;
 		background-color: var(--color);
 		box-shadow: 0 0 10px var(--color);
 	}

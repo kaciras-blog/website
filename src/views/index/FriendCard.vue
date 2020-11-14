@@ -1,29 +1,37 @@
 <!--
-props 说明:
-	 disabled - 是否禁止点击跳转，以及 hover、focus 动效，在拖动排序时用
-	 friend	- 友链对象
+【props 说明】
+active   - 是否加载图片等消耗性能的资源
+disabled - 是否禁止点击跳转，以及 hover、focus 动效，在拖动排序时用
+friend	 - 友链对象
+
+【懒加载的问题】
+拖动排序中会不断删除和添加元素，这会导致懒加载必须处理这些问题。
+目前友链也不多，每张图都很小，还是不做这功能了吧。
+
+【禁用的实现】
+改变 <component> 渲染的元素会导致整个子树更新，应该避免，改为其它禁用实现。
 -->
 <template functional>
-	<component
-		:is="props.disabled ? 'div' : 'a'"
+	<a
+		:disabled="props.disabled"
 		:href="props.friend.url"
 		target="_blank"
-		:class="[$style.container, data.class]"
-		:style="data.style"
+		rel="noopener"
+		:class="$style.container"
 		@mousedown="listeners.dragstart"
 	>
 		<img
-			:data-src="props.friend.background"
+			:src="props.active && props.friend.background"
 			alt="background"
 			:class="$style.background"
 		>
 		<img
-			:data-src="props.friend.favicon"
+			:src="props.active && props.friend.favicon"
 			alt="favicon"
 			:class="$style.favicon"
 		>
 		<span :class="$style.name">{{props.friend.name}}</span>
-	</component>
+	</a>
 </template>
 
 <script>
@@ -35,6 +43,11 @@ export default {
 <style module lang="less">
 @import "../../css/imports";
 
+/*
+ * 友链卡片的样式模仿了 Aurora - https://github.com/chanshiyucx/aurora
+ *
+ * 原版 hover 的动画是整个上移，我这改成了上下两个方向开启。
+ */
 @width: 260px;
 @height: @width * 9 / 16;
 
@@ -67,7 +80,7 @@ export default {
 	}
 }
 
-a.container {
+.container:not([disabled]) {
 	cursor: revert;
 
 	@media screen and (min-width: @length-screen-mobile) {

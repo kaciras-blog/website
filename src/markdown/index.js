@@ -68,7 +68,7 @@ articleRenderer.use(Anchor, {
 	permalinkHref: slug => `#${encodeURIComponent(slug)}`,
 
 	permalink: true,
-	permalinkClass: "fas fa-link header-anchor",
+	permalinkClass: "fas fa-link anchor-link",
 	permalinkSymbol: "",
 
 	// 参考 MSDN 网站的做法，有 aria-labelledby 情况下不再需要内容

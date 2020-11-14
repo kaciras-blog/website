@@ -41,20 +41,19 @@
 		</div>
 
 		<div class="minor-text" :class="$style.meta">
-
-			<span title="发表于" class="meta">
+			<span title="发表于" :class="$style.metaItem">
 				<i class="fa fa-edit"/>
 				<time>{{item.create | localDate}}</time>
 			</span>
 
-			<span title="浏览数" class="meta">
+			<span title="浏览数" :class="$style.metaItem">
 				<i class="fa fa-eye"/>
-				{{item.viewCount}}
+				<span>{{item.viewCount}}</span>
 			</span>
 
-			<span title="评论数" class="meta">
+			<span title="评论数" :class="$style.metaItem">
 				<i class="fas fa-comment-dots"/>
-				{{item.discussionCount}}
+				<span>{{item.discussionCount}}</span>
 			</span>
 		</div>
 	</li>
@@ -150,6 +149,14 @@ export default {
 
 	@media screen and (max-width: @length-screen-mobile) {
 		text-align: center;
+	}
+}
+
+.metaItem {
+	margin-right: 1em;
+
+	& > i {
+		margin-right: .2em;
 	}
 }
 </style>

@@ -9,6 +9,10 @@ export interface CategoryContent {
 	cover: string;
 	description: string;
 	background: string;
+	banner: {
+		image: string;
+		theme: CategoryTheme;
+	}
 	theme: CategoryTheme;
 }
 

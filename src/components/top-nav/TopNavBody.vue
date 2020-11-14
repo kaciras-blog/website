@@ -50,10 +50,9 @@
 			<a href="/feed/atom" class="nav-item" title="Feed订阅">
 				<i class="fas fa-rss" :class="$style.fontIcon"/>
 			</a>
-
-			<span class="nav-item" title="设置" @click="showSettings">
+			<button class="nav-item" title="设置" @click="showSettings">
 				<i class="fas fa-cogs" :class="$style.fontIcon"/>
-			</span>
+			</button>
 		</div>
 	</component>
 </template>
@@ -147,6 +146,11 @@ export default {
 .fontIcon {
 	font-size: 20px;
 	vertical-align: middle;
+
+	// 固定宽度防止字体加载后重排
+	// TODO: 下一版不用垃圾字体图标了
+	width: 25px;
+	text-align: center;
 }
 
 :global(.dark) .container {

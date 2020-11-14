@@ -41,8 +41,14 @@ export default {
 	justify-content: center;
 }
 
-// 纯 CSS 实现下边框两个方向平移
-// 关键在于使用后面的元素选择符，改变激活元素之后所有元素的边框起始位置
+/*
+ * 纯 CSS 实现下划线两个方向平移。
+ * 关键在于使用后面的元素选择符，改变激活元素之后所有元素的边框起始位置。
+ *
+ * 【从 ChokCoco 的博客里学到的】
+ * 不可思议的纯CSS导航栏下划线跟随效果
+ * https://www.cnblogs.com/coco1s/p/8657192.html
+ */
 .tabItem {
 	position: relative;
 	font-size: 16px;
@@ -61,13 +67,13 @@ export default {
 		left: 100%;
 		right: 0;
 		height: 3px;
-		background-color: #00b4eb;
+		background-color: @color-primary;
 		transition: .15s all linear;
 	}
 }
 
 .active {
-	color: #00b4eb;
+	color: @color-primary;
 
 	&::before {
 		left: 0;

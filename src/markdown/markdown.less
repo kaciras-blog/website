@@ -1,6 +1,5 @@
 @import "../css/imports";
 @import "./media";
-@import "./loading";
 @import "./highlight";
 
 @quote-padding: #bfbfbf; // 引用块左边装饰颜色
@@ -20,10 +19,15 @@
 
 	// 跟 GitHub 的大小一样，不过用的是em
 	h1 { font-size: 2em; }
+
 	h2 { font-size: 1.5em; }
+
 	h3 { font-size: 1.25em; }
+
 	h4 { font-size: 1em; }
+
 	h5 { font-size: .875em; }
+
 	h6 { font-size: .75em; }
 
 	ol, ul {
@@ -76,17 +80,23 @@
 .inline-code {
 	margin: 0 .2em;
 	padding: 0 6px;
-	line-height: 1.6;
+	line-height: 1.65;
 
-	background-color: #333;
-	color: #efefe9;
+	background-color: #f7f7f7;
+	color: #fa0085;
 
 	word-wrap: break-word;
 	word-break: break-all;
 }
 
-.header-anchor {
+.anchor-link {
+	font-size: .875em;
 	opacity: 0;
+	text-decoration: none;
+
+	&:hover {
+		text-decoration: underline;
+	}
 
 	@media screen and (max-width: @length-screen-mobile) {
 		display: none;
@@ -95,12 +105,11 @@
 
 // 【新写法】
 //:is(h1 h2 h3 h4 h5 h6):hover > .header-anchor
-h1:hover > .header-anchor,
-h2:hover > .header-anchor,
-h3:hover > .header-anchor,
-h4:hover > .header-anchor,
-h5:hover > .header-anchor,
-h6:hover > .header-anchor {
+h1:hover > .anchor-link,
+h2:hover > .anchor-link,
+h3:hover > .anchor-link,
+h4:hover > .anchor-link,
+h5:hover > .anchor-link,
+h6:hover > .anchor-link {
 	opacity: 1;
-	text-decoration: none;
 }

@@ -44,11 +44,20 @@ import { SUN_PHASES } from "@/store";
 import BlogSection from "./BlogSection";
 import FriendsSection from "./FriendsSection";
 
+import BannerDawn from "@/assets/img/IndexBannerDawn.png";
+import BannerDaytime from "@/assets/img/IndexBannerLight.png";
+import BannerDusk from "@/assets/img/IndexBannerDusk.png";
+import BannerNight from "@/assets/img/IndexBannerNight.png";
+
+import MobileBannerDawn from "@/assets/img/IndexBannerDawn.png?size=IndexBannerMobile";
+import MobileBannerDaytime from "@/assets/img/IndexBannerLight.png?size=IndexBannerMobile";
+import MobileBannerDusk from "@/assets/img/IndexBannerDusk.png?size=IndexBannerMobile";
+import MobileBannerNight from "@/assets/img/IndexBannerNight.png?size=IndexBannerMobile";
+
 /*
  * 由于服务端无法获取客户的时间，导致服务端渲染时无法获取太阳位置。
  *
- * 如果此时用一个默认值，例如白天，那么当客户端时间不是白天时，一加载页面看到的仍是白天主题，
- * 但马上又变为其它的样式，造成闪烁影响用户体验。
+ * 如果此时用一个默认值，那么不使用 AppShell 的用户首屏永远都是同一张图。
  *
  * 所以干脆SSR的输出就留个空白，等到执行JS设置了太阳位置后再显示图片，
  * 反正图片加载完毕前也是白的，刚好表现一致。
@@ -57,17 +66,17 @@ import FriendsSection from "./FriendsSection";
  */
 
 const BANNER_MAP = {
-	Dawn: require("@/assets/img/IndexBannerDawn.png"),
-	Daytime: require("@/assets/img/IndexBannerLight.png"),
-	Dusk: require("@/assets/img/IndexBannerDusk.png"),
-	Night: require("@/assets/img/IndexBannerNight.png"),
+	Dawn: BannerDawn,
+	Daytime: BannerDaytime,
+	Dusk: BannerDusk,
+	Night: BannerNight,
 };
 
 const BANNER_MAP_MOBILE = {
-	Dawn: require("@/assets/img/IndexBannerDawn.png?size=IndexBannerMobile"),
-	Daytime: require("@/assets/img/IndexBannerLight.png?size=IndexBannerMobile"),
-	Dusk: require("@/assets/img/IndexBannerDusk.png?size=IndexBannerMobile"),
-	Night: require("@/assets/img/IndexBannerNight.png?size=IndexBannerMobile"),
+	Dawn: MobileBannerDawn,
+	Daytime: MobileBannerDaytime,
+	Dusk: MobileBannerDusk,
+	Night: MobileBannerNight,
 };
 
 export default {

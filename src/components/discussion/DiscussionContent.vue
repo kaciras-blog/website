@@ -11,25 +11,28 @@
 
 			<!-- 评论者的名字和时间 -->
 			<div :class="$style.nameGroup">
-				<div :class="$style.name">{{ value.nickname || value.user.name }}</div>
+				<div>
+					<span :class="$style.stick" v-if="value.user.id === 2">博主</span>
+					<span :class="$style.name">{{ value.nickname || value.user.name }}</span>
+				</div>
 				<time class="minor-text">{{ value.time | localDateMinute }}</time>
 			</div>
 
 			<!-- 右上角的楼层号 -->
-			<span class="minor-text">#{{ value.floor }}</span>
+			<span class="minor-text"># {{ value.floor }}</span>
 		</header>
 
 		<div :class="$style.content">{{ value.content }}</div>
 
-		<div class="minor-text" :class="$style.metas">
+		<div :class="$style.metas">
 			<div>
 				<span
 					:title="value.voted ? '取消点赞' : '点赞'"
-					class="meta"
 					:class="{
-							[$style.clickable]:true,
-							[$style.active]: value.voted
-						}"
+						[$style.clickable]:true,
+						[$style.meta]: true,
+						[$style.active]: value.voted
+					}"
 					@click="vote"
 				>
 					<i class="far fa-thumbs-up"/>
@@ -37,15 +40,14 @@
 				</span>
 				<span
 					v-if="!value.parent"
-					class="meta"
+					:class="$style.meta"
 				>
 					<i class="far fa-comment"/>
 					回复({{ value.replyCount }})
 				</span>
 				<span
 					v-if="removable"
-					class="meta"
-					:class="$style.clickable"
+					:class="[$style.clickable, $style.meta]"
 					@click="remove"
 				>
 					<i class="far fa-trash-alt"/>删除
@@ -113,6 +115,8 @@ export default {
 </script>
 
 <style module lang="less">
+@import "../../css/imports";
+
 .header {
 	display: flex;
 }
@@ -128,16 +132,29 @@ export default {
 	margin-left: 1rem;
 }
 
+.stick {
+	margin-right: .5em;
+	border-radius: 3px;
+	padding: 4px 6px;
+	color: white;
+	background-color: @color-primary;
+}
+
 .name {
-	margin-right: auto;
 	font-size: 16px;
 	font-weight: 600;
 }
 
 .metas {
+	composes: minor-text from global;
+
 	display: flex;
 	justify-content: space-between;
 	align-items: baseline;
+}
+
+.meta {
+	margin-right: 10px;
 }
 
 .clickable {
@@ -145,7 +162,7 @@ export default {
 }
 
 .clickable:hover, .active {
-	color: #fa5acd;
+	color: @color-second;
 }
 
 .content {

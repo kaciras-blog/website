@@ -7,7 +7,7 @@
 				<img
 					src="/static/img/avatar.png"
 					alt="logo"
-					class="head"
+					class="large head"
 				>
 
 				<h1 :class="$style.name">Kaciras</h1>
@@ -17,30 +17,30 @@
 					<social-link
 						href="mailto:Kaciras@protonmail.com"
 						name="Email"
-						icon="../../assets/img/email.svg"
+						icon="@assets/img/email.svg"
 					/>
 					<social-link
 						href="https://github.com/Kaciras"
 						name="GitHub"
-						icon="../../assets/img/logo-github.svg"
+						icon="@assets/img/logo-github.svg"
 					/>
 				</p>
 			</div>
 
-			<h3>名字和头像</h3>
+			<h2>名字和头像</h2>
 			<p>
 				Kaciras这个名字，是我初中玩网游时滚键盘打出来的，没有意义，我也不知道咋读。
 				后来在需要英文名的地方都用它，索性就一直用下去了。
 			</p>
 			<p>
-				头像是网上看到的，感觉挺不错就用了，原作者应该不会认识我所以不用担心撞车……
-				不过以后还是自己做一个图好些，等我学画画……
+				头像是盗别人的，感觉挺不错就用了，应该没人同时认识我和原作者所以不用担心撞脸……
+				不过以后还是自己做一个图好些，等我学画画先……
 			</p>
 		</section>
 
 		<section id="friend" class="about-section">
-			<h2>友情链接</h2>
-			<img alt="example" src="../../assets/img/friend-example.png" :class="$style.example">
+			<h1>友情链接</h1>
+			<img alt="example" src="@assets/img/friend-example.png" :class="$style.example">
 			<p>
 				加友链在下面评论即可，填写以下几项：
 			</p>
@@ -57,7 +57,7 @@
 				<a class="highlight" href="https://blog.kaciras.com">https://blog.kaciras.com</a>
 			</p>
 
-			<!-- 有些地方可能直接引用这个链接，所以要保证图标的URL不变，并且能在任意位置访问。-->
+			<!-- 有些地方可能直接引用这个链接，所以要保证URL不变，并能在任意位置访问。-->
 			<p>
 				图标：
 				<a :class="$style.inlineLink" href='/static/img/avatar.png'>avatar.png</a>
@@ -90,9 +90,9 @@
 }
 
 .socialLinks > a {
-	&[title="Email"] { --color: rgba(0, 205, 173, .7); }
+	&[title="Email"] { --color: rgba(0, 217, 184, .6); }
 
-	&[title="GitHub"] { --color: rgba(109, 0, 205, .4); }
+	&[title="GitHub"] { --color: rgba(0, 0, 0, .25); }
 }
 
 .example {

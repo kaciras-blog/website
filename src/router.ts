@@ -80,10 +80,6 @@ export default function CreateRouter() {
 			path: "/about",
 			component: () => import(/* webpackChunkName: "about" */ "./views/about/Index.vue"),
 			children: [
-
-				// TODO: Google把它也单独收录了，但实际应该只收录重定向后的
-				{ path: "", redirect: "me" },
-
 				{
 					path: "me",
 					component: () => import(/* webpackChunkName: "about" */ "./views/about/Me.vue"),
