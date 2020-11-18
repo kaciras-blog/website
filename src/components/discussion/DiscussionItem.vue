@@ -27,19 +27,7 @@
 				</template>
 			</div>
 
-			<input-h-o-c
-				v-if="replying"
-				:type="value.type"
-				:object-id="value.objectId"
-				:parent="value.id"
-				:class="$style.input"
-				@submitted="submitReply"
-			>
-				<template v-slot="{ content, onSubmit, onInput }">
-					<discussion-editor ref="editor" :content="content" :on-submit="onSubmit" @input="onInput"/>
-				</template>
-			</input-h-o-c>
-
+			<discussion-editor v-if="replying" ref="editor" :class="$style.input"/>
 		</template>
 	</discussion-content>
 </template>
@@ -50,7 +38,6 @@ import { scrollToElement } from "@kaciras-blog/uikit";
 import api from "@/api";
 import ReplyFrame from "./ReplyFrame";
 import ReplyList from "./ReplyList";
-import InputHOC from "./InputHOC";
 import DiscussionContent from "./DiscussionContent";
 import DiscussionEditor from "./DiscussionEditor";
 
@@ -61,10 +48,8 @@ export default {
 			type: Object,
 			required: true,
 		},
-
 	},
 	components: {
-		InputHOC,
 		ReplyList,
 		DiscussionContent,
 		DiscussionEditor,
@@ -74,6 +59,15 @@ export default {
 		expend: false,
 		replying: false,
 	}),
+	provide() {
+		const context = {
+			objectId: this.value.objectId,
+			type: this.value.type,
+			parent: this.value.id,
+			afterSubmit: this.submitReply,
+		};
+		return { context };
+	},
 	methods: {
 		async showReplyEditor() {
 			this.replying = true;
@@ -83,7 +77,7 @@ export default {
 			scrollToElement(editor.$el);
 			editor.focus();
 		},
-		async submitReply(reply) {
+		async submitReply(entity) {
 			this.value.replyCount++;
 			this.expend = true;
 			await this.$nextTick();
@@ -91,7 +85,7 @@ export default {
 			if (this.value.replies.length) {
 				this.$refs.replies.switchToLast();
 			} else {
-				this.replies = { total: 1, items: [reply] };
+				this.replies = { total: 1, items: [entity] };
 			}
 		},
 		showAllReplies: debounceFirst(function () {

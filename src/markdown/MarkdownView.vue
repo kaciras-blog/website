@@ -11,7 +11,7 @@ export default {
 		},
 		isArticle: {
 			type: Boolean,
-			default: true,
+			default: false,
 		},
 	},
 	render(h) {

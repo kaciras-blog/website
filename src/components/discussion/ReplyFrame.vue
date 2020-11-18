@@ -27,34 +27,20 @@
 			</scroll-paging-view>
 		</div>
 
-		<input-h-o-c
-			:type="value.type"
-			:object-id="value.objectId"
-			:parent="value.id"
-			:class="$style.input_footer"
-			@submitted="submitted"
-		>
-			<template v-slot="{ content, onSubmit, onInput }">
-				<textarea
-					:class="$style.input"
-					:value="content"
-					v-ime-input="e => fit(e, onInput)"
-				/>
-				<kx-button class="primary" @click="onSubmit">回复</kx-button>
-			</template>
-		</input-h-o-c>
+		<div :class="$style.input_footer">
+			<kx-button class="primary" @click="showEditorFrame">添加回复</kx-button>
+		</div>
 	</kx-frame>
 </template>
 
 <script>
 import api from "@/api";
-import InputHOC from "@/components/discussion/InputHOC";
 import DiscussionContent from "./DiscussionContent";
+import EditorFrame from "@/components/discussion/EditorFrame";
 
 export default {
 	name: "ReplyFrame",
 	components: {
-		InputHOC,
 		DiscussionContent,
 	},
 	props: {
@@ -74,11 +60,14 @@ export default {
 		loadNext(start, count) {
 			return api.discuss.getReplies(this.value.id, start, count);
 		},
-		fit(event, updater) {
-			const el = event.target;
-			el.style.height = "";
-			el.style.height = el.scrollHeight + "px";
-			updater(el.value);
+		showEditorFrame() {
+			const context = {
+				objectId: this.value.objectId,
+				type: this.value.type,
+				parent: this.value.id,
+				afterSubmit: this.submitted,
+			};
+			this.$dialog.show(EditorFrame, context);
 		},
 		submitted(entity) {
 			this.pageData.items.push(entity);

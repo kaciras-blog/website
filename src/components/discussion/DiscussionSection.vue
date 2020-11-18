@@ -30,20 +30,7 @@
 			/>
 		</header>
 
-		<input-h-o-c
-			:object-id="objectId"
-			:type="type"
-			class="segment"
-			@submitted="showLatest"
-		>
-			<template v-slot="{ content, onSubmit, onInput }">
-				<discussion-editor
-					:content="content"
-					:on-submit="onSubmit"
-					@input="onInput"
-				/>
-			</template>
-		</input-h-o-c>
+		<discussion-editor/>
 
 		<component
 			:is="$mediaQuery.match('mobile') ? 'ScrollPagingView' : 'ButtonPagingView'"
@@ -72,7 +59,6 @@
 <script>
 import AtomSpinner from "epic-spinners/src/components/lib/AtomSpinner.vue";
 import api from "@/api";
-import InputHOC from "@/components/discussion/InputHOC";
 import { LOAD_DISCUSSION_OPTIONS } from "@/store/types";
 import DiscussionItem from "./DiscussionItem.vue";
 import DiscussionEditor from "./DiscussionEditor.vue";
@@ -86,7 +72,6 @@ const ALL_SORTS = [
 export default {
 	name: "DiscussionSection",
 	components: {
-		InputHOC,
 		DiscussionItem,
 		DiscussionEditor,
 		AtomSpinner,
@@ -109,6 +94,15 @@ export default {
 		allSorts: ALL_SORTS,
 		sort: ALL_SORTS[0],
 	}),
+	provide() {
+		const context = {
+			objectId: this.objectId,
+			type: this.type,
+			parent: 0,
+			afterSubmit: this.showLatest,
+		};
+		return { context };
+	},
 	methods: {
 		// reload - 重新加载，回到第一页；refresh - 刷新当前页
 		reload() {

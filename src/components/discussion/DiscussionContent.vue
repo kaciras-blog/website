@@ -24,7 +24,6 @@
 
 		<markdown-view
 			:class="$style.content"
-			:is-article="false"
 			:value="value.content"
 		/>
 

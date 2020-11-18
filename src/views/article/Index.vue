@@ -23,7 +23,12 @@
 					</span>
 				</div>
 			</header>
-			<markdown-view class="segment" :value="article.content"/>
+
+			<markdown-view
+				class="segment"
+				:value="article.content"
+				is-article="true"
+			/>
 		</article>
 
 		<discussion-section
