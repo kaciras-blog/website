@@ -59,7 +59,7 @@
 
 			<span
 				v-if="!value.parent"
-				class="meta"
+				class="hide-m"
 				:class="$style.clickable"
 				@click="$emit('reply', value.id)"
 			>

@@ -23,7 +23,7 @@
 
 				<template v-else>
 					<reply-list :items="value.replies" @removed="refresh"/>
-					<a class="hd-link" @click="showAllReplies">查看全部</a>
+					<a class="hd-link" @click="showAllReplies">共{{value.replies.length}}条回复 &gt;</a>
 				</template>
 			</div>
 

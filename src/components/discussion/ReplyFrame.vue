@@ -88,9 +88,9 @@ export default {
 
 .input_footer {
 	display: flex;
-	align-items: flex-end;
+	justify-content: flex-end;
 	padding: 10px;
-	background: #ebebeb;
+	border-top: solid 1px #eee;
 }
 
 .input {
