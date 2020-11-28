@@ -2,7 +2,7 @@ import Vue from "vue";
 import { Store } from "vuex";
 import { Route } from "vue-router/types/router";
 import { CancellationToken } from "@kaciras-blog/uikit";
-import { SET_WIDTH } from "@kaciras-blog/uikit/src/media-query/index";
+import { SET_WIDTH } from "@kaciras-blog/uikit/src/media-query";
 import { configureForProxy } from "@kaciras-blog/server/lib/axios-helper";
 import { RenderContext } from "@kaciras-blog/server/lib/koa/vue-ssr";
 import api, { Api } from "./api";

@@ -23,7 +23,9 @@
 
 				<template v-else>
 					<reply-list :items="value.replies" @removed="refresh"/>
-					<a class="hd-link" @click="showAllReplies">共{{value.replies.length}}条回复 &gt;</a>
+					<a class="hd-link" @click="showAllReplies">
+						共{{ value.replies.length }}条回复 &gt;
+					</a>
 				</template>
 			</div>
 
@@ -40,6 +42,7 @@ import ReplyFrame from "./ReplyFrame";
 import ReplyList from "./ReplyList";
 import DiscussionContent from "./DiscussionContent";
 import DiscussionEditor from "./DiscussionEditor";
+import EditorFrame from "./EditorFrame";
 
 export default {
 	name: "DiscussionItem",
@@ -69,13 +72,18 @@ export default {
 		return { context };
 	},
 	methods: {
+		// 宽屏直接在下面加输入框，手机则弹窗。
 		async showReplyEditor() {
-			this.replying = true;
-			await this.$nextTick();
+			if (this.$mediaQuery.match("tablet+")) {
+				this.replying = true;
+				await this.$nextTick();
 
-			const editor = this.$refs.editor;
-			scrollToElement(editor.$el);
-			editor.focus();
+				const editor = this.$refs.editor;
+				scrollToElement(editor.$el);
+				editor.focus();
+			} else {
+				this.$dialog.show(EditorFrame, this.$options.provide.call(this));
+			}
 		},
 		async submitReply(entity) {
 			this.value.replyCount++;

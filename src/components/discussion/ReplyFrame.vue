@@ -1,35 +1,33 @@
 <template>
-	<kx-frame title="查看回复">
-		<div :class="$style.body">
-			<discussion-content
-				:value="value"
-				tag="div"
-				class="segment"
-				:class="$style.item"
-			/>
-
-			<scroll-paging-view
-				v-model="pageData"
-				:start="value.replies.length"
-				:loader="loadNext"
-				:auto-load="true"
+	<kx-frame>
+		<kx-frame-header title="查看回复">
+			<button
+				class="nav-item"
+				title="添加回复"
+				@click="showEditorFrame"
 			>
-				<template v-slot="{ items }">
-					<ol class="clean-list">
-						<discussion-content
-							v-for="item of items"
-							:key="item.id"
-							:value="item"
-							:class="$style.item"
-						/>
-					</ol>
-				</template>
-			</scroll-paging-view>
-		</div>
+				<i :class="$style.addIcon"/>
+			</button>
+		</kx-frame-header>
 
-		<div :class="$style.input_footer">
-			<kx-button class="primary" @click="showEditorFrame">添加回复</kx-button>
-		</div>
+		<scroll-paging-view
+			v-model="pageData"
+			class="kx-frame-body"
+			:start="value.replies.length"
+			:loader="loadNext"
+			:auto-load="true"
+		>
+			<template v-slot="{ items }">
+				<ol :class="$style.list">
+					<discussion-content
+						v-for="item of items"
+						:key="item.id"
+						:value="item"
+						:class="$style.item"
+					/>
+				</ol>
+			</template>
+		</scroll-paging-view>
 	</kx-frame>
 </template>
 
@@ -77,42 +75,19 @@ export default {
 </script>
 
 <style module lang="less">
-.body {
-	overflow-y: auto;
-	flex: 1;
-}
-
 .item {
-	padding: 15px;
+	padding: 15px 0;
+	border-bottom: solid 1px #eee;
 }
 
-.input_footer {
-	display: flex;
-	justify-content: flex-end;
-	padding: 10px;
-	border-top: solid 1px #eee;
+.list {
+	composes: clean-list from global;
+	padding: 0 15px;
 }
 
-.input {
-	flex: 1;
-
-	min-height: 0;
-	max-height: 30px; // HACK
-	font-size: 14px;
-	padding: .5rem;
-	margin-right: 10px;
-	border: none;
-	border-radius: 4px;
-
-	// hide scroll bar, support Firefox, Safari, and Chrome
-	scrollbar-width: none;
-
-	&::-webkit-scrollbar {
-		display: none;
-	}
-
-	&:focus {
-		max-height: 10rem;
-	}
+.addIcon {
+	composes: fas fa-plus from global;
+	font-size: 20px;
+	vertical-align: middle;
 }
 </style>

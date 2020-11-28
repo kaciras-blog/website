@@ -1,4 +1,4 @@
-import Vue from "vue";
+import { Vue } from "vue/types/vue";
 import api from "@/api";
 import { errorMessage } from "@/utils";
 

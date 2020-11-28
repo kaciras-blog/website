@@ -5,7 +5,7 @@
 			<img
 				:src="value.user.avatar"
 				alt="头像"
-				class="small head"
+				class="head"
 				:class="$style.head"
 			>
 
@@ -43,6 +43,7 @@
 				</span>
 				<span
 					v-if="!value.parent"
+					class="hide-m"
 					:class="$style.meta"
 				>
 					<i class="far fa-comment"/>
@@ -59,9 +60,8 @@
 
 			<span
 				v-if="!value.parent"
-				class="hide-m"
 				:class="$style.clickable"
-				@click="$emit('reply', value.id)"
+				@click="$emit('reply', value)"
 			>
 				<i class="fas fa-plus"/>
 				添加回复
@@ -126,29 +126,42 @@ export default {
 
 .header {
 	display: flex;
+	font-size: 14px;
 }
 
 .head {
 	display: block;
 	float: left;
 	position: relative;
+
+	width: 48px;
+	height: 48px;
+
+	@media screen and (max-width: @length-screen-mobile) {
+		width: 40px;
+		height: 40px;
+	}
 }
 
 .nameGroup {
+	// 让保证末尾行靠底部
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+
 	flex: 1;
-	margin-left: 1rem;
+	margin-left: 10px;
 }
 
 .stick {
 	margin-right: .5em;
 	border-radius: 3px;
-	padding: 4px 6px;
+	padding: 3px 6px;
 	color: white;
 	background-color: @color-primary;
 }
 
 .name {
-	font-size: 16px;
 	font-weight: 600;
 }
 
