@@ -27,7 +27,7 @@
 			<markdown-view
 				class="segment"
 				:value="article.content"
-				is-article="true"
+				:is-article="true"
 			/>
 		</article>
 
