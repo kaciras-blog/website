@@ -37,7 +37,7 @@
 			label="对方的友链页（可选，用于检查互友）"
 		/>
 
-		<kx-standard-dialog-buttons @confirm="confirm"/>
+		<kx-dialog-buttons @confirm="confirm"/>
 	</kx-base-dialog>
 </template>
 

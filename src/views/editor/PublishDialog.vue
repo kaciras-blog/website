@@ -35,7 +35,7 @@
 			<kx-check-box v-model="destroy">发表后删除草稿</kx-check-box>
 		</form>
 
-		<kx-standard-dialog-buttons @confirm="accept"/>
+		<kx-dialog-buttons @confirm="accept"/>
 	</kx-base-dialog>
 </template>
 

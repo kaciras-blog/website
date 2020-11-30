@@ -60,7 +60,7 @@
 			</template>
 		</form>
 
-		<kx-standard-dialog-buttons
+		<kx-dialog-buttons
 			:acceptable="src.length > 0"
 			@confirm="$dialog.confirm($data)"
 		/>

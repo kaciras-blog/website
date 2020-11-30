@@ -26,7 +26,7 @@
 				placeholder="关键字,空格隔开"
 			/>
 		</form>
-		<kx-standard-dialog-buttons @confirm="ok"/>
+		<kx-dialog-buttons @confirm="ok"/>
 	</kx-base-dialog>
 </template>
 

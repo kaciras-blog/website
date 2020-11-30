@@ -10,7 +10,7 @@
 				<input type="number" v-model="autoSaveDelay">
 			</label>
 		</form>
-		<kx-standard-dialog-buttons @ok="$dialog.confirm($data)"/>
+		<kx-dialog-buttons @ok="$dialog.confirm($data)"/>
 	</kx-base-dialog>
 </template>
 

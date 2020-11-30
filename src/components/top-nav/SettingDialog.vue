@@ -1,7 +1,7 @@
 <template>
 	<kx-base-dialog title="设置" :class="$style.dialog">
 		<setting-panel/>
-		<kx-standard-dialog-buttons :cancel-button="false"/>
+		<kx-dialog-buttons :cancel-button="false"/>
 	</kx-base-dialog>
 </template>
 

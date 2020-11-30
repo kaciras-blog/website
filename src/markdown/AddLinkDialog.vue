@@ -20,7 +20,7 @@
 				:placeholder="href"
 			/>
 		</form>
-		<kx-standard-dialog-buttons @confirm="ok"/>
+		<kx-dialog-buttons @confirm="ok"/>
 	</kx-base-dialog>
 </template>
 
