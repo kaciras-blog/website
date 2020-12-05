@@ -35,7 +35,7 @@
 		"axios": "^0.21.0",
 		"date-fns": "^2.16.1",
 		"epic-spinners": "^1.1.0",
-		"highlight.js": "^10.4.0",
+		"highlight.js": "^10.4.1",
 		"idb": "^5.0.7",
 		"lozad": "^1.16.0",
 		"markdown-it": "^12.0.2",
