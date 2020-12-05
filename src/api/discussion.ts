@@ -79,12 +79,4 @@ export default class DiscussionResource extends AbstractResource {
 		ids = Array.isArray(ids) ? ids : [ids];
 		return this.servers.content.patch("/discussions", { ids, state });
 	}
-
-	voteUp(id: number) {
-		return this.servers.content.post(`/discussions/${id}/votes`);
-	}
-
-	revokeVote(id: number) {
-		return this.servers.content.delete(`/discussions/${id}/votes`);
-	}
 }

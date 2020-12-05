@@ -28,39 +28,17 @@
 		/>
 
 		<div :class="$style.metas">
-			<div>
-				<span
-					:title="value.voted ? '取消点赞' : '点赞'"
-					:class="{
-						[$style.clickable]:true,
-						[$style.meta]: true,
-						[$style.active]: value.voted
-					}"
-					@click="vote"
-				>
-					<i class="far fa-thumbs-up"/>
-					{{ value.voteCount }}
-				</span>
-				<span
-					v-if="!value.parent"
-					class="hide-m"
-					:class="$style.meta"
-				>
-					<i class="far fa-comment"/>
-					回复({{ value.replyCount }})
-				</span>
-				<span
-					v-if="removable"
-					:class="[$style.clickable, $style.meta]"
-					@click="remove"
-				>
-					<i class="far fa-trash-alt"/>删除
-				</span>
-			</div>
-
+			<span
+				v-if="removable"
+				:class="$style.clickable"
+				@click="remove"
+			>
+				<i class="far fa-trash-alt"/>
+				删除
+			</span>
 			<span
 				v-if="!value.parent"
-				:class="$style.clickable"
+				:class="[$style.clickable, $style.meta]"
 				@click="$emit('reply', value)"
 			>
 				<i class="fas fa-plus"/>
@@ -102,20 +80,6 @@ export default {
 			api.discuss.updateStates(this.value.id, DiscussionState.Deleted)
 				.then(() => this.$emit("removed", this.value))
 				.catch(e => this.$dialog.alertError("删除失败", errorMessage(e)));
-		},
-
-		/** 点赞标签被点击时触发，如果用户已经点赞过则撤销点赞，否则增加点赞 */
-		vote() {
-			const { value } = this;
-			if (value.voted) {
-				api.discuss.revokeVote(value.id)
-					.then(() => value.voted = false)
-					.then(() => value.voteCount--);
-			} else {
-				api.discuss.voteUp(value.id)
-					.then(() => value.voted = true)
-					.then(() => value.voteCount++);
-			}
 		},
 	},
 };
@@ -169,12 +133,12 @@ export default {
 	composes: minor-text from global;
 
 	display: flex;
-	justify-content: space-between;
+	justify-content: flex-end;
 	align-items: baseline;
 }
 
 .meta {
-	margin-right: 10px;
+	margin-left: 16px;
 }
 
 .clickable {
