@@ -5,7 +5,6 @@
 		@reply="showReplyEditor"
 	>
 		<template v-slot:footer>
-
 			<div :class="$style.replyList" v-if="value.replyCount">
 				<button-paging-view
 					v-if="expend"
@@ -82,7 +81,7 @@ export default {
 				scrollToElement(editor.$el);
 				editor.focus();
 			} else {
-				this.$dialog.show(EditorFrame, this.$options.provide.call(this));
+				this.$dialog.show(EditorFrame, this.$options.provide.call(this).context);
 			}
 		},
 		async submitReply(entity) {

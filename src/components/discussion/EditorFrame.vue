@@ -3,7 +3,7 @@
 		<kx-frame-header title="编辑评论">
 			<button
 				v-if="preview"
-				class="nav-item"
+				:class="$style.headerButton"
 				title="编辑"
 				v-ripple
 				@click="preview=false"
@@ -12,16 +12,15 @@
 			</button>
 			<button
 				v-else
-				class="nav-item"
+				:class="$style.headerButton"
 				title="预览"
 				v-ripple
 				@click="preview=true"
 			>
 				<i class="fas fa-eye"/>
 			</button>
-
 			<button
-				class="nav-item"
+				:class="$style.headerButton"
 				title="帮助"
 				v-ripple
 				@click="showGuide"
@@ -61,7 +60,7 @@
 			<kx-button
 				class="primary"
 				icon="far fa-paper-plane"
-				@click="submit"
+				@click="handleSubmit"
 			>
 				发送
 			</kx-button>
@@ -72,13 +71,13 @@
 <script>
 import { mapState } from "vuex";
 import MarkdownView from "@/markdown/MarkdownView";
-import MarkdownGuideDialog from "./MarkdownGuideDialog";
-import DiscussionContext from "./DiscussionContext";
+import MarkdownGuideDialog from "./GuideDialog";
+import EditContext from "./EditContext";
 
 export default {
 	name: "EditorFrame",
 	mixins: [
-		DiscussionContext,
+		EditContext,
 	],
 	isolation: true,
 	components: {
@@ -92,6 +91,10 @@ export default {
 		focus() {
 			this.$refs.textarea.focus();
 		},
+		async handleSubmit() {
+			await this.submit();
+			this.$dialog.close();
+		},
 		showGuide() {
 			this.$dialog.show(MarkdownGuideDialog);
 		},
@@ -102,6 +105,11 @@ export default {
 <style module lang="less">
 .container {
 	font-size: initial;
+}
+
+.headerButton {
+	composes: nav-item from global;
+	padding: 0 16px;
 }
 
 .body {

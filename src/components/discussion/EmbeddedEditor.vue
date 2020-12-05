@@ -69,13 +69,13 @@
 <script>
 import { mapState } from "vuex";
 import MarkdownView from "@/markdown/MarkdownView";
-import MarkdownGuideDialog from "./MarkdownGuideDialog";
-import DiscussionContext from "./DiscussionContext";
+import MarkdownGuideDialog from "./GuideDialog";
+import EditContext from "./EditContext";
 
 export default {
 	name: "EmbeddedEditor",
 	mixins: [
-		DiscussionContext,
+		EditContext,
 	],
 	components: {
 		MarkdownView,

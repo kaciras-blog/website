@@ -54,7 +54,9 @@ export default {
 		},
 
 		/**
+		 * 提交请求，同时处理名字和草稿等数据。
 		 *
+		 * @return 表示评论提交过程的 Promise
 		 */
 		async submit(this: Instance) {
 			const { type, objectId, parent, key, content, nickname } = this;
@@ -78,6 +80,7 @@ export default {
 				this.afterSubmit(entity);
 			} catch (e) {
 				this.$dialog.alertError("评论失败", errorMessage(e));
+				throw e; // 继续抛出传递给 Sentry 和上层
 			}
 		},
 	},
