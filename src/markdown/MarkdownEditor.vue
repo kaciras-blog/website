@@ -22,10 +22,9 @@
 				}"
 				title="编辑区"
 				spellcheck="false"
-				:value="value"
+				v-model="content"
 				v-selection-model.focus="selection"
 				@keydown.tab.prevent="insertTab"
-				@input="$emit('input', $event.target.value)"
 				@scroll="lastScrollPreview = false"
 			/>
 			<article

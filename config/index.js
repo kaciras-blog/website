@@ -31,7 +31,9 @@ module.exports = {
 		/** 客户端构建的一些其他选项 */
 		client: {
 			useBabel: true,
-			devtool: "cheap-module-eval-source-map",
+
+			// eval 类在 Firefox 里无法调试
+			devtool: "inline-source-map",
 			cssSourceMap: true,
 		},
 
