@@ -47,6 +47,10 @@ export default {
 		},
 	},
 	async beforeMount() {
+		if (this.unsupported) {
+			return; // SW 不是本项目必须的，故 navigator.serviceWorker 可能不存在
+		}
+
 		// 虽然说如果无法注册SW的话它永远不会resolve，但该组件用得不多，应该不至于内存泄漏。
 		await navigator.serviceWorker.ready;
 		try {
