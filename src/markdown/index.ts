@@ -2,7 +2,7 @@ import "katex/dist/katex.css";
 import "./markdown.less";
 import MarkdownIt from "markdown-it";
 import { escapeHtml } from "markdown-it/lib/common/utils";
-import Anchor from "markdown-it-anchor";
+import Anchor, { AnchorOptions } from "markdown-it-anchor";
 import tableOfContent from "markdown-it-toc-done-right";
 import katex from "@iktakahiro/markdown-it-katex";
 import highlight from "./highlight";
@@ -11,7 +11,7 @@ import guestPlugin from "./renderer-guest";
 
 export { initLazyLoading };
 
-function highlightCodeBlock(str, lang) {
+function highlightCodeBlock(str: string, lang: string) {
 	let result;
 	if (lang && highlight.getLanguage(lang)) {
 		result = highlight.highlight(lang, str).value;
@@ -50,7 +50,8 @@ articleRenderer.use(tableOfContent);
  * 由 Markdown 渲染的标题链接会触发 Vue-Router 的路由流程，需要在路由钩子里做检查以跳过预载，
  * 具体见 entry-client.ts 中的 router.beforeEach 钩子。
  */
-articleRenderer.use(Anchor, {
+// @ts-ignore 这些小库的类型都八百年不更新的
+articleRenderer.use<AnchorOptions>(Anchor, {
 
 	/*
  	 * vue-router 2 使用 document.querySelector(position.selector) 不支持 URL 编码的 hash 片段，
@@ -72,6 +73,7 @@ articleRenderer.use(Anchor, {
 	permalinkSymbol: "",
 
 	// 参考 MSDN 网站的做法，有 aria-labelledby 情况下不再需要内容
+	// @ts-ignore
 	permalinkAttrs: slug => ({ "aria-labelledby": slug }),
 });
 

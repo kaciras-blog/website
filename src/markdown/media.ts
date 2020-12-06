@@ -1,17 +1,21 @@
 import lozad from "lozad";
-import media from "@kaciras-blog/server/lib/markdown-media";
+import media, { RendererMap } from "@kaciras-blog/server/lib/markdown-media";
+import Token from "markdown-it/lib/token";
+import MarkdownIt from "markdown-it";
 
 /**
  * 从资源的链接参数（?vw=...&vh=...）里读取媒体的尺寸，
  * 生成防抖容器的 class 和 style 属性。
  *
  * @param url 资源的链接
- * @return {string} class 和 style 属性字符串
+ * @return class 和 style 属性字符串
  */
-function getContainerClassAndStyle(url) {
+function getContainerClassAndStyle(url: string) {
 	const urlParams = new URLSearchParams(url.split("?")[1]);
-	const width = parseFloat(urlParams.get("vw"));
-	const height = parseFloat(urlParams.get("vh"));
+
+	// parseFloat(null) 返回 NaN 也是可以的
+	const width = parseFloat(urlParams.get("vw")!);
+	const height = parseFloat(urlParams.get("vh")!);
 
 	if (!(width && height)) {
 		return 'class="md-media-container"';
@@ -38,9 +42,9 @@ function getContainerClassAndStyle(url) {
  * 对于完全无法加载的情况，下面的标签也能表明空白区域是图片。
  * 所以没有必要使用加载指示器（菊花图）来让用户等到图片完全载入。
  */
-function renderImage(tokens, idx) {
+function renderImage(tokens: Token[], idx: number) {
 	const token = tokens[idx];
-	const src = token.attrGet("src");
+	const src = token.attrGet("src") || "";
 	const alt = token.content;
 
 	return `
@@ -61,7 +65,7 @@ function renderImage(tokens, idx) {
 /**
  * 各种自定义指令在本站页面的渲染实现。
  */
-const directiveMap = {
+const directiveMap: RendererMap = {
 	// 大部分浏览器只允许无声视频自动播放，不过GIF视频本来就是无声的。
 	gif(src, alt) {
 		return `
@@ -94,7 +98,7 @@ const directiveMap = {
  *
  * @param markdownIt 要安装的实例
  */
-export function clientMediaPlugin(markdownIt) {
+export function clientMediaPlugin(markdownIt: MarkdownIt) {
 	markdownIt.use(media, directiveMap);
 	markdownIt.renderer.rules.image = renderImage;
 }
@@ -110,14 +114,14 @@ export function clientMediaPlugin(markdownIt) {
  * @param el 容器元素
  * @return {function} 取消监听的函数，在被监视的元素移除后调用，以避免内存泄漏。
  */
-export function initLazyLoading(el) {
+export function initLazyLoading(el: HTMLElement) {
 	const lozadImages = lozad(el.querySelectorAll("img"));
 	lozadImages.observe();
 
 	// gif 视频自动播放/暂停
 	const autoPlay = new IntersectionObserver(entries => {
-		for (const { target, intersectionRatio } of entries) {
-
+		for (const entry of entries) {
+			const target = entry.target as HTMLVideoElement;
 			/*
 			 * play 返回 Promise 来加等待加载完成，如果元数据还未加载完就暂停会抛出异常。
 			 * 这个异常在 Chrome 里是 AbortError，Firefox 是 DomException，无法很好地跟其他情况区分。
@@ -126,7 +130,7 @@ export function initLazyLoading(el) {
 			 *
 			 * https://developers.google.com/web/updates/2017/06/play-request-was-interrupted
 			 */
-			intersectionRatio > 0 ? silencePromise(target.play()) : target.pause();
+			entry.intersectionRatio > 0 ? silencePromise(target.play()) : target.pause();
 		}
 	});
 
@@ -146,7 +150,7 @@ export function initLazyLoading(el) {
  *
  * @param value An object that may or may not be `Promise`-like.
  */
-function silencePromise(value) {
+function silencePromise(value: any) {
 	if (value && typeof value.then === "function") {
 		value.catch(() => {});
 	}
