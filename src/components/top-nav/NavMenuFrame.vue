@@ -4,17 +4,18 @@
 		:enter-active-class="$style.active_enter"
 		:leave-to-class="$style.enter_before"
 		:leave-active-class="$style.active_leave"
+		@after-leave="afterLeave"
 	>
-		<!-- A11y: div弹出层默认被辅助工具忽略，且组件内没有其他的关闭按钮，必须设置role和title属性来提示 -->
+		<!-- A11y: div 弹出层默认被辅助工具忽略，且组件内没有其他的关闭按钮，必须设置 role 和 title 属性来提示 -->
 		<div
-			v-show="show"
+			v-show="visible"
 			:class="$style.container"
 			role="button"
 			title="点击或按ESC关闭弹窗"
 			tabindex="0"
-			v-autofocus="show"
-			@keydown.esc.self="$emit('change', false)"
-			@click.self="$emit('change', false)"
+			v-autofocus
+			@keydown.esc.self="$dialog.close"
+			@click.self="$dialog.close"
 		>
 			<nav-menu :class="$style.navMenu"/>
 		</div>
@@ -22,38 +23,31 @@
 </template>
 
 <script>
-import { preventScroll } from "@kaciras-blog/uikit";
+import { PreventScrollMixin } from "@kaciras-blog/uikit";
+import { PromiseCompletionSource } from "@kaciras-blog/uikit/src/PromiseDelegate";
 import NavMenu from "./NavMenu";
 
 export default {
 	name: "NavMenuFrame",
+	mixins: [
+		PreventScrollMixin,
+	],
+	isolation: true,
 	components: {
 		NavMenu,
 	},
-	model: {
-		prop: "show",
-		event: "change",
-	},
-	props: {
-		show: Boolean,
-	},
-	watch: {
-		show(value, oldValue) {
-			if (value === oldValue) {
-				return;
-			}
-			this.$_scroll = value ? preventScroll() : this.$_scroll();
+	data: () => ({
+		visible: true,
+	}),
+	methods: {
+		afterLeave() {
+			this.transitionPromise.resolve();
 		},
 	},
-	// 处理因外层组件销毁导致没还原滚动的问题
-	mounted() {
-		if(this.show) {
-			this.$_scroll = preventScroll();
-		}
-	},
-	destroyed() {
-		this.$_scroll && this.$_scroll();
-	},
+	beforeDialogClose() {
+		this.visible = false;
+		return this.transitionPromise = new PromiseCompletionSource();
+	}
 };
 </script>
 
@@ -62,7 +56,7 @@ export default {
 	composes: full-vertex from global;
 
 	position: fixed;
-	z-index: 1000;
+	z-index: 800;
 	background: rgba(0, 0, 0, .5);
 }
 

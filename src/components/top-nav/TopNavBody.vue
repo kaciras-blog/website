@@ -5,22 +5,19 @@
 		</router-link>
 
 		<!-- 手机屏的折叠菜单 -->
-		<template v-if="$mediaQuery.match('mobile')">
-			<button
-				title="弹出菜单"
-				class="nav-item nav-right"
-				@click="showNavMenu = true"
-			>
-				<i class="fas fa-bars"/>
-			</button>
-			<nav-menu-frame v-model="showNavMenu"/>
-		</template>
+		<button
+			v-if="$mediaQuery.match('mobile')"
+			title="弹出菜单"
+			class="nav-item nav-right"
+			@click="showMenu"
+		>
+			<i class="fas fa-bars"/>
+		</button>
 
 		<!-- 宽屏直接把按钮都显示在上面 -->
 		<div v-else class="nav-right">
 
 			<template v-if="user.id > 0">
-
 				<router-link to="/profile">
 					<img
 						:src="user.avatar"
@@ -30,7 +27,6 @@
 						:class="$style.head"
 					>
 				</router-link>
-
 				<router-link
 					v-if="user.id === 2"
 					to="/console"
@@ -38,7 +34,6 @@
 				>
 					管理
 				</router-link>
-
 				<button class="nav-item" @click="logout">退出登录</button>
 			</template>
 
@@ -72,7 +67,6 @@ export default {
 		tag: String,
 	},
 	data: () => ({
-		showNavMenu: false,
 		colored: false,
 	}),
 	computed: mapState(["user"]),
@@ -129,7 +123,7 @@ export default {
 	object-fit: cover;
 	object-position: top;
 
-	&:hover{
+	&:hover {
 		object-position: bottom;
 	}
 }
