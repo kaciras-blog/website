@@ -1,6 +1,6 @@
 import "katex/dist/katex.css";
 import "./markdown.less";
-import MarkdownIt from "markdown-it";
+import MarkdownIt, { Options } from "markdown-it";
 import { escapeHtml } from "markdown-it/lib/common/utils";
 import Anchor, { AnchorOptions } from "markdown-it-anchor";
 import tableOfContent from "markdown-it-toc-done-right";
@@ -8,6 +8,8 @@ import katex from "@iktakahiro/markdown-it-katex";
 import highlight from "./highlight";
 import { clientMediaPlugin, initLazyLoading } from "./media";
 import guestPlugin from "./renderer-guest";
+import Token from "markdown-it/lib/token";
+import Renderer from "markdown-it/lib/renderer";
 
 export { initLazyLoading };
 
@@ -26,14 +28,17 @@ function createRenderer() {
 	markdownIt.use(katex);
 	markdownIt.use(clientMediaPlugin);
 
+	const { rules } = markdownIt.renderer;
+	const raw = rules.code_inline!;
+
 	/**
 	 * 给行内代码加个 inline-code 类以便跟代码块区别开
 	 */
-	markdownIt.core.ruler.push("inline_code_class", state => state.tokens
-		.filter(token => token.type === "inline")
-		.forEach(token => token.children
-			.filter(child => child.type === "code_inline")
-			.forEach(child => child.attrs = [["class", "inline-code"]])));
+	rules.code_inline = (tokens: Token[], idx: number, options: Options, env: any, self: Renderer) => {
+		const token = tokens[idx];
+		token.attrs = [["class", "inline-code"]]
+		return raw(tokens, idx, options, env, self);
+	};
 
 	return markdownIt;
 }
