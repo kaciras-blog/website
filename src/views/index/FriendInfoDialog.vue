@@ -103,18 +103,18 @@ export default {
 
 .wrapper {
 	position: relative;
-	padding-bottom: @favicon-size / 2;
+	padding-bottom: (@favicon-size / 2);
 	cursor: pointer;
 }
 
 .background {
 	width: @background-width;
-	height: @background-width * 9 / 16;
+	height: (@background-width * 9 / 16);
 }
 
 .favicon {
 	position: absolute;
-	left: (@background-width - @favicon-size) / 2;
+	left: ((@background-width - @favicon-size) / 2);
 	bottom: 0;
 	.circle(@favicon-size);
 	box-shadow: 0 0 10px rgba(0, 0, 0, .3)

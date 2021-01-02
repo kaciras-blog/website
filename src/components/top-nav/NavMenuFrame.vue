@@ -23,8 +23,7 @@
 </template>
 
 <script>
-import { PreventScrollMixin } from "@kaciras-blog/uikit";
-import { PromiseCompletionSource } from "@kaciras-blog/uikit/src/PromiseDelegate";
+import { PreventScrollMixin, PromiseSource } from "@kaciras-blog/uikit";
 import NavMenu from "./NavMenu";
 
 export default {
@@ -46,7 +45,7 @@ export default {
 	},
 	beforeDialogClose() {
 		this.visible = false;
-		return this.transitionPromise = new PromiseCompletionSource();
+		return this.transitionPromise = new PromiseSource();
 	}
 };
 </script>

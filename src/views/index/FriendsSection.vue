@@ -366,7 +366,7 @@ export default {
 
 .rightTopButton {
 	position: absolute;
-	top: -@button-size / 2;
+	top: -(@button-size / 2);
 	width: @button-size;
 	height: @button-size;
 	z-index: 5;
@@ -395,7 +395,7 @@ export default {
 
 .remove {
 	composes: rightTopButton;
-	right: -@button-size / 2;
+	right: -(@button-size / 2);
 	background-image: url("~@kaciras-blog/uikit/src/assets/icon-close.svg");
 }
 </style>

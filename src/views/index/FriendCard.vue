@@ -49,7 +49,7 @@ export default {
  * 原版 hover 的动画是整个上移，我这改成了上下两个方向开启。
  */
 @width: 260px;
-@height: @width * 9 / 16;
+@height: (@width * 9 / 16);
 
 @favicon-size: 70px;
 @transition: transform .5s;
@@ -84,7 +84,7 @@ export default {
 	cursor: revert;
 
 	@media screen and (min-width: @length-screen-mobile) {
-		@ty: (@height + @favicon-size) / -2;
+		@ty: ((@height + @favicon-size) / -2);
 
 		&:hover, &:focus {
 			&::before { transform: translateY(@ty); }
@@ -104,8 +104,8 @@ export default {
 
 .favicon {
 	position: absolute;
-	left: (@width - @favicon-size) / 2;
-	top: (@height - @favicon-size) / 2;
+	left: ((@width - @favicon-size) / 2);
+	top: ((@height - @favicon-size) / 2);
 	.circle(@favicon-size);
 
 	z-index: 3;
@@ -121,7 +121,7 @@ export default {
 	height: 50%;
 
 	font-size: 16px;
-	padding-top: @height / 2 - 30px;
+	padding-top: (@height / 2 - 30px);
 	padding-bottom: 8px;
 	text-align: center;
 
