@@ -24,10 +24,10 @@ initializeSettingManager();
  * 代码和依赖有较大改动时增加版本号。
  * TODO: 总觉得每次依赖更新清空缓存有点浪费，能不能更细粒度的删除？
  */
-const STATIC_CACHE_NAME = "static-v1.7";
+const STATIC_CACHE_NAME = "static-v1.8";
 
 /** 后端 API 有 Breaking Change 时增加版本号 */
-const API_CACHE_NAME = "api-v1.2";
+const API_CACHE_NAME = "api-v1.3";
 
 const cache = new CacheWrapper(STATIC_CACHE_NAME);
 const router = new Router();
