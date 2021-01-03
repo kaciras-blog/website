@@ -3,7 +3,6 @@
 		<section class="about-section">
 			<icon-section-header title="Kaciras' Blog" icon="@assets/img/logo-kaciras.svg"/>
 			<icon-paragraph src="@assets/img/logo-github.svg" title="github">
-				网站源码：
 				<a class="highlight" href="https://github.com/kaciras-blog">https://github.com/kaciras-blog</a>
 			</icon-paragraph>
 			<icon-paragraph src="@assets/img/html-code.svg" title="browsers">
@@ -18,7 +17,7 @@
 					<li>IE 全都不支持</li>
 				</ul>
 			</icon-paragraph>
-			<p>本站的服务器位于美国，中国的访问者可能有较高（200ms左右）的延迟</p>
+			<p>本站的服务器位于美国，中国的访问者可能有较高的延迟</p>
 		</section>
 
 		<section class="about-section">

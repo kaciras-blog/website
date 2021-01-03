@@ -55,13 +55,13 @@ import MobileBannerDusk from "@/assets/img/IndexBannerDusk.png?size=IndexBannerM
 import MobileBannerNight from "@/assets/img/IndexBannerNight.png?size=IndexBannerMobile";
 
 /*
- * 由于服务端无法获取客户的时间，导致服务端渲染时无法获取太阳位置。
+ * 这里的大部分代码都是实现根据时段（早晨，白天，黄昏，夜晚）切换背景大图的功能。
+ *
+ * 由于服务端无法获取客户的时间，导致服务端渲染时无法获取时段。
  *
  * 如果此时用一个默认值，那么不使用 AppShell 的用户首屏永远都是同一张图。
  *
- * 所以干脆SSR的输出就留个空白，等到执行JS设置了太阳位置后再显示图片，
- * 反正图片加载完毕前也是白的，刚好表现一致。
- *
+ * 所以干脆SSR的输出就留个空白，等到执行JS设置了时段后再显示图片，反正图片加载完毕前也是白的，刚好表现一致。
  * 这样的话不开启JS就看不到图，但是禁用JS的访问者应当有体验降级的准备。
  */
 
@@ -91,15 +91,15 @@ export default {
 	]),
 	/*
 	 * 四个状态与过渡动画的关系：
-	 *   currentSunPhase：当前的太阳位置，过渡一开始它就立即变为下一个太阳位置。
-	 *   transitionSunPhase：过渡开始时下一个太阳位置，过渡完成后为null。
-	 *   targetSunPhase: 过渡开始时下一个太阳位置，过渡完成后不变直到下次切换。
-	 *   visibleSunPhase：过渡开始时等于上一个太阳位置，过渡完成后替换为transitionSunPhase。
+	 *   currentSunPhase：当前的时段，过渡一开始它就立即变为下一个时段。
+	 *   transitionSunPhase：过渡开始时下一个时段，过渡完成后为null。
+	 *   targetSunPhase: 过渡开始时下一个时段，过渡完成后不变直到下次切换。
+	 *   visibleSunPhase：过渡开始时等于上一个时段，过渡完成后替换为transitionSunPhase。
 	 *
 	 * 切换流程：
-	 *   当太阳位置改变，即 Vuex 中的 sunPhase 被修改时，注册的 switchSunPhase 监听被调用。
+	 *   当时段改变，即 Vuex 中的 sunPhase 被修改时，注册的 switchSunPhase 监听被调用。
 	 *   transitionSunPhase 被设置，创建过渡元素并触发过渡动画。
-	 *   动画完成后调用注册的回调 transitionEnd，删除过渡元素并将新的太阳位置赋值给 visibleSunPhase。
+	 *   动画完成后调用注册的回调 transitionEnd，删除过渡元素并将新的时段赋值给 visibleSunPhase。
 	 */
 	data() {
 		// data 在 computed 之前创建，此时 currentSunPhase 还无法访问
@@ -141,7 +141,7 @@ export default {
 	},
 	methods: {
 		/**
-		 * 开始切换大图，太阳位置改变时都要通过这个方法来触发过渡动画。
+		 * 开始切换大图，时段改变时都要通过这个方法来触发过渡动画。
 		 * 该方法中先使用 HTMLImageElement 预载图片，防止网速慢的时候白屏。
 		 */
 		switchSunPhase(sunPhase) {
