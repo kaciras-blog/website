@@ -83,7 +83,12 @@ export default function CreateRouter() {
 				{
 					path: "me",
 					component: () => import(/* webpackChunkName: "about" */ "./views/about/Me.vue"),
-					meta: { title: "关于博主" },
+					meta: { title: "博主" },
+				},
+				{
+					path: "friends",
+					component: () => import(/* webpackChunkName: "about" */ "./views/about/Friends.vue"),
+					meta: { title: "友链" },
 				},
 				{
 					path: "technology",

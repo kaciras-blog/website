@@ -18,7 +18,8 @@ export default {
 	},
 	data: () => ({
 		tabs: [
-			{ title: "关于博主", route: "/about/me" },
+			{ title: "博主", route: "/about/me" },
+			{ title: "友链", route: "/about/friends" },
 			{ title: "技术栈", route: "/about/technology" },
 			{ title: "版权声明", route: "/about/copyright" },
 		],

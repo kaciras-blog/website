@@ -1,7 +1,6 @@
 <!-- /about/me 更具通用性，必用自己名字做url更好，而且名字还可能变 -->
 <template functional>
 	<div class="about-tab-page">
-
 		<section class="about-section">
 			<div :class="$style.profile">
 				<img
@@ -38,41 +37,9 @@
 			</p>
 		</section>
 
-		<section id="friend" class="about-section">
-			<h1>友情链接</h1>
-			<img alt="example" src="@assets/img/friend-example.png" :class="$style.example">
-			<p>
-				加友链在下面评论即可，填写以下几项：
-			</p>
-			<ul>
-				<li>网站地址（必需）</li>
-				<li>名字，如果没有则使用您网站的标题</li>
-				<li>背景，16：9 的图片，如果没有则使用您首页的截图</li>
-				<li>图标，如果没有则使用您网站的图标或GitHub头像</li>
-			</ul>
-
-			<h2>本站信息</h2>
-			<p>
-				网站地址：
-				<a class="highlight" href="https://blog.kaciras.com">https://blog.kaciras.com</a>
-			</p>
-
-			<!-- 有些地方可能直接引用这个链接，所以要保证URL不变，并能在任意位置访问。-->
-			<p>
-				图标：
-				<a :class="$style.inlineLink" href='/static/img/avatar.png'>avatar.png</a>
-			</p>
-			<p>名字：Kaciras 或 Kaciras的博客</p>
-			<p>描述：编程 • 生活 • 梦想</p>
-
-			<h2>其它说明</h2>
-			<p>原则上只加计算机和ACG内容相关，并且是原创内容的站点。</p>
-			<p>友链最好能互加，本站会自动清理超过一个月无法访问的链接。</p>
-		</section>
-
 		<discussion-section
-			:object-id="0"
-			:type="1"
+			:type="2"
+			:object-id="1"
 			class="about-section"
 			:class="$style.discussion"
 		/>
@@ -93,18 +60,6 @@
 	&[title="Email"] { --color: rgba(0, 217, 184, .6); }
 
 	&[title="GitHub"] { --color: rgba(0, 0, 0, .25); }
-}
-
-.example {
-	display: block;
-	width: 380px;
-	max-width: 100%;
-	margin: 0 auto 1em auto;
-}
-
-.inlineLink {
-	composes: highlight from global;
-	margin-right: .5em;
 }
 
 .discussion {
