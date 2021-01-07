@@ -24,8 +24,8 @@ import api from "@/api";
 
 // 传过来的配置没有描述，这里直接定义
 const LABELS = {
-	enabled: "启用评论",
-	allowAnonymous: "允许匿名评论",
+	disabled: "禁用评论",
+	loginRequired: "禁止匿名评论",
 	moderation: "需要审核",
 };
 
@@ -34,9 +34,9 @@ export default {
 	data: () => ({
 		LABELS,
 		config: {
-			enabled: true,
-			allowAnonymous: true,
-			review: false,
+			disabled: true,
+			loginRequired: true,
+			moderation: false,
 		},
 		refreshing: false,
 	}),

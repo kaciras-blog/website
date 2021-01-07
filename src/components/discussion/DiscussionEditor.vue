@@ -1,9 +1,9 @@
 <template>
-	<div v-if="!options.enabled" :class="$style.shore">
+	<div v-if="options.disabled" :class="$style.shore">
 		已设置为禁止评论
 	</div>
 
-	<div v-else-if="!options.allowAnonymous && user.id === 0" :class="$style.shore">
+	<div v-else-if="options.loginRequired && user.id === 0" :class="$style.shore">
 		已禁止匿名评论,请先
 		<router-link class='highlight' to='/login'>登录</router-link>
 	</div>
