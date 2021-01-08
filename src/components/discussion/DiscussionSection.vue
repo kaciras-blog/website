@@ -5,11 +5,11 @@
 			:size="64"
 			color="#33aaff"
 		/>
-		<span :class="$style.loading_text">评论加载中</span>
+		<span :class="$style.loadingText">评论加载中</span>
 	</div>
 
 	<div v-else-if="loadFail" :class="$style.loading">
-		<span :class="$style.loading_fail_text">评论加载失败</span>
+		<span :class="$style.loadingFailed">评论加载失败</span>
 	</div>
 
 	<div v-else>
@@ -17,9 +17,28 @@
 			<h2 :class="$style.title">
 				评论区({{ data.total }})
 			</h2>
+
+			<button
+				v-if="order === 'ASC'"
+				:class="$style.orderButton"
+				title="升序"
+				@click="changeOrder('DESC')"
+			>
+				<i class="fas fa-sort-amount-down-alt"></i>
+			</button>
+			<button
+				v-if="order === 'DESC'"
+				:class="$style.orderButton"
+				title="降序"
+				@click="changeOrder('ASC')"
+			>
+				<i class="fas fa-sort-amount-down"></i>
+			</button>
+
 			<vue-multiselect
 				v-model="sort"
-				:class="$style.sort_select"
+				title="排序方式"
+				:class="$style.sortSelector"
 				:options="allSorts"
 				label="label"
 				track-by="label"
@@ -64,9 +83,9 @@ import DiscussionItem from "./DiscussionItem.vue";
 import DiscussionEditor from "./DiscussionEditor.vue";
 
 const ALL_SORTS = [
-	{ label: "最早评论", value: "id,ASC" },
-	{ label: "最新", value: "id,DESC" },
-	{ label: "点赞数", value: "vote,DESC" },
+	{ label: "时间", value: "id" },
+	{ label: "回复数", value: "reply" },
+	{ label: "长度", value: "source" },
 ];
 
 export default {
@@ -87,12 +106,14 @@ export default {
 		},
 	},
 	data: () => ({
+		allSorts: ALL_SORTS,
+
 		loading: true,
 		loadFail: false,
-
 		data: null,
-		allSorts: ALL_SORTS,
+
 		sort: ALL_SORTS[0],
+		order: "ASC",
 	}),
 	provide() {
 		const context = {
@@ -112,17 +133,23 @@ export default {
 			return this.$refs.discussions.refresh();
 		},
 
+		changeOrder(name) {
+			this.order = name;
+			this.$refs.discussions.reload();
+		},
+
 		loadDiscussions(start, count, cancelToken) {
+			const { type, objectId, sort, order } = this;
 			return api
 				.withCancelToken(cancelToken)
 				.discuss
 				.getList({
-					objectId: this.objectId,
-					type: this.type,
+					objectId: objectId,
+					type: type,
 					start,
 					count,
-					sort: this.sort.value,
-					replySize: 3,
+					sort: `${sort.value},${order}`,
+					childCount: 3,
 				});
 		},
 
@@ -175,13 +202,13 @@ export default {
 	padding: 30px 0;
 }
 
-.loading_text {
+.loadingText {
 	margin-top: 10px;
 	font-size: 16px;
 }
 
 // TODO: 错误字体和颜色用得挺多
-.loading_fail_text {
+.loadingFailed {
 	font-size: 16px;
 	color: red;
 }
@@ -194,12 +221,25 @@ export default {
 
 .title {
 	display: inline-block;
-	margin: 0;
+	margin: 0 auto 0 0;
 }
 
-.sort_select {
+.sortSelector {
 	width: 8em;
-	margin-left: auto;
+	margin-left: 10px;
+}
+
+.orderButton {
+	height: 40px;
+	line-height: 40px;
+	font-size: 25px;
+	background: none;
+	padding: 0 10px;
+	cursor: pointer;
+
+	&:hover, &:focus {
+		background: #eee;
+	}
 }
 
 .list {
