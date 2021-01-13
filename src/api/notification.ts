@@ -11,7 +11,6 @@ export interface FriendAccident {
 	name: string;
 	url: string;
 	newUrl?: string;
-	time: number
 }
 
 export interface DiscussionActivity {
@@ -19,19 +18,19 @@ export interface DiscussionActivity {
 	title: string;
 	preview: string;
 	floor: number;
-	parentFloor: number;
-	time: number;
+	treeFloor: number;
 }
 
-export interface NotificationMap {
-	friends: FriendAccident[];
-	discussions: DiscussionActivity[];
+export interface Notice<T> {
+	id: "Friend" | "Discussion",
+	data: T;
+	time: number;
 }
 
 export default class extends AbstractResource {
 
 	getAll() {
-		return this.servers.content.get<NotificationMap>("/notifications").then(r => r.data);
+		return this.servers.content.get<Notice<unknown>[]>("/notifications").then(r => r.data);
 	}
 
 	clear() {

@@ -22,65 +22,13 @@
 		</div>
 
 		<ul v-else :class="$style.list">
-			<li v-for="item of friends" class="segment">
-				<span :class="$style.friendLabel">
-					友链
-				</span>
-				检测到网站
-				<a
-					:href="item.url"
-					class="highlight"
-					target="_blank"
-				>
-					{{ item.name }}
-				</a>
+			<li v-for="{type, data, time} of notifications" class="segment">
+				<p>
+					<span :class="[$style.label, $style[type]]">{{MAP[type].name}}</span>
+					<time :class="$style.time">{{ time | localDateMinute }}</time>
+				</p>
 
-				<template v-if="item.type === 'Moved'">
-					重定向到
-					<a
-						:href="item.newUrl"
-						class="highlight"
-						target="_blank"
-					>
-						{{ item.newUrl }}
-					</a>
-				</template>
-				<template v-else-if="item.type === 'AbandonedMe'">
-					的友链页不存在本站的链接，可能删除了本站，或是使用了异步渲染。
-				</template>
-				<template v-else-if="item.type === 'Inaccessible'">
-					无法访问
-				</template>
-
-				<time :class="$style.time">{{ item.time | localDateMinute }}</time>
-			</li>
-
-			<li v-for="item of discussions" class="segment">
-				<header>
-					<span :class="$style.diasussionLabel">
-						评论
-					</span>
-
-					<a
-						:href="item.url"
-						class="highlight"
-						target="_blank"
-					>
-						{{ item.title }}
-					</a>
-
-					<template v-if="item.parentFloor">
-						的 {{ item.parentFloor }} 楼
-					</template>
-
-					有新的评论 #{{ item.floor }}
-
-					<time :class="$style.time">
-						{{ item.time | localDateMinute }}
-					</time>
-				</header>
-
-				<blockquote :class="$style.content">{{ item.preview }}</blockquote>
+				<component :is="MAP[type].component" v-bind="data"/>
 			</li>
 		</ul>
 	</div>
@@ -90,6 +38,13 @@
 import AtomSpinner from "epic-spinners/src/components/lib/AtomSpinner.vue";
 import api from "@/api";
 import { errorMessage } from "@/utils";
+import FriendNotice from "@/views/console/FriendNotice";
+import DiscussionNotice from "@/views/console/DiscussionNotice";
+
+const MAP = {
+	Friend: { name: "友链", component: FriendNotice },
+	Discussion: { name: "新评论", component: DiscussionNotice },
+}
 
 export default {
 	name: "NotificationConsole",
@@ -97,9 +52,9 @@ export default {
 		AtomSpinner,
 	},
 	data: () => ({
+		MAP,
 		loading: true,
-		friends: [],
-		discussions: [],
+		notifications: [],
 	}),
 	methods: {
 		async clear() {
@@ -108,7 +63,7 @@ export default {
 		},
 		async refresh() {
 			try {
-				Object.assign(this.$data, await api.notification.getAll());
+				this.notifications = await api.notification.getAll();
 				this.loading = false;
 			} catch (e) {
 				this.$dialog.alertError("加载失败", errorMessage(e));
@@ -141,31 +96,22 @@ export default {
 .label {
 	display: inline-block;
 	margin-right: 8px;
-	padding: 4px 10px;
+	padding: 2px 8px;
+	font-size: .875em;
 	border-radius: 4px;
 }
 
-.friendLabel {
-	composes: label;
+.Friend {
 	color: white;
 	background: #0776df;
 }
 
-.diasussionLabel {
-	composes: label;
+.Discussion {
 	color: white;
 	background: #01c625;
 }
 
 .time {
 	float: right;
-}
-
-.content {
-	composes: minor-text from global;
-
-	margin-left: 0;
-	padding: 4px 0 4px 10px;
-	border-left: solid 4px #ccc;
 }
 </style>
