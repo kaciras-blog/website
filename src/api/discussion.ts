@@ -1,27 +1,59 @@
-import { AbstractResource, Pageable } from "./core";
+import { AbstractResource, ListQueryView, Pageable } from "./core";
+import { User } from "./user";
 
-export interface DiscussionTarget {
+export interface TopicKey {
 
 	/** 被评论对象的类型 */
 	type: number;
 
-	/** 被评论对象的ID */
+	/** 被评论对象的 ID */
 	objectId: number;
 }
 
-export interface DiscussionListRequest extends Pageable, DiscussionTarget {
-	replySize?: number;
+export interface Topic {
+	url: string;
+	name: string;
 }
 
-export interface DiscussionInput extends DiscussionTarget {
+export interface Discussion extends TopicKey {
+	id: number;
 
-	/** 父评论，如果没有则为0 */
+	parent?: Discussion;
+
+	floor: number;
+	treeFloor: number;
+
+	nestId: number;
+	nestSize: number;
+
+	user: User;
+
+	nickname: string;
+	content: string;
+	time: number;
+
+	deleted: boolean;
+
+	topic?: Topic;
+	replies?: Discussion[];
+}
+
+export interface DiscussionQuery extends Pageable, Partial<TopicKey> {
+	nestId?: number;
+	state?: DiscussionState;
+	childCount?: number;
+	includeParent?: boolean;
+}
+
+export interface DiscussionInput extends TopicKey {
+
+	/** 父评论，没有为0 */
 	parent: number;
 
 	/** 评论内容 */
 	content: string;
 
-	/** 游客也可以随意填写的昵称 */
+	/** 可以随意填写的昵称 */
 	nickname?: string;
 }
 
@@ -37,15 +69,62 @@ export enum DiscussionState {
 	Moderation = "Moderation",
 }
 
+/**
+ * 后端返回的数据是 ID 与实体分离的，其中一些字段是整数型 ID。
+ */
+interface RawObjectOverride {
+	parent: number;
+	replies?: number[];
+}
+
+type RawObject = Omit<Discussion, keyof RawObjectOverride> & RawObjectOverride;
+
+/**
+ * 后端返回的列表查询结果，使用 assembly() 来重组为 ListQueryView<Discussion>。
+ */
+interface MappingListView extends ListQueryView<number> {
+	objects: { [id: string]: RawObject };
+}
+
+/**
+ * 重组后端的数据，把 items 以及必要的 replies、parent 从 ID 替换为评论对象。
+ *
+ * 【重复性论证】
+ * 从下到上的引用模式中只有子节点需要转换，而子节点是不会重复的。
+ * 从上到下的树和楼中楼模式中也是转换子节点而不会返回上级，不存在一个对象被重复修改。
+ * 所以这里无需复制直接修改原对象即可。
+ *
+ * @param mappingView 原始数据
+ * @return 重组后的数据
+ */
+function assembly(mappingView: MappingListView) {
+	const { total, objects } = mappingView;
+
+	function toObject(id: number) {
+		const raw = objects[id.toString()];
+		const value = raw as unknown as Discussion;
+		const { parent, replies } = raw;
+
+		//
+		value.parent = objects[parent.toString()] as unknown as Discussion;
+		value.replies = replies?.map(toObject);
+		return value;
+	}
+
+	const items = mappingView.items.map(toObject);
+
+	return { total, items } as ListQueryView<Discussion>;
+}
+
 export default class DiscussionResource extends AbstractResource {
 
 	add(data: DiscussionInput) {
-		return this.servers.content.post("/discussions", data).then(r => r.data);
+		return this.servers.content.post<Discussion>("/discussions", data).then(r => r.data);
 	}
 
-	getList(query: DiscussionListRequest) {
+	getList(query: DiscussionQuery): Promise<ListQueryView<Discussion>> {
 		const params = { ...query, parent: 0 };
-		return this.servers.content.get("/discussions", { params }).then(r => r.data);
+		return this.servers.content.get("/discussions", { params }).then(r => assembly(r.data));
 	}
 
 	/**
@@ -58,7 +137,7 @@ export default class DiscussionResource extends AbstractResource {
 	 * @param count 每页数量
 	 * @return 回复列表
 	 */
-	getReplies(parent: number, start: number, count: number) {
+	getReplies(parent: number, start: number, count: number): Promise<ListQueryView<Discussion>> {
 		const params = { parent, start, count };
 		return this.servers.content.get("/discussions", { params }).then(r => r.data);
 	}
@@ -70,7 +149,7 @@ export default class DiscussionResource extends AbstractResource {
 
 	/**
 	 * 批量更新评论的状态（待审、删除、正常）
-	 * 该API目前仅能由管理者使用，不支持用户删除自己的评论，因为匿名评论无法确定用户身份。
+	 * 该 API 目前仅能由管理者使用，不支持用户删除自己的评论，因为匿名评论无法确定用户身份。
 	 *
 	 * @param ids 评论ID或ID数组
 	 * @param state 目标状态

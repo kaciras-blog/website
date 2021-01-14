@@ -94,3 +94,8 @@ export interface Pageable {
 	 */
 	sort?: string;
 }
+
+export interface ListQueryView<T> {
+	items: T[];
+	total: number;
+}

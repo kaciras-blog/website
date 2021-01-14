@@ -18,11 +18,23 @@
 				评论区({{ data.total }})
 			</h2>
 
+			<vue-multiselect
+				v-model="mode"
+				title="评论结构"
+				:class="$style.sortSelector"
+				:options="MODE"
+				label="label"
+				track-by="label"
+				:allow-empty="false"
+				:searchable="false"
+				:show-labels="false"
+			/>
+
 			<button
 				v-if="order === 'ASC'"
 				:class="$style.orderButton"
 				title="升序"
-				@click="changeOrder('DESC')"
+				@click="order = 'DESC'"
 			>
 				<i class="fas fa-sort-amount-down-alt"></i>
 			</button>
@@ -30,7 +42,7 @@
 				v-if="order === 'DESC'"
 				:class="$style.orderButton"
 				title="降序"
-				@click="changeOrder('ASC')"
+				@click="order = 'ASC'"
 			>
 				<i class="fas fa-sort-amount-down"></i>
 			</button>
@@ -39,13 +51,12 @@
 				v-model="sort"
 				title="排序方式"
 				:class="$style.sortSelector"
-				:options="allSorts"
+				:options="ALL_SORTS"
 				label="label"
 				track-by="label"
 				:allow-empty="false"
 				:searchable="false"
 				:show-labels="false"
-				@input="reload"
 			/>
 		</header>
 
@@ -55,11 +66,19 @@
 			:is="$mediaQuery.match('mobile') ? 'ScrollPagingView' : 'ButtonPagingView'"
 			ref="discussions"
 			v-model="data"
-			:loader="loadDiscussions"
+			:loader="fetchData"
 			:show-top-buttons="true"
 		>
 			<template v-slot="{ items }">
-				<ol v-if="items.length" class="clean-list" :class="$style.list">
+				<ol v-if="mode.value === 0" :class="$style.list">
+					<discussion-bubble
+						v-for="item of items"
+						:key="item.id"
+						:value="item"
+						@removed="refresh"
+					/>
+				</ol>
+				<ol v-else :class="$style.list">
 					<discussion-item
 						v-for="item of items"
 						:key="item.id"
@@ -81,16 +100,25 @@ import api from "@/api";
 import { LOAD_DISCUSSION_OPTIONS } from "@/store/types";
 import DiscussionItem from "./DiscussionItem.vue";
 import DiscussionEditor from "./DiscussionEditor.vue";
+import DiscussionBubble from "@/components/discussion/DiscussionBubble";
+
+const NEST_SIZE = 3;
+
+const MODE = [
+	{ label: "引用模式", value: 0 },
+	{ label: "楼中楼模式", value: 1 },
+];
 
 const ALL_SORTS = [
 	{ label: "时间", value: "id" },
-	{ label: "回复数", value: "reply" },
+	{ label: "回复数", value: "nest_size" },
 	{ label: "长度", value: "source" },
 ];
 
 export default {
 	name: "DiscussionSection",
 	components: {
+		DiscussionBubble,
 		DiscussionItem,
 		DiscussionEditor,
 		AtomSpinner,
@@ -106,12 +134,14 @@ export default {
 		},
 	},
 	data: () => ({
-		allSorts: ALL_SORTS,
+		MODE,
+		ALL_SORTS,
 
 		loading: true,
 		loadFail: false,
 		data: null,
 
+		mode: MODE[1],
 		sort: ALL_SORTS[0],
 		order: "ASC",
 	}),
@@ -124,6 +154,17 @@ export default {
 		};
 		return { context };
 	},
+	watch: {
+		mode() {
+			this.reload();
+		},
+		sort() {
+			this.reload();
+		},
+		order() {
+			this.reload();
+		},
+	},
 	methods: {
 		// reload - 重新加载，回到第一页；refresh - 刷新当前页
 		reload() {
@@ -133,24 +174,24 @@ export default {
 			return this.$refs.discussions.refresh();
 		},
 
-		changeOrder(name) {
-			this.order = name;
-			this.$refs.discussions.reload();
-		},
+		fetchData(start, count, cancelToken) {
+			const { type, objectId, sort, order, mode } = this;
 
-		loadDiscussions(start, count, cancelToken) {
-			const { type, objectId, sort, order } = this;
-			return api
-				.withCancelToken(cancelToken)
-				.discuss
-				.getList({
-					objectId: objectId,
-					type: type,
-					start,
-					count,
-					sort: `${sort.value},${order}`,
-					childCount: 3,
-				});
+			const query = {
+				objectId: objectId,
+				type: type,
+				start,
+				count,
+				sort: `${sort.value},${order}`,
+			};
+
+			if (mode.value === 0) {
+				query.includeParent = true;
+			} else {
+				query.childCount = NEST_SIZE;
+			}
+
+			return api.withCancelToken(cancelToken).discuss.getList(query);
 		},
 
 		/** 评论发表后跳转到能显示新评论的位置 */
@@ -166,7 +207,7 @@ export default {
 		/** 初始化，加载配置信息和第一页，完成时切换加载指示器到列表 */
 		initialize() {
 			const tasks = [
-				this.loadDiscussions(0, 20).then(view => this.data = view),
+				this.fetchData(0, 20).then(view => this.data = view),
 				this.$store.dispatch(LOAD_DISCUSSION_OPTIONS),
 			];
 			Promise.all(tasks)
@@ -243,6 +284,7 @@ export default {
 }
 
 .list {
+	composes: clean-list from global;
 	margin: 30px 0;
 }
 
