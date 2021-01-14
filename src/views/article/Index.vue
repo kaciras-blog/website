@@ -34,7 +34,7 @@
 		<discussion-section
 			ref="discussion"
 			:object-id="article.id"
-			:type="0"
+			:type="1"
 			:class="$style.discuss_section"
 		/>
 
