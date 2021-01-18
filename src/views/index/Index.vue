@@ -211,7 +211,7 @@ export default {
 
 	@media screen and (min-width: @length-screen-wide) {
 		top: 35vh;
-		font-size: 2vw;
+		font-size: 30px;
 	}
 }
 
@@ -225,10 +225,12 @@ export default {
 }
 
 .section {
+	max-width: 1600px;
+	margin: 0 auto;
 	padding: 25px 14px;
 
 	@media screen and(min-width: @length-screen-mobile) {
-		padding: 50px 5vw;
+		padding: 50px 64px;
 	}
 }
 </style>
