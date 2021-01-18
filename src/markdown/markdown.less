@@ -9,6 +9,9 @@
 	font-size: initial;
 	line-height: 1.8;
 
+	word-wrap: break-word;
+	word-break: break-word;
+
 	// 暂时不在全站用，因为在一些动画上会导致文字移动
 	letter-spacing: .5px;
 
@@ -38,6 +41,10 @@
 		}
 	}
 
+	pre > code {
+		overflow-x: auto;
+	}
+
 	// 14÷16 小一号的字体
 	code {
 		border-radius: 5px;
@@ -49,7 +56,6 @@
 	blockquote {
 		margin-left: 0;
 		padding: 1em;
-		word-wrap: break-word;
 
 		background-color: @quote-background;
 		border-left: .5em solid @quote-padding;
@@ -80,7 +86,7 @@
 	background-color: #f7f7f7;
 	color: #fa0085;
 
-	word-wrap: break-word;
+	// 如果在未达行尾就换行会跟多行代码块混淆，故改为 break-all
 	word-break: break-all;
 }
 
