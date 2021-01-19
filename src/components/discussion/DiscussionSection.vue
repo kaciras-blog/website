@@ -21,7 +21,7 @@
 			<vue-multiselect
 				v-model="mode"
 				title="评论结构"
-				:class="$style.sortSelector"
+				:class="$style.modeSelect"
 				:options="MODE"
 				label="label"
 				track-by="label"
@@ -50,7 +50,7 @@
 			<vue-multiselect
 				v-model="sort"
 				title="排序方式"
-				:class="$style.sortSelector"
+				:class="$style.sortSelect"
 				:options="ALL_SORTS"
 				label="label"
 				track-by="label"
@@ -100,7 +100,7 @@ import api from "@/api";
 import { LOAD_DISCUSSION_OPTIONS } from "@/store/types";
 import DiscussionItem from "./DiscussionItem.vue";
 import DiscussionEditor from "./DiscussionEditor.vue";
-import DiscussionBubble from "@/components/discussion/DiscussionBubble";
+import DiscussionBubble from "./DiscussionBubble";
 
 const NEST_SIZE = 3;
 
@@ -114,6 +114,20 @@ const ALL_SORTS = [
 	{ label: "回复数", value: "nest_size" },
 	{ label: "长度", value: "source" },
 ];
+
+// 啊好想要 Hooks 啊，Vue3 全家桶快点出啊
+
+function loadEnumFromStore(type, key, default_) {
+	let v = loadFromStore(key, default_).toString();
+	return type.find(i => i.value.toString() === v);
+}
+
+function loadFromStore(key, default_) {
+	if (typeof window === "undefined") {
+		return default_;
+	}
+	return localStorage.getItem(key) || default_;
+}
 
 export default {
 	name: "DiscussionSection",
@@ -141,9 +155,9 @@ export default {
 		loadFail: false,
 		data: null,
 
-		mode: MODE[1],
-		sort: ALL_SORTS[0],
-		order: "ASC",
+		mode: loadEnumFromStore(MODE, "DIS_MODE", 0),
+		sort: loadEnumFromStore(ALL_SORTS, "DIS_SORT", "id"),
+		order: loadFromStore("DIS_ORDER", "ASC"),
 	}),
 	provide() {
 		const context = {
@@ -157,12 +171,15 @@ export default {
 	watch: {
 		mode() {
 			this.reload();
+			localStorage.setItem("DIS_MODE", this.mode.value);
 		},
 		sort() {
 			this.reload();
+			localStorage.setItem("DIS_SORT", this.sort.value);
 		},
 		order() {
 			this.reload();
+			localStorage.setItem("DIS_ORDER", this.order);
 		},
 	},
 	methods: {
@@ -265,8 +282,12 @@ export default {
 	margin: 0 auto 0 0;
 }
 
-.sortSelector {
-	width: 8em;
+.modeSelect {
+	width: 9em;
+}
+
+.sortSelect {
+	width: 7em;
 	margin-left: 10px;
 }
 
