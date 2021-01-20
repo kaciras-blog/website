@@ -1,18 +1,5 @@
 <template>
-	<div v-if="loading" :class="$style.loading">
-		<atom-spinner
-			:animation-duration="1200"
-			:size="64"
-			color="#33aaff"
-		/>
-		<span :class="$style.loadingText">评论加载中</span>
-	</div>
-
-	<div v-else-if="loadFail" :class="$style.loading">
-		<span :class="$style.loadingFailed">评论加载失败</span>
-	</div>
-
-	<div v-else>
+	<boot-loader :load-fn="initialize">
 		<header class="segment" :class="$style.header">
 			<h2 :class="$style.title">
 				评论区({{ data.total }})
@@ -91,13 +78,13 @@
 		</component>
 
 		<div v-if="data.total===0" :class="$style.empty">还没有评论呢</div>
-	</div>
+	</boot-loader>
 </template>
 
 <script>
-import AtomSpinner from "epic-spinners/src/components/lib/AtomSpinner.vue";
 import api from "@/api";
 import { LOAD_DISCUSSION_OPTIONS } from "@/store/types";
+import BootLoader from "./BootLoader";
 import DiscussionItem from "./DiscussionItem.vue";
 import DiscussionEditor from "./DiscussionEditor.vue";
 import DiscussionBubble from "./DiscussionBubble";
@@ -132,10 +119,10 @@ function loadFromStore(key, default_) {
 export default {
 	name: "DiscussionSection",
 	components: {
+		BootLoader,
 		DiscussionBubble,
 		DiscussionItem,
 		DiscussionEditor,
-		AtomSpinner,
 	},
 	props: {
 		objectId: {
@@ -151,9 +138,7 @@ export default {
 		MODE,
 		ALL_SORTS,
 
-		loading: true,
-		loadFail: false,
-		data: null,
+		data: {},
 
 		mode: loadEnumFromStore(MODE, "DIS_MODE", 0),
 		sort: loadEnumFromStore(ALL_SORTS, "DIS_SORT", "id"),
@@ -223,53 +208,17 @@ export default {
 
 		/** 初始化，加载配置信息和第一页，完成时切换加载指示器到列表 */
 		initialize() {
-			const tasks = [
-				this.fetchData(0, 20).then(view => this.data = view),
+			return Promise.all([
 				this.$store.dispatch(LOAD_DISCUSSION_OPTIONS),
-			];
-			Promise.all(tasks)
-				.catch(() => this.loadFail = true)
-				.finally(() => this.loading = false);
+				this.fetchData(0, 20).then(view => this.data = view),
+			]);
 		},
-	},
-	mounted() {
-		this.$_observer = new IntersectionObserver(entries => {
-			if (entries[0].isIntersecting) {
-				this.initialize();
-				this.$_observer.disconnect();
-				delete this.$_observer;
-			}
-		});
-		this.$_observer.observe(this.$el);
-	},
-	destroyed() {
-		if (this.$_observer) {
-			this.$_observer.disconnect();
-		}
 	},
 };
 </script>
 
 <style module lang="less">
 @import "../../css/imports";
-
-.loading {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	padding: 30px 0;
-}
-
-.loadingText {
-	margin-top: 10px;
-	font-size: 16px;
-}
-
-// TODO: 错误字体和颜色用得挺多
-.loadingFailed {
-	font-size: 16px;
-	color: red;
-}
 
 .header {
 	display: flex;
