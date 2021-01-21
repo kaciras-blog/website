@@ -3,14 +3,14 @@
 
 		<article :class="$style.article">
 			<header class="segment" :class="$style.header">
-				<h1 :class="$style.title">{{article.title}}</h1>
+				<h1 :class="$style.title">{{ article.title }}</h1>
 				<p>
 					<span>发布时间：</span>
-					<time>{{article.create | localDateMinute}}</time>
+					<time>{{ article.create | localDateMinute }}</time>
 				</p>
 				<p>
 					<span>最后更新：</span>
-					<time>{{article.update | localDateMinute}}</time>
+					<time>{{ article.update | localDateMinute }}</time>
 				</p>
 				<div>
 					<span>关键词：</span>
@@ -19,7 +19,7 @@
 						:key="keyword"
 						:class="$style.keyword"
 					>
-						{{keyword}}
+						{{ keyword }}
 					</span>
 				</div>
 			</header>
@@ -35,22 +35,22 @@
 			ref="discussion"
 			:object-id="article.id"
 			:type="1"
-			:class="$style.discuss_section"
+			:class="$style.discussion"
 		/>
 
 		<div
 			v-if="$mediaQuery.match('tablet+')"
-			class="side-buttons compact vertical-btn-group"
+			:class="$style.sideButtons"
 		>
 			<kx-button
-				class="primary outline"
+				:class="$style.toolButton"
 				title="转到评论区"
 				@click="gotoDiscuss"
 			>
 				<i class="far fa-comments"></i>
 			</kx-button>
 			<kx-button
-				class="primary outline"
+				:class="$style.toolButton"
 				title="回顶部"
 				@click="gotoTop"
 			>
@@ -175,7 +175,7 @@ export default {
 	margin-right: .3em;
 }
 
-.discuss_section {
+.discussion {
 	margin: 50px auto;
 	padding: 0 1rem;
 
@@ -188,8 +188,43 @@ export default {
 		}
 		@media (min-width: @length-screen-wide) {
 			width: 75vw;
-			max-width: 1500px;
+			max-width: 1100px;
 		}
 	}
+}
+
+/*
+ * 侧边按钮的位置如果贴右侧，则宽屏下会距离内容区太远，
+ * 这里选用贴内容区，在 1200px 断点处还是会超出屏幕一点。
+ */
+.sideButtons {
+	composes: vertical-btn-group from global;
+
+	position: fixed;
+	top: 65vh;
+	right: 1rem;
+
+	border-radius: .2rem;
+	background-color: white;
+
+	@media screen {
+		@media (min-width: @length-screen-pad) {
+			right: 3%;
+		}
+		@media (min-width: @length-screen-wide) {
+			left: calc(50vw + 540px);
+		}
+	}
+}
+
+.toolButton {
+	composes: outline primary from global;
+
+	width: 55px;
+	height: 55px;
+	padding: 0;
+
+	border-radius: 50%;
+	font-size: 1.8rem;
 }
 </style>
