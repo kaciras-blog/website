@@ -1,47 +1,79 @@
 <template>
-	<discussion-content
-		:value="value"
-		@removed="$emit('removed')"
-		@reply="showReplyEditor"
-	>
-		<template v-slot:footer>
-			<div :class="$style.replyList" v-if="value.replyCount">
-				<button-paging-view
-					v-if="expend"
-					ref="replies"
-					v-model="replies"
-					theme="text"
-					:loader="loadNext"
-					:page-size="10"
-				>
-					<!-- removed 事件必须包装一下，因为创建时还不存在 $refs.replies，下同 -->
-					<template v-slot="{ items }">
-						<reply-list :items="items" @removed="refresh"/>
-					</template>
-				</button-paging-view>
+	<li>
+		<discussion-content
+			:value="value"
+			tag="div"
+			@removed="$emit('removed')"
+			@reply="showReplyEditor"
+		/>
 
-				<template v-else>
-					<reply-list :items="value.replies" @removed="refresh"/>
-					<a class="hd-link" @click="showAllReplies">
-						共{{ value.replies.length }}条回复 &gt;
-					</a>
+		<template v-if="expend || replies.length > 0">
+			<button-paging-view
+				v-if="expend"
+				ref="replies"
+				v-model="replies"
+				theme="text"
+				:loader="loadNext"
+				:page-size="10"
+				:class="$style.replyList"
+			>
+				<template v-slot="{ items }">
+					<ol class="clean-list">
+						<discussion-content
+							v-for="item of items"
+							:key="item.id"
+							:value="item"
+							:class="$style.reply"
+							@removed="refresh"
+						/>
+					</ol>
 				</template>
+			</button-paging-view>
+			<div v-else-if="$mediaQuery.match('tablet+')" :class="$style.replyList">
+				<ol class="clean-list" :class="$style.list">
+					<discussion-content
+						v-for="item of replies"
+						:key="item.id"
+						:value="item"
+						:class="$style.reply"
+						@removed="refresh"
+					/>
+				</ol>
+				<a class="hd-link" @click="showAllReplies">
+					共{{ value.replies.length }}条回复 &gt;
+				</a>
 			</div>
-
-			<discussion-editor v-if="replying" ref="editor" :class="$style.input"/>
+			<div v-else :class="$style.replyList">
+				<ol class="clean-list" :class="$style.list">
+					<li
+						v-for="item of replies"
+						:key="item.id"
+						:class="$style.preview"
+					>
+					<span :class="$style.name">
+						{{ item.user.name }}：
+					</span>
+						{{ item.content }}
+					</li>
+				</ol>
+				<a class="hd-link" @click="showNestFrame">
+					共{{ value.replies.length }}条回复 &gt;
+				</a>
+			</div>
 		</template>
-	</discussion-content>
+
+		<discussion-editor v-if="replying" ref="editor" :class="$style.input"/>
+	</li>
 </template>
 
 <script>
-import { debounceFirst } from "@kaciras-blog/server/lib/functions";
 import { scrollToElement } from "@kaciras-blog/uikit";
+import { debounceFirst } from "@kaciras-blog/server/lib/functions";
 import api from "@/api";
-import ReplyFrame from "./ReplyFrame";
-import ReplyList from "./ReplyList";
 import DiscussionContent from "./DiscussionContent";
-import DiscussionEditor from "./DiscussionEditor";
+import ReplyFrame from "./ReplyFrame";
 import EditorFrame from "./EditorFrame";
+import DiscussionEditor from "./DiscussionEditor";
 
 export default {
 	name: "DiscussionItem",
@@ -52,15 +84,16 @@ export default {
 		},
 	},
 	components: {
-		ReplyList,
 		DiscussionContent,
 		DiscussionEditor,
 	},
-	data: () => ({
-		replies: null,
-		expend: false,
-		replying: false,
-	}),
+	data() {
+		return {
+			replies: this.value.replies,
+			expend: false,
+			replying: false,
+		};
+	},
 	provide() {
 		const context = {
 			objectId: this.value.objectId,
@@ -96,18 +129,17 @@ export default {
 			}
 		},
 		showAllReplies: debounceFirst(function () {
-			if (this.$mediaQuery.match("mobile")) {
-				return this.$dialog.show(ReplyFrame, { value: this.value });
-			}
 			return this.loadNext(0, 10).then((replies) => {
 				this.expend = true;
 				this.replies = replies;
 			});
 		}),
+		showNestFrame() {
+			return this.$dialog.show(ReplyFrame, { value: this.value });
+		},
 		refresh() {
 			this.$refs.replies.refresh();
 		},
-		// 重复
 		loadNext(start, count) {
 			return api.discuss.getReplies(this.value.id, start, count);
 		},
@@ -127,5 +159,22 @@ export default {
 	padding: 20px;
 	border-radius: 8px;
 	background: #f7f7f7;
+}
+
+.list:not(:first-child) {
+	margin-top: .5rem
+}
+
+.reply {
+	margin: 1rem 0;
+}
+
+.name {
+	color: #137ce7;
+}
+
+.preview {
+	margin-bottom: .5rem;
+	.line-clamp(2);
 }
 </style>

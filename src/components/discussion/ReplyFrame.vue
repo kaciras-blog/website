@@ -34,7 +34,7 @@
 <script>
 import api from "@/api";
 import DiscussionContent from "./DiscussionContent";
-import EditorFrame from "@/components/discussion/EditorFrame";
+import EditorFrame from "./EditorFrame";
 
 export default {
 	name: "ReplyFrame",

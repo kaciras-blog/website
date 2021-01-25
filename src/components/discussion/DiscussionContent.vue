@@ -6,7 +6,7 @@
 				:src="value.user.avatar"
 				alt="头像"
 				class="head"
-				:class="$style.head"
+				:class="$style.avatar"
 			>
 
 			<!-- 评论者的名字和时间 -->
@@ -18,16 +18,6 @@
 				<time class="minor-text">{{ value.time | localDateMinute }}</time>
 			</div>
 
-			<!-- 右上角的楼层号 -->
-			<span class="minor-text"># {{ value.floor }}</span>
-		</header>
-
-		<markdown-view
-			:class="$style.content"
-			:value="value.content"
-		/>
-
-		<div :class="$style.metas">
 			<span
 				v-if="removable"
 				:class="$style.clickable"
@@ -44,9 +34,15 @@
 				<i class="fas fa-plus"/>
 				添加回复
 			</span>
-		</div>
 
-		<slot name="footer"></slot>
+			<!-- 右上角的楼层号，楼中楼不显示 -->
+			<span v-if="!value.parent" class="minor-text"># {{ value.floor }}</span>
+		</header>
+
+		<markdown-view
+			:class="$style.content"
+			:value="value.content"
+		/>
 	</component>
 </template>
 
@@ -93,7 +89,7 @@ export default {
 	font-size: 14px;
 }
 
-.head {
+.avatar {
 	display: block;
 	float: left;
 	position: relative;
@@ -102,8 +98,8 @@ export default {
 	height: 48px;
 
 	@media screen and (max-width: @length-screen-mobile) {
-		width: 40px;
-		height: 40px;
+		width: 32px;
+		height: 32px;
 	}
 }
 

@@ -132,14 +132,14 @@ export default class DiscussionResource extends AbstractResource {
 	 *
 	 * 因为 parent -> id 已经可以确定查询范围，故单独用一个方法省略 objectId & type。
 	 *
-	 * @param parent 评论id
+	 * @param nestId 评论id
 	 * @param start 起始位置
 	 * @param count 每页数量
 	 * @return 回复列表
 	 */
-	getReplies(parent: number, start: number, count: number): Promise<ListQueryView<Discussion>> {
-		const params = { parent, start, count };
-		return this.servers.content.get("/discussions", { params }).then(r => r.data);
+	getReplies(nestId: number, start: number, count: number): Promise<ListQueryView<Discussion>> {
+		const params = { nestId, start, count };
+		return this.servers.content.get("/discussions", { params }).then(r => assembly(r.data));
 	}
 
 	getModeration() {

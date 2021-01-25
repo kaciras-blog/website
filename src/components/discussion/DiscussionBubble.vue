@@ -4,7 +4,6 @@
 			<img :src="value.user.avatar" alt="头像" :class="$style.avatar">
 
 			<div :class="$style.bubble">
-
 				<div :class="$style.header">
 					<strong :class="$style.name">
 						{{ value.nickname || value.user.name }}
@@ -22,9 +21,8 @@
 					</kx-tool-button>
 				</div>
 
-				<blockquote v-if="value.parent">
-					{{ parentPreview }}
-				</blockquote>
+				<markdown-view v-if="value.parent" :value="parentPreview">
+				</markdown-view>
 
 				<markdown-view :class="$style.content" :value="value.content"/>
 			</div>
@@ -32,6 +30,7 @@
 
 		<embedded-editor
 			v-if="replying"
+			ref="input"
 			:class="$style.replyInput"
 			:parent="value.id"
 			:after-submit="replied"
@@ -40,6 +39,7 @@
 </template>
 
 <script>
+import { scrollToElement } from "@kaciras-blog/uikit";
 import MarkdownView from "@/markdown/MarkdownView";
 import EmbeddedEditor from "./EmbeddedEditor";
 
@@ -57,12 +57,23 @@ export default {
 	},
 	computed: {
 		parentPreview() {
-			return this.value.parent.content.substring(0, 200);
+			const { content, user, floor, nickname } = this.value.parent;
+
+			const displayName = (user.id === 0 && nickname) ? nickname : user.name;
+			const ref = `> @${displayName}（${floor}楼）\n`;
+
+			const quoted = content.split("\n").map(line => "> " + line).join("\n");
+			return ref + quoted;
 		}
 	},
 	methods: {
-		reply() {
+		async reply() {
 			this.replying = true;
+			await this.$nextTick();
+
+			const { input } = this.$refs;
+			input.focus();
+			scrollToElement(input.$el);
 		},
 		replied() {
 			this.replying = false;

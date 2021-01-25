@@ -69,7 +69,7 @@
 <script>
 import { mapState } from "vuex";
 import MarkdownView from "@/markdown/MarkdownView";
-import MarkdownGuideDialog from "./GuideDialog";
+import GuideDialog from "./GuideDialog";
 import EditContext from "./EditContext";
 
 export default {
@@ -89,7 +89,7 @@ export default {
 			this.$refs.textarea.focus();
 		},
 		showGuide() {
-			this.$dialog.show(MarkdownGuideDialog);
+			this.$dialog.show(GuideDialog);
 		},
 	},
 };
@@ -98,22 +98,18 @@ export default {
 <style module lang="less">
 @import "../../css/imports";
 
-.textarea {
+.textarea, .preview {
 	width: 100%;
-	min-height: 12em;
+	min-height: 10em;
 	margin: 1rem 0;
-	padding: .5em;
-
-	border: solid 1px #dcdee0;
-
+	padding: 10px;
+	border: solid 1px;
 	overflow-y: auto;
-	resize: vertical;
 }
 
-.preview {
-	width: 100%;
-	margin: 1rem 0;
-	overflow-y: auto;
+.textarea {
+	border: solid 1px #dcdee0;
+	resize: vertical;
 }
 
 .header {

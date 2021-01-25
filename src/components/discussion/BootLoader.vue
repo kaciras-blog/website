@@ -28,12 +28,10 @@ export default {
 			required: true,
 		},
 	},
-	data() {
-		return {
-			loading: true,
-			loadFail: false,
-		}
-	},
+	data: () => ({
+		loading: true,
+		loadFail: false,
+	}),
 	methods: {
 		handleIntersect([entry]) {
 			if (!entry.isIntersecting) {

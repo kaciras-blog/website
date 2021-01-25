@@ -71,7 +71,7 @@
 <script>
 import { mapState } from "vuex";
 import MarkdownView from "@/markdown/MarkdownView";
-import MarkdownGuideDialog from "./GuideDialog";
+import GuideDialog from "./GuideDialog";
 import EditContext from "./EditContext";
 
 export default {
@@ -96,7 +96,7 @@ export default {
 			this.$dialog.close();
 		},
 		showGuide() {
-			this.$dialog.show(MarkdownGuideDialog);
+			this.$dialog.show(GuideDialog);
 		},
 	},
 };
