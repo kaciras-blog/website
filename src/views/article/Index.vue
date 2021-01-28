@@ -44,7 +44,7 @@
 		>
 			<kx-button
 				:class="$style.toolButton"
-				title="转到评论区"
+				title="转到评论"
 				@click="gotoDiscuss"
 			>
 				<i class="far fa-comments"></i>
@@ -201,10 +201,9 @@ export default {
 	composes: vertical-btn-group from global;
 
 	position: fixed;
-	top: 65vh;
+	top: 61vh;
 	right: 1rem;
 
-	border-radius: .2rem;
 	background-color: white;
 
 	@media screen {

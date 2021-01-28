@@ -15,10 +15,10 @@
 				theme="text"
 				:loader="loadNext"
 				:page-size="10"
-				:class="$style.replyList"
+				:class="$style.nest"
 			>
 				<template v-slot="{ items }">
-					<ol class="clean-list">
+					<ol class="clean-list" :class="$style.list">
 						<discussion-content
 							v-for="item of items"
 							:key="item.id"
@@ -29,7 +29,7 @@
 					</ol>
 				</template>
 			</button-paging-view>
-			<div v-else-if="$mediaQuery.match('tablet+')" :class="$style.replyList">
+			<div v-else-if="$mediaQuery.match('tablet+')" :class="$style.nest">
 				<ol class="clean-list" :class="$style.list">
 					<discussion-content
 						v-for="item of replies"
@@ -40,10 +40,10 @@
 					/>
 				</ol>
 				<a class="hd-link" @click="showAllReplies">
-					共{{ value.replies.length }}条回复 &gt;
+					共 {{ value.nestSize }} 条回复 &gt;
 				</a>
 			</div>
-			<div v-else :class="$style.replyList">
+			<div v-else :class="$style.nest">
 				<ol class="clean-list" :class="$style.list">
 					<li
 						v-for="item of replies"
@@ -57,7 +57,7 @@
 					</li>
 				</ol>
 				<a class="hd-link" @click="showNestFrame">
-					共{{ value.replies.length }}条回复 &gt;
+					共 {{ value.nestSize }} 条回复 &gt;
 				</a>
 			</div>
 		</template>
@@ -154,7 +154,7 @@ export default {
 	margin-top: 20px;
 }
 
-.replyList {
+.nest {
 	margin-top: 20px;
 	padding: 20px;
 	border-radius: 8px;
@@ -162,11 +162,11 @@ export default {
 }
 
 .list:not(:first-child) {
-	margin-top: .5rem
+	margin-top: 20px;
 }
 
 .reply {
-	margin: 1rem 0;
+	margin-bottom: 2rem;
 }
 
 .name {
