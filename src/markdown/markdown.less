@@ -48,13 +48,19 @@
 	// 14÷16 小一号的字体
 	code {
 		border-radius: 5px;
-		font-size: .875em;
 		tab-size: 4;
-		-moz-tab-size: 4;
+		font-size: .875em;
+
+		// 照顾手机看代码，进一步减小字号
+		@media screen and (max-width: @length-screen-mobile) {
+			tab-size: 3;
+			font-size: .75em;
+		}
 	}
 
 	blockquote {
 		margin-left: 0;
+		margin-right: 0;
 		padding: 1em;
 
 		background-color: @quote-background;

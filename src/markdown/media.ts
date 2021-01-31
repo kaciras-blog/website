@@ -71,7 +71,7 @@ const directiveMap: RendererMap = {
 		return `
 			<p class="center-wrapper">
 				<span ${getContainerClassAndStyle(src)}>
-					<video class="md-img gif" src="${src}" loop muted></video>
+					<video class="gif" src="${src}" loop muted></video>
 				</span>
 				${alt ? `<span class="md-img-alt">${alt}</span>` : ""}
     		</p>
@@ -83,8 +83,10 @@ const directiveMap: RendererMap = {
 			poster = "";
 		}
 		return `
-			<p class="md-video-container md-media-container sized">
-				<video poster="${poster}" src="${src}" controls></video>
+			<p class="center-wrapper md-video">
+				<span class="md-media-container sized">
+					<video poster="${poster}" src="${src}" controls></video>
+				</span>
 			</p>
 		`;
 	},

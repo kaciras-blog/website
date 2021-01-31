@@ -32,7 +32,8 @@
 }
 
 // 这个必须放在下面以覆盖 width & height
-.sized > .md-img {
+.sized > .md-img,
+.sized > video {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -49,18 +50,7 @@
 	&::after { content: " 」"; }
 }
 
-.md-video-container {
+.md-video {
 	--width: 640px;
 	--aspect-ratio: 56.25%;
-
-	margin-left: auto;
-	margin-right: auto;
-
-	& > video {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-	}
 }

@@ -145,20 +145,36 @@ export default {
 }
 
 .article {
-	margin: 0 auto;
-	padding: 30px 1em 0;
+	@mobile-margin: 1rem;
 
-	@media screen {
-		@media (min-width: @length-screen-mobile) {
-			width: 90vw;
-			padding-top: 50px;
-		}
-		@media (min-width: @length-screen-pad) {
-			width: 78vw;
-		}
-		@media (min-width: @length-screen-wide) {
-			width: 66vw;
-			max-width: 1000px;
+	width: 66vw;
+	max-width: 1000px;
+	margin: 0 auto;
+	padding-top: 50px;
+
+	@media screen and (max-width: @length-screen-wide) {
+		width: 78vw;
+	}
+
+	@media screen and (max-width: @length-screen-pad) {
+		width: 90vw;
+	}
+
+	@media screen and (max-width: @length-screen-mobile) {
+		width: initial;
+		padding: 30px @mobile-margin 0;
+
+		/*
+		 * 取消一些元素的左右边距，使其在手机屏下有更大的显示范围。
+		 * 这些元素包括自带边距的比如代码块、无需边距的图片视频。
+		 *
+		 * 因为图片处于 <p> 内部无法与文字区分，所以只能用白名单模式，
+		 * 给这些元素加上负边距扩大，而不能用黑名单去给要边距的缩小。
+		 */
+		:global(.center-wrapper), pre > code {
+			border-radius: 0;
+			margin-left: -@mobile-margin;
+			margin-right: -@mobile-margin;
 		}
 	}
 }
