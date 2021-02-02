@@ -15,24 +15,33 @@ export interface Topic {
 	name: string;
 }
 
+export enum DiscussionState {
+
+	/** 正常显示 */
+	Visible = "Visible",
+
+	/** 已删除 */
+	Deleted = "Deleted",
+
+	/** 等待审核 */
+	Moderation = "Moderation",
+}
+
 export interface Discussion extends TopicKey {
 	id: number;
 
 	parent?: Discussion;
-
 	floor: number;
-	treeFloor: number;
 
 	nestId: number;
+	nestFloor: number;
 	nestSize: number;
 
 	user: User;
-
 	nickname: string;
 	content: string;
 	time: number;
-
-	deleted: boolean;
+	state: DiscussionState;
 
 	topic?: Topic;
 	replies?: Discussion[];
@@ -55,18 +64,6 @@ export interface DiscussionInput extends TopicKey {
 
 	/** 可以随意填写的昵称 */
 	nickname?: string;
-}
-
-export enum DiscussionState {
-
-	/** 正常显示 */
-	Visible = "Visible",
-
-	/** 已删除 */
-	Deleted = "Deleted",
-
-	/** 等待审核 */
-	Moderation = "Moderation",
 }
 
 /**
@@ -122,8 +119,7 @@ export default class DiscussionResource extends AbstractResource {
 		return this.servers.content.post<Discussion>("/discussions", data).then(r => r.data);
 	}
 
-	getList(query: DiscussionQuery): Promise<ListQueryView<Discussion>> {
-		const params = { ...query, parent: 0 };
+	getList(params: DiscussionQuery) {
 		return this.servers.content.get("/discussions", { params }).then(r => assembly(r.data));
 	}
 
@@ -137,7 +133,7 @@ export default class DiscussionResource extends AbstractResource {
 	 * @param count 每页数量
 	 * @return 回复列表
 	 */
-	getReplies(nestId: number, start: number, count: number): Promise<ListQueryView<Discussion>> {
+	getReplies(nestId: number, start: number, count: number) {
 		const params = { nestId, start, count };
 		return this.servers.content.get("/discussions", { params }).then(r => assembly(r.data));
 	}

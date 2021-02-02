@@ -26,7 +26,7 @@ export default {
 		const imgElement = h("img", { staticClass: ctx.$style.logo, attrs });
 
 		// <a :href="href"><img ...></a>
-		const href = `https://localhost:2375/connect/${endpoint}?ret=${returnUri}`;
+		const href = `${process.env.API_ORIGIN}/oauth2/connect/${endpoint}?ret=${returnUri}`;
 		return h("a", { attrs: { href } }, [imgElement]);
 	},
 };
