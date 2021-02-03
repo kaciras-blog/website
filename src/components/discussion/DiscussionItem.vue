@@ -62,7 +62,7 @@
 			</div>
 		</template>
 
-		<discussion-editor v-if="replying" ref="editor" :class="$style.input"/>
+		<input-section v-if="replying" ref="editor" :class="$style.input"/>
 	</li>
 </template>
 
@@ -73,7 +73,7 @@ import api from "@/api";
 import DiscussionContent from "./DiscussionContent";
 import ReplyFrame from "./ReplyFrame";
 import EditorFrame from "./EditorFrame";
-import DiscussionEditor from "./DiscussionEditor";
+import InputSection from "./InputSection";
 
 export default {
 	name: "DiscussionItem",
@@ -85,7 +85,7 @@ export default {
 	},
 	components: {
 		DiscussionContent,
-		DiscussionEditor,
+		InputSection,
 	},
 	data() {
 		return {

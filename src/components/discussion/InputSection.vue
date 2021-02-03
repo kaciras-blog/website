@@ -10,9 +10,18 @@
 
 	<div v-else :class="$style.form">
 		<embedded-editor v-if="$mediaQuery.match('tablet+')" v-bind="context"/>
-		<button v-else :class="$style.openFrameButton" @click="showEditorFrame">
-			添加评论
-		</button>
+
+		<!-- 是在想不到更好看的做法了，还是用输入框的样式吧 -->
+		<div v-else :class="$style.mobileSection">
+			<img :src="user.avatar" alt="头像" class="lite head">
+			<button
+				:class="$style.fakeInput"
+				@click="showEditorFrame"
+			>
+				说点什么吧...
+			</button>
+		</div>
+
 		<div v-if="options.moderation" :class="$style.warn">为防止滥用，评论将在审核后显示</div>
 	</div>
 </template>
@@ -24,7 +33,7 @@ import EditorFrame from "./EditorFrame";
 import EmbeddedEditor from "./EmbeddedEditor";
 
 export default {
-	name: "DiscussEditor",
+	name: "InputSection",
 	components: {
 		EmbeddedEditor,
 		MarkdownView,
@@ -59,9 +68,27 @@ export default {
 	margin-bottom: 1.5rem;
 }
 
-.openFrameButton {
-	background: none;
-	border: dashed 2px #ccc;
+.mobileSection {
+	display: flex;
+	border-radius: 4px;
+	padding: 12px;
+	background: #f7f7f7;
+}
+
+.fakeInput {
+	composes: input from global;
+
+	flex: 1;
+	margin-left: 10px;
+
+	text-align: left;
+	color: @color-text-minor;
+	background: white;
+
+	&:focus-within {
+		border-color: @color-border;
+		box-shadow: none;
+	}
 }
 
 .warn {

@@ -47,7 +47,7 @@
 			/>
 		</header>
 
-		<discussion-editor/>
+		<input-section/>
 
 		<component
 			:is="$mediaQuery.match('mobile') ? 'ScrollPagingView' : 'ButtonPagingView'"
@@ -86,7 +86,7 @@ import api from "@/api";
 import { LOAD_DISCUSSION_OPTIONS } from "@/store/types";
 import BootLoader from "./BootLoader";
 import DiscussionItem from "./DiscussionItem.vue";
-import DiscussionEditor from "./DiscussionEditor.vue";
+import InputSection from "./InputSection.vue";
 import DiscussionBubble from "./DiscussionBubble";
 
 const NEST_SIZE = 3;
@@ -122,7 +122,7 @@ export default {
 		BootLoader,
 		DiscussionBubble,
 		DiscussionItem,
-		DiscussionEditor,
+		InputSection,
 	},
 	props: {
 		objectId: {
