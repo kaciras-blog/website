@@ -1,50 +1,52 @@
 <template>
 	<boot-loader :load-fn="initialize">
-		<header class="segment" :class="$style.header">
+		<header :class="$style.header">
 			<h2 :class="$style.title">
 				评论区({{ data.total }})
 			</h2>
 
-			<vue-multiselect
-				v-model="mode"
-				title="评论结构"
-				:class="$style.modeSelect"
-				:options="MODE"
-				label="label"
-				track-by="label"
-				:allow-empty="false"
-				:searchable="false"
-				:show-labels="false"
-			/>
+			<div :class="$style.options">
+				<button
+					v-if="order === 'ASC'"
+					:class="$style.orderButton"
+					title="升序"
+					@click="order = 'DESC'"
+				>
+					<i class="fas fa-sort-amount-down-alt"></i>
+				</button>
+				<button
+					v-if="order === 'DESC'"
+					:class="$style.orderButton"
+					title="降序"
+					@click="order = 'ASC'"
+				>
+					<i class="fas fa-sort-amount-down"></i>
+				</button>
 
-			<button
-				v-if="order === 'ASC'"
-				:class="$style.orderButton"
-				title="升序"
-				@click="order = 'DESC'"
-			>
-				<i class="fas fa-sort-amount-down-alt"></i>
-			</button>
-			<button
-				v-if="order === 'DESC'"
-				:class="$style.orderButton"
-				title="降序"
-				@click="order = 'ASC'"
-			>
-				<i class="fas fa-sort-amount-down"></i>
-			</button>
+				<vue-multiselect
+					v-model="sort"
+					title="排序方式"
+					:class="$style.sortSelect"
+					:options="ALL_SORTS"
+					label="label"
+					track-by="label"
+					:allow-empty="false"
+					:searchable="false"
+					:show-labels="false"
+				/>
 
-			<vue-multiselect
-				v-model="sort"
-				title="排序方式"
-				:class="$style.sortSelect"
-				:options="ALL_SORTS"
-				label="label"
-				track-by="label"
-				:allow-empty="false"
-				:searchable="false"
-				:show-labels="false"
-			/>
+				<vue-multiselect
+					v-model="mode"
+					title="评论结构"
+					:class="$style.modeSelect"
+					:options="MODE"
+					label="label"
+					track-by="label"
+					:allow-empty="false"
+					:searchable="false"
+					:show-labels="false"
+				/>
+			</div>
 		</header>
 
 		<input-section/>
@@ -190,6 +192,7 @@ export default {
 			if (mode.value === 0) {
 				query.includeParent = true;
 			} else {
+				query.nestId = 0;
 				query.childCount = NEST_SIZE;
 			}
 
@@ -221,23 +224,31 @@ export default {
 @import "../../css/imports";
 
 .header {
-	display: flex;
-	align-items: center;
 	font-size: initial;
+	display: flex;
+	margin-bottom: 1.5rem;
+
+	@media screen and (max-width: @length-screen-mobile) {
+		flex-direction: column;
+	}
+	@media screen and (min-width: @length-screen-mobile) {
+		padding-bottom: 1.5rem;
+		border-bottom: solid 1px @color-border;
+	}
 }
 
 .title {
-	display: inline-block;
-	margin: 0 auto 0 0;
+	@media screen and (max-width: @length-screen-mobile) {
+		margin-bottom: 1.5rem;
+		padding-bottom: 1.5rem;
+		border-bottom: solid 1px @color-border;
+	}
 }
 
-.modeSelect {
-	width: 9em;
-}
-
-.sortSelect {
-	width: 7em;
-	margin-left: 10px;
+.options {
+	display: flex;
+	align-items: center;
+	margin-left: auto;
 }
 
 .orderButton {
@@ -251,6 +262,15 @@ export default {
 	&:hover, &:focus {
 		background: #eee;
 	}
+}
+
+.modeSelect {
+	width: 9em;
+}
+
+.sortSelect {
+	width: 7em;
+	margin: 0 10px;
 }
 
 .list {
