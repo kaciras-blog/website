@@ -37,14 +37,12 @@ export default {
 	methods: {
 
 		/**
-		 *
-		 * @param e
+		 * 自动保存功能，当年高中试卷作文一行 20 个字，这里也搞个 20 字自动保存
 		 */
 		handleInput(this: Instance, e: InputEvent) {
 			const { value } = e.target as HTMLInputElement;
 			this.content = value;
 
-			// 当年高中试卷作文一行20个字，这里也搞个20字自动保存
 			if (value.length === 0) {
 				localStorage.removeItem(this.key);
 			} else if (value.length - this.snapshot.length > 20) {
@@ -64,7 +62,7 @@ export default {
 			if (/^\s*$/.test(content)) {
 				return; // 没写评论就按发表按钮
 			}
-			if (nickname && nickname.length > 16) {
+			if (nickname && nickname.length > 10) {
 				return this.$dialog.alertError("评论失败", "名字最多16个字");
 			}
 
