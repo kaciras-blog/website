@@ -1,4 +1,6 @@
 <script>
+import { BASE_URL } from "@/api";
+
 export default {
 	name: "OauthIcon",
 	functional: true,
@@ -26,7 +28,7 @@ export default {
 		const imgElement = h("img", { staticClass: ctx.$style.logo, attrs });
 
 		// <a :href="href"><img ...></a>
-		const href = `${process.env.API_ORIGIN}/oauth2/connect/${endpoint}?ret=${returnUri}`;
+		const href = `${BASE_URL}/oauth2/connect/${endpoint}?ret=${returnUri}`;
 		return h("a", { attrs: { href } }, [imgElement]);
 	},
 };

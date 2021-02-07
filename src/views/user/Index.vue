@@ -8,7 +8,7 @@
 					<img
 						:class="$style.head"
 						alt="头像"
-						title="点击换头像"
+						title="换头像"
 						:src="user.avatar"
 						@click="changeAvatar"
 					>
@@ -16,7 +16,7 @@
 
 				<div :class="$style.field">
 					ID:
-					<auth-type-tag :auth-type="user.authType"/>
+					<auth-type-tag :auth-type="user.auth"/>
 					{{user.id}}
 				</div>
 
@@ -104,18 +104,25 @@ export default {
 	margin-bottom: 1rem;
 }
 
-.label, .input {
+.label,
+.input {
 	display: block;
 	width: 100%;
 }
 
 .label {
 	color: @color-text-minor;
-	margin-bottom: .5em;
+	margin-bottom: 5px;
 }
 
 .head {
 	.circle(8rem);
+	border: dashed 4px transparent;
 	cursor: pointer;
+	transition: border-color .2s;
+
+	&:hover, &:active {
+		border-color: #39afff;
+	}
 }
 </style>
