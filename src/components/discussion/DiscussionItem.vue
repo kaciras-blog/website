@@ -5,9 +5,18 @@
 			tag="div"
 			@removed="$emit('removed')"
 			@reply="showReplyEditor"
-		/>
+		>
+			<blockquote v-if="value.parent" :class="$style.blockquote">
+				<i :class="$style.quoteStart"/>
+				<div :class="$style.quoteText">
+					<p>回复：@{{ value.parent.user.name }}</p>
+					<markdown-view :value="value.parent.content"/>
+				</div>
+				<!--<i :class="$style.quoteEnd"/>-->
+			</blockquote>
+		</discussion-content>
 
-		<template v-if="expend || replies.length > 0">
+		<template v-if="expend || (replies && replies.length > 0)">
 			<button-paging-view
 				v-if="expend"
 				ref="replies"
@@ -29,6 +38,7 @@
 					</ol>
 				</template>
 			</button-paging-view>
+
 			<div v-else-if="$mediaQuery.match('tablet+')" :class="$style.nest">
 				<ol class="clean-list" :class="$style.list">
 					<discussion-content
@@ -74,6 +84,7 @@ import DiscussionContent from "./DiscussionContent";
 import ReplyFrame from "./ReplyFrame";
 import EditorFrame from "./EditorFrame";
 import InputSection from "./InputSection";
+import MarkdownView from "@/markdown/MarkdownView";
 
 export default {
 	name: "DiscussionItem",
@@ -84,6 +95,7 @@ export default {
 		},
 	},
 	components: {
+		MarkdownView,
 		DiscussionContent,
 		InputSection,
 	},
@@ -156,9 +168,48 @@ export default {
 
 .nest {
 	margin-top: 20px;
-	padding: 20px;
+	padding: 15px;
 	border-radius: 8px;
 	background: #f7f7f7;
+
+	@media screen and(min-width: @length-screen-mobile) {
+		padding: 20px;
+	}
+}
+
+.blockquote {
+	composes: nest;
+
+	margin-left: 0;
+	margin-right: 0;
+	display: flex;
+}
+
+.quoteMark {
+	font-size: 1.5rem;
+	color: #777;
+
+	@media screen and(min-width: @length-screen-mobile) {
+		font-size: 2rem;
+	}
+}
+
+.quoteStart {
+	composes: fas fa-quote-left from global;
+	composes: quoteMark;
+	vertical-align: top;
+}
+
+.quoteEnd {
+	composes: fas fa-quote-right from global;
+	composes: quoteMark;
+	vertical-align: bottom;
+}
+
+.quoteText {
+	flex: 1;
+	margin: 0 1em;
+	overflow: hidden;
 }
 
 .list:not(:first-child) {

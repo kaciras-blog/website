@@ -5,6 +5,7 @@
 				评论区({{ data.total }})
 			</h2>
 
+			<!-- TODO: 菜单是第三方库懒得改，手机下有点大，不好看 -->
 			<div :class="$style.options">
 				<button
 					v-if="order === 'ASC'"
@@ -59,18 +60,10 @@
 			:show-top-buttons="true"
 		>
 			<template v-slot="{ items }">
-				<ol v-if="mode.value === 0" :class="$style.list">
-					<discussion-bubble
-						v-for="item of items"
-						:key="item.id"
-						:value="item"
-						@removed="refresh"
-					/>
-				</ol>
-				<ol v-else :class="$style.list">
+				<ol :class="$style.list">
 					<discussion-item
 						v-for="item of items"
-						:key="item.id"
+						:key="Math.random()"
 						:value="item"
 						class="segment"
 						@removed="refresh"
@@ -238,6 +231,8 @@ export default {
 }
 
 .title {
+	margin: 0;
+
 	@media screen and (max-width: @length-screen-mobile) {
 		margin-bottom: 1.5rem;
 		padding-bottom: 1.5rem;

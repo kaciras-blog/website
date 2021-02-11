@@ -9,40 +9,37 @@
 				:class="$style.avatar"
 			>
 
-			<!-- 评论者的名字和时间 -->
 			<div :class="$style.nameGroup">
 				<div>
 					<span :class="$style.stick" v-if="value.user.id === 2">博主</span>
 					<span :class="$style.name">{{ value.nickname || value.user.name }}</span>
 				</div>
-				<time class="minor-text">{{ value.time | localDateMinute }}</time>
+				<div>
+					<time :class="$style.time">{{ value.time | localDateMinute }}</time>
+				</div>
 			</div>
 
-			<span
+			<kx-tool-button
 				v-if="removable"
+				title="删除"
 				:class="$style.clickable"
 				@click="remove"
 			>
 				<i class="far fa-trash-alt"/>
-				删除
-			</span>
-			<span
-				v-if="!value.parent"
-				:class="[$style.clickable, $style.meta]"
+			</kx-tool-button>
+			<kx-tool-button
+				title="回复"
+				:class="$style.clickable"
 				@click="$emit('reply', value)"
 			>
-				<i class="fas fa-plus"/>
-				添加回复
-			</span>
-
-			<!-- 右上角的楼层号，楼中楼不显示 -->
-			<span v-if="!value.parent" class="minor-text"># {{ value.floor }}</span>
+				<i class="fas fa-reply"/>
+			</kx-tool-button>
 		</header>
 
-		<markdown-view
-			:class="$style.content"
-			:value="value.content"
-		/>
+		<!-- 引用的内容 -->
+		<slot/>
+
+		<markdown-view :class="$style.content" :value="value.content"/>
 	</component>
 </template>
 
@@ -86,6 +83,7 @@ export default {
 
 .header {
 	display: flex;
+	margin-bottom: 1rem;
 	font-size: 14px;
 }
 
@@ -98,8 +96,8 @@ export default {
 	height: 48px;
 
 	@media screen and (max-width: @length-screen-mobile) {
-		width: 32px;
-		height: 32px;
+		width: 35px;
+		height: 35px;
 	}
 }
 
@@ -125,6 +123,14 @@ export default {
 	font-weight: 600;
 }
 
+.time {
+	composes: minor-text from global;
+
+	@media screen and (max-width: @length-screen-mobile) {
+		font-size: .875em;
+	}
+}
+
 .metas {
 	composes: minor-text from global;
 
@@ -133,20 +139,9 @@ export default {
 	align-items: baseline;
 }
 
-.meta {
-	margin-left: 16px;
-}
-
 .clickable {
-	cursor: pointer;
-}
-
-.clickable:hover, .active {
-	color: @color-second;
-}
-
-.content {
-	margin-top: 1rem;
-	margin-bottom: 1rem;
+	--color: @color-text-minor;
+	height: 32px;
+	border-radius: 4px;
 }
 </style>

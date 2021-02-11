@@ -71,7 +71,7 @@ export default {
 .mobileSection {
 	display: flex;
 	border-radius: 4px;
-	padding: 12px;
+	padding: 14px;
 	background: #f7f7f7;
 }
 

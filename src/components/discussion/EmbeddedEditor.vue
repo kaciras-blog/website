@@ -32,7 +32,7 @@
 			class="input"
 			:value="content"
 			name="content"
-			placeholder='说点什么吧'
+			placeholder='说点什么吧...'
 			aria-label="输入评论"
 			v-ime-input="handleInput"
 		/>
@@ -103,7 +103,6 @@ export default {
 	min-height: 10em;
 	margin: 1rem 0;
 	padding: 10px;
-	border: solid 1px;
 	overflow-y: auto;
 }
 
