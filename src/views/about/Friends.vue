@@ -32,9 +32,14 @@
 			<p>友链最好能互加，本站会自动清理超过一个月无法访问的链接。</p>
 		</section>
 
+		<!--
+			因为 Vue 的 provide 不是响应式的，一旦复则编辑器的 inject 无法更新。
+			这里设置 key=<object-id> 强制页面切换时重新创建组件。
+		-->
 		<discussion-section
 			:type="2"
 			:object-id="2"
+			:key="2"
 			class="about-section"
 			:class="$style.discussion"
 		/>

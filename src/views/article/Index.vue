@@ -33,6 +33,7 @@
 
 		<discussion-section
 			ref="discussion"
+			:key="article.id"
 			:object-id="article.id"
 			:type="1"
 			:class="$style.discussion"

@@ -40,6 +40,7 @@
 		<discussion-section
 			:type="2"
 			:object-id="1"
+			:key="1"
 			class="about-section"
 			:class="$style.discussion"
 		/>
