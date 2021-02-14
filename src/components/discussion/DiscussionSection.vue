@@ -7,23 +7,6 @@
 
 			<!-- TODO: 菜单是第三方库懒得改，手机下有点大，不好看 -->
 			<div :class="$style.options">
-				<button
-					v-if="order === 'ASC'"
-					:class="$style.orderButton"
-					title="升序"
-					@click="order = 'DESC'"
-				>
-					<i class="fas fa-sort-amount-down-alt"></i>
-				</button>
-				<button
-					v-if="order === 'DESC'"
-					:class="$style.orderButton"
-					title="降序"
-					@click="order = 'ASC'"
-				>
-					<i class="fas fa-sort-amount-down"></i>
-				</button>
-
 				<vue-multiselect
 					v-model="sort"
 					title="排序方式"
@@ -91,24 +74,27 @@ const MODE = [
 	{ label: "楼中楼模式", value: 1 },
 ];
 
+/**
+ * 字段 + 方向的组合有一些是多余的，比如 nest_size + ASC；而且两个按钮让操作更复杂了。
+ * 所以我决定还是使用预定义的排序选项。
+ */
 const ALL_SORTS = [
-	{ label: "时间", value: "id" },
-	{ label: "回复数", value: "nest_size" },
-	{ label: "长度", value: "source" },
+	{ label: "时间", value: "id,ASC" },
+	{ label: "最新", value: "id,DESC" },
+	{ label: "回复数", value: "nest_size,DESC" },
 ];
 
 // 啊好想要 Hooks 啊，Vue3 全家桶快点出啊
 
 function loadEnumFromStore(type, key, default_) {
-	let v = loadFromStore(key, default_).toString();
-	return type.find(i => i.value.toString() === v);
-}
-
-function loadFromStore(key, default_) {
 	if (typeof window === "undefined") {
 		return default_;
 	}
-	return localStorage.getItem(key) || default_;
+	const v = (localStorage.getItem(key) || default_).toString();
+	const result = type.find(i => i.value.toString() === v);
+
+	// 如果修改了枚举则保存的值可能无效，查找结果为 undefined，此时回退到默认。
+	return result || type.find(i => i.value.toString() === default_);
 }
 
 export default {
@@ -136,15 +122,14 @@ export default {
 		data: {},
 
 		mode: loadEnumFromStore(MODE, "DIS_MODE", 0),
-		sort: loadEnumFromStore(ALL_SORTS, "DIS_SORT", "id"),
-		order: loadFromStore("DIS_ORDER", "ASC"),
+		sort: loadEnumFromStore(ALL_SORTS, "DIS_SORT", "id,ASC"),
 	}),
 	provide() {
 		const context = {
 			objectId: this.objectId,
 			type: this.type,
 			parent: 0,
-			afterSubmit: this.showLatest,
+			afterSubmit: this.afterSubmit,
 		};
 		return { context };
 	},
@@ -157,10 +142,6 @@ export default {
 			this.reload();
 			localStorage.setItem("DIS_SORT", this.sort.value);
 		},
-		order() {
-			this.reload();
-			localStorage.setItem("DIS_ORDER", this.order);
-		},
 	},
 	methods: {
 		// reload - 重新加载，回到第一页；refresh - 刷新当前页
@@ -172,14 +153,14 @@ export default {
 		},
 
 		fetchData(start, count, cancelToken) {
-			const { type, objectId, sort, order, mode } = this;
+			const { type, objectId, sort, mode } = this;
 
 			const query = {
 				objectId: objectId,
 				type: type,
 				start,
 				count,
-				sort: `${sort.value},${order}`,
+				sort: sort.value,
 			};
 
 			if (mode.value === 0) {
@@ -244,19 +225,6 @@ export default {
 	display: flex;
 	align-items: center;
 	margin-left: auto;
-}
-
-.orderButton {
-	height: 40px;
-	line-height: 40px;
-	font-size: 25px;
-	background: none;
-	padding: 0 10px;
-	cursor: pointer;
-
-	&:hover, &:focus {
-		background: #eee;
-	}
 }
 
 .modeSelect {
