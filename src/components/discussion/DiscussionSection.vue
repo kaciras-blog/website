@@ -39,6 +39,7 @@
 			:is="$mediaQuery.match('mobile') ? 'ScrollPagingView' : 'ButtonPagingView'"
 			ref="discussions"
 			v-model="data"
+			:page-size="30"
 			:loader="fetchData"
 			:show-top-buttons="true"
 		>
@@ -67,6 +68,7 @@ import DiscussionItem from "./DiscussionItem.vue";
 import InputSection from "./InputSection.vue";
 import DiscussionBubble from "./DiscussionBubble";
 
+const PAGE_SIZE = 30;
 const NEST_SIZE = 3;
 
 const MODE = [
@@ -173,13 +175,19 @@ export default {
 			return api.withCancelToken(cancelToken).discuss.getList(query);
 		},
 
-		/** 评论发表后跳转到能显示新评论的位置 */
-		showLatest() {
-			if (this.sort === ALL_SORTS[1]) {
-				this.$refs.discussions.reload();
-				this.$refs.discussions.scrollToStart();
+		/**
+		 * 在支持多种排序下，很难确定一个评论的位置，所以没法转到刚提交的评论，
+		 * 为了用户体验，需要换种思路。
+		 *
+		 * 若是分页则刷新当前页；若是滚动加载则直接添加在当前页的最后（Bilibili 是这么做的）。
+		 */
+		afterSubmit(entity) {
+			const { discussions } = this.$refs;
+
+			if ("reload" in discussions) {
+				discussions.reload();
 			} else {
-				this.$refs.discussions.switchToLast();
+				this.data.items.push(entity);
 			}
 		},
 
@@ -187,7 +195,7 @@ export default {
 		initialize() {
 			return Promise.all([
 				this.$store.dispatch(LOAD_DISCUSSION_OPTIONS),
-				this.fetchData(0, 20).then(view => this.data = view),
+				this.fetchData(0, PAGE_SIZE).then(view => this.data = view),
 			]);
 		},
 	},

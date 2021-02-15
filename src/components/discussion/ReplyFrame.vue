@@ -63,11 +63,11 @@ export default {
 				objectId: this.value.objectId,
 				type: this.value.type,
 				parent: this.value.id,
-				afterSubmit: this.submitted,
+				afterSubmit: this.afterSubmit,
 			};
 			this.$dialog.show(EditorFrame, context);
 		},
-		submitted(entity) {
+		afterSubmit(entity) {
 			this.pageData.items.push(entity);
 		},
 	},

@@ -111,10 +111,11 @@ export default {
 			objectId: this.value.objectId,
 			type: this.value.type,
 			parent: this.value.id,
-			afterSubmit: this.submitReply,
+			afterSubmit: this.afterSubmit,
 		};
 		return { context };
 	},
+	inject: ["context"],
 	methods: {
 		// 宽屏直接在下面加输入框，手机则弹窗。
 		async showReplyEditor() {
@@ -129,12 +130,19 @@ export default {
 				this.$dialog.show(EditorFrame, this.$options.provide.call(this).context);
 			}
 		},
-		async submitReply(entity) {
+		async afterSubmit(entity) {
 			this.value.replyCount++;
-			this.expend = true;
+			this.replying = false;
 			await this.$nextTick();
 
-			if (this.value.replies.length) {
+			// 引用模式等同于提交顶层评论，直接转到上层处理。
+			const { replies } = this.value;
+			if (replies === undefined) {
+				return this.context.afterSubmit(entity);
+			}
+
+			this.expend = true;
+			if (replies.length > 0) {
 				this.$refs.replies.switchToLast();
 			} else {
 				this.replies = { total: 1, items: [entity] };
