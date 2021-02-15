@@ -1,21 +1,33 @@
 <!--
-router-link 不能再函数式组件里使用。
-TODO: 超出屏幕宽度的元素点击后滚动到可视区
+	router-link 不能在函数式组件里使用。
+	Vue-Router 4 的写法变复杂了啊。
 -->
 <template>
 	<ol :class="$style.tabList" class="clean-list" role="tablist">
 		<router-link
 			v-for="tab of tabs"
-			:key="tab.title"
-			tag="li"
-			:to="tab.route"
 			replace
-			role="tab"
-			:active-class="$style.active"
-			:class="$style.tabItem"
-			v-ripple
+			:key="tab.title"
+			:to="tab.route"
+			v-slot="{ isActive, navigate }"
 		>
-			<a :class="$style.text" :href="tab.route">{{tab.title}}</a>
+			<li
+				role="tab"
+				:class="{
+					[$style.tabItem]:true,
+					[$style.active]: isActive
+				}"
+				v-ripple
+			>
+				<a
+					:href="tab.route"
+					:class="$style.text"
+					@click="navigate"
+					@keypress.enter="navigate"
+				>
+					{{ tab.title }}
+				</a>
+			</li>
 		</router-link>
 	</ol>
 </template>
@@ -45,8 +57,7 @@ export default {
  * 纯 CSS 实现下划线两个方向平移。
  * 关键在于使用后面的元素选择符，改变激活元素之后所有元素的边框起始位置。
  *
- * 【从 ChokCoco 的博客里学到的】
- * 不可思议的纯CSS导航栏下划线跟随效果
+ * 【CSS导航栏下划线跟随效果】
  * https://www.cnblogs.com/coco1s/p/8657192.html
  */
 .tabItem {
