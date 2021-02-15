@@ -9,10 +9,10 @@
 			<blockquote v-if="value.parent" :class="$style.blockquote">
 				<i :class="$style.quoteStart"/>
 				<div :class="$style.quoteText">
-					<p>回复：@{{ value.parent.user.name }}</p>
+					<p>回复：@{{ displayName(value.parent) }}</p>
 					<markdown-view :value="value.parent.content"/>
 				</div>
-				<!--<i :class="$style.quoteEnd"/>-->
+				<i :class="$style.quoteEnd"/>
 			</blockquote>
 		</discussion-content>
 
@@ -122,10 +122,7 @@ export default {
 			if (this.$mediaQuery.match("tablet+")) {
 				this.replying = true;
 				await this.$nextTick();
-
-				const editor = this.$refs.editor;
-				scrollToElement(editor.$el);
-				editor.focus();
+				scrollToElement(this.$refs.editor.$el);
 			} else {
 				this.$dialog.show(EditorFrame, this.$options.provide.call(this).context);
 			}
@@ -163,6 +160,13 @@ export default {
 		loadNext(start, count) {
 			return api.discuss.getReplies(this.value.id, start, count);
 		},
+		displayName(discussion) {
+			const { nickname, user } = discussion;
+			if (user.id > 0) {
+				return user.name;
+			}
+			return nickname || user.name;
+		}
 	},
 };
 </script>
@@ -185,12 +189,10 @@ export default {
 	}
 }
 
+// Markdown 的段落已经有底间距了，所以去掉外层的。
 .blockquote {
-	composes: nest;
-
-	margin-left: 0;
-	margin-right: 0;
 	display: flex;
+	margin: 14px 0 0 0;
 }
 
 .quoteMark {
@@ -198,26 +200,32 @@ export default {
 	color: #777;
 
 	@media screen and(min-width: @length-screen-mobile) {
-		font-size: 2rem;
+		font-size: 1.75rem;
 	}
 }
 
 .quoteStart {
 	composes: fas fa-quote-left from global;
 	composes: quoteMark;
-	vertical-align: top;
 }
 
 .quoteEnd {
 	composes: fas fa-quote-right from global;
 	composes: quoteMark;
-	vertical-align: bottom;
+
+	align-self: flex-end;
+	margin-bottom: 1rem; // 底部与段落元素对齐
 }
 
 .quoteText {
 	flex: 1;
-	margin: 0 1em;
+	margin: 0 .8rem;
+
 	overflow: hidden;
+
+	@media screen and(min-width: @length-screen-mobile) {
+		font-size: initial;
+	}
 }
 
 .list:not(:first-child) {

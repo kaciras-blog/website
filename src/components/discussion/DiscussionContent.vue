@@ -113,8 +113,10 @@ export default {
 
 .stick {
 	margin-right: .5em;
-	border-radius: 3px;
 	padding: 3px 6px;
+
+	font-size: .875em;
+	border-radius: 3px;
 	color: white;
 	background-color: @color-primary;
 }
@@ -131,12 +133,8 @@ export default {
 	}
 }
 
-.metas {
-	composes: minor-text from global;
-
-	display: flex;
-	justify-content: flex-end;
-	align-items: baseline;
+.content {
+	font-size: initial;
 }
 
 .clickable {

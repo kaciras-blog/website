@@ -34,6 +34,7 @@
 			name="content"
 			placeholder='说点什么吧...'
 			aria-label="输入评论"
+			v-autofocus
 			v-ime-input="handleInput"
 		/>
 
@@ -85,9 +86,6 @@ export default {
 	}),
 	computed: mapState(["user"]),
 	methods: {
-		focus() {
-			this.$refs.textarea.focus();
-		},
 		showGuide() {
 			this.$dialog.show(GuideDialog);
 		},

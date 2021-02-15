@@ -25,9 +25,10 @@
 			</header>
 
 			<markdown-view
-				class="segment"
 				:value="article.content"
 				:is-article="true"
+				class="segment"
+				:class="$style.content"
 			/>
 		</article>
 
@@ -190,6 +191,10 @@ export default {
 
 .keyword {
 	margin-right: .3em;
+}
+
+.content {
+	font-size: initial;
 }
 
 .discussion {

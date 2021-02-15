@@ -41,6 +41,7 @@
 			name="content"
 			placeholder='支持 Markdown，右上角有预览和帮助'
 			aria-label="输入评论"
+			v-autofocus
 			v-ime-input="handleInput"
 		/>
 
@@ -57,13 +58,13 @@
 				:class="$style.nickname"
 			>
 
-			<kx-button
+			<kx-task-button
 				class="primary"
 				icon="far fa-paper-plane"
-				@click="handleSubmit"
+				:on-click="handleSubmit"
 			>
 				发送
-			</kx-button>
+			</kx-task-button>
 		</div>
 	</kx-frame>
 </template>
