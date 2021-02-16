@@ -8,27 +8,26 @@ import Vue, { ComponentOptions } from "vue";
 import { Route } from "vue-router";
 import { NavigationGuardNext, VueRouter } from "vue-router/types/router";
 import { Store } from "vuex";
-import { CancellationToken } from "@kaciras-blog/uikit";
 import api from "@/api";
 import { SET_PREFETCH_DATA } from "@/store/types";
 import { isOnlyHashChange } from "./utils";
 import { MaybePrefetchComponent, PrefetchContext } from "./prefetch";
 import * as loadingIndicator from "./loading-indicator";
 
-let cancelToken = CancellationToken.NEVER;
+let abortSignal = new AbortController().signal;
 
 // @ts-ignore api & isServer on prototype.
 class ClientPrefetchContext extends PrefetchContext {
 
 	readonly store: Store<any>;
-	readonly cancelToken: CancellationToken;
+	readonly abortSignal: AbortSignal;
 	readonly route: Route;
 
-	constructor(store: Store<any>, route: Route, cancelToken: CancellationToken) {
+	constructor(store: Store<any>, route: Route, abortSignal: AbortSignal) {
 		super();
 		this.store = store;
 		this.route = route;
-		this.cancelToken = cancelToken;
+		this.abortSignal = abortSignal;
 	}
 }
 
@@ -74,12 +73,12 @@ function doPrefetch(
 	next: NavigationGuardNext) {
 
 	loadingIndicator.startPrefetch();
-	const context = new ClientPrefetchContext(store, to, cancelToken);
+	const context = new ClientPrefetchContext(store, to, abortSignal);
 
 	const tasks = components.filter(c => c.asyncData).map(c => c.asyncData!(context));
 
 	return Promise.all(tasks).then(() => {
-		if (cancelToken.isCancelled) {
+		if (abortSignal.aborted) {
 			next(false);
 			console.debug(`导航被取消：${to.path}`);
 		} else {
@@ -88,7 +87,7 @@ function doPrefetch(
 		}
 		loadingIndicator.finishSuccessful();
 	}).catch((err) => {
-		if (cancelToken.isCancelled) {
+		if (abortSignal.aborted) {
 			next(false);
 			return console.debug(`导航被取消：${to.path}`);
 		}
@@ -121,7 +120,7 @@ export const ClientPrefetchMixin: ComponentOptions<Vue> = {
 		if (!(this.$options as any).asyncData) {
 			return next();
 		}
-		cancelToken = loadingIndicator.start();
+		abortSignal = loadingIndicator.start();
 		prefetch(this.$store, to, [this.$options], next);
 	},
 }
@@ -140,13 +139,13 @@ export function installRouterHooks(store: Store<any>, router: VueRouter) {
 		if (isOnlyHashChange(to, from)) {
 			return;
 		}
-		cancelToken = loadingIndicator.start();
+		abortSignal = loadingIndicator.start();
 		return next();
 	});
 
 	// 使用 router.beforeResolve()，以便确保所有异步组件都 resolve。
 	router.beforeResolve((to, from, next) => {
-		if (cancelToken.isCancelled) {
+		if (abortSignal.aborted) {
 			console.debug(`导航被取消：${to.path}`);
 			return next(false);
 		}

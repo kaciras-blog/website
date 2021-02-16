@@ -1,6 +1,5 @@
 import { Store } from "vuex";
 import { Route } from "vue-router/types/router";
-import { CancellationToken } from "@kaciras-blog/uikit";
 import { Api } from "./api";
 import Vue, { ComponentOptions } from "vue";
 
@@ -9,7 +8,7 @@ export abstract class PrefetchContext {
 
 	abstract store: Store<any>;
 	abstract route: Route;
-	abstract cancelToken: CancellationToken;
+	abstract abortSignal: AbortSignal;
 	abstract api: Api;
 	abstract isServer: boolean;
 

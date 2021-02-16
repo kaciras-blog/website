@@ -113,7 +113,7 @@ export default {
 		}
 
 		await session.api
-			.withCancelToken(session.cancelToken)
+			.withCancelToken(session.abortSignal)
 			.article.get(id)
 			.then(session.dataSetter("article"));
 

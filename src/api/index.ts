@@ -1,5 +1,4 @@
 import axios, { AxiosRequestConfig, CancelToken } from "axios";
-import { CancellationToken } from "@kaciras-blog/uikit";
 import { RequestConfigProcessor, ServerList, ServerListFilter } from "./core";
 
 // 为了让IDE能够分析类型只能一个个导入再导出，这么写好啰嗦啊
@@ -98,14 +97,14 @@ export class Api {
 	 * @param token 取消令牌
 	 * @return API集
 	 */
-	withCancelToken(token?: CancelToken | CancellationToken) {
+	withCancelToken(token?: CancelToken | AbortSignal) {
 		if (!token) {
 			return this;
 		}
-		if ("addListener" in token) {
-			const axiosTokenSource = axios.CancelToken.source();
-			token.addListener(axiosTokenSource.cancel);
-			token = axiosTokenSource.token;
+		if (token instanceof AbortSignal) {
+			const source = axios.CancelToken.source();
+			token.onabort = () => source.cancel();
+			token = source.token;
 		}
 		return this.withConfigProcessor(config => config.cancelToken = token as CancelToken);
 	}

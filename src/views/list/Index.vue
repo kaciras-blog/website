@@ -52,7 +52,7 @@ export default {
 		AsidePanel,
 	},
 	async asyncData(session) {
-		const configuredApi = session.api.withCancelToken(session.cancelToken);
+		const configuredApi = session.api.withCancelToken(session.abortSignal);
 
 		const tasks = [
 			configuredApi.category.get(0).then(session.dataSetter("category")),

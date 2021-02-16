@@ -1,7 +1,6 @@
 import Vue from "vue";
 import { Store } from "vuex";
 import { Route } from "vue-router/types/router";
-import { CancellationToken } from "@kaciras-blog/uikit";
 import { SET_WIDTH } from "@kaciras-blog/uikit/src/media-query";
 import { configureForProxy } from "@kaciras-blog/server/lib/axios-helper";
 import { RenderContext } from "@kaciras-blog/server/lib/koa/vue-ssr";
@@ -26,7 +25,9 @@ class ServerPrefetchContext extends PrefetchContext {
 }
 
 ServerPrefetchContext.prototype.isServer = true;
-ServerPrefetchContext.prototype.cancelToken = CancellationToken.NEVER;
+
+const never = new AbortController();
+ServerPrefetchContext.prototype.abortSignal = never.signal;
 
 /**
  * 简单地通过 User-Agent 判断客户端的设备是不是手机
