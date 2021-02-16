@@ -6,8 +6,9 @@
 	<ol :class="$style.tabList" class="clean-list" role="tablist">
 		<router-link
 			v-for="tab of tabs"
-			replace
 			:key="tab.title"
+			replace
+			custom
 			:to="tab.route"
 			v-slot="{ isActive, navigate }"
 		>
