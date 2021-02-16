@@ -92,15 +92,12 @@ export class Api {
 	}
 
 	/**
-	 * 设置取消令牌，使请求能够取消。
+	 * 设置取消令牌，使请求能够取消，支持原生 AbortSignal 和 Axios 的 CancelToken
 	 *
 	 * @param token 取消令牌
 	 * @return API集
 	 */
-	withCancelToken(token?: CancelToken | AbortSignal) {
-		if (!token) {
-			return this;
-		}
+	withCancelToken(token: CancelToken | AbortSignal) {
 		if (token instanceof AbortSignal) {
 			const source = axios.CancelToken.source();
 			token.onabort = () => source.cancel();
