@@ -1,9 +1,9 @@
 import { AbstractResource } from "./core";
 
 export enum FriendAccidentType {
-	Moved = "Moved",
-	AbandonedMe = "AbandonedMe",
-	Inaccessible = "Inaccessible",
+	Moved,
+	Lost,
+	AbandonedMe,
 }
 
 export interface FriendAccident {

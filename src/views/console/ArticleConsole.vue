@@ -48,7 +48,7 @@ export default {
 
 			api.article.getList({
 				start: 0,
-				deletion: DeletionState.ALL,
+				deletion: DeletionState.None,
 			}).then(data => {
 				this.loading = false;
 				this.list = data;

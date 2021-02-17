@@ -18,13 +18,13 @@ export interface Topic {
 export enum DiscussionState {
 
 	/** 正常显示 */
-	Visible = "Visible",
+	Visible,
 
 	/** 已删除 */
-	Deleted = "Deleted",
+	Deleted,
 
 	/** 等待审核 */
-	Moderation = "Moderation",
+	Moderation,
 }
 
 export interface Discussion extends TopicKey {
@@ -139,8 +139,8 @@ export default class DiscussionResource extends AbstractResource {
 	}
 
 	getModeration() {
-		const config = { params: { state: "Moderation", linked: true } };
-		return this.servers.content.get("/discussions", config).then(r => r.data);
+		const params = { params: { state: DiscussionState.Moderation, includeTopic: true } };
+		return this.servers.content.get("/discussions", params).then(r => assembly(r.data));
 	}
 
 	/**

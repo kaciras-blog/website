@@ -1,6 +1,23 @@
-<template functional>
-	<span :class="[$style.authTag, $style[props.authType]]" title="登录类型">{{props.authType}}</span>
-</template>
+<!--<template functional>-->
+<!--	<span :class="[$style.authTag, $style[AuthType[props.authType]]]" title="">{{ props.authType }}</span>-->
+<!--</template>-->
+
+<script>
+import { AuthType } from "@/api";
+
+export default {
+	functional: true,
+	render(h, context) {
+		const name = AuthType[context.props.authType];
+		const { $style } = context;
+		const data = {
+			attrs: { title: "登录类型" },
+			class: [$style.authTag, $style[name]],
+		};
+		return h("span", data, name);
+	},
+}
+</script>
 
 <style module lang="less">
 .authTag {

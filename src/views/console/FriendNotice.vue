@@ -3,16 +3,18 @@
 		检测到网站
 		<a :href="props.url" class="highlight" target="_blank">{{ props.name }}</a>
 
-		<template v-if="props.type === 'Moved'">
+		<template v-if="props.type === 0">
 			重定向到
 			<a :href="props.newUrl" class="highlight" target="_blank">
 				{{ props.newUrl }}
 			</a>
 		</template>
-		<template v-else-if="props.type === 'AbandonedMe'">
+
+		<template v-else-if="props.type === 1">无法访问</template>
+
+		<template v-else-if="props.type === 2">
 			的友链页不存在本站的链接，可能删除了本站，或是使用了异步渲染。
 		</template>
-		<template v-else-if="props.type === 'Inaccessible'">无法访问</template>
 	</div>
 </template>
 

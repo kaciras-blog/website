@@ -2,10 +2,10 @@ import { AbstractResource } from "./core";
 import { standardRange } from "./common";
 
 export enum AuthType {
-	None = "None",
-	Local = "Local",
-	Github = "Github",
-	Google = "Google",
+	None,
+	Local,
+	Github,
+	Google,
 }
 
 export interface AccountLoginRequest {

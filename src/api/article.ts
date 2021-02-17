@@ -5,9 +5,9 @@ import { AbstractResource, Pageable } from "./core";
  * 故使用字符串作为值而不是整数，避免次序改变以及提升模板的可读性。其它 API 里的枚举也是一样。
  */
 export enum DeletionState {
-	ALIVE = "ALIVE",
-	DELETED = "DELETED",
-	ALL = "ALL",
+	None,
+	Alive,
+	Deleted,
 }
 
 interface ArticleMeta {
@@ -27,10 +27,10 @@ export interface Article extends ArticleMeta {
 
 interface ArticleListQuery extends Pageable {
 
-	/** 删除状态过滤 */
+	/** 删除状态过滤，默认 ALIVE */
 	deletion?: DeletionState;
 
-	/** 过滤分类 */
+	/** 过滤分类，默认为 0 表示全部分类 */
 	category?: number;
 
 	/** 是否包含下级分类的文章 */
