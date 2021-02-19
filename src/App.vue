@@ -2,6 +2,7 @@
 <template functional>
 	<div id="app">
 		<router-view/>
+		<popup-alert-container/>
 		<kx-dialog-container/>
 	</div>
 </template>

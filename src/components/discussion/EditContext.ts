@@ -76,6 +76,7 @@ export default {
 				this.content = "";
 				localStorage.removeItem(key);
 				this.afterSubmit(entity);
+				this.$root.$emit("popup", { content: "评论提交成功" });
 			} catch (e) {
 				this.$dialog.alertError("评论失败", errorMessage(e));
 				throw e; // 继续抛出传递给 Sentry 和上层
