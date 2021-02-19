@@ -31,22 +31,8 @@
 
 <script>
 import api, { DiscussionState } from "@/api";
-import { articleLink } from "@/blog-plugin";
 import DiscussionConfigPanel from "./DiscussionConfigPanel";
 import DiscussionCheckItem from "./DiscussionCheckItem";
-
-function normalize(item) {
-	item.checked = false;
-
-	if (typeof item.target === "string") {
-		item.title = item.target;
-		item.link = "/about";
-	} else {
-		item.title = item.target.title;
-		item.link = articleLink(item.target);
-	}
-	delete item.target;
-}
 
 export default {
 	name: "DiscussionConsole",
@@ -76,17 +62,21 @@ export default {
 	},
 	methods: {
 		async loadItems() {
-			const list = await api.discuss.getModeration();
-			list.items.forEach(normalize);
+			const list = await api.discuss.getList({
+				count: 30,
+				includeTopic: true,
+				state: DiscussionState.Moderation,
+			});
+			list.items.forEach(v => v.checked = false);
 			this.pendingList = list.items;
 		},
 		async removeAll() {
 			await api.discuss.updateStates(this.selectedIds, DiscussionState.Deleted);
-			this.loadItems();
+			return this.loadItems();
 		},
 		async approveAll() {
 			await api.discuss.updateStates(this.selectedIds, DiscussionState.Visible);
-			this.loadItems();
+			return this.loadItems();
 		},
 	},
 	created() {

@@ -24,7 +24,7 @@ import api from "@/api";
 
 // 传过来的配置没有描述，这里直接定义
 const LABELS = {
-	disabled: "禁用评论",
+	disabled: "禁止发表评论",
 	loginRequired: "禁止匿名评论",
 	moderation: "需要审核",
 };

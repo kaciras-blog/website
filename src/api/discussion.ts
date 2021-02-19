@@ -50,6 +50,8 @@ export interface Discussion extends TopicKey {
 export interface DiscussionQuery extends Pageable, Partial<TopicKey> {
 	nestId?: number;
 	state?: DiscussionState;
+
+	includeTopic?: boolean;
 	childCount?: number;
 	includeParent?: boolean;
 }
@@ -136,11 +138,6 @@ export default class DiscussionResource extends AbstractResource {
 	getReplies(nestId: number, start: number, count: number) {
 		const params = { nestId, start, count };
 		return this.servers.content.get("/discussions", { params }).then(r => assembly(r.data));
-	}
-
-	getModeration() {
-		const params = { params: { state: DiscussionState.Moderation, includeTopic: true } };
-		return this.servers.content.get("/discussions", params).then(r => assembly(r.data));
 	}
 
 	/**

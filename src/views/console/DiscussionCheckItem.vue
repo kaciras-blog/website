@@ -7,9 +7,9 @@
 				用户评论了文章：
 				<router-link
 					class="highlight"
-					:to="item.link"
+					:to="item.topic.url"
 				>
-					{{item.title}}
+					{{ item.topic.name }}
 				</router-link>
 			</span>
 		</div>
@@ -23,9 +23,9 @@
 
 		<div :class="$style.content">
 			<p :class="$style.name">
-				{{item.user.name}}
+				{{ item.user.name }}
 			</p>
-			<div>{{item.content}}</div>
+			<div>{{ item.content }}</div>
 		</div>
 	</li>
 </template>
@@ -47,13 +47,14 @@ export default {
 	display: grid;
 	grid-template-areas: "link link" "head content";
 	grid-template-columns: auto minmax(0, 1fr);
-	grid-gap: 10px;
+	grid-gap: 20px 10px;
 
 	padding: 20px;
 	border-top: solid 1px #c9c9c9;
 }
 
 .link { grid-area: link; }
+
 .head { grid-area: head; }
 
 .content {
