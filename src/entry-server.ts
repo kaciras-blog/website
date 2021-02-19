@@ -25,9 +25,7 @@ class ServerPrefetchContext extends PrefetchContext {
 }
 
 ServerPrefetchContext.prototype.isServer = true;
-
-const never = new AbortController();
-ServerPrefetchContext.prototype.abortSignal = never.signal;
+ServerPrefetchContext.prototype.abortSignal = new AbortController().signal;
 
 /**
  * 简单地通过 User-Agent 判断客户端的设备是不是手机

@@ -14,7 +14,7 @@ import { isOnlyHashChange } from "./utils";
 import { MaybePrefetchComponent, PrefetchContext } from "./prefetch";
 import * as loadingIndicator from "./loading-indicator";
 
-let abortSignal = new AbortController().signal;
+let abortSignal: AbortSignal;
 
 // @ts-ignore api & isServer on prototype.
 class ClientPrefetchContext extends PrefetchContext {
