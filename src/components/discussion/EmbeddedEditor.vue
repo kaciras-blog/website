@@ -98,6 +98,7 @@ export default {
 
 .textarea, .preview {
 	width: 100%;
+	font-size: initial;
 	min-height: 10em;
 	margin: 1rem 0;
 	padding: 10px;

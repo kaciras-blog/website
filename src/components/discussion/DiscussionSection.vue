@@ -72,8 +72,8 @@ const PAGE_SIZE = 30;
 const NEST_SIZE = 3;
 
 const MODE = [
-	{ label: "引用模式", value: 0 },
-	{ label: "楼中楼模式", value: 1 },
+	{ label: "楼中楼模式", value: 0 },
+	{ label: "引用模式", value: 1 },
 ];
 
 /**
@@ -166,10 +166,10 @@ export default {
 			};
 
 			if (mode.value === 0) {
-				query.includeParent = true;
-			} else {
 				query.nestId = 0;
 				query.childCount = NEST_SIZE;
+			} else {
+				query.includeParent = true;
 			}
 
 			return api.withCancelToken(cancelToken).discuss.getList(query);

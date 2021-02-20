@@ -178,6 +178,7 @@ export default {
 	padding: .5rem .8rem 0 .8rem;
 	border: none;
 
+	font-size: initial;
 	background-color: white;
 	resize: none;
 	overflow-y: scroll;
