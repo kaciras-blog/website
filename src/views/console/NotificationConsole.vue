@@ -24,7 +24,9 @@
 		<ul v-else :class="$style.list">
 			<li v-for="{type, data, time} of notifications" class="segment">
 				<p>
-					<span :class="[$style.label, $style[type]]">{{MAP[type].name}}</span>
+					<span :class="[$style.label, $style[MAP[type].name]]">
+						{{ MAP[type].displayName }}
+					</span>
 					<time :class="$style.time">{{ time | localDateMinute }}</time>
 				</p>
 
@@ -42,8 +44,16 @@ import FriendNotice from "@/views/console/FriendNotice";
 import DiscussionNotice from "@/views/console/DiscussionNotice";
 
 const MAP = {
-	Friend: { name: "友链", component: FriendNotice },
-	Discussion: { name: "新评论", component: DiscussionNotice },
+	1: {
+		displayName: "友链",
+		name: "Friend",
+		component: FriendNotice,
+	},
+	2: {
+		displayName: "新评论",
+		name: "Discussion",
+		component: DiscussionNotice,
+	},
 }
 
 export default {
