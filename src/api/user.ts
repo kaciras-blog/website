@@ -39,23 +39,19 @@ export default class UserResource extends AbstractResource {
 	}
 
 	/** 用户注册后自动登录 */
-	signUp(data: AccountSignUpRequest) {
+	signup(data: AccountSignUpRequest) {
 		return this.servers.content.post("/accounts", data);
 	}
 
 	logout() {
-		return this.servers.content.delete("/session/user");
+		return this.servers.content.delete("/user");
 	}
 
 	getCurrent() {
-		return this.servers.content.get<User>("/session/user", { validateStatus: standardRange });
-	}
-
-	get(id: number) {
-		return this.servers.content.get<User>("/users/" + id);
+		return this.servers.content.get<User>("/user", { validateStatus: standardRange });
 	}
 
 	updateProfile(profile: UserProfile) {
-		return this.servers.content.patch("/session/user", profile);
+		return this.servers.content.patch("/user", profile);
 	}
 }

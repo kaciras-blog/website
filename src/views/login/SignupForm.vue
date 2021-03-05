@@ -93,7 +93,7 @@ export default {
 		async signUp(event) {
 			event.stopPropagation();
 			try {
-				await api.user.signUp(this.form);
+				await api.user.signup(this.form);
 				await this.$store.dispatch(REFRESH_USER);
 				await this.$router.push(this.returnUri);
 			} catch (e) {
