@@ -1597,13 +1597,6 @@
   resolved "https://registry.yarnpkg.com/@types/lozad/-/lozad-1.9.0.tgz#ff6df914f98a430347eb0a0a262382ac5c054a9c"
   integrity sha512-G8vLv048DBkH3dkDwURnDnF24pohdK/OwKVU70LQw2lrgeSDz48x4x+GnlIcyeDW47iZ+rxQ5wkgNLe+FhdPWQ==
 
-"@types/markdown-it-anchor@^7.0.0":
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/@types/markdown-it-anchor/-/markdown-it-anchor-7.0.0.tgz#4de1bea40ebf7643990ef35c51908e037bfa48a8"
-  integrity sha512-kFehISVfgSePSp6JWGWrcgKIPoPpAsZAqTLUt0Wq9+MNiGdnWdXQy8UerwhmD2afmjux1TWf8XCmlpL2/6ax/A==
-  dependencies:
-    markdown-it-anchor "*"
-
 "@types/markdown-it@^12.0.1":
   version "12.0.1"
   resolved "https://registry.yarnpkg.com/@types/markdown-it/-/markdown-it-12.0.1.tgz#8391e19fea4796ff863edda55800c7e669beb358"
@@ -7218,7 +7211,7 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
-markdown-it-anchor@*, markdown-it-anchor@^7.0.0:
+markdown-it-anchor@^7.0.0:
   version "7.0.2"
   resolved "https://registry.yarnpkg.com/markdown-it-anchor/-/markdown-it-anchor-7.0.2.tgz#1ac28261e0ea377b8298a1a6760e422921346a03"
   integrity sha512-UtYFAkce16mJlixXUMXUf14ZmOWK2YHLGKUpkZUn98w3qP8nVhb7k5sCBZmVHGMq3SpYtrxQ5XOdHQHRuLR40Q==

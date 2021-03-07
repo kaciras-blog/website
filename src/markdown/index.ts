@@ -55,7 +55,6 @@ articleRenderer.use(tableOfContent);
  * 由 Markdown 渲染的标题链接会触发 Vue-Router 的路由流程，需要在路由钩子里做检查以跳过预载，
  * 具体见 entry-client.ts 中的 router.beforeEach 钩子。
  */
-// @ts-ignore 这些小库的类型都八百年不更新的
 articleRenderer.use<AnchorOptions>(Anchor, {
 
 	/*
@@ -78,7 +77,6 @@ articleRenderer.use<AnchorOptions>(Anchor, {
 	permalinkSymbol: "",
 
 	// 参考 MSDN 网站的做法，有 aria-labelledby 情况下不再需要内容
-	// @ts-ignore
 	permalinkAttrs: slug => ({ "aria-labelledby": slug }),
 });
 
