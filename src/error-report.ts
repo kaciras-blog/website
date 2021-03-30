@@ -1,17 +1,15 @@
-import * as Sentry from '@sentry/browser';
-import { Vue as VueIntegration } from '@sentry/integrations';
+import * as Sentry from "@sentry/vue";
+import { Integrations } from "@sentry/tracing";
 import Vue from "vue";
 
 if (process.env.SENTRY_DSN) {
 	Sentry.init({
+		Vue,
 		dsn: process.env.SENTRY_DSN,
-		integrations: [
-			new VueIntegration({
-				Vue,
-				logErrors: true,
-				attachProps: true,
-			}),
-		],
+		attachProps: true,
+		logErrors: true,
+		integrations: [new Integrations.BrowserTracing()],
+		tracesSampleRate: 1.0,
 	});
 }
 
