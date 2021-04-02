@@ -27,7 +27,7 @@ initializeSettingManager();
 const STATIC_CACHE_NAME = "static-v1.8";
 
 /** 后端 API 有 Breaking Change 时增加版本号 */
-const API_CACHE_NAME = "api-v1.3";
+const API_CACHE_NAME = "api-v1.4";
 
 const cache = new CacheWrapper(STATIC_CACHE_NAME);
 const router = new Router();
