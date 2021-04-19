@@ -31,6 +31,7 @@ if (GOOGLE_ANALYTICS_ID) {
  *
  * 1.ServiceWorker 里 fetchAndCache() 使用了 Response.body 创建新响应。
  * 2.使用 AbortController 控制超时。
+ * 3.一些垃圾软件比如 IPadQQ 内置的浏览器不支持 IntersectionObserver。
  *
  * @return 如果支持则为true，否则false
  */
@@ -43,7 +44,7 @@ function isSupportedBrowser() {
 		return false;
 	}
 
-	return "AbortController" in window;
+	return "AbortController" in window && "IntersectionObserver" in window;
 }
 
 // 检测不支持的浏览器，显示一个提示栏
