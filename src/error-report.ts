@@ -6,6 +6,11 @@ if (process.env.SENTRY_DSN) {
 	Sentry.init({
 		Vue,
 		dsn: process.env.SENTRY_DSN,
+		ignoreErrors: [
+			/Network ?Error/,
+			'Network request failed',
+			'Failed to fetch'
+		],
 		attachProps: true,
 		logErrors: true,
 		integrations: [new Integrations.BrowserTracing()],
