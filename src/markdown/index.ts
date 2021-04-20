@@ -13,12 +13,12 @@ import Renderer from "markdown-it/lib/renderer";
 
 export { initLazyLoading };
 
-function highlightCodeBlock(str: string, lang: string) {
+function highlightCodeBlock(code: string, language: string) {
 	let result;
-	if (lang && highlight.getLanguage(lang)) {
-		result = highlight.highlight(lang, str).value;
+	if (language && highlight.getLanguage(language)) {
+		result = highlight.highlight(code, { language }).value;
 	} else {
-		result = escapeHtml(str);
+		result = escapeHtml(code);
 	}
 	return `<pre class='hljs'><code>${result}</code></pre>`;
 }
