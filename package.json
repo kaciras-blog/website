@@ -22,7 +22,7 @@
 	"browserslist": [
 		"Chrome >= 66",
 		"Safari >= 12.1",
-		"iOS >= 11.3",
+		"iOS >= 12.2",
 		"Firefox >= 57",
 		"Edge >= 79"
 	],

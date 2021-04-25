@@ -12,7 +12,7 @@
 					<li>Firefox 57</li>
 					<li>Chrome 66</li>
 					<li>Safari 12.1</li>
-					<li>IOS 11.3</li>
+					<li>IOS 12.2</li>
 					<li>Opera 53</li>
 					<li>IE 全都不支持</li>
 				</ul>
