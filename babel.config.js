@@ -1,27 +1,13 @@
-module.exports = function (api) {
+module.exports = (api) => {
 	api.cache(true);
 
-	const presets = [
-		[
-			"@babel/preset-env",
-			{ useBuiltIns: "usage", corejs: 3 },
+	return {
+		presets: [
+			["@babel/preset-env", { corejs: 3, useBuiltIns: "usage" }],
 		],
-	];
-
-	const plugins = [
-		[
-			"@babel/plugin-transform-runtime",
-			{ regenerator: false },
-		],
-		"@babel/plugin-syntax-dynamic-import",
-		"@babel/plugin-proposal-class-properties",
-		[
-			"@babel/plugin-proposal-decorators",
-			{ legacy: true }
-		],
-		"@babel/plugin-proposal-numeric-separator",
-		"@babel/plugin-proposal-throw-expressions",
-	];
-
-	return { presets, plugins };
+		plugins: [
+			["@babel/plugin-transform-runtime", { regenerator: false }],
+			["@babel/plugin-proposal-decorators", { legacy: true }],
+		]
+	};
 };
