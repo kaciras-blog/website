@@ -59,6 +59,7 @@ function createAxios(config?: AxiosRequestConfig) {
 	return instance;
 }
 
+// TODO: 这里有点问题，升级构建工具时记得改
 const apiOrigin = process.env.API_ORIGIN as any;
 export const BASE_URL = typeof apiOrigin === "string"
 	? apiOrigin

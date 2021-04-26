@@ -24,7 +24,7 @@
 				图标：
 				<a :class="$style.inlineLink" href='/static/img/avatar.png'>avatar.png</a>
 			</p>
-			<p>名字：Kaciras 或 Kaciras的博客</p>
+			<p>名字：Kaciras</p>
 			<p>描述：编程 • 生活 • 梦想</p>
 
 			<h2>其它说明</h2>

@@ -1,4 +1,4 @@
-<!-- /about/me 更具通用性，必用自己名字做url更好，而且名字还可能变 -->
+<!-- /about/me 更具通用性，比用自己名字做 url 更好，况且名字还可能变 -->
 <template functional>
 	<div class="about-tab-page">
 		<section class="about-section">
@@ -8,9 +8,8 @@
 					alt="logo"
 					class="large head"
 				>
-
 				<h1 :class="$style.name">Kaciras</h1>
-				<p>自学码农 / 热爱技术 / 全栈开发 / 冻鳗 / 二刺螈 / 啥都想学</p>
+				<p>自学码农 / 热爱技术 / 全栈开发 / 二刺螈 / 啥都想学</p>
 
 				<p :class="$style.socialLinks">
 					<social-link
