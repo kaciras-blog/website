@@ -4,7 +4,6 @@ import MarkdownIt, { Options } from "markdown-it";
 import { escapeHtml } from "markdown-it/lib/common/utils";
 import Anchor, { AnchorOptions } from "markdown-it-anchor";
 import tableOfContent from "markdown-it-toc-done-right";
-import katex from "@iktakahiro/markdown-it-katex";
 import highlight from "./highlight";
 import { clientMediaPlugin, initLazyLoading } from "./media";
 import guestPlugin from "./renderer-guest";
@@ -25,7 +24,6 @@ function highlightCodeBlock(code: string, language: string) {
 
 function createRenderer() {
 	const markdownIt = new MarkdownIt({ highlight: highlightCodeBlock });
-	markdownIt.use(katex);
 	markdownIt.use(clientMediaPlugin);
 
 	const { rules } = markdownIt.renderer;
