@@ -27,7 +27,7 @@
 			<template v-slot="{ items }">
 				<ol v-if="items.length" class="clean-list">
 					<draft-console-item
-						v-for="draft in items"
+						v-for="draft of items"
 						:key="draft.id"
 						class="segment"
 						:value="draft"

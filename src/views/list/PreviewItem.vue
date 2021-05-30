@@ -22,7 +22,7 @@
 			<span :class="$style.keyword_header">关键词：</span>
 			<ul class="inline clean-list">
 				<li
-					v-for="kw in item.keywords"
+					v-for="kw of item.keywords"
 					:key="kw"
 					:class="$style.keyword">{{kw}}
 				</li>
@@ -32,7 +32,7 @@
 		<!-- TODO: 分类页暂不使用 -->
 		<div class="tag-group" :class="$style.category">
 			<span
-				v-for="c in item.categories"
+				v-for="c of item.categories"
 				:key="c.id"
 				class="tag-group-item"
 			>

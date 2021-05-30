@@ -15,7 +15,7 @@
 				<div>
 					<span>关键词：</span>
 					<span
-						v-for="keyword in article.keywords"
+						v-for="keyword of article.keywords"
 						:key="keyword"
 						:class="$style.keyword"
 					>

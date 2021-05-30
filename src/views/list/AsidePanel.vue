@@ -5,7 +5,7 @@
 
 			<!-- 这里要保持<a>元素的链接，不能直接把<router-link>搞成<li> -->
 			<li
-				v-for="article in hots"
+				v-for="article of hots"
 				:key="article.id"
 			>
 				<router-link

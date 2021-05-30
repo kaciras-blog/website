@@ -4,7 +4,7 @@
 
 		<div :class="$style.config_row">
 			<kx-check-box
-				v-for="(_, name) in config"
+				v-for="(_, name) of config"
 				:key="name"
 				v-model="config[name]"
 				:class="$style.checkbox"
