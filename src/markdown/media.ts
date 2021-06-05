@@ -1,5 +1,5 @@
 import lozad from "lozad";
-import media, { RendererMap } from "@kaciras-blog/server/lib/markdown-media";
+import media, { RendererMap } from "@kaciras-blog/markdown/lib/media";
 import Token from "markdown-it/lib/token";
 import MarkdownIt from "markdown-it";
 

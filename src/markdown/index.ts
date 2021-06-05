@@ -1,4 +1,3 @@
-import "katex/dist/katex.css";
 import "./markdown.less";
 import MarkdownIt, { Options } from "markdown-it";
 import { escapeHtml } from "markdown-it/lib/common/utils";
