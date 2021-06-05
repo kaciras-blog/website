@@ -23,7 +23,7 @@ export default {
 <style module lang="less">
 .container {
 	display: inline-block;
-	margin: 0 10px;
+	margin: 0 8px;
 	padding: 10px;
 
 	border-radius: 50%;

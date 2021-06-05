@@ -22,6 +22,11 @@
 						name="GitHub"
 						icon="@assets/img/logo-github.svg"
 					/>
+					<social-link
+						href="https://matrix.to/#/@kaciras:matrix.org"
+						name="Matrix"
+						icon="@assets/img/element-io.svg"
+					/>
 				</p>
 			</div>
 
@@ -60,6 +65,8 @@
 	&[title="Email"] { --color: rgba(0, 217, 184, .6); }
 
 	&[title="GitHub"] { --color: rgba(0, 0, 0, .25); }
+
+	&[title="Matrix"] { --color: rgba(247, 227, 0, 0.65); }
 }
 
 .discussion {
