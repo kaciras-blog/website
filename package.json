@@ -43,10 +43,10 @@
 		"markdown-it-toc-done-right": "^4.2.0",
 		"nanoevents": "^6.0.0",
 		"rxjs": "^7.2.0",
-		"vue": "^2.6.14",
+		"vue": "next",
 		"vue-multiselect": "^2.1.6",
-		"vue-router": "^3.5.2",
-		"vuex": "^3.6.2"
+		"vue-router": "next",
+		"vuex": "next"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.14.6",
@@ -71,10 +71,6 @@
 		"jest": "^27.0.6",
 		"less": "^4.1.1",
 		"ts-jest": "^27.0.3",
-		"typescript": "^4.3.5",
-		"vue-template-compiler": "^2.6.14"
-	},
-	"resolutions": {
-		"vue-server-renderer": "2.6.14"
+		"typescript": "^4.3.5"
 	}
 }
