@@ -1,4 +1,4 @@
-<template functional>
+<template>
 	<header :class="$style.section_header">
 		<h1 class="compact">{{props.title}}</h1>
 		<img :src="props.icon" alt="header icon" :class="$style.section_icon">

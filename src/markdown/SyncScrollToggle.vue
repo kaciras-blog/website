@@ -1,7 +1,6 @@
 <script>
 export default {
 	name: "SyncScrollToggle",
-	functional: true,
 	render(createElement, context) {
 		const { isSyncScroll, setSyncScroll } = context.props.ctx;
 		const { $style } = context;

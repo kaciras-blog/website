@@ -1,4 +1,4 @@
-<template functional>
+<template>
 	<kx-base-dialog title="编辑器帮助" :click-to-close="true">
 		<p>评论使用 Markdown，点击按钮可以预览。</p>
 		<p>除标准的 Markdown 语法外还支持以下功能：</p>

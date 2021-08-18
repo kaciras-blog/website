@@ -1,4 +1,4 @@
-<template functional>
+<template>
 	<div>
 		检测到网站
 		<a :href="props.url" class="highlight" target="_blank">{{ props.name }}</a>

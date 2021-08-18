@@ -1,4 +1,4 @@
-<template functional>
+<template>
 	<top-nav-body
 		tag="nav"
 		v-bind="data.attrs"

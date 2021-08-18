@@ -1,4 +1,4 @@
-<template functional>
+<template>
 	<div class="about-tab-page">
 		<section id="friend" class="about-section">
 			<h1>友情链接</h1>

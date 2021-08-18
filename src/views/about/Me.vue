@@ -1,5 +1,5 @@
 <!-- /about/me 更具通用性，比用自己名字做 url 更好，况且名字还可能变 -->
-<template functional>
+<template>
 	<div class="about-tab-page">
 		<section class="about-section">
 			<div :class="$style.profile">

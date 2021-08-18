@@ -1,4 +1,4 @@
-<template functional>
+<template>
 	<nav
 		:class="[$style.container, data.class, data.staticClass]"
 		:style="[data.style, data.staticStyle]"

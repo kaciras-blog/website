@@ -14,7 +14,6 @@
 <script>
 export default {
 	name: "SideMenuLink",
-	functional: true,
 	props: {
 		tag: {
 			type: String,

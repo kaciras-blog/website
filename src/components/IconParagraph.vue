@@ -1,4 +1,4 @@
-<template functional>
+<template>
 	<p :class="$style.wrapper">
 		<img
 			:class="$style.image"

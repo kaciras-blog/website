@@ -1,7 +1,7 @@
 <!--
 	玩玩 Material Disign 的样式
 -->
-<template functional>
+<template>
 	<label :class="$style.container">
 		<span :class="$style.label">{{ props.label }}</span>
 		<input

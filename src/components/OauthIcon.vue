@@ -3,7 +3,6 @@ import { BASE_URL } from "@/api";
 
 export default {
 	name: "OauthIcon",
-	functional: true,
 	props: {
 		endpoint: {
 			type: String,

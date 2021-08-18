@@ -1,4 +1,4 @@
-<template functional>
+<template>
 	<li
 		:class="$style.container"
 		tabindex="0"

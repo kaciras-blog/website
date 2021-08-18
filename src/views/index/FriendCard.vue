@@ -11,7 +11,7 @@ friend	 - 友链对象
 【禁用的实现】
 改变 <component> 渲染的元素会导致整个子树更新，应该避免，改为其它禁用实现。
 -->
-<template functional>
+<template>
 	<a
 		:disabled="props.disabled"
 		:href="props.friend.url"

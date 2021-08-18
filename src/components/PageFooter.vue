@@ -1,5 +1,5 @@
 <!--suppress HtmlUnknownTarget -->
-<template functional v-once>
+<template v-once>
 	<footer id="bottom-footer">
 		<div :class="$style.info">
 			<p>&copy; Kaciras 2018-2021</p>

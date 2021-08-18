@@ -1,4 +1,4 @@
-<template functional>
+<template>
 	<!-- 做个属性穿透这么麻烦 -->
 	<main
 		v-bind="data.attrs"

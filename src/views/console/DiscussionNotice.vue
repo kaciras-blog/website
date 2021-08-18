@@ -1,4 +1,4 @@
-<template functional>
+<template>
 	<div>
 		在 <a :href="props.url" class="highlight" target="_blank">{{ props.title }}</a>
 		的 {{ props.floor }} 楼有新的评论：

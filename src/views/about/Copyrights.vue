@@ -1,4 +1,4 @@
-<template functional>
+<template>
 	<div class="about-tab-page">
 		<section class="about-section">
 			<icon-section-header title="版权声明" icon="@assets/img/copyright.svg"/>

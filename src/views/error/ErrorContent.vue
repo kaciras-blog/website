@@ -1,4 +1,4 @@
-<template functional>
+<template>
 	<main :class="$style.container">
 		<h1 :class="$style.title">{{props.title}}</h1>
 		<img

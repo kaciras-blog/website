@@ -5,7 +5,7 @@
 <script>
 export default {
 	name: "SmartLink",
-	functional: true,
+
 	render(h, ctx) {
 		const { href } = ctx.props;
 		const { data } = ctx;

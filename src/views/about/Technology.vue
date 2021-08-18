@@ -1,4 +1,4 @@
-<template functional>
+<template>
 	<div class="about-tab-page">
 		<section class="about-section">
 			<icon-section-header title="Kaciras' Blog" icon="@assets/img/logo-kaciras.svg"/>

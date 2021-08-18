@@ -6,7 +6,7 @@
 import { AuthType } from "@/api";
 
 export default {
-	functional: true,
+
 	render(h, context) {
 		const name = AuthType[context.props.authType];
 		const { $style } = context;

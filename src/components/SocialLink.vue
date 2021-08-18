@@ -1,4 +1,4 @@
-<template functional>
+<template>
 	<a
 		:title="props.name"
 		:href="props.href"
