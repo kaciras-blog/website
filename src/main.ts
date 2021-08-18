@@ -1,19 +1,14 @@
 import "@fortawesome/fontawesome-free/css/all.css";
 import "vue-multiselect/dist/vue-multiselect.min.css";
 import "./css/index.less";
-import Vue from "vue";
+import { createApp } from "vue";
 import VueMultiselect from "vue-multiselect";
 import UIKit from "@kaciras-blog/uikit";
 import { MediaQueryManager } from "@kaciras-blog/uikit/src/media-query";
-import BlogPlugin from "./blog-plugin";
 import createStore from "./store";
 import createRouter from "./router";
+import BlogPlugin from "./blog-plugin";
 import App from "./App.vue";
-
-Vue.config.productionTip = false;
-
-Vue.use(UIKit);
-Vue.use(BlogPlugin);
 
 export const mediaBreakpoints = {
 	mobile: 768,
@@ -23,9 +18,6 @@ export const mediaBreakpoints = {
 };
 
 export const mediaQueryPlugin = new MediaQueryManager(mediaBreakpoints);
-Vue.use(mediaQueryPlugin);
-
-Vue.component(VueMultiselect.name, VueMultiselect);
 
 /**
  * 服务端和客户端公共的初始化逻辑。
@@ -36,7 +28,7 @@ Vue.component(VueMultiselect.name, VueMultiselect);
  * @param initState Vuex的初始状态
  * @return Vue全家桶
  */
-export default function createApp(initState: any = undefined) {
+export default function createBlogApp(initState: any = undefined) {
 	const store = createStore();
 	const router = createRouter();
 
@@ -63,11 +55,14 @@ export default function createApp(initState: any = undefined) {
 		next({ path: "/login", query: { return_uri: "/console" } });
 	});
 
-	const vue = new Vue({
-		router,
-		store,
-		render: h => h(App),
-	});
+	const app = createApp(App);
 
-	return { vue, router, store };
+	app.use(store);
+	app.use(router);
+	app.use(UIKit);
+	app.use(BlogPlugin);
+	app.use(mediaQueryPlugin);
+	app.component(VueMultiselect.name, VueMultiselect);
+
+	return { app, router, store };
 }

@@ -1,11 +1,13 @@
-import * as Sentry from "@sentry/vue";
+import { init, vueRouterInstrumentation } from "@sentry/vue";
 import { Integrations } from "@sentry/tracing";
-import Vue from "vue";
+import { App } from "vue";
+import { Router } from "vue-router";
 
-if (process.env.SENTRY_DSN) {
-	Sentry.init({
-		Vue,
+export function setupSentry(app: App, router: Router) {
+	init({
+		app,
 		dsn: process.env.SENTRY_DSN,
+		tracesSampleRate: 1.0,
 		ignoreErrors: [
 			/Network ?Error/,
 			'Network request failed',
@@ -13,8 +15,11 @@ if (process.env.SENTRY_DSN) {
 		],
 		attachProps: true,
 		logErrors: true,
-		integrations: [new Integrations.BrowserTracing()],
-		tracesSampleRate: 1.0,
+		integrations: [
+			new Integrations.BrowserTracing({
+				routingInstrumentation: vueRouterInstrumentation(router),
+			})
+		],
 	});
 }
 

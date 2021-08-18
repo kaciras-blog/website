@@ -1,18 +1,15 @@
-import Vue from "vue";
-import Vuex from "vuex";
+import { createStore } from "vuex";
 import api from "@/api";
 import { SunPhases } from "@/sun-phase";
 import {
-	REFRESH_USER,
+	LOAD_DISCUSSION_OPTIONS,
 	LOGOUT,
-	SET_PREFETCH_DATA,
-	SET_USER,
-	SET_SUN_PHASE,
+	REFRESH_USER,
 	SET_DISCUSSION_OPTIONS,
-	LOAD_DISCUSSION_OPTIONS
+	SET_PREFETCH_DATA,
+	SET_SUN_PHASE,
+	SET_USER
 } from "./types";
-
-Vue.use(Vuex);
 
 /**
  * 定义几个太阳位置：7-11 黎明，11-16 白天, 16 - 20 黄昏，20 - 7 夜晚。
@@ -35,7 +32,7 @@ const GUESTS = {
 }
 
 export default function createVuexStore() {
-	return new Vuex.Store({
+	return createStore({
 		state: {
 			/** 当前登录的用户，其值将在入口处被设置 */
 			user: GUESTS,

@@ -1,8 +1,8 @@
 // 注意导入顺序，因为打包后CSS里元素的顺序跟导入顺序一致，所以 main.ts 必须靠前
-import "./error-report";
+import { setupSentry } from "./error-report";
 import "./misc";
 import Vue from "vue";
-import createApp, { mediaQueryPlugin } from "./main";
+import createBlogApp, { mediaQueryPlugin } from "./main";
 import { useServiceWorker } from "@/service-worker/client/installer";
 import { SUN_PHASES } from "@/store";
 import { REFRESH_USER, SET_SUN_PHASE } from "@/store/types";
@@ -18,7 +18,11 @@ declare const window: Window & SSRGlobalVariables;
 
 Vue.mixin(ClientPrefetchMixin);
 
-const { vue, router, store } = createApp(window.__INITIAL_STATE__);
+const { vue, router, store } = createBlogApp(window.__INITIAL_STATE__);
+
+if (process.env.SENTRY_DSN) {
+	setupSentry(vue);
+}
 
 function initApplication() {
 	// 这俩要放在挂载的前面，因为它们影响关键的元素

@@ -7,7 +7,7 @@ import { RenderContext } from "@kaciras-blog/server/lib/koa/vue-ssr";
 import api, { Api } from "./api";
 import { PrefetchContext } from "./prefetch";
 import { REFRESH_USER, SET_PREFETCH_DATA } from "./store/types";
-import createApp, { mediaBreakpoints } from "./main";
+import createBlogApp, { mediaBreakpoints } from "./main";
 
 // @ts-ignore isServer & cancelToken on prototype.
 class ServerPrefetchContext extends PrefetchContext {
@@ -44,7 +44,7 @@ export default async (context: RenderContext) => {
 		return new Vue({ render: h => h("div", { attrs: { id: "app" } }) });
 	}
 
-	const { vue, router, store } = createApp();
+	const { vue, router, store } = createBlogApp();
 	const ssrApi = api.withConfigProcessor(config => configureForProxy(request, config));
 
 	// 从 UserAgent 中检测是否手机，从而设定渲染的屏幕宽度
