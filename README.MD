@@ -26,13 +26,13 @@
 * 运行时需要和后端服务通信，故先要运行[content-server](https://github.com/kaciras-blog/content-server)
 
 浏览器支持：
-* Chrome >= 66
-* Firefox >= 57
-* Safari >= 12.1
-* IOS >= 11.3
-* Opera >= 53
-* MicrosoftEdge >= 79
-* IE 全部不支持
+
+* Microsoft Edge >= 80
+* Firefox >= 74
+* Chrome >= 80
+* Safari >= 13.1
+* IOS >= 13.4
+* IE 全部都不支持
 
 安装并启动具有热重载的服务器
 

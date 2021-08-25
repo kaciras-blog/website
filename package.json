@@ -20,11 +20,11 @@
 		"build-cache": "blog-server build-image-cache"
 	},
 	"browserslist": [
-		"Chrome >= 66",
-		"Safari >= 12.1",
-		"iOS >= 12.2",
-		"Firefox >= 57",
-		"Edge >= 79"
+		"Edge >= 80",
+		"Firefox >= 74",
+		"Chrome >= 80",
+		"Safari >= 13.1",
+		"iOS >= 13.4"
 	],
 	"dependencies": {
 		"@kaciras-blog/markdown": "^1.3.1",

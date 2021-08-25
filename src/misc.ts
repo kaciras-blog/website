@@ -29,26 +29,29 @@ if (GOOGLE_ANALYTICS_ID) {
 /**
  * 判断浏览器是否支持，根据：
  *
- * 1.ServiceWorker 里 fetchAndCache() 使用了 Response.body 创建新响应。
- * 2.使用 AbortController 控制超时。
- * 3.一些垃圾软件比如 IPadQQ 内置的浏览器不支持 IntersectionObserver。
+ * 1.以支持 Optional Chain 的浏览器作为基准。
+ * 2.ServiceWorker 里 fetchAndCache() 使用了 Response.body 创建新响应。
+ * 3.一些垃圾比如 IPadQQ 内置的浏览器不支持 IntersectionObserver。
  *
  * @return 如果支持则为true，否则false
  */
-function isSupportedBrowser() {
+function isSupportedBrowser(blackHole: () => void) {
 
-	// https://github.com/GoogleChrome/workbox/issues/1473
 	try {
+		// @ts-ignore 作为函数的参数避免被优化掉
+		blackHole(null?.never);
+
+		// https://github.com/GoogleChrome/workbox/issues/1473
 		new ReadableStream({ start() {} });
 	} catch (error) {
 		return false;
 	}
 
-	return "AbortController" in window && "IntersectionObserver" in window;
+	return "IntersectionObserver" in window;
 }
 
 // 检测不支持的浏览器，显示一个提示栏
-if (!isSupportedBrowser()) {
+if (!isSupportedBrowser(() => {})) {
 	const alert = document.createElement("div");
 	alert.className = "global-error";
 	alert.innerText = "您的浏览器版本太旧，或是非主流内核，可能无法正常浏览本站。" +

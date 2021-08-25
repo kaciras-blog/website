@@ -8,13 +8,7 @@
 			<icon-paragraph src="@assets/img/html-code.svg" title="browsers">
 				兼容性：
 				<ul>
-					<li>MicrosoftEdge 79</li>
-					<li>Firefox 57</li>
-					<li>Chrome 66</li>
-					<li>Safari 12.1</li>
-					<li>IOS 12.2</li>
-					<li>Opera 53</li>
-					<li>IE 全都不支持</li>
+					<li v-for="line of packageJson.browserslist">{{line}}</li>
 				</ul>
 			</icon-paragraph>
 			<p>本站的服务器位于美国，中国的访问者可能有较高的延迟</p>
@@ -73,3 +67,5 @@
 		</section>
 	</div>
 </template>
+
+<script setup></script>
