@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, CancelToken } from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import { RequestConfigProcessor, ServerList, ServerListFilter } from "./core";
 
 // 为了让IDE能够分析类型只能一个个导入再导出，这么写好啰嗦啊
@@ -93,18 +93,13 @@ export class Api {
 	}
 
 	/**
-	 * 设置取消令牌，使请求能够取消，支持原生 AbortSignal 和 Axios 的 CancelToken
+	 * 设置取消信号，使请求能够取消。
 	 *
-	 * @param token 取消令牌
-	 * @return API集
+	 * @param signal 取消信号
+	 * @return API 集
 	 */
-	withCancelToken(token: CancelToken | AbortSignal) {
-		if (token instanceof AbortSignal) {
-			const source = axios.CancelToken.source();
-			token.onabort = () => source.cancel();
-			token = source.token;
-		}
-		return this.withConfigProcessor(config => config.cancelToken = token as CancelToken);
+	withCancelToken(signal: AbortSignal) {
+		return this.withConfigProcessor(config => config.signal = signal);
 	}
 }
 
