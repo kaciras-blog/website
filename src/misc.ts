@@ -1,7 +1,5 @@
 /* 一些乱七八糟的小功能直接写一起了 */
 
-// =========================== Google Analytics ===========================
-
 declare const dataLayer: any[];
 
 interface Window {
@@ -24,37 +22,4 @@ if (GOOGLE_ANALYTICS_ID) {
 	script.async = true;
 	script.src = `https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_ID}`;
 	document.head.append(script)
-}
-
-/**
- * 判断浏览器是否支持，根据：
- *
- * 1.以支持 Optional Chain 的浏览器作为基准。
- * 2.ServiceWorker 里 fetchAndCache() 使用了 Response.body 创建新响应。
- * 3.一些垃圾比如 IPadQQ 内置的浏览器不支持 IntersectionObserver。
- *
- * @return 如果支持则为true，否则false
- */
-function isSupportedBrowser(blackHole: () => void) {
-
-	try {
-		// @ts-ignore 作为函数的参数避免被优化掉
-		blackHole(null?.never);
-
-		// https://github.com/GoogleChrome/workbox/issues/1473
-		new ReadableStream({ start() {} });
-	} catch (error) {
-		return false;
-	}
-
-	return "IntersectionObserver" in window;
-}
-
-// 检测不支持的浏览器，显示一个提示栏
-if (!isSupportedBrowser(() => {})) {
-	const alert = document.createElement("div");
-	alert.className = "global-error";
-	alert.innerText = "您的浏览器版本太旧，或是非主流内核，可能无法正常浏览本站。" +
-		"请使用最新版的Edge、Firefox、Chrome、Safari等浏览器（本站不支持IE）";
-	document.body.insertBefore(alert, document.body.firstChild);
 }

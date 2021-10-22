@@ -18,10 +18,10 @@ declare const window: Window & SSRGlobalVariables;
 
 Vue.mixin(ClientPrefetchMixin);
 
-const { vue, router, store } = createBlogApp(window.__INITIAL_STATE__);
+const { app, router, store } = createBlogApp(window.__INITIAL_STATE__);
 
-if (process.env.SENTRY_DSN) {
-	setupSentry(vue);
+if (process.env.SENTRY_DSN && window.__isSupport__) {
+	setupSentry(app, router);
 }
 
 function initApplication() {

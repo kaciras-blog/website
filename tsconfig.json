@@ -5,7 +5,7 @@
 		"tests/**/*.ts"
 	],
 	"compilerOptions": {
-		"target": "ESNext",
+		"target": "ES2020",
 		"module": "ESNext",
 		"moduleResolution": "Node",
 		"baseUrl": ".",
