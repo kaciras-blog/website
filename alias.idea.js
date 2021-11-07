@@ -5,15 +5,11 @@
  */
 const { join } = require("path");
 
-function resolve(dir) {
-	return join(__dirname, dir);
-}
-
 module.exports = {
 	resolve: {
 		alias: {
-			"@": resolve("src"),
-			"@assets": resolve("src/assets"),
+			"@": join(__dirname, "src"),
+			"@assets": join(__dirname, "src/assets"),
 		},
 	},
 };

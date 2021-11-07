@@ -7,8 +7,14 @@ module.exports = {
 		"@kaciras/typescript",
 		"@kaciras/vue/typescript",
 	],
-	overrides: [{
-		files: jestConfig.testMatch,
-		extends: ["@kaciras/jest"],
-	}],
+	overrides: [
+		{
+			files: jestConfig.testMatch,
+			extends: ["@kaciras/jest"],
+		},
+		{
+			files: "./*",
+			env: { node: true },
+		},
+	],
 };

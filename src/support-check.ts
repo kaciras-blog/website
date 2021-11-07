@@ -1,7 +1,7 @@
 /*
  * 判断浏览器是否支持运行本应用，根据以下标准：
  *
- * 1.以 ES2020 的 Optional Chain 为基准。
+ * 1.以 ES2020 的 Nullish coalescing operator 为基准。
  * 2.一些垃圾比如 IPadQQ 内置的浏览器不支持 IntersectionObserver。
  *
  * SyntaxError thrown thrown while the code is being parsed,
@@ -9,6 +9,7 @@
  * must be run before parsing the invalid code.
  */
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface Window {
 	__isSupport__: boolean;
 }
@@ -17,7 +18,7 @@ try {
 	// noinspection JSUnusedLocalSymbols
 	eval("const x = null ?? 0");
 
-	window.__isSupport__ = "IntersectionObserver" in window
+	window.__isSupport__ = "IntersectionObserver" in window;
 } catch {
 	window.__isSupport__ = false;
 }
