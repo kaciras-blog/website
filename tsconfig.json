@@ -13,10 +13,10 @@
 			"@/*": ["src/*"]
 		},
 		"jsx": "preserve",
+		"useUnknownInCatchVariables": false,
 		"sourceMap": true,
 		"resolveJsonModule": true,
 		"strict": true,
-		"esModuleInterop": true,
-		"experimentalDecorators": true,
+		"esModuleInterop": true
 	},
 }
