@@ -27,7 +27,7 @@
 					<span :class="[$style.label, $style[MAP[type].name]]">
 						{{ MAP[type].displayName }}
 					</span>
-					<time :class="$style.time">{{ time | localDateMinute }}</time>
+					<time :class="$style.time">{{ localDateMinute(time) }}</time>
 				</p>
 
 				<component :is="MAP[type].component" v-bind="data"/>
@@ -42,6 +42,7 @@ import api from "@/api";
 import { errorMessage } from "@/utils";
 import FriendNotice from "@/views/console/FriendNotice";
 import DiscussionNotice from "@/views/console/DiscussionNotice";
+import { localDateMinute } from "@/blog-plugin";
 
 const MAP = {
 	1: {
@@ -67,6 +68,8 @@ export default {
 		notifications: [],
 	}),
 	methods: {
+		localDateMinute,
+
 		async clear() {
 			await api.notification.clear();
 			return this.refresh();

@@ -1,7 +1,7 @@
 <template>
 	<li :class="$style.container">
 		<router-link
-			:to="item | articleLink"
+			:to="articleLink(item)"
 			tabindex="-1"
 			:class="$style.cover_link"
 		>
@@ -13,10 +13,10 @@
 		</router-link>
 
 		<h2 class="compact" :class="$style.title">
-			<router-link :to="item | articleLink">{{item.title}}</router-link>
+			<router-link :to="articleLink(item)">{{ item.title }}</router-link>
 		</h2>
 
-		<div :class="$style.summary">{{item.summary}}</div>
+		<div :class="$style.summary">{{ item.summary }}</div>
 
 		<div :class="$style.keywords">
 			<span :class="$style.keyword_header">关键词：</span>
@@ -24,7 +24,7 @@
 				<li
 					v-for="kw of item.keywords"
 					:key="kw"
-					:class="$style.keyword">{{kw}}
+					:class="$style.keyword">{{ kw }}
 				</li>
 			</ul>
 		</div>
@@ -36,30 +36,32 @@
 				:key="c.id"
 				class="tag-group-item"
 			>
-				{{c.name}}
+				{{ c.name }}
 			</span>
 		</div>
 
 		<div class="minor-text" :class="$style.meta">
 			<span title="发表于" :class="$style.metaItem">
 				<i class="fa fa-edit"/>
-				<time>{{item.create | localDate}}</time>
+				<time>{{ localDate(item.create) }}</time>
 			</span>
 
 			<span title="浏览数" :class="$style.metaItem">
 				<i class="fa fa-eye"/>
-				<span>{{item.viewCount}}</span>
+				<span>{{ item.viewCount }}</span>
 			</span>
 
 			<span title="评论数" :class="$style.metaItem">
 				<i class="fas fa-comment-dots"/>
-				<span>{{item.discussionCount}}</span>
+				<span>{{ item.discussionCount }}</span>
 			</span>
 		</div>
 	</li>
 </template>
 
 <script>
+import { articleLink, localDate } from "@/blog-plugin"
+
 export default {
 	name: "PreviewItem",
 	props: {
@@ -68,6 +70,10 @@ export default {
 			required: true,
 		},
 	},
+	methods: {
+		articleLink,
+		localDate,
+	}
 };
 </script>
 

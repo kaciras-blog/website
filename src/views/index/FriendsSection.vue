@@ -78,7 +78,6 @@
 </template>
 
 <script>
-import Vue from "vue";
 import { mapState } from "vuex";
 import { edgeScroll, moveElement, observeMouseMove } from "@kaciras-blog/uikit";
 import api from "@/api";
@@ -159,7 +158,7 @@ class VueArrayInsertSort {
 	}
 
 	dragEnd() {
-		Vue.set(this.array, this.index, this.data);
+		this.array[this.index] = this.data;
 	}
 }
 

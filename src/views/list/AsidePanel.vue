@@ -9,7 +9,7 @@
 				:key="article.id"
 			>
 				<router-link
-					:to="article | articleLink"
+					:to="articleLink(article)"
 					class="item"
 				>
 					{{article.title}}
@@ -22,6 +22,7 @@
 
 <script>
 import api from "@/api";
+import { articleLink } from "@/blog-plugin"
 
 export default {
 	name: "AsidePanel",
@@ -31,6 +32,9 @@ export default {
 			return { hots: store.hots };
 		}
 		return { hots: null };
+	},
+	methods: {
+		articleLink,
 	},
 	async beforeMount() {
 		if (!this.hots) {

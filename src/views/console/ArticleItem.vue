@@ -6,7 +6,7 @@
 
 			<div :class="$style.header">
 				<span v-if="value.deleted" :class="$style.removed">已删除</span>
-				<h3>{{value.title}}</h3>
+				<h3>{{ value.title }}</h3>
 			</div>
 
 			<div :class="$style.tag_group">
@@ -15,22 +15,22 @@
 					:key="category.id"
 					class="tag-group-item"
 				>
-					{{category.name}}
+					{{ category.name }}
 				</span>
 			</div>
 
 			<div :class="$style.attrs">
 				<i class="far fa-edit" title="发表于"></i>
-				<time>{{value.create | localDateMinute}}</time>
+				<time>{{ localDateMinute(value.create) }}</time>
 
 				<i class="fas fa-sync" title="最后更新"></i>
-				<time>{{value.update | localDateMinute}}</time>
+				<time>{{ localDateMinute(value.update) }}</time>
 
 				<i class="fa fa-eye" title="浏览数"></i>
-				<span>{{value.viewCount}}</span>
+				<span>{{ value.viewCount }}</span>
 
 				<i class="fas fa-comment-dots" title="评论数"></i>
-				<span>{{value.discussionCount}}</span>
+				<span>{{ value.discussionCount }}</span>
 			</div>
 		</div>
 
@@ -75,7 +75,7 @@
 
 <script>
 import api from "@/api";
-import { articleLink } from "@/blog-plugin";
+import { articleLink, localDateMinute } from "@/blog-plugin";
 import { errorMessage } from "@/utils";
 import CardsConsole from "./CardsConsole";
 import SelectCategoryDialog from "@/components/SelectCategoryDialog";
@@ -90,6 +90,8 @@ export default {
 	},
 	inject: ["sendMessage"],
 	methods: {
+		localDateMinute,
+
 		edit() {
 			return api.draft.fromArticle(this.value.id)
 				.then(id => window.location.href = "/edit/" + id)

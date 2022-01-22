@@ -1,15 +1,15 @@
 <template>
-	<li  :class="$style.container">
+	<li :class="$style.container">
 		<div :class="$style.main">
-			<h3>{{value.title}}</h3>
+			<h3>{{ value.title }}</h3>
 
 			<span :class="$style.time">
 				<i class="fas fa-feather-alt"></i>
-				<time>{{value.createTime | localDateMinute}}</time>
+				<time>{{ localDateMinute(value.createTime) }}</time>
 			</span>
 			<span :class="$style.time">
 				<i class="fas fa-sync-alt"></i>
-				<time>{{value.updateTime | localDateMinute}}</time>
+				<time>{{ localDateMinute(value.updateTime) }}</time>
 			</span>
 
 			<span
@@ -18,7 +18,7 @@
 				:class="$style.target"
 			>
 				<i class="fas fa-edit"/>
-				{{value.articleId}}
+				{{ value.articleId }}
 			</span>
 		</div>
 
@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { MessageBoxType } from "@kaciras-blog/uikit/src/dialog";
+import { localDateMinute } from "@/blog-plugin";
 import api from "@/api";
 
 export default {
@@ -52,14 +52,17 @@ export default {
 		},
 	},
 	methods: {
+		localDateMinute,
+
 		async deleteDraft() {
-			await this.$dialog.alert({
+			const dialog = this.$dialog.alert({
 				title: "删除草稿",
 				content: "删除后不可恢复，是否确定？",
-				type: MessageBoxType.Warning,
+				type: 2,
 				showCancelButton: true,
-			}).confirmPromise;
+			});
 
+			await dialog.confirmPromise;
 			await api.draft.remove(this.value.id);
 			this.$emit("removed");
 		},

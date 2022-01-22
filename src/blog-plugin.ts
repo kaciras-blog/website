@@ -1,4 +1,4 @@
-import { VueConstructor } from "vue";
+import { App } from "vue";
 import { format } from "date-fns";
 import { Article } from "@/api";
 
@@ -27,11 +27,18 @@ export function articleLink({ id, urlTitle }: Article) {
 	return `/article/${id}/${urlTitle}`;
 }
 
-export default function install(Vue: VueConstructor) {
-	Vue.filter("localDate", (timestamp: number) => format(timestamp, "yyyy-M-d"));
-	Vue.filter("localDateMinute", (timestamp: number) => format(timestamp, "yyyy-M-d HH:mm"));
+export function localDate(timestamp: number) {
+	return format(timestamp, "yyyy-M-d");
+}
 
-	Vue.filter("articleLink", articleLink);
+export function localDateMinute(timestamp: number) {
+	return format(timestamp, "yyyy-M-d HH:mm");
+}
+
+export default function install(Vue: App) {
+	// Vue.filter("localDate", (timestamp: number) => format(timestamp, "yyyy-M-d"));
+	// Vue.filter("localDateMinute", (timestamp: number) => format(timestamp, "yyyy-M-d HH:mm"));
+	// Vue.filter("articleLink", articleLink);
 
 	Vue.component(DiscussionSection.name, DiscussionSection);
 	Vue.component(TopNavBody.name, TopNavBody);

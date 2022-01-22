@@ -15,7 +15,7 @@
 					<span :class="$style.name">{{ value.nickname || value.user.name }}</span>
 				</div>
 				<div>
-					<time :class="$style.time">{{ value.time | localDateMinute }}</time>
+					<time :class="$style.time">{{ localDateMinute(value.time) }}</time>
 				</div>
 			</div>
 
@@ -47,6 +47,7 @@
 import api, { DiscussionState } from "@/api";
 import { errorMessage } from "@/utils";
 import MarkdownView from "@/markdown/MarkdownView";
+import { localDateMinute } from "@/blog-plugin";
 
 export default {
 	name: "DiscussionContent",
@@ -69,6 +70,8 @@ export default {
 		},
 	},
 	methods: {
+		localDateMinute,
+
 		remove() {
 			api.discuss.updateStates(this.value.id, DiscussionState.Deleted)
 				.then(() => this.$emit("removed", this.value))

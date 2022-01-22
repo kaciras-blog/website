@@ -14,7 +14,7 @@
 						{{ value.nickname || value.user.name }}
 					</strong>
 					<time class="minor-text">
-						{{ value.time | localDateMinute }}
+						{{ localDateMinute(value.time) }}
 					</time>
 					<span :class="$style.right">{{ value.floor }}楼</span>
 
@@ -28,7 +28,7 @@
 				</div>
 
 				<div v-if="value.parent" :class="$style.replyTo">
-					@{{value.parent.user.name}}
+					@{{ value.parent.user.name }}
 					<markdown-view :value="value.parent.content"/>
 				</div>
 
@@ -48,6 +48,7 @@
 
 <script>
 import { scrollToElement } from "@kaciras-blog/uikit";
+import { localDateMinute } from "@/blog-plugin";
 import MarkdownView from "@/markdown/MarkdownView";
 import EmbeddedEditor from "./EmbeddedEditor";
 
@@ -75,6 +76,8 @@ export default {
 		}
 	},
 	methods: {
+		localDateMinute,
+
 		async reply() {
 			this.replying = true;
 			await this.$nextTick();

@@ -6,11 +6,11 @@
 				<h1 :class="$style.title">{{ article.title }}</h1>
 				<p>
 					<span>发布时间：</span>
-					<time>{{ article.create | localDateMinute }}</time>
+					<time>{{ localDateMinute(article.create) }}</time>
 				</p>
 				<p>
 					<span>最后更新：</span>
-					<time>{{ article.update | localDateMinute }}</time>
+					<time>{{ localDateMinute(article.update) }}</time>
 				</p>
 				<div>
 					<span>关键词：</span>
@@ -66,7 +66,7 @@
 import { mapState } from "vuex";
 import { scrollToElementStart } from "@kaciras-blog/uikit";
 import TitleMixin from "@/title-mixin";
-import { articleLink } from "@/blog-plugin";
+import { articleLink, localDateMinute } from "@/blog-plugin";
 import { escapeHtml } from "@/utils";
 import MarkdownView from "@/markdown/MarkdownView";
 
@@ -127,6 +127,8 @@ export default {
 		article: state => state.prefetch.article,
 	}),
 	methods: {
+		localDateMinute,
+
 		gotoTop() {
 			scrollToElementStart(document.documentElement);
 		},

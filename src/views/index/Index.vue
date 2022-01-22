@@ -49,10 +49,10 @@ import BannerDaytime from "@/assets/img/IndexBannerLight.png";
 import BannerDusk from "@/assets/img/IndexBannerDusk.png";
 import BannerNight from "@/assets/img/IndexBannerNight.png";
 
-import MobileBannerDawn from "@/assets/img/IndexBannerDawn.png?size=IndexBannerMobile";
-import MobileBannerDaytime from "@/assets/img/IndexBannerLight.png?size=IndexBannerMobile";
-import MobileBannerDusk from "@/assets/img/IndexBannerDusk.png?size=IndexBannerMobile";
-import MobileBannerNight from "@/assets/img/IndexBannerNight.png?size=IndexBannerMobile";
+import MobileBannerDawn from "@/assets/img/IndexBannerDawn.png?size=IndexBannerM";
+import MobileBannerDaytime from "@/assets/img/IndexBannerLight.png?size=IndexBannerM";
+import MobileBannerDusk from "@/assets/img/IndexBannerDusk.png?size=IndexBannerM";
+import MobileBannerNight from "@/assets/img/IndexBannerNight.png?size=IndexBannerM";
 
 /*
  * 这里的大部分代码都是实现根据时段（早晨，白天，黄昏，夜晚）切换背景大图的功能。

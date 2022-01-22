@@ -41,7 +41,6 @@
 </template>
 
 <script>
-import { MessageBoxType } from "@kaciras-blog/uikit/src/dialog/index";
 import api from "@/api";
 import { deleteOn, errorMessage } from "@/utils";
 import DraftConsoleItem from "./DraftConsoleItem";
@@ -65,7 +64,7 @@ export default {
 			const result = await this.$dialog.alert({
 				title: "删除所有草稿",
 				content: "该操作不可撤销，是否继续？",
-				type: MessageBoxType.Warning,
+				type: 2,
 				showCancelButton: true,
 			});
 			if (!result.isConfirm) {

@@ -20,7 +20,7 @@
 				自动保存出错
 			</span>
 			<span v-else-if="draft.updateTime">
-				上次保存：{{draft.updateTime | localDateMinute}}
+				上次保存：{{ localDateMinute(draft.updateTime) }}
 			</span>
 		</template>
 
@@ -36,7 +36,7 @@ import api from "@/api";
 import MarkdownEditor from "@/markdown/MarkdownEditor";
 import TextTools from "@/markdown/TextTools";
 import TextStateGroup from "@/markdown/TextStateGroup";
-import { articleLink } from "@/blog-plugin";
+import { articleLink, localDateMinute } from "@/blog-plugin";
 import { errorMessage } from "@/utils";
 import PublishDialog from "./PublishDialog";
 import MetadataDialog from "./MetadataDialog";
@@ -80,6 +80,8 @@ export default {
 		autoSaveError: null,
 	}),
 	methods: {
+		localDateMinute,
+
 		/**
 		 * 监视文本的改变，当改变时开始计时5分钟，到点自动保存
 		 */
