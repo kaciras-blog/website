@@ -3,17 +3,12 @@
 <head>
 	<meta charset="utf-8">
 	<link rel="dns-prefetch" href="//api.kaciras.com">
-	<title>{{ title }}</title>
+	<title><%= htmlWebpackPlugin.options.title %></title>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0">
 	<meta name="theme-color" content="#FFFFFF">
 	<meta name="mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-capable" content="yes">
-
-	{{{ meta }}}
-	{{{ renderResourceHints() }}}
-	{{{ renderCommonStyle() }}}
-	{{{ renderScripts() }}}
 
 	<link rel="icon" href="/favicon.ico">
 	<link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -28,6 +23,5 @@
 	禁用 JavaScript 会导致部分功能不正常
 </noscript>
 <!--vue-ssr-outlet-->
-{{{ renderState() }}}
 </body>
 </html>
