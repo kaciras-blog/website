@@ -3,8 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<link rel="dns-prefetch" href="//api.kaciras.com">
-	<title><%= htmlWebpackPlugin.options.title %></title>
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Kaciras Blog</title>
 	<meta name="viewport" content="width=device-width,initial-scale=1.0">
 	<meta name="theme-color" content="#FFFFFF">
 	<meta name="mobile-web-app-capable" content="yes">
@@ -15,6 +14,8 @@
 	<link rel="manifest" href="/manifest.json">
 	<link rel="apple-touch-icon" href="/icons/192.png">
 
+	<!--preload-links-->
+
 	<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed/atom">
 	<link rel="alternate" type="application/rss+xml" title="Rss Feed" href="/feed/rss">
 </head>
@@ -22,6 +23,7 @@
 <noscript class="global-error">
 	禁用 JavaScript 会导致部分功能不正常
 </noscript>
-<!--vue-ssr-outlet-->
+<div id="app"><!--app-html--></div>
+<script type="module" src="/src/entry-client.ts"></script>
 </body>
 </html>
