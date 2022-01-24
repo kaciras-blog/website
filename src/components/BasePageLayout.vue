@@ -1,18 +1,13 @@
 <template>
 	<!-- 做个属性穿透这么麻烦 -->
-	<main
-		v-bind="data.attrs"
-		:class="[data.class, data.staticClass]"
-		:style="[data.style, data.staticStyle]"
-		v-on="listeners"
-	>
+	<main>
 		<slot name="nav">
-			<top-nav :class="props.navClass" :style="props.navStyle"/>
+			<top-nav :class="navClass" :style="navStyle"/>
 		</slot>
 
 		<slot></slot>
 
-		<page-footer v-if="props.footer"/>
+		<page-footer v-if="footer"/>
 	</main>
 </template>
 

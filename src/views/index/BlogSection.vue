@@ -27,9 +27,13 @@
 							alt="封面"
 							:class="$style.picture"
 						>
-						<h1 :class="$style.name">{{card.name}} </h1>
+						<h1 :class="$style.name">
+							{{ card.name }}
+						</h1>
 					</div>
-					<div :class="$style.content">{{card.description}}</div>
+					<div :class="$style.content">
+						{{ card.description }}
+					</div>
 				</article>
 			</smart-link>
 		</div>

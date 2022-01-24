@@ -13,30 +13,30 @@ friend	 - 友链对象
 -->
 <template>
 	<a
-		:disabled="props.disabled"
-		:href="props.friend.url"
+		:disabled="disabled"
+		:href="friend.url"
 		target="_blank"
 		rel="noopener"
 		:class="$style.container"
-		@mousedown="listeners.dragstart"
 	>
 		<img
-			:src="props.active && props.friend.background"
+			:src="active && friend.background"
 			alt="background"
 			:class="$style.background"
 		>
 		<img
-			:src="props.active && props.friend.favicon"
+			:src="active && friend.favicon"
 			alt="favicon"
 			:class="$style.favicon"
 		>
-		<span :class="$style.name">{{props.friend.name}}</span>
+		<span :class="$style.name">{{friend.name}}</span>
 	</a>
 </template>
 
 <script>
 export default {
 	name: "FriendCard",
+	props: ["friend", "disabled", "active"],
 };
 </script>
 

@@ -12,6 +12,8 @@
 <!--</template>-->
 
 <script>
+import { h } from "vue";
+
 export default {
 	name: "SideMenuLink",
 	props: {
@@ -28,9 +30,9 @@ export default {
 			required: true,
 		},
 	},
-	render(h, ctx) {
-		const { tag, to, icon } = ctx.props;
-		const { $style, listeners } = ctx;
+	render() {
+		const { $style, tag, to, icon } = this;
+		const { , listeners } = ctx;
 
 		let data;
 

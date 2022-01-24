@@ -1,10 +1,7 @@
 <template>
-	<nav
-		:class="[$style.container, data.class, data.staticClass]"
-		:style="[data.style, data.staticStyle]"
-	>
+	<nav :class="$style.container">
 		<!-- 为了动态接收传入的样式，不能用伪元素 -->
-		<div :class="[$style.pseudo, props.imageClass]" :style="props.imageStyle"></div>
+		<div :class="[$style.pseudo, imageClass]" :style="imageStyle"></div>
 		<top-nav-body tag="div" class="full-vertex"/>
 	</nav>
 </template>
@@ -12,6 +9,7 @@
 <script>
 export default {
 	name: "TopNavGlass",
+	props: ["imageClass", "imageStyle"],
 };
 </script>
 

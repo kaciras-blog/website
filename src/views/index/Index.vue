@@ -10,7 +10,7 @@
 
 			<!-- 用于背景图片切换的渐变效果 -->
 			<transition
-				:enter-class="$style.enter_before"
+				:enter-from-class="$style.enter_before"
 				:enter-active-class="$style.active_enter"
 				@after-enter="transitionEnd"
 			>
@@ -40,9 +40,6 @@
 
 <script>
 import { attachRandomId } from "@/utils";
-import { SUN_PHASES } from "@/store";
-import BlogSection from "./BlogSection";
-import FriendsSection from "./FriendsSection";
 
 import BannerDawn from "@/assets/img/IndexBannerDawn.png";
 import BannerDaytime from "@/assets/img/IndexBannerLight.png";
@@ -81,92 +78,107 @@ const BANNER_MAP_MOBILE = {
 
 export default {
 	name: "IndexPage",
-	components: {
-		FriendsSection,
-		BlogSection,
-	},
-	asyncData: (session) => Promise.all([
+	loadData: (session) => Promise.all([
 		session.api.recommend.getCards().then(cards => session.data.cards = cards.map(attachRandomId)),
 		session.api.friend.getFriends().then(friends => session.data.friends = friends.map(attachRandomId)),
 	]),
-	/*
-	 * 四个状态与过渡动画的关系：
-	 *   currentSunPhase：当前的时段，过渡一开始它就立即变为下一个时段。
-	 *   transitionSunPhase：过渡开始时下一个时段，过渡完成后为null。
-	 *   targetSunPhase: 过渡开始时下一个时段，过渡完成后不变直到下次切换。
-	 *   visibleSunPhase：过渡开始时等于上一个时段，过渡完成后替换为transitionSunPhase。
-	 *
-	 * 切换流程：
-	 *   当时段改变，即 Vuex 中的 sunPhase 被修改时，注册的 switchSunPhase 监听被调用。
-	 *   transitionSunPhase 被设置，创建过渡元素并触发过渡动画。
-	 *   动画完成后调用注册的回调 transitionEnd，删除过渡元素并将新的时段赋值给 visibleSunPhase。
-	 */
-	data() {
-		// data 在 computed 之前创建，此时 currentSunPhase 还无法访问
-		return {
-			transitionSunPhase: null,
-			visibleSunPhase: this.$store.state.sunPhase,
-		};
-	},
-	computed: {
-		currentSunPhase() {
-			return this.$store.state.sunPhase;
-		},
-		targetSunPhase() {
-			return this.transitionSunPhase || this.visibleSunPhase;
-		},
-		bannerMap() {
-			return this.$mediaQuery.match("mobile") ? BANNER_MAP_MOBILE : BANNER_MAP;
-		},
-		navClass() {
-			if (this.targetSunPhase === "Night") {
-				return [this.$style.nav, "dark"];
-			}
-			return [this.$style.nav];
-		},
-		titleStyle() {
-			return this.targetSunPhase === "Night" && { color: "deeppink" };
-		},
-		bannerStyle() {
-			const imageFile = this.bannerMap[this.visibleSunPhase];
-			if (!imageFile) {
-				return {};
-			}
-			return { backgroundImage: `url(${imageFile})` };
-		},
-		transitionStyle() {
-			const imageFile = this.bannerMap[this.transitionSunPhase];
-			return { backgroundImage: `url(${imageFile})` };
-		},
-	},
-	methods: {
-		/**
-		 * 开始切换大图，时段改变时都要通过这个方法来触发过渡动画。
-		 * 该方法中先使用 HTMLImageElement 预载图片，防止网速慢的时候白屏。
-		 */
-		switchSunPhase(sunPhase) {
-			const image = document.createElement("img");
-			image.src = this.bannerMap[sunPhase];
-			image.addEventListener("load", () => this.transitionSunPhase = sunPhase);
-		},
-		/** 在图片切换效果结束后调用，替换图片 */
-		transitionEnd() {
-			this.$_lock = false;
-			this.visibleSunPhase = this.transitionSunPhase;
-			this.transitionSunPhase = null;
-		},
-		toNextPhase() {
-			if (this.$_lock) {
-				return;
-			}
-			this.$_lock = true;
-			this.$store.commit("SET_SUN_PHASE", SUN_PHASES.nextOf(this.currentSunPhase));
-		},
-	},
-	beforeMount() {
-		this.$store.watch((state) => state.sunPhase, this.switchSunPhase);
-	},
 };
+</script>
+
+<script setup>
+import { ref, computed, onBeforeMount, inject, useCssModule } from "vue";
+import { useStore } from "vuex";
+import { SUN_PHASES } from "@/store";
+import BlogSection from "./BlogSection";
+import FriendsSection from "./FriendsSection";
+
+/*
+ * 四个状态与过渡动画的关系：
+ *   currentSunPhase：当前的时段，过渡一开始它就立即变为下一个时段。
+ *   transitionSunPhase：过渡开始时下一个时段，过渡完成后为null。
+ *   targetSunPhase: 过渡开始时下一个时段，过渡完成后不变直到下次切换。
+ *   visibleSunPhase：过渡开始时等于上一个时段，过渡完成后替换为transitionSunPhase。
+ *
+ * 切换流程：
+ *   当时段改变，即 Vuex 中的 sunPhase 被修改时，注册的 switchSunPhase 监听被调用。
+ *   transitionSunPhase 被设置，创建过渡元素并触发过渡动画。
+ *   动画完成后调用注册的回调 transitionEnd，删除过渡元素并将新的时段赋值给 visibleSunPhase。
+ */
+
+const $style = useCssModule();
+const store = useStore();
+const mediaQuery = inject("$mediaQuery");
+
+// data 在 computed 之前创建，此时 currentSunPhase 还无法访问
+const transitionSunPhase = ref(null);
+const visibleSunPhase = ref(store.state.sunPhase);
+
+let $_lock;
+
+const currentSunPhase = computed(() => {
+	return store.state.sunPhase;
+});
+
+const targetSunPhase = computed(() => {
+	return transitionSunPhase.value || visibleSunPhase.value;
+});
+
+const bannerMap = computed(() => {
+	return mediaQuery.match("mobile") ? BANNER_MAP_MOBILE : BANNER_MAP;
+});
+
+const navClass = computed(() => {
+	if (targetSunPhase.value !== "Night") {
+		return [$style.nav];
+	}
+	return [$style.nav, "dark"];
+});
+
+const titleStyle = computed(() => {
+	return targetSunPhase.value === "Night" && { color: "deeppink" };
+});
+
+const bannerStyle = computed(() => {
+	const imageFile = bannerMap.value[visibleSunPhase.value];
+	if (!imageFile) {
+		return {};
+	}
+	return { backgroundImage: `url(${imageFile})` };
+});
+
+const transitionStyle = computed(() => {
+	const imageFile = bannerMap.value[transitionSunPhase.value];
+	return { backgroundImage: `url(${imageFile})` };
+});
+
+/**
+ * 开始切换大图，时段改变时都要通过这个方法来触发过渡动画。
+ * 该方法中先使用 HTMLImageElement 预载图片，防止网速慢的时候白屏。
+ */
+function switchSunPhase(sunPhase) {
+	const image = document.createElement("img");
+	image.src = bannerMap.value[sunPhase];
+	image.addEventListener("load", () => transitionSunPhase.value = sunPhase);
+}
+
+/** 在图片切换效果结束后调用，替换图片 */
+function transitionEnd() {
+	$_lock = false;
+	visibleSunPhase.value = transitionSunPhase.value;
+	transitionSunPhase.value = null;
+}
+
+function toNextPhase() {
+	if ($_lock) {
+		return;
+	}
+	$_lock = true;
+	store.commit("SET_SUN_PHASE", SUN_PHASES.nextOf(currentSunPhase.value));
+}
+
+onBeforeMount(() => {
+	store.watch(state => state.sunPhase, switchSunPhase.value);
+});
 </script>
 
 <style module lang="less">

@@ -3,13 +3,13 @@
 -->
 <template>
 	<label :class="$style.container">
-		<span :class="$style.label">{{ props.label }}</span>
+		<span :class="$style.label">{{ label }}</span>
 		<input
 			:class="$style.input"
-			:name="props.name"
-			:placeholder="props.placeholder"
-			:value="props.value"
-			@input="e => listeners.input(e.target.value)"
+			:name="name"
+			:placeholder="placeholder"
+			:value="modelValue"
+			@input="e => $emit('update:modelValue', e.target.value)"
 		>
 	</label>
 </template>
@@ -17,6 +17,8 @@
 <script>
 export default {
 	name: "MaterialTextInput",
+	props: ["name", "modelValue", "label", "placeholder"],
+	emits: ["update:modelValue"]
 };
 </script>
 
