@@ -12,12 +12,12 @@
 		"url": "https://github.com/kaciras-blog/website"
 	},
 	"scripts": {
-		"lint": "eslint --fix --ext .js,.vue src",
+		"lint": "eslint --fix src",
 		"test": "jest",
 		"serve": "blog-devtool serve",
 		"build": "blog-devtool build",
 		"start": "blog-server run",
-		"build-cache": "blog-server build-image-cache"
+		"build-cache": "blog-server build-cache"
 	},
 	"browserslist": [
 		"Edge >= 80",
