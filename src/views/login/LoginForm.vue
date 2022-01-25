@@ -67,7 +67,7 @@
 import api from "@/api";
 import { errorMessage } from "@/utils";
 import { REFRESH_USER } from "@/store/types";
-import OauthIcon from "@/components/OauthIcon";
+import OauthIcon from "@/components/OauthIcon.vue";
 
 export default {
 	name: "LoginPanel",

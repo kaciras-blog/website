@@ -43,7 +43,7 @@
 
 <script>
 import { mapState } from "vuex";
-import SmartLink from "./SmartLink";
+import SmartLink from "./SmartLink.vue";
 
 export default {
 	name: "BlogSection",

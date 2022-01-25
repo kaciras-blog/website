@@ -19,9 +19,9 @@
 <script>
 import { getImageResolution, getVideoResolution, openFile } from "@kaciras-blog/uikit";
 import api from "@/api";
-import VideoDialog from "./VideoDialog";
-import AddLinkDialog from "./AddLinkDialog";
 import { basename } from "@/utils";
+import VideoDialog from "./VideoDialog.vue";
+import AddLinkDialog from "./AddLinkDialog.vue";
 
 export default {
 	name: "TextTools",

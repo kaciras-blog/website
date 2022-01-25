@@ -1,10 +1,6 @@
 <template>
 	<div v-if="loading" :class="$style.loading">
-		<atom-spinner
-			:animation-duration="1200"
-			:size="64"
-			color="#33aaff"
-		/>
+		TODO: spinner
 		<span :class="$style.loadingText">评论加载中</span>
 	</div>
 
@@ -16,12 +12,7 @@
 </template>
 
 <script>
-import AtomSpinner from "epic-spinners/src/components/lib/AtomSpinner.vue";
-
 export default {
-	components: {
-		AtomSpinner,
-	},
 	props: {
 		loadFn: {
 			type: Function,

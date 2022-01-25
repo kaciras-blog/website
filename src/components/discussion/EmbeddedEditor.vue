@@ -69,9 +69,9 @@
 
 <script>
 import { mapState } from "vuex";
-import MarkdownView from "@/markdown/MarkdownView";
-import GuideDialog from "./GuideDialog";
+import MarkdownView from "@/markdown/MarkdownView.vue";
 import EditContext from "./EditContext";
+import GuideDialog from "./GuideDialog.vue";
 
 export default {
 	name: "EmbeddedEditor",

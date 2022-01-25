@@ -33,14 +33,14 @@
 
 <script>
 import api from "@/api";
-import MarkdownEditor from "@/markdown/MarkdownEditor";
-import TextTools from "@/markdown/TextTools";
-import TextStateGroup from "@/markdown/TextStateGroup";
 import { articleLink, localDateMinute } from "@/blog-plugin";
 import { errorMessage } from "@/utils";
-import PublishDialog from "./PublishDialog";
-import MetadataDialog from "./MetadataDialog";
-import SyncScrollToggle from "@/markdown/SyncScrollToggle";
+import MarkdownEditor from "@/markdown/MarkdownEditor.vue";
+import TextTools from "@/markdown/TextTools.vue";
+import TextStateGroup from "@/markdown/TextStateGroup.vue";
+import SyncScrollToggle from "@/markdown/SyncScrollToggle.vue";
+import PublishDialog from "./PublishDialog.vue";
+import MetadataDialog from "./MetadataDialog.vue";
 
 export default {
 	name: "EditPage",

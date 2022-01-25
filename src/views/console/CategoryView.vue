@@ -55,8 +55,8 @@
 
 <script>
 import api from "@/api";
-import SelectCategoryDialog from "@/components/SelectCategoryDialog";
-import MoveCategoryDialog from "./MoveCategoryDialog";
+import SelectCategoryDialog from "@/components/SelectCategoryDialog.vue";
+import MoveCategoryDialog from "./MoveCategoryDialog.vue";
 
 export default {
 	name: "CategoryView",

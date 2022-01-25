@@ -40,8 +40,8 @@
 <script>
 import { mapState } from "vuex";
 import api from "@/api";
-import AsidePanel from "./AsidePanel";
-import PreviewItem from "./PreviewItem";
+import AsidePanel from "./AsidePanel.vue";
+import PreviewItem from "./PreviewItem.vue";
 
 const DEFAULT_PAGE_SIZE = 10;
 

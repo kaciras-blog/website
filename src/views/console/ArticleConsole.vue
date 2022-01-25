@@ -26,7 +26,7 @@
 <script>
 import api, { DeletionState } from "@/api";
 import { errorMessage } from "@/utils";
-import ArticleItem from "./ArticleItem";
+import ArticleItem from "./ArticleItem.vue";
 
 export default {
 	name: "ArticleConsole",

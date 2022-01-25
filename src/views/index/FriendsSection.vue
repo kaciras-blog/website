@@ -82,8 +82,8 @@ import { mapState } from "vuex";
 import { edgeScroll, moveElement, observeMouseMove } from "@kaciras-blog/uikit";
 import api from "@/api";
 import { errorMessage } from "@/utils";
-import FriendCard from "./FriendCard";
-import FriendInfoDialog from "./FriendInfoDialog";
+import FriendCard from "./FriendCard.vue";
+import FriendInfoDialog from "./FriendInfoDialog.vue";
 
 const DEFAULT_INFO = {
 	name: "",

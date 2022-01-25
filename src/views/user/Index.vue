@@ -9,15 +9,15 @@
 						:class="$style.head"
 						alt="头像"
 						title="换头像"
-						:src="user.avatar"
+						:src="user.avatar ?? DEFAULT_AVATAR"
 						@click="changeAvatar"
 					>
 				</div>
 
 				<div :class="$style.field">
 					ID:
-					<auth-type-tag :auth-type="user.auth"/>
-					{{user.id}}
+					<auth-type-tag :type="user.auth"/>
+					{{ user.id }}
 				</div>
 
 				<div :class="$style.field">
@@ -36,40 +36,39 @@
 	</base-page-layout>
 </template>
 
-<script>
+<script setup>
+import { shallowReactive, toRaw } from "vue";
+import { useStore } from "vuex";
+import { openFile, useDialog } from "@kaciras-blog/uikit";
 import api from "@/api";
 import { errorMessage } from "@/utils";
 import AuthTypeTag from "./AuthTypeTag";
-import { openFile } from "@kaciras-blog/uikit/src/index";
 
-export default {
-	name: "UserProfilePage",
-	components: {
-		AuthTypeTag,
-	},
-	data() {
-		return { user: this.$store.state.user };
-	},
-	methods: {
-		async changeAvatar() {
-			const image = await openFile("image/*");
-			const session = this.$dialog.cropImage({
-				image,
-				aspectRatio: 1,
-			});
-			const cropped = await session.confirmPromise;
-			this.user.avatar = await api.misc.uploadImage(cropped);
-		},
-		async save() {
-			try {
-				await api.user.updateProfile(this.user);
-				this.$dialog.alertSuccess("保存成功");
-			} catch (e) {
-				this.$dialog.alertError("保存失败", errorMessage(e));
-			}
-		},
-	},
-};
+const DEFAULT_AVATAR = "/static/img/akalin.jpg";
+
+const dialog = useDialog();
+const store = useStore();
+
+const user = shallowReactive(store.state.user);
+
+async function changeAvatar() {
+	const image = await openFile("image/*");
+	const session = dialog.cropImage({
+		image,
+		aspectRatio: 1,
+	});
+	const cropped = await session.confirmPromise;
+	user.avatar = await api.misc.uploadImage(cropped);
+}
+
+async function save() {
+	try {
+		await api.user.updateProfile(toRaw(user));
+		dialog.alertSuccess("保存成功");
+	} catch (e) {
+		dialog.alertError("保存失败", errorMessage(e));
+	}
+}
 </script>
 
 <style module lang="less">

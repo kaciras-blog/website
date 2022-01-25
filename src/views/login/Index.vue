@@ -22,8 +22,8 @@
 </template>
 
 <script>
-import LoginPanel from "./LoginForm";
-import SignupPanel from "./SignupForm";
+import LoginPanel from "./LoginForm.vue";
+import SignupPanel from "./SignupForm.vue";
 
 export default {
 	name: "LoginPage",

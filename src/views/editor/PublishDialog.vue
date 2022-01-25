@@ -41,7 +41,7 @@
 
 <script>
 import api from "@/api";
-import SelectCategoryDialog from "@/components/SelectCategoryDialog";
+import SelectCategoryDialog from "@/components/SelectCategoryDialog.vue";
 import { errorMessage } from "@/utils";
 
 export default {

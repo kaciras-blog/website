@@ -89,8 +89,8 @@ export default {
 import { ref, computed, onBeforeMount, inject, useCssModule } from "vue";
 import { useStore } from "vuex";
 import { SUN_PHASES } from "@/store";
-import BlogSection from "./BlogSection";
-import FriendsSection from "./FriendsSection";
+import BlogSection from "./BlogSection.vue";
+import FriendsSection from "./FriendsSection.vue";
 
 /*
  * 四个状态与过渡动画的关系：

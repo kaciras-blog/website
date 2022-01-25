@@ -43,7 +43,7 @@
 <script>
 import api from "@/api";
 import { deleteOn, errorMessage } from "@/utils";
-import DraftConsoleItem from "./DraftConsoleItem";
+import DraftConsoleItem from "./DraftConsoleItem.vue";
 
 export default {
 	name: "DraftConsole",

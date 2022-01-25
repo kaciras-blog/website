@@ -32,25 +32,25 @@ export default {
 	},
 	render() {
 		const { $style, tag, to, icon } = this;
-		const { , listeners } = ctx;
+		// const { , listeners } = ctx;
 
 		let data;
 
 		switch (tag) {
 			case "router-link":
-				data = { attrs: { to }, staticClass: "clean-link", class: $style.link };
+				data = { to, class: ["clean-link", $style.link] };
 				break;
 			case "div":
-				data = { class: $style.link, on: { click: listeners.click } };
+				data = { class: $style.link };
 				break;
 			case "a":
-				data = { attrs: { href: to }, staticClass: "clean-link", class: $style.link };
+				data = { href: to,  class: ["clean-link", $style.link] };
 				break;
 		}
 
 		return h(tag, data, [
 			h("i", { class: [$style.icon, icon] }),
-			ctx.slots().default,
+			this.$slots.default,
 		]);
 	},
 };

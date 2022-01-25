@@ -31,7 +31,7 @@
 import { moveElement, observeMouseMove } from "@kaciras-blog/uikit";
 import api from "@/api";
 import { attachRandomId, deleteOn } from "@/utils";
-import CardListItem from "./CardListItem";
+import CardListItem from "./CardListItem.vue";
 
 const CARD_TEMPLATE = {
 	picture: "/static/img/placeholder.png",

@@ -46,7 +46,7 @@
 <script>
 import api, { DiscussionState } from "@/api";
 import { errorMessage } from "@/utils";
-import MarkdownView from "@/markdown/MarkdownView";
+import MarkdownView from "@/markdown/MarkdownView.vue";
 import { localDateMinute } from "@/blog-plugin";
 
 export default {

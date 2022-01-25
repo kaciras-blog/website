@@ -67,5 +67,3 @@
 		</section>
 	</div>
 </template>
-
-<script setup></script>

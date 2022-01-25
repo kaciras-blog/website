@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import ErrorContent from "./ErrorContent";
+import ErrorContent from "./ErrorContent.vue";
 
 export default {
 	name: "Error",

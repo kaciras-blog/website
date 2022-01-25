@@ -28,9 +28,9 @@
 
 <script>
 import { mapState } from "vuex";
-import MarkdownView from "@/markdown/MarkdownView";
-import EditorFrame from "./EditorFrame";
-import EmbeddedEditor from "./EmbeddedEditor";
+import MarkdownView from "@/markdown/MarkdownView.vue";
+import EditorFrame from "./EditorFrame.vue";
+import EmbeddedEditor from "./EmbeddedEditor.vue";
 
 export default {
 	name: "InputSection",

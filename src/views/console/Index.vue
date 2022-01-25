@@ -45,12 +45,12 @@
 </template>
 
 <script>
-import ArticleConsole from "./ArticleConsole";
-import DraftConsole from "./DraftConsole";
-import CategoryConsole from "./CategoryConsole";
-import CardsConsole from "./CardsConsole";
-import DiscussionConsole from "./DiscussionConsole";
-import NotificationConsole from "./NotificationConsole";
+import ArticleConsole from "./ArticleConsole.vue";
+import DraftConsole from "./DraftConsole.vue";
+import CategoryConsole from "./CategoryConsole.vue";
+import CardsConsole from "./CardsConsole.vue";
+import DiscussionConsole from "./DiscussionConsole.vue";
+import NotificationConsole from "./NotificationConsole.vue";
 
 export default {
 	data: () => ({

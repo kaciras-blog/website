@@ -13,11 +13,7 @@
 			v-if="loading"
 			:class="$style.spinner"
 		>
-			<atom-spinner
-				:animation-duration="1200"
-				:size="64"
-				color="#33aaff"
-			/>
+			TODO: spinner
 			<span>加载中……</span>
 		</div>
 
@@ -37,12 +33,11 @@
 </template>
 
 <script>
-import AtomSpinner from "epic-spinners/src/components/lib/AtomSpinner.vue";
 import api from "@/api";
-import { errorMessage } from "@/utils";
-import FriendNotice from "@/views/console/FriendNotice";
-import DiscussionNotice from "@/views/console/DiscussionNotice";
 import { localDateMinute } from "@/blog-plugin";
+import { errorMessage } from "@/utils";
+import FriendNotice from "@/views/console/FriendNotice.vue";
+import DiscussionNotice from "@/views/console/DiscussionNotice.vue";
 
 const MAP = {
 	1: {

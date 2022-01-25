@@ -33,8 +33,8 @@
 
 <script>
 import api from "@/api";
-import DiscussionContent from "./DiscussionContent";
-import EditorFrame from "./EditorFrame";
+import DiscussionContent from "./DiscussionContent.vue";
+import EditorFrame from "./EditorFrame.vue";
 
 export default {
 	name: "ReplyFrame",

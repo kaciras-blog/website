@@ -55,8 +55,8 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import { LOGOUT } from "@/store/types";
-import NavMenuFrame from "./NavMenuFrame";
-import SettingDialog from "./SettingDialog";
+import NavMenuFrame from "./NavMenuFrame.vue";
+import SettingDialog from "./SettingDialog.vue";
 
 export default {
 	name: "TopNavBody",

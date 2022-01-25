@@ -80,11 +80,11 @@
 import { scrollToElement } from "@kaciras-blog/uikit";
 import { debounceFirst } from "@kaciras-blog/server/lib/functions";
 import api from "@/api";
-import DiscussionContent from "./DiscussionContent";
-import ReplyFrame from "./ReplyFrame";
-import EditorFrame from "./EditorFrame";
-import InputSection from "./InputSection";
-import MarkdownView from "@/markdown/MarkdownView";
+import MarkdownView from "@/markdown/MarkdownView.vue";
+import DiscussionContent from "./DiscussionContent.vue";
+import ReplyFrame from "./ReplyFrame.vue";
+import EditorFrame from "./EditorFrame.vue";
+import InputSection from "./InputSection.vue";
 
 export default {
 	name: "DiscussionItem",

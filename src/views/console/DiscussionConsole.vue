@@ -31,8 +31,8 @@
 
 <script>
 import api, { DiscussionState } from "@/api";
-import DiscussionConfigPanel from "./DiscussionConfigPanel";
-import DiscussionCheckItem from "./DiscussionCheckItem";
+import DiscussionConfigPanel from "./DiscussionConfigPanel.vue";
+import DiscussionCheckItem from "./DiscussionCheckItem.vue";
 
 export default {
 	name: "DiscussionConsole",

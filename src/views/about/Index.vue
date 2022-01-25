@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import SlideNav from "./SlideNav";
+import SlideNav from "./SlideNav.vue";
 
 export default {
 	name: "AboutPage",

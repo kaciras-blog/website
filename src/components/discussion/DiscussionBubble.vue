@@ -49,8 +49,8 @@
 <script>
 import { scrollToElement } from "@kaciras-blog/uikit";
 import { localDateMinute } from "@/blog-plugin";
-import MarkdownView from "@/markdown/MarkdownView";
-import EmbeddedEditor from "./EmbeddedEditor";
+import MarkdownView from "@/markdown/MarkdownView.vue";
+import EmbeddedEditor from "./EmbeddedEditor.vue";
 
 export default {
 	name: "DiscussionBubble",

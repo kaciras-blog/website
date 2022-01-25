@@ -23,14 +23,14 @@
 </template>
 
 <script>
-import { PreventScrollMixin, PromiseSource } from "@kaciras-blog/uikit";
-import NavMenu from "./NavMenu";
+import { PromiseSource } from "@kaciras-blog/uikit";
+import NavMenu from "./NavMenu.vue";
 
 export default {
 	name: "NavMenuFrame",
-	mixins: [
-		PreventScrollMixin,
-	],
+	// mixins: [
+	// 	PreventScrollMixin,
+	// ],
 	isolation: true,
 	components: {
 		NavMenu,

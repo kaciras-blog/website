@@ -28,8 +28,8 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import { LOGOUT } from "@/store/types";
-import SideMenuLink from "./SideMenuLink";
-import SettingFrame from "./SettingFrame";
+import SideMenuLink from "./SideMenuLink.vue";
+import SettingFrame from "./SettingFrame.vue";
 
 export default {
 	name: "NavMenu",

@@ -63,10 +63,10 @@
 <script>
 import api from "@/api";
 import { LOAD_DISCUSSION_OPTIONS } from "@/store/types";
-import BootLoader from "./BootLoader";
+import BootLoader from "./BootLoader.vue";
 import DiscussionItem from "./DiscussionItem.vue";
 import InputSection from "./InputSection.vue";
-import DiscussionBubble from "./DiscussionBubble";
+import DiscussionBubble from "./DiscussionBubble.vue";
 
 const PAGE_SIZE = 30;
 const NEST_SIZE = 3;

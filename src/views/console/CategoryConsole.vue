@@ -53,9 +53,9 @@
 
 <script>
 import api from "@/api";
-import CategoryCard from "@/components/CategoryCard";
 import CachedCategoryWalker from "@/components/CachedCategoryWalker";
-import CategoryView from "./CategoryView";
+import CategoryCard from "@/components/CategoryCard.vue";
+import CategoryView from "./CategoryView.vue";
 
 const TEMPLATE = {
 	name: "新建分类",

@@ -68,7 +68,7 @@ import { scrollToElementStart } from "@kaciras-blog/uikit";
 import TitleMixin from "@/title-mixin";
 import { articleLink, localDateMinute } from "@/blog-plugin";
 import { escapeHtml } from "@/utils";
-import MarkdownView from "@/markdown/MarkdownView";
+import MarkdownView from "@/markdown/MarkdownView.vue";
 
 export default {
 	name: "ArticlePage",

@@ -77,8 +77,8 @@
 import api from "@/api";
 import { articleLink, localDateMinute } from "@/blog-plugin";
 import { errorMessage } from "@/utils";
-import CardsConsole from "./CardsConsole";
-import SelectCategoryDialog from "@/components/SelectCategoryDialog";
+import SelectCategoryDialog from "@/components/SelectCategoryDialog.vue";
+import CardsConsole from "./CardsConsole.vue";
 
 export default {
 	name: "ArticleItem",
