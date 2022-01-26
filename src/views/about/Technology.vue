@@ -1,9 +1,14 @@
+<script setup lang="ts">
+import packageJson from "../../../package.json";</script>
+
 <template>
 	<div class="about-tab-page">
 		<section class="about-section">
 			<icon-section-header title="Kaciras' Blog" icon="@assets/img/logo-kaciras.svg"/>
 			<icon-paragraph src="@assets/img/logo-github.svg" title="github">
-				<a class="highlight" href="https://github.com/kaciras-blog">https://github.com/kaciras-blog</a>
+				<a class="highlight" href="https://github.com/kaciras-blog">
+					https://github.com/kaciras-blog
+				</a>
 			</icon-paragraph>
 			<icon-paragraph src="@assets/img/html-code.svg" title="browsers">
 				兼容性：

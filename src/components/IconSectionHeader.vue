@@ -1,13 +1,14 @@
 <template>
 	<header :class="$style.section_header">
-		<h1 class="compact">{{props.title}}</h1>
-		<img :src="props.icon" alt="header icon" :class="$style.section_icon">
+		<h1 class="compact">{{ title }}</h1>
+		<img :src="icon" alt="header icon" :class="$style.section_icon">
 	</header>
 </template>
 
 <script>
 export default {
 	name: "IconSectionHeader",
+	props: ["title", "icon"],
 };
 </script>
 

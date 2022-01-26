@@ -1,14 +1,14 @@
 <template>
 	<a
-		:title="props.name"
-		:href="props.href"
+		:title="name"
+		:href="href"
 		target="_blank"
 		rel="noopener"
 		:class="$style.container"
 	>
 		<img
-			:src="props.icon"
-			:alt="props.name"
+			:src="icon"
+			:alt="name"
 			:class="$style.icon"
 		>
 	</a>
@@ -17,6 +17,7 @@
 <script>
 export default {
 	name: "SocialLink",
+	props: ["name", "href", "icon"]
 };
 </script>
 

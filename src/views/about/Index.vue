@@ -11,19 +11,19 @@
 <script>
 import SlideNav from "./SlideNav.vue";
 
+const tabs = [
+	{ title: "博主", route: "/about/me" },
+	{ title: "友链", route: "/about/friends" },
+	{ title: "技术栈", route: "/about/technology" },
+	{ title: "版权声明", route: "/about/copyright" },
+]
+
 export default {
 	name: "AboutPage",
 	components: {
 		SlideNav,
 	},
-	data: () => ({
-		tabs: [
-			{ title: "博主", route: "/about/me" },
-			{ title: "友链", route: "/about/friends" },
-			{ title: "技术栈", route: "/about/technology" },
-			{ title: "版权声明", route: "/about/copyright" },
-		],
-	}),
+	data: () => ({ tabs }),
 };
 </script>
 
@@ -46,7 +46,7 @@ export default {
 .header {
 	position: sticky;
 	top: 0;
-	z-index: 90; // 比TopNav小一点
+	z-index: 90; // 比 TopNav 小一点
 
 	// 用伪元素模拟边框，使按钮下面的蓝条能够覆盖它，
 	// 普通的 border 在元素内容之外无法覆盖。

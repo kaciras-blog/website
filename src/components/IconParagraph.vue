@@ -2,9 +2,9 @@
 	<p :class="$style.wrapper">
 		<img
 			:class="$style.image"
-			:src="props.src"
-			:alt="props.title"
-			:title="props.title"
+			:src="src"
+			:alt="title"
+			:title="title"
 		>
 		<span :class="$style.text"><slot/></span>
 	</p>
@@ -13,6 +13,7 @@
 <script>
 export default {
 	name: "IconParagraph",
+	props: ["src", "title"]
 };
 </script>
 

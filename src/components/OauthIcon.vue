@@ -1,4 +1,5 @@
 <script>
+import { h } from "vue";
 import { BASE_URL } from "@/api";
 
 export default {
@@ -18,17 +19,21 @@ export default {
 		},
 		returnUri: String,
 	},
-	render(h, ctx) {
-		const { endpoint, returnUri, icon, tip } = ctx.props;
+	render() {
+		const { endpoint, returnUri, icon, tip, $style } = this;
 
 		// <img :class="$style.logo" :src="..." :alt="tip" :title="tip">
 		const src = require("../assets/img/" + icon);
-		const attrs = { src, alt: tip, title: tip };
-		const imgElement = h("img", { staticClass: ctx.$style.logo, attrs });
+		const imgElement = h("img", {
+			title: tip,
+			src,
+			alt: tip,
+			class: $style.logo
+		});
 
 		// <a :href="href"><img ...></a>
 		const href = `${BASE_URL}/oauth2/connect/${endpoint}?ret=${returnUri}`;
-		return h("a", { attrs: { href } }, [imgElement]);
+		return h("a", { href }, [imgElement]);
 	},
 };
 </script>
