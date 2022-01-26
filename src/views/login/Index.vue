@@ -12,7 +12,8 @@
 					:class="$style.picture"
 				>
 			</div>
-			<component :is="activePanel"
+			<component
+				:is="activePanel"
 				:class="$style.formPanel"
 				:return-uri="returnUri"
 				@switch-panel="switchPanel"
@@ -21,37 +22,24 @@
 	</base-page-layout>
 </template>
 
-<script>
-import LoginPanel from "./LoginForm.vue";
-import SignupPanel from "./SignupForm.vue";
+<script setup lang="ts">
+import { shallowRef } from "vue";
+import { useRoute } from "vue-router";
+import SignupForm from "./SignupForm.vue";
+import LoginForm from "./LoginForm.vue";
 
-export default {
-	name: "LoginPage",
-	components: {
-		LoginPanel,
-		SignupPanel,
-	},
-	data: () => ({
-		activePanel: "LoginPanel",
-		returnUri: "/",
-	}),
-	methods: {
-		switchPanel(panel) {
-			this.activePanel = panel;
-		},
-	},
-	beforeRouteEnter(to, from, next) {
-		const param = to.query["return_uri"];
-		if (param) {
-			return next(vm => vm.returnUri = param);
-		}
-		const fromPath = from.fullPath;
-		if (fromPath.startsWith("/login")) {
-			return next(vm => vm.returnUri = this.returnUri);
-		}
-		next(vm => vm.returnUri = fromPath);
-	},
-};
+const returnUri = useRoute().query["return_uri"];
+
+// 这里用 Component 类型会报错，可能是 Vue 的 BUG。
+const activePanel = shallowRef<any>(LoginForm);
+
+function switchPanel(name: string) {
+	if (name === "LoginPanel") {
+		activePanel.value = LoginForm;
+	} else {
+		activePanel.value = SignupForm;
+	}
+}
 </script>
 
 <style module lang="less">
@@ -145,9 +133,11 @@ export default {
 	& > .buttons {
 		grid-column: ~"1/3";
 		display: flex;
+
 		& > * {
 			flex: 1;
 		}
+
 		& > *:not(:last-child) {
 			margin-right: 1rem;
 		}

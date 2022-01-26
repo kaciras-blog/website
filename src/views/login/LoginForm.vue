@@ -49,13 +49,13 @@
 		<div class="center">
 			<oauth-icon
 				endpoint="github"
-				icon="logo-github.svg"
+				icon="@/assets/img/logo-github.svg"
 				tip="Github登录"
 				:return-uri="returnUri"
 			/>
 			<oauth-icon
 				endpoint="google"
-				icon="logo-google.svg"
+				icon="@/assets/img/logo-google.svg"
 				tip="Google登录"
 				:return-uri="returnUri"
 			/>
@@ -77,6 +77,7 @@ export default {
 	props: {
 		returnUri: String,
 	},
+	emits: ["switch-panel"],
 	data: () => ({
 		message: "",
 		form: {

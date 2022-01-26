@@ -50,7 +50,9 @@
 			>
 		</div>
 
-		<span class="text-warning center">{{message}}</span>
+		<span class="text-warning center">
+			{{ message }}
+		</span>
 
 		<div class="buttons">
 			<kx-task-button
@@ -79,6 +81,7 @@ export default {
 	props: {
 		returnUri: String,
 	},
+	emits: ["switch-panel"],
 	data: () => ({
 		message: "",
 		captcha: null,

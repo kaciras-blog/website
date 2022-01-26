@@ -23,10 +23,9 @@ export default {
 		const { endpoint, returnUri, icon, tip, $style } = this;
 
 		// <img :class="$style.logo" :src="..." :alt="tip" :title="tip">
-		const src = require("../assets/img/" + icon);
 		const imgElement = h("img", {
 			title: tip,
-			src,
+			src: icon,
 			alt: tip,
 			class: $style.logo
 		});
