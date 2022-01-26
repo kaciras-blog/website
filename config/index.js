@@ -1,78 +1,48 @@
 /**
  * 配置文件，包括构建配置和运行配置，该文件被 webserver 使用。
  * webserver 默认加载 index.js，通过启动参数 --profile=prod 可以让它改为加载本目录下的 prod.js
- */
-const path = require("path");
-
-/**
- * 全部的配置项，注释里有【环境】的项需要修改为自己的环境
+ *
+ * 全部的配置项都在这里，注释里有【环境】的项需要修改为自己的环境
  */
 module.exports = {
 
 	/** 构建输出的目录 */
-	outputDir: path.resolve(__dirname, "../dist"),
+	outputDir: "dist",
 
 	/** 静态资源目录，相对于outputDir */
 	assetsDir: "static",
 
-	webpack: {
+	build: {
+		/** */
 		mode: "development",
-		publicPath: "/",
-
-		/** 是否使用多线程编译JS文件 */
-		parallel: true,
 
 		/** 是否启用 webpack-bundle-analyzer */
-		bundleAnalyzerReport: false,
-
-		/** 是否启用 speed-measure-webpack-plugin */
-		speedMeasure: false,
-
-		/** 客户端构建的一些其他选项 */
-		client: {
-			useBabel: true,
-
-			// eval 类在 Firefox 里无法调试
-			devtool: "inline-source-map",
-			cssSourceMap: true,
-		},
-
-		/** 服务端构建的一些其他选项 */
-		server: {
-			devtool: "source-map",
-			cssSourceMap: false,
-		},
+		bundleAnalyzer: false,
 
 		/** 传递给 vue-loader 的选项，具体说明见Vue的官网 */
-		vueLoader: {
-			transformAssetUrls: {
-				video: ["src", "poster"],
-				source: "src",
-				img: "src",
-				image: "xlink:href",
+		vueOptions: {
+			template: {
+				transformAssetUrls: {
+					video: ["src", "poster"],
+					source: "src",
+					img: "src",
+					image: "xlink:href",
 
-				"icon-paragraph": "src",
-				"icon-section-header": "icon",
-				"social-link": "icon",
-				"error-content": "image",
+					"icon-paragraph": "src",
+					"icon-section-header": "icon",
+					"social-link": "icon",
+					"oauth-icon": "icon",
+					"error-content": "image",
+				},
 			},
-			compilerOptions: {
-				whitespace: "condense",
-			},
+
+			// compilerOptions: {
+			// 	whitespace: "condense",
+			// },
 		},
 	},
 
-	/** 开发服务器的配置项 */
-	dev: {
-
-		/**
-		 * 热重载中间件的选择，如果为 false 则使用传统的 webpack-hot-middleware，
-		 * true 或未指定则使用 webpack-hot-client。
-		 */
-		useHotClient: true,
-	},
-
-	/** 连接设置，可以配置接受HTTP和HTTPS连接 */
+	/** 连接设置，可以配置接受 HTTP 和 HTTPS 连接 */
 	server: {
 
 		/** 服务器绑定的地址，即 net.server.listen 的 hostname 参数 */
