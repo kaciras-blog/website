@@ -1,30 +1,31 @@
-<!-- 虽然只有脚本代码，但因为是组件所以用vue文件 -->
-<script>
+<template>
+	<div :ref="setupLazyLoad" class="markdown" v-html="html"></div>
+</template>
+
+<script setup lang="ts">
+import { computed } from "vue";
 import { articleRenderer, discussionRenderer, initLazyLoading } from ".";
 
-export default {
-	name: "MarkdownView",
-	props: {
-		value: {
-			type: String,
-			required: true,
-		},
-		isArticle: {
-			type: Boolean,
-			default: false,
-		},
-	},
-	render(h) {
-		const renderer = this.isArticle ? articleRenderer : discussionRenderer;
-		const innerHTML = renderer.render(this.value);
-		return h("div", { staticClass: "markdown", domProps: { innerHTML } });
-	},
-	async mounted() {
-		await this.$nextTick();
-		this.$_disconnect = initLazyLoading(this.$el);
-	},
-	destroyed() {
-		this.$_disconnect();
-	},
-};
+interface MarkdownViewProps {
+	value: string;
+	isArticle: boolean;
+}
+
+const props = defineProps<MarkdownViewProps>();
+
+const html = computed(() => {
+	const renderer = props.isArticle
+		? articleRenderer
+		: discussionRenderer;
+	return renderer.render(props.value);
+});
+
+let disconnect = () => {};
+
+function setupLazyLoad(el: HTMLElement) {
+	if (!el) {
+		disconnect();
+	}
+	disconnect = initLazyLoading(el);
+}
 </script>
