@@ -1,10 +1,8 @@
-import "@fortawesome/fontawesome-free/css/all.css";
 import "vue-multiselect/dist/vue-multiselect.min.css";
 import "./css/index.less";
-import { createApp } from "vue";
+import { createSSRApp } from "vue";
 import VueMultiselect from "vue-multiselect";
-import UIKit from "@kaciras-blog/uikit";
-import { MediaQueryManager } from "@kaciras-blog/uikit/src/media-query";
+import UIKit, { MediaQueryManager } from "@kaciras-blog/uikit";
 import createStore from "./store";
 import createRouter from "./router";
 import BlogPlugin from "./blog-plugin";
@@ -26,7 +24,7 @@ export const mediaQueryPlugin = new MediaQueryManager(mediaBreakpoints);
  * 所以不能等到创建之后再替换服务端渲染出的初始状态，而要在创建Vue实例之前就调用 store.replaceState(...)
  *
  * @param initState Vuex的初始状态
- * @return Vue全家桶
+ * @return Vue 全家桶
  */
 export default function createBlogApp(initState: any = undefined) {
 	const store = createStore();
@@ -47,7 +45,7 @@ export default function createBlogApp(initState: any = undefined) {
 		if (!to.meta.requireAuth) {
 			return next();
 		}
-		const { user } = router.app.$store.state;
+		const { user } = store.state;
 
 		if (user.id === 2) {
 			return next();
@@ -55,13 +53,14 @@ export default function createBlogApp(initState: any = undefined) {
 		next({ path: "/login", query: { return_uri: "/console" } });
 	});
 
-	const app = createApp(App);
+	const app = createSSRApp(App);
 
 	app.use(store);
 	app.use(router);
 	app.use(UIKit);
 	app.use(BlogPlugin);
 	app.use(mediaQueryPlugin);
+
 	app.component(VueMultiselect.name, VueMultiselect);
 
 	return { app, router, store };

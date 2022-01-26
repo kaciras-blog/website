@@ -1,7 +1,7 @@
-import Vue from "vue";
+import { createApp, h } from "vue";
 import { Store } from "vuex";
-import { Route } from "vue-router/types/router";
-import { SET_WIDTH } from "@kaciras-blog/uikit/src/media-query";
+import { RouteLocationNormalizedLoaded } from "vue-router";
+import { SET_WIDTH } from "@kaciras-blog/uikit";
 import { configureForProxy } from "@kaciras-blog/server/lib/axios-helper";
 import { RenderContext } from "@kaciras-blog/server/lib/koa/vue-ssr";
 import api, { Api } from "./api";
@@ -9,14 +9,18 @@ import { PrefetchContext } from "./prefetch";
 import { REFRESH_USER, SET_PREFETCH_DATA } from "./store/types";
 import createBlogApp, { mediaBreakpoints } from "./main";
 
+/*
+ *
+ */
+
 // @ts-ignore isServer & cancelToken on prototype.
 class ServerPrefetchContext extends PrefetchContext {
 
 	readonly store: Store<any>;
-	readonly route: Route;
+	readonly route: RouteLocationNormalizedLoaded;
 	readonly api: Api;
 
-	constructor(store: Store<any>, route: Route, api: Api) {
+	constructor(store: Store<any>, route: RouteLocationNormalizedLoaded, api: Api) {
 		super();
 		this.store = store;
 		this.route = route;
@@ -41,10 +45,10 @@ export default async (context: RenderContext) => {
 	const { request, url } = context;
 
 	if (/^\/edit\//.test(url.pathname)) {
-		return new Vue({ render: h => h("div", { attrs: { id: "app" } }) });
+		return createApp({ render: () => h("div", { id: "app" }) });
 	}
 
-	const { vue, router, store } = createBlogApp();
+	const { app, router, store } = createBlogApp();
 	const ssrApi = api.withConfigProcessor(config => configureForProxy(request, config));
 
 	// 从 UserAgent 中检测是否手机，从而设定渲染的屏幕宽度
@@ -61,18 +65,21 @@ export default async (context: RenderContext) => {
 	}
 
 	// router.push 返回的 Promise 等待所有 hooks 都调用完毕
-	await router.push(url.pathname);
+	router.push(url.pathname);
+	await router.isReady();
 
-	const session = new ServerPrefetchContext(store, router.currentRoute, ssrApi);
+	const route = router.currentRoute.value;
+	const session = new ServerPrefetchContext(store, route, ssrApi);
 
 	/*
 	 * 路由配置里最后一条把所有未匹配的路由都转到错误页，
 	 * 故 router.getMatchedComponents() 不会返回空数组，也无法用其区分404.
 	 * 目前的方案是在 error/Index.vue 里设置一个标识表示 NotFound.
 	 */
-	const tasks = (router.getMatchedComponents() as any[])
-		.filter(c => c.asyncData)
-		.map(c => c.asyncData(session));
+	const tasks = route.matched
+		.flatMap(v => Object.values(v.components) as any)
+		.filter(c => c.loadData)
+		.map(c => c.loadData(session));
 
 	if (!userCheckNeeded) {
 		tasks.push(store.dispatch(REFRESH_USER, ssrApi));
@@ -93,14 +100,15 @@ export default async (context: RenderContext) => {
 		}
 	}
 
-	const { title } = router.currentRoute.meta;
+	const { title } = route.meta;
 	if (title) {
 		context.title = title + " - Kaciras的博客";
 		context.meta = "<meta name='description' content='欢迎来到Kaciras的博客'>";
 	}
 
+
 	// Vue2 的类型定义......
 	(context as any).state = store.state;
 
-	return vue;
+	return app;
 };

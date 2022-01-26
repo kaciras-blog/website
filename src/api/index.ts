@@ -61,7 +61,9 @@ function createAxios(config?: AxiosRequestConfig) {
 
 // TODO: 这里有点问题，升级构建工具时记得改
 const apiOrigin = process.env.API_ORIGIN as any;
-export const BASE_URL = typeof apiOrigin === "string"
+export const BASE_URL = import.meta.env.SSR
+	? process.env.SSR_API_ORIGIN
+	: typeof apiOrigin === "string"
 	? apiOrigin
 	: apiOrigin[location.protocol.substring(0, location.protocol.length - 1)];
 

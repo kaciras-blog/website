@@ -4,9 +4,8 @@
  *   2.处理一些异常情况，例如跳转。在出现内部错误时显示错误页面。
  *   3.允许取消正在进行的预加载，并中止网络请求（需要预加载函数支持）。
  */
-import Vue, { ComponentOptions } from "vue";
-import { Route } from "vue-router";
-import { NavigationGuardNext, VueRouter } from "vue-router/types/router";
+import { ComponentOptions } from "vue";
+import { NavigationGuardNext, RouteLocationNormalizedLoaded, Router } from "vue-router";
 import { Store } from "vuex";
 import api from "@/api";
 import { SET_PREFETCH_DATA } from "@/store/types";
@@ -21,9 +20,9 @@ class ClientPrefetchContext extends PrefetchContext {
 
 	readonly store: Store<any>;
 	readonly abortSignal: AbortSignal;
-	readonly route: Route;
+	readonly route: RouteLocationNormalizedLoaded;
 
-	constructor(store: Store<any>, route: Route, abortSignal: AbortSignal) {
+	constructor(store: Store<any>, route: RouteLocationNormalizedLoaded, abortSignal: AbortSignal) {
 		super();
 		this.store = store;
 		this.route = route;
@@ -44,7 +43,7 @@ ClientPrefetchContext.prototype.isServer = false;
  */
 export function prefetch(
 	store: Store<any>,
-	to: Route,
+	to: RouteLocationNormalizedLoaded,
 	components: MaybePrefetchComponent[],
 	next: NavigationGuardNext) {
 
@@ -68,7 +67,7 @@ export function prefetch(
  */
 function doPrefetch(
 	store: Store<any>,
-	to: Route,
+	to: RouteLocationNormalizedLoaded,
 	components: MaybePrefetchComponent[],
 	next: NavigationGuardNext) {
 
@@ -115,8 +114,8 @@ function doPrefetch(
 /**
  * mixin 必须在创建 Vue 实例之前
  */
-export const ClientPrefetchMixin: ComponentOptions<Vue> = {
-	beforeRouteUpdate(this: Vue, to, from, next) {
+export const ClientPrefetchMixin: ComponentOptions = {
+	beforeRouteUpdate(this: any, to, from, next) {
 		if (!(this.$options as any).asyncData) {
 			return next();
 		}
@@ -125,7 +124,7 @@ export const ClientPrefetchMixin: ComponentOptions<Vue> = {
 	},
 }
 
-export function installRouterHooks(store: Store<any>, router: VueRouter) {
+export function installRouterHooks(store: Store<any>, router: Router) {
 
 	/**
 	 * 相比于官网示例，这里把加载指示器提前到 beforeEach 钩子，以便在异步组件下载前就开始加载提示。
@@ -151,8 +150,8 @@ export function installRouterHooks(store: Store<any>, router: VueRouter) {
 		}
 
 		// （这段是官网给的）我们只关心非预渲染的组件，所以我们对比它们，找出两个匹配列表的差异组件。
-		const matched = router.getMatchedComponents(to);
-		const previous = router.getMatchedComponents(from);
+		const matched = to.matched.flatMap(v => v.components);
+		const previous = from.matched.flatMap(v => v.components);
 		let diffed = false;
 		const activated = matched.filter((c, i) => diffed || (diffed = (previous[i] !== c)));
 
