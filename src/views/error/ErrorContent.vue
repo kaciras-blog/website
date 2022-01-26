@@ -1,14 +1,20 @@
 <template>
 	<main :class="$style.container">
-		<h1 :class="$style.title">{{props.title}}</h1>
+		<h1 :class="$style.title">{{ title }}</h1>
 		<img
-			:src="props.image"
+			:src="image"
 			alt="ErrorImage"
 			:class="$style.image"
 		>
 		<div :class="$style.content"><slot/></div>
 	</main>
 </template>
+
+<script>
+export default {
+	props: ["title", "image"],
+}
+</script>
 
 <style module lang="less">
 @import "../../css/imports";

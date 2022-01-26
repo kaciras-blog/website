@@ -54,9 +54,6 @@ const MAP = {
 
 export default {
 	name: "NotificationConsole",
-	components: {
-		AtomSpinner,
-	},
 	data: () => ({
 		MAP,
 		loading: true,

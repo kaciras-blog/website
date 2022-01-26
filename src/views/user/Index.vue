@@ -42,7 +42,7 @@ import { useStore } from "vuex";
 import { openFile, useDialog } from "@kaciras-blog/uikit";
 import api from "@/api";
 import { errorMessage } from "@/utils";
-import AuthTypeTag from "./AuthTypeTag";
+import AuthTypeTag from "./AuthTypeTag.vue";
 
 const DEFAULT_AVATAR = "/static/img/akalin.jpg";
 

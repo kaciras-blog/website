@@ -177,7 +177,7 @@ function toNextPhase() {
 }
 
 onBeforeMount(() => {
-	store.watch(state => state.sunPhase, switchSunPhase.value);
+	store.watch(state => state.sunPhase, switchSunPhase);
 });
 </script>
 
