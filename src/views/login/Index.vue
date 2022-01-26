@@ -22,16 +22,39 @@
 	</base-page-layout>
 </template>
 
+<script lang="ts">
+import { defineComponent } from "vue";
+
+/**
+ * 将前一个页面的地址记录到 returnUri 属性中，以便登陆后返回。
+ *
+ * vue-router 这个傻逼东西的 next 参数没泛型，导致 returnUri 标错，不影响构建。
+ */
+export default defineComponent({
+	beforeRouteEnter(to, from, next) {
+		const param = to.query.return_uri;
+		if (param) {
+			return next(vm => vm.returnUri = param);
+		}
+		const fromPath = from.fullPath;
+		if (fromPath.startsWith("/login")) {
+			return next(vm => vm.returnUri = this.returnUri);
+		}
+		next(vm => vm.returnUri = fromPath);
+	},
+});
+</script>
+
 <script setup lang="ts">
 import { shallowRef } from "vue";
-import { useRoute } from "vue-router";
 import SignupForm from "./SignupForm.vue";
 import LoginForm from "./LoginForm.vue";
 
-const returnUri = useRoute().query["return_uri"];
-
 // 这里用 Component 类型会报错，可能是 Vue 的 BUG。
 const activePanel = shallowRef<any>(LoginForm);
+const returnUri = shallowRef("/");
+
+defineExpose({ returnUri });
 
 function switchPanel(name: string) {
 	if (name === "LoginPanel") {
