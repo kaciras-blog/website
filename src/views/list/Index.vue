@@ -3,11 +3,12 @@
 
 		<div id="index-page">
 			<section :class="$style.list">
-				<h1 class="segment" :class="$style.listTitle">全部文章</h1>
-
+				<h1 class="segment" :class="$style.listTitle">
+					全部文章
+				</h1>
 				<scroll-paging-view
-					ref="pagingView"
-					v-model="articleList"
+					ref="listView"
+					v-model="articles"
 					:loader="loadPage"
 					:start="startPos"
 					:page-size="10"
@@ -31,26 +32,21 @@
 				<aside-panel></aside-panel>
 
 				<h3 class="padding">设置</h3>
-				<kx-switch-box name="auto-load" v-model="autoLoad">滚动加载</kx-switch-box>
+				<kx-switch-box name="auto-load" v-model="autoLoad">
+					滚动加载
+				</kx-switch-box>
 			</aside>
 		</div>
 	</banner-page-layout>
 </template>
 
 <script>
-import { mapState } from "vuex";
 import api from "@/api";
-import AsidePanel from "./AsidePanel.vue";
-import PreviewItem from "./PreviewItem.vue";
 
 const DEFAULT_PAGE_SIZE = 10;
 
 export default {
 	name: "ArticleListPage",
-	components: {
-		PreviewItem,
-		AsidePanel,
-	},
 	async asyncData(session) {
 		const configuredApi = session.api.withCancelToken(session.abortSignal);
 
@@ -70,62 +66,68 @@ export default {
 
 		return Promise.all(tasks);
 	},
-	data() {
-		const data = {
-			autoLoad: this.$mediaQuery.match("mobile"),
-			startPos: parseInt(this.$route.params.index) || 0,
-			articleList: null,
-		};
-
-		// 预加载的文章只是第一页，后续还会加载更多所以放入data而不是计算属性。
-		const { articleList } = this.$store.state.prefetch;
-		if (articleList) {
-			data.articleList = articleList;
-			data.startPos += articleList.items.length;
-		}
-		return data;
-	},
-	computed: mapState({
-		category: state => state.prefetch.category,
-	}),
-	watch: {
-		autoLoad(value) {
-			localStorage.setItem("scrollPager.autoLoad", JSON.stringify(value));
-		},
-	},
-	methods: {
-		loadPage(start, count) {
-			return api.article.getList({ start, count });
-		},
-		/**
-		 * 根据路由和当前加载的文章数来构造下一页的URL。
-		 *
-		 * @param start {number} 下一页起始位置
-		 * @param count {number} 每页显示多少个
-		 * @return {string} 指向下一页的URL，相对路径
-		 */
-		nextPageUrl(start, count) {
-			const params = Object.assign({}, this.$route.query);
-			const pairs = [];
-			for (const k of Object.keys(params)) {
-				pairs.push(k + "=" + params[k]);
-			}
-			const nextPath = "/list/" + ((parseInt(this.$route.params.index) || 0) + count);
-			return pairs.length ? nextPath + "?" + pairs.join("&") : nextPath;
-		},
-	},
-	beforeMount() {
-		const storedLoad = localStorage.getItem("scrollPager.autoLoad");
-		if (storedLoad) {
-			this.autoLoad = JSON.parse(storedLoad);
-		}
-	},
-	mounted() {
-		if (!this.articleList) {
-			this.$refs.pagingView.reload();
-		}
-	},
 };
+</script>
+
+<script setup>
+import { onBeforeMount, onMounted, watch, inject, ref } from "vue";
+import { useRoute } from 'vue-router'
+import { useStore } from "vuex";
+import PreviewItem from "./PreviewItem.vue";
+import AsidePanel from "./AsidePanel.vue";
+
+const kAutoLoad = "scrollPager.autoLoad";
+
+const mediaQuery = inject("$mediaQuery");
+const route = useRoute();
+const store = useStore();
+
+const { articleList, category } = store.state.prefetch;
+
+let startPos = parseInt(route.params.index) || 0;
+if (articleList) {
+	startPos += articleList.items.length;
+}
+
+const listView = ref();
+const autoLoad = ref(mediaQuery.match("mobile"));
+const articles = ref(articleList);
+
+watch(autoLoad, v => localStorage.setItem(kAutoLoad, JSON.stringify(v)))
+
+function loadPage(start, count) {
+	return api.article.getList({ start, count });
+}
+
+/**
+ * 根据路由和当前加载的文章数来构造下一页的URL。
+ *
+ * @param start {number} 下一页起始位置
+ * @param count {number} 每页显示多少个
+ * @return {string} 指向下一页的URL，相对路径
+ */
+function nextPageUrl(start, count) {
+	const params = Object.assign({}, route.query);
+	const pairs = [];
+	for (const k of Object.keys(params)) {
+		pairs.push(k + "=" + params[k]);
+	}
+	const nextPath = "/list/" + ((parseInt(route.params.index) || 0) + count);
+	return pairs.length ? nextPath + "?" + pairs.join("&") : nextPath;
+}
+
+onBeforeMount(() => {
+	const value = localStorage.getItem(kAutoLoad);
+	if (value) {
+		autoLoad.value = JSON.parse(value);
+	}
+});
+
+onMounted(() => {
+	if (!articleList) {
+		listView.value.reload();
+	}
+})
 </script>
 
 <style module lang="less">

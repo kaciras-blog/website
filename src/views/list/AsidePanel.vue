@@ -27,19 +27,15 @@ import { articleLink } from "@/blog-plugin"
 export default {
 	name: "AsidePanel",
 	data() {
-		const store = this.$store.state.prefetch;
-		if (store) {
-			return { hots: store.hots };
-		}
-		return { hots: null };
+		return {
+			hots: this.$store.state.prefetch?.hots,
+		};
 	},
 	methods: {
 		articleLink,
 	},
 	async beforeMount() {
-		if (!this.hots) {
-			this.hots = await api.article.getHots();
-		}
+		this.hots ??= await api.article.getHots();
 	},
 };
 </script>

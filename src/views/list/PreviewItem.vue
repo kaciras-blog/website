@@ -13,7 +13,9 @@
 		</router-link>
 
 		<h2 class="compact" :class="$style.title">
-			<router-link :to="articleLink(item)">{{ item.title }}</router-link>
+			<router-link :to="articleLink(item)">
+				{{ item.title }}
+			</router-link>
 		</h2>
 
 		<div :class="$style.summary">{{ item.summary }}</div>
@@ -59,22 +61,14 @@
 	</li>
 </template>
 
-<script>
+<script setup lang="ts">
 import { articleLink, localDate } from "@/blog-plugin"
 
-export default {
-	name: "PreviewItem",
-	props: {
-		item: {
-			type: Object,
-			required: true,
-		},
-	},
-	methods: {
-		articleLink,
-		localDate,
-	}
-};
+interface PreviewItemProps {
+	item: any;
+}
+
+defineProps<PreviewItemProps>();
 </script>
 
 <style module lang="less">
