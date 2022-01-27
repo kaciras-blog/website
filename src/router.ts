@@ -1,10 +1,4 @@
-import {
-	createMemoryHistory,
-	createRouter,
-	createWebHistory,
-	RouteRecordRaw,
-	ScrollPositionCoordinates
-} from "vue-router";
+import { createMemoryHistory, createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import IndexPage from "./views/index/Index.vue";
 import ErrorPage from "./views/error/Index.vue";
 
@@ -117,7 +111,7 @@ const routes: RouteRecordRaw[] = [
 		meta: { title: "错误" },
 	},
 	{
-		path: "*",
+		path: "/:pathMatch(.*)*",
 		alias: "/error/404",
 		component: ErrorPage,
 		props: { code: "404" },
