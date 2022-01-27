@@ -1,5 +1,4 @@
-<script setup lang="ts">
-import packageJson from "../../../package.json";</script>
+<script setup lang="ts"></script>
 
 <template>
 	<div class="about-tab-page">
@@ -13,7 +12,7 @@ import packageJson from "../../../package.json";</script>
 			<icon-paragraph src="@assets/img/html-code.svg" title="browsers">
 				兼容性：
 				<ul>
-					<li v-for="line of packageJson.browserslist">{{line}}</li>
+					<li v-for="line of browserslist">{{line}}</li>
 				</ul>
 			</icon-paragraph>
 			<p>本站的服务器位于美国，中国的访问者可能有较高的延迟</p>
