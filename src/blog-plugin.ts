@@ -40,18 +40,16 @@ export default function install(Vue: App) {
 	// Vue.filter("localDateMinute", (timestamp: number) => format(timestamp, "yyyy-M-d HH:mm"));
 	// Vue.filter("articleLink", articleLink);
 
-	Vue.component(DiscussionSection.name, DiscussionSection);
-	Vue.component(TopNavBody.name, TopNavBody);
-	Vue.component(TopNav.name, TopNav);
-	Vue.component(TopNavGlass.name, TopNavGlass);
-	Vue.component(PageFooter.name, PageFooter);
-	Vue.component(SelectCategoryDialog.name, SelectCategoryDialog);
-	Vue.component(BasePageLayout.name, BasePageLayout);
-	Vue.component(BannerPageLayout.name, BannerPageLayout);
-	Vue.component(IconParagraph.name, IconParagraph);
-	Vue.component(IconSectionHeader.name, IconSectionHeader);
-	Vue.component(SocialLink.name, SocialLink);
-
-	// Vue 函数组件里不能导入 component 只能在这全局挂载了
-	Vue.component(SettingPanel.name, SettingPanel);
+	Vue.component("DiscussionSection", DiscussionSection);
+	Vue.component("TopNavBody", TopNavBody);
+	Vue.component("TopNav", TopNav);
+	Vue.component("TopNavGlass", TopNavGlass);
+	Vue.component("PageFooter", PageFooter);
+	Vue.component("SelectCategoryDialog", SelectCategoryDialog);
+	Vue.component("BasePageLayout", BasePageLayout);
+	Vue.component("BannerPageLayout", BannerPageLayout);
+	Vue.component("IconParagraph", IconParagraph);
+	Vue.component("IconSectionHeader", IconSectionHeader);
+	Vue.component("SocialLink", SocialLink);
+	Vue.component("SettingPanel", SettingPanel);
 }
