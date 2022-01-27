@@ -2,7 +2,7 @@
 <template v-once>
 	<footer id="bottom-footer">
 		<div :class="$style.info">
-			<p>&copy; Kaciras 2018-2021</p>
+			<p>&copy; Kaciras 2018-2022</p>
 			<address>Kaciras@protonmail.com</address>
 		</div>
 		<div>
