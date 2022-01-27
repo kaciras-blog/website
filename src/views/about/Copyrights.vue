@@ -1,7 +1,7 @@
 <template>
 	<div class="about-tab-page">
 		<section class="about-section">
-			<icon-section-header title="版权声明" icon="@assets/img/copyright.svg"/>
+			<icon-section-header title="版权声明" icon="@/assets/img/copyright.svg"/>
 			<p>本站的文章若没有单独声明，均未经允许禁止转载。</p>
 
 			<h2>第三方资源</h2>

@@ -7,7 +7,7 @@
 		<div :class="$style.body">
 			<div :class="$style.picture_box">
 				<img
-					src="@assets/img/LoginPicture.jpg"
+					src="@/assets/img/LoginPicture.jpg"
 					alt="banner"
 					:class="$style.picture"
 				>

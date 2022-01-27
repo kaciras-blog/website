@@ -15,17 +15,17 @@
 					<social-link
 						href="mailto:Kaciras@protonmail.com"
 						name="Email"
-						icon="@assets/img/email.svg"
+						icon="@/assets/img/email.svg"
 					/>
 					<social-link
 						href="https://github.com/Kaciras"
 						name="GitHub"
-						icon="@assets/img/logo-github.svg"
+						icon="@/assets/img/logo-github.svg"
 					/>
 					<social-link
 						href="https://matrix.to/#/@kaciras:matrix.org"
 						name="Matrix"
-						icon="@assets/img/element-io.svg"
+						icon="@/assets/img/element-io.svg"
 					/>
 				</p>
 			</div>

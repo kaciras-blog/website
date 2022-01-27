@@ -6,7 +6,7 @@
 				title="only current"
 				alt="only current"
 				:class="$style.image"
-				src="@assets/img/category-single.svg"
+				src="@/assets/img/category-single.svg"
 			>
 		</button>
 		<button :class="$style.button" @click="$dialog.confirm(true)">
@@ -15,7 +15,7 @@
 				title="include subtree"
 				alt="include subtree"
 				:class="$style.image"
-				src="@assets/img/category-subtree.svg"
+				src="@/assets/img/category-subtree.svg"
 			>
 		</button>
 	</kx-base-dialog>
