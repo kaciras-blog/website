@@ -1,9 +1,24 @@
-import { Store } from "vuex";
-import { RouteLocationNormalizedLoaded } from "vue-router";
-import { Api } from "./api";
 import { ComponentOptions } from "vue";
+import { RouteLocationNormalizedLoaded } from "vue-router";
+import { Store } from "vuex";
+import { createNanoEvents, Emitter } from "nanoevents";
+import { Api } from "./api";
 
-// 只是定义一下类型，实现在 entry-client 和 entry-server
+export interface PrefetchEventMap {
+
+	start(signal: AbortSignal): void;
+
+	prefetch(context: PrefetchContext): void;
+
+	end(): void;
+
+	error(cause: Error): void;
+}
+
+export const events = import.meta.env.SSR
+	? {} as Emitter<PrefetchEventMap>
+	: createNanoEvents<PrefetchEventMap>();
+
 export abstract class PrefetchContext {
 
 	abstract store: Store<any>;

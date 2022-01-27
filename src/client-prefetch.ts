@@ -10,10 +10,9 @@ import { Store } from "vuex";
 import api from "@/api";
 import { SET_PREFETCH_DATA } from "@/store/types";
 import { isOnlyHashChange } from "./utils";
-import { MaybePrefetchComponent, PrefetchContext } from "./prefetch";
-import * as loadingIndicator from "./loading-indicator";
+import { events, MaybePrefetchComponent, PrefetchContext } from "./prefetch";
 
-let abortSignal = new AbortController().signal;
+let abortController = new AbortController();
 
 // @ts-ignore api & isServer on prototype.
 class ClientPrefetchContext extends PrefetchContext {
@@ -45,18 +44,18 @@ export function prefetch(
 	store: Store<any>,
 	to: RouteLocationNormalizedLoaded,
 	components: MaybePrefetchComponent[],
-	next: NavigationGuardNext) {
-
+	next: NavigationGuardNext
+) {
 	if (components.length === 0) {
 		return next();
 	}
 
-	function nextWrapper(...args: any[]) {
+	function nextWrapper() {
 		const { title } = to.meta;
 		if (title) {
 			document.title = title + " - Kaciras的博客";
 		}
-		return next(...args);
+		return next();
 	}
 
 	return doPrefetch(store, to, components, nextWrapper);
@@ -69,24 +68,27 @@ function doPrefetch(
 	store: Store<any>,
 	to: RouteLocationNormalizedLoaded,
 	components: MaybePrefetchComponent[],
-	next: NavigationGuardNext) {
+	next: NavigationGuardNext
+) {
+	const context = new ClientPrefetchContext(store, to, abortController.signal);
+	events.emit("prefetch", context);
 
-	loadingIndicator.startPrefetch();
-	const context = new ClientPrefetchContext(store, to, abortSignal);
-
-	const tasks = components.filter(c => c.asyncData).map(c => c.asyncData!(context));
+	const tasks = components
+		.map(module => module.default)
+		.filter(c => c.asyncData)
+		.map(c => c.asyncData!(context));
 
 	return Promise.all(tasks).then(() => {
-		if (abortSignal.aborted) {
+		if (abortController.signal.aborted) {
 			next(false);
 			console.debug(`导航被取消：${to.path}`);
 		} else {
 			store.commit(SET_PREFETCH_DATA, context.data);
 			next();
 		}
-		loadingIndicator.finishSuccessful();
+		events.emit("end");
 	}).catch((err) => {
-		if (abortSignal.aborted) {
+		if (abortController.signal.aborted) {
 			next(false);
 			return console.debug(`导航被取消：${to.path}`);
 		}
@@ -96,7 +98,7 @@ function doPrefetch(
 				break;
 			case 301:
 			case 302:
-				loadingIndicator.finishSuccessful();
+				events.emit("end");
 				return next(err.location);
 			case 404:
 			case 410:
@@ -107,7 +109,7 @@ function doPrefetch(
 				next("/error/500");
 		}
 
-		loadingIndicator.finishWithError();
+		events.emit("error", err);
 	});
 }
 
@@ -119,7 +121,8 @@ export const ClientPrefetchMixin: ComponentOptions = {
 		if (!(this.$options as any).asyncData) {
 			return next();
 		}
-		abortSignal = loadingIndicator.start();
+		abortController = new AbortController();
+		events.emit("start", abortController.signal);
 		prefetch(this.$store, to, [this.$options], next);
 	},
 }
@@ -138,13 +141,14 @@ export function installRouterHooks(store: Store<any>, router: Router) {
 		if (isOnlyHashChange(to, from)) {
 			return;
 		}
-		abortSignal = loadingIndicator.start();
+		abortController = new AbortController();
+		events.emit("start", abortController.signal);
 		return next();
 	});
 
 	// 使用 router.beforeResolve()，以便确保所有异步组件都 resolve。
 	router.beforeResolve((to, from, next) => {
-		if (abortSignal.aborted) {
+		if (abortController.signal.aborted) {
 			console.debug(`导航被取消：${to.path}`);
 			return next(false);
 		}
