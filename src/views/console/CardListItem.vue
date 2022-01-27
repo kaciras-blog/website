@@ -1,7 +1,9 @@
 <template>
 	<section :class="{ [$style.expand]: expand }">
 		<div :class="$style.summary">
-			<h2 class="compact" @click="$emit('switch-expand')">{{card.name}}</h2>
+			<h2 class="compact" @click="$emit('switch-expand')">
+				{{card.name}}
+			</h2>
 
 			<kx-button
 				:class="$style.handler"
@@ -69,37 +71,29 @@
 	</section>
 </template>
 
-<script>
+<script setup lang="ts">
 import api from "@/api";
 
-export default {
-	name: "CardListItem",
-	props: {
-		id: {
-			type: Number,
-			required: true,
-		},
-		expand:{
-			type: Boolean,
-			required: true,
-		},
-		card: {
-			type: Object,
-			required: true,
-		},
-	},
-	methods: {
-		setPicture() {
-			api.misc.uploadImageFile().then(name => this.card.picture = name);
-		},
-		dragStart(event) {
-			if (!event.touches && event.button !== 0) {
-				return; // 鼠标右键不拖动
-			}
-			this.$emit("drag-start", event);
-		},
-	},
-};
+interface CardListItemProps {
+	id: number;
+	expand: boolean;
+	card: any;
+}
+
+const props = defineProps<CardListItemProps>();
+const emit = defineEmits(["drag-start"]);
+
+function dragStart(event: TouchEvent & MouseEvent) {
+	if (!event.touches && event.button !== 0) {
+		return; // 鼠标右键不拖动
+	}
+	emit("drag-start", event);
+}
+
+// TODO: 是不是有问题这里
+function setPicture() {
+	api.misc.uploadImageFile().then(name => props.card.picture = name);
+}
 </script>
 
 <style module lang="less">

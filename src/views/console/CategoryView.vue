@@ -22,7 +22,7 @@
 					class="dark"
 					:class="$style.name"
 				>
-				<span v-else :class="$style.name">{{item.name}}</span>
+				<span v-else :class="$style.name">{{ item.name }}</span>
 
 				<textarea
 					v-if="editable"
@@ -32,7 +32,7 @@
 					:class="$style.desc"
 				/>
 
-				<span v-else :class="$style.desc">{{item.description}}</span>
+				<span v-else :class="$style.desc">{{ item.description }}</span>
 
 				<div :class="$style.buttons" v-if="editable">
 					<kx-button class="primary outline" @click="$emit('change')">应用更改</kx-button>
@@ -53,66 +53,65 @@
 	</div>
 </template>
 
-<script>
+<script setup lang="ts">
+import { computed } from "vue";
+import { useDialog } from "@kaciras-blog/uikit";
 import api from "@/api";
 import SelectCategoryDialog from "@/components/SelectCategoryDialog.vue";
 import MoveCategoryDialog from "./MoveCategoryDialog.vue";
 
-export default {
-	name: "CategoryView",
-	props: {
-		item: {
-			type: Object,
-			required: true,
-		},
-		editable: {
-			type: Boolean,
-			default: false,
-		},
-		parent: Number,
-	},
-	computed: {
-		styleVars() {
-			const { item, editable } = this;
-			const vars = {};
+interface CategoryViewProps {
+	item: any;
+	editable: boolean;
+	parent?: number;
+}
 
-			if (editable) {
-				vars["--cursor"] = "pointer";
-			}
-			if (item.background) {
-				vars["--background"] = `url(${item.background})`;
-			} else {
-				vars["--background"] = `url(${item.banner.image})`;
-			}
-			return vars;
-		},
-	},
-	methods: {
-		setCover() {
-			if (!this.editable) {
-				return;
-			}
-			api.misc.uploadImageFile().then(name => this.item.cover = name);
-		},
-		setBackground() {
-			if (!this.editable) {
-				return;
-			}
-			api.misc.uploadImageFile().then(name => this.item.background = name);
-		},
-		async move() {
-			const target = await this.$dialog.show(SelectCategoryDialog).confirmPromise;
-			const treeMode = await this.$dialog.show(MoveCategoryDialog).confirmPromise;
+const props = defineProps<CategoryViewProps>();
+const emit = defineEmits(["moved", "removed"]);
 
-			await api.category.move(this.item.id, target.id, treeMode);
-			this.$emit("moved", target);
-		},
-		async remove() {
-			await api.category.remove(this.item.id, false);
-			this.$emit("removed");
-		},
-	},
-};
+const dialog = useDialog();
+
+const styleVars = computed(() => {
+	const { background, banner } = props.item;
+	const vars: Record<string, string> = {};
+
+	if (props.editable) {
+		vars["--cursor"] = "pointer";
+	}
+	if (background) {
+		vars["--background"] = `url(${background})`;
+	} else {
+		vars["--background"] = `url(${banner.image})`;
+	}
+	return vars;
+});
+
+function setCover() {
+	if (!props.editable) {
+		return;
+	}
+	api.misc.uploadImageFile().then(name => props.item.cover = name);
+}
+
+function setBackground() {
+	if (!props.editable) {
+		return;
+	}
+	api.misc.uploadImageFile().then(name => props.item.background = name);
+}
+
+async function move() {
+	const target = await dialog.show(SelectCategoryDialog).confirmPromise;
+	const treeMode = await dialog.show(MoveCategoryDialog).confirmPromise;
+
+	await api.category.move(props.item.id, target.id, treeMode);
+	emit("moved", target);
+}
+
+async function remove() {
+	await api.category.remove(props.item.id, false);
+	emit("removed");
+}
 </script>
 
 <style module lang="less">

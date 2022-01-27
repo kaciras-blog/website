@@ -5,7 +5,9 @@
 		<div :class="$style.info_section">
 
 			<div :class="$style.header">
-				<span v-if="value.deleted" :class="$style.removed">已删除</span>
+				<span v-if="value.deleted" :class="$style.removed">
+					已删除
+				</span>
 				<h3>{{ value.title }}</h3>
 			</div>
 
@@ -73,51 +75,47 @@
 	</div>
 </template>
 
-<script>
+<script setup lang="ts">
+import { inject } from "vue";
 import api from "@/api";
+import { useDialog } from "@kaciras-blog/uikit";
 import { articleLink, localDateMinute } from "@/blog-plugin";
 import { errorMessage } from "@/utils";
 import SelectCategoryDialog from "@/components/SelectCategoryDialog.vue";
 import CardsConsole from "./CardsConsole.vue";
 
-export default {
-	name: "ArticleItem",
-	props: {
-		value: {
-			type: Object,
-			required: true,
-		},
-	},
-	inject: ["sendMessage"],
-	methods: {
-		localDateMinute,
+const dialog = useDialog();
+const sendMessage = inject<Function>("sendMessage")!;
 
-		edit() {
-			return api.draft.fromArticle(this.value.id)
-				.then(id => window.location.href = "/edit/" + id)
-				.catch(err => console.log(err));
-		},
-		addToCards() {
-			this.sendMessage(CardsConsole, {
-				picture: this.value.cover,
-				name: this.value.title,
-				link: articleLink(this.value),
-				description: this.value.summary,
-			});
-		},
-		updateDeleteState(deletion) {
-			const { value } = this;
-			api.article.changeDeletion(value.id, deletion)
-				.then(() => value.deleted = deletion)
-				.catch(e => this.$dialog.alertError("设置失败", errorMessage(e)));
-		},
-		async changeCategory() {
-			const target = await this.$dialog.show(SelectCategoryDialog).confirmPromise;
-			api.article.changeCategory(this.value.id, target.id)
-				.catch(e => this.$dialog.alertError("设置失败", errorMessage(e)));
-		},
-	},
-};
+const props = defineProps(["value"]);
+
+function edit() {
+	return api.draft.fromArticle(props.value.id)
+		.then(id => window.location.href = "/edit/" + id)
+		.catch(err => console.log(err));
+}
+
+function addToCards() {
+	sendMessage(CardsConsole, {
+		picture: props.value.cover,
+		name: props.value.title,
+		link: articleLink(props.value),
+		description: props.value.summary,
+	});
+}
+
+function updateDeleteState(deletion: boolean) {
+	const { value } = props;
+	api.article.changeDeletion(value.id, deletion)
+		.then(() => value.deleted = deletion)
+		.catch(e => dialog.alertError("设置失败", errorMessage(e)));
+}
+
+async function changeCategory() {
+	const target: any = await dialog.show(SelectCategoryDialog).confirmPromise;
+	api.article.changeCategory(props.value.id, target.id)
+		.catch(e => dialog.alertError("设置失败", errorMessage(e)));
+}
 </script>
 
 <style module lang="less">

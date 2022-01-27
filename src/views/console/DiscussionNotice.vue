@@ -6,12 +6,6 @@
 	</div>
 </template>
 
-<script>
-export default {
-	name: "DiscussionNotice",
-}
-</script>
-
 <style module lang="less">
 .content {
 	composes: minor-text from global;

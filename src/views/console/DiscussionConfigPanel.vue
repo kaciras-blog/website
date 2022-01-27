@@ -10,7 +10,7 @@
 				:class="$style.checkbox"
 				@input="value => sync(name, value)"
 			>
-				{{LABELS[name]}}
+				{{ LABELS[name] }}
 			</kx-check-box>
 		</div>
 
@@ -19,7 +19,8 @@
 	</section>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref } from "vue";
 import api from "@/api";
 
 // 传过来的配置没有描述，这里直接定义
@@ -29,28 +30,21 @@ const LABELS = {
 	moderation: "需要审核",
 };
 
-export default {
-	name: "DiscussionConfigPanel",
-	data: () => ({
-		LABELS,
-		config: {
-			disabled: true,
-			loginRequired: true,
-			moderation: false,
-		},
-		refreshing: false,
-	}),
-	methods: {
-		async sync(name, value) {
-			this.refreshing = true;
-			await api.config.set("discussion", { [name]: value });
-			this.refreshing = false;
-		},
-	},
-	async created() {
-		this.config = await api.config.get("discussion");
-	},
-};
+const config = ref({
+	disabled: true,
+	loginRequired: true,
+	moderation: false,
+});
+
+const refreshing = ref(false);
+
+async function sync(name: string, value: unknown) {
+	refreshing.value = true;
+	await api.config.set("discussion", { [name]: value });
+	refreshing.value = false;
+}
+
+api.config.get("discussion").then(v => config.value = v);
 </script>
 
 <style module lang="less">

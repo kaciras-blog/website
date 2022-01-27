@@ -32,7 +32,8 @@
 	</div>
 </template>
 
-<script>
+<script setup>
+import { shallowRef } from "vue";
 import api from "@/api";
 import { localDateMinute } from "@/blog-plugin";
 import { errorMessage } from "@/utils";
@@ -52,33 +53,24 @@ const MAP = {
 	},
 }
 
-export default {
-	name: "NotificationConsole",
-	data: () => ({
-		MAP,
-		loading: true,
-		notifications: [],
-	}),
-	methods: {
-		localDateMinute,
+const loading = shallowRef(true);
+const notifications = shallowRef([]);
 
-		async clear() {
-			await api.notification.clear();
-			return this.refresh();
-		},
-		async refresh() {
-			try {
-				this.notifications = await api.notification.getAll();
-				this.loading = false;
-			} catch (e) {
-				this.$dialog.alertError("加载失败", errorMessage(e));
-			}
-		},
-	},
-	created() {
-		this.refresh();
-	},
-};
+async function clear() {
+	await api.notification.clear();
+	return this.refresh();
+}
+
+async function refresh() {
+	try {
+		this.notifications = await api.notification.getAll();
+		this.loading = false;
+	} catch (e) {
+		this.$dialog.alertError("加载失败", errorMessage(e));
+	}
+}
+
+refresh();
 </script>
 
 <style module lang="less">

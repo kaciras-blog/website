@@ -30,7 +30,7 @@
 					@click="active = link.view"
 					@keyup.enter="active = link.view"
 				>
-					{{link.label}}
+					{{ link.label }}
 				</li>
 			</ul>
 		</aside>
@@ -44,7 +44,8 @@
 	</div>
 </template>
 
-<script>
+<script setup>
+import { provide, shallowRef } from "vue";
 import ArticleConsole from "./ArticleConsole.vue";
 import DraftConsole from "./DraftConsole.vue";
 import CategoryConsole from "./CategoryConsole.vue";
@@ -52,33 +53,26 @@ import CardsConsole from "./CardsConsole.vue";
 import DiscussionConsole from "./DiscussionConsole.vue";
 import NotificationConsole from "./NotificationConsole.vue";
 
-export default {
-	data: () => ({
-		views: [
-			{ view: ArticleConsole, label: "文章列表" },
-			{ view: DraftConsole, label: "草稿" },
-			{ view: DiscussionConsole, label: "评论" },
-			{ view: CardsConsole, label: "首页卡片" },
-			{ view: CategoryConsole, label: "分类" },
-			{ view: NotificationConsole, label: "消息通知" },
-		],
-		active: ArticleConsole,
-	}),
-	provide() {
-		return { sendMessage: this.sendMessage };
-	},
-	methods: {
-		async sendMessage(component, data) {
-			this.active = component;
-			await this.$nextTick();
+const views = [
+	{ view: ArticleConsole, label: "文章列表" },
+	{ view: DraftConsole, label: "草稿" },
+	{ view: DiscussionConsole, label: "评论" },
+	{ view: CardsConsole, label: "首页卡片" },
+	{ view: CategoryConsole, label: "分类" },
+	{ view: NotificationConsole, label: "消息通知" },
+];
 
-			const target = this.$refs.panel;
-			if ("receiveMessage" in target) {
-				target.receiveMessage(data);
-			}
-		},
-	},
-};
+const active = shallowRef(ArticleConsole);
+
+provide("sendMessage", async (component, data) => {
+	this.active = component;
+	await this.$nextTick();
+
+	const target = this.$refs.panel;
+	if ("receiveMessage" in target) {
+		target.receiveMessage(data);
+	}
+});
 </script>
 
 <style module lang="less">

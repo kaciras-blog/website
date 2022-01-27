@@ -39,35 +39,27 @@
 	</li>
 </template>
 
-<script>
-import { localDateMinute } from "@/blog-plugin";
+<script setup>
+import { MessageBoxType, useDialog } from "@kaciras-blog/uikit";
 import api from "@/api";
+import { localDateMinute } from "@/blog-plugin";
 
-export default {
-	name: "DraftConsoleItem",
-	props: {
-		value: {
-			type: Object,
-			required: true,
-		},
-	},
-	methods: {
-		localDateMinute,
+const dialog = useDialog();
 
-		async deleteDraft() {
-			const dialog = this.$dialog.alert({
-				title: "删除草稿",
-				content: "删除后不可恢复，是否确定？",
-				type: 2,
-				showCancelButton: true,
-			});
+const props = defineProps(["value"]);
 
-			await dialog.confirmPromise;
-			await api.draft.remove(this.value.id);
-			this.$emit("removed");
-		},
-	},
-};
+async function deleteDraft() {
+	const dialog = dialog.alert({
+		title: "删除草稿",
+		content: "删除后不可恢复，是否确定？",
+		type: MessageBoxType.Warning,
+		showCancelButton: true,
+	});
+
+	await dialog.confirmPromise;
+	await api.draft.remove(props.value.id);
+	this.$emit("removed");
+}
 </script>
 
 <style module lang="less">

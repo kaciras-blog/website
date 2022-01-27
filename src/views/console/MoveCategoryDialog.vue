@@ -21,12 +21,6 @@
 	</kx-base-dialog>
 </template>
 
-<script>
-export default {
-	name: "MoveCategoryDialog",
-};
-</script>
-
 <style module lang="less">
 .button {
 	display: inline-flex;

@@ -29,60 +29,49 @@
 	</div>
 </template>
 
-<script>
+<script setup>
+import { computed, ref } from "vue";
 import api, { DiscussionState } from "@/api";
 import DiscussionConfigPanel from "./DiscussionConfigPanel.vue";
 import DiscussionCheckItem from "./DiscussionCheckItem.vue";
 
-export default {
-	name: "DiscussionConsole",
-	components: {
-		DiscussionCheckItem,
-		DiscussionConfigPanel,
+const pendingList = ref([]);
+
+const selected = computed(() => pendingList.value.filter(item => item.checked));
+
+const selectedIds = computed(() => selected.value.filter(item => item.id));
+
+const allChecked = computed({
+	get() {
+		const { length } = pendingList.value;
+		return length > 0 && length === selected.value.length;
 	},
-	data: () => ({
-		pendingList: [],
-	}),
-	computed: {
-		allChecked: {
-			get() {
-				const { length } = this.pendingList;
-				return length > 0 && length === this.selected.length;
-			},
-			set(value) {
-				this.pendingList.forEach(item => item.checked = value);
-			},
-		},
-		selected() {
-			return this.pendingList.filter(item => item.checked);
-		},
-		selectedIds() {
-			return this.selected.map(item => item.id);
-		},
+	set(value) {
+		pendingList.value.forEach(item => item.checked = value);
 	},
-	methods: {
-		async loadItems() {
-			const list = await api.discuss.getList({
-				count: 30,
-				includeTopic: true,
-				state: DiscussionState.Moderation,
-			});
-			list.items.forEach(v => v.checked = false);
-			this.pendingList = list.items;
-		},
-		async removeAll() {
-			await api.discuss.updateStates(this.selectedIds, DiscussionState.Deleted);
-			return this.loadItems();
-		},
-		async approveAll() {
-			await api.discuss.updateStates(this.selectedIds, DiscussionState.Visible);
-			return this.loadItems();
-		},
-	},
-	created() {
-		this.loadItems();
-	},
-};
+});
+
+async function loadItems() {
+	const { items } = await api.discuss.getList({
+		count: 30,
+		includeTopic: true,
+		state: DiscussionState.Moderation,
+	});
+	items.forEach(v => v.checked = false);
+	pendingList.value = items;
+}
+
+loadItems();
+
+async function removeAll() {
+	await api.discuss.updateStates(selectedIds.value, DiscussionState.Deleted);
+	return loadItems();
+}
+
+async function approveAll() {
+	await api.discuss.updateStates(selectedIds.value, DiscussionState.Visible);
+	return loadItems();
+}
 </script>
 
 <style module lang="less">

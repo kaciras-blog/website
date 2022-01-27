@@ -17,48 +17,50 @@
 				:value="article"
 				class="segment"
 			/>
-			<span v-if="list.total === 0">没有找到文章,去写一篇吧~</span>
+			<span v-if="list.total === 0">
+				没有找到文章,去写一篇吧~
+			</span>
 			<sk-fading-circle v-if="loading"/>
 		</div>
 	</div>
 </template>
 
-<script>
+<script setup lang="ts">
+import { shallowRef } from "vue";
+import { useRouter } from "vue-router";
+import { useDialog } from "@kaciras-blog/uikit";
 import api, { DeletionState } from "@/api";
 import { errorMessage } from "@/utils";
 import ArticleItem from "./ArticleItem.vue";
 
-export default {
-	name: "ArticleConsole",
-	components: {
-		ArticleItem,
-	},
-	data: () => ({
-		list: [],
-		loading: true,
-	}),
-	methods: {
-		newArticle() {
-			api.draft.createNew()
-				.then(id => this.$router.push("/edit/" + id))
-				.catch(e => this.$dialog.alertError("创建失败", errorMessage(e)));
-		},
-		loadArticles() {
-			this.loading = true;
+const dialog = useDialog();
+const router = useRouter();
 
-			api.article.getList({
-				start: 0,
-				deletion: DeletionState.None,
-			}).then(data => {
-				this.loading = false;
-				this.list = data;
-			}).catch(e => {
-				this.$dialog.alertError("加载文章失败", errorMessage(e));
-			});
-		},
-	},
-	beforeMount() {
-		this.loadArticles();
-	},
-};
+const list = shallowRef([]);
+const loading = shallowRef(true);
+
+async function newArticle() {
+	try {
+		await router.push("/edit/" + await api.draft.createNew());
+	} catch (e) {
+		dialog.alertError("创建失败", errorMessage(e))
+	}
+}
+
+function loadArticles() {
+	loading.value = true;
+
+	return api.article.getList({
+		start: 0,
+		count: 99999, // TODO: 文章多了就做下分页
+		deletion: DeletionState.None,
+	}).then(data => {
+		loading.value = false;
+		list.value = data;
+	}).catch(e => {
+		dialog.alertError("加载文章失败", errorMessage(e));
+	});
+}
+
+loadArticles();
 </script>
