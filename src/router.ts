@@ -46,62 +46,62 @@ const routes: RouteRecordRaw[] = [
 	},
 	{
 		path: "/list/:index",
-		component: () => import(/* webpackChunkName: "list" */ "./views/list/Index.vue"),
+		component: () => import("./views/list/Index.vue"),
 		meta: { title: "所有文章" },
 	},
 	{
 		path: "/login",
-		component: () => import(/* webpackChunkName: "login" */ "./views/login/Index.vue"),
+		component: () => import("./views/login/Index.vue"),
 		meta: { title: "登录" },
 	},
 	{
 		path: "/article/:id",
-		component: () => import(/* webpackChunkName: "article" */ "./views/article/Index.vue"),
+		component: () => import("./views/article/Index.vue"),
 	},
 	{
 		path: "/article/:id/:urlTitle",
-		component: () => import(/* webpackChunkName: "article" */ "./views/article/Index.vue"),
+		component: () => import("./views/article/Index.vue"),
 	},
 	{
 		path: "/edit/:draftId",
-		component: () => import(/* webpackChunkName: "edit" */ "./views/editor/Index.vue"),
+		component: () => import("./views/editor/Index.vue"),
 		props: true,
 		meta: { title: "文章编辑器" },
 	},
 	{
 		path: "/profile",
-		component: () => import(/* webpackChunkName: "profile" */ "./views/user/Index.vue"),
+		component: () => import("./views/user/Index.vue"),
 		meta: { title: "用户" },
 	},
 	{
 		path: "/about",
-		component: () => import(/* webpackChunkName: "about" */ "./views/about/Index.vue"),
+		component: () => import("./views/about/Index.vue"),
 		children: [
 			{
 				path: "me",
-				component: () => import(/* webpackChunkName: "about" */ "./views/about/Me.vue"),
+				component: () => import("./views/about/Me.vue"),
 				meta: { title: "博主" },
 			},
 			{
 				path: "friends",
-				component: () => import(/* webpackChunkName: "about" */ "./views/about/Friends.vue"),
+				component: () => import("./views/about/Friends.vue"),
 				meta: { title: "友链" },
 			},
 			{
 				path: "technology",
-				component: () => import(/* webpackChunkName: "about" */ "./views/about/Technology.vue"),
+				component: () => import("./views/about/Technology.vue"),
 				meta: { title: "技术栈" },
 			},
 			{
 				path: "copyright",
-				component: () => import(/* webpackChunkName: "about" */ "./views/about/Copyrights.vue"),
+				component: () => import("./views/about/Copyrights.vue"),
 				meta: { title: "版权声明" },
 			},
 		],
 	},
 	{
 		path: "/console",
-		component: () => import(/* webpackChunkName: "console" */ "./views/console/Index.vue"),
+		component: () => import("./views/console/Index.vue"),
 		meta: { title: "控制台", requireAuth: true },
 	},
 	{
@@ -111,6 +111,12 @@ const routes: RouteRecordRaw[] = [
 		meta: { title: "错误" },
 	},
 	{
+		/*
+		 * 【新版 vue-router 4 匹配串】
+		 * 最开始的 :pathMatch 是参数，可以随意起名。
+		 * (.*) 表示匹配一个目录内的任意值。
+		 * 最后的 * 表示任意次数，加上它就能匹配深层目录。
+		 */
 		path: "/:pathMatch(.*)*",
 		alias: "/error/404",
 		component: ErrorPage,

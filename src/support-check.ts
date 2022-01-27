@@ -4,7 +4,7 @@
  * 1.以 ES2020 的 Nullish coalescing operator 为基准。
  * 2.一些垃圾比如 IPadQQ 内置的浏览器不支持 IntersectionObserver。
  *
- * SyntaxError thrown thrown while the code is being parsed,
+ * SyntaxError thrown while the code is being parsed,
  * to catch it the code must be wrapped by eval() and the script block
  * must be run before parsing the invalid code.
  */

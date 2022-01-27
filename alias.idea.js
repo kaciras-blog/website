@@ -9,7 +9,6 @@ module.exports = {
 	resolve: {
 		alias: {
 			"@": join(__dirname, "src"),
-			"@assets": join(__dirname, "src/assets"),
 		},
 	},
 };

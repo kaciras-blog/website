@@ -5,7 +5,6 @@ import createBlogApp, { mediaQueryPlugin } from "./main";
 import { useServiceWorker } from "@/service-worker/client/installer";
 import { SUN_PHASES } from "@/store";
 import { REFRESH_USER, SET_SUN_PHASE } from "@/store/types";
-import * as loadingIndicator from "./loading-indicator";
 import { ClientPrefetchMixin, installRouterHooks, prefetch } from "./client-prefetch";
 
 interface SSRGlobalVariables {
