@@ -24,18 +24,7 @@ export * from "./config";
 export * from "./cards";
 export * from "./notification";
 
-const CSRF_COOKIE_NAME = "CSRF-Token";
-const CSRF_HEADER_NAME = "X-CSRF-Token";
-
-/*
- * 【设计错误】
- * 后端将用户信息记录在SESSION里，而SESSION对应的Cookie跟登录控制器不在一个层级，
- * 导致无法将 SESSION Cookie 的过期时间设置为会话结束，如果登录时未选择记住登陆则会造成后端无法判断，
- * 于是是否登录的判断全靠CSRF。
- */
 axios.defaults.withCredentials = true;
-axios.defaults.xsrfCookieName = CSRF_COOKIE_NAME;
-axios.defaults.xsrfHeaderName = CSRF_HEADER_NAME;
 
 // ServiceWorker里已经对API设置了超时，如果支持则不在此处添加超时。
 if (process.env.TIMEOUT) {
