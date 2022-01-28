@@ -2,7 +2,7 @@
 	<base-page-layout :class="$style.container">
 		<div :class="$style.body">
 			<error-content
-				v-if="code === '400'"
+				v-if="code === 400"
 				title="400 Bad Request"
 				image="@/assets/img/error-other.png"
 			>
@@ -11,7 +11,7 @@
 			</error-content>
 
 			<error-content
-				v-else-if="code === '403'"
+				v-else-if="code === 403"
 				title="403 Access Denied"
 				image="@/assets/img/error-403.jpg"
 			>
@@ -21,7 +21,7 @@
 			</error-content>
 
 			<error-content
-				v-else-if="code === '404' || code === '410'"
+				v-else-if="code === 404 || code === 410"
 				title="404 Not Found"
 				image="@/assets/img/error-404.jpg"
 			>
@@ -32,7 +32,7 @@
 			</error-content>
 
 			<error-content
-				v-else-if="code === '429'"
+				v-else-if="code === 429"
 				title="429 Too Many Requests"
 				image="@/assets/img/error-429.jpg"
 			>
@@ -42,7 +42,7 @@
 			</error-content>
 
 			<error-content
-				v-else-if="code === '500' || code === '503'"
+				v-else-if="code === 500 || code === 503"
 				:title="code + 'Internal Server Error'"
 				image="@/assets/img/error-500.png"
 			>
@@ -61,19 +61,28 @@
 	</base-page-layout>
 </template>
 
-<script>
+<script setup lang="ts">
+import { computed, useSSRContext } from "vue";
 import ErrorContent from "./ErrorContent.vue";
 
-export default {
-	name: "Error",
-	components: { ErrorContent },
-	props: {
-		code: String,
-	},
-	async serverPrefetch() {
-		this.$ssrContext.notFound = this.code === "404";
-	},
-};
+interface ErrorPageProps {
+
+	/**
+	 * 错误码的字符串，比如 "404", "429"。
+	 * vue-router 不支持 props 类型转换。
+	 */
+	value: string;
+}
+
+const props = defineProps<ErrorPageProps>();
+
+const code = computed(() => {
+	return parseInt(props.value);
+});
+
+if (import.meta.env.SSR) {
+	useSSRContext()!.status = code.value;
+}
 </script>
 
 <style module lang="less">

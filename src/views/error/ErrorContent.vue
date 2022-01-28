@@ -1,5 +1,5 @@
 <template>
-	<main :class="$style.container">
+	<section :class="$style.container">
 		<h1 :class="$style.title">{{ title }}</h1>
 		<img
 			:src="image"
@@ -7,7 +7,7 @@
 			:class="$style.image"
 		>
 		<div :class="$style.content"><slot/></div>
-	</main>
+	</section>
 </template>
 
 <script>
