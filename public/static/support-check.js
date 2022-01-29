@@ -4,15 +4,15 @@
  * 1.以 ES2020 的 Nullish coalescing operator 为基准。
  * 2.一些垃圾比如 IPadQQ 内置的浏览器不支持 IntersectionObserver。
  *
+ * 【为什么单独一个文件】
  * SyntaxError thrown while the code is being parsed,
  * to catch it the code must be wrapped by eval() and the script block
  * must be run before parsing the invalid code.
+ *
+ * 【为什么放在 public 里】
+ * Vite 会将 <script> 引用的文件合并成一个，但本文件需要在主脚本加载之前执行，
+ * 所以只能复制到构建结果中了，还好代码不多无需打包。
  */
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface Window {
-	__isSupport__: boolean;
-}
 
 try {
 	// noinspection JSUnusedLocalSymbols
