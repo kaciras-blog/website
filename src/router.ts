@@ -1,6 +1,6 @@
 import { createMemoryHistory, createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import IndexPage from "./views/index/Index.vue";
-import ErrorPage from "./views/error/Index.vue";
+import IndexPage from "./views/index/IndexPage.vue";
+import ErrorPage from "./views/error/ErrorPage.vue";
 
 /**
  * 控制路由切换后的滚动位置，默认行为跟原生浏览器一致，通过设置路由元信息 meta
@@ -46,36 +46,36 @@ const routes: RouteRecordRaw[] = [
 	},
 	{
 		path: "/list/:index",
-		component: () => import("./views/list/Index.vue"),
+		component: () => import("./views/list/ListPage.vue"),
 		meta: { title: "所有文章" },
 	},
 	{
 		path: "/login",
-		component: () => import("./views/login/Index.vue"),
+		component: () => import("./views/login/LoginPage.vue"),
 		meta: { title: "登录" },
 	},
 	{
 		path: "/article/:id",
-		component: () => import("./views/article/Index.vue"),
+		component: () => import("./views/article/ArticlePage.vue"),
 	},
 	{
 		path: "/article/:id/:urlTitle",
-		component: () => import("./views/article/Index.vue"),
+		component: () => import("./views/article/ArticlePage.vue"),
 	},
 	{
 		path: "/edit/:draftId",
-		component: () => import("./views/editor/Index.vue"),
+		component: () => import("./views/editor/EditorPage.vue"),
 		props: true,
 		meta: { title: "文章编辑器" },
 	},
 	{
 		path: "/profile",
-		component: () => import("./views/user/Index.vue"),
+		component: () => import("./views/user/ProfilePage.vue"),
 		meta: { title: "用户" },
 	},
 	{
 		path: "/about",
-		component: () => import("./views/about/Index.vue"),
+		component: () => import("./views/about/AboutPage.vue"),
 		children: [
 			{
 				path: "me",
@@ -101,11 +101,11 @@ const routes: RouteRecordRaw[] = [
 	},
 	{
 		path: "/console",
-		component: () => import("./views/console/Index.vue"),
+		component: () => import("./views/console/ConsolePage.vue"),
 		meta: { title: "控制台", requireAuth: true },
 	},
 	{
-		path: "/error/:code",
+		path: "/error/:value([0-9]+)",
 		component: ErrorPage,
 		props: true,
 		meta: { title: "错误" },
@@ -120,7 +120,7 @@ const routes: RouteRecordRaw[] = [
 		path: "/:pathMatch(.*)*",
 		alias: "/error/404",
 		component: ErrorPage,
-		props: { code: "404" },
+		props: { value: "404" },
 	},
 ];
 
