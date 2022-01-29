@@ -78,7 +78,7 @@ const BANNER_MAP_MOBILE = {
 
 export default {
 	name: "IndexPage",
-	loadData: (session) => Promise.all([
+	asyncData: (session) => Promise.all([
 		session.api.recommend.getCards().then(cards => session.data.cards = cards.map(attachRandomId)),
 		session.api.friend.getFriends().then(friends => session.data.friends = friends.map(attachRandomId)),
 	]),
@@ -156,6 +156,10 @@ const transitionStyle = computed(() => {
  * 该方法中先使用 HTMLImageElement 预载图片，防止网速慢的时候白屏。
  */
 function switchSunPhase(sunPhase) {
+	// 从白屏（之前未设置 sunPhase）切换时不使用过渡。
+	if (!visibleSunPhase.value) {
+		return visibleSunPhase.value = sunPhase;
+	}
 	const image = document.createElement("img");
 	image.src = bannerMap.value[sunPhase];
 	image.addEventListener("load", () => transitionSunPhase.value = sunPhase);
