@@ -13,23 +13,29 @@ import createBlogApp, { mediaBreakpoints } from "./main";
  *
  */
 
-// @ts-ignore isServer & cancelToken on prototype.
+// @ts-ignore isServer on prototype.
 class ServerPrefetchContext extends PrefetchContext {
 
 	readonly store: Store<any>;
 	readonly route: RouteLocationNormalizedLoaded;
 	readonly api: Api;
+	readonly signal: AbortSignal;
 
-	constructor(store: Store<any>, route: RouteLocationNormalizedLoaded, api: Api) {
+	constructor(
+		store: Store<any>,
+		route: RouteLocationNormalizedLoaded,
+		api: Api,
+		signal: AbortSignal,
+	) {
 		super();
 		this.store = store;
 		this.route = route;
 		this.api = api;
+		this.signal = signal;
 	}
 }
 
 ServerPrefetchContext.prototype.isServer = true;
-ServerPrefetchContext.prototype.abortSignal = new AbortController().signal;
 
 /**
  * 简单地通过 User-Agent 判断客户端的设备是不是手机
@@ -69,7 +75,8 @@ export default async (context: RenderContext) => {
 	await router.isReady();
 
 	const route = router.currentRoute.value;
-	const session = new ServerPrefetchContext(store, route, ssrApi);
+	const controller = new AbortController();
+	const session = new ServerPrefetchContext(store, route, ssrApi, controller.signal);
 
 	/*
 	 * 路由配置里最后一条把所有未匹配的路由都转到错误页，
@@ -89,6 +96,8 @@ export default async (context: RenderContext) => {
 		await Promise.all(tasks);
 		store.commit(SET_PREFETCH_DATA, session.data);
 	} catch (e) {
+		controller.abort();
+
 		switch (e.code) {
 			case 404:
 			case 410:
