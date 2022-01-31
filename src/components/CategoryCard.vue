@@ -2,17 +2,26 @@
 	<li
 		:class="$style.container"
 		tabindex="0"
-		@click="listeners.click"
-		@keyup.enter="listeners.click"
+		@click="emit('click')"
+		@keyup.enter="emit('click')"
 	>
 		<img
-			:src="props.cover"
+			:src="cover"
 			alt="分类图标"
 			:class="$style.cover"
 		>
-		<span :class="$style.name">{{props.name}}</span>
+		<span :class="$style.name">
+			{{ name }}
+		</span>
 	</li>
 </template>
+
+<script setup lang="ts">
+// defineProps 目前不支持外部导入的类型，只能先写死了。
+// https://github.com/vuejs/core/issues/4294
+defineProps(["cover", "name"]);
+defineEmits(["click"]);
+</script>
 
 <style module lang="less">
 @import "../css/imports";

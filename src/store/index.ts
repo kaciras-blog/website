@@ -1,5 +1,5 @@
 import { createStore } from "vuex";
-import api from "@/api";
+import api, { AuthType, User } from "@/api";
 import { SunPhases } from "@/sun-phase";
 import {
 	LOAD_DISCUSSION_OPTIONS,
@@ -24,11 +24,11 @@ export const SUN_PHASES = new SunPhases({
 	Night: 20,
 });
 
-const GUESTS = {
+const GUESTS: User = {
 	id: 0,
 	name: "(游客)",
 	avatar: "/static/img/akalin.jpg",
-	authType: 0,
+	auth: AuthType.None,
 }
 
 export default function createVuexStore() {
@@ -50,8 +50,8 @@ export default function createVuexStore() {
 			sunPhase: null,
 		},
 		actions: {
-			async [REFRESH_USER]({ commit }, ssrApi) {
-				const res = await (process.env.VUE_ENV === "server" ? ssrApi : api).user.getCurrent();
+			async [REFRESH_USER]({ commit }, apiUse = api) {
+				const res = await apiUse.user.getCurrent();
 				if (res.status < 300) {
 					commit(SET_USER, res.data);
 				}

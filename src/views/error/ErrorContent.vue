@@ -13,7 +13,7 @@
 <script>
 export default {
 	props: ["title", "image"],
-}
+};
 </script>
 
 <style module lang="less">

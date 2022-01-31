@@ -81,7 +81,7 @@ interface CardListItemProps {
 }
 
 const props = defineProps<CardListItemProps>();
-const emit = defineEmits(["drag-start"]);
+const emit = defineEmits(["drag-start", 'remove']);
 
 function dragStart(event: TouchEvent & MouseEvent) {
 	if (!event.touches && event.button !== 0) {

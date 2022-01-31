@@ -43,13 +43,9 @@
 
 <script>
 import { mapState } from "vuex";
-import SmartLink from "./SmartLink.vue";
 
 export default {
 	name: "BlogSection",
-	components: {
-		SmartLink,
-	},
 	computed: mapState({
 		cards: state => state.prefetch.cards,
 	}),

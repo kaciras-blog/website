@@ -1,4 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+// noinspection ES6UnusedImports WebStorm 的分析有问题。
+import { browserslist } from "../../../package.json";</script>
 
 <template>
 	<div class="about-tab-page">
@@ -12,7 +14,7 @@
 			<icon-paragraph src="@/assets/img/html-code.svg" title="browsers">
 				兼容性：
 				<ul>
-					<li v-for="line of browserslist">{{line}}</li>
+					<li v-for="line of browserslist" :key="line">{{ line }}</li>
 				</ul>
 			</icon-paragraph>
 			<p>本站的服务器位于美国，中国的访问者可能有较高的延迟</p>

@@ -43,7 +43,7 @@
 
 			<error-content
 				v-else-if="code === 500 || code === 503"
-				:title="code + 'Internal Server Error'"
+				:title="code + ' Internal Server Error'"
 				image="@/assets/img/error-500.png"
 			>
 				<p>服务器要<span :class="$style.red">爆炸啦！！</span>，快叫博主起床改BUG啊</p>

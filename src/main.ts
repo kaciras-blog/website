@@ -1,7 +1,6 @@
-import "vue-multiselect/dist/vue-multiselect.min.css";
+import "@kaciras-blog/uikit/dist/style.css";
 import "./css/index.less";
-import { createSSRApp } from "vue";
-import VueMultiselect from "vue-multiselect";
+import { createApp, createSSRApp } from "vue";
 import UIKit, { MediaQueryManager } from "@kaciras-blog/uikit";
 import createStore from "./store";
 import createRouter from "./router";
@@ -23,7 +22,7 @@ export const mediaQueryPlugin = new MediaQueryManager(mediaBreakpoints);
  * 由于创建Vue实例后就立即渲染，而此时可能就需要初始状态（比如控制台页面鉴权），
  * 所以不能等到创建之后再替换服务端渲染出的初始状态，而要在创建Vue实例之前就调用 store.replaceState(...)
  *
- * @param initState Vuex的初始状态
+ * @param initState Vuex 的初始状态
  * @return Vue 全家桶
  */
 export default function createBlogApp(initState: any = undefined) {
@@ -53,15 +52,13 @@ export default function createBlogApp(initState: any = undefined) {
 		next({ path: "/login", query: { return_uri: "/console" } });
 	});
 
-	const app = createSSRApp(App);
+	const app = initState ? createSSRApp(App) : createApp(App);
 
 	app.use(store);
 	app.use(router);
 	app.use(UIKit);
 	app.use(BlogPlugin);
 	app.use(mediaQueryPlugin);
-
-	app.component(VueMultiselect.name, VueMultiselect);
 
 	return { app, router, store };
 }

@@ -44,13 +44,9 @@
 <script>
 import { openFile } from "@kaciras-blog/uikit";
 import api from "@/api";
-import MaterialTextInput from "./MaterialTextInput.vue";
 
 export default {
 	name: "FriendInfoDialog",
-	components: {
-		MaterialTextInput,
-	},
 	props: {
 		name: String,
 		url: String,

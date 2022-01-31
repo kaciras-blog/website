@@ -27,9 +27,9 @@ export * from "./notification";
 axios.defaults.withCredentials = true;
 
 // ServiceWorker里已经对API设置了超时，如果支持则不在此处添加超时。
-if (process.env.TIMEOUT) {
-	if (process.env.VUE_ENV === "server" || !("serviceWorker" in navigator)) {
-		axios.defaults.timeout = process.env.TIMEOUT as unknown as number;
+if (import.meta.env.TIMEOUT) {
+	if (import.meta.env.SSR === "server" || !("serviceWorker" in navigator)) {
+		axios.defaults.timeout = import.meta.env.TIMEOUT as number;
 	}
 }
 
@@ -49,9 +49,9 @@ function createAxios(config?: AxiosRequestConfig) {
 }
 
 // TODO: 这里有点问题，升级构建工具时记得改
-const apiOrigin = process.env.API_ORIGIN as any;
+const apiOrigin = import.meta.env.API_PUBLIC as any;
 export const BASE_URL = import.meta.env.SSR
-	? process.env.SSR_API_ORIGIN
+	? import.meta.env.API_INTERNAL
 	: typeof apiOrigin === "string"
 	? apiOrigin
 	: apiOrigin[location.protocol.substring(0, location.protocol.length - 1)];
