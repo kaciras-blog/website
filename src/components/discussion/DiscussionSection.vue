@@ -7,29 +7,10 @@
 
 			<!-- TODO: 菜单是第三方库懒得改，手机下有点大，不好看 -->
 			<div :class="$style.options">
-				<vue-multiselect
-					v-model="sort"
-					title="排序方式"
-					:class="$style.sortSelect"
-					:options="ALL_SORTS"
-					label="label"
-					track-by="label"
-					:allow-empty="false"
-					:searchable="false"
-					:show-labels="false"
-				/>
-
-				<vue-multiselect
-					v-model="mode"
-					title="评论结构"
-					:class="$style.modeSelect"
-					:options="MODE"
-					label="label"
-					track-by="label"
-					:allow-empty="false"
-					:searchable="false"
-					:show-labels="false"
-				/>
+				<select>
+					<option></option>
+					<option></option>
+				</select>
 			</div>
 		</header>
 
@@ -47,7 +28,7 @@
 				<ol :class="$style.list">
 					<discussion-item
 						v-for="item of items"
-						:key="Math.random()"
+						:key="item.objectId"
 						:value="item"
 						class="segment"
 						@removed="refresh"
@@ -60,13 +41,15 @@
 	</boot-loader>
 </template>
 
-<script>
-import api from "@/api";
+<script setup lang="ts">
+import { provide, ref, watch } from "vue";
+import { useStore } from "vuex";
+import api, { Discussion, DiscussionQuery } from "@/api";
+import { ListQueryView } from "@/api/core";
 import { LOAD_DISCUSSION_OPTIONS } from "@/store/types";
 import BootLoader from "./BootLoader.vue";
 import DiscussionItem from "./DiscussionItem.vue";
 import InputSection from "./InputSection.vue";
-import DiscussionBubble from "./DiscussionBubble.vue";
 
 const PAGE_SIZE = 30;
 const NEST_SIZE = 3;
@@ -88,7 +71,7 @@ const ALL_SORTS = [
 
 // 啊好想要 Hooks 啊，Vue3 全家桶快点出啊
 
-function loadEnumFromStore(type, key, default_) {
+function loadEnumFromStore(type: any[], key: string, default_: any) {
 	if (typeof window === "undefined") {
 		return default_;
 	}
@@ -99,107 +82,88 @@ function loadEnumFromStore(type, key, default_) {
 	return result || type.find(i => i.value.toString() === default_);
 }
 
-export default {
-	name: "DiscussionSection",
-	components: {
-		BootLoader,
-		DiscussionBubble,
-		DiscussionItem,
-		InputSection,
-	},
-	props: {
-		objectId: {
-			type: Number,
-			required: true,
-		},
-		type: {
-			type: Number,
-			required: true,
-		},
-	},
-	data: () => ({
-		MODE,
-		ALL_SORTS,
+interface DiscussSectionProps {
+	type: number;
+	objectId: number;
+}
 
-		data: {},
+const props = defineProps<DiscussSectionProps>();
 
-		mode: loadEnumFromStore(MODE, "DIS_MODE", 0),
-		sort: loadEnumFromStore(ALL_SORTS, "DIS_SORT", "id,ASC"),
-	}),
-	provide() {
-		const context = {
-			objectId: this.objectId,
-			type: this.type,
-			parent: 0,
-			afterSubmit: this.afterSubmit,
-		};
-		return { context };
-	},
-	watch: {
-		mode() {
-			this.reload();
-			localStorage.setItem("DIS_MODE", this.mode.value);
-		},
-		sort() {
-			this.reload();
-			localStorage.setItem("DIS_SORT", this.sort.value);
-		},
-	},
-	methods: {
-		// reload - 重新加载，回到第一页；refresh - 刷新当前页
-		reload() {
-			this.$refs.discussions.reload();
-		},
-		refresh() {
-			return this.$refs.discussions.refresh();
-		},
+const store = useStore();
 
-		fetchData(start, count, cancelToken) {
-			const { type, objectId, sort, mode } = this;
+const data = ref<ListQueryView<Discussion>>({} as any);
+const mode = ref(loadEnumFromStore(MODE, "DIS_MODE", 0));
+const sort = ref(loadEnumFromStore(ALL_SORTS, "DIS_SORT", "id,ASC"));
+const discussions = ref();
 
-			const query = {
-				objectId: objectId,
-				type: type,
-				start,
-				count,
-				sort: sort.value,
-			};
+provide("context", {
+	type: props.type,
+	objectId: props.objectId,
+	parent: 0,
+	afterSubmit,
+});
 
-			if (mode.value === 0) {
-				query.nestId = 0;
-				query.childCount = NEST_SIZE;
-			} else {
-				query.includeParent = true;
-			}
+watch(mode, () => {
+	reload();
+	localStorage.setItem("DIS_MODE", mode.value.value);
+});
 
-			return api.withCancelToken(cancelToken).discuss.getList(query);
-		},
+watch(sort, () => {
+	reload();
+	localStorage.setItem("DIS_SORT", sort.value.value);
+});
 
-		/**
-		 * 在支持多种排序下，很难确定一个评论的位置，所以没法转到刚提交的评论，
-		 * 为了用户体验，需要换种思路。
-		 *
-		 * 若是分页则刷新当前页；若是滚动加载则直接添加在当前页的最后（Bilibili 是这么做的）。
-		 */
-		afterSubmit(entity) {
-			const { discussions } = this.$refs;
+// reload - 重新加载，回到第一页；refresh - 刷新当前页
+function reload() {
+	discussions.value.reload();
+}
 
-			if ("reload" in discussions) {
-				discussions.reload();
-			} else {
-				this.data.items.push(entity);
-			}
-		},
+function refresh() {
+	discussions.value.refresh();
+}
 
-		/** 初始化，加载配置信息和第一页，完成时切换加载指示器到列表 */
-		initialize() {
-			return Promise.all([
-				this.$store.dispatch(LOAD_DISCUSSION_OPTIONS),
-				this.fetchData(0, PAGE_SIZE).then(view => this.data = view),
-			]);
-		},
-	},
-};
+function fetchData(start: number, count: number, signal?: AbortSignal) {
+	const { type, objectId } = props;
+
+	const query: DiscussionQuery = {
+		objectId: objectId,
+		type: type,
+		start,
+		count,
+		sort: sort.value.value,
+	};
+
+	if (mode.value.value === 0) {
+		query.nestId = 0;
+		query.childCount = NEST_SIZE;
+	} else {
+		query.includeParent = true;
+	}
+
+	return api.withCancelToken(signal).discuss.getList(query);
+}
+
+/**
+ * 在支持多种排序下，很难确定一个评论的位置，所以没法转到刚提交的评论，
+ * 为了用户体验，需要换种思路。
+ *
+ * 若是分页则刷新当前页；若是滚动加载则直接添加在当前页的最后（Bilibili 是这么做的）。
+ */
+function afterSubmit(entity: Discussion) {
+	if ("reload" in discussions.value) {
+		discussions.value.reload();
+	} else {
+		data.value.items.push(entity);
+	}
+}
+
+/** 初始化，加载配置信息和第一页，完成时切换加载指示器到列表 */
+function initialize() {
+	return Promise.all([
+		store.dispatch(LOAD_DISCUSSION_OPTIONS),
+		fetchData(0, PAGE_SIZE).then(view => data.value = view),
+	]);
+}
 </script>
 
 <style module lang="less">

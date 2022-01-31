@@ -45,18 +45,22 @@
 			:class="$style.sideButtons"
 		>
 			<kx-button
+				type="outline"
+				color="primary"
 				:class="$style.toolButton"
 				title="转到评论"
 				@click="gotoDiscuss"
 			>
-				<i class="far fa-comments"></i>
+				<ChatIcon/>
 			</kx-button>
 			<kx-button
+				type="outline"
+				color="primary"
 				:class="$style.toolButton"
 				title="回顶部"
 				@click="gotoTop"
 			>
-				<i class="fas fa-chevron-up"></i>
+				<ArrowTopIcon/>
 			</kx-button>
 		</div>
 	</banner-page-layout>
@@ -64,6 +68,8 @@
 
 <script>
 import { mapState } from "vuex";
+import ChatIcon from "@material-design-icons/svg/outlined/forum.svg?sfc";
+import ArrowTopIcon from "@material-design-icons/svg/outlined/rocket_launch.svg?sfc";
 import { scrollToElementStart } from "@kaciras-blog/uikit";
 import TitleMixin from "@/title-mixin";
 import { articleLink, localDateMinute } from "@/blog-plugin";
@@ -74,6 +80,8 @@ export default {
 	name: "ArticlePage",
 	components: {
 		MarkdownView,
+		ChatIcon,
+		ArrowTopIcon,
 	},
 	mixins: [TitleMixin],
 
@@ -120,7 +128,7 @@ export default {
 		// 检查URL中的标题，不正确则重定向到正确的 URL，这里直接抛出对象不知道好不好
 		const correctUrlTitle = session.data.article.urlTitle;
 		if (!urlTitle || urlTitle !== correctUrlTitle) {
-			throw { code: 301, location: `/article/${id}/${correctUrlTitle}` };
+			session.redirect(301, `/article/${id}/${correctUrlTitle}`);
 		}
 	},
 	computed: mapState({

@@ -44,17 +44,17 @@
 
 		<div class="minor-text" :class="$style.meta">
 			<span title="发表于" :class="$style.metaItem">
-				<i class="fa fa-edit"/>
+				<EditIcon/>
 				<time>{{ localDate(item.create) }}</time>
 			</span>
 
 			<span title="浏览数" :class="$style.metaItem">
-				<i class="fa fa-eye"/>
+				<EyeIcon/>
 				<span>{{ item.viewCount }}</span>
 			</span>
 
 			<span title="评论数" :class="$style.metaItem">
-				<i class="fas fa-comment-dots"/>
+				<ChatIcon/>
 				<span>{{ item.discussionCount }}</span>
 			</span>
 		</div>
@@ -62,7 +62,10 @@
 </template>
 
 <script setup lang="ts">
-import { articleLink, localDate } from "@/blog-plugin"
+import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
+import EyeIcon from "bootstrap-icons/icons/eye-fill.svg?sfc";
+import ChatIcon from "bootstrap-icons/icons/chat-dots.svg?sfc";
+import { articleLink, localDate } from "@/blog-plugin";
 
 interface PreviewItemProps {
 	item: any;
@@ -155,8 +158,10 @@ defineProps<PreviewItemProps>();
 .metaItem {
 	margin-right: 1em;
 
-	& > i {
-		margin-right: .2em;
+	& > svg {
+		vertical-align: -4px;
+		font-size: 18px;
+		margin-right: 4px;
 	}
 }
 </style>

@@ -8,7 +8,7 @@
 				v-ripple
 				@click="preview=false"
 			>
-				<i class="far fa-edit"/>
+				<EditIcon/>
 			</button>
 			<button
 				v-else
@@ -17,7 +17,7 @@
 				v-ripple
 				@click="preview=true"
 			>
-				<i class="fas fa-eye"/>
+				<EyeIcon/>
 			</button>
 			<button
 				:class="$style.headerButton"
@@ -25,7 +25,7 @@
 				v-ripple
 				@click="showGuide"
 			>
-				<i class="far fa-question-circle"/>
+				<HelpIcon/>
 			</button>
 		</kx-frame-header>
 
@@ -71,6 +71,9 @@
 
 <script>
 import { mapState } from "vuex";
+import EyeIcon from "bootstrap-icons/icons/eye-fill.svg?sfc";
+import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
+import HelpIcon from "bootstrap-icons/icons/question-circle.svg?sfc";
 import MarkdownView from "@/markdown/MarkdownView.vue";
 import EditContext from "./EditContext";
 import GuideDialog from "./GuideDialog.vue";
@@ -83,6 +86,9 @@ export default {
 	isolation: true,
 	components: {
 		MarkdownView,
+		EyeIcon,
+		EditIcon,
+		HelpIcon,
 	},
 	data: () => ({
 		preview: false,
@@ -109,15 +115,19 @@ export default {
 }
 
 .headerButton {
-	composes: nav-item from global;
+	display: inline-flex;
+	align-items: center;
+	font-size: 24px;
 	padding: 0 16px;
 }
 
 .body {
-	composes: kx-frame-body from global;
-	border: none;
+	resize: none;
+	flex: 1;
 	padding: 10px;
+	border: none;
 	font-size: initial;
+	outline: none;
 }
 
 .toolbar {

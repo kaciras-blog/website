@@ -1,6 +1,5 @@
 <template>
 	<div :class="$style.container">
-
 		<div :class="$style.header">
 			<div :class="$style.header_content">
 				<img
@@ -14,34 +13,45 @@
 		</div>
 
 		<div :class="$style.body">
-			<side-menu-link to="/" icon="fas fa-home">首页</side-menu-link>
-			<side-menu-link to="/list" icon="far fa-list-alt">文章</side-menu-link>
-			<side-menu-link to="/about/me" icon="far fa-copyright">关于</side-menu-link>
-
-			<side-menu-link tag="a" to="/feed/rss" icon="fa fa-rss">Feed订阅</side-menu-link>
-
-			<side-menu-link tag="div" icon="fas fa-sliders-h" @click="showSettingFrame">设置</side-menu-link>
+			<side-menu-link to="/">
+				<HomeIcon/>
+				首页
+			</side-menu-link>
+			<side-menu-link to="/list">
+				<ListIcon/>
+				文章
+			</side-menu-link>
+			<side-menu-link to="/about/me">
+				<CopyrightIcon/>
+				关于
+			</side-menu-link>
+			<side-menu-link tag="a" to="/feed/rss">
+				<RssIcon/>
+				Feed 订阅
+			</side-menu-link>
+			<side-menu-link tag="div" @click="showSettingFrame">
+				<SettingIcon/>
+				设置
+			</side-menu-link>
 		</div>
 	</div>
 </template>
 
-<script>
-import { mapActions, mapState } from "vuex";
-import { LOGOUT } from "@/store/types";
+<script setup lang="ts">
+import HomeIcon from "@material-design-icons/svg/filled/home.svg?sfc";
+import ListIcon from "bootstrap-icons/icons/list.svg?sfc";
+import CopyrightIcon from "@material-design-icons/svg/filled/copyright.svg?sfc";
+import RssIcon from "@material-design-icons/svg/filled/rss_feed.svg?sfc";
+import SettingIcon from "@material-design-icons/svg/filled/settings.svg?sfc";
 import SideMenuLink from "./SideMenuLink.vue";
 import SettingFrame from "./SettingFrame.vue";
+import { useDialog } from "@kaciras-blog/uikit";
 
-export default {
-	name: "NavMenu",
-	components: { SideMenuLink },
-	computed: mapState(["user"]),
-	methods: {
-		showSettingFrame() {
-			this.$dialog.show(SettingFrame);
-		},
-		...mapActions({ logout: LOGOUT }),
-	},
-};
+const dialog = useDialog();
+
+function showSettingFrame() {
+	dialog.show(SettingFrame);
+}
 </script>
 
 <style module lang="less">

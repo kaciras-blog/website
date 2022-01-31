@@ -11,29 +11,40 @@
 
 			<div :class="$style.nameGroup">
 				<div>
-					<span :class="$style.stick" v-if="value.user.id === 2">博主</span>
-					<span :class="$style.name">{{ value.nickname || value.user.name }}</span>
+					<span
+						v-if="value.user.id === 2"
+						:class="$style.stick"
+					>
+						博主
+					</span>
+					<span :class="$style.name">
+						{{ value.nickname || value.user.name }}
+					</span>
 				</div>
 				<div>
-					<time :class="$style.time">{{ localDateMinute(value.time) }}</time>
+					<time :class="$style.time">
+						{{ localDateMinute(value.time) }}
+					</time>
 				</div>
 			</div>
 
-			<kx-tool-button
+			<kx-button
+				type="icon"
 				v-if="removable"
 				title="删除"
 				:class="$style.clickable"
 				@click="remove"
 			>
-				<i class="far fa-trash-alt"/>
-			</kx-tool-button>
-			<kx-tool-button
+				<TrashIcon/>
+			</kx-button>
+			<kx-button
+				type="icon"
 				title="回复"
 				:class="$style.clickable"
 				@click="$emit('reply', value)"
 			>
-				<i class="fas fa-reply"/>
-			</kx-tool-button>
+				<ReplyIcon/>
+			</kx-button>
 		</header>
 
 		<!-- 引用的内容 -->
@@ -44,6 +55,8 @@
 </template>
 
 <script>
+import TrashIcon from "bootstrap-icons/icons/trash.svg?sfc";
+import ReplyIcon from "bootstrap-icons/icons/reply.svg?sfc";
 import api, { DiscussionState } from "@/api";
 import { errorMessage } from "@/utils";
 import MarkdownView from "@/markdown/MarkdownView.vue";
@@ -52,6 +65,8 @@ import { localDateMinute } from "@/blog-plugin";
 export default {
 	name: "DiscussionContent",
 	components: {
+		TrashIcon,
+		ReplyIcon,
 		MarkdownView,
 	},
 	props: {
@@ -141,8 +156,6 @@ export default {
 }
 
 .clickable {
-	--color: @color-text-minor;
-	height: 32px;
-	border-radius: 4px;
+	align-self: flex-start;
 }
 </style>

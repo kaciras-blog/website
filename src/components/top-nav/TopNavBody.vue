@@ -11,7 +11,7 @@
 			class="nav-item nav-right"
 			@click="showMenu"
 		>
-			<i class="fas fa-bars"/>
+			<ListIcon/>
 		</button>
 
 		<!-- 宽屏直接把按钮都显示在上面 -->
@@ -37,16 +37,20 @@
 				<button class="nav-item" @click="logout">退出登录</button>
 			</template>
 
-			<router-link v-else to="/login" class="nav-item">登录</router-link>
-
-			<router-link to="/list" class="nav-item">文章</router-link>
-			<router-link to="/about/me" class="nav-item">关于</router-link>
-
+			<router-link v-else to="/login" class="nav-item">
+				登录
+			</router-link>
+			<router-link to="/list" class="nav-item">
+				文章
+			</router-link>
+			<router-link to="/about/me" class="nav-item">
+				关于
+			</router-link>
 			<a href="/feed/atom" class="nav-item" title="Feed订阅">
-				<i class="fas fa-rss" :class="$style.fontIcon"/>
+				<RssIcon/>
 			</a>
 			<button class="nav-item" title="设置" @click="showSettings">
-				<i class="fas fa-cogs" :class="$style.fontIcon"/>
+				<SettingIcon/>
 			</button>
 		</div>
 	</component>
@@ -55,6 +59,9 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import { LOGOUT } from "@/store/types";
+import ListIcon from "bootstrap-icons/icons/list.svg?sfc";
+import SettingIcon from "@material-design-icons/svg/filled/settings.svg?sfc";
+import RssIcon from "@material-design-icons/svg/filled/rss_feed.svg?sfc";
 import NavMenuFrame from "./NavMenuFrame.vue";
 import SettingDialog from "./SettingDialog.vue";
 
@@ -62,6 +69,9 @@ export default {
 	name: "TopNavBody",
 	components: {
 		NavMenuFrame,
+		ListIcon,
+		RssIcon,
+		SettingIcon,
 	},
 	props: {
 		tag: String,
@@ -90,7 +100,7 @@ export default {
 			window.addEventListener("scroll", this.scrollFunction);
 		}
 	},
-	beforeDestroy() {
+	beforeUnmount() {
 		window.removeEventListener("scroll", this.scrollFunction);
 	},
 };

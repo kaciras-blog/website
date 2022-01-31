@@ -41,19 +41,21 @@
 		<div :class='$style.bottom_toolbar'>
 			<kx-button
 				v-if="preview"
-				icon="far fa-edit"
+				type="outline"
 				title="编辑"
 				@click="preview=false"
 			>
-				<span class="hide-m"> 编辑</span>
+				<EditIcon class="prefix"/>
+				编辑
 			</kx-button>
 			<kx-button
 				v-else
-				icon="fas fa-eye"
+				type="outline"
 				title="预览"
 				@click="preview=true"
 			>
-				<span class="hide-m"> 预览</span>
+				<EyeIcon class="prefix"/>
+				预览
 			</kx-button>
 
 			<kx-task-button
@@ -69,6 +71,8 @@
 
 <script>
 import { mapState } from "vuex";
+import EyeIcon from "bootstrap-icons/icons/eye-fill.svg?sfc";
+import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
 import MarkdownView from "@/markdown/MarkdownView.vue";
 import EditContext from "./EditContext";
 import GuideDialog from "./GuideDialog.vue";
@@ -80,6 +84,8 @@ export default {
 	],
 	components: {
 		MarkdownView,
+		EyeIcon,
+		EditIcon,
 	},
 	data: () => ({
 		preview: false,
@@ -118,7 +124,7 @@ export default {
 	display: inline-flex;
 	flex-direction: column;
 	margin-left: 1rem;
-	vertical-align: middle;
+	vertical-align: top;
 }
 
 .nickname {

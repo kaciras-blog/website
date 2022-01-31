@@ -4,41 +4,38 @@
 			<h1 :class="$style.title">友情链接</h1>
 
 			<div v-if="sorting" :class="$style.toolbar">
-				<img
-					src="@/assets/icon/close.svg"
-					alt="sort"
+				<CloseIcon
+					tabindex="0"
 					title="取消"
-					:class="$style.iconButton"
-					tabindex="0"
+					fill="#f44336"
+					:class="$style.iconButton2"
 					@click="sortFinish(false)"
-				>
-				<img
-					src="@/assets/icon/correct.svg"
-					alt="make friend"
-					title="确定"
-					:class="$style.iconButton"
+				/>
+				<CheckIcon
 					tabindex="0"
+					title="确定"
+					fill="#2196f3"
+					:class="$style.iconButton2"
 					@click="sortFinish(true)"
-				>
+				/>
 			</div>
 
-			<div v-else-if="user.id === 2" :class="$style.toolbar">
-				<img
-					src="@/assets/icon/sort.svg"
-					alt="sort"
+			<div
+				v-else-if="user.id === 2"
+				:class="$style.toolbar"
+			>
+				<SortIcon
+					tabindex="0"
 					title="调整顺序"
 					:class="$style.iconButton"
-					tabindex="0"
 					@click="sort"
-				>
-				<img
-					src="@/assets/icon/plus.svg"
-					alt="make friend"
+				/>
+				<AddIcon
+					tabindex="0"
 					title="添加"
 					:class="$style.iconButton"
-					tabindex="0"
 					@click="makeFriend"
-				>
+				/>
 			</div>
 		</header>
 
@@ -60,18 +57,24 @@
 					@dragstart="drag($event, i)"
 				/>
 
-				<button
+				<kx-button
 					v-if="user.id === 2 && !sorting"
+					type="icon"
 					title="修改"
 					:class="$style.edit"
 					@click="edit(friend)"
-				/>
-				<button
+				>
+					<PencilIcon/>
+				</kx-button>
+				<kx-button
 					v-if="user.id === 2 && !sorting"
+					type="icon"
 					title="删除"
 					:class="$style.remove"
 					@click="rupture(i)"
-				/>
+				>
+					<CloseIcon fill="#f44336"/>
+				</kx-button>
 			</li>
 		</ul>
 	</section>
@@ -80,6 +83,11 @@
 <script>
 import { mapState } from "vuex";
 import { edgeScroll, moveElement, observeMouseMove } from "@kaciras-blog/uikit";
+import SortIcon from "@/assets/icon/sort.svg?sfc";
+import AddIcon from "@/assets/icon/plus.svg?sfc";
+import CloseIcon from "@material-design-icons/svg/round/close.svg?sfc";
+import CheckIcon from "@material-design-icons/svg/round/check.svg?sfc";
+import PencilIcon from "bootstrap-icons/icons/pencil-fill.svg?sfc";
 import api from "@/api";
 import { errorMessage } from "@/utils";
 import FriendCard from "./FriendCard.vue";
@@ -166,8 +174,8 @@ function dragSort(region, sort, event, el) {
 
 	const observer = {
 		next({ x, y }) {
-			x += pageXOffset;
-			y += pageYOffset;
+			x += window.scrollX;
+			y += window.scrollY;
 			sort.dragOver(region.getIndex(x, y));
 		},
 		complete() {
@@ -183,6 +191,11 @@ export default {
 	name: "FriendsSection",
 	components: {
 		FriendCard,
+		SortIcon,
+		AddIcon,
+		CloseIcon,
+		CheckIcon,
+		PencilIcon,
 	},
 	data() {
 		return {
@@ -269,7 +282,7 @@ export default {
 
 			const sort = new VueArrayInsertSort(friends, i);
 
-			this.$set(friends, i, {
+			friends[i] = {
 				placeholder: true,
 				id: Symbol(),
 
@@ -278,7 +291,7 @@ export default {
 					width: rect.width + "px",
 					height: rect.height + "px",
 				},
-			});
+			};
 
 			dragSort($_draggingRegion, sort, event, dragEl);
 		},
@@ -297,7 +310,7 @@ export default {
 		this.$_lazyLoader = new IntersectionObserver(callback, { rootMargin: "35px" });
 		this.$_lazyLoader.observe(this.$el);
 	},
-	destroyed() {
+	unmounted() {
 		this.$_lazyLoader.disconnect(); // 啊好想要 Hooks 啊
 	},
 };
@@ -318,17 +331,25 @@ export default {
 }
 
 .iconButton {
-	.size(2.8rem);
-	margin-right: .5rem;
-	padding: .5rem;
+	font-size: 44px;
+	margin-right: 8px;
+	padding: 8px;
 
-	border-radius: .25rem;
+	border-radius: 4px;
 	cursor: pointer;
 	transition: background-color .15s;
 
 	&:hover, &:focus {
 		background: #f0f0f0;
 	}
+}
+
+// 这俩图标比上面的小，要放大些。
+.iconButton2 {
+	composes: iconButton;
+
+	padding: 0;
+	font-size: 44px;
 }
 
 .title {
@@ -371,8 +392,7 @@ export default {
 	z-index: 5;
 
 	border-radius: 50%;
-	background-position: 50%;
-	background-repeat: no-repeat;
+	background: white;
 
 	opacity: 0;
 	cursor: pointer;
@@ -380,21 +400,16 @@ export default {
 	transform: scale(0.25);
 	transition: .3s;
 
-	&:hover {
-		border: solid 1px #222;
-	}
+	border: solid 1px #333;
 }
 
 .edit {
 	composes: rightTopButton;
 	right: @button-size - 10px;
-	background-image: url("../../assets/icon/edit.svg");
-	background-size: 20px;
 }
 
 .remove {
 	composes: rightTopButton;
 	right: -(@button-size / 2);
-	background-image: url("~@kaciras-blog/uikit/src/assets/icon-close.svg");
 }
 </style>

@@ -25,13 +25,9 @@ export default {
 			type: String,
 			required: false,
 		},
-		icon: {
-			type: String,
-			required: true,
-		},
 	},
 	render() {
-		const { $style, tag, to, icon } = this;
+		const { $style, tag, to } = this;
 		// const { , listeners } = ctx;
 
 		let data;
@@ -48,10 +44,7 @@ export default {
 				break;
 		}
 
-		return h(tag, data, [
-			h("i", { class: [$style.icon, icon] }),
-			this.$slots.default,
-		]);
+		return h(tag, data, this.$slots.default());
 	},
 };
 </script>
@@ -61,12 +54,14 @@ export default {
 	display: block;
 	padding: 10px 0;
 
+	& > svg {
+		font-size: 24px;
+		vertical-align: -6px;
+		margin: 0 1pc;
+	}
+
 	&:hover, &:focus {
 		background-color: rgba(0, 0, 0, .05);
 	}
-}
-
-.icon {
-	margin: 0 1pc;
 }
 </style>
