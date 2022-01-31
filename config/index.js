@@ -19,6 +19,9 @@ module.exports = {
 		/** 是否启用 webpack-bundle-analyzer */
 		bundleAnalyzer: false,
 
+		/** 是否启用 vite-plugin-inspect */
+		debug: false,
+
 		/** 传递给 vue-loader 的选项，具体说明见Vue的官网 */
 		vueOptions: {
 			template: {
@@ -35,10 +38,16 @@ module.exports = {
 					"error-content": "image",
 				},
 			},
+		},
 
-			// compilerOptions: {
-			// 	whitespace: "condense",
-			// },
+		/** 一些第三方服务，所有项均可由 import.meta.env.* 访问 */
+		env: {
+
+			/** 【可选】Google Analytics 的ID，填写后将启用 */
+			// GOOGLE_ANALYTICS_ID: "UA-12345678-1",
+
+			/** 【可选】本站使用 Sentry 来上报异常，填写后将启用 */
+			// SENTRY_DSN: "https://foobar@sentry.io/123456",
 		},
 	},
 
@@ -81,7 +90,7 @@ module.exports = {
 	app: {
 
 		/** 网站标题和站长名字 */
-		title: "Kaciras的博客",
+		title: "Kaciras 的博客",
 		author: "Kaciras",
 
 		/**
@@ -94,7 +103,7 @@ module.exports = {
 		dataDir: "/var/lib/blog",
 
 		/**
-		 * 【可选】是否启用ServiceWorker，true 表示启用，默认不启用。
+		 * 【可选】是否启用 ServiceWorker，默认不启用。
 		 */
 		// serviceWorker: true,
 
@@ -102,7 +111,7 @@ module.exports = {
 		 * AJAX请求超时（毫秒），0表示无超时，不影响非AJAX请求。
 		 *
 		 * 【环境变量】
-		 * 该选项在构建时可由 process.env.TIMEOUT 访问
+		 * 该选项在构建时可由 import.meta.env.TIMEOUT 访问
 		 */
 		requestTimeout: 10000,
 
@@ -115,13 +124,13 @@ module.exports = {
 		},
 	},
 
-	contentServer: {
+	backend: {
 
 		/**
 		 * 【环境】内容服务器的内部访问 URL，用于服务端渲染和内部通信
-		 * 在服务端构建时用 process.env.API_ORIGIN 访问
+		 * 在服务端构建时用 import.meta.env.PUBLIC_ORIGIN 访问
 		 */
-		internalOrigin: "http://localhost:12345",
+		internal: "http://localhost:12345",
 
 		/**
 		 * 【环境】【可选】内容服务器的证书，如果它启用了HTTPS的话可能需要添加额外的信任。
@@ -132,22 +141,12 @@ module.exports = {
 
 		/**
 		 * 【环境】内容服务器的公网 URL，如果是对象则依据页面使用HTTP还是HTTPS选择
-		 * 在客户端构建时用 process.env.API_ORIGIN 访问
+		 * 在客户端构建时用 import.meta.env.INTERNAL_ORIGIN 访问
 		 */
-		publicOrigin: "https://api.example.com",
+		public: "https://api.example.com",
 		// publicOrigin: {
 		// 	http: "http://api.example.com:54321",
 		// 	https: "https://api.example.com:12345",
 		// },
-	},
-
-	/** 一些第三方服务，所有项均可由 process.env 访问 */
-	thirdParty: {
-
-		/** 【可选】Google Analytics 的ID，不填则不启用 Google Analytics */
-		// GOOGLE_ANALYTICS_ID: "UA-12345678-1",
-
-		/** 【可选】本站使用 Sentry 来上报异常，填写该项后将启用 */
-		// SENTRY_DSN: "https://foobar@sentry.io/123456",
 	},
 };
