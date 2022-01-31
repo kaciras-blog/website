@@ -5,13 +5,16 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { articleRenderer, discussionRenderer, initLazyLoading } from ".";
+import { NOOP } from "@/utils";
 
 interface MarkdownViewProps {
 	value: string;
-	isArticle: boolean;
+	isArticle?: boolean;
 }
 
-const props = defineProps<MarkdownViewProps>();
+const props = withDefaults(defineProps<MarkdownViewProps>(), {
+	isArticle: false,
+});
 
 const html = computed(() => {
 	const renderer = props.isArticle
@@ -20,12 +23,14 @@ const html = computed(() => {
 	return renderer.render(props.value);
 });
 
-let disconnect = () => {};
+let disconnect = NOOP;
 
 function setupLazyLoad(el: HTMLElement) {
 	if (!el) {
 		disconnect();
+		disconnect = NOOP;
+	} else if (disconnect === NOOP) {
+		disconnect = initLazyLoading(el);
 	}
-	disconnect = initLazyLoading(el);
 }
 </script>
