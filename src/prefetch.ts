@@ -1,4 +1,4 @@
-import { ComponentOptions } from "vue";
+import { ComponentOptions, onBeforeMount, useSSRContext } from "vue";
 import { RouteLocationNormalizedLoaded } from "vue-router";
 import { Store } from "vuex";
 import { createNanoEvents, Emitter } from "nanoevents";
@@ -24,7 +24,7 @@ export interface PrefetchEventMap {
 
 /**
  * 在预载的各个阶段都会发出一些事件，可以获取相关信息，用于进度条等等地方。
- * 该事件源仅客户端有效，SSR 不发出任何事件，请注意避免在 SSR 时监听。
+ * 该对象仅客户端有效，SSR 不发出任何事件，请注意避免在 SSR 中监听。
  */
 export const events = import.meta.env.SSR
 	? {} as Emitter<PrefetchEventMap>
@@ -70,3 +70,30 @@ export abstract class PrefetchContext {
 export interface MaybePrefetchComponent extends ComponentOptions {
 	asyncData?: (ctx: PrefetchContext) => Promise<void>;
 }
+
+/**
+ * 用来注入些 SEO 相关的信息。
+ */
+interface HeadMetaObject {
+	meta?: string;
+	title?: string;
+}
+
+function useSSRHeadMeta() {
+	return useSSRContext<HeadMetaObject>()!;
+}
+
+// meta 对于客户端无意义，就不管它了。
+function useClientHeadMeta() {
+	const object: HeadMetaObject = {};
+	onBeforeMount(() => {
+		const { title } = object;
+		if (title) {
+			document.title = title + " - Kaciras 的博客";
+		}
+	});
+	return object;
+}
+
+export const useHeadMeta = import.meta.env.SSR
+	? useSSRHeadMeta : useClientHeadMeta;

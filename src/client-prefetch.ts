@@ -121,13 +121,14 @@ function doPrefetch(
  * mixin 必须在创建 Vue 实例之前
  */
 export const ClientPrefetchMixin: ComponentOptions = {
-	beforeRouteUpdate(this: any, to, from, next) {
-		if (!(this.$options as any).asyncData) {
+	beforeRouteUpdate(this, to, from, next) {
+		const component = this.$options as MaybePrefetchComponent;
+		if (!component.asyncData) {
 			return next();
 		}
 		abortController = new AbortController();
 		events.emit("start", abortController.signal);
-		prefetch(this.$store, to, [this.$options], next);
+		prefetch(this.$store, to, [component], next);
 	},
 };
 

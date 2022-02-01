@@ -1,4 +1,6 @@
-import type { Route } from "vue-router";
+import { RouteLocationNormalized } from "vue-router";
+
+export const NOOP = () => {};
 
 /**
  * 转义HTML文本中的特殊字符
@@ -72,7 +74,7 @@ export function attachRandomId(object: any) {
  * @param from 另一个路由记录
  * @return 两个路由除了HASH部分外是否一样
  */
-export function isOnlyHashChange(to: Route, from: Route) {
+export function isOnlyHashChange(to: RouteLocationNormalized, from: RouteLocationNormalized) {
 	const fPath = from.fullPath, tPath = to.fullPath;
 	const fp = fPath.substring(0, fPath.length - from.hash.length);
 	const tp = tPath.substring(0, tPath.length - to.hash.length);
