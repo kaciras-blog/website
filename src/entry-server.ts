@@ -1,7 +1,7 @@
 import { basename } from "path";
 import { Store } from "vuex";
 import { RouteLocationNormalizedLoaded } from "vue-router";
-import { renderToString, SSRContext } from 'vue/server-renderer';
+import { renderToString, SSRContext } from "vue/server-renderer";
 import { SET_WIDTH } from "@kaciras-blog/uikit";
 import { configureForProxy } from "@kaciras-blog/server/lib/axios-helper";
 import api, { Api } from "./api";
@@ -48,13 +48,21 @@ function isMobile(userAgent: string) {
 
 // noinspection JSUnusedGlobalSymbols 由服务器引用。
 export default async (context: any) => {
-	const { template, manifest, request, path } = context;
+	const { error, template, manifest, request, path } = context;
 
 	if (noSSR.test(path)) {
 		return template;
 	}
 
 	const { app, router, store } = createBlogApp();
+
+	// router.push 返回的 Promise 等待所有 hooks 都调用完毕
+	if (error) {
+		await router.push("/error/500");
+	} else {
+		await router.push(path);
+	}
+
 	const ssrApi = api.withConfigProcessor(config => configureForProxy(request, config));
 
 	// 从 UserAgent 中检测是否手机，从而设定渲染的屏幕宽度。
@@ -62,10 +70,6 @@ export default async (context: any) => {
 	if (userAgent && isMobile(userAgent)) {
 		store.commit(SET_WIDTH, mediaBreakpoints.mobile);
 	}
-
-	// router.push 返回的 Promise 等待所有 hooks 都调用完毕
-	await router.push(path);
-	// await router.isReady();
 
 	const route = router.currentRoute.value;
 	const controller = new AbortController();
@@ -101,7 +105,7 @@ export default async (context: any) => {
 	}
 
 	const ssrContext: SSRContext = {
-		meta: "<meta name='description' content='欢迎来到 Kaciras 的博客'>"
+		meta: "<meta name='description' content='欢迎来到 Kaciras 的博客'>",
 	};
 
 	const { title } = route.meta;
@@ -111,8 +115,10 @@ export default async (context: any) => {
 
 	const appHtml = await renderToString(app, ssrContext);
 
+	context.status = ssrContext.status;
+
 	const initState = JSON.stringify(store.state);
-	ssrContext.meta += `<script>window.__INITIAL_STATE__=${initState}</script>`
+	ssrContext.meta += `<script>window.__INITIAL_STATE__=${initState}</script>`;
 
 	const preloads = renderPreloadLinks(ssrContext.modules, manifest);
 
