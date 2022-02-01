@@ -97,23 +97,24 @@ export default { asyncData };
 </script>
 
 <script setup lang="ts">
-import { ref, computed, ComponentPublicInstance } from "vue";
+import { ref, reactive, ComponentPublicInstance } from "vue";
 import { useStore } from "vuex";
 import ChatIcon from "@material-design-icons/svg/outlined/forum.svg?sfc";
 import ArrowTopIcon from "@material-design-icons/svg/outlined/rocket_launch.svg?sfc";
 import { scrollToElementStart } from "@kaciras-blog/uikit";
+import { Article } from "@/api";
 import { articleLink, localDateMinute } from "@/blog-plugin";
-import useHeadMeta from "@/title-mixin";
+import { useHeadMeta } from "@/prefetch";
 import { escapeHtml } from "@/utils";
 import MarkdownView from "@/markdown/MarkdownView.vue";
 
 const store = useStore();
+const article = reactive<Article>(store.state.prefetch.article);
 const discussion = ref<ComponentPublicInstance>();
-const article = computed(() => store.state.prefetch.article);
 
 // 为了 SEO，需要在预渲染的文章页面的 <head> 中加入一些标签。
 {
-	const { title, keywords, summary, prev, next } = article.value;
+	const { title, keywords, summary, prev, next } = article;
 	const head = useHeadMeta();
 	head.title = title;
 

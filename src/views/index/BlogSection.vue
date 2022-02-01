@@ -2,12 +2,12 @@
 	<section>
 		<header :class="$style.header">
 			<h1 :class="$style.title">推荐</h1>
-			<router-link
-				to="/list"
-				class="outline primary kx-btn"
+			<kx-button
+				type="outline"
+				route="/list"
 			>
 				更多文章 >
-			</router-link>
+			</kx-button>
 		</header>
 
 		<!-- 懒得再套一层 li 了没用 ul -->
@@ -41,15 +41,12 @@
 	</section>
 </template>
 
-<script>
-import { mapState } from "vuex";
+<script setup lang="ts">
+import { reactive } from "vue";
+import { useStore } from "vuex";
 
-export default {
-	name: "BlogSection",
-	computed: mapState({
-		cards: state => state.prefetch.cards,
-	}),
-};
+const store = useStore();
+const cards = reactive(store.state.prefetch.cards);
 </script>
 
 <style module lang="less">
