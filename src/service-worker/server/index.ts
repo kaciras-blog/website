@@ -5,8 +5,9 @@ import "./error-report";
 import { initializeSettingManager } from "./settings";
 import apiCacheRoute from "./api-cache";
 import { CacheWrapper, cleanUnusedCache, useStaticCache } from "./cache";
-import { NavigateRoute, RegexRoute, Router } from "./routing";
+import { RegexRoute, Router } from "./routing";
 import { cacheFirst } from "./fetch-strategy";
+import { navigateRoute } from "@/service-worker/server/navigate";
 
 // 默认是 WebWorker，需要声明一下 ServiceWorker，其他文件里也一样。
 declare const self: ServiceWorkerGlobalScope & {
@@ -30,11 +31,13 @@ const router = new Router();
 router.addRoute(new RegexRoute("/static/", fetcher));
 router.addRoute(apiCacheRoute(API_CACHE_NAME));
 
-// Twitter 的代码里也是这样一个个写死的
+// Twitter 的代码里也是这样一个个写死的，且 app-shell 单独一个存储。
 // https://abs.twimg.com/responsive-web/serviceworker/main.e531acd4.js 格式化后的第6200行
-const APP_SHELL_RE = new RegExp("^/(?:$|list|login|article|edit|profile|about|console|error)");
-const APP_SHELL_NAME = "/index.html";
-router.addRoute(new NavigateRoute(cache, APP_SHELL_NAME, APP_SHELL_RE));
+router.addRoute(navigateRoute({
+	appShell: "/index.html",
+	preload: true,
+	includes: new RegExp("^/(?:$|list|login|article|edit|profile|about|console|error)"),
+}));
 
 self.addEventListener("fetch", router.route.bind(router));
 
@@ -46,11 +49,8 @@ self.addEventListener("fetch", router.route.bind(router));
  *
  * 该事件只运行一次；有副作用的代码应当在 activate 事件里执行。
  */
-self.addEventListener("install", event => {
+self.addEventListener("install", () => {
 	console.debug("[SW] Install new version");
-
-	event.waitUntil(fetch(APP_SHELL_NAME)
-		.then(appShell => cache.put(APP_SHELL_NAME, appShell)));
 
 	// 新版本安装后会等待旧版控制的页面全部关闭，以确保同时只有一个版本在运行，使用该语句将跳过等待。
 	return self.skipWaiting();
@@ -63,23 +63,6 @@ self.addEventListener("install", event => {
  */
 self.addEventListener("activate", event => {
 	console.info("[SW] New version activated");
-
-	/*
-	 * 浏览器会停止没有相关页面打开的 ServiceWorker 以节约资源，如果监听了 fetch 事件，
-	 * 那么任何请求都必须等到 ServiceWorker 启动完成后才能发送，保证其能够被拦截。
-	 *
-	 * 通过打开导航预载，可以允许 ServiceWorker 未启动时就发送导航请求，与其启动过程并行执行，
-	 * 待 ServiceWorker 启动完成后再激活拦截事件，使用 FetchEvent.preloadResponse 获取预载的响应。
-	 *
-	 * 如果使用了 AppShell 模式，则不需要每次都从网络读取页面，可以不开启该功能。
-	 *
-	 * 如果之前开启过，以后不再使用时必须调用 navigationPreload.disable() 关闭。
-	 *
-	 * 详情见：https://developers.google.com/web/updates/2017/02/navigation-preload
-	 */
-	if (self.registration.navigationPreload) {
-		event.waitUntil(self.registration.navigationPreload.enable());
-	}
 
 	event.waitUntil(cleanUnusedCache());
 
