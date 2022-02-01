@@ -72,53 +72,6 @@ export class RegexRoute implements Route {
 }
 
 /**
- * 如果浏览器支持 WebP 格式，则把图片请求的文件扩展名改为.webp。
- *
- * 【存在的问题】
- * WebP 格式不一定就比原格式小，但哪个更优只能在服务端判断，该类只能一律使用 WebP。
- * 首次访问网站时，因为 ServiceWorker 未安装而导致首屏的资源无法拦截。
- *
- * 所以尽量从后端来支持 WebP 升级功能，如果后端支持则不需要使用本类。
- *
- * 【其他方案】
- * 在 HTML 里使用 <picture> + <source> 更好，但是 CSS 对应的功能并没有广泛支持。
- */
-export class WebpUpgradeRoute implements Route {
-
-	private readonly fetch: FetchFn;
-	private readonly pathPattern: RegExp;
-
-	constructor(fetchFn: FetchFn, pathPattern: RegExp) {
-		this.fetch = fetchFn;
-		this.pathPattern = pathPattern;
-	}
-
-	match(request: Request) {
-		const { mode, url, headers } = request;
-		if (mode === "navigate") {
-			return false; // 新建标签页浏览图片
-		}
-
-		const path = new URL(url).pathname;
-		if (!this.pathPattern.test(path)) {
-			return false; // 只拦截特定路径的资源
-		}
-
-		return headers.get("Accept")!.includes("image/webp");
-	}
-
-	async handle(event: FetchEvent) {
-		const url = new URL(event.request.url);
-		const path = url.pathname;
-
-		url.pathname = path.substring(0, path.lastIndexOf(".")) + ".webp";
-		const request = new Request(url.href, event.request);
-
-		event.respondWith(this.fetch(request));
-	}
-}
-
-/**
  * 处理导航请求的路由，根据情况返回网络请求或缓存的 AppShell。
  * 记得打开 navigationPreload 功能。
  */
