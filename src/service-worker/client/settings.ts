@@ -30,7 +30,7 @@ function sendMessage<T>(type: MessageType, data?: any) {
 
 	function rejectTimeout() {
 		const promise = callbacks.get(id);
-		callbacks.delete(id)
+		callbacks.delete(id);
 		promise!.reject(new Error("ServiceWorker message timeout"));
 	}
 
@@ -43,7 +43,7 @@ export function setResult(data: ReplyMessage) {
 	if (!callback) {
 		return;
 	}
-	callbacks.delete(data.id)
+	callbacks.delete(data.id);
 	clearTimeout(callback.timer);
 
 	if ("error" in data) {

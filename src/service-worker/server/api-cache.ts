@@ -29,7 +29,7 @@ class ApiOfflineRoute implements Route {
 			this.fetchFn = staleWhileRevalidate(this.cache);
 			console.debug("[SW] API 请求模式设置为 StaleWhileRevalidate");
 		} else {
-			const ms = process.env.TIMEOUT as unknown as number;
+			const ms = import.meta.env.TIMEOUT as unknown as number;
 			this.fetchFn = networkFirst(this.cache, timeout(ms));
 			console.debug("[SW] API 请求模式设置为 NetworkFirst");
 		}
@@ -57,7 +57,7 @@ class ApiOfflineRoute implements Route {
  * 对内容服务接口使用网络优先缓存，保证在网络不通的情况下也能显示旧的内容。
  */
 export default function apiCacheRoute(cacheName: string) {
-	const apiOrigin = process.env.API_ORIGIN as any;
+	const apiOrigin = import.meta.env.API_PUBLIC as any;
 	const BASE_URL = typeof apiOrigin === "string"
 		? apiOrigin
 		: apiOrigin[location.protocol.substring(0, location.protocol.length - 1)];

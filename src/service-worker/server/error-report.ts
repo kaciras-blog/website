@@ -4,7 +4,7 @@ import { MessageType } from "./message";
 declare const clients: Clients;
 
 export interface ServiceWorkerError {
-	type: "ERROR" | "REJECTION",
+	type: "ERROR" | "REJECTION";
 	name: string;
 	stack?: string;
 	message?: string;
@@ -12,7 +12,7 @@ export interface ServiceWorkerError {
 
 export interface SWErrorMessage {
 	type: MessageType.Error;
-	error: ServiceWorkerError
+	error: ServiceWorkerError;
 }
 
 function reportError(error: ServiceWorkerError) {

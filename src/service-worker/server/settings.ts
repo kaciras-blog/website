@@ -1,6 +1,6 @@
 import { DBSchema, IDBPDatabase, openDB } from "idb";
 import { MessageType } from "./message";
-import { createNanoEvents } from 'nanoevents'
+import { createNanoEvents } from "nanoevents";
 
 declare const self: ServiceWorkerGlobalScope;
 
@@ -24,7 +24,7 @@ const current: { [key: string]: any } = {
 };
 
 function upgradeDatabase(db: IDBPDatabase<Schema>) {
-	db.createObjectStore("settings", { keyPath: "key" })
+	db.createObjectStore("settings", { keyPath: "key" });
 }
 
 /**

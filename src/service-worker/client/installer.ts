@@ -34,20 +34,20 @@ async function unregister() {
 		await registration.unregister();
 		console.debug("[Init] ServiceWorker 已注销");
 	} catch (e) {
-		console.error("[Init] ServiceWorker 注销失败", e)
+		console.error("[Init] ServiceWorker 注销失败", e);
 	}
 }
 
 export async function initialize() {
-	const publicUrl = new URL(process.env.PUBLIC_URL!, window.location.href);
-	if (publicUrl.origin !== window.location.origin) {
-		return console.error("service worker won't work when PUBLIC_URL is on a different origin");
-	}
+	// const publicUrl = new URL(import.meta.env.PUBLIC_URL!, window.location.href);
+	// if (publicUrl.origin !== window.location.origin) {
+	// 	return console.error("service worker won't work when PUBLIC_URL is on a different origin");
+	// }
 	try {
 		const { status } = await fetch("/sw-check", { method: "HEAD" });
 		return status === 200 ? register() : unregister();
 	} catch (e) {
-		console.warn("[Init] 无法获取ServiceWorker注册指令，暂不更新ServiceWorker");
+		console.warn("[Init] 无法获取注册指令，暂不更新 ServiceWorker ");
 	}
 }
 

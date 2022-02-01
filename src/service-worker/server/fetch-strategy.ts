@@ -29,7 +29,7 @@ export async function fetchAndCache(input: RequestInfo, cache: ManagedCache, fet
 		const response = new Response(body, {
 			headers,
 			status: rawResponse.status,
-			statusText: rawResponse.statusText
+			statusText: rawResponse.statusText,
 		});
 
 		cache.put(input, response).catch(e => console.error(e));
@@ -73,7 +73,7 @@ export function networkFirst(cache: ManagedCache, fetchFn: FetchFn = fetch) {
 			// 都抄了 OptionalChaining，咋就不能抄全了，把 ThrowExpression 也拿来。
 			// return (await cache.match(input)) ?? throw err;
 		}
-	}
+	};
 }
 
 /**
@@ -110,5 +110,5 @@ export function cacheFirst(cache: ManagedCache, fetchFn: FetchFn = fetch) {
 			return cached;
 		}
 		return fetchAndCache(input, cache, fetchFn);
-	}
+	};
 }
