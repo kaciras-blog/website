@@ -1,6 +1,6 @@
 import { basename } from "path";
 import { Store } from "vuex";
-import { RouteLocationNormalizedLoaded } from "vue-router";
+import { RouteLocationNormalizedLoaded, Router } from "vue-router";
 import { renderToString, SSRContext } from "vue/server-renderer";
 import { SET_WIDTH } from "@kaciras-blog/uikit";
 import { configureForProxy } from "@kaciras-blog/server/lib/axios-helper";
@@ -10,10 +10,12 @@ import { REFRESH_USER, SET_PREFETCH_DATA } from "./store/types";
 import createBlogApp, { mediaBreakpoints } from "./main";
 
 const titleRE = new RegExp("<title>[^<]*</title>");
+
+// 后台页面就不预渲染了。
 const noSSR = new RegExp("^/(?:edit|console)/");
 
 // @ts-ignore isServer on prototype.
-class ServerPrefetchContext extends PrefetchContext {
+class ServerPrefetch extends PrefetchContext {
 
 	readonly store: Store<any>;
 	readonly route: RouteLocationNormalizedLoaded;
@@ -24,17 +26,17 @@ class ServerPrefetchContext extends PrefetchContext {
 		store: Store<any>,
 		route: RouteLocationNormalizedLoaded,
 		api: Api,
-		signal: AbortSignal,
+		controller: AbortController,
 	) {
 		super();
 		this.store = store;
 		this.route = route;
 		this.api = api;
-		this.signal = signal;
+		this.signal = controller.signal;
 	}
 }
 
-ServerPrefetchContext.prototype.isServer = true;
+ServerPrefetch.prototype.isServer = true;
 
 /**
  * 简单地通过 User-Agent 判断客户端的设备是不是手机
@@ -46,24 +48,8 @@ function isMobile(userAgent: string) {
 	return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
 }
 
-// noinspection JSUnusedGlobalSymbols 由服务器引用。
-export default async (context: any) => {
-	const { error, template, manifest, request, path } = context;
-
-	if (noSSR.test(path)) {
-		return template;
-	}
-
-	const { app, router, store } = createBlogApp();
-
-	// router.push 返回的 Promise 等待所有 hooks 都调用完毕
-	if (error) {
-		await router.push("/error/500");
-	} else {
-		await router.push(path);
-	}
-
-	const ssrApi = api.withConfigProcessor(config => configureForProxy(request, config));
+async function prefetch(store: Store<any>, router: Router, request: any) {
+	const route = router.currentRoute.value;
 
 	// 从 UserAgent 中检测是否手机，从而设定渲染的屏幕宽度。
 	const userAgent = request.headers["user-agent"];
@@ -71,9 +57,9 @@ export default async (context: any) => {
 		store.commit(SET_WIDTH, mediaBreakpoints.mobile);
 	}
 
-	const route = router.currentRoute.value;
+	const ssrApi = api.withConfig(c => configureForProxy(request, c));
 	const controller = new AbortController();
-	const session = new ServerPrefetchContext(store, route, ssrApi, controller.signal);
+	const session = new ServerPrefetch(store, route, ssrApi, controller);
 
 	/*
 	 * 路由配置里最后一条把所有未匹配的路由都转到错误页，
@@ -103,35 +89,43 @@ export default async (context: any) => {
 				throw e;
 		}
 	}
+}
+
+// noinspection JSUnusedGlobalSymbols 由服务器引用。
+export default async (context: any) => {
+	const { error, template, manifest, request, path } = context;
+
+	if (noSSR.test(path)) {
+		return template;
+	}
+
+	const { app, router, store } = createBlogApp();
+
+	// router.push 返回的 Promise 等待所有 hooks 都调用完毕
+	await router.push(error ? "/error/500" : path);
+	await prefetch(store, router, request);
 
 	const ssrContext: SSRContext = {
 		meta: "<meta name='description' content='欢迎来到 Kaciras 的博客'>",
+		title: router.currentRoute.value.meta.title,
 	};
-
-	const { title } = route.meta;
-	if (title) {
-		ssrContext.title = `<title>${title} - Kaciras 的博客</title>`;
-	}
 
 	const appHtml = await renderToString(app, ssrContext);
 
-	context.status = ssrContext.status;
-
+	const preloads = renderPreloadLinks(ssrContext.modules, manifest);
 	const initState = JSON.stringify(store.state);
 	ssrContext.meta += `<script>window.__INITIAL_STATE__=${initState}</script>`;
-
-	const preloads = renderPreloadLinks(ssrContext.modules, manifest);
+	context.status = ssrContext.status;
 
 	let result = template;
-
 	if (ssrContext.title) {
-		result = result.replace(titleRE, ssrContext.title);
+		const tag = `<title>${ssrContext.title} - Kaciras 的博客</title>`;
+		result = result.replace(titleRE, tag);
 	}
-
 	return result
-		.replace("<!--ssr-metadata-->", ssrContext.meta ?? "")
+		.replace("<!--preload-links-->", preloads)
 		.replace("<!--app-html-->", appHtml)
-		.replace("<!--preload-links-->", preloads);
+		.replace("<!--ssr-metadata-->", ssrContext.meta ?? "");
 };
 
 /**

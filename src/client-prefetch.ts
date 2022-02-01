@@ -15,22 +15,26 @@ import { events, MaybePrefetchComponent, PrefetchContext } from "./prefetch";
 let abortController = new AbortController();
 
 // @ts-ignore api & isServer on prototype.
-class ClientPrefetchContext extends PrefetchContext {
+class ClientPrefetch extends PrefetchContext {
 
 	readonly store: Store<any>;
-	readonly abortSignal: AbortSignal;
+	readonly signal: AbortSignal;
 	readonly route: RouteLocationNormalizedLoaded;
 
-	constructor(store: Store<any>, route: RouteLocationNormalizedLoaded, abortSignal: AbortSignal) {
+	constructor(
+		store: Store<any>,
+		route: RouteLocationNormalizedLoaded,
+		abortSignal: AbortSignal,
+	) {
 		super();
 		this.store = store;
 		this.route = route;
-		this.abortSignal = abortSignal;
+		this.signal = abortSignal;
 	}
 }
 
-ClientPrefetchContext.prototype.api = api;
-ClientPrefetchContext.prototype.isServer = false;
+ClientPrefetch.prototype.api = api;
+ClientPrefetch.prototype.isServer = false;
 
 /**
  * 预载下一个路由的组件数据，并更新页面标题等属性。
@@ -44,7 +48,7 @@ export function prefetch(
 	store: Store<any>,
 	to: RouteLocationNormalizedLoaded,
 	components: MaybePrefetchComponent[],
-	next: NavigationGuardNext
+	next: NavigationGuardNext,
 ) {
 	if (components.length === 0) {
 		return next();
@@ -68,9 +72,9 @@ function doPrefetch(
 	store: Store<any>,
 	to: RouteLocationNormalizedLoaded,
 	components: MaybePrefetchComponent[],
-	next: NavigationGuardNext
+	next: NavigationGuardNext,
 ) {
-	const context = new ClientPrefetchContext(store, to, abortController.signal);
+	const context = new ClientPrefetch(store, to, abortController.signal);
 	events.emit("prefetch", context);
 
 	const tasks = components
@@ -125,7 +129,7 @@ export const ClientPrefetchMixin: ComponentOptions = {
 		events.emit("start", abortController.signal);
 		prefetch(this.$store, to, [this.$options], next);
 	},
-}
+};
 
 export function installRouterHooks(store: Store<any>, router: Router) {
 

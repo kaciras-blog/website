@@ -66,85 +66,74 @@
 	</banner-page-layout>
 </template>
 
-<script>
-import { mapState } from "vuex";
+<script lang="ts">
+import { PrefetchContext } from "@/prefetch";
+
+/**
+ * 在路由切换前加载数据，并检查URL是否正确。
+ */
+async function asyncData(session: PrefetchContext) {
+	const { id, urlTitle } = session.route.params;
+	const { article } = session.store.state.prefetch;
+	const idInt = parseInt(id as string);
+
+	if (article && article.id === idInt) {
+		return; // 重定向来的，文章已经加载过了，这里假定 urlTitle 是正确的。
+	}
+
+	await session.api
+		.withCancelToken(session.signal)
+		.article.get(idInt)
+		.then(session.dataSetter("article"));
+
+	// 检查 URL 中的标题，不正确则重定向。
+	const correctUrlTitle = session.data.article.urlTitle;
+	if (!urlTitle || urlTitle !== correctUrlTitle) {
+		session.redirect(301, `/article/${id}/${correctUrlTitle}`);
+	}
+}
+
+export default { asyncData };
+</script>
+
+<script setup lang="ts">
+import { ref, computed, ComponentPublicInstance } from "vue";
+import { useStore } from "vuex";
 import ChatIcon from "@material-design-icons/svg/outlined/forum.svg?sfc";
 import ArrowTopIcon from "@material-design-icons/svg/outlined/rocket_launch.svg?sfc";
 import { scrollToElementStart } from "@kaciras-blog/uikit";
-import TitleMixin from "@/title-mixin";
 import { articleLink, localDateMinute } from "@/blog-plugin";
+import useHeadMeta from "@/title-mixin";
 import { escapeHtml } from "@/utils";
 import MarkdownView from "@/markdown/MarkdownView.vue";
 
-export default {
-	name: "ArticlePage",
-	components: {
-		MarkdownView,
-		ChatIcon,
-		ArrowTopIcon,
-	},
-	mixins: [TitleMixin],
+const store = useStore();
+const discussion = ref<ComponentPublicInstance>();
+const article = computed(() => store.state.prefetch.article);
 
-	title() {
-		return this.article.title;
-	},
-	/**
-	 * 为了优化SEO，需要在预渲染的文章页面的<head>中加入一些标签。
-	 *
-	 * @return {string} html文本
-	 */
-	metadata() {
-		const { keywords, summary, prev, next } = this.article;
-		let headers = `
-				<meta name="description" content="${escapeHtml(summary)}">
-				<meta name="keywords" content="${escapeHtml(keywords.join(","))}">`;
-		if (prev) {
-			headers += `<link rel="prev" title="${prev.title}" href="${articleLink(prev)}">`;
-		}
-		if (next) {
-			headers += `<link rel="next" title="${next.title}" href="${articleLink(next)}">`;
-		}
-		return headers;
-	},
-	/**
-	 * 在路由切换前加载数据，并检查URL是否正确。
-	 *
-	 * @param session 预加载会话
-	 * @return {Promise<void>} 指示加载状态的Promise
-	 */
-	async asyncData(session) {
-		const { id, urlTitle } = session.route.params;
-		const { article } = session.store.state.prefetch;
+// 为了 SEO，需要在预渲染的文章页面的 <head> 中加入一些标签。
+{
+	const { title, keywords, summary, prev, next } = article.value;
+	const head = useHeadMeta();
+	head.title = title;
 
-		if (article && article.id === parseInt(id)) {
-			return; // 重定向来的，文章已经加载过了，这里假定重定向后的urlTitle一定是正确的。
-		}
+	head.meta = `<meta name="keywords" content="${escapeHtml(keywords.join(","))}">`;
+	head.meta += `<meta name="description" content="${escapeHtml(summary)}">`;
+	if (prev) {
+		head.meta += `<link rel="prev" title="${prev.title}" href="${articleLink(prev)}">`;
+	}
+	if (next) {
+		head.meta += `<link rel="next" title="${next.title}" href="${articleLink(next)}">`;
+	}
+}
 
-		await session.api
-			.withCancelToken(session.abortSignal)
-			.article.get(id)
-			.then(session.dataSetter("article"));
+function gotoTop() {
+	scrollToElementStart(document.documentElement);
+}
 
-		// 检查URL中的标题，不正确则重定向到正确的 URL，这里直接抛出对象不知道好不好
-		const correctUrlTitle = session.data.article.urlTitle;
-		if (!urlTitle || urlTitle !== correctUrlTitle) {
-			session.redirect(301, `/article/${id}/${correctUrlTitle}`);
-		}
-	},
-	computed: mapState({
-		article: state => state.prefetch.article,
-	}),
-	methods: {
-		localDateMinute,
-
-		gotoTop() {
-			scrollToElementStart(document.documentElement);
-		},
-		gotoDiscuss() {
-			scrollToElementStart(this.$refs.discussion.$el);
-		},
-	},
-};
+function gotoDiscuss() {
+	scrollToElementStart(discussion.value!.$el);
+}
 </script>
 
 <style module lang="less">

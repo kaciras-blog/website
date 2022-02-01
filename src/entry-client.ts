@@ -1,33 +1,33 @@
 // 注意导入顺序，因为打包后CSS里元素的顺序跟导入顺序一致，所以 main.ts 必须靠前
 import { setupSentry } from "./error-report";
-// import "./misc";
+import "./misc";
 import createBlogApp, { mediaQueryPlugin } from "./main";
 import { useServiceWorker } from "@/service-worker/client/installer";
 import { SUN_PHASES } from "@/store";
 import { REFRESH_USER, SET_SUN_PHASE } from "@/store/types";
 import { ClientPrefetchMixin, installRouterHooks, prefetch } from "./client-prefetch";
 
-interface SSRGlobalVariables {
-	__INITIAL_STATE__: any;
+interface CustomGlobals {
+	__INITIAL_STATE__?: any;
+	__isSupport__: boolean;
 }
 
-declare const window: Window & SSRGlobalVariables;
+declare const window: Window & CustomGlobals;
 
 const { app, router, store } = createBlogApp(window.__INITIAL_STATE__);
 
 app.mixin(ClientPrefetchMixin);
 
-if (process.env.SENTRY_DSN && window.__isSupport__) {
+if (import.meta.env.SENTRY_DSN && window.__isSupport__) {
 	setupSentry(app, router);
 }
 
 function initApplication() {
-	// 这俩要放在挂载的前面，因为它们影响关键的元素
+	app.mount("#app");
+
+	// Vue3 在激活时似乎不会重新设置元素的属性，必须把这俩放挂载后面。
 	mediaQueryPlugin.observeWindow(store);
 	SUN_PHASES.observe().subscribe(value => store.commit(SET_SUN_PHASE, value));
-
-	app.mount("#app");
-	loadingIndicator.mount();
 
 	installRouterHooks(store, router);
 
@@ -53,13 +53,13 @@ async function appShellStartup() {
 if (window.__INITIAL_STATE__) {
 
 	// 服务端渲染的 HTML 包括了首屏资源，所以要延迟到 load 事件避免占用
-	window.addEventListener("load", useServiceWorker)
+	window.addEventListener("load", useServiceWorker);
 
 	// 在服务端渲染下，将初始化注册到 onReady 上，
 	// 使其在初始路由 resolve 后执行，以便我们不会二次预取(double-fetch)已有的数据。
-	router.isReady().then(initApplication)
+	router.isReady().then(initApplication);
 } else {
 
 	// 在客户端渲染下，同样用 onReady 确保异步组件都加载完再预载数据。
-	router.isReady().then(appShellStartup)
+	router.isReady().then(appShellStartup);
 }
