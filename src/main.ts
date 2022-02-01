@@ -25,7 +25,7 @@ export const mediaQueryPlugin = new MediaQueryManager(mediaBreakpoints);
  * @param initState Vuex 的初始状态
  * @return Vue 全家桶
  */
-export default function createBlogApp(initState: any = undefined) {
+export default function createBlogApp(initState?: any) {
 	const store = createStore();
 	const router = createRouter();
 
@@ -46,10 +46,10 @@ export default function createBlogApp(initState: any = undefined) {
 		}
 		const { user } = store.state;
 
-		if (user.id === 2) {
-			return next();
+		if (user.id !== 2) {
+			const return_uri = to.fullPath;
+			return { path: "/login", query: { return_uri } };
 		}
-		next({ path: "/login", query: { return_uri: "/console" } });
 	});
 
 	const app = initState ? createSSRApp(App) : createApp(App);

@@ -39,7 +39,9 @@ async function appShellStartup() {
 	const route = router.currentRoute.value;
 
 	const cs = route.matched.flatMap(v => v.components);
-	await prefetch(store, route, cs, initApplication);
+	await prefetch(store, route, cs);
+
+	initApplication();
 
 	// 把注册延迟到渲染完成之后，避免首屏显示前占用资源
 	useServiceWorker();
