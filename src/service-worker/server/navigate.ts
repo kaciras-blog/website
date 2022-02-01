@@ -2,6 +2,34 @@ import { CacheWrapper, ManagedCache } from "./cache";
 import { Route } from "./routing";
 import { FetchFn, staleWhileRevalidate } from "./fetch-strategy";
 
+/**
+ * Typescript 4.4 移除了一些有用的类型定义，这里给补回来。
+ */
+declare global {
+	interface NavigationPreloadManager {
+		disable(): Promise<void>;
+		enable(): Promise<void>;
+		getState(): Promise<NavigationPreloadState>;
+		setHeaderValue(value: string): Promise<void>;
+	}
+
+	interface NavigationPreloadState {
+		enabled?: boolean;
+		headerValue?: string;
+	}
+
+	interface FetchEvent {
+		readonly preloadResponse: Promise<Response | undefined>;
+	}
+
+	// noinspection JSUnusedGlobalSymbols
+	interface ServiceWorkerRegistration {
+		readonly navigationPreload: NavigationPreloadManager;
+	}
+}
+
+declare const self: ServiceWorkerGlobalScope;
+
 /*
  * 浏览器会停止没有相关页面打开的 ServiceWorker 以节约资源，如果监听了 fetch 事件，
  * 那么任何请求都必须等到 ServiceWorker 启动完成后才能发送，保证其能够被拦截。

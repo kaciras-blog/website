@@ -3,7 +3,6 @@ import { Route } from "./routing";
 import { FetchFn, networkFirst, staleWhileRevalidate, timeout } from "./fetch-strategy";
 import { bind, initPromise } from "./settings";
 
-
 class ApiOfflineRoute implements Route {
 
 	private readonly host: string;
@@ -54,7 +53,7 @@ class ApiOfflineRoute implements Route {
 }
 
 /**
- * 对内容服务接口使用网络优先缓存，保证在网络不通的情况下也能显示旧的内容。
+ * 对动态内容使用缓存，保证在网络不通的情况下也能显示旧的内容。
  */
 export default function apiCacheRoute(cacheName: string) {
 	const apiOrigin = import.meta.env.API_PUBLIC as any;

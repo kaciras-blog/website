@@ -1,3 +1,5 @@
+declare const self: ServiceWorkerGlobalScope;
+
 /**
  * 记录所有使用中的缓存名，用于清理未使用的缓存。
  *

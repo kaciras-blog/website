@@ -28,7 +28,7 @@ axios.defaults.withCredentials = true;
 
 // ServiceWorker里已经对API设置了超时，如果支持则不在此处添加超时。
 if (import.meta.env.TIMEOUT) {
-	if (import.meta.env.SSR === "server" || !("serviceWorker" in navigator)) {
+	if (import.meta.env.SSR || !("serviceWorker" in navigator)) {
 		axios.defaults.timeout = import.meta.env.TIMEOUT as number;
 	}
 }
@@ -53,13 +53,13 @@ const apiOrigin = import.meta.env.API_PUBLIC as any;
 export const BASE_URL = import.meta.env.SSR
 	? import.meta.env.API_INTERNAL
 	: typeof apiOrigin === "string"
-	? apiOrigin
-	: apiOrigin[location.protocol.substring(0, location.protocol.length - 1)];
+		? apiOrigin
+		: apiOrigin[location.protocol.substring(0, location.protocol.length - 1)];
 
 const DEFAULT_SERVERS: ServerList = {
 	web: createAxios(),
 	content: createAxios({ baseURL: BASE_URL }),
-}
+};
 
 export class Api {
 
@@ -79,7 +79,7 @@ export class Api {
 		});
 	}
 
-	withConfigProcessor(processor: RequestConfigProcessor) {
+	withConfig(processor: RequestConfigProcessor) {
 		return new Api(new ServerListFilter(this.serverList, processor));
 	}
 
@@ -89,8 +89,8 @@ export class Api {
 	 * @param signal 取消信号
 	 * @return API 集
 	 */
-	withCancelToken(signal: AbortSignal) {
-		return this.withConfigProcessor(config => config.signal = signal);
+	withCancelToken(signal?: AbortSignal) {
+		return this.withConfig(config => config.signal = signal);
 	}
 }
 

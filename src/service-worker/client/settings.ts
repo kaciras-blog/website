@@ -34,7 +34,7 @@ function sendMessage<T>(type: MessageType, data?: any) {
 		promise!.reject(new Error("ServiceWorker message timeout"));
 	}
 
-	const timer = setTimeout(rejectTimeout, 4000);
+	const timer = window.setTimeout(rejectTimeout, 4000);
 	return new Promise<T>((resolve, reject) => callbacks.set(id, { timer, resolve, reject }));
 }
 

@@ -6,8 +6,8 @@ import { initializeSettingManager } from "./settings";
 import apiCacheRoute from "./api-cache";
 import { CacheWrapper, cleanUnusedCache, useStaticCache } from "./cache";
 import { RegexRoute, Router } from "./routing";
+import { navigateRoute } from "./navigate";
 import { cacheFirst } from "./fetch-strategy";
-import { navigateRoute } from "@/service-worker/server/navigate";
 
 // 默认是 WebWorker，需要声明一下 ServiceWorker，其他文件里也一样。
 declare const self: ServiceWorkerGlobalScope & {

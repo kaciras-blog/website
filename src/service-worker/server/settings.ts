@@ -1,6 +1,6 @@
+import { createNanoEvents } from "nanoevents";
 import { DBSchema, IDBPDatabase, openDB } from "idb";
 import { MessageType } from "./message";
-import { createNanoEvents } from "nanoevents";
 
 declare const self: ServiceWorkerGlobalScope;
 
