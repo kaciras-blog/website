@@ -48,7 +48,6 @@ export abstract class PrefetchContext {
 	abstract route: RouteLocationNormalizedLoaded;
 	abstract signal: AbortSignal;
 	abstract api: Api;
-	abstract isServer: boolean;
 
 	readonly data: { [name: string]: any } = {};
 

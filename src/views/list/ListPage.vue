@@ -40,28 +40,28 @@
 	</banner-page-layout>
 </template>
 
-<script>
-import api from "@/api";
+<script lang="ts">
+import { PrefetchContext } from "@/prefetch";
 
 const DEFAULT_PAGE_SIZE = 10;
 
 export default {
 	name: "ArticleListPage",
-	async asyncData(session) {
-		const configuredApi = session.api.withCancelToken(session.abortSignal);
+	async asyncData(session: PrefetchContext) {
+		const { article, category } = session.api.withCancelToken(session.signal);
 
 		const tasks = [
-			configuredApi.category.get(0).then(session.dataSetter("category")),
+			category.get(0).then(session.dataSetter("category")),
 		];
 
-		if (session.isServer) {
-			const routeParams = session.route.params;
+		if (import.meta.env.SSR) {
+			const start  = parseInt(session.route.params.index as string);
 
-			tasks.push(configuredApi.article
-				.getList({ start: routeParams.index, count: DEFAULT_PAGE_SIZE })
+			tasks.push(article
+				.getList({ start, count: DEFAULT_PAGE_SIZE })
 				.then(session.dataSetter("articleList")));
 
-			tasks.push(configuredApi.article.getHots().then(session.dataSetter("hots")));
+			tasks.push(article.getHots().then(session.dataSetter("hots")));
 		}
 
 		return Promise.all(tasks);
@@ -69,22 +69,23 @@ export default {
 };
 </script>
 
-<script setup>
+<script setup lang="ts">
 import { onBeforeMount, onMounted, watch, inject, ref } from "vue";
-import { useRoute } from 'vue-router'
+import { useRoute } from "vue-router";
 import { useStore } from "vuex";
+import api from "@/api";
 import PreviewItem from "./PreviewItem.vue";
 import AsidePanel from "./AsidePanel.vue";
 
 const kAutoLoad = "scrollPager.autoLoad";
 
-const mediaQuery = inject("$mediaQuery");
+const mediaQuery = inject("$mediaQuery") as any;
 const route = useRoute();
 const store = useStore();
 
 const { articleList, category } = store.state.prefetch;
 
-let startPos = parseInt(route.params.index) || 0;
+let startPos = parseInt(route.params.index as string) || 0;
 if (articleList) {
 	startPos += articleList.items.length;
 }
@@ -93,26 +94,26 @@ const listView = ref();
 const autoLoad = ref(mediaQuery.match("mobile"));
 const articles = ref(articleList);
 
-watch(autoLoad, v => localStorage.setItem(kAutoLoad, JSON.stringify(v)))
+watch(autoLoad, v => localStorage.setItem(kAutoLoad, JSON.stringify(v)));
 
-function loadPage(start, count) {
+function loadPage(start: number, count: number) {
 	return api.article.getList({ start, count });
 }
 
 /**
  * 根据路由和当前加载的文章数来构造下一页的URL。
  *
- * @param start {number} 下一页起始位置
- * @param count {number} 每页显示多少个
- * @return {string} 指向下一页的URL，相对路径
+ * @param start 下一页起始位置
+ * @param count 每页显示多少个
+ * @return 指向下一页的URL，相对路径
  */
-function nextPageUrl(start, count) {
+function nextPageUrl(start: number, count: number) {
 	const params = Object.assign({}, route.query);
 	const pairs = [];
 	for (const k of Object.keys(params)) {
 		pairs.push(k + "=" + params[k]);
 	}
-	const nextPath = "/list/" + ((parseInt(route.params.index) || 0) + count);
+	const nextPath = "/list/" + ((parseInt(route.params.index as string) || 0) + count);
 	return pairs.length ? nextPath + "?" + pairs.join("&") : nextPath;
 }
 
@@ -127,7 +128,7 @@ onMounted(() => {
 	if (!articleList) {
 		listView.value.reload();
 	}
-})
+});
 </script>
 
 <style module lang="less">

@@ -14,7 +14,7 @@ import { events, MaybePrefetchComponent, PrefetchContext } from "./prefetch";
 
 let abortController = new AbortController();
 
-// @ts-ignore api & isServer on prototype.
+// @ts-ignore api is on the prototype.
 class ClientPrefetch extends PrefetchContext {
 
 	readonly store: Store<any>;
@@ -34,7 +34,6 @@ class ClientPrefetch extends PrefetchContext {
 }
 
 ClientPrefetch.prototype.api = api;
-ClientPrefetch.prototype.isServer = false;
 
 /**
  * 预载下一个路由的组件数据，并更新页面标题等属性。

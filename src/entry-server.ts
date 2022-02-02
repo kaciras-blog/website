@@ -14,7 +14,6 @@ const titleRE = new RegExp("<title>[^<]*</title>");
 // 后台页面就不预渲染了。
 const noSSR = new RegExp("^/(?:edit|console)/");
 
-// @ts-ignore isServer on prototype.
 class ServerPrefetch extends PrefetchContext {
 
 	readonly store: Store<any>;
@@ -35,8 +34,6 @@ class ServerPrefetch extends PrefetchContext {
 		this.signal = controller.signal;
 	}
 }
-
-ServerPrefetch.prototype.isServer = true;
 
 /**
  * 简单地通过 User-Agent 判断客户端的设备是不是手机
