@@ -1,27 +1,25 @@
 <template>
-	<div class="fragment">
-		<kx-switch-box
-			:class="$style.line"
-			:disabled="unsupported || loading"
-			:value="StaleApi"
-			@input="v => setOption('StaleApi', v)"
-		>
-			动态内容缓存
-		</kx-switch-box>
+	<kx-switch-box
+		:class="$style.line"
+		:disabled="unsupported || loading"
+		:value="StaleApi"
+		@input="v => setOption('StaleApi', v)"
+	>
+		动态内容缓存
+	</kx-switch-box>
 
-		<div v-if="unsupported" :class="$style.alert">
-			您的浏览器不支持 ServiceWorker，无法使用该功能
-		</div>
-		<div v-else-if="error" :class="$style.alert">
-			无法连接 ServiceWorker：{{ error }}
-		</div>
-		<div v-else-if="loading" :class="$style.alert">
-			正在连接 ServiceWorker……
-		</div>
-		<div v-else class="minor-text">
-			该选项将对动态内容使用 stale-while-revalidate 缓存策略，
-			这能让访问过的内容无需网络立即加载，但新内容会被延迟到下一次访问。
-		</div>
+	<div v-if="unsupported" :class="$style.alert">
+		您的浏览器不支持 ServiceWorker，无法使用该功能
+	</div>
+	<div v-else-if="error" :class="$style.alert">
+		无法连接 ServiceWorker：{{ error }}
+	</div>
+	<div v-else-if="loading" :class="$style.alert">
+		正在连接 ServiceWorker……
+	</div>
+	<div v-else class="minor-text">
+		该选项将对动态内容使用 stale-while-revalidate 缓存策略，
+		这能让访问过的内容无需网络立即加载，但新内容会被延迟到下一次访问。
 	</div>
 </template>
 
