@@ -1,17 +1,20 @@
 <template>
 	<transition
-		:enter-class="$style.enter_before"
+		:enter-from-class="$style.enter_before"
 		:enter-active-class="$style.active_enter"
 		:leave-to-class="$style.enter_before"
 		:leave-active-class="$style.active_leave"
 		@after-leave="afterLeave"
 	>
-		<!-- A11y: div 弹出层默认被辅助工具忽略，且组件内没有其他的关闭按钮，必须设置 role 和 title 属性来提示 -->
+		<!--
+			A11y: div 弹出层默认被辅助工具忽略，且组件内没有其他的关闭按钮，
+			必须设置 role 和 title 属性来提示
+		-->
 		<div
 			v-show="visible"
 			:class="$style.container"
 			role="button"
-			title="点击或按ESC关闭弹窗"
+			title="点击或按 ESC 关闭弹窗"
 			tabindex="0"
 			v-autofocus
 			@keydown.esc.self="$dialog.close"
@@ -22,32 +25,37 @@
 	</transition>
 </template>
 
-<script>
-import { PromiseSource } from "@kaciras-blog/uikit";
+<script lang="ts">
+export default {
+	isolation: true,
+};
+</script>
+
+<script setup lang="ts">
+import { ref, onMounted } from "vue";
+import { PromiseSource, usePreventScroll } from "@kaciras-blog/uikit";
 import NavMenu from "./NavMenu.vue";
 
-export default {
-	name: "NavMenuFrame",
-	// mixins: [
-	// 	PreventScrollMixin,
-	// ],
-	isolation: true,
-	components: {
-		NavMenu,
-	},
-	data: () => ({
-		visible: true,
-	}),
-	methods: {
-		afterLeave() {
-			this.transitionPromise.resolve();
-		},
-	},
-	beforeDialogClose() {
-		this.visible = false;
-		return this.transitionPromise = new PromiseSource();
-	}
-};
+usePreventScroll();
+
+const visible = ref(false);
+let transitionPromise: PromiseSource<void>;
+
+function afterLeave() {
+	transitionPromise.resolve();
+}
+
+function beforeDialogClose() {
+	visible.value = false;
+	return transitionPromise = new PromiseSource();
+}
+
+/**
+ * Vue3 不能由外部的 v-if 触发根节点的过渡，所以要这样。
+ */
+onMounted(() => visible.value = true);
+
+defineExpose({ beforeDialogClose });
 </script>
 
 <style module lang="less">

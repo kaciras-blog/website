@@ -13,26 +13,26 @@
 		</div>
 
 		<div :class="$style.body">
-			<side-menu-link to="/">
+			<router-link to="/" :class="$style.item">
 				<HomeIcon/>
 				首页
-			</side-menu-link>
-			<side-menu-link to="/list">
+			</router-link>
+			<router-link to="/list" :class="$style.item">
 				<ListIcon/>
 				文章
-			</side-menu-link>
-			<side-menu-link to="/about/me">
+			</router-link>
+			<router-link to="/about/me" :class="$style.item">
 				<CopyrightIcon/>
 				关于
-			</side-menu-link>
-			<side-menu-link tag="a" to="/feed/rss">
+			</router-link>
+			<a href="/feed/rss" :class="$style.item">
 				<RssIcon/>
 				Feed 订阅
-			</side-menu-link>
-			<side-menu-link tag="div" @click="showSettingFrame">
+			</a>
+			<div :class="$style.item" @click="showSettingFrame">
 				<SettingIcon/>
 				设置
-			</side-menu-link>
+			</div>
 		</div>
 	</div>
 </template>
@@ -43,7 +43,6 @@ import ListIcon from "bootstrap-icons/icons/list.svg?sfc";
 import CopyrightIcon from "@material-design-icons/svg/filled/copyright.svg?sfc";
 import RssIcon from "@material-design-icons/svg/filled/rss_feed.svg?sfc";
 import SettingIcon from "@material-design-icons/svg/filled/settings.svg?sfc";
-import SideMenuLink from "./SideMenuLink.vue";
 import SettingFrame from "./SettingFrame.vue";
 import { useDialog } from "@kaciras-blog/uikit";
 
@@ -85,9 +84,17 @@ function showSettingFrame() {
 	padding: 10px 0;
 }
 
-.button {
-	padding: 12px 1pc;
-	cursor: pointer;
+.item {
+	composes: clean-link from global;
+
+	display: block;
+	padding: 10px 0;
+
+	& > svg {
+		font-size: 24px;
+		vertical-align: -6px;
+		margin: 0 1pc;
+	}
 
 	&:hover, &:focus {
 		background-color: rgba(0, 0, 0, .05);
