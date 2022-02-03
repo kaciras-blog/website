@@ -1,4 +1,4 @@
-@import "imports";
+@import "./imports";
 
 .top-nav {
 	--nav-height: 48px;
@@ -15,7 +15,8 @@
 }
 
 .nav-item {
-	display: inline-block;
+	display: inline-flex;
+	align-items: center;
 
 	padding: 0 1.5rem;
 	line-height: var(--nav-height);
@@ -24,6 +25,10 @@
 	background-color: transparent;
 	cursor: pointer;
 	user-select: none;
+
+	& > svg {
+		font-size: 28px;
+	}
 
 	&:hover, &:focus {
 		text-decoration: none;
