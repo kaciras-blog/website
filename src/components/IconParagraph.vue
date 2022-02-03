@@ -13,7 +13,7 @@
 <script>
 export default {
 	name: "IconParagraph",
-	props: ["src", "title"]
+	props: ["src", "title"],
 };
 </script>
 

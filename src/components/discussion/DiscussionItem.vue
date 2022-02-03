@@ -88,17 +88,18 @@ import InputSection from "./InputSection.vue";
 
 export default {
 	name: "DiscussionItem",
+	components: {
+		MarkdownView,
+		DiscussionContent,
+		InputSection,
+	},
 	props: {
 		value: {
 			type: Object,
 			required: true,
 		},
 	},
-	components: {
-		MarkdownView,
-		DiscussionContent,
-		InputSection,
-	},
+	emits: ["removed"],
 	data() {
 		return {
 			replies: this.value.replies,
@@ -166,7 +167,7 @@ export default {
 				return user.name;
 			}
 			return nickname || user.name;
-		}
+		},
 	},
 };
 </script>

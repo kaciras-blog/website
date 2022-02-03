@@ -14,12 +14,6 @@
 	</footer>
 </template>
 
-<script>
-export default {
-	name: "PageFooter",
-};
-</script>
-
 <style module lang="less">
 @import "../css/imports";
 

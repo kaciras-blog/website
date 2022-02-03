@@ -10,25 +10,27 @@
 					:src="current.cover"
 					alt="分类图标"
 				>
-				<span :class="$style.name">{{current.name}}</span>
+				<span :class="$style.name">{{ current.name }}</span>
 			</template>
 			<div v-else :class="$style.hold"></div>
 
 			<div class="btn-group">
 				<kx-button
+					type="outline"
 					:disabled="!hasAncestor"
 					@click="walker.gotoParent()"
 				>
-					<i class="fa fa-arrow-left"></i>
-					<span> 回到父级</span>
+					<ArrowLeft class="prefix"/>
+					回到父级
 				</kx-button>
 
 				<kx-button
+					type="outline"
 					:disabled="!hasAncestor"
 					@click="walker.goto(0)"
 				>
-					<i class="fas fa-arrow-up"></i>
-					<span> 返回顶层</span>
+					<ArrowUpward class="prefix"/>
+					返回顶层
 				</kx-button>
 			</div>
 		</div>
@@ -41,9 +43,9 @@
 				@click="walker.goto(category)"
 			>
 				<kx-check-box
-					:value="category.selected"
-					@click.native.stop
-					@changed="select(category)"
+					:modelValue="!!category.selected"
+					@click.stop
+					@update:modelValue="select(category)"
 				/>
 				<div :class="$style.categoryWrapper">
 					<img
@@ -52,7 +54,7 @@
 						:src="category.cover"
 						alt="分类图标"
 					>
-					<h3 :class="$style.name">{{category.name}}</h3>
+					<h3 :class="$style.name">{{ category.name }}</h3>
 				</div>
 			</li>
 		</ul>
@@ -89,71 +91,73 @@
 	</kx-base-dialog>
 </template>
 
-<script>
+<script setup lang="ts">
+import { computed, reactive, ref } from "vue";
+import ArrowLeft from "@material-design-icons/svg/round/arrow_back.svg?sfc";
+import ArrowUpward from "@material-design-icons/svg/round/arrow_upward.svg?sfc";
+import { Category } from "@/api";
 import { deleteOn } from "@/utils";
 import CachedCategoryWalker from "./CachedCategoryWalker";
+import { useDialog } from "@kaciras-blog/uikit";
 
-export default {
-	name: "SelectCategoryDialog",
-	props: {
-		multiple: {
-			type: Boolean,
-			default: false,
-		},
-		filter: {
-			type: Function,
-			default: () => true,
-		},
-	},
-	data: () => ({
-		selected: [],
-		walker: new CachedCategoryWalker(),
-	}),
-	computed: {
-		current() {
-			return this.walker.current;
-		},
-		categories() {
-			const { children } = this.walker;
-			return children ? children.filter(this.filter) : [];
-		},
-		hasAncestor() {
-			const { current } = this.walker;
-			return current && current.id !== 0;
-		},
-	},
-	methods: {
-		select(category) {
-			if (category.selected) {
-				deleteOn(this.selected, cate => cate.id === category.id);
-				category.selected = false;
-			} else {
-				if (!this.multiple) {
-					const old = this.selected.pop();
-					if (old) {
-						old.selected = false;
-					}
-				}
-				this.selected.push(category);
-				this.$set(category, "selected", true);
+interface SelectCategoryDialogProps {
+	multiple?: boolean;
+	filter?: () => boolean;
+}
+
+const props = withDefaults(defineProps<SelectCategoryDialogProps>(), {
+	multiple: false,
+	filter: () => true,
+});
+
+const dialog = useDialog();
+
+const selected = ref<Category[]>([]);
+const walker = reactive(new CachedCategoryWalker());
+
+walker.goto(0);
+
+const current =  computed(() => walker.current);
+
+const categories = computed(() => {
+	const { children } = walker;
+	return children ? children.filter(props.filter) : [];
+});
+
+const hasAncestor = computed(() => {
+	const { current } = walker;
+	return current && current.id !== 0;
+});
+
+function select(category: any) {
+	if (category.selected) {
+		deleteOn(selected.value, cate => cate.id === category.id);
+		category.selected = false;
+	} else {
+		if (!props.multiple) {
+			const old = selected.value.pop();
+			if (old) {
+				(old as any).selected = false;
 			}
-		},
-		ok() {
-			const { multiple, selected } = this;
-			this.$dialog.confirm(multiple ? selected : selected[0]);
-		},
-		cancel() {
-			this.$dialog.close();
-		},
-		clear() {
-			this.selected.forEach(cate => cate.selected = false);
-			this.selected = [];
-		},
-	},
-	created() {
-		this.walker.goto(0);
-	},
-};
+		}
+		category.selected = true;
+		selected.value.push(category);
+	}
+}
+
+function ok() {
+	const value = selected.value;
+	dialog.confirm(props.multiple ? value : value[0]);
+}
+
+function cancel() {
+	dialog.close();
+}
+
+function clear() {
+	const { value } = selected;
+	value.splice(0, value.length).forEach(cate => cate.selected = false);
+}
 </script>
 
 <style module lang="less">

@@ -1,6 +1,6 @@
 <template>
 	<div v-if="loading" :class="$style.loading">
-		TODO: spinner
+		<atom-spinner/>
 		<span :class="$style.loadingText">评论加载中</span>
 	</div>
 
@@ -34,13 +34,13 @@ export default {
 			this.loadFn()
 				.catch(() => this.loadFail = true)
 				.finally(() => this.loading = false);
-		}
+		},
 	},
 	mounted() {
 		this.$_observer = new IntersectionObserver(this.handleIntersect);
 		this.$_observer.observe(this.$el);
 	},
-	destroyed() {
+	unmounted() {
 		if (this.$_observer) {
 			this.$_observer.disconnect();
 		}

@@ -28,15 +28,13 @@
 
 <script>
 import { mapState } from "vuex";
-import MarkdownView from "@/markdown/MarkdownView.vue";
-import EditorFrame from "./EditorFrame.vue";
 import EmbeddedEditor from "./EmbeddedEditor.vue";
+import EditorFrame from "./EditorFrame.vue";
 
 export default {
 	name: "InputSection",
 	components: {
 		EmbeddedEditor,
-		MarkdownView,
 	},
 	inject: ["context"],
 	computed: mapState({

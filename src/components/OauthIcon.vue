@@ -27,7 +27,7 @@ export default {
 			title: tip,
 			src: icon,
 			alt: tip,
-			class: $style.logo
+			class: $style.logo,
 		});
 
 		// <a :href="href"><img ...></a>

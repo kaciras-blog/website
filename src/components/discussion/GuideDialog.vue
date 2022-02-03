@@ -7,6 +7,6 @@
 			<li><p>视频作为动图：@gif[描述](URL)</p></li>
 			<li><p>音频：@audio[](URL)</p></li>
 		</ul>
-		<kx-dialog-buttons :cancel-button="false"/>
+		<kx-dialog-buttons :on-accept="$dialog.close"/>
 	</kx-base-dialog>
 </template>

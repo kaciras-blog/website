@@ -1,18 +1,10 @@
 <template>
 	<kx-base-dialog title="设置" :class="$style.dialog">
 		<setting-panel/>
-		<kx-dialog-buttons :cancel-button="false"/>
+		<kx-dialog-buttons :on-accept="$dialog.close"/>
 	</kx-base-dialog>
 </template>
 
-<script>
-export default {
-	name: "SettingDialog",
-};
-</script>
-
-<style module lang="less">
-.dialog > :global(.kx-dialog) {
-	width: 30rem;
-}
+<style module>
+.dialog { width: 30rem; }
 </style>

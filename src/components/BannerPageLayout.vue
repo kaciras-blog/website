@@ -15,7 +15,7 @@
 <script>
 export default {
 	name: "BannerPageLayout",
-	props:{
+	props: {
 		banner: {
 			type: Object,
 			required: false,
@@ -24,14 +24,14 @@ export default {
 		navStyle: {},
 	},
 	computed: {
-		desktopNavStyle () {
+		desktopNavStyle() {
 			const { banner } = this;
 			if (banner) {
 				return { "--background": `url(${banner.image})` };
 			}
 			return null;
 		},
-		desktopNavClass () {
+		desktopNavClass() {
 			const { banner } = this;
 			if (!banner) {
 				return "default-banner";

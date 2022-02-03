@@ -17,7 +17,7 @@
 <script>
 export default {
 	name: "SocialLink",
-	props: ["name", "href", "icon"]
+	props: ["name", "href", "icon"],
 };
 </script>
 

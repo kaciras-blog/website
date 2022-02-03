@@ -54,46 +54,35 @@
 	</component>
 </template>
 
-<script>
+<script setup lang="ts">
+import { computed } from "vue";
+import { useStore } from "vuex";
 import TrashIcon from "bootstrap-icons/icons/trash.svg?sfc";
 import ReplyIcon from "bootstrap-icons/icons/reply.svg?sfc";
+import { useDialog } from "@kaciras-blog/uikit";
 import api, { DiscussionState } from "@/api";
 import { errorMessage } from "@/utils";
 import MarkdownView from "@/markdown/MarkdownView.vue";
 import { localDateMinute } from "@/blog-plugin";
 
-export default {
-	name: "DiscussionContent",
-	components: {
-		TrashIcon,
-		ReplyIcon,
-		MarkdownView,
-	},
-	props: {
-		value: {
-			type: Object,
-			required: true,
-		},
-		tag: {
-			type: String,
-			default: "li",
-		},
-	},
-	computed: {
-		removable() {
-			return this.$store.state.user.id === 2;
-		},
-	},
-	methods: {
-		localDateMinute,
+interface DiscussContentProps {
+	value: any;
+	tag: string;
+}
 
-		remove() {
-			api.discuss.updateStates(this.value.id, DiscussionState.Deleted)
-				.then(() => this.$emit("removed", this.value))
-				.catch(e => this.$dialog.alertError("删除失败", errorMessage(e)));
-		},
-	},
-};
+const props = defineProps<DiscussContentProps>();
+const emit = defineEmits(["removed", "reply"]);
+
+const dialog = useDialog();
+const store = useStore();
+
+const removable = computed(() => store.state.user.id === 2);
+
+function remove() {
+	return api.discuss.updateStates(props.value.id, DiscussionState.Deleted)
+		.then(() => emit("removed", props.value))
+		.catch(e => dialog.alertError("删除失败", errorMessage(e)));
+}
 </script>
 
 <style module lang="less">

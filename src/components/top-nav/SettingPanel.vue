@@ -1,8 +1,8 @@
 <template>
 	<kx-switch-box
-		:class="$style.line"
 		:disabled="unsupported || loading"
 		:value="StaleApi"
+		:class="$style.line"
 		@input="v => setOption('StaleApi', v)"
 	>
 		动态内容缓存
