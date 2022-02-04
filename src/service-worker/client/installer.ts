@@ -1,5 +1,5 @@
 import { MessageType } from "../server/message";
-import { setResult } from "./settings";
+import { putSetting, setResult } from "./settings";
 import { reportError } from "@/error-report";
 
 const SCRIPT_PATH = "/sw.js";
@@ -16,6 +16,21 @@ function dispatchMessage(message: MessageEvent) {
 		default:
 			throw new Error("Unknown message type: " + data.type);
 	}
+}
+
+const codecMap: Record<string, string> = {
+	opus: "video/mp4; codecs=opus",
+	av1: "video/mp4; codecs=av01.0.05M.08",
+};
+
+/**
+ * 检测浏览器是否支持一些新版的媒体编码，在 SW 中会修改请求尽量使用新版。
+ */
+function enableCodecUpgrade() {
+	const video = document.createElement("video");
+	const codecs = Object.keys(codecMap)
+		.filter(k => video.canPlayType(codecMap[k]) === "probably");
+	return putSetting("CodecSupport", codecs.join(","));
 }
 
 async function register() {
