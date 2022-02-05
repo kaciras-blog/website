@@ -30,9 +30,6 @@ function initApplication() {
 	SUN_PHASES.observe().subscribe(value => store.commit(SET_SUN_PHASE, value));
 
 	installRouterHooks(store, router);
-
-	// 切换视图后关掉所有弹窗
-	router.afterEach(() => (app as any).$dialog.clear());
 }
 
 async function appShellStartup() {

@@ -7,8 +7,15 @@
 
 <script setup lang="ts">
 import type { KxProgress } from "@kaciras-blog/uikit";
+import { useDialog } from "@kaciras-blog/uikit";
 import { Unsubscribe } from "nanoevents";
 import { events, PrefetchContext } from "./prefetch";
+import { useRouter } from "vue-router";
+
+// 切换视图后关掉所有弹窗，因为窗口容器在这里挂载所以也放这了。
+const router = useRouter();
+const dialog = useDialog();
+router.afterEach(() => dialog.clear());
 
 const clean: Unsubscribe[] = [];
 
