@@ -2,19 +2,20 @@
 
 declare const dataLayer: any[];
 
+function gtag(...args: any[]) {
+	dataLayer.push(args);
+}
+
 const GA_ID = import.meta.env.GOOGLE_ANALYTICS_ID;
 if (GA_ID) {
 	(window as any).dataLayer ??= [];
 
-	function gtag(...args: any[]) {
-		dataLayer.push(arguments);
-	}
 
-	gtag('js', new Date());
-	gtag('config', GA_ID);
+	gtag("js", new Date());
+	gtag("config", GA_ID);
 
 	const script = document.createElement("script");
 	script.async = true;
 	script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
-	document.head.append(script)
+	document.head.append(script);
 }

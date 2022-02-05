@@ -5,7 +5,7 @@ export interface Friend {
 	name: string;
 	background: string;
 	favicon: string;
-	friendPage: string;
+	friendPage?: string;
 }
 
 export default class FriendResource extends AbstractResource {

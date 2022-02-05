@@ -23,7 +23,7 @@ export interface AccountSignUpRequest {
 
 export interface UserProfile {
 	name: string;
-	avatar: string;
+	avatar?: string;
 }
 
 export interface User extends UserProfile {

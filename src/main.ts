@@ -36,17 +36,11 @@ export default function createBlogApp(initState?: any) {
 	}
 
 	/**
-	 * 阻止未登录用户访问后台页面。
-	 *
-	 * TODO: 放在这好丑啊
+	 * 阻止未登录用户访问后台页面，放在这同时作用于前后端渲染。
 	 */
-	router.beforeEach((to, from, next) => {
-		if (!to.meta.requireAuth) {
-			return next();
-		}
-		const { user } = store.state;
-
-		if (user.id !== 2) {
+	router.beforeEach(to => {
+		const isAdmin = store.state.user.id === 2;
+		if (to.meta.requireAuth && !isAdmin) {
 			const return_uri = to.fullPath;
 			return { path: "/login", query: { return_uri } };
 		}

@@ -81,7 +81,7 @@ export class SunPhases {
 			const goToNext = () => {
 				i = i < points.length - 2 ? i + 1 : 0;
 				subscriber.next(names[i]);
-				timer = setTimeout(goToNext, (points[i + 1] - points[i]) * 3600000)
+				timer = setTimeout(goToNext, (points[i + 1] - points[i]) * 3600000);
 			};
 			let timer = setTimeout(goToNext, initDuration);
 			subscriber.add(() => clearTimeout(timer));

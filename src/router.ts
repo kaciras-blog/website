@@ -2,38 +2,6 @@ import { createMemoryHistory, createRouter, createWebHistory, RouteRecordRaw } f
 import IndexPage from "./views/index/IndexPage.vue";
 import ErrorPage from "./views/error/ErrorPage.vue";
 
-/**
- * 控制路由切换后的滚动位置，默认行为跟原生浏览器一致，通过设置路由元信息 meta
- * 的 retainScroll 选项可以跨页面保持位置。
- *
- * 抄自官方示例：
- * @link https://github.com/vuejs/vue-router/blob/next/examples/scroll-behavior/app.js
- *
- * @param to 原页面的路由对象
- * @param from 目标页面的路由对象
- * @param savedPosition 浏览器的[前进/后退]按钮触发时，上次页面的位置
- * @return 滚动的位置
- */
-// function scrollBehavior(
-// 	to: RouteLocationNormalized,
-// 	from: RouteLocationNormalizedLoaded,
-// 	savedPosition: ScrollPositionCoordinates | null
-// ) {
-// 	if (savedPosition) {
-// 		return savedPosition;
-// 	} else {
-// 		const position: any = {};
-// 		if (to.hash) {
-// 			position.selector = decodeURIComponent(to.hash);
-// 		}
-// 		if (!to.matched.some(m => m.meta.retainScroll)) {
-// 			position.x = 0;
-// 			position.y = 0;
-// 		}
-// 		return position;
-// 	}
-// }
-
 const routes: RouteRecordRaw[] = [
 	{
 		path: "/",
@@ -129,5 +97,5 @@ export default function () {
 		? createWebHistory()
 		: createMemoryHistory();
 
-	return createRouter({ history, routes })
+	return createRouter({ history, routes });
 }
