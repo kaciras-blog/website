@@ -3,7 +3,7 @@ import { Store } from "vuex";
 import { RouteLocationNormalizedLoaded, Router } from "vue-router";
 import { renderToString, SSRContext } from "vue/server-renderer";
 import { SET_WIDTH } from "@kaciras-blog/uikit";
-import { configureForProxy } from "@kaciras-blog/server/lib/axios-helper";
+import { configureForProxy } from "@kaciras-blog/server/lib/axios-helper.js";
 import api, { Api } from "./api";
 import { PrefetchContext } from "./prefetch";
 import { REFRESH_USER, SET_PREFETCH_DATA } from "./store/types";

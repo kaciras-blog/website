@@ -1,6 +1,6 @@
 import "./markdown.less";
 import MarkdownIt from "markdown-it";
-import { escapeHtml } from "markdown-it/lib/common/utils";
+import { escapeHtml } from "markdown-it/lib/common/utils.js";
 import Anchor from "markdown-it-anchor";
 import tableOfContent from "markdown-it-toc-done-right";
 import highlight from "./highlight";

@@ -11,6 +11,7 @@
 		"type": "git",
 		"url": "https://github.com/kaciras-blog/website"
 	},
+	"type": "module",
 	"scripts": {
 		"lint": "eslint --fix src",
 		"test": "jest",

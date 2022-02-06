@@ -1,7 +1,7 @@
 import lozad from "lozad";
-import media, { RendererMap } from "@kaciras-blog/markdown/lib/media";
-import Token from "markdown-it/lib/token";
+import { MediaPlugin, RendererMap } from "@kaciras-blog/markdown";
 import MarkdownIt from "markdown-it";
+import Token from "markdown-it/lib/token";
 
 /**
  * 从资源的链接参数（?vw=...&vh=...）里读取媒体的尺寸，
@@ -101,7 +101,7 @@ const directiveMap: RendererMap = {
  * @param markdownIt 要安装的实例
  */
 export function clientMediaPlugin(markdownIt: MarkdownIt) {
-	markdownIt.use(media, directiveMap);
+	markdownIt.use(MediaPlugin, directiveMap);
 	markdownIt.renderer.rules.image = renderImage;
 }
 

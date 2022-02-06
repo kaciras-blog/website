@@ -1,5 +1,3 @@
-const jestConfig = require("./jest.config");
-
 module.exports = {
 	root: true,
 	extends: [
@@ -9,7 +7,7 @@ module.exports = {
 	],
 	overrides: [
 		{
-			files: jestConfig.testMatch,
+			files: "**/tests/**/*.spec.ts",
 			extends: ["@kaciras/jest"],
 		},
 		{

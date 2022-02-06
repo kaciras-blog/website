@@ -4,7 +4,7 @@
  *
  * 全部的配置项都在这里，注释里有【环境】的项需要修改为自己的环境
  */
-module.exports = {
+export default {
 
 	/** 构建输出的目录 */
 	outputDir: "dist",
