@@ -5,12 +5,18 @@
 				评论区({{ data.total }})
 			</h2>
 
-			<!-- TODO: 菜单是第三方库懒得改，手机下有点大，不好看 -->
 			<div :class="$style.options">
-				<select>
-					<option></option>
-					<option></option>
-				</select>
+				<kx-select v-model="mode" :class="$style.modeSelect">
+					<option value="nest">楼中楼模式</option>
+					<option value="ref">引用模式</option>
+				</kx-select>
+
+				<!-- 有些组合是多余的，比如 nest_size + ASC -->
+				<kx-select v-model="sort" :class="$style.sortSelect">
+					<option value="id,ASC">时间</option>
+					<option value="id,DESC">最新</option>
+					<option value="nest_size,DESC">回复数</option>
+				</kx-select>
 			</div>
 		</header>
 
@@ -28,7 +34,7 @@
 				<ol :class="$style.list">
 					<discussion-item
 						v-for="item of items"
-						:key="item.objectId"
+						:key="item.id"
 						:value="item"
 						class="segment"
 						@removed="refresh"
@@ -42,8 +48,9 @@
 </template>
 
 <script setup lang="ts">
-import { provide, ref, watch } from "vue";
+import { provide, ref, reactive, watch } from "vue";
 import { useStore } from "vuex";
+import { useLocalStorage } from "@vueuse/core";
 import api, { Discussion, DiscussionQuery } from "@/api";
 import { ListQueryView } from "@/api/core";
 import { LOAD_DISCUSSION_OPTIONS } from "@/store/types";
@@ -54,34 +61,6 @@ import InputSection from "./InputSection.vue";
 const PAGE_SIZE = 30;
 const NEST_SIZE = 3;
 
-const MODE = [
-	{ label: "楼中楼模式", value: 0 },
-	{ label: "引用模式", value: 1 },
-];
-
-/**
- * 字段 + 方向的组合有一些是多余的，比如 nest_size + ASC；而且两个按钮让操作更复杂了。
- * 所以我决定还是使用预定义的排序选项。
- */
-const ALL_SORTS = [
-	{ label: "时间", value: "id,ASC" },
-	{ label: "最新", value: "id,DESC" },
-	{ label: "回复数", value: "nest_size,DESC" },
-];
-
-// 啊好想要 Hooks 啊，Vue3 全家桶快点出啊
-
-function loadEnumFromStore(type: any[], key: string, default_: any) {
-	if (typeof window === "undefined") {
-		return default_;
-	}
-	const v = (localStorage.getItem(key) || default_).toString();
-	const result = type.find(i => i.value.toString() === v);
-
-	// 如果修改了枚举则保存的值可能无效，查找结果为 undefined，此时回退到默认。
-	return result || type.find(i => i.value.toString() === default_);
-}
-
 interface DiscussSectionProps {
 	type: number;
 	objectId: number;
@@ -91,9 +70,9 @@ const props = defineProps<DiscussSectionProps>();
 
 const store = useStore();
 
-const data = ref<ListQueryView<Discussion>>({} as any);
-const mode = ref(loadEnumFromStore(MODE, "DIS_MODE", 0));
-const sort = ref(loadEnumFromStore(ALL_SORTS, "DIS_SORT", "id,ASC"));
+const data = ref<ListQueryView<Discussion>>({ items: [], total: 0 });
+const mode = useLocalStorage("DIS:mode", "nest");
+const sort = useLocalStorage("DIS:sort", "id,ASC");
 const discussions = ref();
 
 provide("context", {
@@ -103,15 +82,7 @@ provide("context", {
 	afterSubmit,
 });
 
-watch(mode, () => {
-	reload();
-	localStorage.setItem("DIS_MODE", mode.value.value);
-});
-
-watch(sort, () => {
-	reload();
-	localStorage.setItem("DIS_SORT", sort.value.value);
-});
+watch([mode, sort], reload, { flush: "post" });
 
 // reload - 重新加载，回到第一页；refresh - 刷新当前页
 function reload() {
@@ -126,14 +97,14 @@ function fetchData(start: number, count: number, signal?: AbortSignal) {
 	const { type, objectId } = props;
 
 	const query: DiscussionQuery = {
-		objectId: objectId,
-		type: type,
+		objectId,
+		type,
 		start,
 		count,
-		sort: sort.value.value,
+		sort: sort.value,
 	};
 
-	if (mode.value.value === 0) {
+	if (mode.value === "nest") {
 		query.nestId = 0;
 		query.childCount = NEST_SIZE;
 	} else {
@@ -147,7 +118,7 @@ function fetchData(start: number, count: number, signal?: AbortSignal) {
  * 在支持多种排序下，很难确定一个评论的位置，所以没法转到刚提交的评论，
  * 为了用户体验，需要换种思路。
  *
- * 若是分页则刷新当前页；若是滚动加载则直接添加在当前页的最后（Bilibili 是这么做的）。
+ * 若是分页则刷新当前页；若是滚动加载则直接添加在当前页的最后（bilibili 是这么做的）。
  */
 function afterSubmit(entity: Discussion) {
 	if ("reload" in discussions.value) {
@@ -161,7 +132,8 @@ function afterSubmit(entity: Discussion) {
 function initialize() {
 	return Promise.all([
 		store.dispatch(LOAD_DISCUSSION_OPTIONS),
-		fetchData(0, PAGE_SIZE).then(view => data.value = view),
+		fetchData(0, PAGE_SIZE)
+			.then(v => data.value = v),
 	]);
 }
 </script>
