@@ -20,16 +20,16 @@ friend	 - 友链对象
 		:class="$style.container"
 	>
 		<img
-			:src="active && friend.background"
+			:src="active ? friend.background : null"
 			alt="background"
 			:class="$style.background"
 		>
 		<img
-			:src="active && friend.favicon"
+			:src="active ? friend.favicon : null"
 			alt="favicon"
 			:class="$style.favicon"
 		>
-		<span :class="$style.name">{{friend.name}}</span>
+		<span :class="$style.name">{{ friend.name }}</span>
 	</a>
 </template>
 
