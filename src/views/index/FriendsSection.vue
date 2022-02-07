@@ -4,38 +4,44 @@
 			<h1 :class="$style.title">友情链接</h1>
 
 			<div v-if="sorting" :class="$style.toolbar">
-				<CloseIcon
-					tabindex="0"
+				<kx-button
+					:class="$style.iconButton2"
+					type="icon"
 					title="取消"
-					fill="#f44336"
-					:class="$style.iconButton2"
 					@click="sortFinish(false)"
-				/>
-				<CheckIcon
-					tabindex="0"
-					title="确定"
-					fill="#2196f3"
+				>
+					<CloseIcon fill="#f44336"/>
+				</kx-button>
+				<kx-button
 					:class="$style.iconButton2"
+					type="icon"
+					title="确定"
 					@click="sortFinish(true)"
-				/>
+				>
+					<CheckIcon fill="#2196f3"/>
+				</kx-button>
 			</div>
 
 			<div
 				v-else-if="user.id === 2"
 				:class="$style.toolbar"
 			>
-				<SortIcon
-					tabindex="0"
+				<kx-button
+					type="icon"
 					title="调整顺序"
 					:class="$style.iconButton"
 					@click="sort"
-				/>
-				<AddIcon
-					tabindex="0"
+				>
+					<SortIcon/>
+				</kx-button>
+				<kx-button
+					type="icon"
 					title="添加"
 					:class="$style.iconButton"
 					@click="makeFriend"
-				/>
+				>
+					<AddIcon/>
+				</kx-button>
 			</div>
 		</header>
 
@@ -110,8 +116,8 @@ class GridDraggingRegion {
 		const cStyle = getComputedStyle(container);
 		const rowGap = parseInt(cStyle.gridRowGap), columnGap = parseInt(cStyle.gridColumnGap);
 
-		this.xOffset = card.left + pageXOffset;
-		this.yOffset = card.top + pageYOffset;
+		this.xOffset = card.left + window.scrollX;
+		this.yOffset = card.top + window.scrollY;
 
 		this.tW = card.width + columnGap;
 		this.tH = card.height + rowGap;
@@ -331,7 +337,7 @@ export default {
 }
 
 .iconButton {
-	font-size: 44px;
+	font-size: 28px;
 	margin-right: 8px;
 	padding: 8px;
 
