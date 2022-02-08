@@ -13,7 +13,7 @@
 	},
 	"type": "module",
 	"scripts": {
-		"lint": "eslint --fix src",
+		"lint": "eslint --fix .",
 		"test": "jest",
 		"serve": "blog-devtool serve",
 		"build": "blog-devtool build",
