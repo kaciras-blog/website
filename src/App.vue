@@ -2,6 +2,7 @@
 <template>
 	<kx-progress :ref="connect"/>
 	<router-view/>
+	<ToastContainer/>
 	<kx-dialog-container/>
 </template>
 
