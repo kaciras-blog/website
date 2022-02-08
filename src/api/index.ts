@@ -26,12 +26,10 @@ export * from "./notification";
 
 axios.defaults.withCredentials = true;
 
-// ServiceWorker里已经对API设置了超时，如果支持则不在此处添加超时。
-if (import.meta.env.TIMEOUT) {
-	if (import.meta.env.SSR || !("serviceWorker" in navigator)) {
-		axios.defaults.timeout = import.meta.env.TIMEOUT as number;
-	}
-}
+/*
+ * 前端的请求超时应当由用户自己的浏览器负责，所以这里不再设置，
+ * SSR 的话也在 web-server 中处理更好。
+ */
 
 // axios 不能全局配置拦截？
 function createAxios(config?: AxiosRequestConfig) {

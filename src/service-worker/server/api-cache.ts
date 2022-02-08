@@ -1,6 +1,6 @@
 import { CacheWrapper, ManagedCache } from "./cache";
 import { Route } from "./routing";
-import { FetchFn, networkFirst, staleWhileRevalidate, timeout } from "./fetch-strategy";
+import { FetchFn, networkFirst, staleWhileRevalidate } from "./fetch-strategy";
 import { bind, initPromise } from "./settings";
 
 class ApiOfflineRoute implements Route {
@@ -28,8 +28,7 @@ class ApiOfflineRoute implements Route {
 			this.fetchFn = staleWhileRevalidate(this.cache);
 			console.debug("[SW] API 请求模式设置为 StaleWhileRevalidate");
 		} else {
-			const ms = import.meta.env.TIMEOUT as unknown as number;
-			this.fetchFn = networkFirst(this.cache, timeout(ms));
+			this.fetchFn = networkFirst(this.cache);
 			console.debug("[SW] API 请求模式设置为 NetworkFirst");
 		}
 	}

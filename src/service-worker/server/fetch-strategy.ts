@@ -39,23 +39,6 @@ export async function fetchAndCache(input: RequestInfo, cache: ManagedCache, fet
 }
 
 /**
- * 限制请求时间，如果超时则取消请求。
- *
- * @param time 超时时间（毫秒）
- * @param fetchFn 内层 fetch 函数
- */
-export function timeout(time: number, fetchFn: FetchFn = fetch) {
-
-	return (input: RequestInfo) => {
-		const controller = new AbortController();
-		const timer = setTimeout(() => controller.abort(), time);
-
-		input = new Request(input, { signal: controller.signal });
-		return fetchFn(input).finally(() => clearTimeout(timer));
-	};
-}
-
-/**
  * 网络优先，适用于频繁更新但又需要离线访问的内容。
  */
 export function networkFirst(cache: ManagedCache, fetchFn: FetchFn = fetch) {
