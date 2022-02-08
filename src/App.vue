@@ -13,9 +13,13 @@ import { events, PrefetchContext } from "./prefetch";
 import { useRouter } from "vue-router";
 
 // 切换视图后关掉所有弹窗，因为窗口容器在这里挂载所以也放这了。
+// vue-router 4 即使 pushState 未改变 URL 也触发导航，所以检查下路径是否改变了。
 const router = useRouter();
 const dialog = useDialog();
-router.afterEach(() => dialog.clear());
+router.afterEach((to, form) => {
+	if (to.fullPath !== form.fullPath)
+		dialog.clear();
+});
 
 const clean: Unsubscribe[] = [];
 
