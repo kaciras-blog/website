@@ -3,7 +3,7 @@
 
 		<header :class="$style.header">
 			<img
-				:src="value.user.avatar"
+				:src="value.user.avatar ?? DEFAULT_AVATAR"
 				alt="头像"
 				class="head"
 				:class="$style.avatar"
@@ -60,17 +60,19 @@ import { useStore } from "vuex";
 import TrashIcon from "bootstrap-icons/icons/trash.svg?sfc";
 import ReplyIcon from "bootstrap-icons/icons/reply.svg?sfc";
 import { useDialog } from "@kaciras-blog/uikit";
-import api, { DiscussionState } from "@/api";
+import api, { Discussion, DiscussionState } from "@/api";
 import { errorMessage } from "@/utils";
 import MarkdownView from "@/markdown/MarkdownView.vue";
-import { localDateMinute } from "@/blog-plugin";
+import { DEFAULT_AVATAR, localDateMinute } from "@/blog-plugin";
 
 interface DiscussContentProps {
-	value: any;
-	tag: string;
+	tag?: string;
+	value: Discussion;
 }
 
-const props = defineProps<DiscussContentProps>();
+const props = withDefaults(defineProps<DiscussContentProps>(), {
+	tag: "li",
+});
 const emit = defineEmits(["removed", "reply"]);
 
 const dialog = useDialog();

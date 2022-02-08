@@ -34,8 +34,8 @@
 				<ol :class="$style.list">
 					<discussion-item
 						v-for="item of items"
+						v-bind="item"
 						:key="item.id"
-						:value="item"
 						class="segment"
 						@removed="refresh"
 					/>

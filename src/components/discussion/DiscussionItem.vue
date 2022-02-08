@@ -1,26 +1,26 @@
 <template>
 	<li>
 		<discussion-content
-			:value="value"
+			:value="$props"
 			tag="div"
 			@removed="$emit('removed')"
 			@reply="showReplyEditor"
 		>
-			<blockquote v-if="value.parent" :class="$style.blockquote">
+			<blockquote v-if="parent" :class="$style.blockquote">
 				<i :class="$style.quoteStart"/>
 				<div :class="$style.quoteText">
-					<p>回复：@{{ displayName(value.parent) }}</p>
-					<markdown-view :value="value.parent.content"/>
+					<p>回复：@{{ displayName(parent) }}</p>
+					<markdown-view :value="parent.content"/>
 				</div>
 				<i :class="$style.quoteEnd"/>
 			</blockquote>
 		</discussion-content>
 
-		<template v-if="expend || (replies && replies.length > 0)">
+		<template v-if="expend || replies?.length">
 			<button-paging-view
 				v-if="expend"
-				ref="replies"
-				v-model="replies"
+				ref="repliesEl"
+				v-model="children"
 				theme="text"
 				:loader="loadNext"
 				:page-size="10"
@@ -45,12 +45,13 @@
 						v-for="item of replies"
 						:key="item.id"
 						:value="item"
+						tag="li"
 						:class="$style.reply"
 						@removed="refresh"
 					/>
 				</ol>
 				<a class="hd-link" @click="showAllReplies">
-					共 {{ value.nestSize }} 条回复 &gt;
+					共 {{ nestSize }} 条回复 &gt;
 				</a>
 			</div>
 			<div v-else :class="$style.nest">
@@ -60,116 +61,135 @@
 						:key="item.id"
 						:class="$style.preview"
 					>
-					<span :class="$style.name">
-						{{ item.user.name }}：
-					</span>
-						{{ item.content }}
+						<span :class="$style.name">
+							{{ user.name }}：
+						</span>
+						{{ content }}
 					</li>
 				</ol>
 				<a class="hd-link" @click="showNestFrame">
-					共 {{ value.nestSize }} 条回复 &gt;
+					共 {{ nestSize }} 条回复 &gt;
 				</a>
 			</div>
 		</template>
 
-		<input-section v-if="replying" ref="editor" :class="$style.input"/>
+		<input-section v-if="replying" ref="editorEl" :class="$style.input"/>
 	</li>
 </template>
 
-<script>
-import { scrollToElement } from "@kaciras-blog/uikit";
-import { debounceFirst } from "@kaciras-blog/server/lib/functions";
-import api from "@/api";
+<script setup lang="ts">
+import { inject, nextTick, provide, ref, watch } from "vue";
+import { scrollToElement, useDialog } from "@kaciras-blog/uikit";
+import { debounceFirst } from "@kaciras-blog/server/lib/functions.js";
+import api, { Discussion, DiscussionState, Topic, User } from "@/api";
+import { ListQueryView } from "@/api/core";
 import MarkdownView from "@/markdown/MarkdownView.vue";
 import DiscussionContent from "./DiscussionContent.vue";
 import ReplyFrame from "./ReplyFrame.vue";
 import EditorFrame from "./EditorFrame.vue";
 import InputSection from "./InputSection.vue";
 
-export default {
-	name: "DiscussionItem",
-	components: {
-		MarkdownView,
-		DiscussionContent,
-		InputSection,
-	},
-	props: {
-		value: {
-			type: Object,
-			required: true,
-		},
-	},
-	emits: ["removed"],
-	data() {
-		return {
-			replies: this.value.replies,
-			expend: false,
-			replying: false,
-		};
-	},
-	provide() {
-		const context = {
-			objectId: this.value.objectId,
-			type: this.value.type,
-			parent: this.value.id,
-			afterSubmit: this.afterSubmit,
-		};
-		return { context };
-	},
-	inject: ["context"],
-	methods: {
-		// 宽屏直接在下面加输入框，手机则弹窗。
-		async showReplyEditor() {
-			if (this.$mediaQuery.match("tablet+")) {
-				this.replying = true;
-				await this.$nextTick();
-				scrollToElement(this.$refs.editor.$el);
-			} else {
-				this.$dialog.show(EditorFrame, this.$options.provide.call(this).context);
-			}
-		},
-		async afterSubmit(entity) {
-			this.value.replyCount++;
-			this.replying = false;
-			await this.$nextTick();
+interface DiscussionCopy {
+	type: number;
+	objectId: number;
+	id: number;
+	parent?: Discussion;
+	floor: number;
+	nestId: number;
+	nestFloor: number;
+	nestSize: number;
+	user: User;
+	nickname?: string;
+	content: string;
+	time: number;
+	state: DiscussionState;
+	topic?: Topic;
+	replies?: Discussion[];
+}
 
-			// 引用模式等同于提交顶层评论，直接转到上层处理。
-			const { replies } = this.value;
-			if (replies === undefined) {
-				return this.context.afterSubmit(entity);
-			}
+const props = defineProps<DiscussionCopy>();
+defineEmits(["removed"]);
 
-			this.expend = true;
-			if (replies.length > 0) {
-				this.$refs.replies.switchToLast();
-			} else {
-				this.replies = { total: 1, items: [entity] };
-			}
-		},
-		showAllReplies: debounceFirst(function () {
-			return this.loadNext(0, 10).then((replies) => {
-				this.expend = true;
-				this.replies = replies;
-			});
-		}),
-		showNestFrame() {
-			return this.$dialog.show(ReplyFrame, { value: this.value });
-		},
-		refresh() {
-			this.$refs.replies.refresh();
-		},
-		loadNext(start, count) {
-			return api.discuss.getReplies(this.value.id, start, count);
-		},
-		displayName(discussion) {
-			const { nickname, user } = discussion;
-			if (user.id > 0) {
-				return user.name;
-			}
-			return nickname || user.name;
-		},
-	},
+const $mediaQuery = inject<any>("$mediaQuery");
+const $dialog = useDialog();
+const parentContext = inject<any>("context");
+
+const editorEl = ref<HTMLElement>();
+const repliesEl = ref();
+const expend = ref(false);
+const replying = ref(false);
+
+// 复用组件实例时重置。
+const children = ref<ListQueryView<Discussion>>({} as any);
+watch(props, () => children.value = {
+	total: 0,
+	items: [],
+});
+
+const replyContext = {
+	afterSubmit,
+	type: props.type,
+	objectId: props.objectId,
+	parent: props.id,
 };
+
+provide("context", replyContext);
+
+function displayName(value: Discussion) {
+	const { nickname, user } = value;
+	if (user.id > 0) {
+		return user.name;
+	}
+	return nickname || user.name;
+}
+
+// 宽屏直接在下面加输入框，手机则弹窗。
+async function showReplyEditor() {
+	if ($mediaQuery.match("tablet+")) {
+		replying.value = true;
+		await nextTick();
+		scrollToElement(editorEl.value!);
+	} else {
+		$dialog.show(EditorFrame, replyContext);
+	}
+}
+
+async function afterSubmit(entity: Discussion) {
+	// props.replyCount++;
+	replying.value = true;
+	await nextTick();
+
+	// 引用模式等同于提交顶层评论，直接转到上层处理。
+	const { replies } = props;
+	if (replies === undefined) {
+		return parentContext.afterSubmit(entity);
+	}
+
+	expend.value = true;
+	if (children.value.total > 0) {
+		repliesEl.value.switchToLast();
+	} else {
+		children.value = { total: 1, items: [entity] };
+	}
+}
+
+const showAllReplies = debounceFirst(async () => {
+	const all = await loadNext(0, 10);
+	expend.value = true;
+	children.value = all;
+});
+
+function showNestFrame() {
+	return $dialog.show(ReplyFrame, { value: props });
+}
+
+function refresh() {
+	repliesEl.value.refresh();
+}
+
+function loadNext(start: number, count: number) {
+	return api.discuss.getReplies(props.id, start, count);
+}
 </script>
 
 <style module lang="less">
