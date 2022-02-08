@@ -42,7 +42,7 @@
 
 <script setup>
 import { shallowRef } from "vue";
-import { MessageBoxType, useDialog } from "@kaciras-blog/uikit";
+import { MessageType, useDialog } from "@kaciras-blog/uikit";
 import api from "@/api";
 import { deleteOn, errorMessage } from "@/utils";
 import DraftConsoleItem from "./DraftConsoleItem.vue";
@@ -64,7 +64,7 @@ async function deleteAll() {
 	const result = await dialog.alert({
 		title: "删除所有草稿",
 		content: "该操作不可撤销，是否继续？",
-		type: MessageBoxType.Warning,
+		type: MessageType.Warning,
 		showCancelButton: true,
 	});
 	if (!result.isConfirm) {

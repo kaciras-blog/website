@@ -39,26 +39,27 @@
 	</li>
 </template>
 
-<script setup>
-import { MessageBoxType, useDialog } from "@kaciras-blog/uikit";
+<script setup lang="ts">
+import { MessageType, useDialog } from "@kaciras-blog/uikit";
 import api from "@/api";
 import { localDateMinute } from "@/blog-plugin";
 
 const dialog = useDialog();
 
 const props = defineProps(["value"]);
+const emit = defineEmits(["removed"]);
 
 async function deleteDraft() {
-	const dialog = dialog.alert({
+	const prompt = dialog.alert({
 		title: "删除草稿",
 		content: "删除后不可恢复，是否确定？",
-		type: MessageBoxType.Warning,
+		type: MessageType.Warning,
 		showCancelButton: true,
 	});
 
-	await dialog.confirmPromise;
+	await prompt.confirmPromise;
 	await api.draft.remove(props.value.id);
-	this.$emit("removed");
+	emit("removed");
 }
 </script>
 
