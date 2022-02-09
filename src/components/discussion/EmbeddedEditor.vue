@@ -6,17 +6,16 @@
 			<label :class="$style.name">
 				名字（可选）
 				<input
-					:value="nickname"
+					v-model="nickname"
 					name="nickname"
 					:placeholder="user.name"
 					:class="$style.nickname"
-					@input="$emit('update:name', )"
 				>
 			</label>
 
 			<button :class="$style.guide" @click="showGuide">
 				<span class="hide-m">帮助 </span>
-				<i class="far fa-question-circle"></i>
+				<QuestionIcon/>
 			</button>
 		</div>
 
@@ -69,34 +68,35 @@
 	</div>
 </template>
 
-<script>
-import { mapState } from "vuex";
+<script setup lang="ts">
+import { ref } from "vue";
+import { useStore } from "vuex";
 import EyeIcon from "bootstrap-icons/icons/eye-fill.svg?sfc";
 import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
+import QuestionIcon from "bootstrap-icons/icons/question-circle.svg?sfc";
 import MarkdownView from "@/markdown/MarkdownView.vue";
-import EditContext from "./EditContext";
+import { useDiscussContext } from "./EditContext";
 import GuideDialog from "./GuideDialog.vue";
+import { useDialog } from "@kaciras-blog/uikit";
 
-export default {
-	name: "EmbeddedEditor",
-	mixins: [
-		EditContext,
-	],
-	components: {
-		MarkdownView,
-		EyeIcon,
-		EditIcon,
-	},
-	data: () => ({
-		preview: false,
-	}),
-	computed: mapState(["user"]),
-	methods: {
-		showGuide() {
-			this.$dialog.show(GuideDialog);
-		},
-	},
-};
+interface EditContextProps_Copy {
+	objectId: number;
+	type: number;
+	parent: number;
+	afterSubmit: (entity: any) => void;
+}
+
+const props = defineProps<EditContextProps_Copy>();
+
+const { nickname, content, handleInput, submit } = useDiscussContext(props);
+const dialog = useDialog();
+const { user } = useStore().state;
+
+const preview = ref(false);
+
+function showGuide() {
+	dialog.show(GuideDialog);
+}
 </script>
 
 <style module lang="less">

@@ -60,53 +60,55 @@
 
 			<kx-task-button
 				class="primary"
-				icon="far fa-paper-plane"
 				:on-click="handleSubmit"
 			>
 				发送
+				<PaperPlaneIcon class="suffix"/>
 			</kx-task-button>
 		</div>
 	</kx-frame>
 </template>
 
-<script>
-import { mapState } from "vuex";
+<script lang="ts">
+export default { isolation: true };
+</script>
+
+<script setup lang="ts">
+import { useStore } from "vuex";
 import EyeIcon from "bootstrap-icons/icons/eye-fill.svg?sfc";
 import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
 import HelpIcon from "bootstrap-icons/icons/question-circle.svg?sfc";
+import PaperPlaneIcon from "@/assets/icon/paper-plane.svg?sfc";
 import MarkdownView from "@/markdown/MarkdownView.vue";
-import EditContext from "./EditContext";
 import GuideDialog from "./GuideDialog.vue";
+import { ref } from "vue";
+import { useDialog } from "@kaciras-blog/uikit";
+import { useDiscussContext } from "@/components/discussion/EditContext";
 
-export default {
-	name: "EditorFrame",
-	mixins: [
-		EditContext,
-	],
-	isolation: true,
-	components: {
-		MarkdownView,
-		EyeIcon,
-		EditIcon,
-		HelpIcon,
-	},
-	data: () => ({
-		preview: false,
-	}),
-	computed: mapState(["user"]),
-	methods: {
-		focus() {
-			this.$refs.textarea.focus();
-		},
-		async handleSubmit() {
-			await this.submit();
-			this.$dialog.close();
-		},
-		showGuide() {
-			this.$dialog.show(GuideDialog);
-		},
-	},
-};
+interface EditContextProps_Copy {
+	objectId: number;
+	type: number;
+	parent: number;
+	afterSubmit: (entity: any) => void;
+}
+
+const props = defineProps<EditContextProps_Copy>();
+const emit = defineEmits(["close"]);
+
+const { user } = useStore().state;
+const dialog = useDialog();
+const { nickname, content, handleInput, submit } = useDiscussContext(props);
+
+const preview = ref(false);
+
+async function handleSubmit() {
+	await submit();
+	emit("close");
+}
+
+function showGuide() {
+	dialog.show(GuideDialog);
+}
 </script>
 
 <style module lang="less">
