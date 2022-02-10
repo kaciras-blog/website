@@ -6,16 +6,20 @@
 			</h2>
 
 			<div :class="$style.options">
-				<kx-select v-model="mode" :class="$style.modeSelect">
-					<option value="nest">楼中楼模式</option>
-					<option value="ref">引用模式</option>
-				</kx-select>
-
-				<!-- 有些组合是多余的，比如 nest_size + ASC -->
-				<kx-select v-model="sort" :class="$style.sortSelect">
+				<!-- 有些组合是多余的，比如 nest_size,ASC -->
+				<kx-select
+					:class="$style.sortSelect"
+					v-model="sort"
+					title="排序方式"
+				>
 					<option value="id,ASC">时间</option>
 					<option value="id,DESC">最新</option>
 					<option value="nest_size,DESC">回复数</option>
+				</kx-select>
+
+				<kx-select v-model="mode" title="评论结构">
+					<option value="ref">引用模式</option>
+					<option value="nest">楼中楼模式</option>
 				</kx-select>
 			</div>
 		</header>
@@ -35,7 +39,7 @@
 					<discussion-item
 						v-for="item of items"
 						v-bind="item"
-						:key="item.id"
+						:key="mode + item.id"
 						class="segment"
 						@removed="refresh"
 					/>
@@ -171,12 +175,7 @@ function initialize() {
 	margin-left: auto;
 }
 
-.modeSelect {
-	width: 9em;
-}
-
 .sortSelect {
-	width: 7em;
 	margin: 0 10px;
 }
 
