@@ -11,7 +11,7 @@
 					v-model="articles"
 					:loader="loadPage"
 					:start="startPos"
-					:page-size="10"
+					:page-size="DEFAULT_PAGE_SIZE"
 					:next-link="nextPageUrl"
 					:auto-load="autoLoad"
 				>
@@ -55,7 +55,8 @@ export default {
 		];
 
 		if (import.meta.env.SSR) {
-			const start  = parseInt(session.route.params.index as string);
+			let start = parseInt(session.route.params.index as string);
+			start *= DEFAULT_PAGE_SIZE;
 
 			tasks.push(article
 				.getList({ start, count: DEFAULT_PAGE_SIZE })
@@ -70,14 +71,13 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { onBeforeMount, onMounted, watch, inject, ref } from "vue";
+import { onMounted, inject, ref } from "vue";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
+import { useLocalStorage } from "@vueuse/core";
 import api from "@/api";
 import PreviewItem from "./PreviewItem.vue";
 import AsidePanel from "./AsidePanel.vue";
-
-const kAutoLoad = "scrollPager.autoLoad";
 
 const mediaQuery = inject("$mediaQuery") as any;
 const route = useRoute();
@@ -86,49 +86,36 @@ const store = useStore();
 const { articleList, category } = store.state.prefetch;
 
 let startPos = parseInt(route.params.index as string) || 0;
-if (articleList) {
-	startPos += articleList.items.length;
-}
+startPos *= DEFAULT_PAGE_SIZE;
 
 const listView = ref();
-const autoLoad = ref(mediaQuery.match("mobile"));
+const autoLoad = useLocalStorage("ListPage:autoLoad", mediaQuery.match("mobile"));
 const articles = ref(articleList);
-
-watch(autoLoad, v => localStorage.setItem(kAutoLoad, JSON.stringify(v)));
 
 function loadPage(start: number, count: number) {
 	return api.article.getList({ start, count });
 }
 
 /**
- * 根据路由和当前加载的文章数来构造下一页的URL。
+ * 根据路由和当前加载的文章数来构造下一页的 URL。
  *
  * @param start 下一页起始位置
  * @param count 每页显示多少个
- * @return 指向下一页的URL，相对路径
+ * @return 指向下一页的 URL，相对路径
  */
 function nextPageUrl(start: number, count: number) {
-	const params = Object.assign({}, route.query);
-	const pairs = [];
-	for (const k of Object.keys(params)) {
-		pairs.push(k + "=" + params[k]);
-	}
-	const nextPath = "/list/" + ((parseInt(route.params.index as string) || 0) + count);
-	return pairs.length ? nextPath + "?" + pairs.join("&") : nextPath;
+	const { query, params } = route;
+	const index = parseInt(params.index as string);
+
+	const qs = new URLSearchParams(query as any).toString();
+	const path = `/list/${index + 1}`;
+	return qs ? `${path}?${qs}` : path;
 }
 
-onBeforeMount(() => {
-	const value = localStorage.getItem(kAutoLoad);
-	if (value) {
-		autoLoad.value = JSON.parse(value);
-	}
-});
+// watch(autoLoad, v => v && listView.value.loadNext());
 
-onMounted(() => {
-	if (!articleList) {
-		listView.value.reload();
-	}
-});
+// 如果没有数据就加载一下。
+onMounted(() => articleList || listView.value.reload());
 </script>
 
 <style module lang="less">
