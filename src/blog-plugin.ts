@@ -15,6 +15,11 @@ import IconParagraph from "./components/IconParagraph.vue";
 import IconSectionHeader from "./components/IconSectionHeader.vue";
 import SocialLink from "./components/SocialLink.vue";
 
+import DEFAULT_AVATAR from "@/assets/img/akalin.jpg";
+import DEFAULT_COVER from "@/assets/img/placeholder.png";
+
+export { DEFAULT_AVATAR, DEFAULT_COVER };
+
 /**
  * 获取文章所在页面的的完整路径。
  * 格式：/article/{id}/{url}

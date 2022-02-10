@@ -27,9 +27,8 @@ export const SUN_PHASES = new SunPhases({
 const GUESTS: User = {
 	id: 0,
 	name: "(游客)",
-	avatar: "/static/img/akalin.jpg",
 	auth: AuthType.None,
-}
+};
 
 export default function createVuexStore() {
 	return createStore({

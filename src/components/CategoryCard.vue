@@ -6,7 +6,7 @@
 		@keyup.enter="emit('click')"
 	>
 		<img
-			:src="cover"
+			:src="cover ?? DEFAULT_CODER"
 			alt="分类图标"
 			:class="$style.cover"
 		>
@@ -17,6 +17,8 @@
 </template>
 
 <script setup lang="ts">
+import DEFAULT_CODER from "@/assets/img/category.png";
+
 // defineProps 目前不支持外部导入的类型，只能先写死了。
 // https://github.com/vuejs/core/issues/4294
 defineProps(["cover", "name"]);

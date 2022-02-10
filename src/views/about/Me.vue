@@ -4,7 +4,7 @@
 		<section class="about-section">
 			<div :class="$style.profile">
 				<img
-					src="/static/img/avatar.png"
+					src="/avatar.png"
 					alt="logo"
 					class="large head"
 				>

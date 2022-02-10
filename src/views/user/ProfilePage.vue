@@ -36,15 +36,14 @@
 	</base-page-layout>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { shallowReactive, toRaw } from "vue";
 import { useStore } from "vuex";
 import { openFile, useDialog } from "@kaciras-blog/uikit";
 import api from "@/api";
+import { DEFAULT_AVATAR } from "@/blog-plugin";
 import { errorMessage } from "@/utils";
 import AuthTypeTag from "./AuthTypeTag.vue";
-
-const DEFAULT_AVATAR = "/static/img/akalin.jpg";
 
 const dialog = useDialog();
 const store = useStore();

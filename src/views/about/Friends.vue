@@ -22,7 +22,7 @@
 			<!-- 有些地方可能直接引用这个链接，所以要保证URL不变，并能在任意位置访问。-->
 			<p>
 				图标：
-				<a :class="$style.inlineLink" href='/static/img/avatar.png'>avatar.png</a>
+				<a :class="$style.inlineLink" href='/avatar.png'>avatar.png</a>
 			</p>
 			<p>名字：Kaciras</p>
 			<p>描述：编程 • 生活 • 梦想</p>
@@ -38,7 +38,7 @@
 		</section>
 
 		<!--
-			因为 Vue 的 provide 不是响应式的，一旦复则编辑器的 inject 无法更新。
+			因为 Vue 的 provide 不是响应式的，一旦复用则编辑器的 inject 无法更新。
 			这里设置 key=<object-id> 强制页面切换时重新创建组件。
 		-->
 		<discussion-section

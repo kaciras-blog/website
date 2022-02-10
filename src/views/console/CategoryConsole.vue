@@ -59,7 +59,6 @@ import CategoryView from "./CategoryView.vue";
 
 const TEMPLATE = {
 	name: "新建分类",
-	cover: "/static/img/category.png",
 	description: "没有",
 	theme: 0,
 	background: null,
