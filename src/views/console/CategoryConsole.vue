@@ -7,6 +7,7 @@
 					:disabled="!hasAncestor"
 					@click="$data.gotoId(0)"
 				>
+					<ArrowUpward class="prefix"/>
 					返回顶层
 				</kx-button>
 				<kx-button
@@ -14,6 +15,7 @@
 					:disabled="!hasAncestor"
 					@click="$data.gotoParent()"
 				>
+					<ArrowLeft class="prefix"/>
 					回到父级
 				</kx-button>
 			</div>
@@ -53,6 +55,8 @@
 
 <script>
 import api from "@/api";
+import ArrowLeft from "@material-design-icons/svg/round/arrow_back.svg?sfc";
+import ArrowUpward from "@material-design-icons/svg/round/arrow_upward.svg?sfc";
 import CachedCategoryWalker from "@/components/CachedCategoryWalker";
 import CategoryCard from "@/components/CategoryCard.vue";
 import CategoryView from "./CategoryView.vue";
@@ -67,6 +71,8 @@ const TEMPLATE = {
 export default {
 	name: "CategoryConsole",
 	components: {
+		ArrowLeft,
+		ArrowUpward,
 		CategoryCard,
 		CategoryView,
 	},

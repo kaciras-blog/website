@@ -2,17 +2,17 @@
 	<div>
 		<div class="btn-group console-toolbar">
 			<kx-button
-				icon="fa fa-edit"
 				class="primary"
 				@click="newArticle"
 			>
+				<EditIcon class="prefix"/>
 				新文章
 			</kx-button>
 			<kx-button
-				class="dangerous"
-				icon="far fa-trash-alt"
+				color="dangerous"
 				@click="deleteAll"
 			>
+				<TrashIcon class="prefix"/>
 				全部删除
 			</kx-button>
 		</div>
@@ -42,6 +42,8 @@
 
 <script setup>
 import { shallowRef } from "vue";
+import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
+import TrashIcon from "bootstrap-icons/icons/trash.svg?sfc";
 import { MessageType, useDialog } from "@kaciras-blog/uikit";
 import api from "@/api";
 import { deleteOn, errorMessage } from "@/utils";

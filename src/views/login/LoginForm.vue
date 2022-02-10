@@ -1,6 +1,6 @@
 <template>
 	<form class="login-form" @keyup.enter="login">
-		<h1 class="center segment">登录</h1>
+		<h1 class="center">登录</h1>
 
 		<label for="name">用户名:</label>
 		<input
@@ -32,13 +32,16 @@
 
 		<div class="buttons">
 			<kx-task-button
-				class="primary outline"
+				type="outline"
+				color="primary"
 				:on-click="login"
 			>
 				确定
 			</kx-task-button>
 			<kx-button
-				class="second outline"
+				:disabled="true"
+				type="outline"
+				color="second"
 				@click="switchPanel"
 			>
 				注册

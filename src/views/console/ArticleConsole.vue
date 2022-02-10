@@ -2,10 +2,9 @@
 	<div>
 		<div class="btn-group console-toolbar">
 			<kx-button
-				icon="fa fa-edit"
-				class="primary"
 				@click="newArticle"
 			>
+				<EditIcon class="prefix"/>
 				新文章
 			</kx-button>
 		</div>
@@ -28,6 +27,7 @@
 <script setup lang="ts">
 import { shallowRef } from "vue";
 import { useRouter } from "vue-router";
+import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
 import { useDialog } from "@kaciras-blog/uikit";
 import api, { DeletionState } from "@/api";
 import { errorMessage } from "@/utils";

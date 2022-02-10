@@ -1,8 +1,8 @@
 <template>
 	<div>
 		<div class="btn-group" :class="$style.toolbar">
-			<kx-button @click="createNew">添加</kx-button>
-			<kx-button @click="load">重新加载</kx-button>
+			<kx-button type="outline" @click="createNew">添加</kx-button>
+			<kx-button type="outline" @click="load">重新加载</kx-button>
 			<kx-button color="primary" @click="submit">应用更改</kx-button>
 		</div>
 

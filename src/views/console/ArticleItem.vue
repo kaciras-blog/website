@@ -38,13 +38,15 @@
 
 		<div :class="$style.buttons">
 			<kx-button
-				class="primary outline"
+				type="outline"
+				color="primary"
 				@click="addToCards"
 			>
 				创建卡片
 			</kx-button>
 			<kx-button
-				class="primary outline"
+				type="outline"
+				color="primary"
 				@click="changeCategory"
 			>
 				更改分类
@@ -52,21 +54,24 @@
 		</div>
 		<div :class="$style.buttons">
 			<kx-button
-				class="primary outline"
+				type="outline"
+				color="primary"
 				@click="edit"
 			>
 				修改
 			</kx-button>
 			<kx-button
 				v-if="value.deleted"
-				class="info"
+				color="info"
+				type="outline"
 				@click="updateDeleteState(false)"
 			>
 				恢复
 			</kx-button>
 			<kx-button
 				v-else
-				class="dangerous"
+				type="outline"
+				color="dangerous"
 				@click="updateDeleteState(true)"
 			>
 				删除

@@ -5,6 +5,7 @@
 				class="primary"
 				:on-click="clear"
 			>
+				<ClearIcon class="prefix"/>
 				清除全部
 			</kx-task-button>
 		</div>
@@ -13,7 +14,7 @@
 			v-if="loading"
 			:class="$style.spinner"
 		>
-			TODO: spinner
+			<atom-spinner/>
 			<span>加载中……</span>
 		</div>
 
@@ -32,9 +33,11 @@
 	</div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { shallowRef } from "vue";
-import api from "@/api";
+import ClearIcon from "@material-design-icons/svg/filled/clear_all.svg?sfc";
+import { useDialog } from "@kaciras-blog/uikit";
+import api, { Notice } from "@/api";
 import { localDateMinute } from "@/blog-plugin";
 import { errorMessage } from "@/utils";
 import FriendNotice from "@/views/console/FriendNotice.vue";
@@ -51,22 +54,24 @@ const MAP = {
 		name: "Discussion",
 		component: DiscussionNotice,
 	},
-}
+};
+
+const dialog = useDialog();
 
 const loading = shallowRef(true);
-const notifications = shallowRef([]);
+const notifications = shallowRef<Array<Notice<unknown>>>([]);
 
 async function clear() {
 	await api.notification.clear();
-	return this.refresh();
+	return refresh();
 }
 
 async function refresh() {
 	try {
-		this.notifications = await api.notification.getAll();
-		this.loading = false;
+		notifications.value = await api.notification.getAll();
+		loading.value = false;
 	} catch (e) {
-		this.$dialog.alertError("加载失败", errorMessage(e));
+		dialog.alertError("加载失败", errorMessage(e));
 	}
 }
 

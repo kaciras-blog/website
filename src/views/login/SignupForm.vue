@@ -56,13 +56,15 @@
 
 		<div class="buttons">
 			<kx-task-button
-				class="primary outline"
+				type="outline"
+				color="primary"
 				:on-click="signUp"
 			>
 				确定
 			</kx-task-button>
 			<kx-button
-				class="second outline"
+				type="outline"
+				color="second"
 				@click="switchPanel"
 			>
 				登录
@@ -120,6 +122,7 @@ export default {
 
 <style module lang="less">
 .captcha > img {
+	vertical-align: middle;
 	width: 150px;
 	height: 40px;
 	cursor: pointer;

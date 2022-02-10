@@ -10,7 +10,7 @@
 				<img
 					class="head"
 					:class="$style.head"
-					:src="item.cover"
+					:src="item.cover ?? DEFAULT_CODER"
 					:title="editable ? '点击换头像' : null"
 					alt="图标"
 					@click="setCover"
@@ -22,7 +22,9 @@
 					class="dark"
 					:class="$style.name"
 				>
-				<span v-else :class="$style.name">{{ item.name }}</span>
+				<span v-else :class="$style.name">
+					{{ item.name }}
+				</span>
 
 				<textarea
 					v-if="editable"
@@ -32,12 +34,32 @@
 					:class="$style.desc"
 				/>
 
-				<span v-else :class="$style.desc">{{ item.description }}</span>
+				<span v-else :class="$style.desc">
+					{{ item.description }}
+				</span>
 
 				<div :class="$style.buttons" v-if="editable">
-					<kx-button class="primary outline" @click="$emit('change')">应用更改</kx-button>
-					<kx-button class="primary outline" @click="move">移动</kx-button>
-					<kx-button class="dangerous outline" @click="remove">删除</kx-button>
+					<kx-button
+						type="outline"
+						color="primary"
+						@click="$emit('change')"
+					>
+						应用更改
+					</kx-button>
+					<kx-button
+						type="outline"
+						color="primary"
+						@click="move"
+					>
+						移动
+					</kx-button>
+					<kx-button
+						type="outline"
+						color="dangerous"
+						@click="remove"
+					>
+						删除
+					</kx-button>
 				</div>
 			</div>
 		</div>
@@ -55,6 +77,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import DEFAULT_CODER from "@/assets/img/category.png";
 import { useDialog } from "@kaciras-blog/uikit";
 import api from "@/api";
 import SelectCategoryDialog from "@/components/SelectCategoryDialog.vue";
@@ -67,7 +90,7 @@ interface CategoryViewProps {
 }
 
 const props = defineProps<CategoryViewProps>();
-const emit = defineEmits(["moved", "removed"]);
+const emit = defineEmits(["moved", "removed", "change"]);
 
 const dialog = useDialog();
 

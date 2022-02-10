@@ -25,12 +25,14 @@
 		<div class="btn-group">
 			<kx-button
 				:route="'/edit/' + value.id"
-				class="primary outline"
+				type="outline"
+				color="primary"
 			>
 				编辑
 			</kx-button>
 			<kx-button
-				class="dangerous outline"
+				type="outline"
+				color="dangerous"
 				@click="deleteDraft"
 			>
 				删除

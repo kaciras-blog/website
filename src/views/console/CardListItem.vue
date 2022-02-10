@@ -2,24 +2,24 @@
 	<section :class="{ [$style.expand]: expand }">
 		<div :class="$style.summary">
 			<h2 class="compact" @click="$emit('switch-expand')">
-				{{card.name}}
+				{{ card.name }}
 			</h2>
 
 			<kx-button
 				:class="$style.handler"
-				class="icon"
+				type="icon"
 				title="拖动调整次序"
 				@mousedown.stop="dragStart"
 			>
-				<i class="fas fa-arrows-alt"/>
+				<DownUpIcon/>
 			</kx-button>
 
 			<kx-button
-				class="icon dangerous"
+				type="icon"
 				title="删除"
 				@click="$emit('remove', id)"
 			>
-				<i class="fas fa-trash"/>
+				<TrashIcon/>
 			</kx-button>
 		</div>
 
@@ -72,6 +72,8 @@
 </template>
 
 <script setup lang="ts">
+import DownUpIcon from "bootstrap-icons/icons/arrow-down-up.svg?sfc";
+import TrashIcon from "bootstrap-icons/icons/trash.svg?sfc";
 import api from "@/api";
 
 interface CardListItemProps {
@@ -81,7 +83,7 @@ interface CardListItemProps {
 }
 
 const props = defineProps<CardListItemProps>();
-const emit = defineEmits(["drag-start", 'remove']);
+const emit = defineEmits(["drag-start", "remove", "switch-expand"]);
 
 function dragStart(event: TouchEvent & MouseEvent) {
 	if (!event.touches && event.button !== 0) {
@@ -181,7 +183,13 @@ textarea.inputBox {
 	background: rgba(0, 0, 0, .5);
 }
 
+.button {
+	border-radius: 0;
+}
+
 .handler {
+	composes: button;
+
 	cursor: move;
 	background: #e6e6e6;
 }
