@@ -1,6 +1,5 @@
 <template>
 	<component :is="tag">
-
 		<header :class="$style.header">
 			<img
 				:src="value.user.avatar ?? DEFAULT_AVATAR"
@@ -21,16 +20,14 @@
 						{{ value.nickname || value.user.name }}
 					</span>
 				</div>
-				<div>
-					<time :class="$style.time">
-						{{ localDateMinute(value.time) }}
-					</time>
-				</div>
+				<time :class="$style.time">
+					{{ localDateMinute(value.time) }}
+				</time>
 			</div>
 
 			<kx-button
-				type="icon"
 				v-if="removable"
+				type="icon"
 				title="删除"
 				:class="$style.clickable"
 				@click="remove"
@@ -45,6 +42,8 @@
 			>
 				<ReplyIcon/>
 			</kx-button>
+
+			<span :class="$style.floor">#{{ floor }}</span>
 		</header>
 
 		<!-- 引用的内容 -->
@@ -80,6 +79,16 @@ const store = useStore();
 
 const removable = computed(() => store.state.user.id === 2);
 
+/**
+ * 楼层号，引用模式下返回 floor，楼中楼模式返回 nestFloor。
+ * 这里使用 replies 属性是否存在来判断处于哪种模式，比起 provide-inject 少些代码。
+ */
+const floor = computed(() => {
+	const { parent, floor, nestFloor } = props.value;
+	const { replies } = (parent ?? props.value);
+	return Array.isArray(replies) ? nestFloor : floor;
+});
+
 function remove() {
 	return api.discuss.updateStates(props.value.id, DiscussionState.Deleted)
 		.then(() => emit("removed", props.value))
@@ -93,7 +102,6 @@ function remove() {
 .header {
 	display: flex;
 	margin-bottom: 1rem;
-	font-size: 14px;
 }
 
 .avatar {
@@ -115,9 +123,10 @@ function remove() {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-
 	flex: 1;
+
 	margin-left: 10px;
+	font-size: 14px;
 }
 
 .stick {
@@ -148,5 +157,11 @@ function remove() {
 
 .clickable {
 	align-self: flex-start;
+}
+
+/* 直接微调居中，懒得再包层 flex 容器 */
+.floor {
+	margin-top: 6px;
+	margin-left: 10px;
 }
 </style>
