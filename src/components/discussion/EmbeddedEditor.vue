@@ -1,70 +1,69 @@
 <template>
-	<div>
-		<div>
-			<img :src="user.avatar" alt="头像" class="small head">
+	<img
+		class="small head"
+		alt="头像"
+		:src="user.avatar ?? DEFAULT_AVATAR"
+	>
+	<label :class="$style.name">
+		名字（可选）
+		<input
+			v-model="nickname"
+			name="nickname"
+			:placeholder="user.name"
+			:class="$style.nickname"
+		>
+	</label>
 
-			<label :class="$style.name">
-				名字（可选）
-				<input
-					v-model="nickname"
-					name="nickname"
-					:placeholder="user.name"
-					:class="$style.nickname"
-				>
-			</label>
+	<button :class="$style.guide" @click="showGuide">
+		<QuestionIcon/>
+		<span class="hide-m">帮助</span>
+	</button>
 
-			<button :class="$style.guide" @click="showGuide">
-				<span class="hide-m">帮助 </span>
-				<QuestionIcon/>
-			</button>
-		</div>
+	<markdown-view
+		v-if="preview"
+		:class="$style.preview"
+		:value="content"
+	/>
+	<textarea
+		v-else
+		ref="textarea"
+		:class="$style.textarea"
+		class="input"
+		:value="content"
+		name="content"
+		placeholder='说点什么吧...'
+		aria-label="输入评论"
+		v-autofocus
+		v-ime-input="handleInput"
+	/>
 
-		<markdown-view
+	<div :class='$style.bottom_toolbar'>
+		<kx-button
 			v-if="preview"
-			:class="$style.preview"
-			:value="content"
-		/>
-		<textarea
+			type="outline"
+			title="编辑"
+			@click="preview=false"
+		>
+			<EditIcon class="prefix"/>
+			编辑
+		</kx-button>
+		<kx-button
 			v-else
-			ref="textarea"
-			:class="$style.textarea"
-			class="input"
-			:value="content"
-			name="content"
-			placeholder='说点什么吧...'
-			aria-label="输入评论"
-			v-autofocus
-			v-ime-input="handleInput"
-		/>
+			type="outline"
+			title="预览"
+			@click="preview=true"
+		>
+			<EyeIcon class="prefix"/>
+			预览
+		</kx-button>
 
-		<div :class='$style.bottom_toolbar'>
-			<kx-button
-				v-if="preview"
-				type="outline"
-				title="编辑"
-				@click="preview=false"
-			>
-				<EditIcon class="prefix"/>
-				编辑
-			</kx-button>
-			<kx-button
-				v-else
-				type="outline"
-				title="预览"
-				@click="preview=true"
-			>
-				<EyeIcon class="prefix"/>
-				预览
-			</kx-button>
-
-			<kx-task-button
-				class='primary'
-				:class="$style.submit"
-				:on-click='submit'
-			>
-				发表评论
-			</kx-task-button>
-		</div>
+		<kx-task-button
+			class='primary'
+			:class="$style.submit"
+			:on-click='submit'
+		>
+			发表评论
+		</kx-task-button>
 	</div>
 </template>
 
@@ -78,6 +77,7 @@ import MarkdownView from "@/markdown/MarkdownView.vue";
 import { useDiscussContext } from "./EditContext";
 import GuideDialog from "./GuideDialog.vue";
 import { useDialog } from "@kaciras-blog/uikit";
+import { DEFAULT_AVATAR } from "@/blog-plugin";
 
 interface EditContextProps_Copy {
 	objectId: number;
