@@ -8,7 +8,7 @@
 				:key="name"
 				v-model="config[name]"
 				:class="$style.checkbox"
-				@input="value => sync(name, value)"
+				@input="sync"
 			>
 				{{ LABELS[name] }}
 			</kx-check-box>
@@ -20,10 +20,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, toRaw } from "vue";
 import api from "@/api";
 
-// 传过来的配置没有描述，这里直接定义
+// 传过来的配置没有描述，这里直接定义.
 const LABELS = {
 	disabled: "禁止发表评论",
 	loginRequired: "禁止匿名评论",
@@ -38,9 +38,9 @@ const config = ref({
 
 const refreshing = ref(false);
 
-async function sync(name: string, value: unknown) {
+async function sync() {
 	refreshing.value = true;
-	await api.config.set("discussion", { [name]: value });
+	await api.config.set("discussion", toRaw(config.value));
 	refreshing.value = false;
 }
 
@@ -63,7 +63,7 @@ api.config.get("discussion").then(v => config.value = v);
 
 .progress {
 	position: absolute;
-	top: 0;
+	top: 1rem;
 	right: 1rem;
 	width: 2rem;
 	height: 2rem;
