@@ -12,7 +12,7 @@ import createBlogApp, { mediaBreakpoints } from "./main";
 const titleRE = new RegExp("<title>[^<]*</title>");
 
 // 后台页面就不预渲染了。
-const noSSR = new RegExp("^/(?:edit|console)/");
+const noSSR = new RegExp("^/(?:edit|console)/?(?:\\?|$)");
 
 class ServerPrefetch extends PrefetchContext {
 
