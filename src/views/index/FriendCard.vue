@@ -21,7 +21,7 @@ friend	 - 友链对象
 			:class="$style.background"
 		>
 		<img
-			:src="active ? friend.favicon : null"
+			:src="active ? friend.favicon ?? DEFAULT_AVATAR : null"
 			alt="favicon"
 			:class="$style.favicon"
 		>
@@ -29,11 +29,17 @@ friend	 - 友链对象
 	</a>
 </template>
 
-<script>
-export default {
-	name: "FriendCard",
-	props: ["friend", "disabled", "active"],
-};
+<script setup lang="ts">
+import { Friend } from "@/api";
+import { DEFAULT_AVATAR } from "@/blog-plugin";
+
+interface FriendCardProps {
+	friend: Friend;
+	disabled: boolean;
+	active: boolean;
+}
+
+defineProps<FriendCardProps>();
 </script>
 
 <style module lang="less">

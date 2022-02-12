@@ -1,6 +1,5 @@
 <template>
 	<kx-base-dialog title="友链信息">
-
 		<div :class="$style.wrapper">
 			<img
 				:src="value.background"
@@ -10,7 +9,7 @@
 				@click="uploadBackground"
 			>
 			<img
-				:src="value.favicon"
+				:src="value.favicon ?? DEFAULT_AVATAR"
 				title="设置图标"
 				alt="favicon"
 				:class="$style.favicon"
@@ -24,71 +23,67 @@
 			name="url"
 			placeholder="http://example.com/index"
 		/>
-
 		<material-text-input
 			v-model="value.name"
 			name="name"
 			label="名字（16字以内）"
 		/>
-
 		<material-text-input
 			v-model="value.friendPage"
 			name="friendPage"
 			label="对方的友链页（可选，用于检查互友）"
 		/>
 
-		<kx-dialog-buttons @confirm="confirm"/>
+		<kx-dialog-buttons
+			:on-accept="confirm"
+			:on-cancel="dialog.close"
+		/>
 	</kx-base-dialog>
 </template>
 
-<script>
-import { openFile } from "@kaciras-blog/uikit";
+<script setup lang="ts">
+import { reactive, toRaw } from "vue";
+import { openFile, useDialog } from "@kaciras-blog/uikit";
 import api from "@/api";
+import { DEFAULT_AVATAR } from "@/blog-plugin";
 
-export default {
-	name: "FriendInfoDialog",
-	props: {
-		name: String,
-		url: String,
-		background: String,
-		favicon: String,
-		friendPage: {
-			type: String,
-			default: "",
-		},
-	},
-	// 这写法真你🐎丑陋，希望Vue3能改改
-	data() {
-		return { value: Object.assign({}, this.$props) };
-	},
-	methods: {
-		async uploadBackground() {
-			this.value.background = await this.cropAndUploadImage(16 / 9);
-		},
+interface Friend_Copy {
+	url: string;
+	name: string;
+	background: string;
+	favicon?: string;
+	friendPage?: string;
+}
 
-		async uploadFavicon() {
-			this.value.favicon = await this.cropAndUploadImage(1);
-		},
+const props = defineProps<Friend_Copy>();
 
-		async cropAndUploadImage(aspectRatio) {
-			let image = await openFile("image/*");
-			const cropping = await this.$dialog.cropImage({ image, aspectRatio });
-			if (cropping.isConfirm) {
-				image = cropping.data;
-			}
-			return api.misc.uploadImage(image);
-		},
+const dialog = useDialog();
+const value = reactive({ ...toRaw(props) });
 
-		// 烦人的空字符串与 null 的问题
-		confirm() {
-			const { value } = this;
-			if (!value.friendPage) {
-				delete value.friendPage;
-			}
-			this.$dialog.confirm(value);
-		},
-	},
-};
+async function uploadBackground() {
+	value.background = await cropAndUploadImage(16 / 9);
+}
+
+async function uploadFavicon() {
+	value.favicon = await cropAndUploadImage(1);
+}
+
+async function cropAndUploadImage(aspectRatio: number) {
+	let image:Blob = await openFile("image/*");
+	const cropping = await dialog.cropImage({ image, aspectRatio });
+	if (cropping.isConfirm) {
+		image = cropping.data;
+	}
+	return api.misc.uploadImage(image);
+}
+
+// 烦人的空字符串与 null 的问题
+function confirm() {
+	if (!value.friendPage) {
+		delete value.friendPage;
+	}
+	dialog.confirm(toRaw(value));
+}
 </script>
 
 <style module lang="less">
@@ -104,6 +99,7 @@ export default {
 }
 
 .background {
+	display: block;
 	width: @background-width;
 	height: (@background-width * 9 / 16);
 }

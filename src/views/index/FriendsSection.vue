@@ -95,15 +95,15 @@ import CloseIcon from "@material-design-icons/svg/round/close.svg?sfc";
 import CheckIcon from "@material-design-icons/svg/round/check.svg?sfc";
 import PencilIcon from "bootstrap-icons/icons/pencil-fill.svg?sfc";
 import api from "@/api";
+import { DEFAULT_COVER } from "@/blog-plugin";
 import { errorMessage } from "@/utils";
 import FriendCard from "./FriendCard.vue";
 import FriendInfoDialog from "./FriendInfoDialog.vue";
 
-const DEFAULT_INFO = {
+const FRIEND_TEMPLATE = {
 	name: "",
 	url: "",
-	background: "/static/img/placeholder.png",
-	favicon: "/static/img/akalin.jpg",
+	background: DEFAULT_COVER,
 };
 
 class GridDraggingRegion {
@@ -213,7 +213,7 @@ export default {
 	computed: mapState(["user"]),
 	methods: {
 		async makeFriend() {
-			let info = DEFAULT_INFO;
+			let info = FRIEND_TEMPLATE;
 			for (; ;) {
 				const result = await this.$dialog.show(FriendInfoDialog, info);
 				if (!result.isConfirm) {
