@@ -1,26 +1,44 @@
 /**
- * 配置文件，包括构建配置和运行配置，该文件被 webserver 使用。
+ * 全部的配置项都在这里，该文件被 webserver 使用。
  * webserver 默认加载 index.js，通过启动参数 --profile=prod 可以让它改为加载本目录下的 prod.js
- *
- * 全部的配置项都在这里，注释里有【环境】的项需要修改为自己的环境
  */
 export default {
 
-	/** 构建输出的目录 */
+	/** 构建输出的目录，该目录中还会有 client 和 server 两个下级目录。 */
 	outputDir: "dist",
 
 	/** 静态资源目录，相对于outputDir */
 	assetsDir: "static",
 
 	build: {
-		/** */
+		/**
+		 * 生成代码的模式，如果不存在则使用 Vite 默认值。
+		 */
 		mode: "development",
+
+		/**
+		 * 生成代码的兼容性，根据 Vite 文档只要支持 import() 的就性，但其源码中却比这高。
+		 * 此处设为与本项目设计时的兼容性一致。
+		 * https://github.com/vitejs/vite/blob/526b5ce96a0a9028a60f810e6d58db34579191c1/packages/vite/src/node/build.ts#L276
+		 */
+		target: [
+			"firefox74",
+			"edge80",
+			"chrome80",
+			"safari13.1",
+		],
 
 		/** 是否启用 webpack-bundle-analyzer */
 		bundleAnalyzer: false,
 
 		/** 是否启用 vite-plugin-inspect */
 		debug: false,
+
+		// serviceWorker: {
+		// 	src: "src/service-worker/server/index.ts",
+		// 	// dist: "sw.js",
+		// 	// includes: new RegExp("^/static/");
+		// },
 
 		/** 传递给 vue-loader 的选项，具体说明见Vue的官网 */
 		vueOptions: {
@@ -107,14 +125,6 @@ export default {
 		 */
 		// serviceWorker: true,
 
-		/**
-		 * AJAX请求超时（毫秒），0表示无超时，不影响非AJAX请求。
-		 *
-		 * 【环境变量】
-		 * 该选项在构建时可由 import.meta.env.TIMEOUT 访问
-		 */
-		requestTimeout: 10000,
-
 		/** 日志等级和文件 */
 		logging: {
 
@@ -131,6 +141,11 @@ export default {
 		 * 在服务端构建时用 import.meta.env.PUBLIC_ORIGIN 访问
 		 */
 		internal: "http://localhost:12345",
+
+		/**
+		 * 请求超时（毫秒），0 表示永不超时。
+		 */
+		timeout: 10000,
 
 		/**
 		 * 【环境】【可选】内容服务器的证书，如果它启用了HTTPS的话可能需要添加额外的信任。
