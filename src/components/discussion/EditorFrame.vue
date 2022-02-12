@@ -51,6 +51,8 @@
 				alt="头像"
 				:class="$style.avatar"
 			>
+
+			名字：
 			<input
 				v-model="nickname"
 				name="nickname"
@@ -59,11 +61,11 @@
 			>
 
 			<kx-task-button
-				class="primary"
+				:class="$style.button"
 				:on-click="handleSubmit"
 			>
 				发送
-				<PaperPlaneIcon class="suffix"/>
+				<PaperPlaneIcon/>
 			</kx-task-button>
 		</div>
 	</kx-frame>
@@ -152,9 +154,16 @@ function showGuide() {
 	composes: head from global;
 	width: 32px;
 	height: 32px;
+	margin-right: 10px;
 }
 
 .nickname {
-	margin: 0 auto 0 10px;
+	flex: 1;
+	margin-right: 10px;
+}
+
+.button {
+	padding: 5px 10px;
+	gap: 6px;
 }
 </style>

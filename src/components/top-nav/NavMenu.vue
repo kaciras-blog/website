@@ -14,7 +14,7 @@
 
 		<div :class="$style.body">
 			<router-link to="/" :class="$style.item">
-				<HomeIcon/>
+				<HomeIcon fill="#0099ff"/>
 				首页
 			</router-link>
 			<router-link to="/list" :class="$style.item">
@@ -22,15 +22,15 @@
 				文章
 			</router-link>
 			<router-link to="/about/me" :class="$style.item">
-				<CopyrightIcon/>
+				<CopyrightIcon fill="#01AD20"/>
 				关于
 			</router-link>
 			<a href="/feed/rss" :class="$style.item">
-				<RssIcon/>
+				<RssIcon fill="#eb8a34"/>
 				Feed 订阅
 			</a>
 			<div :class="$style.item" @click="showSettingFrame">
-				<SettingIcon/>
+				<SettingIcon fill="#3961ff"/>
 				设置
 			</div>
 		</div>
@@ -88,11 +88,11 @@ function showSettingFrame() {
 	composes: clean-link from global;
 
 	display: block;
-	padding: 10px 0;
+	padding: 12px 0;
 
 	& > svg {
 		font-size: 24px;
-		vertical-align: -6px;
+		vertical-align: -7px;
 		margin: 0 1pc;
 	}
 

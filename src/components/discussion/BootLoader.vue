@@ -1,14 +1,14 @@
 <template>
-	<div v-if="loading" :class="$style.loading">
+	<section v-if="loading" :class="$style.loading">
 		<atom-spinner/>
 		<span :class="$style.loadingText">评论加载中</span>
-	</div>
+	</section>
 
-	<div v-else-if="loadFail" :class="$style.loading">
+	<section v-else-if="loadFail" :class="$style.loading">
 		<span :class="$style.failed">评论加载失败</span>
-	</div>
+	</section>
 
-	<div v-else><slot></slot></div>
+	<section v-else><slot></slot></section>
 </template>
 
 <script>
