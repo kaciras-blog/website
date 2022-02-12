@@ -4,8 +4,7 @@
 
 		<div :class="$style.frameBody">
 			<scroll-paging-view
-				v-model="pageData"
-				:start="replies.length"
+				v-model="data"
 				:loader="loadNext"
 				:auto-load="true"
 			>
@@ -26,62 +25,54 @@
 			:class="$style.bottom"
 			@click="showEditorFrame"
 		>
-			<EditIcon :class="$style.icon"/>写回复...
+			<EditIcon :class="$style.icon"/>
+			写回复...
 		</button>
 	</kx-frame>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
 import { useDialog } from "@kaciras-blog/uikit";
-import api, { Discussion, DiscussionState, Topic, User } from "@/api";
+import api, { Discussion } from "@/api";
+import { ListQueryView } from "@/api/core";
 import EditorFrame from "./EditorFrame.vue";
 import DiscussionContent from "./DiscussionContent.vue";
 
-interface Discussion_Copy {
-	type: number;
-	objectId: number;
-	id: number;
-	parent?: Discussion;
-	floor: number;
-	nestId: number;
-	nestFloor: number;
-	nestSize: number;
-	user: User;
-	nickname?: string;
-	content: string;
-	time: number;
-	state: DiscussionState;
-	topic?: Topic;
-	replies?: Discussion[];
+interface ReplyFrameProps {
+	host: Discussion;
+	modelValue: ListQueryView<Discussion>;
 }
 
-const props = defineProps<Discussion_Copy>();
+const props = defineProps<ReplyFrameProps>();
+const emit = defineEmits(["update:modelValue"]);
 
 const $dialog = useDialog();
 
-const pageData = ref({
-	items: props.replies!.slice(),
-	total: props.nestSize,
-});
+const data = ref(props.modelValue);
 
-function loadNext(start: number, count: number) {
-	return api.discuss.getReplies(props.id, start, count);
-}
+watch(data, v => emit("update:modelValue", v));
 
 function showEditorFrame() {
+	const parent = props.host;
+	const { objectId, type } = parent;
 	const context = {
-		parent: props,
-		objectId: props.objectId,
-		type: props.type,
+		type,
+		objectId,
+		parent,
 		afterSubmit,
 	};
 	$dialog.show(EditorFrame, context);
 }
 
 function afterSubmit(entity: Discussion) {
-	pageData.value.items.push(entity);
+	data.value.total++;
+	data.value.items.push(entity);
+}
+
+function loadNext(start: number, count: number) {
+	return api.discuss.getReplies(props.host.id, start, count);
 }
 </script>
 
@@ -90,6 +81,7 @@ function afterSubmit(entity: Discussion) {
 	composes: clean-list from global;
 	padding: 0 15px;
 }
+
 .item {
 	padding: 15px 0;
 	border-bottom: solid 1px #eee;

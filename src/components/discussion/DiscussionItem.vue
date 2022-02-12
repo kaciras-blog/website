@@ -26,14 +26,14 @@
 			</blockquote>
 		</discussion-content>
 
-		<template v-if="expend || replies?.length">
+		<template v-if="expend || children.items.length">
 			<button-paging-view
 				v-if="expend"
 				ref="repliesEl"
 				v-model="children"
 				theme="text"
 				:loader="loadNext"
-				:page-size="10"
+				:page-size="PAGE_SIZE"
 				:class="$style.nest"
 			>
 				<template v-slot="{ items }">
@@ -52,7 +52,7 @@
 			<div v-else-if="$mediaQuery.match('tablet+')" :class="$style.nest">
 				<ol class="clean-list" :class="$style.list">
 					<discussion-content
-						v-for="item of replies"
+						v-for="item of children.items"
 						:key="item.id"
 						:value="item"
 						tag="li"
@@ -61,13 +61,13 @@
 					/>
 				</ol>
 				<a class="hd-link" @click="showAllReplies">
-					共 {{ nestSize }} 条回复 &gt;
+					共 {{ children.total }} 条回复 &gt;
 				</a>
 			</div>
 			<div v-else :class="$style.nest">
 				<ol class="clean-list" :class="$style.list">
 					<li
-						v-for="item of replies"
+						v-for="item of children.items.slice(0, 5)"
 						:key="item.id"
 						:class="$style.preview"
 					>
@@ -78,7 +78,7 @@
 					</li>
 				</ol>
 				<a class="hd-link" @click="showNestFrame">
-					共 {{ nestSize }} 条回复 &gt;
+					共 {{ children.total }} 条回复 &gt;
 				</a>
 			</div>
 		</template>
@@ -98,6 +98,8 @@ import DiscussionContent from "./DiscussionContent.vue";
 import ReplyFrame from "./ReplyFrame.vue";
 import EditorFrame from "./EditorFrame.vue";
 import InputSection from "./InputSection.vue";
+
+const PAGE_SIZE = 10;
 
 interface DiscussionCopy {
 	type: number;
@@ -131,8 +133,8 @@ const replying = ref(false);
 
 // 复用组件实例时重置。
 const children = ref<ListQueryView<Discussion>>({
-	total: 0,
-	items: [],
+	total: props.nestSize,
+	items: props.replies ?? [],
 });
 
 const replyContext = {
@@ -164,7 +166,7 @@ async function showReplyEditor() {
 }
 
 async function afterSubmit(entity: Discussion) {
-	replying.value = true;
+	replying.value = false;
 	await nextTick();
 
 	// 引用模式等同于提交顶层评论，直接转到上层处理。
@@ -173,22 +175,27 @@ async function afterSubmit(entity: Discussion) {
 		return parentContext.afterSubmit(entity);
 	}
 
-	expend.value = true;
-	if (children.value.total > 0) {
-		repliesEl.value.switchToLast();
+	// 如果没展开（包含无回复）就刷新数据；
+	// 展开了就只刷新当前页，不要改变用户阅读位置。
+	if (expend.value) {
+		return repliesEl.value.refresh();
 	} else {
-		children.value = { total: 1, items: [entity] };
+		children.value = await loadNext(0, PAGE_SIZE);
 	}
 }
 
 const showAllReplies = debounceFirst(async () => {
-	const all = await loadNext(0, 10);
+	children.value = await loadNext(0, PAGE_SIZE);
 	expend.value = true;
-	children.value = all;
 });
 
 function showNestFrame() {
-	return $dialog.show(ReplyFrame, props);
+	// 回复界面也会改动数据，所以用 v-model 模式把这里的也更新。
+	return $dialog.show(ReplyFrame, {
+		host: props,
+		modelValue: children.value,
+		"onUpdate:modelValue": v => children.value = v,
+	});
 }
 
 function refresh() {
