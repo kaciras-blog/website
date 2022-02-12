@@ -26,12 +26,12 @@
 	/>
 	<textarea
 		v-else
-		ref="textarea"
+		ref="textareaEl"
 		:class="$style.textarea"
 		class="input"
 		:value="content"
 		name="content"
-		placeholder='说点什么吧...'
+		:placeholder='placeholder'
 		aria-label="输入评论"
 		v-autofocus
 		v-ime-input="handleInput"
@@ -68,11 +68,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, nextTick, ref } from "vue";
 import { useStore } from "vuex";
 import EyeIcon from "bootstrap-icons/icons/eye-fill.svg?sfc";
 import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
 import QuestionIcon from "bootstrap-icons/icons/question-circle.svg?sfc";
+import { Discussion } from "@/api";
 import MarkdownView from "@/markdown/MarkdownView.vue";
 import { useDiscussContext } from "./EditContext";
 import GuideDialog from "./GuideDialog.vue";
@@ -82,8 +83,8 @@ import { DEFAULT_AVATAR } from "@/blog-plugin";
 interface EditContextProps_Copy {
 	objectId: number;
 	type: number;
-	parent: number;
-	afterSubmit: (entity: any) => void;
+	parent?: Discussion;
+	afterSubmit: (entity: Discussion) => void;
 }
 
 const props = defineProps<EditContextProps_Copy>();
@@ -93,10 +94,30 @@ const dialog = useDialog();
 const { user } = useStore().state;
 
 const preview = ref(false);
+const textareaEl = ref<HTMLElement>();
+
+/**
+ * 跟百度贴吧一样的设计，用占位文字表示回复对象。
+ */
+const placeholder = computed(() => {
+	const { parent } = props;
+	if (!parent) {
+		return "说点什么吧...";
+	}
+	return `回复 ${parent.user.name}:`;
+});
 
 function showGuide() {
 	dialog.show(GuideDialog);
 }
+
+async function focus() {
+	preview.value = false;
+	await nextTick();
+	textareaEl.value!.focus();
+}
+
+defineExpose({ focus });
 </script>
 
 <style module lang="less">

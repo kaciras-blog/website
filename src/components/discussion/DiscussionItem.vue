@@ -1,3 +1,13 @@
+<!--
+	【定位功能？】
+	根据评论对象定位评论的页面的功能，在支持删除或多种排序的情况下是做不到的，
+	一旦评论删除后面的评论跟分页就无法计算，而一旦根据分数之类的排序同样也无法计算。
+	如果真要查看父评论，可以像知乎一样弹窗。
+
+	【气泡样式？】
+	像 IM 一样的气泡样式虽然更具亲和力，但布局宽度会受限，只适合文本。
+	特别是本站评论支持 Markdown，排版空间更加重要，所以还是选择传统式布局。
+-->
 <template>
 	<li>
 		<discussion-content
@@ -62,9 +72,9 @@
 						:class="$style.preview"
 					>
 						<span :class="$style.name">
-							{{ user.name }}：
+							{{ item.user.name }}：
 						</span>
-						{{ content }}
+						{{ item.content }}
 					</li>
 				</ol>
 				<a class="hd-link" @click="showNestFrame">
@@ -78,8 +88,8 @@
 </template>
 
 <script setup lang="ts">
-import { inject, nextTick, provide, ref, watch } from "vue";
-import { scrollToElement, useDialog } from "@kaciras-blog/uikit";
+import { inject, nextTick, provide, ref } from "vue";
+import { useDialog } from "@kaciras-blog/uikit";
 import { debounceFirst } from "@kaciras-blog/server/lib/functions.js";
 import api, { Discussion, DiscussionState, Topic, User } from "@/api";
 import { ListQueryView } from "@/api/core";
@@ -120,8 +130,7 @@ const expend = ref(false);
 const replying = ref(false);
 
 // 复用组件实例时重置。
-const children = ref<ListQueryView<Discussion>>({} as any);
-watch(props, () => children.value = {
+const children = ref<ListQueryView<Discussion>>({
 	total: 0,
 	items: [],
 });
@@ -130,7 +139,7 @@ const replyContext = {
 	afterSubmit,
 	type: props.type,
 	objectId: props.objectId,
-	parent: props.id,
+	parent: props,
 };
 
 provide("context", replyContext);
@@ -148,14 +157,13 @@ async function showReplyEditor() {
 	if ($mediaQuery.match("tablet+")) {
 		replying.value = true;
 		await nextTick();
-		scrollToElement(editorEl.value!);
+		editorEl.value!.focus();
 	} else {
 		$dialog.show(EditorFrame, replyContext);
 	}
 }
 
 async function afterSubmit(entity: Discussion) {
-	// props.replyCount++;
 	replying.value = true;
 	await nextTick();
 
@@ -180,7 +188,7 @@ const showAllReplies = debounceFirst(async () => {
 });
 
 function showNestFrame() {
-	return $dialog.show(ReplyFrame, { value: props });
+	return $dialog.show(ReplyFrame, props);
 }
 
 function refresh() {

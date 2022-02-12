@@ -1,18 +1,18 @@
 <template>
-	<div v-if="options.disabled" :class="$style.shore">
+	<div v-if="options.disabled" ref="thisEl" :class="$style.shore">
 		已设置为禁止评论
 	</div>
 
-	<div v-else-if="options.loginRequired && user.id === 0" :class="$style.shore">
+	<div v-else-if="options.loginRequired && user.id === 0" ref="thisEl" :class="$style.shore">
 		已禁止匿名评论,请先
 		<router-link class='highlight' to='/login'>登录</router-link>
 	</div>
 
 	<div v-else :class="$style.form">
-		<embedded-editor v-if="$mediaQuery.match('tablet+')" v-bind="context"/>
+		<embedded-editor v-if="$mediaQuery.match('tablet+')" ref="thisEl" v-bind="context"/>
 
 		<!-- 是在想不到更好看的做法了，还是用输入框的样式吧 -->
-		<div v-else :class="$style.mobileSection">
+		<div v-else ref="thisEl" :class="$style.mobileSection">
 			<img :src="user.avatar" alt="头像" class="lite head">
 			<button
 				:class="$style.fakeInput"
@@ -26,30 +26,31 @@
 	</div>
 </template>
 
-<script>
-import { mapState } from "vuex";
+<script setup lang="ts">
+import { computed, inject, ref } from "vue";
+import { useStore } from "vuex";
 import EmbeddedEditor from "./EmbeddedEditor.vue";
 import EditorFrame from "./EditorFrame.vue";
+import { useDialog } from "@kaciras-blog/uikit";
 
-export default {
-	name: "InputSection",
-	components: {
-		EmbeddedEditor,
-	},
-	inject: ["context"],
-	computed: mapState({
-		user: "user",
-		options: "discussionOptions",
-	}),
-	methods: {
-		focus() {
-			this.$refs.textarea.focus();
-		},
-		showEditorFrame() {
-			this.$dialog.show(EditorFrame, this.context);
-		},
-	},
-};
+const context = inject("context");
+const store = useStore();
+const dialog = useDialog();
+
+const thisEl = ref<HTMLElement>();
+
+const user = computed(() => store.state.user);
+const options = computed(() => store.state.discussionOptions);
+
+function focus() {
+	thisEl.value!.focus();
+}
+
+function showEditorFrame() {
+	dialog.show(EditorFrame, context);
+}
+
+defineExpose({ focus });
 </script>
 
 <style module lang="less">

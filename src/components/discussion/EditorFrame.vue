@@ -39,7 +39,7 @@
 			:class="$style.body"
 			:value="content"
 			name="content"
-			placeholder='支持 Markdown，右上角有预览和帮助'
+			:placeholder='placeholder'
 			aria-label="输入评论"
 			v-autofocus
 			v-ime-input="handleInput"
@@ -75,21 +75,22 @@ export default { isolation: true };
 
 <script setup lang="ts">
 import { useStore } from "vuex";
+import { computed, ref } from "vue";
 import EyeIcon from "bootstrap-icons/icons/eye-fill.svg?sfc";
 import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
 import HelpIcon from "bootstrap-icons/icons/question-circle.svg?sfc";
+import { useDialog } from "@kaciras-blog/uikit";
 import PaperPlaneIcon from "@/assets/icon/paper-plane.svg?sfc";
+import { Discussion } from "@/api";
 import MarkdownView from "@/markdown/MarkdownView.vue";
 import GuideDialog from "./GuideDialog.vue";
-import { ref } from "vue";
-import { useDialog } from "@kaciras-blog/uikit";
-import { useDiscussContext } from "@/components/discussion/EditContext";
+import { useDiscussContext } from "./EditContext";
 
 interface EditContextProps_Copy {
 	objectId: number;
 	type: number;
-	parent: number;
-	afterSubmit: (entity: any) => void;
+	parent?: Discussion;
+	afterSubmit: (entity: Discussion) => void;
 }
 
 const props = defineProps<EditContextProps_Copy>();
@@ -100,6 +101,14 @@ const dialog = useDialog();
 const { nickname, content, handleInput, submit } = useDiscussContext(props);
 
 const preview = ref(false);
+
+const placeholder = computed(() => {
+	const { parent } = props;
+	if (!parent) {
+		return "说点什么吧...";
+	}
+	return `回复 ${parent.user.name}:`;
+});
 
 async function handleSubmit() {
 	await submit();

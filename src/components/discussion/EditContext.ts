@@ -1,13 +1,13 @@
 import { ref } from "vue";
 import { useDialog, useToast } from "@kaciras-blog/uikit";
-import api from "@/api";
+import api, { Discussion } from "@/api";
 import { errorMessage } from "@/utils";
 
 export interface EditContextProps {
 	objectId: number;
 	type: number;
-	parent: number;
-	afterSubmit: (entity: any) => void;
+	parent?: Discussion;
+	afterSubmit: (entity: Discussion) => void;
 }
 
 export function useDiscussContext(props: EditContextProps) {
@@ -62,7 +62,7 @@ export function useDiscussContext(props: EditContextProps) {
 			const entity = await api.discuss.add({
 				objectId,
 				type,
-				parent,
+				parent: parent?.id ?? 0,
 				content: contentVal,
 				nickname: nicknameVal,
 			});
