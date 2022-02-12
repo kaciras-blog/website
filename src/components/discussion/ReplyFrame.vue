@@ -1,93 +1,114 @@
 <template>
 	<kx-frame>
-		<kx-frame-header title="查看回复">
-			<button
-				class="nav-item"
-				title="添加回复"
-				@click="showEditorFrame"
-			>
-				<i :class="$style.addIcon"/>
-			</button>
-		</kx-frame-header>
+		<kx-frame-header title="查看回复"/>
 
-		<scroll-paging-view
-			v-model="pageData"
-			class="kx-frame-body"
-			:start="value.replies.length"
-			:loader="loadNext"
-			:auto-load="true"
+		<div :class="$style.frameBody">
+			<scroll-paging-view
+				v-model="pageData"
+				:start="replies.length"
+				:loader="loadNext"
+				:auto-load="true"
+			>
+				<template v-slot="{ items }">
+					<ol :class="$style.list">
+						<discussion-content
+							v-for="item of items"
+							:key="item.id"
+							:value="item"
+							:class="$style.item"
+						/>
+					</ol>
+				</template>
+			</scroll-paging-view>
+		</div>
+
+		<button
+			:class="$style.bottom"
+			@click="showEditorFrame"
 		>
-			<template v-slot="{ items }">
-				<ol :class="$style.list">
-					<discussion-content
-						v-for="item of items"
-						:key="item.id"
-						:value="item"
-						:class="$style.item"
-					/>
-				</ol>
-			</template>
-		</scroll-paging-view>
+			<EditIcon :class="$style.icon"/>写回复...
+		</button>
 	</kx-frame>
 </template>
 
-<script>
-import api from "@/api";
-import DiscussionContent from "./DiscussionContent.vue";
+<script setup lang="ts">
+import { ref } from "vue";
+import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
+import { useDialog } from "@kaciras-blog/uikit";
+import api, { Discussion, DiscussionState, Topic, User } from "@/api";
 import EditorFrame from "./EditorFrame.vue";
+import DiscussionContent from "./DiscussionContent.vue";
 
-export default {
-	name: "ReplyFrame",
-	components: {
-		DiscussionContent,
-	},
-	props: {
-		value: {
-			type: Object,
-			required: true,
-		},
-	},
-	data() {
-		const pageData = {
-			items: this.value.replies.slice(),
-			total: this.value.replyCount,
-		};
-		return { pageData };
-	},
-	methods: {
-		loadNext(start, count) {
-			return api.discuss.getReplies(this.value.id, start, count);
-		},
-		showEditorFrame() {
-			const context = {
-				objectId: this.value.objectId,
-				type: this.value.type,
-				parent: this.value.id,
-				afterSubmit: this.afterSubmit,
-			};
-			this.$dialog.show(EditorFrame, context);
-		},
-		afterSubmit(entity) {
-			this.pageData.items.push(entity);
-		},
-	},
-};
+interface Discussion_Copy {
+	type: number;
+	objectId: number;
+	id: number;
+	parent?: Discussion;
+	floor: number;
+	nestId: number;
+	nestFloor: number;
+	nestSize: number;
+	user: User;
+	nickname?: string;
+	content: string;
+	time: number;
+	state: DiscussionState;
+	topic?: Topic;
+	replies?: Discussion[];
+}
+
+const props = defineProps<Discussion_Copy>();
+
+const $dialog = useDialog();
+
+const pageData = ref({
+	items: props.replies!.slice(),
+	total: props.nestSize,
+});
+
+function loadNext(start: number, count: number) {
+	return api.discuss.getReplies(props.id, start, count);
+}
+
+function showEditorFrame() {
+	const context = {
+		parent: props,
+		objectId: props.objectId,
+		type: props.type,
+		afterSubmit,
+	};
+	$dialog.show(EditorFrame, context);
+}
+
+function afterSubmit(entity: Discussion) {
+	pageData.value.items.push(entity);
+}
 </script>
 
 <style module lang="less">
+.list {
+	composes: clean-list from global;
+	padding: 0 15px;
+}
 .item {
 	padding: 15px 0;
 	border-bottom: solid 1px #eee;
 }
 
-.list {
-	composes: clean-list from global;
-	padding: 0 15px;
+.frameBody {
+	flex: 1;
+	overflow-y: auto;
 }
 
-.addIcon {
-	composes: fas fa-plus from global;
-	font-size: 20px;
-	vertical-align: middle;
+.bottom {
+	display: flex;
+	align-items: center;
+	color: #666;
+	border-top: solid 1px #ddd;
+}
+
+.icon {
+	margin: 10px;
+	font-size: 18px;
 }
 </style>
