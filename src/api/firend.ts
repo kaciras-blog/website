@@ -4,7 +4,7 @@ export interface Friend {
 	url: string;
 	name: string;
 	background: string;
-	favicon: string;
+	favicon?: string;
 	friendPage?: string;
 }
 

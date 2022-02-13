@@ -12,7 +12,7 @@
 					v-model="sort"
 					title="排序方式"
 				>
-					<option value="id,ASC">时间</option>
+					<option value="id,ASC">最早</option>
 					<option value="id,DESC">最新</option>
 					<option value="nest_size,DESC">回复数</option>
 				</kx-select>

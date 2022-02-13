@@ -1,3 +1,4 @@
+<!-- 等 Suspense 出了看能不能替代 -->
 <template>
 	<section v-if="loading" :class="$style.loading">
 		<atom-spinner/>

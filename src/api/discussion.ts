@@ -38,7 +38,7 @@ export interface Discussion extends TopicKey {
 	nestSize: number;
 
 	user: User;
-	nickname: string;
+	nickname?: string;
 	content: string;
 	time: number;
 	state: DiscussionState;
@@ -64,8 +64,8 @@ export interface DiscussionInput extends TopicKey {
 	/** 评论内容 */
 	content: string;
 
-	/** 可以随意填写的昵称 */
-	nickname?: string;
+	/** 可以随意填写的昵称，不能为空字符串 */
+	nickname?: string | null;
 }
 
 /**

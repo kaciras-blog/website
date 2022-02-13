@@ -22,7 +22,7 @@ export interface DiscussionActivity {
 }
 
 export interface Notice<T> {
-	id: "Friend" | "Discussion",
+	id: "Friend" | "Discussion";
 	data: T;
 	time: number;
 }
@@ -30,7 +30,7 @@ export interface Notice<T> {
 export default class extends AbstractResource {
 
 	getAll() {
-		return this.servers.content.get<Notice<unknown>[]>("/notifications").then(r => r.data);
+		return this.servers.content.get<Array<Notice<unknown>>>("/notifications").then(r => r.data);
 	}
 
 	clear() {
