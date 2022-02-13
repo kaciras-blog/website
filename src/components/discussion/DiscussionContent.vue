@@ -25,25 +25,27 @@
 				</time>
 			</div>
 
+			<!-- 这两个按钮用文字比图标更好 -->
 			<kx-button
 				v-if="removable"
-				type="icon"
+				type="text"
+				color="dangerous"
 				title="删除"
 				:class="$style.clickable"
 				@click="remove"
 			>
-				<TrashIcon/>
+				删除
 			</kx-button>
 			<kx-button
-				type="icon"
+				type="text"
 				title="回复"
 				:class="$style.clickable"
 				@click="$emit('reply', value)"
 			>
-				<ReplyIcon/>
+				回复
 			</kx-button>
 
-			<span :class="$style.floor">#{{ floor }}</span>
+			#{{ localFloor }}
 		</header>
 
 		<!-- 引用的内容 -->
@@ -56,8 +58,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useStore } from "vuex";
-import TrashIcon from "bootstrap-icons/icons/trash.svg?sfc";
-import ReplyIcon from "bootstrap-icons/icons/reply.svg?sfc";
 import { useDialog } from "@kaciras-blog/uikit";
 import api, { Discussion, DiscussionState } from "@/api";
 import { errorMessage } from "@/utils";
@@ -83,7 +83,7 @@ const removable = computed(() => store.state.user.id === 2);
  * 楼层号，引用模式下返回 floor，楼中楼模式返回 nestFloor。
  * 这里使用 replies 属性是否存在来判断处于哪种模式，比起 provide-inject 少些代码。
  */
-const floor = computed(() => {
+const localFloor = computed(() => {
 	const { parent, floor, nestFloor } = props.value;
 	const { replies } = (parent ?? props.value);
 	return Array.isArray(replies) ? nestFloor : floor;
@@ -101,7 +101,9 @@ function remove() {
 
 .header {
 	display: flex;
+	align-items: center;
 	margin-bottom: 1rem;
+	font-size: 1rem;
 }
 
 .avatar {
@@ -156,12 +158,8 @@ function remove() {
 }
 
 .clickable {
-	align-self: flex-start;
-}
-
-/* 直接微调居中，懒得再包层 flex 容器 */
-.floor {
-	margin-top: 6px;
-	margin-left: 10px;
+	padding: 5px 10px;
+	margin-right: 5px;
+	font-size: 0.875rem;
 }
 </style>
