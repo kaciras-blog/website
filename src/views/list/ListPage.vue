@@ -1,6 +1,5 @@
 <template>
 	<banner-page-layout :banner="category.banner">
-
 		<div id="index-page">
 			<section :class="$style.list">
 				<h1 class="segment" :class="$style.listTitle">
@@ -47,31 +46,27 @@ const DEFAULT_PAGE_SIZE = 10;
 
 export default {
 	name: "ArticleListPage",
-	async asyncData(session: PrefetchContext) {
+	asyncData(session: PrefetchContext) {
 		const { article, category } = session.api.withCancelToken(session.signal);
 
-		const tasks = [
+		let start = parseInt(session.route.params.index as string);
+		start *= DEFAULT_PAGE_SIZE;
+
+		return Promise.all([
 			category.get(0).then(session.dataSetter("category")),
-		];
 
-		if (import.meta.env.SSR) {
-			let start = parseInt(session.route.params.index as string);
-			start *= DEFAULT_PAGE_SIZE;
-
-			tasks.push(article
+			article
 				.getList({ start, count: DEFAULT_PAGE_SIZE })
-				.then(session.dataSetter("articleList")));
+				.then(session.dataSetter("articleList")),
 
-			tasks.push(article.getHots().then(session.dataSetter("hots")));
-		}
-
-		return Promise.all(tasks);
+			article.getHots().then(session.dataSetter("hots")),
+		]);
 	},
 };
 </script>
 
 <script setup lang="ts">
-import { onMounted, inject, ref } from "vue";
+import { inject, ref } from "vue";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 import { useLocalStorage } from "@vueuse/core";
@@ -113,9 +108,6 @@ function nextPageUrl(start: number, count: number) {
 }
 
 // watch(autoLoad, v => v && listView.value.loadNext());
-
-// 如果没有数据就加载一下。
-onMounted(() => articleList || listView.value.reload());
 </script>
 
 <style module lang="less">
