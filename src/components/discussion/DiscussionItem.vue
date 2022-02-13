@@ -17,12 +17,12 @@
 			@reply="showReplyEditor"
 		>
 			<blockquote v-if="parent" :class="$style.blockquote">
-				<i :class="$style.quoteStart"/>
-				<div :class="$style.quoteText">
-					<p>回复：@{{ displayName(parent) }}</p>
-					<markdown-view :value="parent.content"/>
-				</div>
-				<i :class="$style.quoteEnd"/>
+				<p>
+					回复：
+					@{{ displayName(parent) }}
+					(#{{ parent.floor }})
+				</p>
+				<markdown-view :value="parent.content"/>
 			</blockquote>
 		</discussion-content>
 
@@ -230,39 +230,13 @@ function loadNext(start: number, count: number) {
 	}
 }
 
-// Markdown 的段落已经有底间距了，所以去掉外层的。
+/* 跟 Markdown 里的样式重复了，但用户应该能区分 */
 .blockquote {
-	display: flex;
-	margin: 14px 0 0 0;
-}
+	margin: 14px 0;
+	padding: 1em 1em 1px;
 
-.quoteMark {
-	font-size: 1.5rem;
-	color: #777;
-
-	@media screen and(min-width: @length-screen-mobile) {
-		font-size: 1.75rem;
-	}
-}
-
-.quoteStart {
-	composes: fas fa-quote-left from global;
-	composes: quoteMark;
-}
-
-.quoteEnd {
-	composes: fas fa-quote-right from global;
-	composes: quoteMark;
-
-	align-self: flex-end;
-	margin-bottom: 1rem; // 底部与段落元素对齐
-}
-
-.quoteText {
-	flex: 1;
-	margin: 0 .8rem;
-
-	overflow: hidden;
+	background-color: #f8f8f8;
+	border-left: 6px solid #bfbfbf;
 
 	@media screen and(min-width: @length-screen-mobile) {
 		font-size: initial;
