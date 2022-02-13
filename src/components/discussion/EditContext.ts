@@ -43,8 +43,8 @@ export function useDiscussContext(props: EditContextProps) {
 	 * @return 表示评论提交过程的 Promise
 	 */
 	async function submit() {
-		const nicknameVal = nickname.value;
 		const contentVal = content.value;
+		let nicknameVal = nickname.value;
 
 		if (/^\s*$/.test(contentVal)) {
 			return; // 没写评论就按发表按钮
@@ -56,6 +56,10 @@ export function useDiscussContext(props: EditContextProps) {
 				return $dialog.alertError("名字最多16个字");
 			}
 			localStorage.setItem("nickname", nicknameVal);
+		} else {
+			// 空字符串转为 null，后端省一个检查。
+			nicknameVal = null;
+			localStorage.removeItem("nickname");
 		}
 
 		try {
