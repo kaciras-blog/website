@@ -32,14 +32,14 @@
 			v-model="data"
 			:page-size="30"
 			:loader="fetchData"
-			:show-top-buttons="true"
+			:top-buttons="true"
 		>
 			<template v-slot="{ items }">
 				<ol :class="$style.list">
 					<discussion-item
 						v-for="item of items"
 						v-bind="item"
-						:key="mode + item.id"
+						:key="item.id"
 						class="segment"
 						@removed="refresh"
 					/>
@@ -52,7 +52,7 @@
 </template>
 
 <script setup lang="ts">
-import { provide, ref, reactive, watch } from "vue";
+import { provide, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { useLocalStorage } from "@vueuse/core";
 import api, { Discussion, DiscussionQuery } from "@/api";
@@ -82,16 +82,17 @@ const discussions = ref();
 provide("context", {
 	type: props.type,
 	objectId: props.objectId,
-	parent: 0,
 	afterSubmit,
 });
 
-watch([mode, sort], reload, { flush: "post" });
-
-// reload - 重新加载，回到第一页；refresh - 刷新当前页
-function reload() {
+/*
+ * 当模式或排序改编后重新加载数据。注意这里更新了两个状态，其中 mode 先改变，
+ * 然后异步地重载 data，在 data 更新之前数据处于不一致的状态！对此只能先同步地清空 data。
+ */
+watch([mode, sort], () => {
+	data.value = { items: [], total: 0 };
 	discussions.value.reload();
-}
+});
 
 function refresh() {
 	discussions.value.refresh();
@@ -125,8 +126,8 @@ function fetchData(start: number, count: number, signal?: AbortSignal) {
  * 若是分页则刷新当前页；若是滚动加载则直接添加在当前页的最后（bilibili 是这么做的）。
  */
 function afterSubmit(entity: Discussion) {
-	if ("reload" in discussions.value) {
-		discussions.value.reload();
+	if ("refresh" in discussions.value) {
+		discussions.value.refresh();
 	} else {
 		data.value.items.push(entity);
 	}
