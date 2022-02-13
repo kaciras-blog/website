@@ -84,7 +84,7 @@ interface EditContextProps_Copy {
 	objectId: number;
 	type: number;
 	parent?: Discussion;
-	afterSubmit: (entity: Discussion) => void;
+	onAfterSubmit: (entity: Discussion) => void;
 }
 
 const props = defineProps<EditContextProps_Copy>();

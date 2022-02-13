@@ -44,6 +44,7 @@
 							:value="item"
 							:class="$style.reply"
 							@removed="refresh"
+							@reply="showReplyEditor"
 						/>
 					</ol>
 				</template>
@@ -58,6 +59,7 @@
 						tag="li"
 						:class="$style.reply"
 						@removed="refresh"
+						@reply="showReplyEditor"
 					/>
 				</ol>
 				<a class="hd-link" @click="showAllReplies">
@@ -67,7 +69,7 @@
 			<div v-else :class="$style.nest">
 				<ol class="clean-list" :class="$style.list">
 					<li
-						v-for="item of children.items.slice(0, 5)"
+						v-for="item of children.items.slice(0, 3)"
 						:key="item.id"
 						:class="$style.preview"
 					>
@@ -83,12 +85,18 @@
 			</div>
 		</template>
 
-		<input-section v-if="replying" ref="editorEl" :class="$style.input"/>
+		<input-section
+			v-if="replyContext"
+			:key="replyContext.parent.id"
+			v-bind="replyContext"
+			ref="editorEl"
+			:class="$style.input"
+		/>
 	</li>
 </template>
 
 <script setup lang="ts">
-import { inject, nextTick, provide, ref } from "vue";
+import { inject, nextTick, ref } from "vue";
 import { useDialog } from "@kaciras-blog/uikit";
 import { debounceFirst } from "@kaciras-blog/server/lib/functions.js";
 import api, { Discussion, DiscussionState, Topic, User } from "@/api";
@@ -120,31 +128,21 @@ interface DiscussionCopy {
 }
 
 const props = defineProps<DiscussionCopy>();
-defineEmits(["removed"]);
+const emit = defineEmits(["removed", "afterSubmit"]);
 
 const $mediaQuery = inject<any>("$mediaQuery");
 const $dialog = useDialog();
-const parentContext = inject<any>("context");
 
 const editorEl = ref<HTMLElement>();
 const repliesEl = ref();
 const expend = ref(false);
-const replying = ref(false);
+const replyContext = ref();
 
 // 复用组件实例时重置。
 const children = ref<ListQueryView<Discussion>>({
 	total: props.nestSize,
 	items: props.replies ?? [],
 });
-
-const replyContext = {
-	afterSubmit,
-	type: props.type,
-	objectId: props.objectId,
-	parent: props,
-};
-
-provide("context", replyContext);
 
 function displayName(value: Discussion) {
 	const { nickname, user } = value;
@@ -155,24 +153,31 @@ function displayName(value: Discussion) {
 }
 
 // 宽屏直接在下面加输入框，手机则弹窗。
-async function showReplyEditor() {
+async function showReplyEditor(parent: Discussion) {
+	const ctx = {
+		objectId: props.objectId,
+		type: props.type,
+		parent,
+		onAfterSubmit: afterSubmit,
+	};
+
 	if ($mediaQuery.match("tablet+")) {
-		replying.value = true;
+		replyContext.value = ctx;
 		await nextTick();
 		editorEl.value!.focus();
 	} else {
-		$dialog.show(EditorFrame, replyContext);
+		$dialog.show(EditorFrame, ctx);
 	}
 }
 
 async function afterSubmit(entity: Discussion) {
-	replying.value = false;
+	replyContext.value = null;
 	await nextTick();
 
 	// 引用模式等同于提交顶层评论，直接转到上层处理。
 	const { replies } = props;
 	if (replies === undefined) {
-		return parentContext.afterSubmit(entity);
+		return emit("afterSubmit", entity);
 	}
 
 	// 如果没展开（包含无回复）就刷新数据；

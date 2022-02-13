@@ -9,7 +9,7 @@
 	</div>
 
 	<div v-else :class="$style.form">
-		<embedded-editor v-if="$mediaQuery.match('tablet+')" ref="thisEl" v-bind="context"/>
+		<embedded-editor v-if="$mediaQuery.match('tablet+')" ref="thisEl" v-bind="props"/>
 
 		<!-- 是在想不到更好看的做法了，还是用输入框的样式吧 -->
 		<div v-else ref="thisEl" :class="$style.mobileSection">
@@ -27,13 +27,22 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject, ref } from "vue";
+import { computed, ref } from "vue";
 import { useStore } from "vuex";
 import EmbeddedEditor from "./EmbeddedEditor.vue";
 import EditorFrame from "./EditorFrame.vue";
 import { useDialog } from "@kaciras-blog/uikit";
+import { Discussion } from "@/api";
 
-const context = inject("context");
+interface EditContextProps_Copy {
+	objectId: number;
+	type: number;
+	parent?: Discussion;
+	onAfterSubmit: (entity: Discussion) => void;
+}
+
+const props = defineProps<EditContextProps_Copy>();
+
 const store = useStore();
 const dialog = useDialog();
 
@@ -47,7 +56,7 @@ function focus() {
 }
 
 function showEditorFrame() {
-	dialog.show(EditorFrame, context);
+	dialog.show(EditorFrame, props);
 }
 
 defineExpose({ focus });

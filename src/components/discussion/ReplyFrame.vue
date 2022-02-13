@@ -61,7 +61,7 @@ function showEditorFrame() {
 		type,
 		objectId,
 		parent,
-		afterSubmit,
+		onAfterSubmit: afterSubmit,
 	};
 	$dialog.show(EditorFrame, context);
 }

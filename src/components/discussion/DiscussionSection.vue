@@ -24,7 +24,11 @@
 			</div>
 		</header>
 
-		<input-section/>
+		<input-section
+			:object-id="objectId"
+			:type="type"
+			@after-submit="afterSubmit"
+		/>
 
 		<component
 			:is="$mediaQuery.match('mobile') ? 'ScrollPagingView' : 'ButtonPagingView'"
@@ -41,6 +45,7 @@
 						v-bind="item"
 						:key="item.id"
 						class="segment"
+						@after-submit="afterSubmit"
 						@removed="refresh"
 					/>
 				</ol>
@@ -52,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-import { provide, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import { useStore } from "vuex";
 import { useLocalStorage } from "@vueuse/core";
 import api, { Discussion, DiscussionQuery } from "@/api";
@@ -78,12 +83,6 @@ const data = ref<ListQueryView<Discussion>>({ items: [], total: 0 });
 const mode = useLocalStorage("DIS:mode", "nest");
 const sort = useLocalStorage("DIS:sort", "id,ASC");
 const discussions = ref();
-
-provide("context", {
-	type: props.type,
-	objectId: props.objectId,
-	afterSubmit,
-});
 
 /*
  * 当模式或排序改编后重新加载数据。注意这里更新了两个状态，其中 mode 先改变，

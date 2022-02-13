@@ -7,11 +7,11 @@ export interface EditContextProps {
 	objectId: number;
 	type: number;
 	parent?: Discussion;
-	afterSubmit: (entity: Discussion) => void;
+	onAfterSubmit: (entity: Discussion) => void;
 }
 
 export function useDiscussContext(props: EditContextProps) {
-	const { objectId, type, parent, afterSubmit } = props;
+	const { objectId, type, parent, onAfterSubmit } = props;
 	const key = `DIS:${type}_${objectId}_${parent}`;
 
 	const $dialog = useDialog();
@@ -68,8 +68,8 @@ export function useDiscussContext(props: EditContextProps) {
 			});
 			content.value = "";
 			localStorage.removeItem(key);
-			afterSubmit(entity);
 			$toast.success("评论提交成功");
+			onAfterSubmit(entity);
 		} catch (e) {
 			$dialog.alertError("评论失败", errorMessage(e));
 			throw e; // 继续抛出传递给 Sentry 和上层
