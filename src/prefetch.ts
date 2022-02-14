@@ -1,5 +1,5 @@
 import { ComponentOptions, onBeforeMount, useSSRContext } from "vue";
-import { RouteLocationNormalizedLoaded } from "vue-router";
+import { RouteComponent, RouteLocationNormalizedLoaded } from "vue-router";
 import { Store } from "vuex";
 import { createNanoEvents, Emitter } from "nanoevents";
 import { Api } from "./api";
@@ -63,7 +63,7 @@ export abstract class PrefetchContext {
 }
 
 export interface MaybePrefetchComponent extends ComponentOptions {
-	asyncData?: (ctx: PrefetchContext) => Promise<void>;
+	asyncData?(ctx: PrefetchContext): Promise<void>;
 }
 
 /**
@@ -92,3 +92,17 @@ function useClientHeadMeta() {
 
 export const useHeadMeta = import.meta.env.SSR
 	? useSSRHeadMeta : useClientHeadMeta;
+
+export function collectTasks(comps: RouteComponent[], session: PrefetchContext) {
+	(comps as MaybePrefetchComponent[])
+		.forEach(c => c.asyncData?.(session));
+
+	const prefetched: Record<string, unknown> = {};
+	const tasks = [];
+
+	for (const [k, v] of Object.entries(session.data)) {
+		tasks.push(v.then(d => prefetched[k] = d));
+	}
+
+	return Promise.all(tasks).then(() => prefetched);
+}

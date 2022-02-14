@@ -5,7 +5,7 @@ import { renderToString, SSRContext } from "vue/server-renderer";
 import { SET_WIDTH } from "@kaciras-blog/uikit";
 import { configureForProxy } from "@kaciras-blog/server/lib/axios-helper.js";
 import api, { Api } from "./api";
-import { PrefetchContext } from "./prefetch";
+import { collectTasks, PrefetchContext } from "./prefetch";
 import { REFRESH_USER, SET_PREFETCH_DATA } from "./store/types";
 import createBlogApp, { mediaBreakpoints } from "./main";
 
@@ -63,21 +63,14 @@ async function prefetch(store: Store<any>, router: Router, request: any) {
 	 * 故 router.getMatchedComponents() 不会返回空数组，也无法用其区分404.
 	 * 目前的方案是在 error/Index.vue 里设置一个标识表示 NotFound.
 	 */
-	route.matched
-		.flatMap(v => Object.values(v.components) as any)
-		.forEach(c => c.asyncData?.(session));
+	const components = route.matched
+		.flatMap(v => Object.values(v.components));
 
-	const prefetched: Record<string, unknown> = {};
-	const tasks = [];
-
-	for (const [k, v] of Object.entries(session.data)) {
-		tasks.push(v.then(d => prefetched[k] = d));
-	}
-	tasks.push(store.dispatch(REFRESH_USER, ssrApi));
+	const prefetching = collectTasks(components, session);
 
 	try {
-		await Promise.all(tasks);
-		store.commit(SET_PREFETCH_DATA, prefetched);
+		await store.dispatch(REFRESH_USER, ssrApi);
+		store.commit(SET_PREFETCH_DATA, await prefetching);
 	} catch (e) {
 		controller.abort();
 

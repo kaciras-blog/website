@@ -5,14 +5,14 @@
  *   3.允许取消正在进行的预加载，并中止网络请求（需要预加载函数支持）。
  */
 import { ComponentOptions } from "vue";
-import { RouteLocationNormalizedLoaded, Router } from "vue-router";
+import { RouteComponent, RouteLocationNormalizedLoaded, Router } from "vue-router";
 import { Store } from "vuex";
 import api, { Api } from "@/api";
 import { SET_PREFETCH_DATA } from "@/store/types";
 import { isOnlyHashChange } from "@/utils";
-import { events, MaybePrefetchComponent, PrefetchContext } from "./prefetch";
+import { collectTasks, events, MaybePrefetchComponent, PrefetchContext } from "./prefetch";
 
-let abortController = new AbortController();
+let controller = new AbortController();
 
 class ClientPrefetch extends PrefetchContext {
 
@@ -35,7 +35,7 @@ class ClientPrefetch extends PrefetchContext {
 }
 
 /**
- * 预载下一个路由的组件数据，并更新页面标题等属性。
+ * 预载下一个路由的组件数据，并处理加载指示器、错误页面、新页面标题等任务。
  *
  * @param store Vuex存储实例
  * @param to 即将要进入的目标路由对象
@@ -44,59 +44,33 @@ class ClientPrefetch extends PrefetchContext {
 export async function prefetch(
 	store: Store<any>,
 	to: RouteLocationNormalizedLoaded,
-	components: MaybePrefetchComponent[],
+	components: RouteComponent[],
 ) {
 	if (components.length === 0) {
 		return;
 	}
-	await doPrefetch(store, to, components);
+	const session = new ClientPrefetch(store, to, controller.signal);
 
-	const { title } = to.meta;
-	if (title) {
-		document.title = title + " - Kaciras的博客";
-	}
-}
-
-/**
- * 处理预加载任务，包括显示加载指示器、错误页面、防止取消后跳转等。
- */
-async function doPrefetch(
-	store: Store<any>,
-	to: RouteLocationNormalizedLoaded,
-	components: MaybePrefetchComponent[],
-) {
-	const session = new ClientPrefetch(store, to, abortController.signal);
-
-	components
-		.map(module => module.default)
-		.forEach(c => c.asyncData?.(session));
-
+	const prefetching = collectTasks(components, session);
 	events.emit("prefetch", session);
 
-	const prefetched: Record<string, unknown> = {};
-	const tasks = [];
-
-	for (const [k, v] of Object.entries(session.data)) {
-		tasks.push(v.then(d => prefetched[k] = d));
-	}
-
 	try {
-		await Promise.all(tasks);
+		const data = await prefetching;
 		events.emit("end");
 
-		if (abortController.signal.aborted) {
+		if (controller.signal.aborted) {
 			console.debug(`导航被取消：${to.path}`);
 			return false;
 		} else {
-			store.commit(SET_PREFETCH_DATA, prefetched);
+			store.commit(SET_PREFETCH_DATA, data);
 		}
 	} catch (err) {
-		if (abortController.signal.aborted) {
+		if (controller.signal.aborted) {
 			console.debug(`导航被取消：${to.path}`);
 			return false;
 		}
 
-		abortController.abort();
+		controller.abort();
 		events.emit("error", err);
 
 		switch (err.code) {
@@ -114,6 +88,11 @@ async function doPrefetch(
 				return "/error/500";
 		}
 	}
+
+	const { title } = to.meta;
+	if (title) {
+		document.title = title + " - Kaciras的博客";
+	}
 }
 
 /**
@@ -123,8 +102,8 @@ export const ClientPrefetchMixin: ComponentOptions = {
 	beforeRouteUpdate(this, to) {
 		const component = this.$options as MaybePrefetchComponent;
 		if (component.asyncData) {
-			abortController = new AbortController();
-			events.emit("start", abortController.signal);
+			controller = new AbortController();
+			events.emit("start", controller.signal);
 			return prefetch(this.$store, to, [component]);
 		}
 	},
@@ -144,13 +123,13 @@ export function installRouterHooks(store: Store<any>, router: Router) {
 		if (isOnlyHashChange(to, from)) {
 			return;
 		}
-		abortController = new AbortController();
-		events.emit("start", abortController.signal);
+		controller = new AbortController();
+		events.emit("start", controller.signal);
 	});
 
 	// 使用 router.beforeResolve()，以便确保所有异步组件都 resolve。
 	router.beforeResolve((to, from) => {
-		if (abortController.signal.aborted) {
+		if (controller.signal.aborted) {
 			console.debug(`导航被取消：${to.path}`);
 			return false;
 		}
@@ -159,8 +138,11 @@ export function installRouterHooks(store: Store<any>, router: Router) {
 		const matched = to.matched.flatMap(v => v.components);
 		const previous = from.matched.flatMap(v => v.components);
 		let diffed = false;
-		const activated = matched.filter((c, i) => diffed || (diffed = (previous[i] !== c)));
 
-		return prefetch(store, to, (activated as MaybePrefetchComponent[]));
+		const activated = matched
+			.map(module => (module as any).default)
+			.filter((c, i) => diffed || (diffed = (previous[i] !== c)));
+
+		return prefetch(store, to, activated);
 	});
 }
