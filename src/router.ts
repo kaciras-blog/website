@@ -104,10 +104,18 @@ const routes: RouteRecordRaw[] = [
 	},
 ];
 
-export default function () {
-	const history = typeof window !== "undefined"
+export default () => createRouter({
+	routes,
+	scrollBehavior(to, from, saved) {
+		if (saved) {
+			return saved;
+		} else if (to.hash) {
+			return { el: to.hash };
+		} else {
+			return { top: 0 };
+		}
+	},
+	history: typeof window !== "undefined"
 		? createWebHistory()
-		: createMemoryHistory();
-
-	return createRouter({ history, routes });
-}
+		: createMemoryHistory(),
+});
