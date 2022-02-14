@@ -1,4 +1,4 @@
-import { basename } from "path";
+import { basename, extname } from "path";
 import { Store } from "vuex";
 import { RouteLocationNormalizedLoaded, Router } from "vue-router";
 import { renderToString, SSRContext } from "vue/server-renderer";
@@ -131,46 +131,50 @@ export default async (context: any) => {
  * @param modules
  * @param manifest
  */
-function renderPreloadLinks(modules: any, manifest: any) {
+function renderPreloadLinks(modules: string[], manifest: Record<string, string[]>) {
 	let links = "";
 	const seen = new Set();
-	modules.forEach((id: string) => {
+
+	for (const id of modules) {
 		const files = manifest[id];
-		if (files) {
-			files.forEach((file: string) => {
-				if (!seen.has(file)) {
-					seen.add(file);
-					const filename = basename(file);
-					if (manifest[filename]) {
-						for (const depFile of manifest[filename]) {
-							links += renderPreloadLink(depFile);
-							seen.add(depFile);
-						}
-					}
-					links += renderPreloadLink(file);
-				}
-			});
+		if (!files) {
+			continue;
 		}
-	});
+		for (const file of files) {
+			if (seen.has(file)) {
+				continue;
+			}
+			seen.add(file);
+			const filename = basename(file);
+			if (manifest[filename]) {
+				for (const dep of manifest[filename]) {
+					links += renderPreloadLink(dep);
+					seen.add(dep);
+				}
+			}
+			links += renderPreloadLink(file) ?? "";
+		}
+	}
 	return links;
 }
 
 function renderPreloadLink(file: string) {
-	if (file.endsWith(".js")) {
-		return `<link rel="modulepreload" crossorigin href="${file}">`;
-	} else if (file.endsWith(".css")) {
-		return `<link rel="stylesheet" href="${file}">`;
-	} else if (file.endsWith(".woff")) {
-		return ` <link rel="preload" href="${file}" as="font" type="font/woff" crossorigin>`;
-	} else if (file.endsWith(".woff2")) {
-		return ` <link rel="preload" href="${file}" as="font" type="font/woff2" crossorigin>`;
-	} else if (file.endsWith(".gif")) {
-		return ` <link rel="preload" href="${file}" as="image" type="image/gif">`;
-	} else if (file.endsWith(".jpg") || file.endsWith(".jpeg")) {
-		return ` <link rel="preload" href="${file}" as="image" type="image/jpeg">`;
-	} else if (file.endsWith(".png")) {
-		return ` <link rel="preload" href="${file}" as="image" type="image/png">`;
-	} else {
-		return "";
+	const ext = extname(file).slice(1);
+	switch (ext) {
+		case "js":
+			return `<link rel="modulepreload" crossorigin href="${file}">`;
+		case "css":
+			return `<link rel="stylesheet" href="${file}">`;
+		case "woff":
+		case "woff2":
+			return `<link rel="preload" href="${file}" as="font" type="font/${ext}" crossorigin>`;
+		case "gif":
+		case "png":
+		case "jpeg":
+		case "webp":
+		case "avif":
+			return `<link rel="preload" href="${file}" as="image" type="image/${ext}">`;
+		case "jpg":
+			return `<link rel="preload" href="${file}" as="image" type="image/jpeg">`;
 	}
 }
