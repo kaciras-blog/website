@@ -13,19 +13,18 @@
 	<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 	<link rel="manifest" href="/manifest.json">
 	<link rel="apple-touch-icon" href="/icons/192.png">
-	<script src="/static/support-check.js"></script>
 
 	<!--preload-links-->
 	<!--ssr-metadata-->
+
+	<script src="/static/support-check.js"></script>
+	<script type="module" src="/src/entry-client.ts"></script>
 
 	<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed/atom">
 	<link rel="alternate" type="application/rss+xml" title="Rss Feed" href="/feed/rss">
 </head>
 <body>
-<noscript class="global-error">
-	禁用 JavaScript 会导致部分功能不正常
-</noscript>
 <div id="app"><!--app-html--></div>
-<script type="module" src="/src/entry-client.ts"></script>
+<noscript class="global-error">禁用 JavaScript 会导致部分功能不正常</noscript>
 </body>
 </html>
