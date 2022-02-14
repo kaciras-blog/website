@@ -109,8 +109,10 @@ export default async (context: any) => {
 
 	const preloads = renderPreloadLinks(ssrContext.modules, manifest);
 	const initState = JSON.stringify(store.state);
-	ssrContext.meta += `<script>window.__INITIAL_STATE__=${initState}</script>`;
 	context.status = ssrContext.status;
+
+	// 加上 type="module" 相当于 defer，虽然代码不多但还是延迟一下吧。
+	ssrContext.meta += `<script type="module">window.__INITIAL_STATE__=${initState}</script>`;
 
 	let result = template;
 	if (ssrContext.title) {
