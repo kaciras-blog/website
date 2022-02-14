@@ -63,16 +63,21 @@ async function prefetch(store: Store<any>, router: Router, request: any) {
 	 * 故 router.getMatchedComponents() 不会返回空数组，也无法用其区分404.
 	 * 目前的方案是在 error/Index.vue 里设置一个标识表示 NotFound.
 	 */
-	const tasks = route.matched
+	route.matched
 		.flatMap(v => Object.values(v.components) as any)
-		.filter(c => c.asyncData)
-		.map(c => c.asyncData(session));
+		.forEach(c => c.asyncData?.(session));
 
+	const prefetched: Record<string, unknown> = {};
+	const tasks = [];
+
+	for (const [k, v] of Object.entries(session.data)) {
+		tasks.push(v.then(d => prefetched[k] = d));
+	}
 	tasks.push(store.dispatch(REFRESH_USER, ssrApi));
 
 	try {
 		await Promise.all(tasks);
-		store.commit(SET_PREFETCH_DATA, session.data);
+		store.commit(SET_PREFETCH_DATA, prefetched);
 	} catch (e) {
 		controller.abort();
 

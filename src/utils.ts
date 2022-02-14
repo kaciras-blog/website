@@ -1,4 +1,5 @@
 import { RouteLocationNormalized } from "vue-router";
+import { uniqueKey } from "@kaciras-blog/uikit";
 
 export const NOOP = () => {};
 
@@ -60,7 +61,11 @@ export function deleteOn<T>(array: T[], predicate: (value: T) => boolean) {
  * @return 原样返回输入的对象
  */
 export function attachRandomId(object: any) {
-	object.id ||= Math.random();
+	if (Array.isArray(object)) {
+		object.forEach(v => v.id ||= uniqueKey());
+	} else {
+		object.id ||= uniqueKey();
+	}
 	return object;
 }
 

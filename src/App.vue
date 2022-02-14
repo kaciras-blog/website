@@ -32,7 +32,16 @@ function connect(pb: typeof KxProgress | null) {
 	}
 
 	function onPrefetch(ctx: PrefetchContext) {
-		pb!.setProgress(60);
+		const { data, signal } = ctx;
+
+		let value = 40;
+		pb!.setProgress(value);
+		const tasks = Object.values(data);
+		const p = 60 / tasks.length;
+
+		for (const promise of tasks) {
+			promise.then(() => signal.aborted || pb.setProgress(value += p));
+		}
 	}
 
 	if (pb) {

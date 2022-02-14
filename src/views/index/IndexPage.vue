@@ -78,10 +78,10 @@ const BANNER_MAP_MOBILE = {
 
 export default {
 	name: "IndexPage",
-	asyncData: (session) => Promise.all([
-		session.api.recommend.getCards().then(cards => session.data.cards = cards.map(attachRandomId)),
-		session.api.friend.getFriends().then(friends => session.data.friends = friends.map(attachRandomId)),
-	]),
+	asyncData({ data, api }) {
+		data.cards = api.recommend.getCards().then(attachRandomId);
+		data.friends = api.friend.getFriends().then(attachRandomId);
+	},
 };
 </script>
 

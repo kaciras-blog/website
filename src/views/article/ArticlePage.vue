@@ -72,25 +72,22 @@ import { PrefetchContext } from "@/prefetch";
 /**
  * 在路由切换前加载数据，并检查URL是否正确。
  */
-async function asyncData(session: PrefetchContext) {
+function asyncData(session: PrefetchContext) {
 	const { id, urlTitle } = session.route.params;
 	const { article } = session.store.state.prefetch;
 	const idInt = parseInt(id as string);
 
-	if (article && article.id === idInt) {
+	if (article?.id === idInt) {
 		return; // 重定向来的，文章已经加载过了，这里假定 urlTitle 是正确的。
 	}
 
-	await session.api
-		.withCancelToken(session.signal)
-		.article.get(idInt)
-		.then(session.dataSetter("article"));
-
-	// 检查 URL 中的标题，不正确则重定向。
-	const correctUrlTitle = session.data.article.urlTitle;
-	if (!urlTitle || urlTitle !== correctUrlTitle) {
-		session.redirect(301, `/article/${id}/${correctUrlTitle}`);
-	}
+	session.data.article = session.api.article.get(idInt).then(v => {
+		// 检查 URL 中的标题，不正确则重定向。
+		if (!urlTitle || urlTitle !== v.urlTitle) {
+			session.redirect(301, `/article/${id}/${v.urlTitle}`);
+		}
+		return v;
+	});
 }
 
 export default { asyncData };

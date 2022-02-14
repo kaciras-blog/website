@@ -49,11 +49,7 @@ export abstract class PrefetchContext {
 	abstract signal: AbortSignal;
 	abstract api: Api;
 
-	readonly data: { [name: string]: any } = {};
-
-	dataSetter(name: string) {
-		return (value: any) => this.data[name] = value;
-	}
+	readonly data: Record<string, Promise<unknown>> = {};
 
 	/**
 	 * 在预载时发现需要重定向，本次的渲染结果将被丢弃。

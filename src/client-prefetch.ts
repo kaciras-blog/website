@@ -7,33 +7,32 @@
 import { ComponentOptions } from "vue";
 import { RouteLocationNormalizedLoaded, Router } from "vue-router";
 import { Store } from "vuex";
-import api from "@/api";
+import api, { Api } from "@/api";
 import { SET_PREFETCH_DATA } from "@/store/types";
-import { isOnlyHashChange } from "./utils";
+import { isOnlyHashChange } from "@/utils";
 import { events, MaybePrefetchComponent, PrefetchContext } from "./prefetch";
 
 let abortController = new AbortController();
 
-// @ts-ignore api is on the prototype.
 class ClientPrefetch extends PrefetchContext {
 
 	readonly store: Store<any>;
 	readonly signal: AbortSignal;
 	readonly route: RouteLocationNormalizedLoaded;
+	readonly api: Api;
 
 	constructor(
 		store: Store<any>,
 		route: RouteLocationNormalizedLoaded,
-		abortSignal: AbortSignal,
+		signal: AbortSignal,
 	) {
 		super();
+		this.api = api.withCancelToken(signal);
 		this.store = store;
 		this.route = route;
-		this.signal = abortSignal;
+		this.signal = signal;
 	}
 }
-
-ClientPrefetch.prototype.api = api;
 
 /**
  * 预载下一个路由的组件数据，并更新页面标题等属性。
@@ -66,13 +65,20 @@ async function doPrefetch(
 	to: RouteLocationNormalizedLoaded,
 	components: MaybePrefetchComponent[],
 ) {
-	const context = new ClientPrefetch(store, to, abortController.signal);
-	events.emit("prefetch", context);
+	const session = new ClientPrefetch(store, to, abortController.signal);
 
-	const tasks = components
+	components
 		.map(module => module.default)
-		.filter(c => c.asyncData)
-		.map(c => c.asyncData!(context));
+		.forEach(c => c.asyncData?.(session));
+
+	events.emit("prefetch", session);
+
+	const prefetched: Record<string, unknown> = {};
+	const tasks = [];
+
+	for (const [k, v] of Object.entries(session.data)) {
+		tasks.push(v.then(d => prefetched[k] = d));
+	}
 
 	try {
 		await Promise.all(tasks);
@@ -82,7 +88,7 @@ async function doPrefetch(
 			console.debug(`导航被取消：${to.path}`);
 			return false;
 		} else {
-			store.commit(SET_PREFETCH_DATA, context.data);
+			store.commit(SET_PREFETCH_DATA, prefetched);
 		}
 	} catch (err) {
 		if (abortController.signal.aborted) {
@@ -90,7 +96,9 @@ async function doPrefetch(
 			return false;
 		}
 
+		abortController.abort();
 		events.emit("error", err);
+
 		switch (err.code) {
 			case -1:
 				break;

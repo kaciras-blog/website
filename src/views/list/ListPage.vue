@@ -47,20 +47,15 @@ const DEFAULT_PAGE_SIZE = 10;
 export default {
 	name: "ArticleListPage",
 	asyncData(session: PrefetchContext) {
-		const { article, category } = session.api.withCancelToken(session.signal);
+		const { article, category } = session.api;
 
 		let start = parseInt(session.route.params.index as string);
 		start *= DEFAULT_PAGE_SIZE;
 
-		return Promise.all([
-			category.get(0).then(session.dataSetter("category")),
-
-			article
-				.getList({ start, count: DEFAULT_PAGE_SIZE })
-				.then(session.dataSetter("articleList")),
-
-			article.getHots().then(session.dataSetter("hots")),
-		]);
+		session.data.category = category.get(0);
+		session.data.hots = article.getHots();
+		session.data.articleList = article
+			.getList({ start, count: DEFAULT_PAGE_SIZE });
 	},
 };
 </script>
