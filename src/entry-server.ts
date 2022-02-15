@@ -126,10 +126,15 @@ export default async (context: any) => {
 };
 
 /**
- * https://github.com/vitejs/vite/blob/main/packages/playground/ssr-vue/src/entry-server.js
+ * 我感觉 Vite 这个清单有问题，它简单地把引用的文件作为页面需要的资源，这是错误的，
+ * 因为并非引用了资源就一定会使用，而且第三方库里的资源也许首屏用不到但也包含了。
  *
- * @param modules
- * @param manifest
+ * <h2>设想的方案</h2>
+ * 通过封 hook 资源元素 <img>、<video> 等等，应该能分析出哪些在首屏用到了，
+ * CSS 里面的也能用 postcss 检查，这样可以更精确的预载。
+ *
+ * 代码参考：
+ * https://github.com/vitejs/vite/blob/main/packages/playground/ssr-vue/src/entry-server.js
  */
 function renderPreloadLinks(modules: string[], manifest: Record<string, string[]>) {
 	let links = "";
@@ -158,6 +163,16 @@ function renderPreloadLinks(modules: string[], manifest: Record<string, string[]
 	return links;
 }
 
+/**
+ * 根据页面使用到的文件生成对应的预载链接，用于优化加载速度。
+ *
+ * <h2>Preload vs. Prefetch</h2>
+ * Preload 预载当前页面必定会用到的资源，重要性比 Prefetch 高，如果没用到会显示警告。
+ * Prefetch 指示未来可能用到的资源，当前页也许不会用，浏览器也可能忽略它。
+ *
+ * @param file 文件路径
+ * @return 链接元素的 HTML，如果无需预载则为 undefined。
+ */
 function renderPreloadLink(file: string) {
 	const ext = extname(file).slice(1);
 	switch (ext) {
@@ -173,8 +188,8 @@ function renderPreloadLink(file: string) {
 		case "jpeg":
 		case "webp":
 		case "avif":
-			return `<link rel="preload" href="${file}" as="image" type="image/${ext}">`;
+			return `<link rel="prefetch" href="${file}" as="image" type="image/${ext}">`;
 		case "jpg":
-			return `<link rel="preload" href="${file}" as="image" type="image/jpeg">`;
+			return `<link rel="prefetch" href="${file}" as="image" type="image/jpeg">`;
 	}
 }
