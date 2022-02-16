@@ -22,6 +22,6 @@ yarn-error.log*
 *.sln
 *.sw*
 
-### Custion ###
+### Config files ###
 /config/*
 !/config/index.js

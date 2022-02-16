@@ -56,7 +56,6 @@ export function bind(key: string, handler: (value: any) => void) {
 	emitter.on(key, handler);
 }
 
-// TODO: 再有其他类型的消息时把这函数移出去
 async function handleEvent(event: ExtendableMessageEvent) {
 	const { type, id, data } = event.data;
 

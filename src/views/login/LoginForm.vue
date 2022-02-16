@@ -16,9 +16,9 @@
 		<kx-password-input
 			input-id="password"
 			v-model="form.password"
-			name="password"
-			required
 			title="密码"
+			required
+			name="password"
 		/>
 
 		<kx-check-box
@@ -28,7 +28,9 @@
 			保持登录
 		</kx-check-box>
 
-		<span class="text-warning center">{{message}}</span>
+		<span class="text-warning center">
+			{{ message }}
+		</span>
 
 		<div class="buttons">
 			<kx-task-button
@@ -48,7 +50,9 @@
 			</kx-button>
 		</div>
 
-		<span class="center" :class="$style.separator">第三方登录</span>
+		<span class="center" :class="$style.separator">
+			第三方登录
+		</span>
 		<div class="center">
 			<oauth-icon
 				endpoint="github"

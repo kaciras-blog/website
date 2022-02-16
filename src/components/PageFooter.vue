@@ -1,6 +1,6 @@
 <!--suppress HtmlUnknownTarget -->
 <template v-once>
-	<footer id="bottom-footer">
+	<footer :class="$style.globalFooter">
 		<div :class="$style.info">
 			<p>&copy; Kaciras 2018-2022</p>
 			<address>Kaciras@protonmail.com</address>
@@ -17,7 +17,7 @@
 <style module lang="less">
 @import "../css/imports";
 
-:global(#bottom-footer) {
+.globalFooter {
 	width: 100%;
 	color: #eee;
 	background-color: #303030;

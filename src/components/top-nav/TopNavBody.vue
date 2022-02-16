@@ -1,7 +1,19 @@
 <template>
-	<component :is="tag" class="top-nav" :class="[$style.container, { [$style.colored]: colored }]">
-		<router-link to="/" title="回到首页" :class="$style.logoLink">
-			<img src="@/assets/img/logo-kaciras-wide.svg" alt="logo" :class="$style.logo">
+	<component
+		:is="tag"
+		:class="[$style.container, colored && $style.colored]"
+		class="top-nav"
+	>
+		<router-link
+			to="/"
+			title="回到首页"
+			:class="$style.logoLink"
+		>
+			<img
+				src="@/assets/img/logo-kaciras-wide.svg"
+				alt="logo"
+				:class="$style.logo"
+			>
 		</router-link>
 
 		<!-- 手机屏的折叠菜单 -->
@@ -56,54 +68,55 @@
 	</component>
 </template>
 
-<script>
-import { mapActions, mapState } from "vuex";
+<script setup lang="ts">
+import { computed, inject, onBeforeMount, onBeforeUnmount, ref } from "vue";
+import { useStore } from "vuex";
 import { LOGOUT } from "@/store/types";
 import ListIcon from "bootstrap-icons/icons/list.svg?sfc";
 import SettingIcon from "@material-design-icons/svg/filled/settings.svg?sfc";
 import RssIcon from "@material-design-icons/svg/filled/rss_feed.svg?sfc";
 import NavMenuFrame from "./NavMenuFrame.vue";
 import SettingDialog from "./SettingDialog.vue";
+import { useDialog } from "@kaciras-blog/uikit";
 
-export default {
-	name: "TopNavBody",
-	components: {
-		NavMenuFrame,
-		ListIcon,
-		RssIcon,
-		SettingIcon,
-	},
-	props: {
-		tag: String,
-	},
-	data: () => ({
-		colored: false,
-	}),
-	computed: mapState(["user"]),
-	methods: {
-		...mapActions({ logout: LOGOUT }),
+interface TopNavBodyProps {
+	tag: string;
+}
 
-		showMenu() {
-			this.$dialog.show(NavMenuFrame);
-		},
+defineProps<TopNavBodyProps>();
 
-		scrollFunction() {
-			this.colored = document.body.scrollTop > 16 || document.documentElement.scrollTop > 16;
-		},
+const mediaQuery = inject<any>("$mediaQuery")!;
+const store = useStore();
+const dialog = useDialog();
 
-		showSettings() {
-			this.$dialog.show(SettingDialog);
-		},
-	},
-	beforeMount() {
-		if (this.$mediaQuery.match("mobile")) {
-			window.addEventListener("scroll", this.scrollFunction);
-		}
-	},
-	beforeUnmount() {
-		window.removeEventListener("scroll", this.scrollFunction);
-	},
-};
+const colored = ref(false);
+const user = computed(() => store.state.user);
+
+function logout() {
+	return store.dispatch(LOGOUT);
+}
+
+function showMenu() {
+	dialog.show(NavMenuFrame);
+}
+
+function scrollFunction() {
+	colored.value = document.body.scrollTop > 16 || document.documentElement.scrollTop > 16;
+}
+
+function showSettings() {
+	dialog.show(SettingDialog);
+}
+
+onBeforeMount(() => {
+	if (mediaQuery.match("mobile")) {
+		window.addEventListener("scroll", scrollFunction);
+	}
+});
+
+onBeforeUnmount(() => {
+	window.removeEventListener("scroll", scrollFunction);
+});
 </script>
 
 <style module lang="less">

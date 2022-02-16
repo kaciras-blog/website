@@ -89,11 +89,9 @@ function loadPage(start: number, count: number) {
 /**
  * 根据路由和当前加载的文章数来构造下一页的 URL。
  *
- * @param start 下一页起始位置
- * @param count 每页显示多少个
  * @return 指向下一页的 URL，相对路径
  */
-function nextPageUrl(start: number, count: number) {
+function nextPageUrl() {
 	const { query, params } = route;
 	const index = parseInt(params.index as string);
 

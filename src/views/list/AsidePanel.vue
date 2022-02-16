@@ -12,7 +12,7 @@
 					:to="articleLink(article)"
 					class="item"
 				>
-					{{article.title}}
+					{{ article.title }}
 				</router-link>
 			</li>
 		</ol>
