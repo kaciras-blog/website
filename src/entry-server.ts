@@ -120,8 +120,8 @@ export default async (context: any) => {
 		result = result.replace(titleRE, tag);
 	}
 	return result
+		.replace("<div id='shell-loading'></div>", appHtml)
 		.replace("<!--preload-links-->", preloads)
-		.replace("<!--app-html-->", appHtml)
 		.replace("<!--ssr-metadata-->", ssrContext.meta ?? "");
 };
 

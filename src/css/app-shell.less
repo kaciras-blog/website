@@ -1,49 +1,52 @@
-/* HTML模板和App-Shell里的元素所用的样式 */
+/* HTML 模板和 App-Shell 里的元素所用的样式 */
 @import "./imports";
 
 @loading-size: 140px;
 @logo-size: 100px;
-@circle-color: rgba(0, 170, 255, 0.5);
+@ripple-color: #15b1e8;
 
-// 可以在 App-Shell 模式下数据还没来的情况下先显示个加载动画？
-// 代码来自：https://github.com/epicmaxco/epic-spinners
+// 在数据还没来的情况下先显示个加载动画，仅可用于预载模式。
 #shell-loading {
 	position: absolute;
 	top: calc(50% - (@loading-size / 2));
 	left: calc(50% - (@loading-size / 2));
-	width: @loading-size;
-	height: @loading-size;
-	border-radius: 100%;
 
-	background: url("../assets/img/logo-kaciras-circle.svg") no-repeat center center;
-	background-size: @logo-size @logo-size;
-
-	&::before, &::after {
+	&::after {
 		content: "";
-		position: absolute;
-		width: 100%;
-		height: 100%;
+		display: block;
+
+		width: @logo-size;
+		height: @logo-size;
 		border-radius: 100%;
-		border: 8px solid transparent;
+
+		background: url("../assets/img/logo-kaciras-circle.svg") no-repeat center center;
 	}
 
 	&::before {
-		border-top-color: @circle-color;
-		animation: half-circle-spinner-animation 1s infinite;
-	}
+		content: "";
+		display: block;
 
-	&::after{
-		border-bottom-color: @circle-color;
-		animation: half-circle-spinner-animation 1s infinite alternate;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 100%;
+		height: 100%;
+		z-index: -1;
+
+		border-radius: 100%;
+		background: @ripple-color;
+		animation: shell-loading-ripple 2s infinite;
 	}
 }
 
-@keyframes half-circle-spinner-animation {
+@keyframes shell-loading-ripple {
 	0% {
-		transform: rotate(0deg);
+		transform: translate(-50%, -50%) scale(1.1);
+		opacity: 0.3;
 	}
 	100% {
-		transform: rotate(360deg);
+		transform: translate(-50%, -50%) scale(1.4);
+		opacity: 0;
 	}
 }
 
