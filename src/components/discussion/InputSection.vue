@@ -28,11 +28,11 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { useStore } from "vuex";
 import EmbeddedEditor from "./EmbeddedEditor.vue";
 import EditorFrame from "./EditorFrame.vue";
 import { useDialog } from "@kaciras-blog/uikit";
 import { Discussion } from "@/api";
+import { useCurrentUser, useDiscussOptions } from "@/store";
 
 interface EditContextProps_Copy {
 	objectId: number;
@@ -43,13 +43,13 @@ interface EditContextProps_Copy {
 
 const props = defineProps<EditContextProps_Copy>();
 
-const store = useStore();
+const user = useCurrentUser();
+const o = useDiscussOptions();
 const dialog = useDialog();
 
 const thisEl = ref<HTMLElement>();
 
-const user = computed(() => store.state.user);
-const options = computed(() => store.state.discussionOptions);
+const options = computed(() => o.options);
 
 function focus() {
 	thisEl.value!.focus();

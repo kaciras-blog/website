@@ -1,15 +1,6 @@
-import { createStore } from "vuex";
+import { defineStore } from "pinia";
 import api, { AuthType, User } from "@/api";
 import { SunPhases } from "@/sun-phase";
-import {
-	LOAD_DISCUSSION_OPTIONS,
-	LOGOUT,
-	REFRESH_USER,
-	SET_DISCUSSION_OPTIONS,
-	SET_PREFETCH_DATA,
-	SET_SUN_PHASE,
-	SET_USER
-} from "./types";
 
 /**
  * 定义几个太阳位置：7-11 黎明，11-16 白天, 16 - 20 黄昏，20 - 7 夜晚。
@@ -30,49 +21,48 @@ const GUESTS: User = {
 	auth: AuthType.None,
 };
 
-export default function createVuexStore() {
-	return createStore({
-		state: {
-			/** 当前登录的用户，其值将在入口处被设置 */
-			user: GUESTS,
-
-			/** 路由页面的预取数据 */
-			prefetch: {},
-
-			/** 评论设置，因为不常变所以放到全局免得每次都读取 */
-			discussionOptions: undefined,
-
-			/**
-			 * 当前的太阳阶段，值是上面 SUN_PHASES 的字段名，null 表明无法确定。
-			 * 【注意】不要使用 undefined，$store.watch 无法监听值为 undefined 的字段。
-			 */
-			sunPhase: null,
+/** 当前登录的用户，其值将在入口处被设置 */
+export const useCurrentUser = defineStore("user", {
+	state: () => GUESTS,
+	actions: {
+		async refresh(apiUse = api) {
+			const res = await apiUse.user.getCurrent();
+			if (res.status < 300) {
+				this.$state = res.data;
+			}
 		},
-		actions: {
-			async [REFRESH_USER]({ commit }, apiUse = api) {
-				const res = await apiUse.user.getCurrent();
-				if (res.status < 300) {
-					commit(SET_USER, res.data);
-				}
-			},
-
-			// 不要设为null，未登录用 id=0 表示
-			[LOGOUT]({ commit }) {
-				return api.user.logout().then(() => commit(SET_USER, GUESTS));
-			},
-
-			async [LOAD_DISCUSSION_OPTIONS]({ commit, state }) {
-				if (typeof state.discussionOptions !== "undefined") {
-					return;
-				}
-				commit(SET_DISCUSSION_OPTIONS, await api.config.get("discussion"));
-			},
+		logout() {
+			return api.user.logout().then(() => this.$state = GUESTS);
 		},
-		mutations: {
-			[SET_DISCUSSION_OPTIONS]: (state, data) => state.discussionOptions = data,
-			[SET_USER]: (state, data) => state.user = data,
-			[SET_PREFETCH_DATA]: (state, data) => state.prefetch = data,
-			[SET_SUN_PHASE]: (state, value) => state.sunPhase = value,
+	},
+});
+
+/** 路由页面的预取数据 */
+export const usePrefetch = defineStore("prefetch", {
+	state: () => ({} as any),
+});
+
+/**
+ * 当前的太阳阶段，值是上面 SUN_PHASES 的字段名，null 表明无法确定。
+ * 【注意】不要使用 undefined，$store.watch 无法监听值为 undefined 的字段。
+ */
+export const useSunPhase = defineStore("sunPhase", {
+	state: () => ({
+		current: null as unknown as string,
+	}),
+	actions: {
+		toNext() {
+			this.current = SUN_PHASES.nextOf(this.current);
 		},
-	});
-}
+	},
+});
+
+/** 评论设置，因为不常变所以放到全局免得每次都读取 */
+export const useDiscussOptions = defineStore("discussOptions", {
+	state: () => ({ options: null }),
+	actions: {
+		async load() {
+			this.$state ??= await api.config.get("discussion");
+		},
+	},
+});

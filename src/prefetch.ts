@@ -1,6 +1,6 @@
 import { ComponentOptions, onBeforeMount, useSSRContext } from "vue";
+import { Pinia } from "pinia";
 import { RouteComponent, RouteLocationNormalizedLoaded } from "vue-router";
-import { Store } from "vuex";
 import { createNanoEvents, Emitter } from "nanoevents";
 import { Api } from "./api";
 
@@ -44,7 +44,7 @@ class RedirectException extends Error {
 
 export abstract class PrefetchContext {
 
-	abstract store: Store<any>;
+	abstract store: Pinia;
 	abstract route: RouteLocationNormalizedLoaded;
 	abstract signal: AbortSignal;
 	abstract api: Api;

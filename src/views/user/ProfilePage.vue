@@ -38,17 +38,17 @@
 
 <script setup lang="ts">
 import { shallowReactive, toRaw } from "vue";
-import { useStore } from "vuex";
 import { openFile, useDialog } from "@kaciras-blog/uikit";
 import api from "@/api";
 import { DEFAULT_AVATAR } from "@/blog-plugin";
+import { useCurrentUser } from "@/store";
 import { errorMessage } from "@/utils";
 import AuthTypeTag from "./AuthTypeTag.vue";
 
+const globalUser = useCurrentUser();
 const dialog = useDialog();
-const store = useStore();
 
-const user = shallowReactive(store.state.user);
+const user = shallowReactive(globalUser.$state);
 
 async function changeAvatar() {
 	const image = await openFile("image/*");
@@ -63,6 +63,7 @@ async function changeAvatar() {
 async function save() {
 	try {
 		await api.user.updateProfile(toRaw(user));
+		globalUser.$state = user;
 		dialog.alertSuccess("保存成功");
 	} catch (e) {
 		dialog.alertError("保存失败", errorMessage(e));

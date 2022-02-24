@@ -57,12 +57,12 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { useStore } from "vuex";
 import { useDialog } from "@kaciras-blog/uikit";
 import api, { Discussion, DiscussionState } from "@/api";
 import { errorMessage } from "@/utils";
 import MarkdownView from "@/markdown/MarkdownView.vue";
 import { DEFAULT_AVATAR, localDateMinute } from "@/blog-plugin";
+import { useCurrentUser } from "@/store";
 
 interface DiscussContentProps {
 	tag?: string;
@@ -75,9 +75,9 @@ const props = withDefaults(defineProps<DiscussContentProps>(), {
 const emit = defineEmits(["removed", "reply"]);
 
 const dialog = useDialog();
-const store = useStore();
+const user = useCurrentUser();
 
-const removable = computed(() => store.state.user.id === 2);
+const removable = computed(() => user.id === 2);
 
 /**
  * 楼层号，引用模式下返回 floor，楼中楼模式返回 nestFloor。

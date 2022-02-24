@@ -1,13 +1,13 @@
 import { basename, extname } from "path";
-import { Store } from "vuex";
 import { RouteLocationNormalizedLoaded, Router } from "vue-router";
 import { renderToString, SSRContext } from "vue/server-renderer";
-import { SET_WIDTH } from "@kaciras-blog/uikit";
+import { Pinia } from "pinia";
+import { useMQStore, breakpoints } from "@kaciras-blog/uikit";
 import { configureForProxy } from "@kaciras-blog/server/lib/axios-helper.js";
 import api, { Api } from "./api";
 import { collectTasks, PrefetchContext } from "./prefetch";
-import { REFRESH_USER, SET_PREFETCH_DATA } from "./store/types";
-import createBlogApp, { mediaBreakpoints } from "./main";
+import createBlogApp from "./main";
+import { useCurrentUser, usePrefetch } from "@/store";
 
 const titleRE = new RegExp("<title>[^<]*</title>");
 
@@ -16,13 +16,13 @@ const noSSR = new RegExp("^/(?:edit|console)/?(?:\\?|$)");
 
 class ServerPrefetch extends PrefetchContext {
 
-	readonly store: Store<any>;
+	readonly store: Pinia;
 	readonly route: RouteLocationNormalizedLoaded;
 	readonly api: Api;
 	readonly signal: AbortSignal;
 
 	constructor(
-		store: Store<any>,
+		store: Pinia,
 		route: RouteLocationNormalizedLoaded,
 		api: Api,
 		controller: AbortController,
@@ -45,13 +45,13 @@ function isMobile(userAgent: string) {
 	return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
 }
 
-async function prefetch(store: Store<any>, router: Router, request: any) {
+async function prefetch(store: Pinia, router: Router, request: any) {
 	const route = router.currentRoute.value;
 
 	// 从 UserAgent 中检测是否手机，从而设定渲染的屏幕宽度。
 	const userAgent = request.headers["user-agent"];
 	if (userAgent && isMobile(userAgent)) {
-		store.commit(SET_WIDTH, mediaBreakpoints.mobile);
+		useMQStore(store).width = breakpoints.mobile;
 	}
 
 	const ssrApi = api.withConfig(c => configureForProxy(request, c));
@@ -68,9 +68,12 @@ async function prefetch(store: Store<any>, router: Router, request: any) {
 
 	const prefetching = collectTasks(components, session);
 
+	const userStore = useCurrentUser(store);
+	const prefetch = usePrefetch();
+
 	try {
-		await store.dispatch(REFRESH_USER, ssrApi);
-		store.commit(SET_PREFETCH_DATA, await prefetching);
+		await userStore.refresh(ssrApi);
+		prefetch.$state = await prefetching;
 	} catch (e) {
 		controller.abort();
 

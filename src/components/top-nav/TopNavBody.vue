@@ -69,15 +69,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject, onBeforeMount, onBeforeUnmount, ref } from "vue";
-import { useStore } from "vuex";
-import { LOGOUT } from "@/store/types";
+import { ref } from "vue";
+import { useDialog, useBreakPoint } from "@kaciras-blog/uikit";
+import { useEventListener } from "@vueuse/core";
 import ListIcon from "bootstrap-icons/icons/list.svg?sfc";
 import SettingIcon from "@material-design-icons/svg/filled/settings.svg?sfc";
 import RssIcon from "@material-design-icons/svg/filled/rss_feed.svg?sfc";
+import { useCurrentUser } from "@/store";
 import NavMenuFrame from "./NavMenuFrame.vue";
 import SettingDialog from "./SettingDialog.vue";
-import { useDialog } from "@kaciras-blog/uikit";
 
 interface TopNavBodyProps {
 	tag: string;
@@ -85,15 +85,14 @@ interface TopNavBodyProps {
 
 defineProps<TopNavBodyProps>();
 
-const mediaQuery = inject<any>("$mediaQuery")!;
-const store = useStore();
+const user = useCurrentUser();
 const dialog = useDialog();
+const breakPoint = useBreakPoint();
 
 const colored = ref(false);
-const user = computed(() => store.state.user);
 
 function logout() {
-	return store.dispatch(LOGOUT);
+	return user.logout();
 }
 
 function showMenu() {
@@ -108,15 +107,9 @@ function showSettings() {
 	dialog.show(SettingDialog);
 }
 
-onBeforeMount(() => {
-	if (mediaQuery.match("mobile")) {
-		window.addEventListener("scroll", scrollFunction);
-	}
-});
-
-onBeforeUnmount(() => {
-	window.removeEventListener("scroll", scrollFunction);
-});
+if (breakPoint.value === "mobile") {
+	useEventListener(window, "scroll", scrollFunction);
+}
 </script>
 
 <style module lang="less">

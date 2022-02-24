@@ -45,10 +45,10 @@
 		"markdown-it-anchor": "^8.4.1",
 		"markdown-it-toc-done-right": "^4.2.0",
 		"nanoevents": "^6.0.2",
+		"pinia": "^2.0.11",
 		"rxjs": "^7.5.4",
 		"vue": "^3.2.31",
-		"vue-router": "^4.0.12",
-		"vuex": "^4.0.2"
+		"vue-router": "^4.0.12"
 	},
 	"devDependencies": {
 		"@kaciras-blog/devtool": "^2.0.0",

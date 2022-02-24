@@ -96,7 +96,6 @@ export default { asyncData };
 
 <script setup lang="ts">
 import { ref, reactive, ComponentPublicInstance } from "vue";
-import { useStore } from "vuex";
 import ChatIcon from "@material-design-icons/svg/outlined/forum.svg?sfc";
 import ArrowTopIcon from "@material-design-icons/svg/outlined/rocket_launch.svg?sfc";
 import { scrollToElementStart } from "@kaciras-blog/uikit";
@@ -105,9 +104,11 @@ import { articleLink, localDateMinute } from "@/blog-plugin";
 import { useHeadMeta } from "@/prefetch";
 import { escapeHtml } from "@/utils";
 import MarkdownView from "@/markdown/MarkdownView.vue";
+import { usePrefetch } from "@/store";
 
-const store = useStore();
-const article = reactive<Article>(store.state.prefetch.article);
+const prefetch = usePrefetch();
+
+const article = reactive<Article>(prefetch.article);
 const discussion = ref<ComponentPublicInstance>();
 
 // 为了 SEO，需要在预渲染的文章页面的 <head> 中加入一些标签。

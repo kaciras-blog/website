@@ -43,10 +43,10 @@
 
 <script setup lang="ts">
 import { reactive } from "vue";
-import { useStore } from "vuex";
+import { usePrefetch } from "@/store";
 
-const store = useStore();
-const cards = reactive(store.state.prefetch.cards);
+const prefetch = usePrefetch();
+const cards = reactive(prefetch.cards);
 </script>
 
 <style module lang="less">

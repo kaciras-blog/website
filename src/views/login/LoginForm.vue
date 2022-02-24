@@ -9,7 +9,7 @@
 			name="name"
 			title="用户名"
 			required
-			v-autofocus
+			v-auto-focus
 		>
 
 		<label for="password">密码:</label>
@@ -36,7 +36,7 @@
 			<kx-task-button
 				type="outline"
 				color="primary"
-				:on-click="login"
+				@click="login"
 			>
 				确定
 			</kx-task-button>
@@ -70,46 +70,46 @@
 	</form>
 </template>
 
-<script>
+<script setup lang="ts">
+import { reactive, ref, toRaw } from "vue";
+import { useRouter } from "vue-router";
+import { KxButton, KxTaskButton, KxCheckBox, KxPasswordInput, vAutoFocus } from "@kaciras-blog/uikit";
 import api from "@/api";
-import { errorMessage } from "@/utils";
-import { REFRESH_USER } from "@/store/types";
 import OauthIcon from "@/components/OauthIcon.vue";
+import { errorMessage } from "@/utils";
+import { useCurrentUser } from "@/store";
 
-export default {
-	name: "LoginPanel",
-	components: {
-		OauthIcon,
-	},
-	props: {
-		returnUri: String,
-	},
-	emits: ["switch-panel"],
-	data: () => ({
-		message: "",
-		form: {
-			password: "",
-			name: "",
-			remember: false,
-		},
-	}),
-	methods: {
-		async login(event) {
-			event.stopPropagation();
+interface LoginFormProps {
+	returnUri: string;
+}
 
-			try {
-				await api.user.login(this.form);
-				await this.$store.dispatch(REFRESH_USER);
-				await this.$router.push(this.returnUri);
-			} catch (e) {
-				this.message = errorMessage(e);
-			}
-		},
-		switchPanel() {
-			this.$emit("switch-panel", "SignupPanel");
-		},
-	},
-};
+const props = defineProps<LoginFormProps>();
+const emit = defineEmits(["switch-panel"]);
+
+const user = useCurrentUser();
+const router = useRouter();
+
+const form = reactive({
+	password: "",
+	name: "",
+	remember: false,
+});
+
+const message = ref("");
+
+async function login() {
+	try {
+		await api.user.login(toRaw(form));
+		await user.refresh();
+		await router.push(props.returnUri);
+	} catch (e) {
+		message.value = errorMessage(e);
+	}
+}
+
+function switchPanel() {
+	emit("switch-panel", "SignupPanel");
+}
 </script>
 
 <style module lang="less">

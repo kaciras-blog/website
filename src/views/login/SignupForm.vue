@@ -9,7 +9,7 @@
 			name="name"
 			placeholder="中英文数字和下划线"
 			required
-			v-autofocus
+			v-auto-focus
 		>
 
 		<label for="password">密码:</label>
@@ -58,7 +58,7 @@
 			<kx-task-button
 				type="outline"
 				color="primary"
-				:on-click="signUp"
+				@click="signUp"
 			>
 				确定
 			</kx-task-button>
@@ -73,51 +73,56 @@
 	</form>
 </template>
 
-<script>
+<script setup lang="ts">
+import { onMounted, reactive, ref, toRaw } from "vue";
+import { useRouter } from "vue-router";
+import { KxButton, KxTaskButton, KxPasswordInput, vAutoFocus } from "@kaciras-blog/uikit";
 import api from "@/api";
-import { REFRESH_USER } from "@/store/types";
 import { errorMessage } from "@/utils";
+import { useCurrentUser } from "@/store";
 
-export default {
-	name: "SignupPanel",
-	props: {
-		returnUri: String,
-	},
-	emits: ["switch-panel"],
-	data: () => ({
-		message: "",
-		captcha: null,
-		form: {
-			name: "",
-			password: "",
-			email: "",
-			captcha: "",
-		},
-	}),
-	methods: {
-		async signUp(event) {
-			event.stopPropagation();
-			try {
-				await api.user.signup(this.form);
-				await this.$store.dispatch(REFRESH_USER);
-				await this.$router.push(this.returnUri);
-			} catch (e) {
-				this.message = errorMessage(e);
-			}
-		},
-		switchPanel() {
-			this.$emit("switch-panel", "LoginPanel");
-		},
-		updateCaptcha() {
-			this.captcha = api.misc.randomCaptchaAddress();
-			this.form.captcha = "";
-			this.$refs.captchaInput.focus();
-		},
-	},
-	mounted() {
-		this.captcha = api.misc.randomCaptchaAddress();
-	},
-};
+interface LoginFormProps {
+	returnUri: string;
+}
+
+const props = defineProps<LoginFormProps>();
+const emit = defineEmits(["switch-panel"]);
+
+const user = useCurrentUser();
+const router = useRouter();
+
+const form = reactive({
+	name: "",
+	password: "",
+	email: "",
+	captcha: "",
+});
+
+const captcha = ref<string | null>(null);
+const message = ref("");
+const captchaInput = ref<HTMLInputElement>();
+
+async function signUp() {
+	try {
+		await api.user.signup(toRaw(form));
+		await user.refresh();
+		await router.push(props.returnUri);
+	} catch (e) {
+		message.value = errorMessage(e);
+	}
+}
+
+function switchPanel() {
+	emit("switch-panel", "LoginPanel");
+}
+
+function updateCaptcha() {
+	captcha.value = api.misc.captchaAddress();
+	form.captcha = "";
+	captchaInput.value!.focus();
+}
+
+onMounted(() => captcha.value = api.misc.captchaAddress());
 </script>
 
 <style module lang="less">

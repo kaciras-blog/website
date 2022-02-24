@@ -58,14 +58,13 @@
 
 <script setup lang="ts">
 import { ref, watch } from "vue";
-import { useStore } from "vuex";
 import { useLocalStorage } from "@vueuse/core";
 import api, { Discussion, DiscussionQuery } from "@/api";
 import { ListQueryView } from "@/api/core";
-import { LOAD_DISCUSSION_OPTIONS } from "@/store/types";
 import BootLoader from "./BootLoader.vue";
 import DiscussionItem from "./DiscussionItem.vue";
 import InputSection from "./InputSection.vue";
+import { useDiscussOptions } from "@/store";
 
 const PAGE_SIZE = 30;
 const NEST_SIZE = 3;
@@ -77,7 +76,7 @@ interface DiscussSectionProps {
 
 const props = defineProps<DiscussSectionProps>();
 
-const store = useStore();
+const discussOptions = useDiscussOptions();
 
 const data = ref<ListQueryView<Discussion>>({ items: [], total: 0 });
 const mode = useLocalStorage("DIS:mode", "nest");
@@ -135,7 +134,7 @@ function afterSubmit(entity: Discussion) {
 /** 初始化，加载配置信息和第一页，完成时切换加载指示器到列表 */
 function initialize() {
 	return Promise.all([
-		store.dispatch(LOAD_DISCUSSION_OPTIONS),
+		discussOptions.load(),
 		fetchData(0, PAGE_SIZE)
 			.then(v => data.value = v),
 	]);

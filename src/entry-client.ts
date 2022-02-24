@@ -1,10 +1,10 @@
 // 注意导入顺序，因为打包后CSS里元素的顺序跟导入顺序一致，所以 main.ts 必须靠前
+import { observeMediaQuery } from "@kaciras-blog/uikit";
 import { setupSentry } from "./error-report";
 import "./misc";
-import createBlogApp, { mediaQueryPlugin } from "./main";
+import createBlogApp from "./main";
 import { useServiceWorker } from "@/service-worker/client/installer";
-import { SUN_PHASES } from "@/store";
-import { REFRESH_USER, SET_SUN_PHASE } from "@/store/types";
+import { SUN_PHASES, useCurrentUser, useSunPhase } from "@/store";
 import { ClientPrefetchMixin, installRouterHooks, prefetch } from "./client-prefetch";
 
 interface CustomGlobals {
@@ -23,11 +23,13 @@ if (import.meta.env.SENTRY_DSN && window.__isSupport__) {
 }
 
 function initApplication() {
+	observeMediaQuery(store);
+
 	app.mount("#app");
 
-	// Vue3 在激活时似乎不会重新设置元素的属性，必须把这俩放挂载后面。
-	mediaQueryPlugin.observeWindow(store);
-	SUN_PHASES.observe().subscribe(value => store.commit(SET_SUN_PHASE, value));
+	// Vue3 在激活时似乎不会重新设置元素的属性，必须把它放挂载后面。
+	const subPhase = useSunPhase();
+	SUN_PHASES.observe().subscribe(value => subPhase.current = value);
 
 	installRouterHooks(store, router);
 }
@@ -45,7 +47,7 @@ async function appShellStartup() {
 
 	// AppShell 模式不会在服务端加载用户
 	// TODO: 这会导致控制台不能直接访问（以及刷新），但不是什么严重的问题
-	await store.dispatch(REFRESH_USER);
+	useCurrentUser(store).refresh();
 }
 
 // 如果有 window.__INITIAL_STATE__ 全局属性则说明使用了服务端渲染。

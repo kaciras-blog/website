@@ -63,17 +63,17 @@ export default {
 <script setup lang="ts">
 import { inject, ref } from "vue";
 import { useRoute } from "vue-router";
-import { useStore } from "vuex";
 import { useLocalStorage } from "@vueuse/core";
 import api from "@/api";
 import PreviewItem from "./PreviewItem.vue";
 import AsidePanel from "./AsidePanel.vue";
+import { usePrefetch } from "@/store";
 
 const mediaQuery = inject("$mediaQuery") as any;
 const route = useRoute();
-const store = useStore();
+const prefetch = usePrefetch();
 
-const { articleList, category } = store.state.prefetch;
+const { articleList, category } = prefetch;
 
 let startPos = parseInt(route.params.index as string) || 0;
 startPos *= DEFAULT_PAGE_SIZE;

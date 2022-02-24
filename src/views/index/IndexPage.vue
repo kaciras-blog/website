@@ -38,7 +38,8 @@
 	</base-page-layout>
 </template>
 
-<script>
+<script lang="ts">
+import { PrefetchContext } from "@/prefetch";
 import { attachRandomId } from "@/utils";
 
 import BannerDawn from "@/assets/img/IndexBannerDawn.png";
@@ -62,14 +63,14 @@ import MobileBannerNight from "@/assets/img/IndexBannerNight.png?size=IndexBanne
  * 这样的话不开启JS就看不到图，但是禁用JS的访问者应当有体验降级的准备。
  */
 
-const BANNER_MAP = {
+const BANNER_MAP: Record<string, string> = {
 	Dawn: BannerDawn,
 	Daytime: BannerDaytime,
 	Dusk: BannerDusk,
 	Night: BannerNight,
 };
 
-const BANNER_MAP_MOBILE = {
+const BANNER_MAP_MOBILE: Record<string, string> = {
 	Dawn: MobileBannerDawn,
 	Daytime: MobileBannerDaytime,
 	Dusk: MobileBannerDusk,
@@ -78,19 +79,19 @@ const BANNER_MAP_MOBILE = {
 
 export default {
 	name: "IndexPage",
-	asyncData({ data, api }) {
+	asyncData({ data, api }: PrefetchContext) {
 		data.cards = api.recommend.getCards().then(attachRandomId);
 		data.friends = api.friend.getFriends().then(attachRandomId);
 	},
 };
 </script>
 
-<script setup>
-import { ref, computed, onBeforeMount, inject, useCssModule } from "vue";
-import { useStore } from "vuex";
-import { SUN_PHASES } from "@/store";
+<script setup lang="ts">
+import { ref, computed, onBeforeMount, useCssModule, watch } from "vue";
+import { useSunPhase } from "@/store";
 import BlogSection from "./BlogSection.vue";
 import FriendsSection from "./FriendsSection.vue";
+import { useBreakPoint } from "@kaciras-blog/uikit";
 
 /*
  * 四个状态与过渡动画的关系：
@@ -100,31 +101,27 @@ import FriendsSection from "./FriendsSection.vue";
  *   visibleSunPhase：过渡开始时等于上一个时段，过渡完成后替换为transitionSunPhase。
  *
  * 切换流程：
- *   当时段改变，即 Vuex 中的 sunPhase 被修改时，注册的 switchSunPhase 监听被调用。
+ *   当时段改变，即全局的 sunPhase 被修改时，注册的 switchSunPhase 监听被调用。
  *   transitionSunPhase 被设置，创建过渡元素并触发过渡动画。
  *   动画完成后调用注册的回调 transitionEnd，删除过渡元素并将新的时段赋值给 visibleSunPhase。
  */
 
 const $style = useCssModule();
-const store = useStore();
-const mediaQuery = inject("$mediaQuery");
+const sunPhase = useSunPhase();
+const breakPoint = useBreakPoint();
 
 // data 在 computed 之前创建，此时 currentSunPhase 还无法访问
-const transitionSunPhase = ref(null);
-const visibleSunPhase = ref(store.state.sunPhase);
+const transitionSunPhase = ref("");
+const visibleSunPhase = ref(sunPhase.current);
 
-let $_lock;
-
-const currentSunPhase = computed(() => {
-	return store.state.sunPhase;
-});
+let lock = false;
 
 const targetSunPhase = computed(() => {
 	return transitionSunPhase.value || visibleSunPhase.value;
 });
 
 const bannerMap = computed(() => {
-	return mediaQuery.match("mobile") ? BANNER_MAP_MOBILE : BANNER_MAP;
+	return breakPoint.value === "mobile" ? BANNER_MAP_MOBILE : BANNER_MAP;
 });
 
 const navClass = computed(() => {
@@ -155,7 +152,7 @@ const transitionStyle = computed(() => {
  * 开始切换大图，时段改变时都要通过这个方法来触发过渡动画。
  * 该方法中先使用 HTMLImageElement 预载图片，防止网速慢的时候白屏。
  */
-function switchSunPhase(sunPhase) {
+function switchSunPhase(sunPhase: string) {
 	// 从白屏（之前未设置 sunPhase）切换时不使用过渡。
 	if (!visibleSunPhase.value) {
 		return visibleSunPhase.value = sunPhase;
@@ -167,21 +164,21 @@ function switchSunPhase(sunPhase) {
 
 /** 在图片切换效果结束后调用，替换图片 */
 function transitionEnd() {
-	$_lock = false;
+	lock = false;
 	visibleSunPhase.value = transitionSunPhase.value;
-	transitionSunPhase.value = null;
+	transitionSunPhase.value = "";
 }
 
 function toNextPhase() {
-	if ($_lock) {
+	if (lock) {
 		return;
 	}
-	$_lock = true;
-	store.commit("SET_SUN_PHASE", SUN_PHASES.nextOf(currentSunPhase.value));
+	lock = true;
+	sunPhase.toNext();
 }
 
 onBeforeMount(() => {
-	store.watch(state => state.sunPhase, switchSunPhase);
+	watch(() => sunPhase.current, switchSunPhase);
 });
 </script>
 

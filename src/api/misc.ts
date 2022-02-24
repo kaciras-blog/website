@@ -51,11 +51,11 @@ export default class extends AbstractResource {
 	}
 
 	/**
-	 * 生成一个随机的验证码URL。
+	 * 生成一个随机的验证码 URL。
 	 *
 	 * @return {string} 验证码URL
 	 */
-	randomCaptchaAddress() {
+	captchaAddress() {
 		return this.servers.content.defaults.baseURL + "/captcha?r=" + Math.random();
 	}
 }

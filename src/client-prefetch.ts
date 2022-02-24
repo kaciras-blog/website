@@ -6,23 +6,23 @@
  */
 import { ComponentOptions } from "vue";
 import { RouteComponent, RouteLocationNormalizedLoaded, Router } from "vue-router";
-import { Store } from "vuex";
 import api, { Api } from "@/api";
-import { SET_PREFETCH_DATA } from "@/store/types";
 import { isOnlyHashChange } from "@/utils";
 import { collectTasks, events, MaybePrefetchComponent, PrefetchContext } from "./prefetch";
+import { Pinia } from "pinia";
+import { usePrefetch } from "@/store";
 
 let controller = new AbortController();
 
 class ClientPrefetch extends PrefetchContext {
 
-	readonly store: Store<any>;
+	readonly store: Pinia;
 	readonly signal: AbortSignal;
 	readonly route: RouteLocationNormalizedLoaded;
 	readonly api: Api;
 
 	constructor(
-		store: Store<any>,
+		store: Pinia,
 		route: RouteLocationNormalizedLoaded,
 		signal: AbortSignal,
 	) {
@@ -42,7 +42,7 @@ class ClientPrefetch extends PrefetchContext {
  * @param components 需要预载数据的组件数组
  */
 export async function prefetch(
-	store: Store<any>,
+	store: Pinia,
 	to: RouteLocationNormalizedLoaded,
 	components: RouteComponent[],
 ) {
@@ -62,7 +62,7 @@ export async function prefetch(
 			console.debug(`导航被取消：${to.path}`);
 			return false;
 		} else {
-			store.commit(SET_PREFETCH_DATA, data);
+			usePrefetch(store).$state = data;
 		}
 	} catch (err) {
 		if (controller.signal.aborted) {
@@ -109,7 +109,7 @@ export const ClientPrefetchMixin: ComponentOptions = {
 	},
 };
 
-export function installRouterHooks(store: Store<any>, router: Router) {
+export function installRouterHooks(store: Pinia, router: Router) {
 
 	/**
 	 * 相比于官网示例，这里把加载指示器提前到 beforeEach 钩子，以便在异步组件下载前就开始加载提示。

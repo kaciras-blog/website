@@ -76,7 +76,6 @@ export default { isolation: true };
 </script>
 
 <script setup lang="ts">
-import { useStore } from "vuex";
 import { computed, ref } from "vue";
 import EyeIcon from "bootstrap-icons/icons/eye-fill.svg?sfc";
 import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
@@ -84,6 +83,7 @@ import HelpIcon from "bootstrap-icons/icons/question-circle.svg?sfc";
 import { useDialog } from "@kaciras-blog/uikit";
 import PaperPlaneIcon from "@/assets/icon/paper-plane.svg?sfc";
 import { Discussion } from "@/api";
+import { useCurrentUser } from "@/store";
 import MarkdownView from "@/markdown/MarkdownView.vue";
 import GuideDialog from "./GuideDialog.vue";
 import { useDiscussContext } from "./EditContext";
@@ -98,7 +98,7 @@ interface EditContextProps_Copy {
 const props = defineProps<EditContextProps_Copy>();
 const emit = defineEmits(["close"]);
 
-const { user } = useStore().state;
+const user = useCurrentUser();
 const dialog = useDialog();
 const { nickname, content, handleInput, submit } = useDiscussContext(props);
 

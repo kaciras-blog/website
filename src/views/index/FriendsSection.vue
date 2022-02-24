@@ -199,7 +199,6 @@ function dragSort(
 
 <script setup lang="ts">
 import { computed, reactive, ref } from "vue";
-import { useStore } from "vuex";
 import { KxButton, useDialog, useIntersectionHandler } from "@kaciras-blog/uikit";
 import SortIcon from "@/assets/icon/sort.svg?sfc";
 import AddIcon from "@/assets/icon/plus.svg?sfc";
@@ -211,6 +210,7 @@ import FriendCard from "./FriendCard.vue";
 import FriendInfoDialog from "./FriendInfoDialog.vue";
 import { DEFAULT_COVER } from "@/blog-plugin";
 import api, { Friend } from "@/api";
+import { useCurrentUser, usePrefetch } from "@/store";
 
 const FRIEND_TEMPLATE: Friend = {
 	name: "",
@@ -218,16 +218,16 @@ const FRIEND_TEMPLATE: Friend = {
 	background: DEFAULT_COVER,
 };
 
+const user = useCurrentUser();
+const prefetch = usePrefetch();
 const dialog = useDialog();
-const store = useStore();
 
-const friends = reactive<Friend[]>(store.state.prefetch.friends);
+const friends = reactive<Friend[]>(prefetch.friends);
 const active = ref(false);
 const sorting = ref(false);
 
 const listEl = ref();
 
-const user = computed(() => store.state.user);
 
 let draggingRegion: GridDraggingRegion;
 let backup: Friend[];

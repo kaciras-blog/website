@@ -69,16 +69,16 @@
 
 <script setup lang="ts">
 import { computed, nextTick, ref } from "vue";
-import { useStore } from "vuex";
+import { useDialog } from "@kaciras-blog/uikit";
+import QuestionIcon from "bootstrap-icons/icons/question-circle.svg?sfc";
 import EyeIcon from "bootstrap-icons/icons/eye-fill.svg?sfc";
 import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
-import QuestionIcon from "bootstrap-icons/icons/question-circle.svg?sfc";
+import { DEFAULT_AVATAR } from "@/blog-plugin";
+import { useCurrentUser } from "@/store";
 import { Discussion } from "@/api";
 import MarkdownView from "@/markdown/MarkdownView.vue";
 import { useDiscussContext } from "./EditContext";
 import GuideDialog from "./GuideDialog.vue";
-import { useDialog } from "@kaciras-blog/uikit";
-import { DEFAULT_AVATAR } from "@/blog-plugin";
 
 interface EditContextProps_Copy {
 	objectId: number;
@@ -91,7 +91,7 @@ const props = defineProps<EditContextProps_Copy>();
 
 const { nickname, content, handleInput, submit } = useDiscussContext(props);
 const dialog = useDialog();
-const { user } = useStore().state;
+const user = useCurrentUser();
 
 const preview = ref(false);
 const textareaEl = ref<HTMLElement>();

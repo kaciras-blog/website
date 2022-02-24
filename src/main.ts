@@ -1,20 +1,12 @@
 import "@kaciras-blog/uikit/dist/style.css";
 import "./css/index.less";
 import { createApp, createSSRApp } from "vue";
-import UIKit, { MediaQueryManager } from "@kaciras-blog/uikit";
-import createStore from "./store";
+import UIKit from "@kaciras-blog/uikit";
+import { createPinia } from "pinia";
+import { useCurrentUser } from "@/store";
 import createRouter from "./router";
 import BlogPlugin from "./blog-plugin";
 import App from "./App.vue";
-
-export const mediaBreakpoints = {
-	mobile: 768,
-	tablet: 992,
-	desktop: 1200,
-	wide: 99999,
-};
-
-export const mediaQueryPlugin = new MediaQueryManager(mediaBreakpoints);
 
 /**
  * 服务端和客户端公共的初始化逻辑。
@@ -22,25 +14,23 @@ export const mediaQueryPlugin = new MediaQueryManager(mediaBreakpoints);
  * 由于创建Vue实例后就立即渲染，而此时可能就需要初始状态（比如控制台页面鉴权），
  * 所以不能等到创建之后再替换服务端渲染出的初始状态，而要在创建Vue实例之前就调用 store.replaceState(...)
  *
- * @param initState Vuex 的初始状态
+ * @param initState Pinia 的初始状态
  * @return Vue 全家桶
  */
 export default function createBlogApp(initState?: any) {
-	const store = createStore();
+	const store = createPinia();
 	const router = createRouter();
 
-	mediaQueryPlugin.registerToStore(store);
-
 	if (initState) {
-		store.replaceState(initState);
+		store.state.value = initState;
 	}
 
 	/**
 	 * 阻止未登录用户访问后台页面，放在这同时作用于前后端渲染。
 	 */
 	router.beforeEach(to => {
-		const isAdmin = store.state.user.id === 2;
-		if (to.meta.requireAuth && !isAdmin) {
+		const user = useCurrentUser(store);
+		if (to.meta.requireAuth && user.id !== 2) {
 			const return_uri = to.fullPath;
 			return { path: "/login", query: { return_uri } };
 		}
@@ -52,7 +42,6 @@ export default function createBlogApp(initState?: any) {
 	app.use(router);
 	app.use(UIKit);
 	app.use(BlogPlugin);
-	app.use(mediaQueryPlugin);
 
 	return { app, router, store };
 }
