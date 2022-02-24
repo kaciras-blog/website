@@ -31,7 +31,7 @@
 		/>
 
 		<component
-			:is="$mediaQuery.match('mobile') ? 'ScrollPagingView' : 'ButtonPagingView'"
+			:is="$bp.value === 'mobile' ? 'ScrollPagingView' : 'ButtonPagingView'"
 			ref="discussions"
 			v-model="data"
 			:page-size="30"

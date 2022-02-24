@@ -61,15 +61,16 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { inject, ref } from "vue";
+import { ref } from "vue";
 import { useRoute } from "vue-router";
 import { useLocalStorage } from "@vueuse/core";
 import api from "@/api";
 import PreviewItem from "./PreviewItem.vue";
 import AsidePanel from "./AsidePanel.vue";
 import { usePrefetch } from "@/store";
+import { useBreakPoint } from "@kaciras-blog/uikit";
 
-const mediaQuery = inject("$mediaQuery") as any;
+const breakPoint = useBreakPoint();
 const route = useRoute();
 const prefetch = usePrefetch();
 
@@ -79,7 +80,7 @@ let startPos = parseInt(route.params.index as string) || 0;
 startPos *= DEFAULT_PAGE_SIZE;
 
 const listView = ref();
-const autoLoad = useLocalStorage("ListPage:autoLoad", mediaQuery.match("mobile"));
+const autoLoad = useLocalStorage("ListPage:autoLoad", breakPoint.value === "mobile");
 const articles = ref(articleList);
 
 function loadPage(start: number, count: number) {

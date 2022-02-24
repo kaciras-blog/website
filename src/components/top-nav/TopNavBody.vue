@@ -18,7 +18,7 @@
 
 		<!-- 手机屏的折叠菜单 -->
 		<button
-			v-if="$mediaQuery.match('mobile')"
+			v-if="$bp.value === 'mobile'"
 			title="弹出菜单"
 			class="nav-item nav-right"
 			@click="showMenu"

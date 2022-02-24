@@ -50,7 +50,7 @@
 				</template>
 			</button-paging-view>
 
-			<div v-else-if="$mediaQuery.match('tablet+')" :class="$style.nest">
+			<div v-else-if="$bp.isGreater('tablet')" :class="$style.nest">
 				<ol class="clean-list" :class="$style.list">
 					<discussion-content
 						v-for="item of children.items"
@@ -97,7 +97,7 @@
 
 <script setup lang="ts">
 import { inject, nextTick, ref } from "vue";
-import { useDialog } from "@kaciras-blog/uikit";
+import { useBreakPoint, useDialog } from "@kaciras-blog/uikit";
 import { debounceFirst } from "@kaciras-blog/server/lib/functions.js";
 import api, { Discussion, DiscussionState, Topic, User } from "@/api";
 import { ListQueryView } from "@/api/core";
@@ -130,7 +130,7 @@ interface DiscussionCopy {
 const props = defineProps<DiscussionCopy>();
 const emit = defineEmits(["removed", "afterSubmit"]);
 
-const $mediaQuery = inject<any>("$mediaQuery");
+const breakPoint = useBreakPoint();
 const $dialog = useDialog();
 
 const editorEl = ref<HTMLElement>();
@@ -161,7 +161,7 @@ async function showReplyEditor(parent: Discussion) {
 		onAfterSubmit: afterSubmit,
 	};
 
-	if ($mediaQuery.match("tablet+")) {
+	if (breakPoint.isGreater("tablet")) {
 		replyContext.value = ctx;
 		await nextTick();
 		editorEl.value!.focus();

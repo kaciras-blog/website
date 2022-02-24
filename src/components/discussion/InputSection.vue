@@ -9,7 +9,7 @@
 	</div>
 
 	<div v-else :class="$style.form">
-		<embedded-editor v-if="$mediaQuery.match('tablet+')" ref="thisEl" v-bind="props"/>
+		<embedded-editor v-if="$bp.isGreater('tablet')" ref="thisEl" v-bind="props"/>
 
 		<!-- 是在想不到更好看的做法了，还是用输入框的样式吧 -->
 		<div v-else ref="thisEl" :class="$style.mobileSection">

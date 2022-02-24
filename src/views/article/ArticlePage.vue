@@ -41,7 +41,7 @@
 		/>
 
 		<div
-			v-if="$mediaQuery.match('tablet+')"
+			v-if="$bp.isGreater('tablet')"
 			:class="$style.sideButtons"
 		>
 			<kx-button
