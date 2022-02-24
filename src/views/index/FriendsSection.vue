@@ -1,5 +1,5 @@
 <template>
-	<section>
+	<section :ref="lazyLoad">
 		<header :class="$style.header">
 			<h1 :class="$style.title">友情链接</h1>
 
@@ -45,7 +45,7 @@
 			</div>
 		</header>
 
-		<ul :class="$style.list" ref="list">
+		<ul :class="$style.list" ref="listEl">
 			<li
 				v-for="(friend, i) of friends"
 				:key="friend.id"
@@ -86,29 +86,21 @@
 	</section>
 </template>
 
-<script>
-import { mapState } from "vuex";
+<script lang="ts">
 import { edgeScroll, moveElement, observeMouseMove } from "@kaciras-blog/uikit";
-import SortIcon from "@/assets/icon/sort.svg?sfc";
-import AddIcon from "@/assets/icon/plus.svg?sfc";
-import CloseIcon from "@material-design-icons/svg/round/close.svg?sfc";
-import CheckIcon from "@material-design-icons/svg/round/check.svg?sfc";
-import PencilIcon from "bootstrap-icons/icons/pencil-fill.svg?sfc";
-import api from "@/api";
-import { DEFAULT_COVER } from "@/blog-plugin";
-import { errorMessage } from "@/utils";
-import FriendCard from "./FriendCard.vue";
-import FriendInfoDialog from "./FriendInfoDialog.vue";
-
-const FRIEND_TEMPLATE = {
-	name: "",
-	url: "",
-	background: DEFAULT_COVER,
-};
 
 class GridDraggingRegion {
 
-	constructor(container) {
+	private readonly xOffset: number;
+	private readonly yOffset: number;
+
+	private readonly tW: number;
+	private readonly tH: number;
+
+	private readonly columns: number;
+	private readonly rows: number;
+
+	constructor(container: HTMLElement) {
 		const region = container.getBoundingClientRect();
 		const card = container.children[0].getBoundingClientRect();
 
@@ -135,17 +127,17 @@ class GridDraggingRegion {
 	 * @param y Y坐标
 	 * @return {number} 格子序号
 	 */
-	getIndex(x, y) {
+	getIndex(x: number, y: number) {
 		return this.getRow(y) * this.columns + this.getColumn(x);
 	}
 
 	// 这里不要用 round，而是要向下取整
-	getColumn(x) {
+	getColumn(x: number) {
 		const c = Math.floor((x - this.xOffset) / this.tW);
 		return Math.max(0, Math.min(c, this.columns - 1));
 	}
 
-	getRow(y) {
+	getRow(y: number) {
 		const r = Math.floor((y - this.yOffset) / this.tH);
 		return Math.max(0, Math.min(r, this.rows - 1));
 	}
@@ -153,13 +145,18 @@ class GridDraggingRegion {
 
 class VueArrayInsertSort {
 
-	constructor(array, index) {
+	private readonly array: unknown[];
+	private readonly data: unknown;
+
+	private index: number;
+
+	constructor(array: unknown[], index: number) {
 		this.array = array;
 		this.index = index;
 		this.data = array[index];
 	}
 
-	dragOver(k) {
+	dragOver(k: number) {
 		const { index, array } = this;
 		k = Math.min(k, array.length - 1);
 
@@ -176,8 +173,12 @@ class VueArrayInsertSort {
 	}
 }
 
-function dragSort(region, sort, event, el) {
-
+function dragSort(
+	region: GridDraggingRegion,
+	sort: VueArrayInsertSort,
+	event: MouseEvent | TouchEvent,
+	el: HTMLElement,
+) {
 	const observer = {
 		next({ x, y }) {
 			x += window.scrollX;
@@ -190,136 +191,146 @@ function dragSort(region, sort, event, el) {
 		},
 	};
 
-	observeMouseMove().pipe(edgeScroll(), moveElement(event, el)).subscribe(observer);
+	observeMouseMove()
+		.pipe(edgeScroll(), moveElement(event, el))
+		.subscribe(observer);
+}
+</script>
+
+<script setup lang="ts">
+import { computed, reactive, ref } from "vue";
+import { useStore } from "vuex";
+import { KxButton, useDialog, useIntersectionHandler } from "@kaciras-blog/uikit";
+import SortIcon from "@/assets/icon/sort.svg?sfc";
+import AddIcon from "@/assets/icon/plus.svg?sfc";
+import CloseIcon from "@material-design-icons/svg/round/close.svg?sfc";
+import CheckIcon from "@material-design-icons/svg/round/check.svg?sfc";
+import PencilIcon from "bootstrap-icons/icons/pencil-fill.svg?sfc";
+import { errorMessage } from "@/utils";
+import FriendCard from "./FriendCard.vue";
+import FriendInfoDialog from "./FriendInfoDialog.vue";
+import { DEFAULT_COVER } from "@/blog-plugin";
+import api, { Friend } from "@/api";
+
+const FRIEND_TEMPLATE: Friend = {
+	name: "",
+	url: "",
+	background: DEFAULT_COVER,
+};
+
+const dialog = useDialog();
+const store = useStore();
+
+const friends = reactive<Friend[]>(store.state.prefetch.friends);
+const active = ref(false);
+const sorting = ref(false);
+
+const listEl = ref();
+
+const user = computed(() => store.state.user);
+
+let draggingRegion: GridDraggingRegion;
+let backup: Friend[];
+
+async function makeFriend() {
+	let info = FRIEND_TEMPLATE;
+	for (; ;) {
+		const result = await dialog.show(FriendInfoDialog, info);
+		if (!result.isConfirm) {
+			return;
+		}
+		info = result.data as Friend;
+
+		try {
+			const friend = await api.friend.makeFriend(info);
+			return friends.push(friend);
+		} catch (e) {
+			await dialog.alertError("添加失败", errorMessage(e));
+		}
+	}
 }
 
-export default {
-	name: "FriendsSection",
-	components: {
-		FriendCard,
-		SortIcon,
-		AddIcon,
-		CloseIcon,
-		CheckIcon,
-		PencilIcon,
-	},
-	data() {
-		return {
-			friends: this.$store.state.prefetch.friends,
-			active: false,
-			sorting: false,
-		};
-	},
-	computed: mapState(["user"]),
-	methods: {
-		async makeFriend() {
-			let info = FRIEND_TEMPLATE;
-			for (; ;) {
-				const result = await this.$dialog.show(FriendInfoDialog, info);
-				if (!result.isConfirm) {
-					return;
-				}
-				info = result.data;
+async function rupture(index: number) {
+	await api.friend.rupture(friends[index]);
+	friends.splice(index, 1);
+}
 
-				try {
-					const friend = await api.friend.makeFriend(info);
-					return this.friends.push(friend);
-				} catch (e) {
-					await this.$dialog.alertError("添加失败", errorMessage(e));
-				}
-			}
+async function edit(friend: Friend) {
+	const result = await dialog.show(FriendInfoDialog, friend);
+	if (result.isConfirm) {
+		Object.assign(friend, result.data);
+		await api.friend.updateFriend(friend, result.data as Friend);
+	}
+}
+
+// GridDraggingRegion 的构造方法有点耗时，在进入排序模式时就计算好，让拖动更流畅。
+// 注意不能更早去计算，因为非排序模式下可能因添加删除等改变布局。
+function sort() {
+	sorting.value = true;
+	draggingRegion = new GridDraggingRegion(listEl.value);
+	backup = friends.slice();
+}
+
+async function sortFinish(save: boolean) {
+	if (!save) {
+		friends.splice(0, friends.length, ...backup);
+		return sorting.value = false;
+	}
+	try {
+		await api.friend.updateSort(friends);
+		sorting.value = false;
+	} catch (e) {
+		dialog.alertError("更新失败", errorMessage(e));
+	}
+}
+
+function drag(event: MouseEvent | TouchEvent, i: number) {
+	if (!sorting.value) {
+		return;
+	}
+	event.preventDefault();
+
+	const el = listEl.value.children[i];
+	const rect = el.getBoundingClientRect();
+
+	const dragEl = el.firstElementChild.cloneNode(true);
+
+	// 不能使用 dragEl.style = {...}
+	Object.assign(dragEl.style, {
+		position: "fixed",
+		top: rect.top + "px",
+		left: rect.left + "px",
+		zIndex: 10000,
+		cursor: "grabbing",
+	});
+	document.body.appendChild(dragEl);
+
+	const sort = new VueArrayInsertSort(friends, i);
+
+	friends[i] = {
+		placeholder: true,
+		id: Symbol(),
+
+		// 这个占位是必要的，用于保持新行
+		style: {
+			width: rect.width + "px",
+			height: rect.height + "px",
 		},
+	};
 
-		async rupture(index) {
-			await api.friend.rupture(this.friends[index]);
-			this.friends.splice(index, 1);
-		},
+	dragSort(draggingRegion, sort, event, dragEl);
+}
 
-		async edit(friend) {
-			const updated = await this.$dialog.show(FriendInfoDialog, friend).confirmPromise;
-			await api.friend.updateFriend(friend, updated);
-			Object.assign(friend, updated);
-		},
-
-		// GridDraggingRegion 的构造方法有点耗时，在进入排序模式时就计算好，让拖动更流畅。
-		// 注意不能更早去计算，因为非排序模式下可能因添加删除等改变布局。
-		sort() {
-			this.sorting = true;
-			this.$_draggingRegion = new GridDraggingRegion(this.$refs.list);
-			this.$_backup = this.friends.slice();
-		},
-
-		async sortFinish(save) {
-			if (!save) {
-				this.friends = this.$_backup;
-				return this.sorting = false;
-			}
-			try {
-				await api.friend.updateSort(this.friends);
-				this.sorting = false;
-			} catch (e) {
-				this.$dialog.alertError("更新失败", errorMessage(e));
-			}
-		},
-
-		drag(event, i) {
-			if (!this.sorting) {
-				return;
-			}
-			event.preventDefault();
-
-			const { friends, $_draggingRegion } = this;
-
-			const listEl = this.$refs.list;
-			const el = listEl.children[i];
-			const rect = el.getBoundingClientRect();
-
-			const dragEl = el.firstElementChild.cloneNode(true);
-
-			// 不能使用 dragEl.style = {...}
-			Object.assign(dragEl.style, {
-				position: "fixed",
-				top: rect.top + "px",
-				left: rect.left + "px",
-				zIndex: 10000,
-				cursor: "grabbing",
-			});
-			document.body.appendChild(dragEl);
-
-			const sort = new VueArrayInsertSort(friends, i);
-
-			friends[i] = {
-				placeholder: true,
-				id: Symbol(),
-
-				// 这个占位是必要的，用于保持新行
-				style: {
-					width: rect.width + "px",
-					height: rect.height + "px",
-				},
-			};
-
-			dragSort($_draggingRegion, sort, event, dragEl);
-		},
-	},
-	/*
-	 * 因为友链图片较多且首屏对性能要求高，所以做了个懒加载。
-	 * 目前仅以容器进入视区为准，若要精确到每个友链请注意拖动排序的重新生成元素问题。
-	 */
-	mounted() {
-		const callback = (entries, observer) => {
-			if (entries[0].isIntersecting) {
-				this.active = true;
-				observer.disconnect();
-			}
-		};
-		this.$_lazyLoader = new IntersectionObserver(callback, { rootMargin: "35px" });
-		this.$_lazyLoader.observe(this.$el);
-	},
-	unmounted() {
-		this.$_lazyLoader.disconnect(); // 啊好想要 Hooks 啊
-	},
-};
+/*
+ * 因为友链图片较多且首屏对性能要求高，所以做了个懒加载。
+ * 目前仅以容器进入视区为准，若要精确到每个友链请注意拖动排序的重新生成元素问题。
+ */
+const lazyLoad = useIntersectionHandler((entries, observer) => {
+	if (entries[0].isIntersecting) {
+		active.value = true;
+		observer.disconnect();
+	}
+}, { rootMargin: "35px" });
 </script>
 
 <style module lang="less">
