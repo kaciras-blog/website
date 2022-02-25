@@ -25,7 +25,7 @@ export interface DraftHistoryInput {
 
 export interface DraftHistory extends DraftHistoryInput {
 	time: number;
-	saveCount: number
+	saveCount: number;
 }
 
 export default class DraftResource extends AbstractResource {

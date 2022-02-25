@@ -30,43 +30,52 @@
 	</kx-base-dialog>
 </template>
 
-<script>
+<script lang="ts">
+export default {
+	inheritAttrs: false,
+};
+</script>
+
+<script setup lang="ts">
+import { reactive, toRaw } from "vue";
+import { useDialog } from "@kaciras-blog/uikit";
 import api from "@/api";
 
-export default {
-	name: "MetadataDialog",
-	inheritAttrs: false,
-	props: {
-		title: String,
-		cover: String,
-		keywords: String,
-		summary: String,
-	},
-	data () {
-		// metadata 是直接传的，复制一份防止影响原数据
-		return { local: Object.assign({}, this.$props) };
-	},
-	methods: {
-		ok () {
-			this.$dialog.confirm(this.local);
-		},
-		async changeCover () {
-			this.local.cover = await api.misc.uploadImageFile();
-		},
-	},
-};
+interface ArticleMeta {
+	title: string;
+	cover: string;
+	keywords: string;
+	summary: string;
+}
+
+const props = defineProps<ArticleMeta>();
+
+const dialog = useDialog();
+
+// metadata 是直接传的，复制一份防止影响原数据
+const local = reactive<ArticleMeta>(toRaw(props));
+
+function ok() {
+	dialog.confirm(toRaw(local));
+}
+
+async function changeCover() {
+	local.cover = await api.misc.uploadImageFile();
+}
 </script>
 
 <style module lang="less">
 .content {
-	width: 680px;
 	display: grid;
-	grid-template-areas: "cover title"
-						 "cover summary"
-						 "keywords keywords";
 	grid-template-columns: auto 1fr;
 	grid-template-rows: auto 1fr auto;
+	grid-template-areas:
+			"  cover   title"
+			"  cover  summary"
+			"keywords keywords";
+
 	grid-gap: 1rem;
+	width: 680px;
 }
 
 .cover {

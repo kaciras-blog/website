@@ -40,7 +40,7 @@ interface ArticleListQuery extends Pageable {
 	recursive?: boolean;
 }
 
-interface PublishRequest extends ArticleMeta {
+export interface PublishRequest extends ArticleMeta {
 	draftId: number;
 	destroy?: boolean;
 }

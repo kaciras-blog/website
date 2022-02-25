@@ -11,7 +11,7 @@
 						:src="category.cover"
 						alt="分类图标"
 					>
-					<h3 :class="$style.name">{{category.name}}</h3>
+					<h3 :class="$style.name">{{ category.name }}</h3>
 				</div>
 				<div v-else :class="$style.input"></div>
 
@@ -39,62 +39,63 @@
 	</kx-base-dialog>
 </template>
 
-<script>
-import api from "@/api";
+<script setup lang="ts">
+import { ref } from "vue";
+import { useDialog } from "@kaciras-blog/uikit";
+import api, { Category } from "@/api";
 import SelectCategoryDialog from "@/components/SelectCategoryDialog.vue";
 import { errorMessage } from "@/utils";
 
-export default {
-	name: "PublishDialog",
-	props: {
-		draft: Object,
-		current: Object,
-	},
-	data: () => ({
-		urlTitle: "",
-		category: null,
-		destroy: false,
-	}),
-	methods: {
-		selectCategory() {
-			this.$dialog.show(SelectCategoryDialog).onConfirm(data => this.category = data);
-		},
-		replace() {
-			this.urlTitle = this.urlTitle.replace(/ +/g, "-");
-		},
-		async accept() {
-			const { draft, current } = this;
-			try {
-				const data = Object.assign({}, current);
-				data.keywords = current.keywords.split(" ");
-				data.draftId = draft.id; // 文章API里是draftId
-				data.destroy = this.destroy;
+interface PublishDialogProps {
+	draft: any;
+	current: any;
+}
 
-				let id = draft.articleId;
-				let article;
+const props = defineProps<PublishDialogProps>();
 
-				if (id) {
-					article = await api.article.update(id, data);
-				} else if (!this.category) {
-					return this.$dialog.alertError("发表失败", "必须选择一个分类");
-				} else {
-					data.category = this.category.id;
-					data.urlTitle = this.urlTitle || data.title;
-					article = await api.article.publish(data);
-				}
+const dialog = useDialog();
 
-				this.$dialog.confirm(article);
-			} catch (e) {
-				this.$dialog.alertError("发表失败", errorMessage(e));
-			}
-		},
-	},
-};
+const urlTitle = ref("");
+const category = ref<Category | null>(null);
+const destroy = ref(false);
+
+function selectCategory() {
+	dialog.show<Category>(SelectCategoryDialog).onConfirm(data => category.value = data);
+}
+
+function replace() {
+	urlTitle.value = urlTitle.value.replace(/ +/g, "-");
+}
+
+async function accept() {
+	const { draft, current } = props;
+	try {
+		const data = Object.assign({}, current);
+		data.keywords = current.keywords.split(" ");
+		data.draftId = draft.id; // 文章API里是draftId
+		data.destroy = destroy.value;
+
+		let id = draft.articleId;
+		let article;
+
+		if (id) {
+			article = await api.article.update(id, data);
+		} else if (!category.value) {
+			return dialog.alertError("发表失败", "必须选择一个分类");
+		} else {
+			data.category = category.value.id;
+			data.urlTitle = urlTitle.value || data.title;
+			article = await api.article.publish(data);
+		}
+
+		dialog.confirm(article);
+	} catch (e) {
+		dialog.alertError("发表失败", errorMessage(e));
+	}
+}
 </script>
 
 <style module lang="less">
-/*@import "../../css/imports";*/
-
 .body {
 	width: 32rem;
 }

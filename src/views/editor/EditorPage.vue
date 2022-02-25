@@ -31,8 +31,12 @@
 	</markdown-editor>
 </template>
 
-<script>
-import api from "@/api";
+<script setup lang="ts">
+import api, { Article, Draft, DraftHistory } from "@/api";
+import { onBeforeUnmount, reactive, ref, watch } from "vue";
+import { onBeforeRouteLeave, useRouter } from "vue-router";
+import { useEventListener } from "@vueuse/core";
+import { useDialog } from "@kaciras-blog/uikit";
 import { articleLink, localDateMinute } from "@/blog-plugin";
 import { errorMessage } from "@/utils";
 import MarkdownEditor from "@/markdown/MarkdownEditor.vue";
@@ -42,144 +46,128 @@ import SyncScrollToggle from "@/markdown/SyncScrollToggle.vue";
 import PublishDialog from "./PublishDialog.vue";
 import MetadataDialog from "./MetadataDialog.vue";
 
-export default {
-	name: "EditPage",
-	components: {
-		SyncScrollToggle,
-		TextStateGroup,
-		TextTools,
-		MarkdownEditor,
-	},
-	props: {
-		draftId: {
-			type: String,
-			required: true,
-		},
-	},
-	data: () => ({
-		// Vue2的TS支持不好，只能写上以便IDE提示，下面的current也是
-		draft: {
-			id: null,
-			articleId: null,
-			userId: 0,
-			updateTime: null,
-		},
+interface EditorPageProps {
+	draftId: string;
+}
 
-		current: {
-			title: "",
-			cover: "",
-			keywords: "",
-			summary: "",
-			content: "",
-			saveCount: 0,
-		},
+const props = defineProps<EditorPageProps>();
 
-		/** 是否有在未保存的改动 */
-		changes: false,
+const dialog = useDialog();
+const router = useRouter();
 
-		autoSaveError: null,
-	}),
-	methods: {
-		localDateMinute,
+const draft = reactive<Draft>({} as any);
 
-		/**
-		 * 监视文本的改变，当改变时开始计时5分钟，到点自动保存
-		 */
-		watchForAutoSave() {
-			const callback = () => {
-				unwatch();
-				this.$_autoSaveTimer = setTimeout(this.autoSave, 5 * 60 * 1000);
-			};
-			const unwatch = this.$watch("current", callback, { deep: true });
-		},
+const current = reactive<DraftHistory>({
+	title: "",
+	cover: "",
+	keywords: "",
+	summary: "",
+	content: "",
+	time: 0,
+	saveCount: 0,
+});
 
-		async autoSave() {
-			const { draft, current } = this;
-			this.watchForAutoSave();
+/** 是否有在未保存的改动 */
+const changes = ref(false);
 
-			try {
-				await api.draft.save(draft.id, current.saveCount, current);
-				draft.updateTime = new Date();
-				this.changes = false;
-				this.autoSaveError = null;
-			} catch (e) {
-				this.autoSaveError = e;
-			}
-		},
+const autoSaveError = ref<Error>();
 
-		async manualSave() {
-			const { draft, current } = this;
-			try {
-				await api.draft.saveNewHistory(draft.id, current);
+let autoSaveTimer: any;
 
-				draft.updateTime = new Date();
-				this.changes = false;
-				this.autoSaveError = null;
+/**
+ * 监视文本的改变，当改变时开始计时 5 分钟，到点自动保存
+ */
+function watchForAutoSave() {
+	const callback = () => {
+		unwatch();
+		autoSaveTimer = setTimeout(autoSave, 5 * 60 * 1000);
+	};
+	const unwatch = watch(current, callback, { deep: true });
+}
 
-				this.$dialog.alertSuccess("保存成功");
+async function autoSave() {
+	watchForAutoSave();
 
-				// 刷新自动保存的计时
-				clearTimeout(this.$_autoSaveTimer);
-				this.watchForAutoSave();
-			} catch (e) {
-				this.$dialog.alertError("保存失败，请手动备份", errorMessage(e));
-			}
-		},
+	try {
+		await api.draft.save(draft.id, current.saveCount, current);
+		draft.updateTime = new Date();
+		changes.value = false;
+		autoSaveError.value = undefined;
+	} catch (e) {
+		autoSaveError.value = e;
+	}
+}
 
-		async showMetadataDialog() {
-			const result = await this.$dialog.show(MetadataDialog, this.current).confirmPromise;
-			Object.assign(this.current, result);
-		},
+async function manualSave() {
+	try {
+		await api.draft.saveNewHistory(draft.id, current);
 
-		async showPublishDialog() {
-			const article = await this.$dialog.show(PublishDialog, this.$data).confirmPromise;
-			this.changes = false;
-			return this.$router.push(articleLink(article));
-		},
+		draft.updateTime = new Date();
+		changes.value = false;
+		autoSaveError.value = undefined;
 
-		async loadHistory(saveCount) {
-			const { draft } = this;
-			this.current = await api.draft.getHistory(draft.id, saveCount);
-			draft.updateTime = this.current.time;
-		},
+		dialog.alertSuccess("保存成功");
 
-		onPageExit(event) {
-			if (this.changes) {
-				return event.returnValue = "Sure?";
-			}
-		},
-	},
-	beforeRouteLeave(to, from, next) {
-		if (this.changes) {
-			const exit = confirm("有未保存的改动，是否退出？");
-			if (exit === false) {
-				return next(false);
-			}
-		}
-		return next();
-	},
-	async beforeMount() {
-		this.draft = await api.draft.get(parseInt(this.draftId));
-		const { lastSaveCount, articleId } = this.draft;
+		// 刷新自动保存的计时
+		clearTimeout(autoSaveTimer);
+		watchForAutoSave();
+	} catch (e) {
+		dialog.alertError("保存失败，请手动备份", errorMessage(e));
+	}
+}
 
-		await this.loadHistory(lastSaveCount);
+async function showMetadataDialog() {
+	const result = await dialog.show(MetadataDialog, current).confirmPromise;
+	Object.assign(current, result);
+}
 
-		this.changes = false;
-		this.$watch("current", () => this.changes = true, { deep: true });
-		this.watchForAutoSave();
+async function showPublishDialog() {
+	const article = await dialog.show<Article>(PublishDialog, { current, draft }).confirmPromise;
+	changes.value = false;
+	return router.push(articleLink(article));
+}
 
-		if (!articleId && this.current.saveCount === 0) {
-			await this.showMetadataDialog();
-		}
-	},
-	mounted() {
-		window.addEventListener("beforeunload", this.onPageExit);
-	},
-	beforeDestroy() {
-		clearTimeout(this.$_autoSaveTimer);
-		window.removeEventListener("beforeunload", this.onPageExit);
-	},
-};
+async function loadHistory(saveCount: number) {
+	const got = await api.draft.getHistory(draft.id, saveCount);
+	Object.assign(current, got);
+	draft.updateTime = current.time;
+}
+
+function onPageExit(event: BeforeUnloadEvent) {
+	if (changes.value) {
+		return event.returnValue = "Sure?";
+	}
+}
+
+onBeforeRouteLeave(() => {
+	if (!changes.value) {
+		return;
+	}
+	const exit = window.confirm("有未保存的改动，是否退出？");
+	if (!exit) {
+		return false;
+	}
+});
+
+useEventListener("beforeunload", onPageExit);
+
+onBeforeUnmount(async () => {
+	const got = await api.draft.get(parseInt(props.draftId));
+	const { lastSaveCount, articleId } = got;
+	Object.assign(draft, got);
+
+	await loadHistory(lastSaveCount);
+
+	changes.value = false;
+	watch(current, () => changes.value = true, { deep: true });
+	watchForAutoSave();
+
+	if (!articleId && current.saveCount === 0) {
+		await showMetadataDialog();
+	}
+});
+
+onBeforeUnmount(() => clearTimeout(autoSaveTimer));
 </script>
 
 <style module lang="less">
