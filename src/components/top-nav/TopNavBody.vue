@@ -70,7 +70,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { useDialog, useBreakPoint } from "@kaciras-blog/uikit";
+import { useBreakPoint, useDialog } from "@kaciras-blog/uikit";
 import { useEventListener } from "@vueuse/core";
 import ListIcon from "bootstrap-icons/icons/list.svg?sfc";
 import SettingIcon from "@material-design-icons/svg/filled/settings.svg?sfc";
@@ -108,7 +108,7 @@ function showSettings() {
 }
 
 if (breakPoint.value === "mobile") {
-	useEventListener(window, "scroll", scrollFunction);
+	useEventListener("scroll", scrollFunction);
 }
 </script>
 
