@@ -20,7 +20,6 @@
 		<scroll-paging-view
 			v-model="draftList"
 			:loader="loadPage"
-			class="panel"
 			:page-size="20"
 			:auto-load="true"
 		>
@@ -40,21 +39,24 @@
 	</div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { shallowRef } from "vue";
+import { useRouter } from "vue-router";
 import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
 import TrashIcon from "bootstrap-icons/icons/trash.svg?sfc";
 import { MessageType, useDialog } from "@kaciras-blog/uikit";
-import api from "@/api";
+import api, { Draft } from "@/api";
 import { deleteOn, errorMessage } from "@/utils";
 import DraftConsoleItem from "./DraftConsoleItem.vue";
-import { useRouter } from "vue-router";
+import { ListQueryView } from "@/api/core";
 
 const dialog = useDialog();
 const router = useRouter();
 
-const draftList = shallowRef();
-const showHistory = shallowRef();
+// TODO: 列表的空数据状态处理。
+const DEFAULT_PAGE_DATA: ListQueryView<Draft> = { items: [], total: Infinity };
+
+const draftList = shallowRef(DEFAULT_PAGE_DATA);
 
 function newArticle() {
 	return api.draft.createNew()
@@ -67,22 +69,22 @@ async function deleteAll() {
 		title: "删除所有草稿",
 		content: "该操作不可撤销，是否继续？",
 		type: MessageType.Warning,
-		showCancelButton: true,
+		cancelable: true,
 	});
 	if (!result.isConfirm) {
 		return;
 	}
 	api.draft.clear()
-		.then(() => draftList.value = null)
+		.then(() => draftList.value = DEFAULT_PAGE_DATA)
 		.catch(e => dialog.alertError("清空失败", errorMessage(e)));
 }
 
-function loadPage(start, count) {
+function loadPage(start: number, count: number) {
 	const userId = 2;
 	return api.draft.getList({ userId, start, count });
 }
 
-function removeItem(id) {
+function removeItem(id: number) {
 	deleteOn(draftList.value.items, d => d.id === id);
 }
 </script>

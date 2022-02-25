@@ -8,6 +8,7 @@
 
 <script setup lang="ts">
 interface DiscussionActivity_Copy {
+	url: string;
 	title: string;
 	floor: number;
 	preview: string;
