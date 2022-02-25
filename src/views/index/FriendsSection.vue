@@ -222,7 +222,7 @@ const user = useCurrentUser();
 const prefetch = usePrefetch();
 const dialog = useDialog();
 
-const friends = reactive<Friend[]>(prefetch.friends);
+const friends = reactive<Friend[]>(prefetch.data.friends);
 const active = ref(false);
 const sorting = ref(false);
 

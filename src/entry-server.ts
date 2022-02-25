@@ -2,7 +2,7 @@ import { basename, extname } from "path";
 import { RouteLocationNormalizedLoaded, Router } from "vue-router";
 import { renderToString, SSRContext } from "vue/server-renderer";
 import { Pinia } from "pinia";
-import { useMQStore, breakpoints } from "@kaciras-blog/uikit";
+import { breakpoints, useMQStore } from "@kaciras-blog/uikit";
 import { configureForProxy } from "@kaciras-blog/server/lib/axios-helper.js";
 import api, { Api } from "./api";
 import { collectTasks, PrefetchContext } from "./prefetch";
@@ -73,7 +73,7 @@ async function prefetch(store: Pinia, router: Router, request: any) {
 
 	try {
 		await userStore.refresh(ssrApi);
-		prefetch.$state = await prefetching;
+		prefetch.data = await prefetching;
 	} catch (e) {
 		controller.abort();
 
@@ -111,7 +111,7 @@ export default async (context: any) => {
 	const appHtml = await renderToString(app, ssrContext);
 
 	const preloads = renderPreloadLinks(ssrContext.modules, manifest);
-	const initState = JSON.stringify(store.state);
+	const initState = JSON.stringify(store.state.value);
 	context.status = ssrContext.status;
 
 	// 加上 type="module" 相当于 defer，虽然代码不多但还是延迟一下吧。

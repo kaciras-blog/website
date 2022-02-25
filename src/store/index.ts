@@ -39,12 +39,12 @@ export const useCurrentUser = defineStore("user", {
 
 /** 路由页面的预取数据 */
 export const usePrefetch = defineStore("prefetch", {
-	state: () => ({} as any),
+	state: () => ({ data: {} as any }),
+
 });
 
 /**
  * 当前的太阳阶段，值是上面 SUN_PHASES 的字段名，null 表明无法确定。
- * 【注意】不要使用 undefined，$store.watch 无法监听值为 undefined 的字段。
  */
 export const useSunPhase = defineStore("sunPhase", {
 	state: () => ({

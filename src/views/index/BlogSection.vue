@@ -42,11 +42,9 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from "vue";
 import { usePrefetch } from "@/store";
 
-const prefetch = usePrefetch();
-const cards = reactive(prefetch.cards);
+const { cards } = usePrefetch().data;
 </script>
 
 <style module lang="less">

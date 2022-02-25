@@ -62,7 +62,7 @@ export async function prefetch(
 			console.debug(`导航被取消：${to.path}`);
 			return false;
 		} else {
-			usePrefetch(store).$state = data;
+			usePrefetch(store).data = data;
 		}
 	} catch (err) {
 		if (controller.signal.aborted) {
@@ -104,7 +104,7 @@ export const ClientPrefetchMixin: ComponentOptions = {
 		if (component.asyncData) {
 			controller = new AbortController();
 			events.emit("start", controller.signal);
-			return prefetch(this.$store, to, [component]);
+			return prefetch(this.$pinia, to, [component]);
 		}
 	},
 };

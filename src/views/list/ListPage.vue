@@ -74,7 +74,7 @@ const breakPoint = useBreakPoint();
 const route = useRoute();
 const prefetch = usePrefetch();
 
-const { articleList, category } = prefetch;
+const { articleList, category } = prefetch.data;
 
 let startPos = parseInt(route.params.index as string) || 0;
 startPos *= DEFAULT_PAGE_SIZE;

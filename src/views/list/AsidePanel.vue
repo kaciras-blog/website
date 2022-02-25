@@ -20,24 +20,11 @@
 	</div>
 </template>
 
-<script>
-import api from "@/api";
-import { articleLink } from "@/blog-plugin"
+<script setup lang="ts">
+import { articleLink } from "@/blog-plugin";
+import { usePrefetch } from "@/store";
 
-export default {
-	name: "AsidePanel",
-	data() {
-		return {
-			hots: this.$store.state.prefetch?.hots,
-		};
-	},
-	methods: {
-		articleLink,
-	},
-	async beforeMount() {
-		this.hots ??= await api.article.getHots();
-	},
-};
+const { hots } = usePrefetch().data;
 </script>
 
 <style module lang="less">
