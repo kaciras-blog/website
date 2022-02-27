@@ -12,7 +12,7 @@ import { useCurrentUser, usePrefetch } from "@/store";
 const titleRE = new RegExp("<title>[^<]*</title>");
 
 // 后台页面就不预渲染了。
-const noSSR = new RegExp("^/(?:edit|console)/?(?:\\?|$)");
+const noSSR = new RegExp("^/(?:edit|console)/?(?:\\?|$)?");
 
 class ServerPrefetch extends PrefetchContext {
 
@@ -69,7 +69,7 @@ async function prefetch(store: Pinia, router: Router, request: any) {
 	const prefetching = collectTasks(components, session);
 
 	const userStore = useCurrentUser(store);
-	const prefetch = usePrefetch();
+	const prefetch = usePrefetch(store);
 
 	try {
 		await userStore.refresh(ssrApi);
