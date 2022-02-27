@@ -1,14 +1,13 @@
 <template>
 	<kx-base-dialog title="插入视频">
 		<form :class="$style.form" @keyup.enter="enterKey">
-
 			<label for="video_url">
 				视频URL（必需）
 			</label>
 			<div :class="$style.field">
 				<input
 					id="video_url"
-					v-model="src"
+					v-model="data.src"
 					name="src"
 					:class="$style.text_box"
 				>
@@ -21,7 +20,7 @@
 			</div>
 
 			<kx-radio-box-group
-				v-model="isVideo"
+				v-model="data.isVideo"
 				name="isVideo"
 				:class="$style.field"
 			>
@@ -29,12 +28,12 @@
 				<kx-radio-box :value="true">作为视频</kx-radio-box>
 			</kx-radio-box-group>
 
-			<template v-if="isVideo">
+			<template v-if="data.isVideo">
 				<label for="video_poster">视频封面</label>
 				<div :class="$style.field">
 					<input
 						id="video_poster"
-						v-model="poster"
+						v-model="data.poster"
 						name="poster"
 						:class="$style.text_box"
 					>
@@ -53,7 +52,7 @@
 						id="video_alt"
 						name="alt"
 						:class="$style.text_box"
-						:value="label"
+						:value="data.label"
 						@input="inputLabel"
 					>
 				</div>
@@ -61,50 +60,56 @@
 		</form>
 
 		<kx-dialog-buttons
-			:acceptable="src.length > 0"
-			@confirm="$dialog.confirm($data)"
+			@accept="data.src.length > 0 && dialog.confirm(data)"
 		/>
 	</kx-base-dialog>
 </template>
 
-<script>
-import { openFile } from "@kaciras-blog/uikit";
+<script setup lang="ts">
+import { openFile, useDialog } from "@kaciras-blog/uikit";
 import api from "@/api";
 import { basename } from "@/utils";
+import { reactive } from "vue";
 
-export default {
-	name: "VideoDialog",
-	data: () => ({
-		src: "",
-		isVideo: false,
-		poster: "",
-		label: "",
-		autoLabel: true,
-	}),
-	methods: {
-		// 用户的输入给设个标识，关闭 label 的自动填充
-		inputLabel(event) {
-			this.label = event.target.value;
-			this.autoLabel = false;
-		},
-		async uploadVideo() {
-			const file = await openFile("video/*");
-			this.src = await api.misc.uploadVideo(file);
-			if (this.autoLabel) {
-				this.label = basename(file.name);
-			}
-		},
-		async uploadPoster() {
-			this.poster = await api.misc.uploadImageFile();
-		},
-		enterKey() {
-			if (!this.src) {
-				return;
-			}
-			this.$dialog.confirm(this.$data);
-		},
-	},
-};
+interface VideoDialogProps {
+	src: string;
+	isVideo: boolean;
+	poster: string;
+	label: string;
+	autoLabel: boolean;
+}
+
+const dialog = useDialog();
+
+const data = reactive<VideoDialogProps>({
+	src: "",
+	isVideo: false,
+	poster: "",
+	label: "",
+	autoLabel: true,
+});
+
+function enterKey() {
+	data.src && dialog.confirm(data);
+}
+
+// 用户的输入给设个标识，关闭 label 的自动填充
+function inputLabel(event: Event) {
+	data.autoLabel = false;
+	data.label = (event.target as HTMLInputElement).value;
+}
+
+async function uploadVideo() {
+	const file = await openFile("video/*");
+	data.src = await api.misc.uploadVideo(file);
+	if (data.autoLabel) {
+		data.label = basename(file.name);
+	}
+}
+
+async function uploadPoster() {
+	data.poster = await api.misc.uploadImageFile();
+}
 </script>
 
 <style module lang="less">

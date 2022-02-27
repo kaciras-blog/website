@@ -1,23 +1,23 @@
 <template>
 	<div>
 		<kx-button class="icon green" title="双列视图" @click="viewModel = 0">
-			<i class="fas fa-columns"></i>
+			<SplitIcon/>
 		</kx-button>
 		<kx-button class="icon green" title="Markdown视图" @click="viewModel = 1">
-			<i class="far fa-edit"></i>
+			<EditIcon/>
 		</kx-button>
 		<kx-button class="icon green" title="Html视图" @click="viewModel = 2">
-			<i class="fas fa-eye"></i>
+			<EyeIcon/>
 		</kx-button>
 
 		<kx-button class="primary icon" title="编辑器设置">
-			<i class="fas fa-cog"></i>
+			<SettingIcon/>
 		</kx-button>
 	</div>
 </template>
 
-<script>
-export default {
-	name: "KxMarkdownConfigToolbar",
-};
-</script>
+<script setup lang="ts">
+import SplitIcon from "@material-design-icons/svg/round/vertical_split.svg?sfc";
+import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
+import EyeIcon from "bootstrap-icons/icons/eye-fill.svg?sfc";
+import SettingIcon from "@material-design-icons/svg/filled/settings.svg?sfc";</script>

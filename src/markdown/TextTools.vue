@@ -1,153 +1,200 @@
 <template>
 	<div>
-		<kx-button title="标题" icon="fas fa-heading" @click="addHeader(2)"/>
-		<kx-button title="粗体" icon="fa fa-bold" @click="switchWrapper('**')"/>
-		<kx-button title="斜体" icon="fa fa-italic" @click="switchWrapper('*')"/>
-		<kx-button title="删除线" icon="fa fa-strikethrough" @click="switchWrapper('~~')"/>
-		<kx-button title="行内代码" icon="fa fa-code" @click="switchWrapper('`')"/>
-		<kx-button title="横线" icon="fa fa-minus" @click="addNewLine('- - -')"/>
-		<kx-button title="引用块" icon="fa fa-quote-left" @click="addPrefixToLines('>')"/>
-		<kx-button title="列表" icon="fas fa-list-ul" @click="addPrefixToLines('* ')"/>
-		<kx-button title="插入链接" icon="fa fa-link" @click="addLink"/>
+		<kx-button title="标题" @click="addHeader(2)">
+			<TitleIcon/>
+		</kx-button>
+		<kx-button title="粗体" @click="switchWrapper('**')">
+			<BoldIcon/>
+		</kx-button>
+		<kx-button title="斜体" @click="switchWrapper('*')">
+			<ItalicIcon/>
+		</kx-button>
+		<kx-button title="删除线" @click="switchWrapper('~~')">
+			<StrikethroughIcon/>
+		</kx-button>
+		<kx-button title="行内代码" @click="switchWrapper('`')">
+			<CodeIcon/>
+		</kx-button>
+		<kx-button title="横线" @click="addNewLine('- - -')">
+			<RemoveIcon/>
+		</kx-button>
+		<kx-button title="引用块" @click="addPrefixToLines('>')">
+			<QuoteIcon/>
+		</kx-button>
+		<kx-button title="列表" @click="addPrefixToLines('* ')">
+			<ListIcon/>
+		</kx-button>
+		<kx-button title="插入链接" @click="addLink">
+			<AddLinkIcon/>
+		</kx-button>
 
-		<kx-button title="插入图片" icon="far fa-file-image" @click="addImage"/>
-		<kx-button title="插入视频" icon="fa fa-file-video" @click="addVideo"/>
-		<kx-button title="插入音频" icon="fas fa-file-audio" @click="addAudio"/>
+		<kx-button title="插入图片" @click="addImage">
+			<ImageIcon/>
+		</kx-button>
+		<kx-button title="插入视频" @click="addVideo">
+			<VideoIcon/>
+		</kx-button>
+		<kx-button title="插入音频" @click="addAudio">
+			<MusicIcon/>
+		</kx-button>
 	</div>
 </template>
 
-<script>
-import { getImageResolution, getVideoResolution, openFile } from "@kaciras-blog/uikit";
+<script setup lang="ts">
+import TitleIcon from "@material-design-icons/svg/round/title.svg?sfc";
+import BoldIcon from "@material-design-icons/svg/round/format_bold.svg?sfc";
+import ItalicIcon from "@material-design-icons/svg/round/format_italic.svg?sfc";
+import StrikethroughIcon from "@material-design-icons/svg/round/strikethrough_s.svg?sfc";
+import CodeIcon from "@material-design-icons/svg/round/code.svg?sfc";
+import RemoveIcon from "@material-design-icons/svg/round/remove.svg?sfc";
+import QuoteIcon from "bootstrap-icons/icons/quote.svg?sfc";
+import ListIcon from "@material-design-icons/svg/round/format_list_bulleted.svg?sfc";
+import AddLinkIcon from "@material-design-icons/svg/round/add_link.svg?sfc";
+import ImageIcon from "bootstrap-icons/icons/image-fill.svg?sfc";
+import VideoIcon from "bootstrap-icons/icons/play-btn.svg?sfc";
+import MusicIcon from "bootstrap-icons/icons/music-note-beamed.svg?sfc";
+import { getImageResolution, getVideoResolution, openFile, useDialog } from "@kaciras-blog/uikit";
 import api from "@/api";
 import { basename } from "@/utils";
 import VideoDialog from "./VideoDialog.vue";
 import AddLinkDialog from "./AddLinkDialog.vue";
 
-export default {
-	name: "TextTools",
-	// functional: true,
-	props: {
-		ctx: {
-			type: Object,
-			required: true,
-		},
-	},
-	computed: {
-		text() {
-			return this.ctx.content;
-		},
-	},
-	methods: {
+interface ToolbarProps {
+	viewMode: 0 | 1;
+	selection: [number, number];
+	content: string;
+}
 
-		/**
-		 * 获取用户选择的范围，也可以将范围扩大到整行。
-		 *
-		 * @param extend 是否扩展到整行
-		 * @return [number, number] 起点和终点
-		 */
-		getSelectedRange(extend) {
-			let [s, e] = this.ctx.selection;
-			if (extend) {
-				if (s > 0) {
-					s = this.text.lastIndexOf("\n", s - 1) + 1;
-				}
-				e = this.text.indexOf("\n", e);
-				if (e === -1) e = this.text.length;
-			}
-			return [s, e];
-		},
+interface ToolbarEvents {
+	(event: "overwrite", start: number, end: number, value: string): void;
+}
 
-		addHeader(level) {
-			const prefix = new Array(level + 1).join("#") + " ";
-			this.addPrefixToLines(prefix);
-		},
+const props = defineProps<ToolbarProps>();
+const emit = defineEmits<ToolbarEvents>();
 
-		addNewLine(text) {
-			const v = this.text;
-			const index = this.getSelectedRange(false)[0];
+const dialog = useDialog();
 
-			if (index > 0 && v.charAt(index - 1) !== "\n") {
-				text = "\n" + text;
-			}
-			if (index < v.length && v.charAt(index) !== "\n") {
-				text += "\n";
-			}
+/**
+ * 获取用户选择的范围，也可以将范围扩大到整行。
+ *
+ * @param extend 是否扩展到整行
+ * @return [number, number] 起点和终点
+ */
+function getSelectedRange(extend: boolean) {
+	const { content, selection } = props;
+	let [s, e] = selection;
+	if (extend) {
+		if (s > 0) {
+			s = content.lastIndexOf("\n", s - 1) + 1;
+		}
+		e = content.indexOf("\n", e);
+		if (e === -1) e = content.length;
+	}
+	return [s, e];
+}
 
-			this.ctx.replaceArea(index, index, text);
-		},
+function addPrefixToLines(prefix: string) {
+	const [selStart, selEnd] = getSelectedRange(true);
+	const lines = props.content.substring(selStart, selEnd).split("\n");
 
-		addPrefixToLines(prefix) {
-			const [selStart, selEnd] = this.getSelectedRange(true);
-			const lines = this.text.substring(selStart, selEnd).split("\n");
+	let text = "";
+	for (let line of lines) {
+		text += "\n";
+		if (/^\s*$/.test(line)) {
+			text += line;
+		} else {
+			text += prefix + line;
+		}
+	}
+	text = text.substring(1);
 
-			let text = "";
-			for (let line of lines) {
-				text += "\n";
-				if (/^\s*$/.test(line)) {
-					text += line;
-				} else {
-					text += prefix + line;
-				}
-			}
-			text = text.substring(1);
+	emit("overwrite", selStart, selEnd, text);
+}
 
-			this.ctx.replaceArea(selStart, selEnd, text);
-		},
+function addHeader(level: number) {
+	addPrefixToLines(new Array(level + 1).join("#") + " ");
+}
 
-		switchWrapper(prefix) {
-			const v = this.text;
-			const [selStart, selEnd] = this.getSelectedRange(false);
+function addNewLine(text: string) {
+	const v = props.content;
+	const index = getSelectedRange(false)[0];
 
-			let text = v.substring(selStart, selEnd);
-			if (text.startsWith(prefix) && text.endsWith(prefix)) {
-				text = text.substring(prefix.length, text.length - prefix.length);
-			} else {
-				text = prefix + text + prefix;
-			}
+	if (index > 0 && v.charAt(index - 1) !== "\n") {
+		text = "\n" + text;
+	}
+	if (index < v.length && v.charAt(index) !== "\n") {
+		text += "\n";
+	}
 
-			this.ctx.replaceArea(selStart, selEnd, text);
-		},
+	emit("overwrite", index, index, text);
+}
 
-		async addLink() {
-			const { text, href } = await this.$dialog.show(AddLinkDialog).confirmPromise;
-			const str = `[${text}](${href})`;
+function switchWrapper(prefix: string) {
+	const v = props.content;
+	const [selStart, selEnd] = getSelectedRange(false);
 
-			const selEnd = this.getSelectedRange(false)[1];
-			this.ctx.replaceArea(selEnd, selEnd, str);
-		},
+	let text = v.substring(selStart, selEnd);
+	if (text.startsWith(prefix) && text.endsWith(prefix)) {
+		text = text.substring(prefix.length, text.length - prefix.length);
+	} else {
+		text = prefix + text + prefix;
+	}
 
-		async addImage() {
-			const file = await openFile("image/*");
+	emit("overwrite", selStart, selEnd, text);
+}
 
-			// 加上宽高便于确定占位图的尺寸，从 https://chanshiyu.com/#/post/41 学到的
-			const { width, height } = await getImageResolution(file);
-			const res = await api.misc.uploadImage(file) + `?vw=${width}&vh=${height}`;
+interface AddLinkData  {
+	text: string;
+	href: string;
+}
 
-			const [, selEnd] = this.ctx.selection;
-			this.ctx.replaceArea(selEnd, selEnd, `![${basename(file.name)}](${res})`);
-		},
+async function addLink() {
+	const { text, href } = await dialog.show<AddLinkData>(AddLinkDialog).confirmPromise;
+	const str = `[${text}](${href})`;
 
-		async addVideo() {
-			const { src, label, poster, isVideo } = await this.$dialog.show(VideoDialog).confirmPromise;
-			let text;
+	const selEnd = getSelectedRange(false)[1];
+	emit("overwrite", selEnd, selEnd, str);
+}
 
-			if (isVideo) {
-				text = `@video[${poster}](${src})`;
-			} else {
-				const { width, height } = await getVideoResolution(src);
-				text = `@gif[${label}](${src}?vw=${width}&vh=${height})`;
-			}
+async function addImage() {
+	const file = await openFile("image/*");
 
-			const selEnd = this.ctx.selection[1];
-			this.ctx.replaceArea(selEnd, selEnd, text);
-		},
+	// 加上宽高便于确定占位图的尺寸，从 https://chanshiyu.com/#/post/41 学到的
+	const { width, height } = await getImageResolution(file);
+	const res = await api.misc.uploadImage(file) + `?vw=${width}&vh=${height}`;
 
-		async addAudio() {
-			const file = await openFile("audio/*");
-			const res = await api.misc.uploadAudio(file);
-			const selEnd = this.ctx.selection[1];
-			this.ctx.replaceArea(selEnd, selEnd, `@audio[](${res})`);
-		},
-	},
-};
+	const [, selEnd] = props.selection;
+	emit("overwrite", selEnd, selEnd, `![${basename(file.name)}](${res})`);
+}
+
+interface VDP_Copy {
+	src: string;
+	isVideo: boolean;
+	poster: string;
+	label: string;
+	autoLabel: boolean;
+}
+
+async function addVideo() {
+	const { src, label, poster, isVideo } = await dialog
+		.show<VDP_Copy>(VideoDialog).confirmPromise;
+	let text;
+
+	if (isVideo) {
+		text = `@video[${poster}](${src})`;
+	} else {
+		const { width, height } = await getVideoResolution(src);
+		text = `@gif[${label}](${src}?vw=${width}&vh=${height})`;
+	}
+
+	const [selEnd] = props.selection;
+	emit("overwrite", selEnd, selEnd, text);
+}
+
+async function addAudio() {
+	const file = await openFile("audio/*");
+	const res = await api.misc.uploadAudio(file);
+	const [selEnd] = props.selection;
+	emit("overwrite", selEnd, selEnd, `@audio[](${res})`);
+}
 </script>

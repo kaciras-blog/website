@@ -6,10 +6,6 @@
 		</template>
 
 		<template v-slot:tools-right="{ ctx }">
-			<kx-button class="info" title="双列视图" icon="fas fa-columns" @click="ctx.viewMode = 0"/>
-			<kx-button class="info" title="Markdown视图" icon="far fa-edit" @click="ctx.viewMode = 1"/>
-			<kx-button class="info" title="Html视图" icon="fas fa-eye" @click="ctx.viewMode = 2"/>
-
 			<kx-button class="primary" title="修改简介" icon="far fa-address-card" @click="showMetadataDialog"/>
 			<kx-button class="primary" title="保存" icon="far fa-save" @click="manualSave"/>
 			<kx-button class="primary" title="发布!" icon="far fa-paper-plane" @click="showPublishDialog"/>

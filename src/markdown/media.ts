@@ -128,7 +128,7 @@ export function initLazyLoading(el: HTMLElement) {
 			 * play 返回 Promise 来加等待加载完成，如果元数据还未加载完就暂停会抛出异常。
 			 * 这个异常在 Chrome 里是 AbortError，Firefox 是 DomException，无法很好地跟其他情况区分。
 			 *
-			 * 但元数据的加载被中断是正常的，不影响下次播放，故直接屏蔽掉异常免得控制台里难看。
+			 * 但元数据的加载被中断是正常的，不影响下次播放，故直接屏蔽掉。
 			 *
 			 * https://developers.google.com/web/updates/2017/06/play-request-was-interrupted
 			 */

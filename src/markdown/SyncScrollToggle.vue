@@ -1,22 +1,25 @@
 <script>
+import { h, useCssModule } from "vue";
+
 export default {
 	name: "SyncScrollToggle",
-	render(createElement, context) {
-		const { isSyncScroll, setSyncScroll } = context.props.ctx;
-		const { $style } = context;
+	props: ["ctx"],
+	render(props) {
+		const { isSyncScroll, setSyncScroll } = props.ctx;
+		const $style = useCssModule();
 
 		if (isSyncScroll) {
 			const attrs = {
 				staticClass: `${$style.element} ${$style.on}`,
 				on: { click: () => setSyncScroll(false) },
 			};
-			return createElement("span", attrs, "同步滚动开");
+			return h("span", attrs, "同步滚动开");
 		} else {
 			const attrs = {
 				staticClass: `${$style.element} ${$style.off}`,
 				on: { click: () => setSyncScroll(true) },
 			};
-			return createElement("span", attrs, "同步滚动关");
+			return h("span", attrs, "同步滚动关");
 		}
 	},
 };

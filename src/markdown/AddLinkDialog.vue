@@ -4,7 +4,7 @@
 
 			<label>链接地址</label>
 			<input
-				v-model="href"
+				v-model="data.href"
 				title="链接地址"
 				:class="$style.input"
 				placeholder="地址不能为空"
@@ -14,36 +14,36 @@
 
 			<label>文字</label>
 			<input
-				v-model="text"
+				v-model="data.text"
 				title="文字"
 				:class="$style.input"
-				:placeholder="href"
+				:placeholder="data.href"
 			/>
 		</form>
 		<kx-dialog-buttons @confirm="ok"/>
 	</kx-base-dialog>
 </template>
 
-<script>
-export default {
-	name: "AddLinkDialog",
-	data: () => ({
-		text: "",
-		href: "",
-	}),
-	methods: {
-		ok() {
-			const data = this.$data;
-			if (!data.href) {
-				return this.$dialog.close();
-			}
-			if (!data.text) {
-				data.text = data.href;
-			}
-			this.$dialog.confirm(data);
-		},
-	},
-};
+<script setup lang="ts">
+import { reactive } from "vue";
+import { useDialog } from "@kaciras-blog/uikit";
+
+const dialog = useDialog();
+
+const data = reactive({
+	text: "",
+	href: "",
+});
+
+function ok() {
+	if (!data.href) {
+		return dialog.close();
+	}
+	if (!data.text) {
+		data.text = data.href;
+	}
+	dialog.confirm(data);
+}
 </script>
 
 <style module lang="less">
