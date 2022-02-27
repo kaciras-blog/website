@@ -72,6 +72,7 @@
 </template>
 
 <script setup lang="ts">
+import { KxButton } from "@kaciras-blog/uikit";
 import DownUpIcon from "bootstrap-icons/icons/arrow-down-up.svg?sfc";
 import TrashIcon from "bootstrap-icons/icons/trash.svg?sfc";
 import api from "@/api";

@@ -96,9 +96,9 @@
 </template>
 
 <script setup lang="ts">
-import { inject, nextTick, ref } from "vue";
-import { useBreakPoint, useDialog } from "@kaciras-blog/uikit";
-import { debounceFirst } from "@kaciras-blog/server/lib/functions.js";
+import { nextTick, ref } from "vue";
+import { useBreakPoint, useDialog, ButtonPagingView } from "@kaciras-blog/uikit";
+import { debounceFirst } from "@kaciras-blog/server";
 import api, { Discussion, DiscussionState, Topic, User } from "@/api";
 import { ListQueryView } from "@/api/core";
 import MarkdownView from "@/markdown/MarkdownView.vue";
@@ -109,7 +109,7 @@ import InputSection from "./InputSection.vue";
 
 const PAGE_SIZE = 10;
 
-interface DiscussionCopy {
+interface Discussion_Copy {
 	type: number;
 	objectId: number;
 	id: number;
@@ -127,7 +127,7 @@ interface DiscussionCopy {
 	replies?: Discussion[];
 }
 
-const props = defineProps<DiscussionCopy>();
+const props = defineProps<Discussion_Copy>();
 const emit = defineEmits(["removed", "afterSubmit"]);
 
 const breakPoint = useBreakPoint();
@@ -199,7 +199,7 @@ function showNestFrame() {
 	return $dialog.show(ReplyFrame, {
 		host: props,
 		modelValue: children.value,
-		"onUpdate:modelValue": v => children.value = v,
+		"onUpdate:modelValue": (v: any) => children.value = v,
 	});
 }
 

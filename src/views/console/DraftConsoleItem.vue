@@ -42,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import { MessageType, useDialog } from "@kaciras-blog/uikit";
+import { MessageType, useDialog, KxButton } from "@kaciras-blog/uikit";
 import api from "@/api";
 import { localDateMinute } from "@/blog-plugin";
 

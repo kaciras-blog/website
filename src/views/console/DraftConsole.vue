@@ -42,9 +42,9 @@
 <script setup lang="ts">
 import { shallowRef } from "vue";
 import { useRouter } from "vue-router";
+import { MessageType, useDialog, KxButton, ScrollPagingView } from "@kaciras-blog/uikit";
 import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
 import TrashIcon from "bootstrap-icons/icons/trash.svg?sfc";
-import { MessageType, useDialog } from "@kaciras-blog/uikit";
 import api, { Draft } from "@/api";
 import { deleteOn, errorMessage } from "@/utils";
 import DraftConsoleItem from "./DraftConsoleItem.vue";

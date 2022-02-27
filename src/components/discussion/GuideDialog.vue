@@ -10,3 +10,7 @@
 		<kx-dialog-buttons :on-accept="$dialog.close"/>
 	</kx-base-dialog>
 </template>
+
+<script setup lang="ts">
+import { KxDialogButtons } from "@kaciras-blog/uikit";
+</script>

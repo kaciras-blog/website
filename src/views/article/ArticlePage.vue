@@ -99,7 +99,7 @@ export default { asyncData };
 import { ref, ComponentPublicInstance } from "vue";
 import ChatIcon from "@material-design-icons/svg/outlined/forum.svg?sfc";
 import ArrowTopIcon from "@material-design-icons/svg/outlined/rocket_launch.svg?sfc";
-import { scrollToElementStart } from "@kaciras-blog/uikit";
+import { scrollToElementStart, KxButton } from "@kaciras-blog/uikit";
 import { Article } from "@/api";
 import { articleLink, localDateMinute } from "@/blog-plugin";
 import { useHeadMeta } from "@/prefetch";

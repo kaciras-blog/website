@@ -59,6 +59,7 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import { useLocalStorage } from "@vueuse/core";
+import { KxSelect } from "@kaciras-blog/uikit";
 import api, { Discussion, DiscussionQuery } from "@/api";
 import { ListQueryView } from "@/api/core";
 import BootLoader from "./BootLoader.vue";

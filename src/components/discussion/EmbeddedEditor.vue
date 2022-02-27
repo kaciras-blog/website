@@ -33,7 +33,7 @@
 		name="content"
 		:placeholder='placeholder'
 		aria-label="输入评论"
-		v-autofocus
+		v-auto-focus
 		v-ime-input="handleInput"
 	/>
 
@@ -69,10 +69,10 @@
 
 <script setup lang="ts">
 import { computed, nextTick, ref } from "vue";
-import { useDialog } from "@kaciras-blog/uikit";
 import QuestionIcon from "bootstrap-icons/icons/question-circle.svg?sfc";
 import EyeIcon from "bootstrap-icons/icons/eye-fill.svg?sfc";
 import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
+import { useDialog, KxButton, KxTaskButton } from "@kaciras-blog/uikit";
 import { DEFAULT_AVATAR } from "@/blog-plugin";
 import { useCurrentUser } from "@/store";
 import { Discussion } from "@/api";

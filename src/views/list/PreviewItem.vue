@@ -62,6 +62,7 @@
 </template>
 
 <script setup lang="ts">
+import { RouterLink } from "vue-router";
 import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
 import EyeIcon from "bootstrap-icons/icons/eye-fill.svg?sfc";
 import ChatIcon from "bootstrap-icons/icons/chat-dots.svg?sfc";

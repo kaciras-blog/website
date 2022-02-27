@@ -38,7 +38,7 @@ export default {
 
 <script setup lang="ts">
 import { reactive, toRaw } from "vue";
-import { useDialog } from "@kaciras-blog/uikit";
+import { useDialog, KxDialogButtons } from "@kaciras-blog/uikit";
 import api from "@/api";
 
 interface ArticleMeta {

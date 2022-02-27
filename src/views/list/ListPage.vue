@@ -62,13 +62,13 @@ export default {
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { useRoute } from "vue-router";
 import { useLocalStorage } from "@vueuse/core";
+import { useRoute } from "vue-router";
+import { useBreakPoint, ScrollPagingView, KxSwitchBox } from "@kaciras-blog/uikit";
 import api from "@/api";
+import { usePrefetch } from "@/store";
 import PreviewItem from "./PreviewItem.vue";
 import AsidePanel from "./AsidePanel.vue";
-import { usePrefetch } from "@/store";
-import { useBreakPoint } from "@kaciras-blog/uikit";
 
 const breakPoint = useBreakPoint();
 const route = useRoute();

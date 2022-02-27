@@ -54,9 +54,10 @@
 </template>
 
 <script>
-import api from "@/api";
+import { KxButton } from "@kaciras-blog/uikit";
 import ArrowLeft from "@material-design-icons/svg/round/arrow_back.svg?sfc";
 import ArrowUpward from "@material-design-icons/svg/round/arrow_upward.svg?sfc";
+import api from "@/api";
 import CachedCategoryWalker from "@/components/CachedCategoryWalker";
 import CategoryCard from "@/components/CategoryCard.vue";
 import CategoryView from "./CategoryView.vue";
@@ -75,6 +76,7 @@ export default {
 		ArrowUpward,
 		CategoryCard,
 		CategoryView,
+		KxButton,
 	},
 	data: () => new CachedCategoryWalker(),
 	computed: {

@@ -5,6 +5,10 @@
 	</kx-base-dialog>
 </template>
 
+<script setup lang="ts">
+import { KxDialogButtons } from "@kaciras-blog/uikit";
+</script>
+
 <style module>
 .dialog { width: 30rem; }
 </style>

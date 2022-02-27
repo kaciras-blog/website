@@ -33,8 +33,8 @@
 
 <script setup lang="ts">
 import { ref, watch } from "vue";
+import { useDialog, KxFrame, KxFrameHeader, ScrollPagingView } from "@kaciras-blog/uikit";
 import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
-import { useDialog } from "@kaciras-blog/uikit";
 import api, { Discussion } from "@/api";
 import { ListQueryView } from "@/api/core";
 import EditorFrame from "./EditorFrame.vue";

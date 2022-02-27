@@ -41,7 +41,7 @@
 			name="content"
 			:placeholder='placeholder'
 			aria-label="输入评论"
-			v-autofocus
+			v-auto-focus
 			v-ime-input="handleInput"
 		/>
 
@@ -77,10 +77,10 @@ export default { isolation: true };
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
+import { useDialog, KxFrameHeader, KxFrame, KxTaskButton } from "@kaciras-blog/uikit";
 import EyeIcon from "bootstrap-icons/icons/eye-fill.svg?sfc";
 import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
 import HelpIcon from "bootstrap-icons/icons/question-circle.svg?sfc";
-import { useDialog } from "@kaciras-blog/uikit";
 import PaperPlaneIcon from "@/assets/icon/paper-plane.svg?sfc";
 import { Discussion } from "@/api";
 import { useCurrentUser } from "@/store";

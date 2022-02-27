@@ -73,7 +73,7 @@
 <script setup lang="ts">
 import { reactive, ref, toRaw } from "vue";
 import { useRouter } from "vue-router";
-import { KxButton, KxTaskButton, KxCheckBox, KxPasswordInput, vAutoFocus } from "@kaciras-blog/uikit";
+import { KxButton, KxTaskButton, KxCheckBox, KxPasswordInput } from "@kaciras-blog/uikit";
 import api from "@/api";
 import OauthIcon from "@/components/OauthIcon.vue";
 import { errorMessage } from "@/utils";

@@ -29,7 +29,7 @@
 
 <script setup>
 import { nextTick, ref, watch } from "vue";
-import { moveElement, observeMouseMove, useDialog } from "@kaciras-blog/uikit";
+import { moveElement, observeMouseMove, useDialog, KxButton } from "@kaciras-blog/uikit";
 import api from "@/api";
 import { attachRandomId, deleteOn } from "@/utils";
 import CardListItem from "./CardListItem.vue";

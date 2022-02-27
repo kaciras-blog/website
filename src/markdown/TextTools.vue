@@ -53,7 +53,7 @@ import AddLinkIcon from "@material-design-icons/svg/round/add_link.svg?sfc";
 import ImageIcon from "bootstrap-icons/icons/image-fill.svg?sfc";
 import VideoIcon from "bootstrap-icons/icons/play-btn.svg?sfc";
 import MusicIcon from "bootstrap-icons/icons/music-note-beamed.svg?sfc";
-import { getImageResolution, getVideoResolution, openFile, useDialog } from "@kaciras-blog/uikit";
+import { getImageResolution, getVideoResolution, openFile, useDialog, KxButton } from "@kaciras-blog/uikit";
 import api from "@/api";
 import { basename } from "@/utils";
 import VideoDialog from "./VideoDialog.vue";

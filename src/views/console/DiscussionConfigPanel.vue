@@ -21,6 +21,7 @@
 
 <script setup lang="ts">
 import { ref, toRaw } from "vue";
+import { KxCheckBox, SkFadingCircle } from "@kaciras-blog/uikit";
 import api from "@/api";
 
 // 传过来的配置没有描述，这里直接定义.

@@ -38,7 +38,7 @@
 
 <script setup lang="ts">
 import { shallowReactive, toRaw } from "vue";
-import { openFile, useDialog } from "@kaciras-blog/uikit";
+import { openFile, useDialog, KxButton } from "@kaciras-blog/uikit";
 import api from "@/api";
 import { DEFAULT_AVATAR } from "@/blog-plugin";
 import { useCurrentUser } from "@/store";

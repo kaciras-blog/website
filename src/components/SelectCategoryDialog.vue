@@ -93,12 +93,12 @@
 
 <script setup lang="ts">
 import { computed, reactive, ref } from "vue";
+import { useDialog, KxButton, KxCheckBox } from "@kaciras-blog/uikit";
 import ArrowLeft from "@material-design-icons/svg/round/arrow_back.svg?sfc";
 import ArrowUpward from "@material-design-icons/svg/round/arrow_upward.svg?sfc";
 import { Category } from "@/api";
 import { deleteOn } from "@/utils";
 import CachedCategoryWalker from "./CachedCategoryWalker";
-import { useDialog } from "@kaciras-blog/uikit";
 
 interface SelectCategoryDialogProps {
 	multiple?: boolean;

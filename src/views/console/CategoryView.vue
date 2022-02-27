@@ -78,7 +78,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import DEFAULT_CODER from "@/assets/img/category.png";
-import { useDialog } from "@kaciras-blog/uikit";
+import { useDialog, KxButton, KxRadioBoxGroup, KxRadioBox } from "@kaciras-blog/uikit";
 import api from "@/api";
 import SelectCategoryDialog from "@/components/SelectCategoryDialog.vue";
 import MoveCategoryDialog from "./MoveCategoryDialog.vue";

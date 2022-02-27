@@ -32,7 +32,7 @@ import api, { Article, Draft, DraftHistory } from "@/api";
 import { onBeforeUnmount, reactive, ref, watch } from "vue";
 import { onBeforeRouteLeave, useRouter } from "vue-router";
 import { useEventListener } from "@vueuse/core";
-import { useDialog } from "@kaciras-blog/uikit";
+import { useDialog, KxButton } from "@kaciras-blog/uikit";
 import { articleLink, localDateMinute } from "@/blog-plugin";
 import { errorMessage } from "@/utils";
 import MarkdownEditor from "@/markdown/MarkdownEditor.vue";

@@ -5,6 +5,10 @@
 	</kx-frame>
 </template>
 
+<script setup lang="ts">
+import { KxFrameHeader, KxFrame } from "@kaciras-blog/uikit";
+</script>
+
 <style module lang="less">
 .body {
 	padding: 15px;

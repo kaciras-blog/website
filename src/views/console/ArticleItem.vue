@@ -83,7 +83,7 @@
 <script setup lang="ts">
 import { inject } from "vue";
 import api from "@/api";
-import { useDialog } from "@kaciras-blog/uikit";
+import { useDialog, KxButton } from "@kaciras-blog/uikit";
 import { articleLink, localDateMinute } from "@/blog-plugin";
 import { errorMessage } from "@/utils";
 import SelectCategoryDialog from "@/components/SelectCategoryDialog.vue";

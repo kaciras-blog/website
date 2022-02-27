@@ -33,14 +33,14 @@
 	</ol>
 </template>
 
-<script>
-export default {
-	name: "SlideNav",
-	props: {
-		/** Array<{ title: string, route: string }> */
-		tabs: { type: Array, required: true },
-	},
-};
+<script setup lang="ts">
+import { RouterLink } from "vue-router";
+
+interface SlideNavProps {
+	tabs: Array<{ title: string; route: string }>;
+}
+
+defineProps<SlideNavProps>();
 </script>
 
 <style module lang="less">

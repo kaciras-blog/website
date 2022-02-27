@@ -2,20 +2,20 @@
 	<li :class="$style.container">
 
 		<div :class="$style.link">
-			<kx-check-box v-model="item.checked"/>
+			<kx-check-box v-model="checked"/>
 			<span>
 				用户评论了文章：
 				<router-link
 					class="highlight"
-					:to="item.topic.url"
+					:to="topic.url"
 				>
-					{{ item.topic.name }}
+					{{ topic.name }}
 				</router-link>
 			</span>
 		</div>
 
 		<img
-			:src="item.user.avatar"
+			:src="user.avatar"
 			alt="头像"
 			:class="$style.head"
 			class="small head"
@@ -23,23 +23,36 @@
 
 		<div :class="$style.content">
 			<p :class="$style.name">
-				{{ item.user.name }}
+				{{ user.name }}
 			</p>
-			<div>{{ item.content }}</div>
+			<div>{{ content }}</div>
 		</div>
 	</li>
 </template>
 
-<script>
-export default {
-	name: "DiscussionCheckItem",
-	props: {
-		item: {
-			type: Object,
-			required: true,
-		},
-	},
-};
+<script setup lang="ts">
+import { KxCheckBox } from "@kaciras-blog/uikit";
+import { Discussion, DiscussionState, Topic, User } from "@/api";
+
+interface Discussion_Copy {
+	type: number;
+	objectId: number;
+	id: number;
+	parent?: Discussion;
+	floor: number;
+	nestId: number;
+	nestFloor: number;
+	nestSize: number;
+	user: User;
+	nickname?: string;
+	content: string;
+	time: number;
+	state: DiscussionState;
+	topic?: Topic;
+	replies?: Discussion[];
+}
+
+defineProps<Discussion_Copy>();
 </script>
 
 <style module lang="less">

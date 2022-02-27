@@ -3,12 +3,16 @@
 		:class="$style.container"
 		:nav-class="$style.top_nav"
 	>
-		<slide-nav :class="$style.header" :tabs="tabs"/>
+		<slide-nav
+			:class="$style.header"
+			:tabs="tabs"
+		/>
 		<router-view/>
 	</base-page-layout>
 </template>
 
-<script>
+<script setup lang="ts">
+import { RouterView } from "vue-router";
 import SlideNav from "./SlideNav.vue";
 
 const tabs = [
@@ -16,15 +20,7 @@ const tabs = [
 	{ title: "友链", route: "/about/friends" },
 	{ title: "技术栈", route: "/about/technology" },
 	{ title: "版权声明", route: "/about/copyright" },
-]
-
-export default {
-	name: "AboutPage",
-	components: {
-		SlideNav,
-	},
-	data: () => ({ tabs }),
-};
+];
 </script>
 
 <style module lang="less">

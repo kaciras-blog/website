@@ -9,7 +9,7 @@
 				:class="$style.input"
 				placeholder="地址不能为空"
 				required
-				v-autofocus
+				v-auto-focus
 			/>
 
 			<label>文字</label>
@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
 import { reactive } from "vue";
-import { useDialog } from "@kaciras-blog/uikit";
+import { useDialog, KxDialogButtons } from "@kaciras-blog/uikit";
 
 const dialog = useDialog();
 

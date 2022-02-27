@@ -27,8 +27,8 @@
 <script setup lang="ts">
 import { shallowRef } from "vue";
 import { useRouter } from "vue-router";
+import { useDialog, SkFadingCircle, KxButton } from "@kaciras-blog/uikit";
 import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
-import { useDialog } from "@kaciras-blog/uikit";
 import api, { DeletionState } from "@/api";
 import { errorMessage } from "@/utils";
 import ArticleItem from "./ArticleItem.vue";
@@ -43,7 +43,7 @@ async function newArticle() {
 	try {
 		await router.push("/edit/" + await api.draft.createNew());
 	} catch (e) {
-		dialog.alertError("创建失败", errorMessage(e))
+		dialog.alertError("创建失败", errorMessage(e));
 	}
 }
 

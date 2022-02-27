@@ -17,7 +17,9 @@
 </template>
 
 <script setup lang="ts">
+import { KxButton } from "@kaciras-blog/uikit";
 import SplitIcon from "@material-design-icons/svg/round/vertical_split.svg?sfc";
 import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
 import EyeIcon from "bootstrap-icons/icons/eye-fill.svg?sfc";
-import SettingIcon from "@material-design-icons/svg/filled/settings.svg?sfc";</script>
+import SettingIcon from "@material-design-icons/svg/filled/settings.svg?sfc";
+</script>

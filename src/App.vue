@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 import type { KxProgress } from "@kaciras-blog/uikit";
-import { useDialog } from "@kaciras-blog/uikit";
+import { useDialog, ToastContainer, KxDialogContainer } from "@kaciras-blog/uikit";
 import { Unsubscribe } from "nanoevents";
 import { events, PrefetchContext } from "./prefetch";
 import { useRouter } from "vue-router";

@@ -1,6 +1,7 @@
 <template>
 	<div>
-		<discussion-config-panel></discussion-config-panel>
+		<discussion-config-panel/>
+
 		<div class="panel compact">
 			<div :class="$style.toolbar">
 				<kx-check-box v-model="allChecked"/>
@@ -22,8 +23,13 @@
 					</kx-button>
 				</div>
 			</div>
+
 			<ul class="clean-list">
-				<discussion-check-item v-for="item of pendingList" :key="item.id" :item="item"/>
+				<discussion-check-item
+					v-for="item of pendingList"
+					v-bind="item"
+					:key="item.id"
+				/>
 			</ul>
 		</div>
 	</div>
@@ -31,6 +37,7 @@
 
 <script setup>
 import { computed, ref } from "vue";
+import { KxButton, KxCheckBox } from "@kaciras-blog/uikit";
 import api, { DiscussionState } from "@/api";
 import DiscussionConfigPanel from "./DiscussionConfigPanel.vue";
 import DiscussionCheckItem from "./DiscussionCheckItem.vue";

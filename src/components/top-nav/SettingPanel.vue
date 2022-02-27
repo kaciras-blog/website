@@ -24,10 +24,14 @@
 </template>
 
 <script>
+import { KxSwitchBox } from "@kaciras-blog/uikit";
 import { getSettings, putSetting } from "@/service-worker/client/settings";
 
 export default {
 	name: "SettingPanel",
+	components: {
+		KxSwitchBox,
+	},
 	data: () => ({
 		loading: true,
 		error: null,

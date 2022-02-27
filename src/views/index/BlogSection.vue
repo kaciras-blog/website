@@ -42,6 +42,7 @@
 </template>
 
 <script setup lang="ts">
+import { KxButton, SmartLink } from "@kaciras-blog/uikit";
 import { usePrefetch } from "@/store";
 
 const { cards } = usePrefetch().data;
