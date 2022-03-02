@@ -98,7 +98,7 @@
 <script setup lang="ts">
 import { nextTick, ref } from "vue";
 import { useBreakPoint, useDialog, ButtonPagingView } from "@kaciras-blog/uikit";
-import { debounceFirst } from "@kaciras-blog/server";
+import { debounceFirst } from "@kaciras-blog/server/lib/functions.js";
 import api, { Discussion, DiscussionState, Topic, User } from "@/api";
 import { ListQueryView } from "@/api/core";
 import MarkdownView from "@/markdown/MarkdownView.vue";

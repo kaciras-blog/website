@@ -9,7 +9,7 @@
 				:class="$style.input"
 				placeholder="地址不能为空"
 				required
-				v-auto-focus
+				v-autofocus
 			/>
 
 			<label>文字</label>

@@ -41,7 +41,7 @@
 			name="content"
 			:placeholder='placeholder'
 			aria-label="输入评论"
-			v-auto-focus
+			v-autofocus
 			v-ime-input="handleInput"
 		/>
 

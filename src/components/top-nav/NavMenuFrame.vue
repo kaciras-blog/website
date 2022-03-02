@@ -16,7 +16,7 @@
 			role="button"
 			title="点击或按 ESC 关闭弹窗"
 			tabindex="0"
-			v-auto-focus
+			v-autofocus
 			@keydown.esc.self="$dialog.close"
 			@click.self="$dialog.close"
 		>

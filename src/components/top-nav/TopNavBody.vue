@@ -33,7 +33,7 @@
 				<router-link to="/profile">
 					<img
 						:src="user.avatar"
-						alt="用户头像"
+						:alt="user.name"
 						title="就是一个头像而已"
 						class="small head"
 						:class="$style.head"

@@ -9,9 +9,10 @@
 			name="name"
 			title="用户名"
 			required
-			v-auto-focus
+			v-autofocus
 		>
 
+		<!--suppress XmlInvalidId -->
 		<label for="password">密码:</label>
 		<kx-password-input
 			input-id="password"

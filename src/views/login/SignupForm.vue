@@ -9,9 +9,10 @@
 			name="name"
 			placeholder="中英文数字和下划线"
 			required
-			v-auto-focus
+			v-autofocus
 		>
 
+		<!--suppress XmlInvalidId -->
 		<label for="password">密码:</label>
 		<kx-password-input
 			input-id="password"
@@ -76,7 +77,7 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref, toRaw } from "vue";
 import { useRouter } from "vue-router";
-import { KxButton, KxTaskButton, KxPasswordInput, vAutoFocus } from "@kaciras-blog/uikit";
+import { KxButton, KxTaskButton, KxPasswordInput } from "@kaciras-blog/uikit";
 import api from "@/api";
 import { errorMessage } from "@/utils";
 import { useCurrentUser } from "@/store";
