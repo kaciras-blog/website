@@ -44,16 +44,15 @@ export default {
 		vueOptions: {
 			template: {
 				transformAssetUrls: {
+					source: ["src"],
+					img: ["src"],
 					video: ["src", "poster"],
-					source: "src",
-					img: "src",
-					image: "xlink:href",
 
-					"icon-paragraph": "src",
-					"icon-section-header": "icon",
-					"social-link": "icon",
-					"oauth-icon": "icon",
-					"error-content": "image",
+					"icon-paragraph": ["src"],
+					"icon-section-header": ["icon"],
+					"social-link": ["icon"],
+					"oauth-icon": ["icon"],
+					"error-content": ["image"],
 				},
 			},
 		},
