@@ -1,6 +1,6 @@
 <template>
-	<kx-frame :class="$style.container">
-		<kx-frame-header title="编辑评论">
+	<kx-frame :class="$style.container" title="编辑评论">
+		<template #actions>
 			<button
 				v-if="preview"
 				:class="$style.headerButton"
@@ -27,7 +27,7 @@
 			>
 				<HelpIcon/>
 			</button>
-		</kx-frame-header>
+		</template>
 
 		<markdown-view
 			v-if="preview"
@@ -77,7 +77,7 @@ export default { isolation: true };
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { useDialog, KxFrameHeader, KxFrame, KxTaskButton } from "@kaciras-blog/uikit";
+import { useDialog, KxFrame, KxTaskButton } from "@kaciras-blog/uikit";
 import EyeIcon from "bootstrap-icons/icons/eye-fill.svg?sfc";
 import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
 import HelpIcon from "bootstrap-icons/icons/question-circle.svg?sfc";

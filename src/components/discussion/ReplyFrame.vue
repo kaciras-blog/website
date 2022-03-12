@@ -1,7 +1,5 @@
 <template>
-	<kx-frame>
-		<kx-frame-header title="查看回复"/>
-
+	<kx-frame title="查看回复">
 		<div :class="$style.frameBody">
 			<scroll-paging-view
 				v-model="data"
@@ -33,7 +31,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from "vue";
-import { useDialog, KxFrame, KxFrameHeader, ScrollPagingView } from "@kaciras-blog/uikit";
+import { KxFrame, ScrollPagingView, useDialog } from "@kaciras-blog/uikit";
 import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
 import api, { Discussion } from "@/api";
 import { ListQueryView } from "@/api/core";
