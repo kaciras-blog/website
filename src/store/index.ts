@@ -62,7 +62,7 @@ export const useDiscussOptions = defineStore("discussOptions", {
 	state: () => ({ options: null }),
 	actions: {
 		async load() {
-			this.$state ??= await api.config.get("discussion");
+			this.options ??= await api.config.get("discussion");
 		},
 	},
 });

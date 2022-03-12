@@ -5,7 +5,7 @@
 		"tests/**/*.ts"
 	],
 	"compilerOptions": {
-		"target": "ES2021",
+		"target": "ESNext",
 		"module": "ESNext",
 		"moduleResolution": "Node",
 		"baseUrl": ".",
@@ -17,6 +17,6 @@
 		"sourceMap": true,
 		"resolveJsonModule": true,
 		"strict": true,
-		"esModuleInterop": true
+		"allowSyntheticDefaultImports": true
 	},
 }

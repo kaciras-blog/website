@@ -87,17 +87,12 @@ export function isOnlyHashChange(to: RouteLocationNormalized, from: RouteLocatio
 }
 
 /**
- * 获取文件名去除了扩展名的部分，如果没有扩展名则原样返回。
- *
- * 这个函数比较简单就自己实现算了。
+ * 去除文件名中的最后一个扩展名，如果没有则原样返回。
  *
  * @param name 文件名
  * @return 去除了扩展名的部分
  */
 export function basename(name: string) {
 	const i = name.lastIndexOf(".");
-	if (i === -1) {
-		return name;
-	}
-	return name.slice(0, i);
+	return i === -1 ? name : name.slice(0, i);
 }
