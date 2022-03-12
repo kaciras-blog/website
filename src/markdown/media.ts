@@ -1,5 +1,5 @@
 import lozad from "lozad";
-import { MediaPlugin, RendererMap } from "@kaciras-blog/markdown";
+import { Media, RendererMap } from "@kaciras-blog/markdown";
 import MarkdownIt from "markdown-it";
 import Token from "markdown-it/lib/token";
 
@@ -101,7 +101,7 @@ const directiveMap: RendererMap = {
  * @param markdownIt 要安装的实例
  */
 export function clientMediaPlugin(markdownIt: MarkdownIt) {
-	markdownIt.use(MediaPlugin, directiveMap);
+	markdownIt.use(Media, directiveMap);
 	markdownIt.renderer.rules.image = renderImage;
 }
 
@@ -153,7 +153,5 @@ export function initLazyLoading(el: HTMLElement) {
  * @param value An object that may or may not be `Promise`-like.
  */
 function silencePromise(value: any) {
-	if (value && typeof value.then === "function") {
-		value.catch(() => {});
-	}
+	if (typeof value?.then === "function") value.catch(() => {});
 }

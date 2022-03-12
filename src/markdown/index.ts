@@ -1,11 +1,9 @@
 import "./markdown.less";
 import MarkdownIt from "markdown-it";
 import { escapeHtml } from "markdown-it/lib/common/utils.js";
-import Anchor from "markdown-it-anchor";
-import tableOfContent from "markdown-it-toc-done-right";
+import { Anchor, TOC, UGC } from "@kaciras-blog/markdown";
 import highlight from "./highlight";
 import { clientMediaPlugin, initLazyLoading } from "./media";
-import guestPlugin from "./renderer-guest";
 
 export { initLazyLoading };
 
@@ -31,7 +29,7 @@ function createRenderer() {
 	 */
 	rules.code_inline = (tokens, idx, options, env, self) => {
 		const token = tokens[idx];
-		token.attrs = [["class", "inline-code"]]
+		token.attrs = [["class", "inline-code"]];
 		return raw(tokens, idx, options, env, self);
 	};
 
@@ -39,9 +37,7 @@ function createRenderer() {
 }
 
 export const articleRenderer = createRenderer();
-
-// 评论一般也不长，不需要 TOC
-articleRenderer.use(tableOfContent);
+export const discussionRenderer = createRenderer();
 
 /*
  * 只有文章才添加导航锚，评论就不用了。
@@ -50,18 +46,8 @@ articleRenderer.use(tableOfContent);
  * 由 Markdown 渲染的标题链接会触发 Vue-Router 的路由流程，需要在路由钩子里做检查以跳过预载，
  * 具体见 entry-client.ts 中的 router.beforeEach 钩子。
  */
-articleRenderer.use<Anchor.AnchorOptions>(Anchor, {
+articleRenderer.use(Anchor);
+articleRenderer.use(TOC);
 
-	// 参考 MSDN 网站的做法，有 aria-labelledby 情况下不再需要内容
-	permalink: Anchor.permalink.linkInsideHeader({
-		placement: "after",
-		ariaHidden: true,
-		class: "anchor-link",
-	}),
-
-	slugify: title => title.trim().toLowerCase().replace(/\s+/g, "-"),
-});
-
-export const discussionRenderer = createRenderer();
-
-discussionRenderer.use(guestPlugin);
+// 评论一般也不长，不需要 TOC
+discussionRenderer.use(UGC);
