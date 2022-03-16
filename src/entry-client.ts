@@ -22,6 +22,13 @@ if (import.meta.env.SENTRY_DSN && window.__isSupport__) {
 	setupSentry(app, router);
 }
 
+/**
+ * 初始化应用的各个模块并挂载，该函数是客户端的入口点。
+ *
+ * <h2>直接挂载到 body</h2>
+ * 很多框架都不建议这样做，因为会跟一些三方库冲突，特别是在 body 末尾加 script 的。
+ * 但 Vue3 并未警告，而且从原理上看似乎可行，所以先试试如果不行再改回去。
+ */
 function initApplication() {
 	observeMediaQuery(store);
 
