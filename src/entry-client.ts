@@ -25,7 +25,7 @@ if (import.meta.env.SENTRY_DSN && window.__isSupport__) {
 function initApplication() {
 	observeMediaQuery(store);
 
-	app.mount("#app");
+	app.mount(document.body);
 
 	// Vue3 在激活时似乎不会重新设置元素的属性，必须把它放挂载后面。
 	const subPhase = useSunPhase();

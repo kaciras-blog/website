@@ -1,3 +1,4 @@
+import type { RenderContext } from "@kaciras-blog/server";
 import { basename, extname } from "path";
 import { RouteLocationNormalizedLoaded, Router } from "vue-router";
 import { renderToString, SSRContext } from "vue/server-renderer";
@@ -90,7 +91,7 @@ async function prefetch(store: Pinia, router: Router, request: any) {
 }
 
 // noinspection JSUnusedGlobalSymbols 由服务器引用。
-export default async (context: any) => {
+export default async (context: RenderContext) => {
 	const { error, template, manifest, request, path } = context;
 
 	if (noSSR.test(path)) {
@@ -122,8 +123,9 @@ export default async (context: any) => {
 		const tag = `<title>${ssrContext.title} - Kaciras 的博客</title>`;
 		result = result.replace(titleRE, tag);
 	}
+
 	return result
-		.replace("<div id='shell-loading'></div>", appHtml)
+		.replace(/(?<=<body>).*(?=<\/body>)/s, appHtml)
 		.replace("<!--preload-links-->", preloads)
 		.replace("<!--ssr-metadata-->", ssrContext.meta ?? "");
 };
