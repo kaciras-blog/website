@@ -12,5 +12,5 @@
 </template>
 
 <script setup lang="ts">
-import { KxDialogButtons } from "@kaciras-blog/uikit";
+import { KxDialogButtons, KxBaseDialog } from "@kaciras-blog/uikit";
 </script>

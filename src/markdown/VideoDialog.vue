@@ -66,7 +66,7 @@
 </template>
 
 <script setup lang="ts">
-import { KxDialogButtons, KxRadioBox, KxRadioBoxGroup, KxTaskButton, openFile, useDialog } from "@kaciras-blog/uikit";
+import { KxDialogButtons, KxBaseDialog, KxRadioBox, KxRadioBoxGroup, KxTaskButton, openFile, useDialog } from "@kaciras-blog/uikit";
 import api from "@/api";
 import { basename } from "@/utils";
 import { reactive } from "vue";

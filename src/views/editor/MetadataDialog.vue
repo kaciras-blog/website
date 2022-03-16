@@ -26,7 +26,7 @@
 				placeholder="关键字,空格隔开"
 			/>
 		</form>
-		<kx-dialog-buttons @confirm="ok"/>
+		<kx-dialog-buttons @accept="ok" @cancel="$dialog.close"/>
 	</kx-base-dialog>
 </template>
 
@@ -38,7 +38,7 @@ export default {
 
 <script setup lang="ts">
 import { reactive, toRaw } from "vue";
-import { useDialog, KxDialogButtons } from "@kaciras-blog/uikit";
+import { useDialog, KxDialogButtons, KxBaseDialog } from "@kaciras-blog/uikit";
 import api from "@/api";
 
 interface ArticleMeta {

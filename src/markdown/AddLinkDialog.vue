@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
 import { reactive } from "vue";
-import { useDialog, KxDialogButtons } from "@kaciras-blog/uikit";
+import { useDialog, KxDialogButtons, KxBaseDialog } from "@kaciras-blog/uikit";
 
 const dialog = useDialog();
 

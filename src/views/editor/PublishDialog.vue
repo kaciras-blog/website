@@ -41,7 +41,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { useDialog, KxDialogButtons, KxCheckBox, KxButton } from "@kaciras-blog/uikit";
+import { useDialog, KxDialogButtons, KxBaseDialog, KxCheckBox, KxButton } from "@kaciras-blog/uikit";
 import api, { Category } from "@/api";
 import SelectCategoryDialog from "@/components/SelectCategoryDialog.vue";
 import { errorMessage } from "@/utils";
