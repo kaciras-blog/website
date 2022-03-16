@@ -14,7 +14,13 @@ export default {
 		/**
 		 * 生成代码的模式，如果不存在则使用 Vite 默认值。
 		 */
-		mode: "development",
+		// mode: "development",
+
+		/**
+		 * 代码图生成选项，默认不生成，详情见 Vite 的文档：
+		 * https://vitejs.dev/config/#build-sourcemap
+		 */
+		// sourcemap: true,
 
 		/**
 		 * 生成代码的兼容性，根据 Vite 文档只要支持 import() 的就性，但其源码中却比这高。
