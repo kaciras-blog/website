@@ -75,8 +75,32 @@ const disableSyncScroll = ref<(() => void) | null>(null);
 const textareaEl = ref<HTMLElement>();
 const previewEl = ref<HTMLElement>();
 
-let $_disconnect;
-let $_timer;
+let disconnect: () => void;
+let timer: any;
+
+/**
+ * 设置是否启用同步滚动，如果由关闭变为开启则会立即触发同步。
+ *
+ * 立即同步时以最后滚动的一方作为目标，另一方调整滚动位置与对方同步。
+ */
+const scrollSynced = computed({
+	get: () => Boolean(disableSyncScroll.value),
+	set(enabled) {
+		const disable = disableSyncScroll.value;
+
+		if (!enabled && disable) {
+			disableSyncScroll.value = null;
+			return disable();
+		}
+
+		const preview = previewEl.value!;
+		const textarea = textareaEl.value!;
+
+		disableSyncScroll.value = lastScrollPreview.value
+			? syncScroll(preview, textarea)
+			: syncScroll(textarea, preview);
+	},
+});
 
 /**
  * 浏览器默认的tab键用于切换选择的元素。
@@ -105,30 +129,8 @@ function replaceArea(start: number, end: number, value: string) {
 	selection.value = [start, start + value.length];
 }
 
-/**
- * 设置是否启用同步滚动，如果由关闭变为开启则会立即触发同步。
- *
- * 立即同步时以最后滚动的一方作为目标，另一方调整滚动位置与对方同步。
- *
- * @param enabled 是否启用
- */
-function setSyncScroll(enabled: boolean) {
-	const disable  = disableSyncScroll.value;
-
-	if (!enabled && disable) {
-		disable();
-		disableSyncScroll.value = null;
-	} else if (enabled && !disable) {
-		const preview = previewEl.value!;
-		const textarea = textareaEl.value!;
-
-		disableSyncScroll.value = lastScrollPreview.value
-			? syncScroll(preview, textarea)
-			: syncScroll(textarea, preview);
-	}
-}
-
-watchEffect(() =>{
+// watchEffect 在 setup 阶段就调用，所以要检查 previewEl。
+watchEffect(() => {
 	const { modelValue } = props;
 
 	const render = async () => {
