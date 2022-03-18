@@ -44,7 +44,7 @@ function initApplication() {
 async function appShellStartup() {
 	const route = router.currentRoute.value;
 
-	const cs = route.matched.flatMap(v => v.components);
+	const cs = route.matched.flatMap(v => v.components.default);
 	await prefetch(store, route, cs);
 
 	initApplication();

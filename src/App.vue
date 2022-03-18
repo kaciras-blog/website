@@ -2,8 +2,11 @@
 <template>
 	<kx-progress :ref="connect"/>
 	<router-view/>
-	<ToastContainer/>
 	<dialog-container/>
+	<ToastContainer/>
+	<noscript class="global-error">
+		禁用 JavaScript 会导致部分功能不正常
+	</noscript>
 </template>
 
 <script setup lang="ts">
