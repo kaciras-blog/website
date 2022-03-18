@@ -1,6 +1,6 @@
 /**
  * 全部的配置项都在这里，该文件被 webserver 使用。
- * webserver 默认加载 index.js，通过启动参数 --profile=prod 可以让它改为加载本目录下的 prod.js
+ * 默认加载 index.js，通过启动参数 --profile=prod 可以让它改为加载本目录下的 prod.js
  */
 export default {
 
@@ -9,6 +9,11 @@ export default {
 
 	/** 静态资源目录，相对于outputDir */
 	assetsDir: "static",
+
+	/**
+	 * 服务端渲染的入口，如果没有则不启用 SSR。
+	 */
+	ssr: "src/entry-server.ts",
 
 	build: {
 		/**
@@ -40,11 +45,11 @@ export default {
 		/** 是否启用 vite-plugin-inspect */
 		debug: false,
 
-		// serviceWorker: {
-		// 	src: "src/service-worker/server/index.ts",
-		// 	// dist: "sw.js",
-		// 	// includes: new RegExp("^/static/");
-		// },
+		serviceWorker: {
+			src: "src/service-worker/server/index.ts",
+			// dist: "sw.js",
+			// includes: new RegExp("^/static/");
+		},
 
 		/** 传递给 vue-loader 的选项，具体说明见Vue的官网 */
 		vueOptions: {
