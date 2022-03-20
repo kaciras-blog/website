@@ -1,61 +1,57 @@
 <template>
 	<div :class="$style.container">
-
 		<div :class="$style.toolbar" role="toolbar">
-			<div :class="$style.left_items">
-				<slot name="tools-left" :ctx="this"/>
-			</div>
-			<div :class="$style.right_items">
-				<slot name="tools-right" :ctx="this"/>
-			</div>
+			<slot name="toolbar-left"/>
+			<span :class="$style.span"></span>
+			<slot name="toolbar-right"/>
 		</div>
 
 		<div :class="$style.main">
 			<textarea
-				v-show="viewMode !== 2"
+				v-show="viewMode !== ViewMode.Preview"
 				ref="textareaEl"
 				:class="{
 					[$style.textarea]: true,
 					[$style.window]: true,
-					[$style.split]:viewMode === 0,
-					[$style.single]:viewMode === 1,
+					[$style.split]: viewMode === ViewMode.Split,
+					[$style.single]: viewMode === ViewMode.Edit,
 				}"
 				title="编辑区"
 				spellcheck="false"
 				v-model="content"
-				v-selection-model.focus="selection"
+				v-bind-selection.focus="selection"
+				v-on-selection-change="v => selection = v"
 				@keydown.tab.prevent="insertTab"
 				@scroll="lastScrollPreview = false"
 			/>
 			<article
-				v-show="viewMode !== 1"
+				v-show="viewMode !== ViewMode.Edit"
 				v-html="html"
 				ref="previewEl"
 				class="markdown"
 				:class="{
 					[$style.window]: true,
-					[$style.split]:viewMode === 0,
-					[$style.single]:viewMode === 2,
+					[$style.split]: viewMode === ViewMode.Split,
+					[$style.single]: viewMode === ViewMode.Preview,
 				}"
 				@scroll="lastScrollPreview = true"
 			/>
 		</div>
 
 		<div :class="$style.statebar">
-			<div :class="$style.left_items">
-				<slot name="state-left" :ctx="this"/>
-			</div>
-			<div :class="$style.right_items">
-				<slot name="state-right" :ctx="this"/>
-			</div>
+			<slot name="statebar-left"/>
+			<span :class="$style.span"></span>
+			<slot name="statebar-right"/>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { nextTick, onMounted, onUnmounted, ref, watchEffect } from "vue";
+import { computed, nextTick, onMounted, onUnmounted, provide, reactive, ref, watchEffect } from "vue";
+import { useVModel } from "@vueuse/core";
 import { syncScroll } from "@kaciras-blog/uikit";
 import { articleRenderer, initLazyLoading } from ".";
+import { kContext, ViewMode } from "./editor-addon";
 
 interface MarkdownEditorProps {
 	modelValue: string;
@@ -66,14 +62,18 @@ const props = withDefaults(defineProps<MarkdownEditorProps>(), {
 	debounce: 500,
 });
 
-const selection = ref([0,0]);
-const viewMode = 0;
+const emit = defineEmits(["update:modelValue"]);
+
+const content = useVModel(props, "modelValue", emit);
+const selection = ref([0, 0]);
+const viewMode = ref(ViewMode.Split);
+
 const html = ref(articleRenderer.render(props.modelValue));
-const lastScrollPreview = ref(false);
-const disableSyncScroll = ref<(() => void) | null>(null);
 
 const textareaEl = ref<HTMLElement>();
 const previewEl = ref<HTMLElement>();
+const lastScrollPreview = ref(false);
+const disableSyncScroll = ref<(() => void) | null>(null);
 
 let disconnect: () => void;
 let timer: any;
@@ -112,22 +112,18 @@ function insertTab() {
 	const v = props.modelValue;
 	const newEnd = selStart + 1;
 
-	this.content = v.substring(0, selStart) + "\t" + v.substring(selEnd, v.length);
+	content.value = v.substring(0, selStart) + "\t" + v.substring(selEnd, v.length);
 	selection.value = [newEnd, newEnd];
 }
 
-/**
- * 替换一段区域内的文本，并选中替换的部分。
- *
- * @param start 替换起点
- * @param end 替换终点
- * @param value 替换的文本
- */
-function replaceArea(start: number, end: number, value: string) {
-	const v = props.modelValue;
-	this.content = v.substring(0, start) + value + v.substring(end, v.length);
-	selection.value = [start, start + value.length];
-}
+const addonContext = reactive({
+	viewMode,
+	selection,
+	content,
+	scrollSynced,
+});
+
+provide(kContext, addonContext);
 
 // watchEffect 在 setup 阶段就调用，所以要检查 previewEl。
 watchEffect(() => {
@@ -137,32 +133,21 @@ watchEffect(() => {
 		html.value = articleRenderer.render(modelValue);
 		await nextTick();
 
-		if ($_disconnect) {
-			$_disconnect();
+		if (disconnect) {
+			disconnect();
 		}
-		$_disconnect = initLazyLoading(previewEl.value);
+		if (!previewEl.value) {
+			return;
+		}
+		disconnect = initLazyLoading(previewEl.value);
 	};
 
-	if ($_timer) {
-		clearTimeout($_timer);
-	}
-	$_timer = setTimeout(render, props.debounce);
+	clearTimeout(timer);
+	timer = setTimeout(render, props.debounce);
 });
 
-onMounted(() => setSyncScroll(true));
-onUnmounted(() => $_disconnect());
-
-export default {
-	computed: {
-		content: {
-			get() { return this.value; },
-			set(value) { this.$emit("input", value); },
-		},
-		isSyncScroll() {
-			return !!this.disableSyncScroll;
-		},
-	},
-};
+onMounted(() => scrollSynced.value = true);
+onUnmounted(() => disconnect?.());
 </script>
 
 <style module lang="less">
@@ -189,6 +174,10 @@ export default {
 	background-color: whitesmoke;
 }
 
+.span {
+	flex: 1;
+}
+
 .statebar {
 	display: flex;
 	line-height: 22px;
@@ -201,12 +190,6 @@ export default {
 	display: flex;
 	flex-grow: 1;
 }
-
-/*.right_items {*/
-/*	display: flex;*/
-/*	flex-direction: row-reverse;*/
-/*	flex-wrap: wrap;*/
-/*}*/
 
 .main {
 	display: flex;

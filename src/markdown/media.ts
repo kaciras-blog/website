@@ -37,10 +37,9 @@ function getContainerClassAndStyle(url: string) {
  * 详细的原理见：
  * https://blog.kaciras.com/article/18/add-video-support-to-markdown
  *
- * 【关于加载菊花图】
+ * 【加载指示器（菊花图）】
  * 图片本身就有在不完全加载的时的显示方式，比如从上往下显示或者渐进式图片。
- * 对于完全无法加载的情况，下面的标签也能表明空白区域是图片。
- * 所以没有必要使用加载指示器（菊花图）来让用户等到图片完全载入。
+ * 如果无法加载，下面的标签也能表明空白区域是图片，所以没有必要使用指示器。
  */
 function renderImage(tokens: Token[], idx: number) {
 	const token = tokens[idx];
@@ -55,7 +54,7 @@ function renderImage(tokens: Token[], idx: number) {
 				target="_blank"
 				rel="noopener,nofollow"
 			>
-				<img data-src="${src}" alt="${alt}" class="md-img">
+				<img data-src="${src}" alt="${alt}" class="md-img" crossorigin>
 			</a>
 			${alt ? `<span class="md-img-alt">${alt}</span>` : ""}
     	</span>
@@ -66,12 +65,12 @@ function renderImage(tokens: Token[], idx: number) {
  * 各种自定义指令在本站页面的渲染实现。
  */
 const directiveMap: RendererMap = {
-	// 大部分浏览器只允许无声视频自动播放，不过GIF视频本来就是无声的。
+	// 大部分浏览器只允许无声视频自动播放，不过 GIF 视频本来就是无声的。
 	gif(src, alt) {
 		return `
 			<p class="center-wrapper">
 				<span ${getContainerClassAndStyle(src)}>
-					<video class="gif" src="${src}" loop muted></video>
+					<video class="gif" src="${src}" loop muted crossorigin></video>
 				</span>
 				${alt ? `<span class="md-img-alt">${alt}</span>` : ""}
     		</p>
@@ -85,13 +84,16 @@ const directiveMap: RendererMap = {
 		return `
 			<p class="center-wrapper md-video">
 				<span class="md-media-container sized">
-					<video poster="${poster}" src="${src}" controls></video>
+					<video poster="${poster}" src="${src}" controls crossorigin></video>
 				</span>
 			</p>
 		`;
 	},
 	audio(src) {
-		return `<p class="center-wrapper"><audio controls src=${src}></audio></p>`;
+		return `
+			<p class="center-wrapper">
+				<audio controls src=${src} crossorigin></audio>
+			</p>`;
 	},
 };
 

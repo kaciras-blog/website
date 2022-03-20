@@ -1,17 +1,38 @@
 <template>
 	<markdown-editor :class="$style.editor" v-model="current.content">
-
-		<template v-slot:tools-left="{ ctx }">
-			<text-tools :ctx="ctx"/>
+		<template #toolbar-left>
+			<text-tools/>
+			<media-tools/>
+		</template>
+		<template #toolbar-right>
+			<config-toolbar/>
+			<kx-button
+				class="primary"
+				type="icon"
+				title="修改简介"
+				@click="showMetadataDialog"
+			>
+				<CardIcon/>
+			</kx-button>
+			<kx-button
+				class="primary"
+				type="icon"
+				title="保存"
+				@click="manualSave"
+			>
+				<SaveIcon/>
+			</kx-button>
+			<kx-button
+				class="primary"
+				type="icon"
+				title="发布!"
+				@click="showPublishDialog"
+			>
+				<PaperPlaneIcon/>
+			</kx-button>
 		</template>
 
-		<template v-slot:tools-right="{ ctx }">
-			<kx-button class="primary" title="修改简介" icon="far fa-address-card" @click="showMetadataDialog"/>
-			<kx-button class="primary" title="保存" icon="far fa-save" @click="manualSave"/>
-			<kx-button class="primary" title="发布!" icon="far fa-paper-plane" @click="showPublishDialog"/>
-		</template>
-
-		<template v-slot:state-left>
+		<template #statebar-left>
 			<span v-if="autoSaveError" :class="$style.error">
 				自动保存出错
 			</span>
@@ -19,25 +40,29 @@
 				上次保存：{{ localDateMinute(draft.updateTime) }}
 			</span>
 		</template>
-
-		<template v-slot:state-right="{ ctx }">
-			<text-state-group :selection="ctx.selection" :content="ctx.content"/>
-			<sync-scroll-toggle :ctx="ctx"/>
+		<template #statebar-right>
+			<text-state-group/>
+			<sync-scroll-toggle/>
 		</template>
 	</markdown-editor>
 </template>
 
 <script setup lang="ts">
 import api, { Article, Draft, DraftHistory } from "@/api";
-import { onBeforeUnmount, reactive, ref, watch } from "vue";
+import { onBeforeMount, onBeforeUnmount, reactive, ref, watch } from "vue";
 import { onBeforeRouteLeave, useRouter } from "vue-router";
 import { useEventListener } from "@vueuse/core";
-import { useDialog, KxButton } from "@kaciras-blog/uikit";
+import { KxButton, useDialog } from "@kaciras-blog/uikit";
+import SaveIcon from "@material-design-icons/svg/filled/save.svg?sfc";
+import CardIcon from "bootstrap-icons/icons/credit-card-2-front.svg?sfc";
+import PaperPlaneIcon from "@/assets/icon/paper-plane.svg?sfc";
 import { articleLink, localDateMinute } from "@/blog-plugin";
 import { errorMessage } from "@/utils";
 import MarkdownEditor from "@/markdown/MarkdownEditor.vue";
 import TextTools from "@/markdown/TextTools.vue";
 import TextStateGroup from "@/markdown/TextStateGroup.vue";
+import ConfigToolbar from "@/markdown/ConfigToolbar.vue";
+import MediaTools from "@/markdown/MediaTools.vue";
 import SyncScrollToggle from "@/markdown/SyncScrollToggle.vue";
 import PublishDialog from "./PublishDialog.vue";
 import MetadataDialog from "./MetadataDialog.vue";
@@ -86,7 +111,7 @@ async function autoSave() {
 
 	try {
 		await api.draft.save(draft.id, current.saveCount, current);
-		draft.updateTime = new Date();
+		draft.updateTime = Date.now();
 		changes.value = false;
 		autoSaveError.value = undefined;
 	} catch (e) {
@@ -98,7 +123,7 @@ async function manualSave() {
 	try {
 		await api.draft.saveNewHistory(draft.id, current);
 
-		draft.updateTime = new Date();
+		draft.updateTime = Date.now();
 		changes.value = false;
 		autoSaveError.value = undefined;
 
@@ -129,12 +154,6 @@ async function loadHistory(saveCount: number) {
 	draft.updateTime = current.time;
 }
 
-function onPageExit(event: BeforeUnloadEvent) {
-	if (changes.value) {
-		return event.returnValue = "Sure?";
-	}
-}
-
 onBeforeRouteLeave(() => {
 	if (!changes.value) {
 		return;
@@ -145,9 +164,13 @@ onBeforeRouteLeave(() => {
 	}
 });
 
-useEventListener("beforeunload", onPageExit);
+useEventListener("beforeunload", event =>{
+	if (changes.value) {
+		return event.returnValue = "Sure?";
+	}
+});
 
-onBeforeUnmount(async () => {
+onBeforeMount(async () => {
 	const got = await api.draft.get(parseInt(props.draftId));
 	const { lastSaveCount, articleId } = got;
 	Object.assign(draft, got);

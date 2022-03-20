@@ -1,43 +1,31 @@
 <template>
-	<div>
-		<kx-button title="标题" @click="addHeader(2)">
-			<TitleIcon/>
-		</kx-button>
-		<kx-button title="粗体" @click="switchWrapper('**')">
-			<BoldIcon/>
-		</kx-button>
-		<kx-button title="斜体" @click="switchWrapper('*')">
-			<ItalicIcon/>
-		</kx-button>
-		<kx-button title="删除线" @click="switchWrapper('~~')">
-			<StrikethroughIcon/>
-		</kx-button>
-		<kx-button title="行内代码" @click="switchWrapper('`')">
-			<CodeIcon/>
-		</kx-button>
-		<kx-button title="横线" @click="addNewLine('- - -')">
-			<RemoveIcon/>
-		</kx-button>
-		<kx-button title="引用块" @click="addPrefixToLines('>')">
-			<QuoteIcon/>
-		</kx-button>
-		<kx-button title="列表" @click="addPrefixToLines('* ')">
-			<ListIcon/>
-		</kx-button>
-		<kx-button title="插入链接" @click="addLink">
-			<AddLinkIcon/>
-		</kx-button>
-
-		<kx-button title="插入图片" @click="addImage">
-			<ImageIcon/>
-		</kx-button>
-		<kx-button title="插入视频" @click="addVideo">
-			<VideoIcon/>
-		</kx-button>
-		<kx-button title="插入音频" @click="addAudio">
-			<MusicIcon/>
-		</kx-button>
-	</div>
+	<kx-button type="icon" title="标题" @click="addHeader(1)">
+		<TitleIcon/>
+	</kx-button>
+	<kx-button type="icon" title="粗体" @click="switchWrapper('**')">
+		<BoldIcon/>
+	</kx-button>
+	<kx-button type="icon" title="斜体" @click="switchWrapper('*')">
+		<ItalicIcon/>
+	</kx-button>
+	<kx-button type="icon" title="删除线" @click="switchWrapper('~~')">
+		<StrikethroughIcon/>
+	</kx-button>
+	<kx-button type="icon" title="行内代码" @click="switchWrapper('`')">
+		<CodeIcon/>
+	</kx-button>
+	<kx-button type="icon" title="横线" @click="addNewLine('- - -')">
+		<RemoveIcon/>
+	</kx-button>
+	<kx-button type="icon" title="引用块" @click="addPrefixToLines('>')">
+		<QuoteIcon/>
+	</kx-button>
+	<kx-button type="icon" title="列表" @click="addPrefixToLines('* ')">
+		<ListIcon/>
+	</kx-button>
+	<kx-button type="icon" title="插入链接" @click="addLink">
+		<AddLinkIcon/>
+	</kx-button>
 </template>
 
 <script setup lang="ts">
@@ -50,28 +38,14 @@ import RemoveIcon from "@material-design-icons/svg/round/remove.svg?sfc";
 import QuoteIcon from "bootstrap-icons/icons/quote.svg?sfc";
 import ListIcon from "@material-design-icons/svg/round/format_list_bulleted.svg?sfc";
 import AddLinkIcon from "@material-design-icons/svg/round/add_link.svg?sfc";
-import ImageIcon from "bootstrap-icons/icons/image-fill.svg?sfc";
-import VideoIcon from "bootstrap-icons/icons/play-btn.svg?sfc";
-import MusicIcon from "bootstrap-icons/icons/music-note-beamed.svg?sfc";
-import { getImageResolution, getVideoResolution, openFile, useDialog, KxButton } from "@kaciras-blog/uikit";
+import { getImageResolution, getVideoResolution, KxButton, openFile, useDialog } from "@kaciras-blog/uikit";
 import api from "@/api";
 import { basename } from "@/utils";
 import VideoDialog from "./VideoDialog.vue";
 import AddLinkDialog from "./AddLinkDialog.vue";
+import { overwrite, useEditorContext } from "./editor-addon";
 
-interface ToolbarProps {
-	viewMode: 0 | 1;
-	selection: [number, number];
-	content: string;
-}
-
-interface ToolbarEvents {
-	(event: "overwrite", start: number, end: number, value: string): void;
-}
-
-const props = defineProps<ToolbarProps>();
-const emit = defineEmits<ToolbarEvents>();
-
+const context = useEditorContext();
 const dialog = useDialog();
 
 /**
@@ -81,7 +55,7 @@ const dialog = useDialog();
  * @return [number, number] 起点和终点
  */
 function getSelectedRange(extend: boolean) {
-	const { content, selection } = props;
+	const { content, selection } = context;
 	let [s, e] = selection;
 	if (extend) {
 		if (s > 0) {
@@ -95,7 +69,7 @@ function getSelectedRange(extend: boolean) {
 
 function addPrefixToLines(prefix: string) {
 	const [selStart, selEnd] = getSelectedRange(true);
-	const lines = props.content.substring(selStart, selEnd).split("\n");
+	const lines = context.content.substring(selStart, selEnd).split("\n");
 
 	let text = "";
 	for (let line of lines) {
@@ -108,7 +82,7 @@ function addPrefixToLines(prefix: string) {
 	}
 	text = text.substring(1);
 
-	emit("overwrite", selStart, selEnd, text);
+	overwrite(context, selStart, selEnd, text);
 }
 
 function addHeader(level: number) {
@@ -116,7 +90,7 @@ function addHeader(level: number) {
 }
 
 function addNewLine(text: string) {
-	const v = props.content;
+	const v = context.content;
 	const index = getSelectedRange(false)[0];
 
 	if (index > 0 && v.charAt(index - 1) !== "\n") {
@@ -126,11 +100,11 @@ function addNewLine(text: string) {
 		text += "\n";
 	}
 
-	emit("overwrite", index, index, text);
+	overwrite(context, index, index, text);
 }
 
 function switchWrapper(prefix: string) {
-	const v = props.content;
+	const v = context.content;
 	const [selStart, selEnd] = getSelectedRange(false);
 
 	let text = v.substring(selStart, selEnd);
@@ -140,7 +114,7 @@ function switchWrapper(prefix: string) {
 		text = prefix + text + prefix;
 	}
 
-	emit("overwrite", selStart, selEnd, text);
+	overwrite(context, selStart, selEnd, text);
 }
 
 interface AddLinkData  {
@@ -153,7 +127,7 @@ async function addLink() {
 	const str = `[${text}](${href})`;
 
 	const selEnd = getSelectedRange(false)[1];
-	emit("overwrite", selEnd, selEnd, str);
+	overwrite(context, selEnd, selEnd, str);
 }
 
 async function addImage() {
@@ -163,8 +137,8 @@ async function addImage() {
 	const { width, height } = await getImageResolution(file);
 	const res = await api.misc.uploadImage(file) + `?vw=${width}&vh=${height}`;
 
-	const [, selEnd] = props.selection;
-	emit("overwrite", selEnd, selEnd, `![${basename(file.name)}](${res})`);
+	const [, selEnd] = context.selection;
+	overwrite(context, selEnd, selEnd, `![${basename(file.name)}](${res})`);
 }
 
 interface VDP_Copy {
@@ -187,14 +161,14 @@ async function addVideo() {
 		text = `@gif[${label}](${src}?vw=${width}&vh=${height})`;
 	}
 
-	const [selEnd] = props.selection;
-	emit("overwrite", selEnd, selEnd, text);
+	const [selEnd] = context.selection;
+	overwrite(context, selEnd, selEnd, text);
 }
 
 async function addAudio() {
 	const file = await openFile("audio/*");
 	const res = await api.misc.uploadAudio(file);
-	const [selEnd] = props.selection;
-	emit("overwrite", selEnd, selEnd, `@audio[](${res})`);
+	const [selEnd] = context.selection;
+	overwrite(context, selEnd, selEnd, `@audio[](${res})`);
 }
 </script>
