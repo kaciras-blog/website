@@ -29,6 +29,7 @@ const clean: Unsubscribe[] = [];
 function connect(pb: typeof KxProgress | null) {
 
 	function onStart(signal: AbortSignal) {
+		pb!.start();
 		pb!.setProgress(30);
 		signal.addEventListener("abort", pb!.reset);
 	}
@@ -36,13 +37,11 @@ function connect(pb: typeof KxProgress | null) {
 	function onPrefetch(ctx: PrefetchContext) {
 		const { data, signal } = ctx;
 
-		let value = 50;
-		pb!.setProgress(value);
 		const tasks = Object.values(data);
 		const p = 50 / tasks.length;
 
 		for (const promise of tasks) {
-			promise.then(() => signal.aborted || pb!.setProgress(value += p));
+			promise.then(() => signal.aborted || pb!.increase(p));
 		}
 	}
 

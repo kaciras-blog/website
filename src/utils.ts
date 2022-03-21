@@ -69,21 +69,22 @@ export function attachRandomId(object: any) {
 	return object;
 }
 
+// RouteLocation.fullPath 的 Hash 部分是编码后的，所以不能直接减去 RouteLocation.hash。
+function removeHash(url: string) {
+	const i = url.indexOf("#");
+	return i >= 0 ? url.slice(0, i) : url;
+}
+
 /**
- * 检查两个路由的 URL 是否仅仅是 HASH 不同而其它部分是一样的。
- *
- * 【自己实现】
- * Route.path 不带查询参数，Route.query 对象比较又麻烦还不如自己写。
+ * 检查两个路由的 URL 是否仅仅是 Hash 不同而其它部分是一样的。
+ * vue-router 竟然没有方便的办法判断。
  *
  * @param to 路由记录
  * @param from 另一个路由记录
- * @return 两个路由除了HASH部分外是否一样
+ * @return 两个路由除了 Hash 部分外是否一样
  */
 export function isOnlyHashChange(to: RouteLocationNormalized, from: RouteLocationNormalized) {
-	const fPath = from.fullPath, tPath = to.fullPath;
-	const fp = fPath.substring(0, fPath.length - from.hash.length);
-	const tp = tPath.substring(0, tPath.length - to.hash.length);
-	return fp === tp;
+	return removeHash(from.fullPath) === removeHash(to.fullPath);
 }
 
 /**
