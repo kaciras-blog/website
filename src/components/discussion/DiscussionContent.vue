@@ -11,7 +11,7 @@
 			<div :class="$style.nameGroup">
 				<div>
 					<span
-						v-if="value.user.id === 2"
+						v-if="value.user.isAdmin"
 						:class="$style.stick"
 					>
 						博主
@@ -27,7 +27,7 @@
 
 			<!-- 这两个按钮用文字比图标更好 -->
 			<kx-button
-				v-if="removable"
+				v-if="user.isAdmin"
 				type="text"
 				color="dangerous"
 				title="删除"
@@ -76,8 +76,6 @@ const emit = defineEmits(["removed", "reply"]);
 
 const dialog = useDialog();
 const user = useCurrentUser();
-
-const removable = computed(() => user.id === 2);
 
 /**
  * 楼层号，引用模式下返回 floor，楼中楼模式返回 nestFloor。

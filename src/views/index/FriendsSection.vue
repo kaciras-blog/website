@@ -23,7 +23,7 @@
 			</div>
 
 			<div
-				v-else-if="user.id === 2"
+				v-else-if="user.isAdmin"
 				:class="$style.toolbar"
 			>
 				<kx-button
@@ -64,7 +64,7 @@
 				/>
 
 				<kx-button
-					v-if="user.id === 2 && !sorting"
+					v-if="user.isAdmin && !sorting"
 					type="icon"
 					title="修改"
 					:class="$style.edit"
@@ -73,7 +73,7 @@
 					<PencilIcon/>
 				</kx-button>
 				<kx-button
-					v-if="user.id === 2 && !sorting"
+					v-if="user.isAdmin && !sorting"
 					type="icon"
 					title="删除"
 					:class="$style.remove"

@@ -28,7 +28,7 @@ import { defineComponent } from "vue";
 import { KxSwitchBox } from "@kaciras-blog/uikit";
 import { getSettings, putSetting } from "@/service-worker/client/settings";
 
-const unsupported = !("serviceWorker" in navigator);
+const unsupported = import.meta.env.SSR || !("serviceWorker" in navigator);
 
 export default defineComponent({
 	name: "SettingPanel",

@@ -40,7 +40,7 @@
 					>
 				</router-link>
 				<router-link
-					v-if="user.id === 2"
+					v-if="user.isAdmin"
 					to="/console"
 					class="nav-item"
 				>

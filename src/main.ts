@@ -30,7 +30,7 @@ export default function createBlogApp(initState?: any) {
 	 */
 	router.beforeEach(to => {
 		const user = useCurrentUser(store);
-		if (to.meta.requireAuth && user.id !== 2) {
+		if (to.meta.requireAuth && !user.isAdmin) {
 			const return_uri = to.fullPath;
 			return { path: "/login", query: { return_uri } };
 		}
