@@ -70,13 +70,16 @@ export function useStaticCache(name: string, assets: string[]) {
 	}
 
 	async function expire() {
-		const cache = await caches.open(name);
-		const expected = new Set(assets);
+		const assetUrls = assets.map(v => new URL(v, location.href).href);
+		const expected = new Set(assetUrls);
 
-		for (const request of await cache.keys()) {
-			if (!expected.has(request.url))
-				await cache.delete(request);
+		const cache = await caches.open(name);
+		const expired = (await cache.keys()).filter(r => !expected.has(r.url));
+
+		for (const request of expired) {
+			await cache.delete(request);
 		}
+		console.debug(`[SW] 清理了 ${expired.length} 个静态资源缓存。`);
 	}
 
 	self.addEventListener("install", event => event.waitUntil(precache()));
