@@ -60,24 +60,19 @@ export function networkFirst(cache: ManagedCache, fetchFn: FetchFn = fetch) {
 }
 
 /**
- * 缓存优先，后台更新。该策略能够保证立即响应且允许离线访问，同时也能更新资源。
+ * 缓存优先 + 后台更新。该策略能够保证立即响应且允许离线访问，同时也能更新资源。
  *
- * 因为在后台更新需要用户下一次访问才能生效，通常给用户显示一个提示，让其刷新页面查看最新的内容。
+ * 在后台更新需要下一次访问才能生效，通常给用户显示一个提示，让其刷新页面查看最新的内容。
  */
 export function staleWhileRevalidate(cache: ManagedCache, fetchFn: FetchFn = fetch) {
 
 	return async (input: RequestInfo) => {
-		const fromCache = cache.match(input);
 		const fromFetch = fetchAndCache(input, cache, fetchFn);
+		const fromCache = cache.match(input);
 
-		// 假定缓存永远比网络快
-		const cached = await fromCache;
-		if (!cached) {
-			return fromFetch;
-		}
-
-		// TODO: 是否需要 event.waitUtil(fromFetch)?
-		return cached;
+		// 这里竞速而不是缓存优先，因为缓存不一定比网络快。
+		// 由于 fetch 不会返回 undefined，所以为空的一定是缓存，此时回退到网络。
+		return (await Promise.any([fromCache, fromFetch])) ?? fromFetch;
 	};
 }
 
