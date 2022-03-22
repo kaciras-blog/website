@@ -147,8 +147,12 @@ export default class DiscussionResource extends AbstractResource {
 	 * @param ids 评论ID或ID数组
 	 * @param state 目标状态
 	 */
-	updateStates(ids: number | number[], state: DiscussionState) {
-		ids = Array.isArray(ids) ? ids : [ids];
+	updateStates(ids: number | number[] | Set<number>, state: DiscussionState) {
+		if (typeof ids === "number") {
+			ids = [ids];
+		} else if (!Array.isArray(ids)) {
+			ids = Array.from(ids);
+		}
 		return this.servers.content.patch("/discussions", { ids, state });
 	}
 }

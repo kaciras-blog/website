@@ -14,8 +14,7 @@
 			</kx-check-box>
 		</div>
 
-		<!-- TODO: 这个函数式组件 v-show 无效？ -->
-		<sk-fading-circle v-if="refreshing" :class="$style.progress"/>
+		<sk-fading-circle v-show="refreshing" :class="$style.progress"/>
 	</section>
 </template>
 

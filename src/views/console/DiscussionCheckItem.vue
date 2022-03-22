@@ -1,16 +1,17 @@
 <template>
 	<li :class="$style.container">
-
 		<div :class="$style.link">
-			<kx-check-box v-model="checked"/>
+			<kx-check-box
+				v-model="checkedForward"
+			/>
 			<span>
 				用户评论了文章：
-				<router-link
+				<a
 					class="highlight"
-					:to="topic.url"
+					:href="topic.url"
 				>
 					{{ topic.name }}
-				</router-link>
+				</a>
 			</span>
 		</div>
 
@@ -32,9 +33,13 @@
 
 <script setup lang="ts">
 import { KxCheckBox } from "@kaciras-blog/uikit";
+import { useVModel } from "@vueuse/core";
 import { Discussion, DiscussionState, Topic, User } from "@/api";
 
 interface Discussion_Copy {
+	// 多了一个属性
+	checked: boolean;
+
 	type: number;
 	objectId: number;
 	id: number;
@@ -52,7 +57,10 @@ interface Discussion_Copy {
 	replies?: Discussion[];
 }
 
-defineProps<Discussion_Copy>();
+const props = defineProps<Discussion_Copy>();
+const emit = defineEmits(["update:checked"]);
+
+const checkedForward = useVModel(props, "checked", emit);
 </script>
 
 <style module lang="less">
@@ -62,7 +70,7 @@ defineProps<Discussion_Copy>();
 	grid-template-columns: auto minmax(0, 1fr);
 	grid-gap: 20px 10px;
 
-	padding: 20px;
+	padding: 20px 0;
 	border-top: solid 1px #c9c9c9;
 }
 
