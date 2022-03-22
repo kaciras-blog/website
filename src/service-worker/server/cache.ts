@@ -4,7 +4,7 @@ declare const self: ServiceWorkerGlobalScope;
  * 记录所有使用中的缓存名，用于清理未使用的缓存。
  *
  * 【使用注意】
- * 所以缓存必须在执行清理之前创建，以便这里能记录它们。
+ * 所有缓存必须在执行清理之前创建，以便这里能记录它们。
  */
 export const cacheNames = new Set<string>();
 

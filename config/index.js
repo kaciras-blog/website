@@ -45,6 +45,12 @@ export default {
 		/** 是否启用 vite-plugin-inspect */
 		debug: false,
 
+		/**
+		 * 额外的 ServiceWorker 构建选项，没有则不构建 SW 入口。
+		 *
+		 * 【使用注意】
+		 * 构建完了还需要设置 `app.serviceWorker` 来启用。
+		 */
 		serviceWorker: {
 			src: "src/service-worker/server/index.ts",
 			// dist: "sw.js",

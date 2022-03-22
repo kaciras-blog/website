@@ -19,7 +19,6 @@ export class Router {
 	 * 添加一个路由，注意没有删除方法，先添加的优先匹配。
 	 *
 	 * @param route 路由对象
-	 * @return 链式调用返回自己
 	 */
 	addRoute(route: Route) {
 		this.routes.push(route);

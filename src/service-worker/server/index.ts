@@ -15,14 +15,16 @@ declare const self: ServiceWorkerGlobalScope & {
 };
 
 /**
- * ServiceWorkerWebpackPlugin 自动生成，包含静态资源的列表
+ * 由构建插件自动生成，包含静态资源的列表。
  */
 const assets = self.__WB_MANIFEST;
 
-initializeSettingManager();
-
-/** 后端 API 有 Breaking Change 时增加版本号 */
+/**
+ * 后端 API 有 Breaking Change 时增加版本号。
+ */
 const API_CACHE_NAME = "api-v2.0";
+
+initializeSettingManager();
 
 useStaticCache("static", assets);
 const fetcher = cacheFirst(new CacheWrapper("static"));
@@ -44,8 +46,8 @@ self.addEventListener("fetch", router.route.bind(router));
 /**
  * 安装事件，当新的 ServiceWorker 加载后将会调用，此时可能还有之前旧的在运行。
  *
- * 在这个事件里应当做一些没有副作用的初始化工作，比如初始化缓存机制等，但是不要做会影响
- * 其他ServiceWorker的事，比如清理旧缓存。
+ * 在这个事件里应当做一些没有副作用的初始化工作，比如初始化缓存等，
+ * 不要做会影响其它 ServiceWorker 的事，比如清理旧缓存。
  *
  * 该事件只运行一次；有副作用的代码应当在 activate 事件里执行。
  */
@@ -59,12 +61,13 @@ self.addEventListener("install", () => {
 /**
  * 激活事件，这个事件触发时表明当前 ServiceWorker 已经被使用。
  *
- * 在这个事件里应当清理旧版的缓存。
+ * 在这个事件里可以清理旧版的缓存。
  */
 self.addEventListener("activate", event => {
 	console.info("[SW] New version activated");
 
 	event.waitUntil(cleanUnusedCache());
 
+	// 接管所有前端页面，即使它们目前并不由该版本的 SW 控制。
 	return self.clients.claim();
 });
