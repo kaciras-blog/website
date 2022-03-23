@@ -45,19 +45,19 @@ async function register() {
 
 async function unregister() {
 	try {
-		const registration = await navigator.serviceWorker.ready;
-		await registration.unregister();
-		console.debug("[Init] ServiceWorker 已注销");
+		const list = await navigator.serviceWorker.getRegistrations();
+		for (const registration of list) {
+			await registration.unregister();
+		}
+		if (list.length > 0) {
+			console.debug("[Init] ServiceWorker 已注销");
+		}
 	} catch (e) {
 		console.error("[Init] ServiceWorker 注销失败", e);
 	}
 }
 
-export async function initialize() {
-	// const publicUrl = new URL(import.meta.env.PUBLIC_URL!, window.location.href);
-	// if (publicUrl.origin !== window.location.origin) {
-	// 	return console.error("service worker won't work when PUBLIC_URL is on a different origin");
-	// }
+async function initialize() {
 	try {
 		const { status } = await fetch("/sw-check", { method: "HEAD" });
 		return status === 200 ? register() : unregister();
@@ -67,9 +67,9 @@ export async function initialize() {
 }
 
 /**
- * 启用ServiceWorker功能，该函数只能在客户端使用。
+ * 启用 ServiceWorker 功能，该函数只能在客户端使用。
  *
- * 等到 window.load 事件时再注册，以免 ServiceWorker 里加载的资源占用首屏宽带。
+ * 最好等到 window.load 事件时再注册，以免占用首屏宽带。
  *
  * 【注意】
  * 若之前启用过，要禁用的话必须得注销，该函数始终需要被调用。
