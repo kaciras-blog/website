@@ -9,8 +9,7 @@ import api, { Api } from "./api";
 import { collectTasks, PrefetchContext } from "./prefetch";
 import createBlogApp from "./main";
 import { useCurrentUser, usePrefetch } from "@/store";
-
-const titleRE = new RegExp("<title>[^<]*</title>");
+import { createReplacer, TemplateReplacer } from "@/utils";
 
 // 后台页面就不预渲染了。
 const noSSR = new RegExp("^/(?:edit|console)/?(?:\\?|$)?");
@@ -90,12 +89,22 @@ async function prefetch(store: Pinia, router: Router, request: any) {
 	}
 }
 
+let newTemplate: () => TemplateReplacer;
+
 // noinspection JSUnusedGlobalSymbols 由服务器引用。
 export default async (context: RenderContext) => {
 	const { error, template, manifest, request, path } = context;
 
 	if (noSSR.test(path)) {
 		return template;
+	}
+	if (!newTemplate) {
+		newTemplate = createReplacer(template, {
+			title: /(?<=<title>).*(?=<\/title>)/s,
+			app: /(?<=<body>).*(?=<\/body>)/s,
+			links: "<!--preload-links-->",
+			metadata: "<!--ssr-metadata-->",
+		});
 	}
 
 	const { app, router, store } = createBlogApp();
@@ -118,16 +127,16 @@ export default async (context: RenderContext) => {
 	// 加上 type="module" 相当于 defer，虽然代码不多但还是延迟一下吧。
 	ssrContext.meta += `<script type="module">window.__INITIAL_STATE__=${initState}</script>`;
 
-	let result = template;
+	const result = newTemplate();
 	if (ssrContext.title) {
-		const tag = `<title>${ssrContext.title} - Kaciras 的博客</title>`;
-		result = result.replace(titleRE, tag);
+		result.put("title", `${ssrContext.title} - Kaciras 的博客`);
 	}
 
-	return result
-		.replace(/(?<=<body>).*(?=<\/body>)/s, appHtml)
-		.replace("<!--preload-links-->", preloads)
-		.replace("<!--ssr-metadata-->", ssrContext.meta ?? "");
+	result.put("app", appHtml);
+	result.put("links", preloads);
+	result.put("metadata", ssrContext.meta ?? "");
+
+	return result.toString();
 };
 
 /**

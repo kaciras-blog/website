@@ -97,3 +97,73 @@ export function basename(name: string) {
 	const i = name.lastIndexOf(".");
 	return i === -1 ? name : name.slice(0, i);
 }
+
+/**
+ * 经测试比 String.replace 快 10 倍，不过也是蚊子肉罢了。
+ *
+ * @param template
+ * @param matchers
+ */
+export function createReplacer(template: string, matchers: Record<string, string | RegExp>) {
+	const nameToSlot = new Map();
+	const positions = [];
+
+	for (const name of Object.keys(matchers)) {
+		const pattern = matchers[name];
+		let startPos: number;
+		let endPos: number;
+
+		if (typeof pattern === "string") {
+			startPos = template.indexOf(pattern);
+			if(startPos === -1) {
+				throw new Error("找不到匹配串");
+			}
+			endPos = startPos + pattern.length;
+		} else {
+			const match = pattern.exec(template);
+			if (!match) {
+				throw new Error("找不到匹配串");
+			}
+			startPos = match.index;
+			endPos = startPos + match[0].length;
+		}
+
+		positions.push({ name, startPos, endPos });
+	}
+
+	positions.sort((a, b) => a.startPos - b.startPos);
+
+	let lastEnd = 0;
+	const parts: string[] = [];
+
+	for (let i = 0; i < positions.length; i++) {
+		const { name, startPos, endPos } = positions[i];
+		nameToSlot.set(name, i * 2 + 1);
+
+		parts.push(template.slice(lastEnd, startPos));
+		parts.push(template.slice(startPos, lastEnd = endPos));
+	}
+
+	parts.push(template.slice(lastEnd));
+
+	return () => new TemplateReplacer(nameToSlot, [...parts]);
+}
+
+export class TemplateReplacer {
+
+	private readonly nameToSlot: Map<string, number>;
+	private readonly parts: string[];
+
+	constructor(nameToSlot: Map<string, number>, parts: string[]) {
+		this.parts = parts;
+		this.nameToSlot = nameToSlot;
+	}
+
+	toString() {
+		return this.parts.join("");
+	}
+
+	put(name: string, value: string) {
+		this.parts[this.nameToSlot.get(name)!] = value;
+	}
+}
