@@ -1,7 +1,3 @@
-import { inject } from "vue";
-
-export const kContext = Symbol("AddonContext");
-
 export enum ViewMode {
 	Split,
 	Edit,
@@ -13,10 +9,6 @@ export interface AddonContext {
 	selection: [number, number];
 	viewMode: ViewMode;
 	scrollSynced: boolean;
-}
-
-export function useEditorContext() {
-	return inject<AddonContext>(kContext)!;
 }
 
 /**

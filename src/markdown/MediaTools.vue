@@ -10,32 +10,25 @@
 	</kx-button>
 </template>
 
-<script lang="ts">
-export default { inheritAttrs: false };
-</script>
-
 <script setup lang="ts">
-import { getImageResolution, getVideoResolution, openFile, useDialog, KxButton } from "@kaciras-blog/uikit";
+import { getImageResolution, getVideoResolution, KxButton, openFile, useDialog } from "@kaciras-blog/uikit";
 import ImageIcon from "bootstrap-icons/icons/image-fill.svg?sfc";
 import VideoIcon from "bootstrap-icons/icons/play-btn.svg?sfc";
 import MusicIcon from "bootstrap-icons/icons/music-note-beamed.svg?sfc";
 import api from "@/api";
 import { basename } from "@/utils";
 import VideoDialog from "./VideoDialog.vue";
+import { AddonContext, overwrite } from "./editor-addon";
 
-interface ToolbarProps {
-	content: string;
-	selection: [number, number];
+interface TextStateGroupProps {
+	ctx: AddonContext;
 }
 
-interface ToolbarEvents {
-	(event: "overwrite", start: number, end: number, value: string): void;
-}
-
-const props = defineProps<ToolbarProps>();
-const emit = defineEmits<ToolbarEvents>();
-
+const props = defineProps<TextStateGroupProps>();
 const dialog = useDialog();
+
+// eslint-disable-next-line vue/no-setup-props-destructure
+const context = props.ctx;
 
 async function addImage() {
 	const file = await openFile("image/*");
@@ -44,8 +37,8 @@ async function addImage() {
 	const { width, height } = await getImageResolution(file);
 	const res = await api.misc.uploadImage(file) + `?vw=${width}&vh=${height}`;
 
-	const [, selEnd] = props.selection;
-	emit("overwrite", selEnd, selEnd, `![${basename(file.name)}](${res})`);
+	const [, selEnd] = context.selection;
+	overwrite(context, selEnd, selEnd, `![${basename(file.name)}](${res})`);
 }
 
 interface VDP_Copy {
@@ -68,14 +61,14 @@ async function addVideo() {
 		text = `@gif[${label}](${src}?vw=${width}&vh=${height})`;
 	}
 
-	const [selEnd] = props.selection;
-	emit("overwrite", selEnd, selEnd, text);
+	const [selEnd] = context.selection;
+	overwrite(context, selEnd, selEnd, text);
 }
 
 async function addAudio() {
 	const file = await openFile("audio/*");
 	const res = await api.misc.uploadAudio(file);
-	const [selEnd] = props.selection;
-	emit("overwrite", selEnd, selEnd, `@audio[](${res})`);
+	const [selEnd] = context.selection;
+	overwrite(context, selEnd, selEnd, `@audio[](${res})`);
 }
 </script>

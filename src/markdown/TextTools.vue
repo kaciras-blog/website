@@ -38,15 +38,19 @@ import RemoveIcon from "@material-design-icons/svg/round/remove.svg?sfc";
 import QuoteIcon from "bootstrap-icons/icons/quote.svg?sfc";
 import ListIcon from "@material-design-icons/svg/round/format_list_bulleted.svg?sfc";
 import AddLinkIcon from "@material-design-icons/svg/round/add_link.svg?sfc";
-import { getImageResolution, getVideoResolution, KxButton, openFile, useDialog } from "@kaciras-blog/uikit";
-import api from "@/api";
-import { basename } from "@/utils";
-import VideoDialog from "./VideoDialog.vue";
+import { KxButton, useDialog } from "@kaciras-blog/uikit";
 import AddLinkDialog from "./AddLinkDialog.vue";
-import { overwrite, useEditorContext } from "./editor-addon";
+import { AddonContext, overwrite } from "./editor-addon";
 
-const context = useEditorContext();
+interface TextStateGroupProps {
+	ctx: AddonContext;
+}
+
+const props = defineProps<TextStateGroupProps>();
 const dialog = useDialog();
+
+// eslint-disable-next-line vue/no-setup-props-destructure
+const context = props.ctx;
 
 /**
  * 获取用户选择的范围，也可以将范围扩大到整行。
@@ -117,7 +121,7 @@ function switchWrapper(prefix: string) {
 	overwrite(context, selStart, selEnd, text);
 }
 
-interface AddLinkData  {
+interface AddLinkData {
 	text: string;
 	href: string;
 }
@@ -128,47 +132,5 @@ async function addLink() {
 
 	const selEnd = getSelectedRange(false)[1];
 	overwrite(context, selEnd, selEnd, str);
-}
-
-async function addImage() {
-	const file = await openFile("image/*");
-
-	// 加上宽高便于确定占位图的尺寸，从 https://chanshiyu.com/#/post/41 学到的
-	const { width, height } = await getImageResolution(file);
-	const res = await api.misc.uploadImage(file) + `?vw=${width}&vh=${height}`;
-
-	const [, selEnd] = context.selection;
-	overwrite(context, selEnd, selEnd, `![${basename(file.name)}](${res})`);
-}
-
-interface VDP_Copy {
-	src: string;
-	isVideo: boolean;
-	poster: string;
-	label: string;
-	autoLabel: boolean;
-}
-
-async function addVideo() {
-	const { src, label, poster, isVideo } = await dialog
-		.show<VDP_Copy>(VideoDialog).confirmPromise;
-	let text;
-
-	if (isVideo) {
-		text = `@video[${poster}](${src})`;
-	} else {
-		const { width, height } = await getVideoResolution(src);
-		text = `@gif[${label}](${src}?vw=${width}&vh=${height})`;
-	}
-
-	const [selEnd] = context.selection;
-	overwrite(context, selEnd, selEnd, text);
-}
-
-async function addAudio() {
-	const file = await openFile("audio/*");
-	const res = await api.misc.uploadAudio(file);
-	const [selEnd] = context.selection;
-	overwrite(context, selEnd, selEnd, `@audio[](${res})`);
 }
 </script>

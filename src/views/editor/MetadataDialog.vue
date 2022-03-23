@@ -1,5 +1,5 @@
 <template>
-	<kx-base-dialog title="编辑描述信息">
+	<kx-base-dialog title="描述信息">
 		<form :class="$style.content">
 			<img
 				:class="$style.cover"

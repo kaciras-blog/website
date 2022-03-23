@@ -15,7 +15,12 @@
 				</div>
 				<div v-else :class="$style.input"></div>
 
-				<kx-button @click="selectCategory">选择分类</kx-button>
+				<kx-button
+					type="outline"
+					@click="selectCategory"
+				>
+					选择分类
+				</kx-button>
 			</div>
 
 			<label for="urlTitle" :class="$style.block_label">
@@ -29,19 +34,24 @@
 					:placeholder="current.title"
 					:class="$style.input"
 				>
-				<kx-button @click="replace">替换空格</kx-button>
+				<kx-button
+					type="outline"
+					@click="replace"
+				>
+					替换空格
+				</kx-button>
 			</div>
 
 			<kx-check-box v-model="destroy">发表后删除草稿</kx-check-box>
 		</form>
 
-		<kx-dialog-buttons @confirm="accept"/>
+		<kx-dialog-buttons @accept="accept" @cancel="dialog.close"/>
 	</kx-base-dialog>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { useDialog, KxDialogButtons, KxBaseDialog, KxCheckBox, KxButton } from "@kaciras-blog/uikit";
+import { KxBaseDialog, KxButton, KxCheckBox, KxDialogButtons, useDialog } from "@kaciras-blog/uikit";
 import api, { Category } from "@/api";
 import SelectCategoryDialog from "@/components/SelectCategoryDialog.vue";
 import { errorMessage } from "@/utils";

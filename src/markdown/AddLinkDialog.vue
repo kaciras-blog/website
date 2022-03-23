@@ -1,7 +1,6 @@
 <template>
 	<kx-base-dialog title="添加链接">
 		<form :class="$style.form" @keyup.enter="ok">
-
 			<label>链接地址</label>
 			<input
 				v-model="data.href"
@@ -20,13 +19,13 @@
 				:placeholder="data.href"
 			/>
 		</form>
-		<kx-dialog-buttons @confirm="ok"/>
+		<kx-dialog-buttons @accept="ok" @cancel="dialog.close"/>
 	</kx-base-dialog>
 </template>
 
 <script setup lang="ts">
 import { reactive } from "vue";
-import { useDialog, KxDialogButtons, KxBaseDialog } from "@kaciras-blog/uikit";
+import { KxBaseDialog, KxDialogButtons, useDialog } from "@kaciras-blog/uikit";
 
 const dialog = useDialog();
 

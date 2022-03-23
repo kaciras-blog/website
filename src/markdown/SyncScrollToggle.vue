@@ -1,24 +1,31 @@
 <template>
 	<span
-		v-if="context.scrollSynced"
+		v-if="scrollSynced"
 		:class="[$style.element, $style.on]"
-		@click="context.scrollSynced = false"
+		@click="scrollSynced = false"
 	>
 		同步滚动开
 	</span>
 	<span
 		v-else
 		:class="[$style.element, $style.off]"
-		@click="context.scrollSynced = true"
+		@click="scrollSynced = true"
 	>
 		同步滚动关
 	</span>
 </template>
 
 <script setup lang="ts">
-import { useEditorContext } from "@/markdown/editor-addon";
+import { AddonContext } from "@/markdown/editor-addon";
+import { toRef } from "vue";
 
-const context = useEditorContext();
+interface TextStateGroupProps {
+	ctx: AddonContext;
+}
+
+const props = defineProps<TextStateGroupProps>();
+
+const scrollSynced = toRef(props.ctx, "scrollSynced");
 </script>
 
 <style module lang="less">

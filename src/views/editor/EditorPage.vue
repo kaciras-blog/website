@@ -1,11 +1,11 @@
 <template>
 	<markdown-editor :class="$style.editor" v-model="current.content">
-		<template #toolbar-left>
-			<text-tools/>
-			<media-tools/>
+		<template #toolbar-left="{ ctx }">
+			<text-tools :ctx="ctx"/>
+			<media-tools :ctx="ctx"/>
 		</template>
-		<template #toolbar-right>
-			<config-toolbar/>
+		<template #toolbar-right="{ ctx }">
+			<config-toolbar :ctx="ctx"/>
 			<kx-button
 				class="primary"
 				type="icon"
@@ -40,10 +40,6 @@
 				上次保存：{{ localDateMinute(draft.updateTime) }}
 			</span>
 		</template>
-		<template #statebar-right>
-			<text-state-group/>
-			<sync-scroll-toggle/>
-		</template>
 	</markdown-editor>
 </template>
 
@@ -60,10 +56,8 @@ import { articleLink, localDateMinute } from "@/blog-plugin";
 import { errorMessage } from "@/utils";
 import MarkdownEditor from "@/markdown/MarkdownEditor.vue";
 import TextTools from "@/markdown/TextTools.vue";
-import TextStateGroup from "@/markdown/TextStateGroup.vue";
 import ConfigToolbar from "@/markdown/ConfigToolbar.vue";
 import MediaTools from "@/markdown/MediaTools.vue";
-import SyncScrollToggle from "@/markdown/SyncScrollToggle.vue";
 import PublishDialog from "./PublishDialog.vue";
 import MetadataDialog from "./MetadataDialog.vue";
 
@@ -164,7 +158,7 @@ onBeforeRouteLeave(() => {
 	}
 });
 
-useEventListener("beforeunload", event =>{
+useEventListener("beforeunload", event => {
 	if (changes.value) {
 		return event.returnValue = "Sure?";
 	}

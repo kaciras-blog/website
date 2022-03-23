@@ -1,24 +1,22 @@
 <template>
-	<span>
-		<span v-if="selected" :class="$style.item">
-			选择：
-			{{ props.selection[0] + " - " + props.selection[1] }}
-			| {{ props.selection[1] - props.selection[0] }} 字
-		</span>
-		<span :class="$style.item">总字数：{{ props.content.length }}</span>
+	<span v-if="start !== end" :class="$style.item">
+		选择：{{ start + " - " + end }} | {{ end - start }} 字
 	</span>
+	<span :class="$style.item">总字数：{{ ctx.content.length }}</span>
 </template>
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { useEditorContext } from "@/markdown/editor-addon";
+import { AddonContext } from "./editor-addon";
 
-const props = useEditorContext();
+interface TextStateGroupProps {
+	ctx: AddonContext;
+}
 
-const selected = computed(() => {
-	const [start, end] = props.selection;
-	return start !== end;
-});
+const props = defineProps<TextStateGroupProps>();
+
+const start = computed(() => props.ctx.selection[0]);
+const end = computed(() => props.ctx.selection[1]);
 </script>
 
 <style module lang="less">

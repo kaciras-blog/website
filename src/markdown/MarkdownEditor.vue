@@ -1,9 +1,9 @@
 <template>
 	<div :class="$style.container">
 		<div :class="$style.toolbar" role="toolbar">
-			<slot name="toolbar-left"/>
+			<slot name="toolbar-left" :ctx="ctx"/>
 			<span :class="$style.span"></span>
-			<slot name="toolbar-right"/>
+			<slot name="toolbar-right" :ctx="ctx"/>
 		</div>
 
 		<div :class="$style.main">
@@ -20,7 +20,7 @@
 				spellcheck="false"
 				v-model="content"
 				v-bind-selection.focus="selection"
-				v-on-selection-change="v => selection = v"
+				v-on-selection-change="selection"
 				@keydown.tab.prevent="insertTab"
 				@scroll="lastScrollPreview = false"
 			/>
@@ -39,19 +39,24 @@
 		</div>
 
 		<div :class="$style.statebar">
-			<slot name="statebar-left"/>
+			<slot name="statebar-left" :ctx="ctx"/>
 			<span :class="$style.span"></span>
-			<slot name="statebar-right"/>
+			<slot name="statebar-right" :ctx="ctx"/>
+
+			<text-state-group :ctx="ctx"/>
+			<sync-scroll-toggle :ctx="ctx"/>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onMounted, onUnmounted, provide, reactive, ref, watchEffect } from "vue";
+import { computed, nextTick, onMounted, onUnmounted, reactive, ref, watchEffect } from "vue";
 import { useVModel } from "@vueuse/core";
 import { syncScroll } from "@kaciras-blog/uikit";
 import { articleRenderer, initLazyLoading } from ".";
-import { kContext, ViewMode } from "./editor-addon";
+import { ViewMode } from "./editor-addon";
+import TextStateGroup from "./TextStateGroup.vue";
+import SyncScrollToggle from "./SyncScrollToggle.vue";
 
 interface MarkdownEditorProps {
 	modelValue: string;
@@ -116,14 +121,16 @@ function insertTab() {
 	selection.value = [newEnd, newEnd];
 }
 
-const addonContext = reactive({
+/**
+ * 官网上说紧密耦合的组件使用可变 props 也行。
+ * https://vuejs.org/guide/components/props.html#mutating-object-array-props
+ */
+const ctx = reactive({
 	viewMode,
 	selection,
 	content,
 	scrollSynced,
 });
-
-provide(kContext, addonContext);
 
 // watchEffect 在 setup 阶段就调用，所以要检查 previewEl。
 watchEffect(() => {
@@ -172,6 +179,7 @@ onUnmounted(() => disconnect?.());
 .toolbar {
 	display: flex;
 	background-color: whitesmoke;
+	--btn-radius: 0;
 }
 
 .span {
