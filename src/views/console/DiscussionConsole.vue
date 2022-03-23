@@ -72,6 +72,7 @@ async function loadItems() {
 		includeTopic: true,
 		state: DiscussionState.Moderation,
 	});
+	selected.clear();
 	pendingList.value = data.items;
 }
 

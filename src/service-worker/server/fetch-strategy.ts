@@ -39,7 +39,7 @@ export async function fetchAndCache(input: RequestInfo, cache: ManagedCache, fet
 }
 
 /**
- * 网络优先，适用于频繁更新但又需要离线访问的内容。
+ * 网络优先，失败则回退到缓存，适用于频繁更新但又需要离线访问的内容。
  */
 export function networkFirst(cache: ManagedCache, fetchFn: FetchFn = fetch) {
 

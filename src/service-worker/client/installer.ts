@@ -18,6 +18,10 @@ function dispatchMessage(message: MessageEvent) {
 	}
 }
 
+/**
+ * https://cconcolato.github.io/media-mime-support/
+ * https://evilmartians.com/chronicles/better-web-video-with-av1-codec
+ */
 const codecMap: Record<string, string> = {
 	opus: "video/mp4; codecs=opus",
 	av1: "video/mp4; codecs=av01.0.05M.08",

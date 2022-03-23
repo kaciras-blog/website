@@ -51,7 +51,7 @@ function createStore(db: IDBPDatabase<Schema>) {
 /**
  * 有过期功能的缓存，过期信息记录在 IndexedDB 里。
  *
- * 该类使用FIFO方法淘汰缓存。
+ * 该类使用 FIFO 方法淘汰缓存。
  */
 export class ExpirationCache implements ManagedCache {
 

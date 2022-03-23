@@ -9,14 +9,17 @@ declare const self: ServiceWorkerGlobalScope;
 export const cacheNames = new Set<string>();
 
 export async function cleanUnusedCache() {
-	(await caches.keys()).filter(k => !cacheNames.has(k)).map(deleteCache);
+	return Promise.all((await caches.keys()).map(deleteUnused));
 }
 
-async function deleteCache(name: string) {
+async function deleteUnused(name: string) {
+	if (cacheNames.has(name)) {
+		return;
+	}
 	if (await caches.delete(name)) {
 		console.debug("[SW] 删除了过期的缓存：" + name);
 	} else {
-		console.warn("[SW] 无法删除过期的缓存：" + name);
+		console.warn("[SW] 无法删除缓存：" + name);
 	}
 }
 
@@ -28,7 +31,7 @@ export interface ManagedCache {
 }
 
 /**
- * 简单包装下self.caches。
+ * 简单包装下 self.caches，绑定名字并自动注册到已使用的缓存列表。
  */
 export class CacheWrapper implements ManagedCache {
 
