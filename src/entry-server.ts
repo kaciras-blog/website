@@ -5,11 +5,11 @@ import { renderToString, SSRContext } from "vue/server-renderer";
 import { Pinia } from "pinia";
 import { breakpoints, useMQStore } from "@kaciras-blog/uikit";
 import { configureForProxy } from "@kaciras-blog/server/lib/axios-helper.js";
-import api, { Api } from "./api";
-import { collectTasks, PrefetchContext } from "./prefetch";
-import createBlogApp from "./main";
 import { useCurrentUser, usePrefetch } from "@/store";
-import { createReplacer } from "@/utils";
+import { templateCompositor } from "@/utils";
+import api, { Api } from "./api";
+import createBlogApp from "./main";
+import { collectTasks, PrefetchContext } from "./prefetch";
 
 // 后台页面就不预渲染了。
 const noSSR = new RegExp("^/(?:edit|console)/?(?:\\?|$)?");
@@ -91,7 +91,7 @@ async function prefetch(store: Pinia, router: Router, request: any) {
 
 // noinspection JSUnusedGlobalSymbols 由服务器引用。
 export default function (template: string, manifest: SSRManifest) {
-	const newTemplate = createReplacer(template, {
+	const newComposite = templateCompositor(template, {
 		metadata: "<!--ssr-metadata-->",
 		preloads: "<!--preload-links-->",
 		appHtml: /(?<=<body>).*(?=<\/body>)/s,
@@ -123,15 +123,15 @@ export default function (template: string, manifest: SSRManifest) {
 		ssrContext.meta += `<script>window.__INITIAL_STATE__=${data}</script>`;
 
 		const { title, modules, meta } = ssrContext;
-		const result = newTemplate();
+		const composite = newComposite();
 		if (title) {
-			result.put("title", `${title} - Kaciras 的博客`);
+			composite.put("title", `${title} - Kaciras 的博客`);
 		}
-		result.put("appHtml", appHtml);
-		result.put("metadata", meta ?? "");
-		result.put("preloads", renderPreloads(modules, manifest));
+		composite.put("appHtml", appHtml);
+		composite.put("metadata", meta ?? "");
+		composite.put("preloads", renderPreloads(modules, manifest));
 
-		return result.toString();
+		return composite.toString();
 	};
 }
 

@@ -98,18 +98,26 @@ export function basename(name: string) {
 	return i === -1 ? name : name.slice(0, i);
 }
 
+type Placeholders = Record<string, string | RegExp>;
+
 /**
+ * 闲着无聊写了个简单的字符串替换器，可用于 SSR 中组合最终的 HTML 结果。
+ *
+ * 原理是通过提前计算替换点位，避免每次都要搜索，从而提高性能。
  * 经测试比 String.replace 快 10 倍，不过也是蚊子肉罢了。
  *
- * @param template
- * @param matchers
+ * @param template 模板字符串
+ * @param placeholders 所有替换点位的定义，各个之间不能重叠
  */
-export function createReplacer(template: string, matchers: Record<string, string | RegExp>) {
-	const nameToSlot = new Map();
+export function templateCompositor<T extends Placeholders>(
+	template: string,
+	placeholders: T,
+) {
+	const nameToSlot = new Map<keyof T, number>();
 	const positions = [];
 
-	for (const name of Object.keys(matchers)) {
-		const pattern = matchers[name];
+	for (const name of Object.keys(placeholders)) {
+		const pattern = placeholders[name];
 		let startPos: number;
 		let endPos: number;
 
@@ -146,15 +154,15 @@ export function createReplacer(template: string, matchers: Record<string, string
 
 	parts.push(template.slice(lastEnd));
 
-	return () => new TemplateReplacer(nameToSlot, [...parts]);
+	return () => new Composite<T>(nameToSlot, [...parts]);
 }
 
-export class TemplateReplacer {
+export class Composite<T extends Placeholders> {
 
-	private readonly nameToSlot: Map<string, number>;
+	private readonly nameToSlot: Map<keyof T, number>;
 	private readonly parts: string[];
 
-	constructor(nameToSlot: Map<string, number>, parts: string[]) {
+	constructor(nameToSlot: Map<keyof T, number>, parts: string[]) {
 		this.parts = parts;
 		this.nameToSlot = nameToSlot;
 	}
@@ -163,7 +171,7 @@ export class TemplateReplacer {
 		return this.parts.join("");
 	}
 
-	put(name: string, value: string) {
+	put(name: keyof T, value: string) {
 		this.parts[this.nameToSlot.get(name)!] = value;
 	}
 }
