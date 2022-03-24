@@ -1,4 +1,4 @@
-import type { RenderContext } from "@kaciras-blog/server";
+import type { RenderContext, SSRManifest } from "@kaciras-blog/server";
 import { basename, extname } from "path";
 import { RouteLocationNormalizedLoaded, Router } from "vue-router";
 import { renderToString, SSRContext } from "vue/server-renderer";
@@ -9,7 +9,7 @@ import api, { Api } from "./api";
 import { collectTasks, PrefetchContext } from "./prefetch";
 import createBlogApp from "./main";
 import { useCurrentUser, usePrefetch } from "@/store";
-import { createReplacer, TemplateReplacer } from "@/utils";
+import { createReplacer } from "@/utils";
 
 // 后台页面就不预渲染了。
 const noSSR = new RegExp("^/(?:edit|console)/?(?:\\?|$)?");
@@ -89,55 +89,51 @@ async function prefetch(store: Pinia, router: Router, request: any) {
 	}
 }
 
-let newTemplate: () => TemplateReplacer;
-
 // noinspection JSUnusedGlobalSymbols 由服务器引用。
-export default async (context: RenderContext) => {
-	const { error, template, manifest, request, path } = context;
+export default function (template: string, manifest: SSRManifest) {
+	const newTemplate = createReplacer(template, {
+		metadata: "<!--ssr-metadata-->",
+		preloads: "<!--preload-links-->",
+		appHtml: /(?<=<body>).*(?=<\/body>)/s,
+		title: /(?<=<title>).*(?=<\/title>)/s,
+	});
 
-	if (noSSR.test(path)) {
-		return template;
-	}
-	if (!newTemplate) {
-		newTemplate = createReplacer(template, {
-			title: /(?<=<title>).*(?=<\/title>)/s,
-			app: /(?<=<body>).*(?=<\/body>)/s,
-			links: "<!--preload-links-->",
-			metadata: "<!--ssr-metadata-->",
-		});
-	}
+	return async (context: RenderContext) => {
+		const { error, request, path } = context;
 
-	const { app, router, store } = createBlogApp();
+		if (noSSR.test(path)) {
+			return template;
+		}
 
-	// router.push 返回的 Promise 等待所有 hooks 都调用完毕
-	await router.push(error ? "/error/500" : path);
-	await prefetch(store, router, request);
+		const { app, router, store } = createBlogApp();
 
-	const ssrContext: SSRContext = {
-		meta: "<meta name='description' content='欢迎来到 Kaciras 的博客'>",
-		title: router.currentRoute.value.meta.title,
+		// router.push 返回的 Promise 等待所有 hooks 都调用完毕
+		await router.push(error ? "/error/500" : path);
+		await prefetch(store, router, request);
+
+		const ssrContext: SSRContext = {
+			meta: "<meta name='description' content='欢迎来到 Kaciras 的博客'>",
+			title: router.currentRoute.value.meta.title,
+		};
+
+		const appHtml = await renderToString(app, ssrContext);
+		context.status = ssrContext.status;
+
+		const data = JSON.stringify(store.state.value);
+		ssrContext.meta += `<script>window.__INITIAL_STATE__=${data}</script>`;
+
+		const { title, modules, meta } = ssrContext;
+		const result = newTemplate();
+		if (title) {
+			result.put("title", `${title} - Kaciras 的博客`);
+		}
+		result.put("appHtml", appHtml);
+		result.put("metadata", meta ?? "");
+		result.put("preloads", renderPreloads(modules, manifest));
+
+		return result.toString();
 	};
-
-	const appHtml = await renderToString(app, ssrContext);
-
-	const preloads = renderPreloadLinks(ssrContext.modules, manifest);
-	const initState = JSON.stringify(store.state.value);
-	context.status = ssrContext.status;
-
-	// 加上 type="module" 相当于 defer，虽然代码不多但还是延迟一下吧。
-	ssrContext.meta += `<script type="module">window.__INITIAL_STATE__=${initState}</script>`;
-
-	const result = newTemplate();
-	if (ssrContext.title) {
-		result.put("title", `${ssrContext.title} - Kaciras 的博客`);
-	}
-
-	result.put("app", appHtml);
-	result.put("links", preloads);
-	result.put("metadata", ssrContext.meta ?? "");
-
-	return result.toString();
-};
+}
 
 /**
  * 我感觉 Vite 这个清单有问题，它简单地把引用的文件作为页面需要的资源，这是错误的，
@@ -150,7 +146,7 @@ export default async (context: RenderContext) => {
  * 代码参考：
  * https://github.com/vitejs/vite/blob/main/packages/playground/ssr-vue/src/entry-server.js
  */
-function renderPreloadLinks(modules: string[], manifest: Record<string, string[]>) {
+function renderPreloads(modules: string[], manifest: SSRManifest) {
 	let links = "";
 	const seen = new Set();
 
