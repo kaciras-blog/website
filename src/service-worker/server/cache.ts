@@ -55,14 +55,19 @@ export class CacheWrapper implements ManagedCache {
 }
 
 /**
- * 启用静态资源缓存，在 SW 注册时就下载全部静态资源，并在更新时自动清理过期的。
+ * 启用静态资源缓存，可选在 SW 注册时下载全部静态资源，并在更新时自动清理过期的。
+ *
+ * <h2>是否需要预缓存</h2>
+ * 预先下载资源可以让应用离线访问，但如果无此需求则浪费流量，
+ * 不预载的话也能在首次使用时自动缓存，请视情况开启。
  *
  * @param name 缓存空间的名字
  * @param assets 要缓存的 URL 列表
+ * @param precache 是否预先下载所有资源
  */
-export function useStaticCache(name: string, assets: string[]) {
+export function useStaticCache(name: string, assets: string[], precache = false) {
 
-	async function precache() {
+	async function fetchAll() {
 		const cache = await caches.open(name);
 		const alreadyCached = (await cache.keys()).map(request => request.url);
 		const existing = new Set(alreadyCached);
@@ -85,6 +90,8 @@ export function useStaticCache(name: string, assets: string[]) {
 		console.debug(`[SW] 清理了 ${expired.length} 个静态资源缓存。`);
 	}
 
-	self.addEventListener("install", event => event.waitUntil(precache()));
+	if (precache) {
+		self.addEventListener("install", event => event.waitUntil(fetchAll()));
+	}
 	self.addEventListener("activate", event => event.waitUntil(expire()));
 }
