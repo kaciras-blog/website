@@ -6,7 +6,7 @@ import { Pinia } from "pinia";
 import { breakpoints, useMQStore } from "@kaciras-blog/uikit";
 import { configureForProxy } from "@kaciras-blog/server/lib/axios-helper.js";
 import { useCurrentUser, usePrefetch } from "@/store";
-import { templateCompositor } from "@/utils";
+import { compositor } from "@/utils";
 import api, { Api } from "./api";
 import createBlogApp from "./main";
 import { collectTasks, PrefetchContext } from "./prefetch";
@@ -91,7 +91,7 @@ async function prefetch(store: Pinia, router: Router, request: any) {
 
 // noinspection JSUnusedGlobalSymbols 由服务器引用。
 export default function (template: string, manifest: SSRManifest) {
-	const newComposite = templateCompositor(template, {
+	const newComposite = compositor(template, {
 		metadata: "<!--ssr-metadata-->",
 		preloads: "<!--preload-links-->",
 		appHtml: /(?<=<body>).*(?=<\/body>)/s,

@@ -109,7 +109,7 @@ type Placeholders = Record<string, string | RegExp>;
  * @param template 模板字符串
  * @param placeholders 所有替换点位的定义，各个之间不能重叠
  */
-export function templateCompositor<T extends Placeholders>(
+export function compositor<T extends Placeholders>(
 	template: string,
 	placeholders: T,
 ) {

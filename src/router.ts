@@ -115,8 +115,6 @@ export default () => createRouter({
 			return { top: 0 };
 		}
 	},
-
-	// Vite 不能内联 `typeof window`，扩展性有点差啊。
 	history: import.meta.env.SSR
 		? createMemoryHistory() : createWebHistory(),
 });
