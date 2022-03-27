@@ -2,11 +2,11 @@
  * 导航前加载数据，在官方教程的基础上修改而来，增加了以下功能：
  *   1.在异步组件解析前就显示加载指示器，让过渡更顺畅。
  *   2.处理一些异常情况，例如跳转。在出现内部错误时显示错误页面。
- *   3.允许取消正在进行的预加载，并中止网络请求（需要预加载函数支持）。
+ *   3.允许取消正在进行的预加载，并中止网络请求。
  */
 import { ComponentOptions } from "vue";
 import { RouteComponent, RouteLocationNormalizedLoaded, Router } from "vue-router";
-import api, { Api } from "@/api";
+import api from "@/api";
 import { isOnlyHashChange } from "@/utils";
 import { collectTasks, events, MaybePrefetchComponent, PrefetchContext } from "./prefetch";
 import { Pinia } from "pinia";
@@ -14,30 +14,10 @@ import { usePrefetch } from "@/store";
 
 let controller = new AbortController();
 
-class ClientPrefetch extends PrefetchContext {
-
-	readonly store: Pinia;
-	readonly signal: AbortSignal;
-	readonly route: RouteLocationNormalizedLoaded;
-	readonly api: Api;
-
-	constructor(
-		store: Pinia,
-		route: RouteLocationNormalizedLoaded,
-		signal: AbortSignal,
-	) {
-		super();
-		this.api = api.withCancelToken(signal);
-		this.store = store;
-		this.route = route;
-		this.signal = signal;
-	}
-}
-
 /**
  * 预载下一个路由的组件数据，并处理加载指示器、错误页面、新页面标题等任务。
  *
- * @param store Vuex存储实例
+ * @param store Pinia 存储实例
  * @param to 即将要进入的目标路由对象
  * @param components 需要预载数据的组件数组
  */
@@ -49,10 +29,11 @@ export async function prefetch(
 	if (components.length === 0) {
 		return;
 	}
-	const session = new ClientPrefetch(store, to, controller.signal);
+	const scopedAPI = api.withCancelToken(controller.signal);
+	const ctx = new PrefetchContext(store, to, scopedAPI, controller);
 
-	const prefetching = collectTasks(components, session);
-	events.emit("prefetch", session);
+	const prefetching = collectTasks(components, ctx);
+	events.emit("prefetch", ctx);
 
 	try {
 		const data = await prefetching;
@@ -95,9 +76,6 @@ export async function prefetch(
 	}
 }
 
-/**
- * mixin 必须在创建 Vue 实例之前
- */
 export const ClientPrefetchMixin: ComponentOptions = {
 	beforeRouteUpdate(this, to) {
 		const component = this.$options as MaybePrefetchComponent;

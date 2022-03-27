@@ -1,39 +1,18 @@
 import type { RenderContext, SSRManifest } from "@kaciras-blog/server";
 import { basename, extname } from "path";
-import { RouteLocationNormalizedLoaded, Router } from "vue-router";
+import { Router } from "vue-router";
 import { renderToString, SSRContext } from "vue/server-renderer";
 import { Pinia } from "pinia";
 import { breakpoints, useMQStore } from "@kaciras-blog/uikit";
 import { configureForProxy } from "@kaciras-blog/server/lib/axios-helper.js";
 import { useCurrentUser, usePrefetch } from "@/store";
 import { compositor } from "@/utils";
-import api, { Api } from "./api";
+import api from "./api";
 import createBlogApp from "./main";
 import { collectTasks, PrefetchContext } from "./prefetch";
 
 // 后台页面就不预渲染了。
 const noSSR = new RegExp("^/(?:edit|console)/?(?:\\?|$)?");
-
-class ServerPrefetch extends PrefetchContext {
-
-	readonly store: Pinia;
-	readonly route: RouteLocationNormalizedLoaded;
-	readonly api: Api;
-	readonly signal: AbortSignal;
-
-	constructor(
-		store: Pinia,
-		route: RouteLocationNormalizedLoaded,
-		api: Api,
-		controller: AbortController,
-	) {
-		super();
-		this.store = store;
-		this.route = route;
-		this.api = api;
-		this.signal = controller.signal;
-	}
-}
 
 /**
  * 简单地通过 User-Agent 判断客户端的设备是不是手机
@@ -54,9 +33,11 @@ async function prefetch(store: Pinia, router: Router, request: any) {
 		useMQStore(store).width = breakpoints.mobile;
 	}
 
-	const ssrApi = api.withConfig(c => configureForProxy(request, c));
 	const controller = new AbortController();
-	const session = new ServerPrefetch(store, route, ssrApi, controller);
+	const ssrApi = api
+		.withConfig(c => configureForProxy(request, c))
+		.withCancelToken(controller.signal);
+	const ctx = new PrefetchContext(store, route, ssrApi, controller);
 
 	/*
 	 * 路由配置里最后一条把所有未匹配的路由都转到错误页，
@@ -66,7 +47,7 @@ async function prefetch(store: Pinia, router: Router, request: any) {
 	const components = route.matched
 		.flatMap(v => Object.values(v.components));
 
-	const prefetching = collectTasks(components, session);
+	const prefetching = collectTasks(components, ctx);
 
 	const userStore = useCurrentUser(store);
 	const prefetch = usePrefetch(store);

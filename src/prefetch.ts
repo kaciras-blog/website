@@ -42,14 +42,26 @@ class RedirectException extends Error {
 	}
 }
 
-export abstract class PrefetchContext {
+export class PrefetchContext {
 
-	abstract store: Pinia;
-	abstract route: RouteLocationNormalizedLoaded;
-	abstract signal: AbortSignal;
-	abstract api: Api;
+	readonly store: Pinia;
+	readonly route: RouteLocationNormalizedLoaded;
+	readonly signal: AbortSignal;
+	readonly api: Api;
 
 	readonly data: Record<string, Promise<unknown>> = {};
+
+	constructor(
+		store: Pinia,
+		route: RouteLocationNormalizedLoaded,
+		api: Api,
+		controller: AbortController,
+	) {
+		this.store = store;
+		this.route = route;
+		this.api = api;
+		this.signal = controller.signal;
+	}
 
 	/**
 	 * 在预载时发现需要重定向，本次的渲染结果将被丢弃。
