@@ -59,9 +59,7 @@ async function appShellStartup() {
 
 // 如果有 window.__INITIAL_STATE__ 全局属性则说明使用了服务端渲染。
 if (window.__INITIAL_STATE__) {
-
-	// 服务端渲染的 HTML 包括了首屏资源，所以要延迟到 load 事件避免占用
-	window.addEventListener("load", useServiceWorker);
+	useServiceWorker();
 
 	// 在服务端渲染下，将初始化注册到 onReady 上，
 	// 使其在初始路由 resolve 后执行，以便我们不会二次预取(double-fetch)已有的数据。

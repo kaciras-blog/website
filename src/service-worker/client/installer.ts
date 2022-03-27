@@ -71,13 +71,20 @@ async function initialize() {
 }
 
 /**
- * 启用 ServiceWorker 功能，该函数只能在客户端使用。
- *
- * 最好等到 window.load 事件时再注册，以免占用首屏宽带。
+ * 等到空闲时注册 ServiceWorker，该函数只能在客户端使用。
  *
  * 【注意】
  * 若之前启用过，要禁用的话必须得注销，该函数始终需要被调用。
  */
 export function useServiceWorker() {
-	if ("serviceWorker" in navigator) initialize();
+	if (!("serviceWorker" in navigator)) {
+		return;
+	}
+	if ("requestIdleCallback" in window) {
+		requestIdleCallback(initialize);
+	} else if (document.readyState === "complete") {
+		void initialize();
+	} else {
+		window.addEventListener("load", initialize);
+	}
 }
