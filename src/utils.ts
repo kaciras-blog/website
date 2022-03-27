@@ -123,7 +123,7 @@ export function compositor<T extends Placeholders>(
 
 		if (typeof pattern === "string") {
 			startPos = template.indexOf(pattern);
-			if(startPos === -1) {
+			if (startPos === -1) {
 				throw new Error("找不到匹配串");
 			}
 			endPos = startPos + pattern.length;
@@ -147,6 +147,10 @@ export function compositor<T extends Placeholders>(
 	for (let i = 0; i < positions.length; i++) {
 		const { name, startPos, endPos } = positions[i];
 		nameToSlot.set(name, i * 2 + 1);
+
+		if (startPos > lastEnd) {
+			throw new Error("placeholders overlap.");
+		}
 
 		parts.push(template.slice(lastEnd, startPos));
 		parts.push(template.slice(startPos, lastEnd = endPos));

@@ -3,9 +3,9 @@ export default {
 	moduleNameMapper: {
 		"^@/(.*)$": "<rootDir>/src/$1",
 	},
-	preset: "ts-jest",
-	transform: {
-		"^.+\\.tsx?$": "ts-jest",
+	preset: "ts-jest/presets/default-esm",
+	globals: {
+		"ts-jest": { useESM: true },
 	},
 	testMatch: [
 		"**/tests/**/*.spec.+(ts|js|tsx|jsx)",
