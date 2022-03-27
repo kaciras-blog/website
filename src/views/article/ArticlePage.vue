@@ -27,9 +27,21 @@
 			<markdown-view
 				:value="article.content"
 				:is-article="true"
-				class="segment"
 				:class="$style.content"
 			/>
+
+			<footer :class="$style.copyright">
+				<a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+					<img
+						alt="知识共享许可协议"
+						style="border-width:0"
+						src="https://i.creativecommons.org/l/by/4.0/88x31.png"
+					/>
+				</a>
+				<br/>
+				本作品采用
+				<a rel="license" href="https://creativecommons.org/licenses/by/4.0/" class="highlight">知识共享署名 4.0 国际许可协议</a>进行许可。
+			</footer>
 		</article>
 
 		<discussion-section
@@ -194,6 +206,14 @@ function gotoDiscuss() {
 
 .content {
 	font-size: initial;
+}
+
+.copyright {
+	composes: panel from global;
+
+	font-size: initial;
+	background: #f7f7f7;
+	text-align: center;
 }
 
 .discussion {

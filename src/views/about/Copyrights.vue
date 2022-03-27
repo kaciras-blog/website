@@ -2,7 +2,7 @@
 	<div class="about-tab-page">
 		<section class="about-section">
 			<icon-section-header title="版权声明" icon="@/assets/img/copyright.svg"/>
-			<p>本站的文章若没有单独声明，均未经允许禁止转载。</p>
+			<p>本站文章的许可参见文章末尾的声明。</p>
 
 			<h2>第三方资源</h2>
 			<p>网站的图标来自</p>
