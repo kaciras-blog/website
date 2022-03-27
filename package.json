@@ -49,6 +49,7 @@
 		"vue-router": "^4.0.14"
 	},
 	"devDependencies": {
+		"@jest/globals": "^27.5.1",
 		"@kaciras-blog/devtool": "^2.0.2",
 		"@kaciras/eslint-config-core": "^2.3.0",
 		"@kaciras/eslint-config-jest": "^2.3.0",

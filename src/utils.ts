@@ -148,7 +148,7 @@ export function compositor<T extends Placeholders>(
 		const { name, startPos, endPos } = positions[i];
 		nameToSlot.set(name, i * 2 + 1);
 
-		if (startPos > lastEnd) {
+		if (startPos < lastEnd) {
 			throw new Error("placeholders overlap.");
 		}
 

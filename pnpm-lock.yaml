@@ -1,6 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
+  '@jest/globals': ^27.5.1
   '@kaciras-blog/devtool': ^2.0.2
   '@kaciras-blog/markdown': ^2.0.2
   '@kaciras-blog/server': ^2.0.2
@@ -60,6 +61,7 @@ dependencies:
   vue-router: 4.0.14_vue@3.2.31
 
 devDependencies:
+  '@jest/globals': 27.5.1
   '@kaciras-blog/devtool': 2.0.2_ad6d7c821ac5b626aebc1865aa208a36
   '@kaciras/eslint-config-core': 2.3.0_eslint@8.11.0
   '@kaciras/eslint-config-jest': 2.3.0_39394221a84a0125a51a7138e62e9739
