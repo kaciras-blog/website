@@ -1,14 +1,17 @@
 import { ComponentOptions, onBeforeMount, useSSRContext } from "vue";
 import { Pinia } from "pinia";
 import { RouteComponent, RouteLocationNormalizedLoaded } from "vue-router";
+import { Awaitable } from "@vueuse/core";
 import { createNanoEvents, Emitter } from "nanoevents";
 import { Api } from "./api";
 
 /*
- * 本项目使用预载模式，即先获取数据再渲染路由页面，官方也有对此的介绍：
- * https://next.router.vuejs.org/guide/advanced/data-fetching.html#fetching-before-navigation
+ * 本项目使用预载模式，即先获取数据再渲染路由页面，官方也有介绍：
+ * https://router.vuejs.org/guide/advanced/data-fetching.html#fetching-before-navigation
  *
- *
+ * 之所以选它，是因为有以下优势：
+ * 1）简化代码，仅需一个顶部进度条作为指示器，而后加载要在所有需要数据的组件上做菊花图。
+ * 2）没有中间的无效状态，要么当前页，要么是完成的新页面，而后加载则有切换过去但全是菊花图的情况。
  */
 
 export interface PrefetchEventMap {
@@ -42,12 +45,19 @@ class RedirectException extends Error {
 	}
 }
 
+/**
+ * 预载函数的参数，包含了预载所需的全部信息，注意跟 Vue 自带的 SSRContext 区分。
+ *
+ * <h2>为什么自己实现预载机制</h2>
+ * 1）serverPrefetch 钩子不在客户端执行，自己调用吧感觉耦合高了不太好。
+ * 2）组建内路由钩子虽然跟组件配合得好，但 SSR 需要保存全局状态。
+ */
 export class PrefetchContext {
 
 	readonly store: Pinia;
 	readonly route: RouteLocationNormalizedLoaded;
-	readonly signal: AbortSignal;
 	readonly api: Api;
+	readonly signal: AbortSignal;
 
 	readonly data: Record<string, Promise<unknown>> = {};
 
@@ -74,8 +84,8 @@ export class PrefetchContext {
 	}
 }
 
-export interface MaybePrefetchComponent extends ComponentOptions {
-	asyncData?(ctx: PrefetchContext): Promise<void>;
+export interface PrefetchComponent extends ComponentOptions {
+	asyncData?(ctx: PrefetchContext): Awaitable<void>;
 }
 
 /**
@@ -106,7 +116,7 @@ export const useHeadMeta = import.meta.env.SSR
 	? useSSRHeadMeta : useClientHeadMeta;
 
 export function collectTasks(comps: RouteComponent[], session: PrefetchContext) {
-	(comps as MaybePrefetchComponent[])
+	(comps as PrefetchComponent[])
 		.forEach(c => c.asyncData?.(session));
 
 	const prefetched: Record<string, unknown> = {};

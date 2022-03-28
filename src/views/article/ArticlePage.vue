@@ -79,11 +79,12 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from "vue";
 import { PrefetchContext } from "@/prefetch";
 import { usePrefetch } from "@/store";
 
 /**
- * 在路由切换前加载数据，并检查URL是否正确。
+ * 在路由切换前加载数据，并检查 URL 是否正确。
  */
 function asyncData(session: PrefetchContext) {
 	const { store, route, api, data } = session;
@@ -104,7 +105,7 @@ function asyncData(session: PrefetchContext) {
 	});
 }
 
-export default { asyncData };
+export default defineComponent({ asyncData });
 </script>
 
 <script setup lang="ts">

@@ -8,7 +8,7 @@ import { ComponentOptions } from "vue";
 import { RouteComponent, RouteLocationNormalizedLoaded, Router } from "vue-router";
 import api from "@/api";
 import { isOnlyHashChange } from "@/utils";
-import { collectTasks, events, MaybePrefetchComponent, PrefetchContext } from "./prefetch";
+import { collectTasks, events, PrefetchComponent, PrefetchContext } from "./prefetch";
 import { Pinia } from "pinia";
 import { usePrefetch } from "@/store";
 
@@ -78,7 +78,7 @@ export async function prefetch(
 
 export const ClientPrefetchMixin: ComponentOptions = {
 	beforeRouteUpdate(this, to) {
-		const component = this.$options as MaybePrefetchComponent;
+		const component = this.$options as PrefetchComponent;
 		if (component.asyncData) {
 			controller = new AbortController();
 			events.emit("start", controller.signal);
