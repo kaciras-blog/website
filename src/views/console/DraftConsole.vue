@@ -29,8 +29,8 @@
 						v-for="draft of items"
 						:key="draft.id"
 						class="segment"
-						:value="draft"
-						@removed="removeItem(draft.id)"
+						v-bind="draft"
+						@removed="removeItem(draft)"
 					/>
 				</ol>
 				<span v-else class="minor-text">空空如也</span>
@@ -40,9 +40,9 @@
 </template>
 
 <script setup lang="ts">
-import { shallowRef } from "vue";
+import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { MessageType, useDialog, KxButton, ScrollPagingView } from "@kaciras-blog/uikit";
+import { KxButton, MessageType, ScrollPagingView, useDialog } from "@kaciras-blog/uikit";
 import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
 import TrashIcon from "bootstrap-icons/icons/trash.svg?sfc";
 import api, { Draft } from "@/api";
@@ -56,7 +56,7 @@ const router = useRouter();
 // TODO: 列表的空数据状态处理。
 const DEFAULT_PAGE_DATA: ListQueryView<Draft> = { items: [], total: Infinity };
 
-const draftList = shallowRef(DEFAULT_PAGE_DATA);
+const draftList = ref(DEFAULT_PAGE_DATA);
 
 function newArticle() {
 	return api.draft.createNew()
@@ -84,7 +84,8 @@ function loadPage(start: number, count: number) {
 	return api.draft.getList({ userId, start, count });
 }
 
-function removeItem(id: number) {
-	deleteOn(draftList.value.items, d => d.id === id);
+function removeItem(item: Draft) {
+	draftList.value.total -= 1;
+	deleteOn(draftList.value.items, d => d === item);
 }
 </script>

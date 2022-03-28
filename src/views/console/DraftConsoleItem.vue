@@ -1,30 +1,30 @@
 <template>
 	<li :class="$style.container">
 		<div :class="$style.main">
-			<h3>{{ value.title }}</h3>
+			<h3>{{ title }}</h3>
 
-			<span :class="$style.time">
-				<i class="fas fa-feather-alt"></i>
-				<time>{{ localDateMinute(value.createTime) }}</time>
+			<span :class="$style.time" title="创建时间">
+				<EditIcon/>
+				<time>{{ localDateMinute(createTime) }}</time>
 			</span>
-			<span :class="$style.time">
-				<i class="fas fa-sync-alt"></i>
-				<time>{{ localDateMinute(value.updateTime) }}</time>
+			<span :class="$style.time" title="最后更新">
+				<UpdateIcon/>
+				<time>{{ localDateMinute(updateTime) }}</time>
 			</span>
 
 			<span
-				v-if="value.articleId"
+				v-if="articleId"
 				title="修改现有的文章"
 				:class="$style.target"
 			>
-				<i class="fas fa-edit"/>
-				{{ value.articleId }}
+				<PaperPlaneIcon/>
+				{{ articleId }}
 			</span>
 		</div>
 
 		<div class="btn-group">
 			<kx-button
-				:route="'/edit/' + value.id"
+				:route="'/edit/' + id"
 				type="outline"
 				color="primary"
 			>
@@ -42,26 +42,38 @@
 </template>
 
 <script setup lang="ts">
-import { MessageType, useDialog, KxButton } from "@kaciras-blog/uikit";
+import { KxButton, MessageType, useDialog } from "@kaciras-blog/uikit";
+import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
+import PaperPlaneIcon from "@/assets/icon/paper-plane.svg?sfc";
+import UpdateIcon from "@material-design-icons/svg/filled/update.svg?sfc";
 import api from "@/api";
 import { localDateMinute } from "@/blog-plugin";
 
-const dialog = useDialog();
+interface Draft_COPY {
+	id: number;
+	articleId?: number;
+	userId: number;
+	title: string;
+	lastSaveCount: number;
+	createTime: number;
+	updateTime: number;
+}
 
-const props = defineProps(["value"]);
+const props = defineProps<Draft_COPY>();
 const emit = defineEmits(["removed"]);
 
+const dialog = useDialog();
+
 async function deleteDraft() {
-	const prompt = dialog.alert({
+	const prompt = await dialog.alert({
 		title: "删除草稿",
 		content: "删除后不可恢复，是否确定？",
 		type: MessageType.Warning,
-		showCancelButton: true,
+		cancelable: true,
 	});
-
-	await prompt.confirmPromise;
-	await api.draft.remove(props.value.id);
-	emit("removed");
+	if (prompt.isConfirm) {
+		api.draft.remove(props.id).then(() => emit("removed"));
+	}
 }
 </script>
 
@@ -87,7 +99,9 @@ async function deleteDraft() {
 	color: @color-text-minor;
 	padding-right: 15px;
 
-	& > i {
+	& > svg {
+		font-size: 18px;
+		vertical-align: -4px;
 		margin-right: 5px;
 	}
 }

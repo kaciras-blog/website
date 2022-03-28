@@ -3,7 +3,7 @@ import { getLocation } from "./common";
 
 export interface Draft {
 	id: number;
-	articleId: number;
+	articleId?: number;
 	userId: number;
 	title: string;
 	lastSaveCount: number;
@@ -18,7 +18,7 @@ export interface DraftListQuery extends Pageable {
 export interface DraftHistoryInput {
 	title: string;
 	keywords: string;
-	cover: string;
+	cover?: string;
 	summary: string;
 	content: string;
 }
