@@ -7,7 +7,7 @@
 				<img
 					class="small head"
 					:class="$style.cover"
-					:src="current.cover"
+					:src="current.cover ?? CATEGORY_IMG"
 					alt="分类图标"
 				>
 				<span :class="$style.name">{{ current.name }}</span>
@@ -51,7 +51,7 @@
 					<img
 						class="head"
 						:class="$style.cover"
-						:src="category.cover"
+						:src="category.cover ?? CATEGORY_IMG"
 						alt="分类图标"
 					>
 					<h3 :class="$style.name">{{ category.name }}</h3>
@@ -69,12 +69,13 @@
 
 			<div class="btn-group">
 				<kx-button
-					class="second"
+					color="second"
 					@click="clear"
 				>
 					清空选择
 				</kx-button>
 				<kx-button
+					color="second"
 					@click="cancel"
 				>
 					取消
@@ -93,11 +94,12 @@
 
 <script setup lang="ts">
 import { computed, reactive, ref } from "vue";
-import { useDialog, KxButton, KxCheckBox } from "@kaciras-blog/uikit";
+import { KxBaseDialog, KxButton, KxCheckBox, useDialog } from "@kaciras-blog/uikit";
 import ArrowLeft from "@material-design-icons/svg/round/arrow_back.svg?sfc";
 import ArrowUpward from "@material-design-icons/svg/round/arrow_upward.svg?sfc";
 import { Category } from "@/api";
 import { deleteOn } from "@/utils";
+import { CATEGORY_IMG } from "@/blog-plugin";
 import CachedCategoryWalker from "./CachedCategoryWalker";
 
 interface SelectCategoryDialogProps {

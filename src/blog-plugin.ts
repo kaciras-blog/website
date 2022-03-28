@@ -17,8 +17,9 @@ import SocialLink from "./components/SocialLink.vue";
 
 import DEFAULT_AVATAR from "@/assets/img/akalin.jpg";
 import DEFAULT_COVER from "@/assets/img/placeholder.png";
+import CATEGORY_IMG from "@/assets/img/category.png";
 
-export { DEFAULT_AVATAR, DEFAULT_COVER };
+export { DEFAULT_AVATAR, DEFAULT_COVER, CATEGORY_IMG };
 
 /**
  * 获取文章所在页面的的完整路径。

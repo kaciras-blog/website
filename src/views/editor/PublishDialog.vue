@@ -3,20 +3,20 @@
 		<form :class="$style.body">
 
 			<div :class="$style.category" class="segment">
-				<span class="label">发布到：</span>
+				<span class="label">分类：</span>
 
-				<div v-if="category" :class="$style.input">
+				<template v-if="category">
 					<img
 						class="small head"
 						:src="category.cover"
 						alt="分类图标"
 					>
 					<h3 :class="$style.name">{{ category.name }}</h3>
-				</div>
-				<div v-else :class="$style.input"></div>
+				</template>
 
 				<kx-button
 					type="outline"
+					:style="{ marginLeft: 'auto' }"
 					@click="selectCategory"
 				>
 					选择分类
@@ -136,7 +136,6 @@ async function accept() {
 
 	display: inline-block;
 	padding: 0 .5rem;
-	vertical-align: middle;
 }
 
 .block_label {

@@ -74,7 +74,6 @@ const draft = reactive<Draft>({} as any);
 
 const current = reactive<DraftHistory>({
 	title: "",
-	cover: "",
 	keywords: "",
 	summary: "",
 	content: "",

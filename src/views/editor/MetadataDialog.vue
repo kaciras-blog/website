@@ -3,7 +3,7 @@
 		<form :class="$style.content">
 			<img
 				:class="$style.cover"
-				:src="local.cover"
+				:src="local.cover ?? DEFAULT_COVER"
 				alt="封面"
 				@click="changeCover"
 			/>
@@ -40,10 +40,11 @@ export default {
 import { reactive, toRaw } from "vue";
 import { useDialog, KxDialogButtons, KxBaseDialog } from "@kaciras-blog/uikit";
 import api from "@/api";
+import { DEFAULT_COVER } from "@/blog-plugin";
 
 interface ArticleMeta {
 	title: string;
-	cover: string;
+	cover?: string;
 	keywords: string;
 	summary: string;
 }
