@@ -28,10 +28,17 @@ export interface DraftHistory extends DraftHistoryInput {
 	saveCount: number;
 }
 
+const initial: DraftHistoryInput = {
+	title: "新文章",
+	summary: "",
+	content: "",
+	keywords: "",
+};
+
 export default class DraftResource extends AbstractResource {
 
 	createNew() {
-		return this.servers.content.post<Draft>("/drafts").then(getLocation("/drafts/"));
+		return this.servers.content.post<Draft>("/drafts", initial).then(getLocation("/drafts/"));
 	}
 
 	fromArticle(article: number) {
