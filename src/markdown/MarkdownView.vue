@@ -9,6 +9,7 @@ import { NOOP } from "@/utils";
 
 interface MarkdownViewProps {
 	value: string;
+	docId?: any;
 	isArticle?: boolean;
 }
 
@@ -17,10 +18,11 @@ const props = withDefaults(defineProps<MarkdownViewProps>(), {
 });
 
 const html = computed(() => {
-	const renderer = props.isArticle
+	const { value, isArticle, docId } = props;
+	const renderer = isArticle
 		? articleRenderer
 		: discussionRenderer;
-	return renderer.render(props.value);
+	return renderer.render(value, { docId });
 });
 
 let disconnect = NOOP;

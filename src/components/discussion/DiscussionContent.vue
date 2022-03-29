@@ -51,7 +51,11 @@
 		<!-- 引用的内容 -->
 		<slot/>
 
-		<markdown-view :class="$style.content" :value="value.content"/>
+		<markdown-view
+			:class="$style.content"
+			:value="value.content"
+			:doc-id="value.id.toString()"
+		/>
 	</component>
 </template>
 

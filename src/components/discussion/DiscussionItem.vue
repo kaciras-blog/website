@@ -22,7 +22,10 @@
 					@{{ displayName(parent) }}
 					(#{{ parent.floor }})
 				</p>
-				<markdown-view :value="parent.content"/>
+				<markdown-view
+					:doc-id='"dq" + id'
+					:value="parent.content"
+				/>
 			</blockquote>
 		</discussion-content>
 
