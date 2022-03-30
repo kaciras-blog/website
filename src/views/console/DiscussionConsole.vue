@@ -1,40 +1,38 @@
 <template>
-	<div>
-		<discussion-config-panel></discussion-config-panel>
+	<discussion-config-panel></discussion-config-panel>
 
-		<div class="panel">
-			<div :class="$style.toolbar">
-				<kx-check-box v-model="allChecked"/>
+	<div class="panel">
+		<div :class="$style.toolbar">
+			<kx-check-box v-model="allChecked"/>
 
-				<div class="btn-group">
-					<kx-button
-						class="primary"
-						:disabled="!selected.size"
-						@click="approveAll"
-					>
-						全部发布
-					</kx-button>
-					<kx-button
-						class="dangerous"
-						:disabled="!selected.size"
-						@click="removeAll"
-					>
-						全部删除
-					</kx-button>
-				</div>
+			<div class="btn-group">
+				<kx-button
+					class="primary"
+					:disabled="!selected.size"
+					@click="approveAll"
+				>
+					全部发布
+				</kx-button>
+				<kx-button
+					class="dangerous"
+					:disabled="!selected.size"
+					@click="removeAll"
+				>
+					全部删除
+				</kx-button>
 			</div>
-
-			<ul v-if="pendingList.length" class="clean-list">
-				<discussion-check-item
-					v-for="item of pendingList"
-					v-bind="item"
-					:key="item.id"
-					:checked="selected.has(item.id)"
-					@update:checked="v => switchChecked(item, v)"
-				/>
-			</ul>
-			<div v-else :class="$style.empty">没有需要审核的评论。</div>
 		</div>
+
+		<ul v-if="pendingList.length" class="clean-list">
+			<discussion-check-item
+				v-for="item of pendingList"
+				v-bind="item"
+				:key="item.id"
+				:checked="selected.has(item.id)"
+				@update:checked="v => switchChecked(item, v)"
+			/>
+		</ul>
+		<div v-else :class="$style.empty">没有需要审核的评论。</div>
 	</div>
 </template>
 

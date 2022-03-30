@@ -1,33 +1,31 @@
 <template>
-	<div>
-		<div class="btn-group console-toolbar">
-			<kx-button
-				@click="newArticle"
-			>
-				<EditIcon class="prefix"/>
-				新文章
-			</kx-button>
-		</div>
+	<div class="btn-group console-toolbar">
+		<kx-button
+			@click="newArticle"
+		>
+			<EditIcon class="prefix"/>
+			新文章
+		</kx-button>
+	</div>
 
-		<div class="panel">
-			<article-item
-				v-for="article of list.items"
-				:key="article.id"
-				:value="article"
-				class="segment"
-			/>
-			<span v-if="list.total === 0">
-				没有找到文章,去写一篇吧~
-			</span>
-			<sk-fading-circle v-if="loading"/>
-		</div>
+	<div class="panel">
+		<article-item
+			v-for="article of list.items"
+			:key="article.id"
+			:value="article"
+			class="segment"
+		/>
+		<span v-if="list.total === 0">
+			没有找到文章,去写一篇吧~
+		</span>
+		<sk-fading-circle v-if="loading"/>
 	</div>
 </template>
 
 <script setup lang="ts">
 import { shallowRef } from "vue";
 import { useRouter } from "vue-router";
-import { useDialog, SkFadingCircle, KxButton } from "@kaciras-blog/uikit";
+import { KxButton, SkFadingCircle, useDialog } from "@kaciras-blog/uikit";
 import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
 import api, { DeletionState } from "@/api";
 import { errorMessage } from "@/utils";

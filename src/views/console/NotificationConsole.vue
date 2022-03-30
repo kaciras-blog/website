@@ -1,36 +1,34 @@
 <template>
-	<div>
-		<div class="btn-group console-toolbar">
-			<kx-task-button
-				class="primary"
-				:on-click="clear"
-			>
-				<ClearIcon class="prefix"/>
-				清除全部
-			</kx-task-button>
-		</div>
-
-		<div
-			v-if="loading"
-			:class="$style.spinner"
+	<div class="btn-group console-toolbar">
+		<kx-task-button
+			class="primary"
+			:on-click="clear"
 		>
-			<atom-spinner/>
-			<span>加载中……</span>
-		</div>
+			<ClearIcon class="prefix"/>
+			清除全部
+		</kx-task-button>
+	</div>
 
-		<ul v-else :class="$style.list">
-			<li v-for="{type, data, time} of notifications" class="segment">
-				<p>
+	<div
+		v-if="loading"
+		:class="$style.spinner"
+	>
+		<atom-spinner/>
+		<span>加载中……</span>
+	</div>
+
+	<ul v-else :class="$style.list">
+		<li v-for="{type, data, time} of notifications" class="segment">
+			<p>
 					<span :class="[$style.label, $style[MAP[type].name]]">
 						{{ MAP[type].displayName }}
 					</span>
-					<time :class="$style.time">{{ localDateMinute(time) }}</time>
-				</p>
+				<time :class="$style.time">{{ localDateMinute(time) }}</time>
+			</p>
 
-				<component :is="MAP[type].component" v-bind="data"/>
-			</li>
-		</ul>
-	</div>
+			<component :is="MAP[type].component" v-bind="data"/>
+		</li>
+	</ul>
 </template>
 
 <script setup lang="ts">

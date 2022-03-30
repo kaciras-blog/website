@@ -1,56 +1,54 @@
 <template>
-	<div>
-		<div :class="$style.buttons">
-			<div class="btn-group">
-				<kx-button
-					icon="fas fa-arrow-up"
-					:disabled="!hasAncestor"
-					@click="$data.gotoId(0)"
-				>
-					<ArrowUpward class="prefix"/>
-					返回顶层
-				</kx-button>
-				<kx-button
-					icon="fa fa-arrow-left"
-					:disabled="!hasAncestor"
-					@click="$data.gotoParent()"
-				>
-					<ArrowLeft class="prefix"/>
-					回到父级
-				</kx-button>
-			</div>
-
+	<div :class="$style.buttons">
+		<div class="btn-group">
 			<kx-button
-				class="second"
-				@click="createNew"
+				icon="fas fa-arrow-up"
+				:disabled="!hasAncestor"
+				@click="$data.gotoId(0)"
 			>
-				新建分类
+				<ArrowUpward class="prefix"/>
+				返回顶层
+			</kx-button>
+			<kx-button
+				icon="fa fa-arrow-left"
+				:disabled="!hasAncestor"
+				@click="$data.gotoParent()"
+			>
+				<ArrowLeft class="prefix"/>
+				回到父级
 			</kx-button>
 		</div>
 
-		<category-view
-			v-if="current"
-			:editable="true"
-			:item="current"
-			@moved="$data.gotoParent()"
-			@removed="$data.gotoParent()"
-			@change="submit"
-		/>
-
-		<div :class="$style.childrenTitle" v-if="current">下级分类</div>
-
-		<div v-if="!children">正在加载中</div>
-
-		<ul v-else-if="children.length" :class="$style.cards">
-			<category-card
-				v-for="item of children"
-				:key="item.id"
-				v-bind="item"
-				@click="$data.goto(item)"
-			/>
-		</ul>
-		<div v-else :class="$style.empty_holder">没有下级分类了</div>
+		<kx-button
+			class="second"
+			@click="createNew"
+		>
+			新建分类
+		</kx-button>
 	</div>
+
+	<category-view
+		v-if="current"
+		:editable="true"
+		:item="current"
+		@moved="$data.gotoParent()"
+		@removed="$data.gotoParent()"
+		@change="submit"
+	/>
+
+	<div :class="$style.childrenTitle" v-if="current">下级分类</div>
+
+	<div v-if="!children">正在加载中</div>
+
+	<ul v-else-if="children.length" :class="$style.cards">
+		<category-card
+			v-for="item of children"
+			:key="item.id"
+			v-bind="item"
+			@click="$data.goto(item)"
+		/>
+	</ul>
+	<div v-else :class="$style.empty_holder">没有下级分类了</div>
 </template>
 
 <script>

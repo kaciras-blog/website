@@ -1,35 +1,33 @@
 <template>
-	<div>
-		<div class="btn-group" :class="$style.toolbar">
-			<kx-button type="outline" @click="createNew">添加</kx-button>
-			<kx-button type="outline" @click="load">重新加载</kx-button>
-			<kx-button color="primary" @click="submit">应用更改</kx-button>
-		</div>
+	<div class="btn-group" :class="$style.toolbar">
+		<kx-button type="outline" @click="createNew">添加</kx-button>
+		<kx-button type="outline" @click="load">重新加载</kx-button>
+		<kx-button color="primary" @click="submit">应用更改</kx-button>
+	</div>
 
-		<div ref="container">
-			<template v-for="item of cards">
-				<div
-					v-if="item.placeholder"
-					:key="item.id"
-					:class="$style.placeholder"
-				/>
-				<card-list-item
-					v-else
-					:key="item.id"
-					:class="$style.card"
-					v-bind="item"
-					@switch-expand="item.expand = !item.expand"
-					@remove="remove"
-					@drag-start="drag($event, item)"
-				/>
-			</template>
-		</div>
+	<div ref="container">
+		<template v-for="item of cards">
+			<div
+				v-if="item.placeholder"
+				:key="item.id"
+				:class="$style.placeholder"
+			/>
+			<card-list-item
+				v-else
+				:key="item.id"
+				:class="$style.card"
+				v-bind="item"
+				@switch-expand="item.expand = !item.expand"
+				@remove="remove"
+				@drag-start="drag($event, item)"
+			/>
+		</template>
 	</div>
 </template>
 
 <script setup>
 import { nextTick, ref, watch } from "vue";
-import { moveElement, observeMouseMove, useDialog, KxButton } from "@kaciras-blog/uikit";
+import { KxButton, moveElement, observeMouseMove, useDialog } from "@kaciras-blog/uikit";
 import api from "@/api";
 import { attachRandomId, deleteOn } from "@/utils";
 import CardListItem from "./CardListItem.vue";
@@ -62,6 +60,7 @@ const dialog = useDialog();
 const container = ref();
 const cards = ref([]);
 const initialized = ref(false);
+
 // const dragging = ref(null);
 
 function receiveMessage(data) {
