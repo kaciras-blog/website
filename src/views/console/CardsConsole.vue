@@ -71,6 +71,8 @@ function receiveMessage(data) {
 	}
 }
 
+defineExpose({ receiveMessage });
+
 function createNew() {
 	addCard(CARD_TEMPLATE);
 }

@@ -1,6 +1,6 @@
 <template>
 	<div :class="$style.container">
-		<nav class="light nav-item-group" :class="$style.nav">
+		<nav class="light" :class="$style.nav">
 			<router-link
 				to="/"
 				class="nav-item"
@@ -12,40 +12,42 @@
 
 		<!--
 			如果用路由来导航面板，可以让URL更好看，而且能记住历史直接跳转到对应的面板上。
-			但是 VueRouter 要求初始化时就配置好子路由，这样就难以分离代码，所以这里还是用动态组件。
+			但是 VueRouter 要求初始化时就配置好子路由，难以分离代码，所以还是用动态组件。
 		-->
 		<aside :class="$style.tabs">
 			<h1>控制台</h1>
 			<ul class="clean-list" role="tablist">
 				<li
-					v-for="link of views"
-					:key="link.label"
+					v-for="{ label, view } of views"
+					:key="label"
 					role="tab"
 					tabindex="2"
-					:aria-selected="active === link.view"
+					:aria-selected="active === view"
 					:class="{
-						[$style.active]: active === link.view,
+						[$style.active]: active === view,
 						[$style.tabItem]: true,
 					}"
-					@click="active = link.view"
-					@keyup.enter="active = link.view"
+					@click="active = view"
+					@keyup.enter="active = view"
 				>
-					{{ link.label }}
+					{{ label }}
 				</li>
 			</ul>
 		</aside>
 
-		<main :class="$style.body_wrapper">
-			<!-- 多面板联动必须要 keep-alive 一下 -->
+		<!--
+			将容器元素放在这里，里头的视图使用 Fragment，就像 iframe 一样。
+		-->
+		<main :class="$style.bodyWrapper">
 			<keep-alive>
-				<component :is="active" ref="panel" :class="$style.body"/>
+				<component :is="active" ref="panel"/>
 			</keep-alive>
 		</main>
 	</div>
 </template>
 
-<script setup>
-import { provide, shallowRef } from "vue";
+<script setup lang="ts">
+import { DefineComponent, nextTick, provide, shallowRef } from "vue";
 import ArticleConsole from "./ArticleConsole.vue";
 import DraftConsole from "./DraftConsole.vue";
 import CategoryConsole from "./CategoryConsole.vue";
@@ -63,12 +65,13 @@ const views = [
 ];
 
 const active = shallowRef(ArticleConsole);
+const panel = shallowRef();
 
-provide("sendMessage", async (component, data) => {
-	this.active = component;
-	await this.$nextTick();
+provide("sendMessage", async (component: DefineComponent, data: unknown) => {
+	active.value = component;
+	await nextTick();
 
-	const target = this.$refs.panel;
+	const target = panel.value;
 	if ("receiveMessage" in target) {
 		target.receiveMessage(data);
 	}
@@ -142,14 +145,10 @@ provide("sendMessage", async (component, data) => {
 	}
 }
 
-// 网格布局会使padding失效？只能外套一层然后内层加margin
-.body_wrapper {
+.bodyWrapper {
 	grid-area: body;
+	padding: 30px;
 	overflow-y: scroll;
-}
-
-.body {
-	margin: 30px;
 }
 </style>
 
