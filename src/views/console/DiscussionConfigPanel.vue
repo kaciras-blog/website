@@ -8,7 +8,6 @@
 				:key="name"
 				v-model="config[name]"
 				:class="$style.checkbox"
-				@input="sync"
 			>
 				{{ LABELS[name] }}
 			</kx-check-box>
@@ -19,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, toRaw } from "vue";
+import { reactive, ref, watch } from "vue";
 import { KxCheckBox, SkFadingCircle } from "@kaciras-blog/uikit";
 import api from "@/api";
 
@@ -30,21 +29,22 @@ const LABELS = {
 	moderation: "需要审核",
 };
 
-const config = ref({
-	disabled: true,
-	loginRequired: true,
+// 虽然会被替换，但还是给个值够避免布局移动。
+const config = reactive({
+	disabled: false,
+	loginRequired: false,
 	moderation: false,
 });
 
 const refreshing = ref(false);
 
-async function sync() {
+watch(config, async changed => {
 	refreshing.value = true;
-	await api.config.set("discussion", toRaw(config.value));
+	await api.config.set("discussion", changed);
 	refreshing.value = false;
-}
+});
 
-api.config.get("discussion").then(v => config.value = v);
+api.config.get("discussion").then(v => Object.assign(config, v));
 </script>
 
 <style module lang="less">
