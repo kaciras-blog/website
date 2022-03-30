@@ -34,7 +34,8 @@
 				<a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
 					<img
 						alt="知识共享许可协议"
-						style="border-width:0"
+						width="88"
+						height="31"
 						src="https://i.creativecommons.org/l/by/4.0/88x31.png"
 					/>
 				</a>
