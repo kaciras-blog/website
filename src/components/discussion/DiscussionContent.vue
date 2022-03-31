@@ -88,7 +88,13 @@ const user = useCurrentUser();
 const localFloor = computed(() => {
 	const { parent, floor, nestFloor } = props.value;
 	const { replies } = (parent ?? props.value);
-	return Array.isArray(replies) ? nestFloor : floor;
+	if (!replies) {
+		return floor; // 引用模式
+	}
+	if (!parent) {
+		return nestFloor; // 顶层评论
+	}
+	return `${parent.nestFloor}-${nestFloor}`;
 });
 
 function remove() {
