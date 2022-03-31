@@ -11,7 +11,7 @@
 			<div :class="$style.nameGroup">
 				<div>
 					<span
-						v-if="value.user.isAdmin"
+						v-if="value.user.id === 2"
 						:class="$style.stick"
 					>
 						博主
