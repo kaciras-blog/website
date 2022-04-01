@@ -1,15 +1,14 @@
 /* HTML 模板和 App-Shell 里的元素所用的样式 */
 @import "./imports";
 
-@loading-size: 140px;
 @logo-size: 100px;
 @ripple-color: #15b1e8;
 
 // 在数据还没来的情况下先显示个加载动画，仅可用于预载模式。
 #shell-loading {
 	position: absolute;
-	top: calc(50% - (@loading-size / 2));
-	left: calc(50% - (@loading-size / 2));
+	top: calc(50% - (@logo-size / 2));
+	left: calc(50% - (@logo-size / 2));
 
 	&::after {
 		content: "";

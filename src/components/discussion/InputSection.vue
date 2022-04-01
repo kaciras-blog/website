@@ -13,7 +13,11 @@
 
 		<!-- 是在想不到更好看的做法了，还是用输入框的样式吧 -->
 		<div v-else ref="thisEl" :class="$style.mobileSection">
-			<img :src="user.avatar" alt="头像" class="lite head">
+			<img
+				:src="user.avatar"
+				alt="头像"
+				class="lite head"
+			>
 			<button
 				:class="$style.fakeInput"
 				@click="showEditorFrame"
