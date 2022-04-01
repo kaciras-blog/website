@@ -3,7 +3,6 @@
 		<img :class="$style.cover" :src="value.cover" alt="封面">
 
 		<div :class="$style.info_section">
-
 			<div :class="$style.header">
 				<span v-if="value.deleted" :class="$style.removed">
 					已删除
@@ -22,16 +21,16 @@
 			</div>
 
 			<div :class="$style.attrs">
-				<i class="far fa-edit" title="发表于"></i>
+				<PaperPlaneIcon :class="$style.icon" title="发表于"/>
 				<time>{{ localDateMinute(value.create) }}</time>
 
-				<i class="fas fa-sync" title="最后更新"></i>
+				<UpdateIcon :class="$style.icon" title="发表于"/>
 				<time>{{ localDateMinute(value.update) }}</time>
 
-				<i class="fa fa-eye" title="浏览数"></i>
+				<EyeIcon :class="$style.icon" title="浏览数"/>
 				<span>{{ value.viewCount }}</span>
 
-				<i class="fas fa-comment-dots" title="评论数"></i>
+				<ChatIcon :class="$style.icon" title="评论数"/>
 				<span>{{ value.discussionCount }}</span>
 			</div>
 		</div>
@@ -83,7 +82,11 @@
 <script setup lang="ts">
 import { inject } from "vue";
 import api from "@/api";
-import { useDialog, KxButton } from "@kaciras-blog/uikit";
+import { KxButton, useDialog } from "@kaciras-blog/uikit";
+import PaperPlaneIcon from "@/assets/icon/paper-plane.svg?sfc";
+import UpdateIcon from "@material-design-icons/svg/filled/update.svg?sfc";
+import EyeIcon from "bootstrap-icons/icons/eye-fill.svg?sfc";
+import ChatIcon from "bootstrap-icons/icons/chat-dots.svg?sfc";
 import { articleLink, localDateMinute } from "@/blog-plugin";
 import { errorMessage } from "@/utils";
 import SelectCategoryDialog from "@/components/SelectCategoryDialog.vue";
@@ -181,5 +184,15 @@ async function changeCategory() {
 .tag_group {
 	composes: tag-group from global;
 	margin-bottom: 1rem;
+}
+
+.icon {
+	margin-right: 4px;
+	font-size: 18px;
+	vertical-align: sub;
+
+	&:not(:first-child) {
+		margin-left: 10px;
+	}
 }
 </style>

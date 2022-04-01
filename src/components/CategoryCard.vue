@@ -2,8 +2,8 @@
 	<li
 		:class="$style.container"
 		tabindex="0"
-		@click="emit('click')"
-		@keyup.enter="emit('click')"
+		@click="$emit('click')"
+		@keyup.enter="$emit('click')"
 	>
 		<img
 			:src="cover ?? CATEGORY_IMG"

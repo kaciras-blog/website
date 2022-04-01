@@ -2,7 +2,6 @@
 	<div :class="$style.buttons">
 		<div class="btn-group">
 			<kx-button
-				icon="fas fa-arrow-up"
 				:disabled="!hasAncestor"
 				@click="$data.gotoId(0)"
 			>
@@ -10,7 +9,6 @@
 				返回顶层
 			</kx-button>
 			<kx-button
-				icon="fa fa-arrow-left"
 				:disabled="!hasAncestor"
 				@click="$data.gotoParent()"
 			>
