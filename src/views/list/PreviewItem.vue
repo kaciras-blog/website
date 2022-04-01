@@ -18,20 +18,10 @@
 			</router-link>
 		</h2>
 
-		<div :class="$style.summary">{{ item.summary }}</div>
-
-		<div :class="$style.keywords">
-			<span :class="$style.keyword_header">关键词：</span>
-			<ul class="inline clean-list">
-				<li
-					v-for="kw of item.keywords"
-					:key="kw"
-					:class="$style.keyword">{{ kw }}
-				</li>
-			</ul>
+		<div :class="$style.summary">
+			{{ item.summary }}
 		</div>
 
-		<!-- TODO: 分类页暂不使用 -->
 		<div class="tag-group" :class="$style.category">
 			<span
 				v-for="c of item.categories"
@@ -47,12 +37,10 @@
 				<EditIcon/>
 				<time>{{ localDate(item.create) }}</time>
 			</span>
-
 			<span title="浏览数" :class="$style.metaItem">
 				<EyeIcon/>
 				<span>{{ item.viewCount }}</span>
 			</span>
-
 			<span title="评论数" :class="$style.metaItem">
 				<ChatIcon/>
 				<span>{{ item.discussionCount }}</span>
@@ -94,7 +82,11 @@ defineProps<PreviewItemProps>();
 
 	@media screen and (min-width: @length-screen-mobile) {
 		grid-template-columns: auto 1fr;
-		grid-template-areas: "cover title" "cover summary" "cover keywords" "category category" "meta meta";
+		grid-template-rows: auto 1fr auto;
+		grid-template-areas:
+				"cover   title "
+				"cover  summary"
+				"category meta "
 	}
 }
 
