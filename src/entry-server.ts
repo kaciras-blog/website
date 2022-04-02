@@ -74,7 +74,7 @@ async function prefetch(store: Pinia, router: Router, request: any) {
 export default function (template: string, manifest: SSRManifest) {
 	const newComposite = compositor(template, {
 		metadata: "<!--ssr-metadata-->",
-		preloads: "<!--preload-links-->",
+		preloads: /(?=<\/head>)/s,
 		appHtml: /(?<=<body>).*(?=<\/body>)/s,
 		title: /(?<=<title>).*(?=<\/title>)/s,
 	});
