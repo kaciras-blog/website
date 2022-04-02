@@ -1,6 +1,6 @@
 {
-	"name": "Kaciras的博客",
-	"short_name": "Kaciras的博客",
+	"name": "Kaciras Blog",
+	"short_name": "Kaciras Blog",
 	"icons": [
 		{
 			"src": "/icons/128.png",
@@ -31,6 +31,6 @@
 	],
 	"start_url": "/",
 	"display": "standalone",
-	"background_color": "#FFFFFF",
-	"theme_color": "#FFFFFF"
+	"theme_color": "#FFFFFF",
+	"background_color": "#FFFFFF"
 }
