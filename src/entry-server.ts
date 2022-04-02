@@ -174,13 +174,5 @@ function renderPreloadLink(file: string) {
 		case "woff":
 		case "woff2":
 			return `<link rel="preload" href="${file}" as="font" type="font/${ext}" crossorigin>`;
-		case "gif":
-		case "png":
-		case "jpeg":
-		case "webp":
-		case "avif":
-			return `<link rel="prefetch" href="${file}" as="image" type="image/${ext}">`;
-		case "jpg":
-			return `<link rel="prefetch" href="${file}" as="image" type="image/jpeg">`;
 	}
 }
