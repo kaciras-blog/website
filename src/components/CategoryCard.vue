@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { CATEGORY_IMG } from "@/blog-plugin";
+import { CATEGORY_IMG } from "@/common";
 
 // defineProps 目前不支持外部导入的类型，只能先写死了。
 // https://github.com/vuejs/core/issues/4294

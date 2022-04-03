@@ -45,7 +45,7 @@
 import { reactive, toRaw } from "vue";
 import { openFile, useDialog, MaterialTextInput, KxDialogButtons, KxBaseDialog } from "@kaciras-blog/uikit";
 import api from "@/api";
-import { DEFAULT_AVATAR } from "@/blog-plugin";
+import { DEFAULT_AVATAR } from "@/common";
 
 interface Friend_Copy {
 	url: string;

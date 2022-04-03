@@ -99,7 +99,7 @@ import ArrowLeft from "@material-design-icons/svg/round/arrow_back.svg?sfc";
 import ArrowUpward from "@material-design-icons/svg/round/arrow_upward.svg?sfc";
 import { Category } from "@/api";
 import { deleteOn } from "@/utils";
-import { CATEGORY_IMG } from "@/blog-plugin";
+import { CATEGORY_IMG } from "@/common";
 import CachedCategoryWalker from "./CachedCategoryWalker";
 
 interface SelectCategoryDialogProps {

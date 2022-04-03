@@ -31,7 +31,7 @@ friend	 - 友链对象
 
 <script setup lang="ts">
 import { Friend } from "@/api";
-import { DEFAULT_AVATAR } from "@/blog-plugin";
+import { DEFAULT_AVATAR } from "@/common";
 
 interface FriendCardProps {
 	friend: Friend;

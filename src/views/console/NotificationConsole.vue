@@ -20,9 +20,9 @@
 	<ul v-else :class="$style.list">
 		<li v-for="{type, data, time} of notifications" class="segment">
 			<p>
-					<span :class="[$style.label, $style[MAP[type].name]]">
-						{{ MAP[type].displayName }}
-					</span>
+				<span :class="[$style.label, $style[MAP[type].name]]">
+					{{ MAP[type].displayName }}
+				</span>
 				<time :class="$style.time">{{ localDateMinute(time) }}</time>
 			</p>
 
@@ -36,7 +36,7 @@ import { shallowRef } from "vue";
 import { useDialog, KxTaskButton, AtomSpinner } from "@kaciras-blog/uikit";
 import ClearIcon from "@material-design-icons/svg/filled/clear_all.svg?sfc";
 import api, { Notice } from "@/api";
-import { localDateMinute } from "@/blog-plugin";
+import { localDateMinute } from "@/common";
 import { errorMessage } from "@/utils";
 import FriendNotice from "@/views/console/FriendNotice.vue";
 import DiscussionNotice from "@/views/console/DiscussionNotice.vue";

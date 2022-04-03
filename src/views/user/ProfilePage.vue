@@ -40,7 +40,7 @@
 import { shallowReactive, toRaw } from "vue";
 import { KxButton, openFile, useDialog } from "@kaciras-blog/uikit";
 import api from "@/api";
-import { DEFAULT_AVATAR } from "@/blog-plugin";
+import { DEFAULT_AVATAR } from "@/common";
 import { useCurrentUser } from "@/store";
 import { errorMessage } from "@/utils";
 import BasePageLayout from "@/components/BasePageLayout.vue";

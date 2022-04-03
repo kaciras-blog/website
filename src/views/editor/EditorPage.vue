@@ -52,7 +52,7 @@ import { KxButton, useDialog } from "@kaciras-blog/uikit";
 import SaveIcon from "@material-design-icons/svg/filled/save.svg?sfc";
 import CardIcon from "bootstrap-icons/icons/credit-card-2-front.svg?sfc";
 import PaperPlaneIcon from "@/assets/icon/paper-plane.svg?sfc";
-import { articleLink, localDateMinute } from "@/blog-plugin";
+import { articleLink, localDateMinute } from "@/common";
 import { errorMessage } from "@/utils";
 import MarkdownEditor from "@/markdown/MarkdownEditor.vue";
 import TextTools from "@/markdown/TextTools.vue";

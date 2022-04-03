@@ -3,7 +3,7 @@
 		<h3 :class="$style.padding">浏览排行</h3>
 		<ol v-if="hots" class="rank-list">
 
-			<!-- 这里要保持<a>元素的链接，不能直接把<router-link>搞成<li> -->
+			<!-- 这里要保持 <a> 的链接，不能直接把 <router-link> 搞成 <li> -->
 			<li
 				v-for="article of hots"
 				:key="article.id"
@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import { articleLink } from "@/blog-plugin";
+import { articleLink } from "@/common";
 import { usePrefetch } from "@/store";
 
 const { hots } = usePrefetch().data;

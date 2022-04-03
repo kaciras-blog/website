@@ -74,4 +74,5 @@
 </template>
 
 <script setup lang="ts">
-import IconSectionHeader from "@/components/IconSectionHeader.vue";</script>
+import IconSectionHeader from "@/components/IconSectionHeader.vue";
+</script>

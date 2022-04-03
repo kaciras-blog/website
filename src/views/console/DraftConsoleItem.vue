@@ -47,7 +47,7 @@ import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
 import PaperPlaneIcon from "@/assets/icon/paper-plane.svg?sfc";
 import UpdateIcon from "@material-design-icons/svg/filled/update.svg?sfc";
 import api from "@/api";
-import { localDateMinute } from "@/blog-plugin";
+import { localDateMinute } from "@/common";
 
 interface Draft_COPY {
 	id: number;

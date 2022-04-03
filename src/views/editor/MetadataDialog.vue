@@ -40,7 +40,7 @@ export default {
 import { reactive, toRaw } from "vue";
 import { useDialog, KxDialogButtons, KxBaseDialog } from "@kaciras-blog/uikit";
 import api from "@/api";
-import { DEFAULT_COVER } from "@/blog-plugin";
+import { DEFAULT_COVER } from "@/common";
 
 interface ArticleMeta {
 	title: string;

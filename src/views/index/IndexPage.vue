@@ -1,14 +1,11 @@
 <template>
 	<base-page-layout>
-
 		<!-- 经过1小时的尝试仍未能做到模糊层背景定位，已放弃 -->
 		<template #nav>
 			<top-nav-glass :class="navClass"/>
 		</template>
 
 		<section :class="$style.banner" :style="bannerStyle">
-
-			<!-- 用于背景图片切换的渐变效果 -->
 			<transition
 				:enter-from-class="$style.enter_before"
 				:enter-active-class="$style.active_enter"
@@ -21,7 +18,6 @@
 					:style="transitionStyle"
 				/>
 			</transition>
-
 			<div
 				title="滚轮点击切换背景"
 				:class="$style.banner_content"

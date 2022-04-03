@@ -1,11 +1,23 @@
 <template>
-	<span :class="[$style.authTag, $style[AuthType[type]]]" title="登录类型">{{ AuthType[type] }}</span>
+	<span
+		:class="[
+			$style[AuthType[type]],
+			$style.authTag,
+		]"
+		title="登录类型"
+	>
+		{{ AuthType[type] }}
+	</span>
 </template>
 
 <script setup lang="ts">
 import { AuthType } from "@/api";
 
-defineProps(["type"]);
+interface AuthTapeTagProps {
+	type: AuthType;
+}
+
+defineProps<AuthTapeTagProps>();
 </script>
 
 <style module lang="less">

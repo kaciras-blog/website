@@ -73,7 +73,7 @@ import QuestionIcon from "bootstrap-icons/icons/question-circle.svg?sfc";
 import EyeIcon from "bootstrap-icons/icons/eye-fill.svg?sfc";
 import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
 import { useDialog, KxButton, KxTaskButton } from "@kaciras-blog/uikit";
-import { DEFAULT_AVATAR } from "@/blog-plugin";
+import { DEFAULT_AVATAR } from "@/common";
 import { useCurrentUser } from "@/store";
 import { Discussion } from "@/api";
 import MarkdownView from "@/markdown/MarkdownView.vue";

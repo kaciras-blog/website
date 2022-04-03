@@ -10,10 +10,13 @@
 	</section>
 </template>
 
-<script>
-export default {
-	props: ["title", "image"],
-};
+<script setup lang="ts">
+interface ErrorContentProps {
+	title: string;
+	image: string;
+}
+
+defineProps<ErrorContentProps>();
 </script>
 
 <style module lang="less">

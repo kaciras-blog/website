@@ -87,7 +87,7 @@ import PaperPlaneIcon from "@/assets/icon/paper-plane.svg?sfc";
 import UpdateIcon from "@material-design-icons/svg/filled/update.svg?sfc";
 import EyeIcon from "bootstrap-icons/icons/eye-fill.svg?sfc";
 import ChatIcon from "bootstrap-icons/icons/chat-dots.svg?sfc";
-import { articleLink, localDateMinute } from "@/blog-plugin";
+import { articleLink, localDateMinute } from "@/common";
 import { errorMessage } from "@/utils";
 import SelectCategoryDialog from "@/components/SelectCategoryDialog.vue";
 import CardsConsole from "./CardsConsole.vue";

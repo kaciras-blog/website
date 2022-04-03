@@ -65,7 +65,7 @@ import { KxButton, useDialog } from "@kaciras-blog/uikit";
 import api, { Discussion, DiscussionState } from "@/api";
 import MarkdownView from "@/markdown/MarkdownView.vue";
 import { errorMessage } from "@/utils";
-import { DEFAULT_AVATAR, localDateMinute } from "@/blog-plugin";
+import { DEFAULT_AVATAR, localDateMinute } from "@/common";
 import { useCurrentUser } from "@/store";
 
 interface DiscussContentProps {

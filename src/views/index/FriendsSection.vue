@@ -106,7 +106,7 @@ class GridDraggingRegion {
 
 		// 不能使用 gridGap 属性，CSS 设置的 grid-gap 会转换为 gridRowGap & gridColumnGap。
 		const cStyle = getComputedStyle(container);
-		const rowGap = parseInt(cStyle.gridRowGap), columnGap = parseInt(cStyle.gridColumnGap);
+		const rowGap = parseInt(cStyle.rowGap), columnGap = parseInt(cStyle.columnGap);
 
 		this.xOffset = card.left + window.scrollX;
 		this.yOffset = card.top + window.scrollY;
@@ -208,7 +208,7 @@ import PencilIcon from "bootstrap-icons/icons/pencil-fill.svg?sfc";
 import { errorMessage } from "@/utils";
 import FriendCard from "./FriendCard.vue";
 import FriendInfoDialog from "./FriendInfoDialog.vue";
-import { DEFAULT_COVER } from "@/blog-plugin";
+import { DEFAULT_COVER } from "@/common";
 import api, { Friend } from "@/api";
 import { useCurrentUser, usePrefetch } from "@/store";
 
