@@ -1,7 +1,6 @@
 // 注意导入顺序，因为打包后CSS里元素的顺序跟导入顺序一致，所以 main.ts 必须靠前
 import { observeMediaQuery } from "@kaciras-blog/uikit";
 import { setupSentry } from "./error-report";
-import "./misc";
 import createBlogApp from "./main";
 import { useServiceWorker } from "@/service-worker/client/installer";
 import { SUN_PHASES, useCurrentUser, useSunPhase } from "@/store";
