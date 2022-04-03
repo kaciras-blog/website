@@ -80,10 +80,12 @@ import NavMenuFrame from "./NavMenuFrame.vue";
 import SettingDialog from "./SettingDialog.vue";
 
 interface TopNavBodyProps {
-	tag: string;
+	tag?: string;
 }
 
-defineProps<TopNavBodyProps>();
+withDefaults(defineProps<TopNavBodyProps>(), {
+	tag: "nav",
+});
 
 const user = useCurrentUser();
 const dialog = useDialog();

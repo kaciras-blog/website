@@ -118,6 +118,7 @@ import { Article } from "@/api";
 import { articleLink, localDateMinute } from "@/blog-plugin";
 import { useHeadMeta } from "@/prefetch";
 import { escapeHtml } from "@/utils";
+import BannerPageLayout from "@/components/BannerPageLayout.vue";
 import MarkdownView from "@/markdown/MarkdownView.vue";
 
 const prefetch = usePrefetch();

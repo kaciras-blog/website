@@ -13,6 +13,7 @@
 
 <script setup lang="ts">
 import { RouterView } from "vue-router";
+import BasePageLayout from "@/components/BasePageLayout.vue";
 import SlideNav from "./SlideNav.vue";
 
 const tabs = [

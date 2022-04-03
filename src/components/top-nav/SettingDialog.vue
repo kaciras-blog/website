@@ -6,8 +6,8 @@
 </template>
 
 <script setup lang="ts">
-import { KxDialogButtons, KxBaseDialog } from "@kaciras-blog/uikit";
-</script>
+import { KxBaseDialog, KxDialogButtons } from "@kaciras-blog/uikit";
+import SettingPanel from "./SettingPanel.vue";</script>
 
 <style module>
 .dialog { width: 30rem; }

@@ -13,8 +13,15 @@
 </template>
 
 <script>
+import BasePageLayout from "./BasePageLayout.vue";
+import TopNavGlass from "./top-nav/TopNavGlass.vue";
+
 export default {
 	name: "BannerPageLayout",
+	components: {
+		TopNavGlass,
+		BasePageLayout,
+	},
 	props: {
 		banner: {
 			type: Object,

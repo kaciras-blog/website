@@ -1,8 +1,3 @@
-<script setup lang="ts">
-// noinspection ES6UnusedImports WebStorm 的分析有问题。
-import { browserslist } from "../../../package.json";
-</script>
-
 <template>
 	<div class="about-tab-page">
 		<section class="about-section">
@@ -74,3 +69,10 @@ import { browserslist } from "../../../package.json";
 		</section>
 	</div>
 </template>
+
+<script setup lang="ts">
+// noinspection ES6UnusedImports WebStorm 的分析有问题。
+import { browserslist } from "../../../package.json";
+
+import IconSectionHeader from "@/components/IconSectionHeader.vue";
+import IconParagraph from "@/components/IconParagraph.vue";</script>

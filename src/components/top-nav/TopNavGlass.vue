@@ -7,8 +7,11 @@
 </template>
 
 <script lang="ts">
+import TopNavBody from "./TopNavBody.vue";
+
 export default {
 	name: "TopNavGlass",
+	components: { TopNavBody },
 	props: ["imageClass", "imageStyle"],
 };
 </script>

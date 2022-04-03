@@ -47,6 +47,7 @@ export default defineComponent({
 
 <script setup lang="ts">
 import { shallowRef } from "vue";
+import BasePageLayout from "@/components/BasePageLayout.vue";
 import SignupForm from "./SignupForm.vue";
 import LoginForm from "./LoginForm.vue";
 

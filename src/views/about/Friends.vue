@@ -51,6 +51,9 @@
 	</div>
 </template>
 
+<script setup lang="ts">
+import DiscussionSection from "@/components/discussion/DiscussionSection.vue";</script>
+
 <style module lang="less">
 .example {
 	display: block;

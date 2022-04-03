@@ -89,6 +89,8 @@ export default {
 <script setup lang="ts">
 import { ref, computed, onBeforeMount, useCssModule, watch } from "vue";
 import { useSunPhase } from "@/store";
+import BasePageLayout from "@/components/BasePageLayout.vue";
+import TopNavGlass from "@/components/top-nav/TopNavGlass.vue";
 import BlogSection from "./BlogSection.vue";
 import FriendsSection from "./FriendsSection.vue";
 import { useBreakPoint } from "@kaciras-blog/uikit";

@@ -38,11 +38,12 @@
 
 <script setup lang="ts">
 import { shallowReactive, toRaw } from "vue";
-import { openFile, useDialog, KxButton } from "@kaciras-blog/uikit";
+import { KxButton, openFile, useDialog } from "@kaciras-blog/uikit";
 import api from "@/api";
 import { DEFAULT_AVATAR } from "@/blog-plugin";
 import { useCurrentUser } from "@/store";
 import { errorMessage } from "@/utils";
+import BasePageLayout from "@/components/BasePageLayout.vue";
 import AuthTypeTag from "./AuthTypeTag.vue";
 
 const globalUser = useCurrentUser();

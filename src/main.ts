@@ -5,7 +5,6 @@ import UIKit from "@kaciras-blog/uikit";
 import { createPinia } from "pinia";
 import { useCurrentUser } from "@/store";
 import createRouter from "./router";
-import BlogPlugin from "./blog-plugin";
 import App from "./App.vue";
 
 /**
@@ -41,7 +40,6 @@ export default function createBlogApp(initState?: any) {
 	app.use(store);
 	app.use(router);
 	app.use(UIKit);
-	app.use(BlogPlugin);
 
 	return { app, router, store };
 }

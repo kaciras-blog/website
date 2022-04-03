@@ -1,7 +1,10 @@
 <template>
 	<div class="about-tab-page">
 		<section class="about-section">
-			<icon-section-header title="版权声明" icon="@/assets/img/copyright.svg"/>
+			<icon-section-header
+				title="版权声明"
+				icon="@/assets/img/copyright.svg"
+			/>
 			<p>本站文章的许可参见文章末尾的声明。</p>
 
 			<h2>第三方资源</h2>
@@ -69,3 +72,6 @@
 		</section>
 	</div>
 </template>
+
+<script setup lang="ts">
+import IconSectionHeader from "@/components/IconSectionHeader.vue";</script>

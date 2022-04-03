@@ -63,6 +63,7 @@
 
 <script setup lang="ts">
 import { computed, useSSRContext } from "vue";
+import BasePageLayout from "@/components/BasePageLayout.vue";
 import ErrorContent from "./ErrorContent.vue";
 
 interface ErrorPageProps {

@@ -67,6 +67,7 @@ import { useRoute } from "vue-router";
 import { useBreakPoint, ScrollPagingView, KxSwitchBox } from "@kaciras-blog/uikit";
 import api from "@/api";
 import { usePrefetch } from "@/store";
+import BannerPageLayout from "@/components/BannerPageLayout.vue";
 import PreviewItem from "./PreviewItem.vue";
 import AsidePanel from "./AsidePanel.vue";
 

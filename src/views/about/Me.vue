@@ -51,6 +51,10 @@
 	</div>
 </template>
 
+<script setup lang="ts">
+import DiscussionSection from "@/components/discussion/DiscussionSection.vue";
+import SocialLink from "@/components/SocialLink.vue";</script>
+
 <style module lang="less">
 .profile {
 	text-align: center;

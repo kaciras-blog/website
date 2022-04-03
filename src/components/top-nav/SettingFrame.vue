@@ -5,7 +5,8 @@
 </template>
 
 <script setup lang="ts">
-import { KxFrame } from "@kaciras-blog/uikit";</script>
+import { KxFrame } from "@kaciras-blog/uikit";
+import SettingPanel from "./SettingPanel.vue";</script>
 
 <style module lang="less">
 .body {

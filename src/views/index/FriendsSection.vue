@@ -198,7 +198,7 @@ function dragSort(
 </script>
 
 <script setup lang="ts">
-import { computed, reactive, ref } from "vue";
+import { reactive, ref } from "vue";
 import { KxButton, useDialog, useIntersectionHandler } from "@kaciras-blog/uikit";
 import SortIcon from "@/assets/icon/sort.svg?sfc";
 import AddIcon from "@/assets/icon/plus.svg?sfc";

@@ -2,7 +2,7 @@
 	<span :class="[$style.authTag, $style[AuthType[type]]]" title="登录类型">{{ AuthType[type] }}</span>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { AuthType } from "@/api";
 
 defineProps(["type"]);

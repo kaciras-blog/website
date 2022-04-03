@@ -12,8 +12,15 @@
 </template>
 
 <script>
+import PageFooter from "./PageFooter.vue";
+import TopNav from "./top-nav/TopNav.vue";
+
 export default {
 	name: "BasePageLayout",
+	components: {
+		PageFooter,
+		TopNav,
+	},
 	props: {
 		footer: {
 			type: Boolean,
