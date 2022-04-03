@@ -2,8 +2,8 @@
 	<div class="about-tab-page">
 		<section class="about-section">
 			<icon-section-header
-				title="Kaciras' Blog"
 				icon="@/assets/img/logo-kaciras.svg"
+				title="Kaciras' Blog"
 			/>
 			<icon-paragraph
 				src="@/assets/img/logo-github.svg"
@@ -22,7 +22,6 @@
 					<li v-for="line of browserslist" :key="line">{{ line }}</li>
 				</ul>
 			</icon-paragraph>
-			<p>本站的服务器位于美国，中国的访问者可能有较高的延迟。</p>
 		</section>
 
 		<section class="about-section">
@@ -34,32 +33,32 @@
 				src="@/assets/img/logo-vue.svg"
 				title="vue"
 			>
-				网页端是用 Vue3 全家桶编写的单页应用，目前共有 9 个页面，纯手撸组件未使用 UI 库。
+				网页端是用 Vue3 全家桶编写的单页应用，纯手撸组件未使用 UI 库。
 			</icon-paragraph>
 			<icon-paragraph
 				src="@/assets/img/tools-and-utensils.svg"
 				title="write"
 			>
-				拥有 Markdown 编辑器，支持图片、视频、LaTeX等。
+				拥有 Markdown 编辑器，支持动图、视频等。
 			</icon-paragraph>
 			<icon-paragraph
 				src="@/assets/img/logo-sentry.png"
 				title="sentry"
 			>
-				由 Sentry.io 提供的的免费服务来监控和统计页面里发生的错误。
+				由 Sentry.io 提供的的免费服务来监控页面里发生的错误。
 			</icon-paragraph>
 			<icon-paragraph
-				src="@/assets/img/logo-webpack.svg"
-				title="webpack"
+				src="@/assets/img/vite.svg"
+				title="Vite"
 			>
-				使用 Webpack 打包代码和资源，并提供开发时的热重载。
+				使用 Vite 打包代码和资源，并提供开发时的热重载。
 			</icon-paragraph>
 			<icon-paragraph
 				src="@/assets/img/logo-pwa.png"
 				title="pwa"
 			>
-				本站拥有PWA支持，大幅提升了加载速度（不过服务器在国外也快不到哪去），
-				使用了自己写的一个ServiceWorker，主要参考了 workbox 项目。
+				本站拥有 PWA 支持，大幅提升了加载速度，
+				使用了自己写的 ServiceWorker，主要参考了 workbox 项目。
 			</icon-paragraph>
 		</section>
 
@@ -78,13 +77,14 @@
 				src="@/assets/img/browser-gears.svg"
 				title="ssr"
 			>
-				支持由 Vue 提供的服务端渲染功能，让网站能够被搜索引擎抓取，并减少首次访问的白屏时间。
+				支持服务端渲染，让网站能够被搜索引擎抓取，并减少首次访问的白屏时间。
 			</icon-paragraph>
 			<icon-paragraph
 				src="@/assets/img/photo.svg"
 				title="webp"
 			>
-				支持图片自动优化、压缩，转码为最新的格式，节约了76.2%的流量（根据文章里的图片计算）。
+				支持图片自动优化、压缩，转码为最新的格式，节约了 93.5% 的流量
+				（根据文章里的图片计算，假定浏览器支持 AVIF）。
 			</icon-paragraph>
 		</section>
 
