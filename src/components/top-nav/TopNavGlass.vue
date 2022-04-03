@@ -2,16 +2,16 @@
 	<nav :class="$style.container">
 		<!-- 为了动态接收传入的样式，不能用伪元素 -->
 		<div :class="[$style.pseudo, imageClass]" :style="imageStyle"></div>
-		<top-nav-body tag="div" class="full-vertex"/>
+		<top-nav tag="div" class="full-vertex"/>
 	</nav>
 </template>
 
 <script lang="ts">
-import TopNavBody from "./TopNavBody.vue";
+import TopNav from "./TopNav.vue";
 
 export default {
 	name: "TopNavGlass",
-	components: { TopNavBody },
+	components: { TopNav },
 	props: ["imageClass", "imageStyle"],
 };
 </script>
