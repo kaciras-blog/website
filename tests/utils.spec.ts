@@ -56,4 +56,15 @@ describe("compositor", () => {
 
 		expect(composite.toString()).toBe("AABB123FF_GG_456_JJKK");
 	});
+
+	it("should work with zero-width patterns", () => {
+		const create = compositor(template, {
+			foo: /(?<=EE)(?=FF)/,
+			bar: /(?<=EE)(?=FF)/,
+		});
+		const composite = create();
+		composite.put("foo", "123");
+		composite.put("bar", "456");
+		expect(composite.toString()).toBe("AABBCC_DD_EE123456FF_GG_HHII_JJKK");
+	});
 });
