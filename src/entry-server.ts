@@ -1,5 +1,5 @@
 import type { RenderContext, SSRManifest } from "@kaciras-blog/server";
-import { basename, extname } from "path";
+import { extname } from "path";
 import { Router } from "vue-router";
 import { renderToString, SSRContext } from "vue/server-renderer";
 import { Pinia } from "pinia";
@@ -110,7 +110,7 @@ export default function (template: string, manifest: SSRManifest) {
 		}
 		composite.put("appHtml", appHtml);
 		composite.put("metadata", meta ?? "");
-		composite.put("preloads", renderPreloads(modules, manifest));
+		composite.put("preloads", preloads(modules, manifest));
 
 		return composite.toString();
 	};
@@ -127,31 +127,26 @@ export default function (template: string, manifest: SSRManifest) {
  * 代码参考：
  * https://github.com/vitejs/vite/blob/main/packages/playground/ssr-vue/src/entry-server.js
  */
-function renderPreloads(modules: string[], manifest: SSRManifest) {
-	let links = "";
-	const seen = new Set();
+function preloads(modules: Set<string>, manifest: SSRManifest) {
+	const chunkSet = new Set<string>();
+	const depSet = new Set<string>();
+	const preloadLinks: Array<string | undefined> = [];
 
-	for (const id of modules) {
-		const files = manifest[id];
-		if (!files) {
+	for (const module of modules) {
+		const chunk = manifest.modules[module];
+		if (!chunk || chunkSet.has(chunk)) {
 			continue;
 		}
-		for (const file of files) {
-			if (seen.has(file)) {
+		chunkSet.add(chunk);
+		for (const dep of manifest.chunks[chunk]) {
+			if (depSet.has(dep)) {
 				continue;
 			}
-			seen.add(file);
-			const filename = basename(file);
-			if (manifest[filename]) {
-				for (const dep of manifest[filename]) {
-					links += renderPreloadLink(dep);
-					seen.add(dep);
-				}
-			}
-			links += renderPreloadLink(file) ?? "";
+			depSet.add(dep);
+			preloadLinks.push(renderPreloadLink(dep));
 		}
 	}
-	return links;
+	return preloadLinks.filter(Boolean).join("");
 }
 
 /**
