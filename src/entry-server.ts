@@ -70,8 +70,13 @@ async function prefetch(store: Pinia, router: Router, request: any) {
 	}
 }
 
-// noinspection JSUnusedGlobalSymbols 由服务器引用。
-export default function (template: string, manifest: SSRManifest) {
+/**
+ * 服务端渲染的入口，该函数将由支持 SSR 的服务器调用。
+ *
+ * @param template HTML 模板
+ * @param manifest 模块到依赖的资源的清单
+ */
+export default function (template: string, manifest?: SSRManifest) {
 	const newComposite = compositor(template, {
 		metadata: "<!--ssr-metadata-->",
 		preloads: /(?=<\/head>)/s,
@@ -105,13 +110,14 @@ export default function (template: string, manifest: SSRManifest) {
 
 		const { title, modules, meta } = ssrContext;
 		const composite = newComposite();
+		if (manifest) {
+			composite.put("preloads", preloads(modules, manifest));
+		}
 		if (title) {
 			composite.put("title", `${title} - Kaciras 的博客`);
 		}
 		composite.put("appHtml", appHtml);
 		composite.put("metadata", meta ?? "");
-		composite.put("preloads", preloads(modules, manifest));
-
 		return composite.toString();
 	};
 }
