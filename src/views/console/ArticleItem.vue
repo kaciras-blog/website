@@ -24,7 +24,7 @@
 				<PaperPlaneIcon :class="$style.icon" title="发表于"/>
 				<time>{{ localDateMinute(value.create) }}</time>
 
-				<UpdateIcon :class="$style.icon" title="发表于"/>
+				<UpdateIcon :class="$style.icon" title="更新时间"/>
 				<time>{{ localDateMinute(value.update) }}</time>
 
 				<EyeIcon :class="$style.icon" title="浏览数"/>
@@ -93,7 +93,7 @@ import SelectCategoryDialog from "@/components/SelectCategoryDialog.vue";
 import CardsConsole from "./CardsConsole.vue";
 
 const dialog = useDialog();
-const sendMessage = inject<Function>("sendMessage")!;
+const sendMessage = inject<(target: any, data: unknown) => void>("sendMessage")!;
 
 const props = defineProps(["value"]);
 
@@ -104,11 +104,12 @@ function edit() {
 }
 
 function addToCards() {
+	const { value } = props;
 	sendMessage(CardsConsole, {
-		picture: props.value.cover,
-		name: props.value.title,
-		link: articleLink(props.value),
-		description: props.value.summary,
+		picture: value.cover,
+		description: value.summary,
+		name: value.title,
+		link: articleLink(value),
 	});
 }
 

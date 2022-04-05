@@ -8,22 +8,20 @@
 		</kx-button>
 	</div>
 
-	<div class="panel">
-		<article-item
-			v-for="article of list.items"
-			:key="article.id"
-			:value="article"
-			class="segment"
-		/>
-		<span v-if="list.total === 0">
-			没有找到文章,去写一篇吧~
-		</span>
-		<sk-fading-circle v-if="loading"/>
-	</div>
+	<article-item
+		v-for="article of list.items"
+		:key="article.id"
+		:value="article"
+		class="segment"
+	/>
+	<span v-if="list.total === 0">
+		没有找到文章,去写一篇吧~
+	</span>
+	<sk-fading-circle v-if="loading"/>
 </template>
 
 <script setup lang="ts">
-import { shallowRef } from "vue";
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { KxButton, SkFadingCircle, useDialog } from "@kaciras-blog/uikit";
 import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
@@ -34,8 +32,8 @@ import ArticleItem from "./ArticleItem.vue";
 const dialog = useDialog();
 const router = useRouter();
 
-const list = shallowRef([]);
-const loading = shallowRef(true);
+const list = ref([]);
+const loading = ref(true);
 
 async function newArticle() {
 	try {
@@ -53,10 +51,11 @@ function loadArticles() {
 		count: 99999, // TODO: 文章多了就做下分页
 		deletion: DeletionState.None,
 	}).then(data => {
-		loading.value = false;
 		list.value = data;
 	}).catch(e => {
 		dialog.alertError("加载文章失败", errorMessage(e));
+	}).finally(() => {
+		loading.value = false;
 	});
 }
 
