@@ -5,11 +5,13 @@
 	</header>
 </template>
 
-<script>
-export default {
-	name: "IconSectionHeader",
-	props: ["title", "icon"],
-};
+<script setup lang="ts">
+interface IconSectionHeaderProps {
+	icon: string;
+	title: string;
+}
+
+defineProps<IconSectionHeaderProps>();
 </script>
 
 <style module lang="less">

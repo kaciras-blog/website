@@ -10,11 +10,13 @@
 	</p>
 </template>
 
-<script>
-export default {
-	name: "IconParagraph",
-	props: ["src", "title"],
-};
+<script setup lang="ts">
+interface IconParagraphProps {
+	src: string;
+	title: string;
+}
+
+defineProps<IconParagraphProps>();
 </script>
 
 <style module lang="less">

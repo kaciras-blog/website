@@ -14,11 +14,14 @@
 	</a>
 </template>
 
-<script>
-export default {
-	name: "SocialLink",
-	props: ["name", "href", "icon"],
-};
+<script setup lang="ts">
+interface SocialLinkProps {
+	name: string;
+	href: string;
+	icon: string;
+}
+
+defineProps<SocialLinkProps>();
 </script>
 
 <style module lang="less">
