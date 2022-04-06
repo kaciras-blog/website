@@ -22,6 +22,9 @@ yarn-error.log*
 *.sln
 *.sw*
 
-### Config files ###
+# Config files
 /config/*
 !/config/index.js
+
+# Generated
+/stats.html
