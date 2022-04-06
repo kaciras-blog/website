@@ -41,7 +41,8 @@
 				</a>
 				<br/>
 				本作品采用
-				<a rel="license" href="https://creativecommons.org/licenses/by/4.0/" class="highlight">知识共享署名 4.0 国际许可协议</a>进行许可。
+				<a rel="license" href="https://creativecommons.org/licenses/by/4.0/" class="highlight">知识共享署名 4.0
+					国际许可协议</a>进行许可。
 			</footer>
 		</article>
 
@@ -113,7 +114,7 @@ export default defineComponent({ asyncData });
 import { ref, ComponentPublicInstance } from "vue";
 import ChatIcon from "@material-design-icons/svg/outlined/forum.svg?sfc";
 import ArrowTopIcon from "@material-design-icons/svg/outlined/rocket_launch.svg?sfc";
-import { scrollToElementStart, KxButton } from "@kaciras-blog/uikit";
+import { KxButton } from "@kaciras-blog/uikit";
 import { Article } from "@/api";
 import { articleLink, localDateMinute } from "@/common";
 import { useHeadMeta } from "@/prefetch";
@@ -144,11 +145,11 @@ const discussion = ref<ComponentPublicInstance>();
 }
 
 function gotoTop() {
-	scrollToElementStart(document.documentElement);
+	document.documentElement.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function gotoDiscuss() {
-	scrollToElementStart(discussion.value!.$el);
+	discussion.value!.$el.scrollIntoView({ behavior: "smooth" });
 }
 </script>
 
