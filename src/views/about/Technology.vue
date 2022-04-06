@@ -18,10 +18,12 @@
 				title="browsers"
 			>
 				兼容性：
-				<ul>
-					<li v-for="line of browserslist" :key="line">{{ line }}</li>
-				</ul>
 			</icon-paragraph>
+
+			<!-- ul 不能是 p 的子元素，所以拿出来了 -->
+			<ul>
+				<li v-for="line of browserslist" :key="line">{{ line }}</li>
+			</ul>
 		</section>
 
 		<section class="about-section">
