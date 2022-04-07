@@ -1,5 +1,7 @@
 <template>
 	<banner-page-layout :banner="category.banner">
+		<PageMeta title="所有文章"/>
+
 		<div id="index-page">
 			<section :class="$style.list">
 				<h1 class="segment" :class="$style.listTitle">
@@ -70,6 +72,7 @@ import { usePrefetch } from "@/store";
 import BannerPageLayout from "@/components/BannerPageLayout.vue";
 import PreviewItem from "./PreviewItem.vue";
 import AsidePanel from "./AsidePanel.vue";
+import PageMeta from "@/components/PageMeta";
 
 const breakPoint = useBreakPoint();
 const route = useRoute();

@@ -1,5 +1,7 @@
 <template>
 	<div class="about-tab-page">
+		<PageMeta title="友链"/>
+
 		<section id="friend" class="about-section">
 			<h1>友情链接</h1>
 			<img alt="example" src="@/assets/img/friend-example.png" :class="$style.example">
@@ -52,7 +54,8 @@
 </template>
 
 <script setup lang="ts">
-import DiscussionSection from "@/components/discussion/DiscussionSection.vue";</script>
+import DiscussionSection from "@/components/discussion/DiscussionSection.vue";
+import PageMeta from "@/components/PageMeta";</script>
 
 <style module lang="less">
 .example {

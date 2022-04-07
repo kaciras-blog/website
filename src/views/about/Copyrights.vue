@@ -1,5 +1,7 @@
 <template>
 	<div class="about-tab-page">
+		<PageMeta title="版权声明"/>
+
 		<section class="about-section">
 			<icon-section-header
 				title="版权声明"
@@ -75,4 +77,5 @@
 
 <script setup lang="ts">
 import IconSectionHeader from "@/components/IconSectionHeader.vue";
+import PageMeta from "@/components/PageMeta";
 </script>

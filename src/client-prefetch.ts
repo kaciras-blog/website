@@ -69,11 +69,6 @@ export async function prefetch(
 				return "/error/500";
 		}
 	}
-
-	const { title } = to.meta;
-	if (title) {
-		document.title = title + " - Kaciras的博客";
-	}
 }
 
 export const ClientPrefetchMixin: ComponentOptions = {

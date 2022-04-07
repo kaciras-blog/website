@@ -1,5 +1,7 @@
 <template>
 	<form class="login-form" @keyup.enter="signUp">
+		<PageMeta title="注册"/>
+
 		<h1 class="center segment">注册</h1>
 
 		<label for="name">用户名:</label>
@@ -81,6 +83,7 @@ import { KxButton, KxTaskButton, KxPasswordInput } from "@kaciras-blog/uikit";
 import api from "@/api";
 import { errorMessage } from "@/utils";
 import { useCurrentUser } from "@/store";
+import PageMeta from "@/components/PageMeta";
 
 interface LoginFormProps {
 	returnUri: string;

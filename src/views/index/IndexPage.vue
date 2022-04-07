@@ -1,5 +1,7 @@
 <template>
 	<base-page-layout>
+		<PageMeta title="首页"/>
+
 		<!-- 经过1小时的尝试仍未能做到模糊层背景定位，已放弃 -->
 		<template #nav>
 			<top-nav-glass :class="navClass"/>
@@ -86,6 +88,7 @@ export default {
 import { ref, computed, onBeforeMount, useCssModule, watch } from "vue";
 import { useSunPhase } from "@/store";
 import BasePageLayout from "@/components/BasePageLayout.vue";
+import PageMeta from "@/components/PageMeta";
 import TopNavGlass from "@/components/top-nav/TopNavGlass.vue";
 import BlogSection from "./BlogSection.vue";
 import FriendsSection from "./FriendsSection.vue";

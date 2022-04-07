@@ -18,7 +18,6 @@ const routes: RouteRecordRaw[] = [
 	{
 		path: "/",
 		component: IndexPage,
-		meta: { title: "首页" },
 	},
 	{
 		path: "/list",
@@ -27,12 +26,10 @@ const routes: RouteRecordRaw[] = [
 	{
 		path: "/list/:index",
 		component: () => import("./views/list/ListPage.vue"),
-		meta: { title: "所有文章" },
 	},
 	{
 		path: "/login",
 		component: () => import("./views/login/LoginPage.vue"),
-		meta: { title: "登录" },
 	},
 	{
 		path: "/article/:id",
@@ -46,12 +43,10 @@ const routes: RouteRecordRaw[] = [
 		path: "/edit/:draftId",
 		component: () => import("./views/editor/EditorPage.vue"),
 		props: true,
-		meta: { title: "文章编辑器" },
 	},
 	{
 		path: "/profile",
 		component: () => import("./views/user/ProfilePage.vue"),
-		meta: { title: "用户" },
 	},
 	{
 		path: "/about",
@@ -60,35 +55,30 @@ const routes: RouteRecordRaw[] = [
 			{
 				path: "me",
 				component: AbortMe,
-				meta: { title: "站长" },
 			},
 			{
 				path: "friends",
 				component: AbortFriends,
-				meta: { title: "友链" },
 			},
 			{
 				path: "technology",
 				component: AbortTechnology,
-				meta: { title: "技术栈" },
 			},
 			{
 				path: "copyright",
 				component: AbortCopyrights,
-				meta: { title: "版权声明" },
 			},
 		],
 	},
 	{
 		path: "/console",
 		component: () => import("./views/console/ConsolePage.vue"),
-		meta: { title: "控制台", requireAuth: true },
+		meta: { requireAuth: true },
 	},
 	{
 		path: "/error/:value([0-9]+)",
 		component: ErrorPage,
 		props: true,
-		meta: { title: "错误" },
 	},
 	{
 		/*

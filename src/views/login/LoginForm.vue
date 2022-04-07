@@ -1,5 +1,7 @@
 <template>
 	<form class="login-form" @keyup.enter="login">
+		<PageMeta title="登录"/>
+
 		<h1 class="center">登录</h1>
 
 		<label for="name">用户名:</label>
@@ -79,6 +81,7 @@ import api from "@/api";
 import OauthIcon from "@/components/OauthIcon.vue";
 import { errorMessage } from "@/utils";
 import { useCurrentUser } from "@/store";
+import PageMeta from "@/components/PageMeta";
 
 interface LoginFormProps {
 	returnUri: string;

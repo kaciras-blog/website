@@ -99,7 +99,7 @@ export default function (template: string, manifest?: SSRManifest) {
 
 		const ssrContext: SSRContext = {
 			meta: "<meta name='description' content='欢迎来到 Kaciras 的博客'>",
-			title: router.currentRoute.value.meta.title,
+			title: "Kaciras Blog",
 		};
 
 		const appHtml = await renderToString(app, ssrContext);
@@ -113,10 +113,8 @@ export default function (template: string, manifest?: SSRManifest) {
 		if (manifest) {
 			composite.put("preloads", preloads(modules, manifest));
 		}
-		if (title) {
-			composite.put("title", `${title} - Kaciras 的博客`);
-		}
 		composite.put("appHtml", appHtml);
+		composite.put("title", title);
 		composite.put("metadata", meta ?? "");
 		return composite.toString();
 	};

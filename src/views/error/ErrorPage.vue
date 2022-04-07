@@ -1,5 +1,7 @@
 <template>
 	<base-page-layout :class="$style.container">
+		<PageMeta title="错误"/>
+
 		<div :class="$style.body">
 			<error-content
 				v-if="code === 400"
@@ -65,6 +67,7 @@
 import { computed, useSSRContext } from "vue";
 import BasePageLayout from "@/components/BasePageLayout.vue";
 import ErrorContent from "./ErrorContent.vue";
+import PageMeta from "@/components/PageMeta";
 
 interface ErrorPageProps {
 

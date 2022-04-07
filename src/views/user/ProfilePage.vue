@@ -1,5 +1,7 @@
 <template>
 	<base-page-layout :class="$style.pageLayout">
+		<PageMeta title="用户"/>
+
 		<div :class="$style.body">
 			<form :class="$style.card" class="panel">
 				<h2>修改用户信息</h2>
@@ -45,6 +47,7 @@ import { useCurrentUser } from "@/store";
 import { errorMessage } from "@/utils";
 import BasePageLayout from "@/components/BasePageLayout.vue";
 import AuthTypeTag from "./AuthTypeTag.vue";
+import PageMeta from "@/components/PageMeta";
 
 const globalUser = useCurrentUser();
 const dialog = useDialog();

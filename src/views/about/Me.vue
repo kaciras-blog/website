@@ -1,6 +1,8 @@
 <!-- /about/me 更具通用性，比用自己名字做 url 更好，况且名字还可能变 -->
 <template>
 	<div class="about-tab-page">
+		<PageMeta title="站长"/>
+
 		<section class="about-section">
 			<div :class="$style.profile">
 				<img
@@ -53,7 +55,8 @@
 
 <script setup lang="ts">
 import DiscussionSection from "@/components/discussion/DiscussionSection.vue";
-import SocialLink from "@/components/SocialLink.vue";</script>
+import SocialLink from "@/components/SocialLink.vue";
+import PageMeta from "@/components/PageMeta";</script>
 
 <style module lang="less">
 .profile {

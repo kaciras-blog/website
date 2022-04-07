@@ -1,5 +1,7 @@
 <template>
 	<div class="about-tab-page">
+		<PageMeta title="技术栈"/>
+
 		<section class="about-section">
 			<icon-section-header
 				icon="@/assets/img/logo-kaciras.svg"
@@ -135,4 +137,5 @@ import { browserslist } from "../../../package.json";
 
 import IconSectionHeader from "@/components/IconSectionHeader.vue";
 import IconParagraph from "@/components/IconParagraph.vue";
+import PageMeta from "@/components/PageMeta";
 </script>

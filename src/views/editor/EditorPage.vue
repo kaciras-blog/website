@@ -1,5 +1,7 @@
 <template>
 	<markdown-editor :class="$style.editor" v-model="current.content">
+		<PageMeta title="编辑器"/>
+
 		<template #toolbar-left="{ ctx }">
 			<text-tools :ctx="ctx"/>
 			<media-tools :ctx="ctx"/>
@@ -60,6 +62,7 @@ import ConfigToolbar from "@/markdown/ConfigToolbar.vue";
 import MediaTools from "@/markdown/MediaTools.vue";
 import PublishDialog from "./PublishDialog.vue";
 import MetadataDialog from "./MetadataDialog.vue";
+import PageMeta from "@/components/PageMeta";
 
 interface EditorPageProps {
 	draftId: string;

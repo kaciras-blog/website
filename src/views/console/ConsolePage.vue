@@ -1,5 +1,7 @@
 <template>
 	<div :class="$style.container">
+		<PageMeta title="控制台"/>
+
 		<nav class="light" :class="$style.nav">
 			<router-link
 				to="/"
@@ -54,6 +56,7 @@ import CategoryConsole from "./CategoryConsole.vue";
 import CardsConsole from "./CardsConsole.vue";
 import DiscussionConsole from "./DiscussionConsole.vue";
 import NotificationConsole from "./NotificationConsole.vue";
+import PageMeta from "@/components/PageMeta";
 
 const views = [
 	{ view: ArticleConsole, label: "文章列表" },

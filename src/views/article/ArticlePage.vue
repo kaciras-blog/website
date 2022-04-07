@@ -1,5 +1,6 @@
 <template>
 	<banner-page-layout :class="$style.container" :banner="article.banner">
+		<PageMeta :title="article.title"/>
 
 		<article :class="$style.article">
 			<header class="segment" :class="$style.header">
@@ -120,6 +121,7 @@ import { articleLink, localDateMinute } from "@/common";
 import { useHeadMeta } from "@/prefetch";
 import { escapeHtml } from "@/utils";
 import BannerPageLayout from "@/components/BannerPageLayout.vue";
+import PageMeta from "@/components/PageMeta";
 import DiscussionSection from "@/components/discussion/DiscussionSection.vue";
 import MarkdownView from "@/markdown/MarkdownView.vue";
 
@@ -128,11 +130,11 @@ const prefetch = usePrefetch();
 const article = prefetch.data.article as Article;
 const discussion = ref<ComponentPublicInstance>();
 
-// 为了 SEO，需要在预渲染的文章页面的 <head> 中加入一些标签。
+// 为了 SEO，需要在预渲染的文章页面的 <head> 中加入一些标签。暂时没法用 teleport 因为有 BUG：
+// https://github.com/vuejs/core/issues/5242
 {
-	const { title, keywords, summary, prev, next } = article;
+	const { keywords, summary, prev, next } = article;
 	const head = useHeadMeta();
-	head.title = title;
 
 	head.meta = `<meta name="keywords" content="${escapeHtml(keywords.join(","))}">`;
 	head.meta += `<meta name="description" content="${escapeHtml(summary)}">`;
