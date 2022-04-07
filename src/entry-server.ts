@@ -109,17 +109,15 @@ export default function (template: string, manifest?: SSRManifest) {
 		const data = JSON.stringify(store.state.value);
 		ssrContext.meta += `<script>window.__INITIAL_STATE__=${data}</script>`;
 
-		const { title, modules, meta, bodyClass } = ssrContext;
+		const { title, modules, meta, bodyClass = "" } = ssrContext;
 		const composite = newComposite();
 		if (manifest) {
 			composite.put("preloads", preloads(modules, manifest));
 		}
-		if (bodyClass) {
-			composite.put("bodyAttrs", ` class="${bodyClass}"`);
-		}
 		composite.put("appHtml", appHtml);
 		composite.put("title", title);
 		composite.put("metadata", meta ?? "");
+		composite.put("bodyAttrs", ` class="${bodyClass}"`);
 		return composite.toString();
 	};
 }
