@@ -81,8 +81,8 @@ export default function (template: string, manifest?: SSRManifest) {
 		metadata: "<!--ssr-metadata-->",
 		title: /(?<=<title>).*(?=<\/title>)/s,
 		preloads: /(?=<\/head>)/s,
-		bodyAttrs: /(?<=<body)(?=>)/s,
-		appHtml: /(?<=<body>).*(?=<\/body>)/s,
+		bodyAttrs: /(?<=<body.*?)(?=>)/s,
+		appHtml: /(?<=<body.*?>).*(?=<\/body>)/s,
 	});
 
 	return async (context: RenderContext) => {
