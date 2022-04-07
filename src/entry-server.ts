@@ -79,9 +79,10 @@ async function prefetch(store: Pinia, router: Router, request: any) {
 export default function (template: string, manifest?: SSRManifest) {
 	const newComposite = compositor(template, {
 		metadata: "<!--ssr-metadata-->",
-		preloads: /(?=<\/head>)/s,
-		appHtml: /(?<=<body>).*(?=<\/body>)/s,
 		title: /(?<=<title>).*(?=<\/title>)/s,
+		preloads: /(?=<\/head>)/s,
+		bodyAttrs: /(?<=<body)(?=>)/s,
+		appHtml: /(?<=<body>).*(?=<\/body>)/s,
 	});
 
 	return async (context: RenderContext) => {
@@ -108,10 +109,13 @@ export default function (template: string, manifest?: SSRManifest) {
 		const data = JSON.stringify(store.state.value);
 		ssrContext.meta += `<script>window.__INITIAL_STATE__=${data}</script>`;
 
-		const { title, modules, meta } = ssrContext;
+		const { title, modules, meta, bodyClass } = ssrContext;
 		const composite = newComposite();
 		if (manifest) {
 			composite.put("preloads", preloads(modules, manifest));
+		}
+		if (bodyClass) {
+			composite.put("bodyAttrs", ` class="${bodyClass}"`);
 		}
 		composite.put("appHtml", appHtml);
 		composite.put("title", title);

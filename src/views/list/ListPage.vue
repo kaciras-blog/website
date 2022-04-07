@@ -1,6 +1,6 @@
 <template>
 	<banner-page-layout :banner="category.banner">
-		<PageMeta title="所有文章"/>
+		<PageMeta title="所有文章" body-class=""/>
 
 		<div id="index-page">
 			<section :class="$style.list">

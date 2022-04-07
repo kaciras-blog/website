@@ -1,6 +1,6 @@
 <template>
 	<markdown-editor :class="$style.editor" v-model="current.content">
-		<PageMeta title="编辑器"/>
+		<PageMeta title="编辑器" body-class=""/>
 
 		<template #toolbar-left="{ ctx }">
 			<text-tools :ctx="ctx"/>

@@ -1,6 +1,6 @@
 <template>
-	<banner-page-layout :class="$style.container" :banner="article.banner">
-		<PageMeta :title="article.title"/>
+	<banner-page-layout :banner="article.banner">
+		<PageMeta :title="article.title" :body-class="$style.container"/>
 
 		<article :class="$style.article">
 			<header class="segment" :class="$style.header">
@@ -112,13 +112,12 @@ export default defineComponent({ asyncData });
 </script>
 
 <script setup lang="ts">
-import { ref, ComponentPublicInstance } from "vue";
+import { ref, ComponentPublicInstance, useSSRContext } from "vue";
 import ChatIcon from "@material-design-icons/svg/outlined/forum.svg?sfc";
 import ArrowTopIcon from "@material-design-icons/svg/outlined/rocket_launch.svg?sfc";
 import { KxButton } from "@kaciras-blog/uikit";
 import { Article } from "@/api";
 import { articleLink, localDateMinute } from "@/common";
-import { useHeadMeta } from "@/prefetch";
 import { escapeHtml } from "@/utils";
 import BannerPageLayout from "@/components/BannerPageLayout.vue";
 import PageMeta from "@/components/PageMeta";
@@ -132,9 +131,9 @@ const discussion = ref<ComponentPublicInstance>();
 
 // 为了 SEO，需要在预渲染的文章页面的 <head> 中加入一些标签。暂时没法用 teleport 因为有 BUG：
 // https://github.com/vuejs/core/issues/5242
-{
+if (import.meta.env.SSR) {
 	const { keywords, summary, prev, next } = article;
-	const head = useHeadMeta();
+	const head = useSSRContext()!;
 
 	head.meta = `<meta name="keywords" content="${escapeHtml(keywords.join(","))}">`;
 	head.meta += `<meta name="description" content="${escapeHtml(summary)}">`;

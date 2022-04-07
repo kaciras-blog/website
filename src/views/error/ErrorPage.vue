@@ -1,6 +1,6 @@
 <template>
-	<base-page-layout :class="$style.container">
-		<PageMeta title="错误"/>
+	<base-page-layout>
+		<PageMeta title="错误" :body-class="$style.container"/>
 
 		<div :class="$style.body">
 			<error-content

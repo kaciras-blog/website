@@ -1,51 +1,49 @@
 <template>
-	<div :class="$style.container">
-		<PageMeta title="控制台"/>
+	<PageMeta title="控制台" :body-class="$style.container"/>
 
-		<nav class="light" :class="$style.nav">
-			<router-link
-				to="/"
-				class="nav-item"
-				tabindex="1"
-			>
-				返回首页
-			</router-link>
-		</nav>
+	<nav class="light" :class="$style.nav">
+		<router-link
+			to="/"
+			class="nav-item"
+			tabindex="1"
+		>
+			返回首页
+		</router-link>
+	</nav>
 
-		<!--
-			如果用路由来导航面板，可以让URL更好看，而且能记住历史直接跳转到对应的面板上。
-			但是 VueRouter 要求初始化时就配置好子路由，难以分离代码，所以还是用动态组件。
-		-->
-		<aside :class="$style.tabs">
-			<h1>控制台</h1>
-			<ul class="clean-list" role="tablist">
-				<li
-					v-for="{ label, view } of views"
-					:key="label"
-					role="tab"
-					tabindex="2"
-					:aria-selected="active === view"
-					:class="{
+	<!--
+		如果用路由来导航面板，可以让URL更好看，而且能记住历史直接跳转到对应的面板上。
+		但是 VueRouter 要求初始化时就配置好子路由，难以分离代码，所以还是用动态组件。
+	-->
+	<aside :class="$style.tabs">
+		<h1>控制台</h1>
+		<ul class="clean-list" role="tablist">
+			<li
+				v-for="{ label, view } of views"
+				:key="label"
+				role="tab"
+				tabindex="2"
+				:aria-selected="active === view"
+				:class="{
 						[$style.active]: active === view,
 						[$style.tabItem]: true,
 					}"
-					@click="active = view"
-					@keyup.enter="active = view"
-				>
-					{{ label }}
-				</li>
-			</ul>
-		</aside>
+				@click="active = view"
+				@keyup.enter="active = view"
+			>
+				{{ label }}
+			</li>
+		</ul>
+	</aside>
 
-		<!--
-			将容器元素放在这里，里头的视图使用 Fragment，就像 iframe 一样。
-		-->
-		<main :class="$style.bodyWrapper">
-			<keep-alive>
-				<component :is="active" ref="panel"/>
-			</keep-alive>
-		</main>
-	</div>
+	<!--
+		将容器元素放在这里，里头的视图使用 Fragment，就像 iframe 一样。
+	-->
+	<main :class="$style.bodyWrapper">
+		<keep-alive>
+			<component :is="active" ref="panel"/>
+		</keep-alive>
+	</main>
 </template>
 
 <script setup lang="ts">

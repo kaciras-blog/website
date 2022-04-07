@@ -1,4 +1,4 @@
-import { ComponentOptions, onBeforeMount, useSSRContext } from "vue";
+import { ComponentOptions } from "vue";
 import { Pinia } from "pinia";
 import { RouteComponent, RouteLocationNormalizedLoaded } from "vue-router";
 import { Awaitable } from "@vueuse/core";
@@ -87,33 +87,6 @@ export class PrefetchContext {
 export interface PrefetchComponent extends ComponentOptions {
 	asyncData?(ctx: PrefetchContext): Awaitable<void>;
 }
-
-/**
- * 用来注入些 SEO 相关的信息。
- */
-interface HeadMetaObject {
-	meta?: string;
-	title?: string;
-}
-
-function useSSRHeadMeta() {
-	return useSSRContext<HeadMetaObject>()!;
-}
-
-// meta 对于客户端无意义，就不管它了。
-function useClientHeadMeta() {
-	const object: HeadMetaObject = {};
-	onBeforeMount(() => {
-		const { title } = object;
-		if (title) {
-			document.title = title + " - Kaciras 的博客";
-		}
-	});
-	return object;
-}
-
-export const useHeadMeta = import.meta.env.SSR
-	? useSSRHeadMeta : useClientHeadMeta;
 
 export function collectTasks(comps: RouteComponent[], session: PrefetchContext) {
 	(comps as PrefetchComponent[])

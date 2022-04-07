@@ -1,12 +1,7 @@
 <template>
-	<base-page-layout
-		:class="$style.container"
-		:nav-class="$style.top_nav"
-	>
-		<slide-nav
-			:class="$style.header"
-			:tabs="tabs"
-		/>
+	<base-page-layout :nav-class="$style.top_nav">
+		<PageMeta :body-class="$style.container"/>
+		<slide-nav :class="$style.header" :tabs="tabs"/>
 		<router-view/>
 	</base-page-layout>
 </template>
@@ -14,6 +9,7 @@
 <script setup lang="ts">
 import { RouterView } from "vue-router";
 import BasePageLayout from "@/components/BasePageLayout.vue";
+import PageMeta from "@/components/PageMeta";
 import SlideNav from "./SlideNav.vue";
 
 const tabs = [

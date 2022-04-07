@@ -1,6 +1,6 @@
 <template>
 	<base-page-layout>
-		<PageMeta title="首页"/>
+		<PageMeta title="首页" body-class=""/>
 
 		<!-- 经过1小时的尝试仍未能做到模糊层背景定位，已放弃 -->
 		<template #nav>

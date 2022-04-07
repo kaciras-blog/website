@@ -1,6 +1,6 @@
 <template>
-	<base-page-layout :class="$style.pageLayout">
-		<PageMeta title="用户"/>
+	<base-page-layout>
+		<PageMeta title="用户" :body-class="$style.pageLayout"/>
 
 		<div :class="$style.body">
 			<form :class="$style.card" class="panel">
