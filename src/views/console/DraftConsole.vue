@@ -1,22 +1,22 @@
 <template>
 	<div class="btn-group console-toolbar">
-		<kx-button
+		<KxButton
 			class="primary"
 			@click="newArticle"
 		>
 			<EditIcon class="prefix"/>
 			新文章
-		</kx-button>
-		<kx-button
+		</KxButton>
+		<KxButton
 			color="dangerous"
 			@click="deleteAll"
 		>
 			<TrashIcon class="prefix"/>
 			全部删除
-		</kx-button>
+		</KxButton>
 	</div>
 
-	<scroll-paging-view
+	<ScrollPagingView
 		v-model="draftList"
 		:loader="loadPage"
 		:page-size="20"
@@ -24,7 +24,7 @@
 	>
 		<template v-slot="{ items }">
 			<ol v-if="items.length" class="clean-list">
-				<draft-console-item
+				<DraftConsoleItem
 					v-for="draft of items"
 					:key="draft.id"
 					class="segment"
@@ -34,7 +34,7 @@
 			</ol>
 			<span v-else class="minor-text">空空如也</span>
 		</template>
-	</scroll-paging-view>
+	</ScrollPagingView>
 </template>
 
 <script setup lang="ts">

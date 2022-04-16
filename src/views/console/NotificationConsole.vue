@@ -1,19 +1,19 @@
 <template>
 	<div class="btn-group console-toolbar">
-		<kx-task-button
+		<KxTaskButton
 			class="primary"
 			:on-click="clear"
 		>
 			<ClearIcon class="prefix"/>
 			清除全部
-		</kx-task-button>
+		</KxTaskButton>
 	</div>
 
 	<div
 		v-if="loading"
 		:class="$style.spinner"
 	>
-		<atom-spinner/>
+		<AtomSpinner/>
 		<span>加载中……</span>
 	</div>
 

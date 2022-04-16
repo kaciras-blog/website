@@ -20,7 +20,7 @@
 			@keydown.esc.self="$dialog.close"
 			@click.self="$dialog.close"
 		>
-			<nav-menu :class="$style.navMenu"/>
+			<NavMenu :class="$style.navMenu"/>
 		</div>
 	</transition>
 </template>

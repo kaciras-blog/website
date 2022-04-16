@@ -19,7 +19,7 @@
 		<span class="hide-m">帮助</span>
 	</button>
 
-	<markdown-view
+	<MarkdownView
 		v-if="preview"
 		:class="$style.preview"
 		:value="content"
@@ -38,7 +38,7 @@
 	/>
 
 	<div :class='$style.bottom_toolbar'>
-		<kx-button
+		<KxButton
 			v-if="preview"
 			type="outline"
 			title="编辑"
@@ -46,8 +46,8 @@
 		>
 			<EditIcon class="prefix"/>
 			编辑
-		</kx-button>
-		<kx-button
+		</KxButton>
+		<KxButton
 			v-else
 			type="outline"
 			title="预览"
@@ -55,15 +55,15 @@
 		>
 			<EyeIcon class="prefix"/>
 			预览
-		</kx-button>
+		</KxButton>
 
-		<kx-task-button
+		<KxTaskButton
 			class='primary'
 			:class="$style.submit"
 			:on-click='submit'
 		>
 			发表评论
-		</kx-task-button>
+		</KxTaskButton>
 	</div>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-	<banner-page-layout :banner="article.banner">
+	<BannerPageLayout :banner="article.banner">
 		<PageMeta :title="article.title" :body-class="$style.container"/>
 
 		<article :class="$style.article">
@@ -25,7 +25,7 @@
 				</div>
 			</header>
 
-			<markdown-view
+			<MarkdownView
 				:value="article.content"
 				:is-article="true"
 				:class="$style.content"
@@ -47,7 +47,7 @@
 			</footer>
 		</article>
 
-		<discussion-section
+		<DiscussionSection
 			ref="discussion"
 			:key="article.id"
 			:object-id="article.id"
@@ -59,7 +59,7 @@
 			v-if="$bp.isGreater('tablet')"
 			:class="$style.sideButtons"
 		>
-			<kx-button
+			<KxButton
 				type="outline"
 				color="primary"
 				:class="$style.toolButton"
@@ -67,8 +67,8 @@
 				@click="gotoDiscuss"
 			>
 				<ChatIcon/>
-			</kx-button>
-			<kx-button
+			</KxButton>
+			<KxButton
 				type="outline"
 				color="primary"
 				:class="$style.toolButton"
@@ -76,9 +76,9 @@
 				@click="gotoTop"
 			>
 				<ArrowTopIcon/>
-			</kx-button>
+			</KxButton>
 		</div>
-	</banner-page-layout>
+	</BannerPageLayout>
 </template>
 
 <script lang="ts">

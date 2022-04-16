@@ -39,38 +39,38 @@
 				</span>
 
 				<div :class="$style.buttons" v-if="editable">
-					<kx-button
+					<KxButton
 						type="outline"
 						color="primary"
 						@click="$emit('change')"
 					>
 						应用更改
-					</kx-button>
-					<kx-button
+					</KxButton>
+					<KxButton
 						type="outline"
 						color="primary"
 						@click="move"
 					>
 						移动
-					</kx-button>
-					<kx-button
+					</KxButton>
+					<KxButton
 						type="outline"
 						color="dangerous"
 						@click="remove"
 					>
 						删除
-					</kx-button>
+					</KxButton>
 				</div>
 			</div>
 		</div>
 
 		<div v-if="editable" :class="$style.optionSection">
 			<h3>导航栏背景色：</h3>
-			<kx-radio-box-group v-model="item.theme" name="theme">
-				<kx-radio-box :value="0">默认</kx-radio-box>
-				<kx-radio-box :value="1">明亮</kx-radio-box>
-				<kx-radio-box :value="2">暗色</kx-radio-box>
-			</kx-radio-box-group>
+			<KxRadioBoxGroup v-model="item.theme" name="theme">
+				<KxRadioBox :value="0">默认</KxRadioBox>
+				<KxRadioBox :value="1">明亮</KxRadioBox>
+				<KxRadioBox :value="2">暗色</KxRadioBox>
+			</KxRadioBoxGroup>
 		</div>
 	</div>
 </template>

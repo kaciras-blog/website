@@ -1,31 +1,31 @@
 <template>
-	<kx-button type="icon" title="标题" @click="addHeader(1)">
+	<KxButton type="icon" title="标题" @click="addHeader(1)">
 		<TitleIcon/>
-	</kx-button>
-	<kx-button type="icon" title="粗体" @click="switchWrapper('**')">
+	</KxButton>
+	<KxButton type="icon" title="粗体" @click="switchWrapper('**')">
 		<BoldIcon/>
-	</kx-button>
-	<kx-button type="icon" title="斜体" @click="switchWrapper('*')">
+	</KxButton>
+	<KxButton type="icon" title="斜体" @click="switchWrapper('*')">
 		<ItalicIcon/>
-	</kx-button>
-	<kx-button type="icon" title="删除线" @click="switchWrapper('~~')">
+	</KxButton>
+	<KxButton type="icon" title="删除线" @click="switchWrapper('~~')">
 		<StrikethroughIcon/>
-	</kx-button>
-	<kx-button type="icon" title="行内代码" @click="switchWrapper('`')">
+	</KxButton>
+	<KxButton type="icon" title="行内代码" @click="switchWrapper('`')">
 		<CodeIcon/>
-	</kx-button>
-	<kx-button type="icon" title="横线" @click="addNewLine('- - -')">
+	</KxButton>
+	<KxButton type="icon" title="横线" @click="addNewLine('- - -')">
 		<RemoveIcon/>
-	</kx-button>
-	<kx-button type="icon" title="引用块" @click="addPrefixToLines('>')">
+	</KxButton>
+	<KxButton type="icon" title="引用块" @click="addPrefixToLines('>')">
 		<QuoteIcon/>
-	</kx-button>
-	<kx-button type="icon" title="列表" @click="addPrefixToLines('* ')">
+	</KxButton>
+	<KxButton type="icon" title="列表" @click="addPrefixToLines('* ')">
 		<ListIcon/>
-	</kx-button>
-	<kx-button type="icon" title="插入链接" @click="addLink">
+	</KxButton>
+	<KxButton type="icon" title="插入链接" @click="addLink">
 		<AddLinkIcon/>
-	</kx-button>
+	</KxButton>
 </template>
 
 <script setup lang="ts">

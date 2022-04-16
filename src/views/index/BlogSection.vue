@@ -2,17 +2,17 @@
 	<section>
 		<header :class="$style.header">
 			<h1 :class="$style.title">推荐</h1>
-			<kx-button
+			<KxButton
 				type="outline"
 				route="/list"
 			>
 				更多文章 >
-			</kx-button>
+			</KxButton>
 		</header>
 
 		<!-- 懒得再套一层 li 了没用 ul -->
 		<div v-if="cards.length" :class="$style.card_list">
-			<smart-link
+			<SmartLink
 				v-for="card of cards"
 				:key="card.id"
 				:href="card.link"
@@ -35,9 +35,8 @@
 						{{ card.description }}
 					</div>
 				</article>
-			</smart-link>
+			</SmartLink>
 		</div>
-
 	</section>
 </template>
 

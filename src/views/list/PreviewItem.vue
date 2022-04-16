@@ -1,6 +1,6 @@
 <template>
 	<li :class="$style.container">
-		<router-link
+		<RouterLink
 			:to="articleLink(item)"
 			tabindex="-1"
 			:class="$style.cover_link"
@@ -10,12 +10,12 @@
 				alt="封面"
 				:class="$style.cover"
 			>
-		</router-link>
+		</RouterLink>
 
 		<h2 class="compact" :class="$style.title">
-			<router-link :to="articleLink(item)">
+			<RouterLink :to="articleLink(item)">
 				{{ item.title }}
-			</router-link>
+			</RouterLink>
 		</h2>
 
 		<div :class="$style.summary">

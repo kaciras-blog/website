@@ -1,9 +1,9 @@
 <template>
-	<base-page-layout :nav-class="$style.top_nav">
+	<BasePageLayout :nav-class="$style.top_nav">
 		<PageMeta :body-class="$style.container"/>
 		<slide-nav :class="$style.header" :tabs="tabs"/>
-		<router-view/>
-	</base-page-layout>
+		<RouterView/>
+	</BasePageLayout>
 </template>
 
 <script setup lang="ts">

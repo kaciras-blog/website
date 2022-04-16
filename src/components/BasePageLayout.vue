@@ -9,7 +9,7 @@
 
 	<slot></slot>
 
-	<page-footer v-if="footer"/>
+	<PageFooter v-if="footer"/>
 </template>
 
 <script>

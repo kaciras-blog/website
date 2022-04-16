@@ -1,12 +1,12 @@
 <template>
-	<kx-switch-box
+	<KxSwitchBox
 		:disabled="unsupported || loading"
 		:modelValue="StaleApi"
 		:class="$style.line"
 		@update:modelValue="v => setOption('StaleApi', v)"
 	>
 		动态内容缓存
-	</kx-switch-box>
+	</KxSwitchBox>
 
 	<div v-if="unsupported" :class="$style.alert">
 		您的浏览器不支持 ServiceWorker，无法使用该功能

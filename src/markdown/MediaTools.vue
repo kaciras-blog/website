@@ -1,13 +1,13 @@
 <template>
-	<kx-button type="icon" title="插入图片" @click="addImage">
+	<KxButton type="icon" title="插入图片" @click="addImage">
 		<ImageIcon/>
-	</kx-button>
-	<kx-button type="icon" title="插入视频" @click="addVideo">
+	</KxButton>
+	<KxButton type="icon" title="插入视频" @click="addVideo">
 		<VideoIcon/>
-	</kx-button>
-	<kx-button type="icon" title="插入音频" @click="addAudio">
+	</KxButton>
+	<KxButton type="icon" title="插入音频" @click="addAudio">
 		<MusicIcon/>
-	</kx-button>
+	</KxButton>
 </template>
 
 <script setup lang="ts">

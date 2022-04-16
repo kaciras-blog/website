@@ -6,7 +6,7 @@
 			<address>Kaciras@protonmail.com</address>
 		</div>
 		<div>
-			<router-link class="highlight pink" to="/">首页</router-link>
+			<RouterLink class="highlight pink" to="/">首页</RouterLink>
 		</div>
 		<div>
 			<a class="highlight pink" href="/sitemap.xml">站点地图</a>

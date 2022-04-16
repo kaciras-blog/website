@@ -26,8 +26,8 @@
 			</div>
 
 			<!-- 这两个按钮用文字比图标更好 -->
-			<kx-button
-				v-if="user.isAdmin"
+			<KxButton
+				v-if="currentUser.isAdmin"
 				type="text"
 				color="dangerous"
 				title="删除"
@@ -35,15 +35,15 @@
 				@click="remove"
 			>
 				删除
-			</kx-button>
-			<kx-button
+			</KxButton>
+			<KxButton
 				type="text"
 				title="回复"
 				:class="$style.clickable"
 				@click="$emit('reply', value)"
 			>
 				回复
-			</kx-button>
+			</KxButton>
 
 			#{{ localFloor }}
 		</header>
@@ -51,7 +51,7 @@
 		<!-- 引用的内容 -->
 		<slot/>
 
-		<markdown-view
+		<MarkdownView
 			:class="$style.content"
 			:value="value.content"
 			:doc-id="value.id.toString()"
@@ -79,7 +79,7 @@ const props = withDefaults(defineProps<DiscussContentProps>(), {
 const emit = defineEmits(["removed", "reply"]);
 
 const dialog = useDialog();
-const user = useCurrentUser();
+const currentUser = useCurrentUser();
 
 /**
  * 楼层号，引用模式下返回 floor，楼中楼模式返回 nestFloor。

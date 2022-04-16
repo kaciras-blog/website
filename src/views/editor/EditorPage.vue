@@ -1,37 +1,37 @@
 <template>
-	<markdown-editor :class="$style.editor" v-model="current.content">
+	<MarkdownEditor :class="$style.editor" v-model="current.content">
 		<PageMeta title="编辑器" body-class=""/>
 
 		<template #toolbar-left="{ ctx }">
-			<text-tools :ctx="ctx"/>
-			<media-tools :ctx="ctx"/>
+			<TextTools :ctx="ctx"/>
+			<MediaTools :ctx="ctx"/>
 		</template>
 		<template #toolbar-right="{ ctx }">
-			<config-toolbar :ctx="ctx"/>
-			<kx-button
+			<ConfigToolbar :ctx="ctx"/>
+			<KxButton
 				class="primary"
 				type="icon"
 				title="修改简介"
 				@click="showMetadataDialog"
 			>
 				<CardIcon/>
-			</kx-button>
-			<kx-button
+			</KxButton>
+			<KxButton
 				class="primary"
 				type="icon"
 				title="保存"
 				@click="manualSave"
 			>
 				<SaveIcon/>
-			</kx-button>
-			<kx-button
+			</KxButton>
+			<KxButton
 				class="primary"
 				type="icon"
 				title="发布!"
 				@click="showPublishDialog"
 			>
 				<PaperPlaneIcon/>
-			</kx-button>
+			</KxButton>
 		</template>
 
 		<template #statebar-left>
@@ -42,7 +42,7 @@
 				上次保存：{{ localDateMinute(draft.updateTime) }}
 			</span>
 		</template>
-	</markdown-editor>
+	</MarkdownEditor>
 </template>
 
 <script setup lang="ts">

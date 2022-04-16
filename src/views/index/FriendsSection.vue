@@ -4,44 +4,44 @@
 			<h1 :class="$style.title">友情链接</h1>
 
 			<div v-if="sorting" :class="$style.toolbar">
-				<kx-button
+				<KxButton
 					:class="$style.iconButton2"
 					type="icon"
 					title="取消"
 					@click="sortFinish(false)"
 				>
 					<CloseIcon fill="#f44336"/>
-				</kx-button>
-				<kx-button
+				</KxButton>
+				<KxButton
 					:class="$style.iconButton2"
 					type="icon"
 					title="确定"
 					@click="sortFinish(true)"
 				>
 					<CheckIcon fill="#2196f3"/>
-				</kx-button>
+				</KxButton>
 			</div>
 
 			<div
 				v-else-if="user.isAdmin"
 				:class="$style.toolbar"
 			>
-				<kx-button
+				<KxButton
 					type="icon"
 					title="调整顺序"
 					:class="$style.iconButton"
 					@click="sort"
 				>
 					<SortIcon/>
-				</kx-button>
-				<kx-button
+				</KxButton>
+				<KxButton
 					type="icon"
 					title="添加"
 					:class="$style.iconButton"
 					@click="makeFriend"
 				>
 					<AddIcon/>
-				</kx-button>
+				</KxButton>
 			</div>
 		</header>
 
@@ -55,7 +55,7 @@
 					v-if="friend.placeholder"
 					:style="friend.style"
 				/>
-				<friend-card
+				<FriendCard
 					v-else
 					:disabled="sorting"
 					:active="active"
@@ -63,7 +63,7 @@
 					@dragstart="drag($event, i)"
 				/>
 
-				<kx-button
+				<KxButton
 					v-if="user.isAdmin && !sorting"
 					type="icon"
 					title="修改"
@@ -71,8 +71,8 @@
 					@click="edit(friend)"
 				>
 					<PencilIcon/>
-				</kx-button>
-				<kx-button
+				</KxButton>
+				<KxButton
 					v-if="user.isAdmin && !sorting"
 					type="icon"
 					title="删除"
@@ -80,7 +80,7 @@
 					@click="rupture(i)"
 				>
 					<CloseIcon fill="#f44336"/>
-				</kx-button>
+				</KxButton>
 			</li>
 		</ul>
 	</section>

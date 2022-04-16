@@ -16,7 +16,7 @@
 
 		<!--suppress XmlInvalidId -->
 		<label for="password">密码:</label>
-		<kx-password-input
+		<KxPasswordInput
 			input-id="password"
 			v-model="form.password"
 			title="密码"
@@ -24,46 +24,46 @@
 			name="password"
 		/>
 
-		<kx-check-box
+		<KxCheckBox
 			v-model="form.remember"
 			:class="$style.centerElement"
 		>
 			保持登录
-		</kx-check-box>
+		</KxCheckBox>
 
 		<span class="text-warning center">
 			{{ message }}
 		</span>
 
 		<div class="buttons">
-			<kx-task-button
+			<KxTaskButton
 				type="outline"
 				color="primary"
 				@click="login"
 			>
 				确定
-			</kx-task-button>
-			<kx-button
+			</KxTaskButton>
+			<KxButton
 				:disabled="true"
 				type="outline"
 				color="second"
 				@click="switchPanel"
 			>
 				注册
-			</kx-button>
+			</KxButton>
 		</div>
 
 		<span class="center" :class="$style.separator">
 			第三方登录
 		</span>
 		<div class="center">
-			<oauth-icon
+			<OauthIcon
 				endpoint="github"
 				icon="@/assets/img/logo-github.svg"
 				tip="Github登录"
 				:return-uri="returnUri"
 			/>
-			<oauth-icon
+			<OauthIcon
 				endpoint="google"
 				icon="@/assets/img/logo-google.svg"
 				tip="Google登录"

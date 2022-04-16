@@ -1,5 +1,5 @@
 <template>
-	<kx-base-dialog v-once title="选择移动方式">
+	<KxBaseDialog v-once title="选择移动方式">
 		<button :class="$style.button" @click="$dialog.confirm(false)">
 			<span :class="$style.text">仅单个分类</span>
 			<img
@@ -18,7 +18,7 @@
 				src="@/assets/img/category-subtree.svg"
 			>
 		</button>
-	</kx-base-dialog>
+	</KxBaseDialog>
 </template>
 
 <style module lang="less">

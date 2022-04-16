@@ -23,20 +23,20 @@
 		</div>
 
 		<div class="btn-group">
-			<kx-button
+			<KxButton
 				:route="'/edit/' + id"
 				type="outline"
 				color="primary"
 			>
 				编辑
-			</kx-button>
-			<kx-button
+			</KxButton>
+			<KxButton
 				type="outline"
 				color="dangerous"
 				@click="deleteDraft"
 			>
 				删除
-			</kx-button>
+			</KxButton>
 		</div>
 	</li>
 </template>

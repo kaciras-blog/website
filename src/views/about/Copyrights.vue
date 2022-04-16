@@ -3,7 +3,7 @@
 		<PageMeta title="版权声明"/>
 
 		<section class="about-section">
-			<icon-section-header
+			<IconSectionHeader
 				title="版权声明"
 				icon="@/assets/img/copyright.svg"
 			/>

@@ -1,8 +1,8 @@
 <template>
 	<div class="btn-group" :class="$style.toolbar">
-		<kx-button type="outline" @click="createNew">添加</kx-button>
-		<kx-button type="outline" @click="load">重新加载</kx-button>
-		<kx-button color="primary" @click="submit">应用更改</kx-button>
+		<KxButton type="outline" @click="createNew">添加</KxButton>
+		<KxButton type="outline" @click="load">重新加载</KxButton>
+		<KxButton color="primary" @click="submit">应用更改</KxButton>
 	</div>
 
 	<div ref="container">
@@ -12,7 +12,7 @@
 				:key="item.id"
 				:class="$style.placeholder"
 			/>
-			<card-list-item
+			<CardListItem
 				v-else
 				:key="item.id"
 				:class="$style.card"

@@ -1,5 +1,5 @@
 <template>
-	<kx-base-dialog title="插入视频">
+	<KxBaseDialog title="插入视频">
 		<form :class="$style.form" @keyup.enter="enterKey">
 			<label for="video_url">
 				视频URL（必需）
@@ -11,27 +11,27 @@
 					name="src"
 					:class="$style.text_box"
 				>
-				<kx-task-button
+				<KxTaskButton
 					:class="$style.button"
 					type="outline"
 					:on-click="uploadVideo"
 				>
 					上传
-				</kx-task-button>
+				</KxTaskButton>
 			</div>
 
-			<kx-radio-box-group
+			<KxRadioBoxGroup
 				v-model="data.isVideo"
 				name="isVideo"
 				:class="$style.field"
 			>
-				<kx-radio-box :value="false">
+				<KxRadioBox :value="false">
 					作为 GIF 动图
-				</kx-radio-box>
-				<kx-radio-box :value="true">
+				</KxRadioBox>
+				<KxRadioBox :value="true">
 					作为视频
-				</kx-radio-box>
-			</kx-radio-box-group>
+				</KxRadioBox>
+			</KxRadioBoxGroup>
 
 			<template v-if="data.isVideo">
 				<label for="video_poster">
@@ -44,13 +44,13 @@
 						name="poster"
 						:class="$style.text_box"
 					>
-					<kx-task-button
+					<KxTaskButton
 						:class="$style.button"
 						type="outline"
 						:on-click="uploadPoster"
 					>
 						上传
-					</kx-task-button>
+					</KxTaskButton>
 				</div>
 			</template>
 			<template v-else>
@@ -69,12 +69,12 @@
 			</template>
 		</form>
 
-		<kx-dialog-buttons
+		<KxDialogButtons
 			:acceptable="data.src.length > 0"
 			@cancel="dialog.close"
 			@accept="dialog.confirm(data)"
 		/>
-	</kx-base-dialog>
+	</KxBaseDialog>
 </template>
 
 <script setup lang="ts">
@@ -85,7 +85,7 @@ import {
 	KxRadioBoxGroup,
 	KxTaskButton,
 	openFile,
-	useDialog
+	useDialog,
 } from "@kaciras-blog/uikit";
 import api from "@/api";
 import { basename } from "@/utils";

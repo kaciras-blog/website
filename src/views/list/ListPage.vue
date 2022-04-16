@@ -1,5 +1,5 @@
 <template>
-	<banner-page-layout :banner="category.banner">
+	<BannerPageLayout :banner="category.banner">
 		<PageMeta title="所有文章" body-class=""/>
 
 		<div id="index-page">
@@ -7,7 +7,7 @@
 				<h1 class="segment" :class="$style.listTitle">
 					全部文章
 				</h1>
-				<scroll-paging-view
+				<ScrollPagingView
 					ref="listView"
 					v-model="articles"
 					:loader="loadPage"
@@ -18,7 +18,7 @@
 				>
 					<template v-slot="{ items }">
 						<ul class="clean-list">
-							<preview-item
+							<PreviewItem
 								v-for="item of items"
 								:key="item.id"
 								:item="item"
@@ -26,19 +26,19 @@
 							/>
 						</ul>
 					</template>
-				</scroll-paging-view>
+				</ScrollPagingView>
 			</section>
 
 			<aside :class="$style.aside">
-				<aside-panel></aside-panel>
+				<AsidePanel></AsidePanel>
 
 				<h3 class="padding">设置</h3>
-				<kx-switch-box name="auto-load" v-model="autoLoad">
+				<KxSwitchBox name="auto-load" v-model="autoLoad">
 					滚动加载
-				</kx-switch-box>
+				</KxSwitchBox>
 			</aside>
 		</div>
-	</banner-page-layout>
+	</BannerPageLayout>
 </template>
 
 <script lang="ts">

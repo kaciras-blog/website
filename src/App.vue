@@ -1,8 +1,8 @@
 <!-- 很多组件必须跟主实例中挂载，否则功能将受限 -->
 <template>
-	<kx-progress :ref="connect"/>
-	<router-view/>
-	<dialog-container/>
+	<KxProgress :ref="connect"/>
+	<RouterView/>
+	<DialogContainer/>
 	<ToastContainer/>
 	<noscript class="global-error">
 		禁用 JavaScript 会导致部分功能不正常

@@ -4,7 +4,7 @@
 		:class="[$style.container, colored && $style.colored]"
 		class="top-nav"
 	>
-		<router-link
+		<RouterLink
 			to="/"
 			title="回到首页"
 			:class="$style.logoLink"
@@ -14,7 +14,7 @@
 				alt="logo"
 				:class="$style.logo"
 			>
-		</router-link>
+		</RouterLink>
 
 		<!-- 手机屏的折叠菜单 -->
 		<button
@@ -28,9 +28,8 @@
 
 		<!-- 宽屏直接把按钮都显示在上面 -->
 		<div v-else class="nav-right">
-
 			<template v-if="user.id > 0">
-				<router-link to="/profile">
+				<RouterLink to="/profile">
 					<img
 						:src="user.avatar"
 						:alt="user.name"
@@ -38,26 +37,26 @@
 						class="small head"
 						:class="$style.head"
 					>
-				</router-link>
-				<router-link
+				</RouterLink>
+				<RouterLink
 					v-if="user.isAdmin"
 					to="/console"
 					class="nav-item"
 				>
 					管理
-				</router-link>
+				</RouterLink>
 				<button class="nav-item" @click="logout">退出登录</button>
 			</template>
 
-			<router-link v-else to="/login" class="nav-item">
+			<RouterLink v-else to="/login" class="nav-item">
 				登录
-			</router-link>
-			<router-link to="/list" class="nav-item">
+			</RouterLink>
+			<RouterLink to="/list" class="nav-item">
 				文章
-			</router-link>
-			<router-link to="/about/me" class="nav-item">
+			</RouterLink>
+			<RouterLink to="/about/me" class="nav-item">
 				关于
-			</router-link>
+			</RouterLink>
 			<a href="/feed/atom" class="nav-item" title="Feed订阅">
 				<RssIcon/>
 			</a>

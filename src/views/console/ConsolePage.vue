@@ -2,13 +2,13 @@
 	<PageMeta title="控制台" :body-class="$style.container"/>
 
 	<nav class="light" :class="$style.nav">
-		<router-link
+		<RouterLink
 			to="/"
 			class="nav-item"
 			tabindex="1"
 		>
 			返回首页
-		</router-link>
+		</RouterLink>
 	</nav>
 
 	<!--
@@ -40,9 +40,9 @@
 		将容器元素放在这里，里头的视图使用 Fragment，就像 iframe 一样。
 	-->
 	<main :class="$style.bodyWrapper">
-		<keep-alive>
+		<KeepAlive>
 			<component :is="active" ref="panel"/>
-		</keep-alive>
+		</KeepAlive>
 	</main>
 </template>
 

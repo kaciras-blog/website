@@ -1,14 +1,14 @@
 <template>
 	<div class="btn-group console-toolbar">
-		<kx-button
+		<KxButton
 			@click="newArticle"
 		>
 			<EditIcon class="prefix"/>
 			新文章
-		</kx-button>
+		</KxButton>
 	</div>
 
-	<article-item
+	<ArticleItem
 		v-for="article of list.items"
 		:key="article.id"
 		:value="article"
@@ -17,7 +17,7 @@
 	<span v-if="list.total === 0">
 		没有找到文章,去写一篇吧~
 	</span>
-	<sk-fading-circle v-if="loading"/>
+	<SkFadingCircle v-if="loading"/>
 </template>
 
 <script setup lang="ts">

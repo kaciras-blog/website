@@ -1,31 +1,31 @@
 <template>
 	<div :class="$style.buttons">
 		<div class="btn-group">
-			<kx-button
+			<KxButton
 				:disabled="!hasAncestor"
 				@click="$data.gotoId(0)"
 			>
 				<ArrowUpward class="prefix"/>
 				返回顶层
-			</kx-button>
-			<kx-button
+			</KxButton>
+			<KxButton
 				:disabled="!hasAncestor"
 				@click="$data.gotoParent()"
 			>
 				<ArrowLeft class="prefix"/>
 				回到父级
-			</kx-button>
+			</KxButton>
 		</div>
 
-		<kx-button
+		<KxButton
 			class="second"
 			@click="createNew"
 		>
 			新建分类
-		</kx-button>
+		</KxButton>
 	</div>
 
-	<category-view
+	<CategoryView
 		v-if="current"
 		:editable="true"
 		:item="current"
@@ -39,7 +39,7 @@
 	<div v-if="!children">正在加载中</div>
 
 	<ul v-else-if="children.length" :class="$style.cards">
-		<category-card
+		<CategoryCard
 			v-for="item of children"
 			:key="item.id"
 			v-bind="item"

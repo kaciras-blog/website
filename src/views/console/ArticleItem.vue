@@ -36,45 +36,45 @@
 		</div>
 
 		<div :class="$style.buttons">
-			<kx-button
+			<KxButton
 				type="outline"
 				color="primary"
 				@click="addToCards"
 			>
 				创建卡片
-			</kx-button>
-			<kx-button
+			</KxButton>
+			<KxButton
 				type="outline"
 				color="primary"
 				@click="changeCategory"
 			>
 				更改分类
-			</kx-button>
+			</KxButton>
 		</div>
 		<div :class="$style.buttons">
-			<kx-button
+			<KxButton
 				type="outline"
 				color="primary"
 				@click="edit"
 			>
 				修改
-			</kx-button>
-			<kx-button
+			</KxButton>
+			<KxButton
 				v-if="value.deleted"
 				color="info"
 				type="outline"
 				@click="updateDeleteState(false)"
 			>
 				恢复
-			</kx-button>
-			<kx-button
+			</KxButton>
+			<KxButton
 				v-else
 				type="outline"
 				color="dangerous"
 				@click="updateDeleteState(true)"
 			>
 				删除
-			</kx-button>
+			</KxButton>
 		</div>
 	</div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-	<kx-base-dialog title="描述信息">
+	<KxBaseDialog title="描述信息">
 		<form :class="$style.content">
 			<img
 				:class="$style.cover"
@@ -26,8 +26,8 @@
 				placeholder="关键字,空格隔开"
 			/>
 		</form>
-		<kx-dialog-buttons @accept="ok" @cancel="$dialog.close"/>
-	</kx-base-dialog>
+		<KxDialogButtons @accept="ok" @cancel="$dialog.close"/>
+	</KxBaseDialog>
 </template>
 
 <script lang="ts">

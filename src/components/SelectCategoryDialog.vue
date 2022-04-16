@@ -1,5 +1,5 @@
 <template>
-	<kx-base-dialog title="选择分类">
+	<KxBaseDialog title="选择分类">
 		<div :class="$style.buttons">
 
 			<template v-if="current">
@@ -15,23 +15,23 @@
 			<div v-else :class="$style.hold"></div>
 
 			<div class="btn-group">
-				<kx-button
+				<KxButton
 					type="outline"
 					:disabled="!hasAncestor"
 					@click="walker.gotoParent()"
 				>
 					<ArrowLeft class="prefix"/>
 					回到父级
-				</kx-button>
+				</KxButton>
 
-				<kx-button
+				<KxButton
 					type="outline"
 					:disabled="!hasAncestor"
 					@click="walker.goto(0)"
 				>
 					<ArrowUpward class="prefix"/>
 					返回顶层
-				</kx-button>
+				</KxButton>
 			</div>
 		</div>
 
@@ -42,7 +42,7 @@
 				:class="{ [$style.category]: true, selected: category.selected }"
 				@click="walker.goto(category)"
 			>
-				<kx-check-box
+				<KxCheckBox
 					:modelValue="!!category.selected"
 					@click.stop
 					@update:modelValue="select(category)"
@@ -68,28 +68,28 @@
 			</div>
 
 			<div class="btn-group">
-				<kx-button
+				<KxButton
 					color="second"
 					@click="clear"
 				>
 					清空选择
-				</kx-button>
-				<kx-button
+				</KxButton>
+				<KxButton
 					color="second"
 					@click="cancel"
 				>
 					取消
-				</kx-button>
-				<kx-button
+				</KxButton>
+				<KxButton
 					class="primary"
 					:disabled="!selected.length"
 					@click="ok"
 				>
 					确定
-				</kx-button>
+				</KxButton>
 			</div>
 		</div>
-	</kx-base-dialog>
+	</KxBaseDialog>
 </template>
 
 <script setup lang="ts">

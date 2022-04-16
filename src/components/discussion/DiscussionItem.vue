@@ -10,7 +10,7 @@
 -->
 <template>
 	<li>
-		<discussion-content
+		<DiscussionContent
 			:value="$props"
 			tag="div"
 			@removed="$emit('removed')"
@@ -22,15 +22,22 @@
 					@{{ displayName(parent) }}
 					(#{{ parent.floor }})
 				</p>
-				<markdown-view
+				<MarkdownView
 					:doc-id='"dq" + id'
 					:value="parent.content"
 				/>
 			</blockquote>
-		</discussion-content>
+		</DiscussionContent>
 
+		<!--
+			这里有不同设备和是否展开两种状态，每个状态有两种情况：
+			1）展开时显示分页，否则显示展开按钮。
+			2）未展开时宽屏显示完整评论，手机显示预览。
+
+			一共三种组合，由于组件比较简单所以没提取组件，可能比较乱。
+		-->
 		<template v-if="expend || children.items.length">
-			<button-paging-view
+			<ButtonPagingView
 				v-if="expend"
 				ref="repliesEl"
 				v-model="children"
@@ -41,7 +48,7 @@
 			>
 				<template v-slot="{ items }">
 					<ol class="clean-list" :class="$style.list">
-						<discussion-content
+						<DiscussionContent
 							v-for="item of items"
 							:key="item.id"
 							:value="item"
@@ -51,15 +58,14 @@
 						/>
 					</ol>
 				</template>
-			</button-paging-view>
+			</ButtonPagingView>
 
 			<div v-else-if="$bp.isGreater('tablet')" :class="$style.nest">
 				<ol class="clean-list" :class="$style.list">
-					<discussion-content
+					<DiscussionContent
 						v-for="item of children.items"
 						:key="item.id"
 						:value="item"
-						tag="li"
 						:class="$style.reply"
 						@removed="refresh"
 						@reply="showReplyEditor"
@@ -69,6 +75,7 @@
 					共 {{ children.total }} 条回复 &gt;
 				</a>
 			</div>
+
 			<div v-else :class="$style.nest">
 				<ol class="clean-list" :class="$style.list">
 					<li
@@ -88,7 +95,7 @@
 			</div>
 		</template>
 
-		<input-section
+		<InputSection
 			v-if="replyContext"
 			:key="replyContext.parent.id"
 			v-bind="replyContext"

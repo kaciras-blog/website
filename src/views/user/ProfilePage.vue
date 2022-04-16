@@ -1,5 +1,5 @@
 <template>
-	<base-page-layout>
+	<BasePageLayout>
 		<PageMeta title="用户" :body-class="$style.pageLayout"/>
 
 		<div :class="$style.body">
@@ -18,7 +18,7 @@
 
 				<div :class="$style.field">
 					ID:
-					<auth-type-tag :type="user.auth"/>
+					<AuthTypeTag :type="user.auth"/>
 					{{ user.id }}
 				</div>
 
@@ -32,10 +32,10 @@
 					>
 				</div>
 
-				<kx-button class="primary" @click="save">保存</kx-button>
+				<KxButton class="primary" @click="save">保存</KxButton>
 			</form>
 		</div>
-	</base-page-layout>
+	</BasePageLayout>
 </template>
 
 <script setup lang="ts">

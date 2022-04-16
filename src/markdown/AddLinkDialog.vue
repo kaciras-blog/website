@@ -1,5 +1,5 @@
 <template>
-	<kx-base-dialog title="添加链接">
+	<KxBaseDialog title="添加链接">
 		<form :class="$style.form" @keyup.enter="ok">
 			<label>链接地址</label>
 			<input
@@ -19,8 +19,8 @@
 				:placeholder="data.href"
 			/>
 		</form>
-		<kx-dialog-buttons @accept="ok" @cancel="dialog.close"/>
-	</kx-base-dialog>
+		<KxDialogButtons @accept="ok" @cancel="dialog.close"/>
+	</KxBaseDialog>
 </template>
 
 <script setup lang="ts">

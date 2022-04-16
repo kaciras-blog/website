@@ -43,7 +43,7 @@
 			因为 Vue 的 provide 不是响应式的，一旦复用则编辑器的 inject 无法更新。
 			这里设置 key=<object-id> 强制页面切换时重新创建组件。
 		-->
-		<discussion-section
+		<DiscussionSection
 			:type="2"
 			:object-id="2"
 			:key="2"

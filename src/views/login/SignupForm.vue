@@ -16,7 +16,7 @@
 
 		<!--suppress XmlInvalidId -->
 		<label for="password">密码:</label>
-		<kx-password-input
+		<KxPasswordInput
 			input-id="password"
 			v-model="form.password"
 			name="password"
@@ -58,20 +58,20 @@
 		</span>
 
 		<div class="buttons">
-			<kx-task-button
+			<KxTaskButton
 				type="outline"
 				color="primary"
 				@click="signUp"
 			>
 				确定
-			</kx-task-button>
-			<kx-button
+			</KxTaskButton>
+			<KxButton
 				type="outline"
 				color="second"
 				@click="switchPanel"
 			>
 				登录
-			</kx-button>
+			</KxButton>
 		</div>
 	</form>
 </template>

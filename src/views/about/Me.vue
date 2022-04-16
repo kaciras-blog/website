@@ -14,17 +14,17 @@
 				<p>自学码农 / 热爱技术 / 全栈开发 / 二刺螈 / 啥都想学</p>
 
 				<p :class="$style.socialLinks">
-					<social-link
+					<SocialLink
 						href="mailto:Kaciras@protonmail.com"
 						name="Email"
 						icon="@/assets/img/email.svg"
 					/>
-					<social-link
+					<SocialLink
 						href="https://github.com/Kaciras"
 						name="GitHub"
 						icon="@/assets/img/logo-github.svg"
 					/>
-					<social-link
+					<SocialLink
 						href="https://matrix.to/#/@kaciras:matrix.org"
 						name="Matrix"
 						icon="@/assets/img/element-io.svg"
@@ -43,7 +43,7 @@
 			</p>
 		</section>
 
-		<discussion-section
+		<DiscussionSection
 			:type="2"
 			:object-id="1"
 			:key="1"

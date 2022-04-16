@@ -5,22 +5,22 @@
 				{{ card.name }}
 			</h2>
 
-			<kx-button
+			<KxButton
 				:class="$style.handler"
 				type="icon"
 				title="拖动调整次序"
 				@mousedown.stop="dragStart"
 			>
 				<DownUpIcon/>
-			</kx-button>
+			</KxButton>
 
-			<kx-button
+			<KxButton
 				type="icon"
 				title="删除"
 				@click="$emit('remove', id)"
 			>
 				<TrashIcon/>
-			</kx-button>
+			</KxButton>
 		</div>
 
 		<form :class="$style.details">

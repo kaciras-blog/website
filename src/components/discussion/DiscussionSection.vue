@@ -1,5 +1,5 @@
 <template>
-	<boot-loader :load-fn="initialize">
+	<BootLoader :load-fn="initialize">
 		<header :class="$style.header">
 			<h2 :class="$style.title">
 				评论区({{ data.total }})
@@ -7,7 +7,7 @@
 
 			<div :class="$style.options">
 				<!-- 有些组合是多余的，比如 nest_size,ASC -->
-				<kx-select
+				<KxSelect
 					:class="$style.sortSelect"
 					v-model="sort"
 					title="排序方式"
@@ -15,16 +15,16 @@
 					<option value="id,ASC">最早</option>
 					<option value="id,DESC">最新</option>
 					<option value="nest_size,DESC">回复数</option>
-				</kx-select>
+				</KxSelect>
 
-				<kx-select v-model="mode" title="评论结构">
+				<KxSelect v-model="mode" title="评论结构">
 					<option value="ref">引用模式</option>
 					<option value="nest">楼中楼模式</option>
-				</kx-select>
+				</KxSelect>
 			</div>
 		</header>
 
-		<input-section
+		<InputSection
 			:object-id="objectId"
 			:type="type"
 			@after-submit="afterSubmit"
@@ -40,7 +40,7 @@
 		>
 			<template v-slot="{ items }">
 				<ol :class="$style.list">
-					<discussion-item
+					<DiscussionItem
 						v-for="item of items"
 						v-bind="item"
 						:key="item.id"
@@ -53,7 +53,7 @@
 		</component>
 
 		<div v-if="data.total===0" :class="$style.empty">还没有评论呢</div>
-	</boot-loader>
+	</BootLoader>
 </template>
 
 <script setup lang="ts">

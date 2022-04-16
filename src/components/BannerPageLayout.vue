@@ -1,15 +1,15 @@
 <template>
-	<base-page-layout :nav-class="navClass" :nav-style="navStyle">
+	<BasePageLayout :nav-class="navClass" :nav-style="navStyle">
 
 		<template v-if="$bp.isGreater('tablet')" v-slot:nav>
 			<div :style="desktopNavStyle" :class="desktopNavClass">
-				<top-nav-glass :image-class="$style.image_resolver"/>
+				<TopNavGlass :image-class="$style.image_resolver"/>
 				<div :class="$style.banner" role="banner"></div>
 			</div>
 		</template>
 
 		<slot></slot>
-	</base-page-layout>
+	</BasePageLayout>
 </template>
 
 <script>

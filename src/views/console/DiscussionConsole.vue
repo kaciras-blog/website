@@ -1,30 +1,30 @@
 <template>
-	<discussion-config-panel></discussion-config-panel>
+	<DiscussionConfigPanel></DiscussionConfigPanel>
 
 	<div class="panel">
 		<div :class="$style.toolbar">
-			<kx-check-box v-model="allChecked"/>
+			<KxCheckBox v-model="allChecked"/>
 
 			<div class="btn-group">
-				<kx-button
+				<KxButton
 					class="primary"
 					:disabled="!selected.size"
 					@click="approveAll"
 				>
 					全部发布
-				</kx-button>
-				<kx-button
+				</KxButton>
+				<KxButton
 					class="dangerous"
 					:disabled="!selected.size"
 					@click="removeAll"
 				>
 					全部删除
-				</kx-button>
+				</KxButton>
 			</div>
 		</div>
 
 		<ul v-if="pendingList.length" class="clean-list">
-			<discussion-check-item
+			<DiscussionCheckItem
 				v-for="item of pendingList"
 				v-bind="item"
 				:key="item.id"

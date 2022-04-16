@@ -1,14 +1,14 @@
 <template>
-	<kx-frame title="查看回复">
+	<KxFrame title="查看回复">
 		<div :class="$style.frameBody">
-			<scroll-paging-view
+			<ScrollPagingView
 				v-model="data"
 				:loader="loadNext"
 				:auto-load="true"
 			>
 				<template v-slot="{ items }">
 					<ol :class="$style.list">
-						<discussion-content
+						<DiscussionContent
 							v-for="item of items"
 							:key="item.id"
 							:value="item"
@@ -16,7 +16,7 @@
 						/>
 					</ol>
 				</template>
-			</scroll-paging-view>
+			</ScrollPagingView>
 		</div>
 
 		<button
@@ -26,7 +26,7 @@
 			<EditIcon :class="$style.icon"/>
 			写回复...
 		</button>
-	</kx-frame>
+	</KxFrame>
 </template>
 
 <script setup lang="ts">

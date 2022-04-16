@@ -43,8 +43,8 @@
 			<span :class="$style.span"></span>
 			<slot name="statebar-right" :ctx="ctx"/>
 
-			<text-state-group :ctx="ctx"/>
-			<sync-scroll-toggle :ctx="ctx"/>
+			<TextStateGroup :ctx="ctx"/>
+			<SyncScrollToggle :ctx="ctx"/>
 		</div>
 	</div>
 </template>

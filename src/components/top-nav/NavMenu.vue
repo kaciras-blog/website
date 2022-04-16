@@ -13,18 +13,18 @@
 		</div>
 
 		<div :class="$style.body">
-			<router-link to="/" :class="$style.item">
+			<RouterLink to="/" :class="$style.item">
 				<HomeIcon fill="#0099ff"/>
 				首页
-			</router-link>
-			<router-link to="/list" :class="$style.item">
+			</RouterLink>
+			<RouterLink to="/list" :class="$style.item">
 				<ListIcon/>
 				文章
-			</router-link>
-			<router-link to="/about/me" :class="$style.item">
+			</RouterLink>
+			<RouterLink to="/about/me" :class="$style.item">
 				<CopyrightIcon fill="#01AD20"/>
 				关于
-			</router-link>
+			</RouterLink>
 			<a href="/feed/rss" :class="$style.item">
 				<RssIcon fill="#eb8a34"/>
 				Feed 订阅

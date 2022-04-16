@@ -1,7 +1,7 @@
 <template>
-	<kx-frame title="设置">
-		<div :class="$style.body"><setting-panel/></div>
-	</kx-frame>
+	<KxFrame title="设置">
+		<div :class="$style.body"><SettingPanel/></div>
+	</KxFrame>
 </template>
 
 <script setup lang="ts">

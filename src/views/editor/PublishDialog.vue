@@ -1,5 +1,5 @@
 <template>
-	<kx-base-dialog :title='draft.articleId ? "更新文章": "发表文章"'>
+	<KxBaseDialog :title='draft.articleId ? "更新文章": "发表文章"'>
 		<form :class="$style.body">
 
 			<div :class="$style.category" class="segment">
@@ -14,13 +14,13 @@
 					<h3 :class="$style.name">{{ category.name }}</h3>
 				</template>
 
-				<kx-button
+				<KxButton
 					type="outline"
 					:style="{ marginLeft: 'auto' }"
 					@click="selectCategory"
 				>
 					选择分类
-				</kx-button>
+				</KxButton>
 			</div>
 
 			<label for="urlTitle" :class="$style.block_label">
@@ -34,19 +34,19 @@
 					:placeholder="current.title"
 					:class="$style.input"
 				>
-				<kx-button
+				<KxButton
 					type="outline"
 					@click="replace"
 				>
 					替换空格
-				</kx-button>
+				</KxButton>
 			</div>
 
-			<kx-check-box v-model="destroy">发表后删除草稿</kx-check-box>
+			<KxCheckBox v-model="destroy">发表后删除草稿</KxCheckBox>
 		</form>
 
-		<kx-dialog-buttons @accept="accept" @cancel="dialog.close"/>
-	</kx-base-dialog>
+		<KxDialogButtons @accept="accept" @cancel="dialog.close"/>
+	</KxBaseDialog>
 </template>
 
 <script setup lang="ts">

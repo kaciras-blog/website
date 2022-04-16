@@ -1,10 +1,10 @@
 <!--
-	router-link 不能在函数式组件里使用。
+	RouterLink 不能在函数式组件里使用。
 	Vue-Router 4 的写法变复杂了啊。
 -->
 <template>
 	<ol :class="$style.tabList" class="clean-list" role="tablist">
-		<router-link
+		<RouterLink
 			v-for="tab of tabs"
 			:key="tab.title"
 			replace
@@ -29,7 +29,7 @@
 					{{ tab.title }}
 				</a>
 			</li>
-		</router-link>
+		</RouterLink>
 	</ol>
 </template>
 

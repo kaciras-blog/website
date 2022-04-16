@@ -1,8 +1,8 @@
 <template>
-	<kx-base-dialog title="设置" :class="$style.dialog">
-		<setting-panel/>
-		<kx-dialog-buttons :on-accept="$dialog.close"/>
-	</kx-base-dialog>
+	<KxBaseDialog title="设置" :class="$style.dialog">
+		<SettingPanel/>
+		<KxDialogButtons :on-accept="$dialog.close"/>
+	</KxBaseDialog>
 </template>
 
 <script setup lang="ts">

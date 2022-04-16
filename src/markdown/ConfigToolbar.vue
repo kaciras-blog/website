@@ -1,13 +1,13 @@
 <template>
-	<kx-button type="icon" color="info" title="双列视图" @click="viewMode = 0">
+	<KxButton type="icon" color="info" title="双列视图" @click="viewMode = 0">
 		<SplitIcon/>
-	</kx-button>
-	<kx-button type="icon" color="info" title="Markdown视图" @click="viewMode = 1">
+	</KxButton>
+	<KxButton type="icon" color="info" title="Markdown视图" @click="viewMode = 1">
 		<EditIcon/>
-	</kx-button>
-	<kx-button type="icon" color="info" title="Html视图" @click="viewMode = 2">
+	</KxButton>
+	<KxButton type="icon" color="info" title="Html视图" @click="viewMode = 2">
 		<EyeIcon/>
-	</kx-button>
+	</KxButton>
 </template>
 
 <script setup lang="ts">

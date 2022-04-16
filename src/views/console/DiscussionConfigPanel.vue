@@ -3,17 +3,17 @@
 		<h2>设置</h2>
 
 		<div :class="$style.config_row">
-			<kx-check-box
+			<KxCheckBox
 				v-for="(_, name) of config"
 				:key="name"
 				v-model="config[name]"
 				:class="$style.checkbox"
 			>
 				{{ LABELS[name] }}
-			</kx-check-box>
+			</KxCheckBox>
 		</div>
 
-		<sk-fading-circle v-show="refreshing" :class="$style.progress"/>
+		<SkFadingCircle v-show="refreshing" :class="$style.progress"/>
 	</section>
 </template>
 

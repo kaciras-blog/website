@@ -1,7 +1,7 @@
 <template>
 	<li :class="$style.container">
 		<div :class="$style.link">
-			<kx-check-box
+			<KxCheckBox
 				v-model="checkedForward"
 			/>
 			<span>

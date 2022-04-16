@@ -1,10 +1,10 @@
 <template>
-	<base-page-layout>
+	<BasePageLayout>
 		<PageMeta title="首页" body-class=""/>
 
 		<!-- 经过1小时的尝试仍未能做到模糊层背景定位，已放弃 -->
 		<template #nav>
-			<top-nav-glass :class="navClass"/>
+			<TopNavGlass :class="navClass"/>
 		</template>
 
 		<section :class="$style.banner" :style="bannerStyle">
@@ -31,9 +31,9 @@
 			</div>
 		</section>
 
-		<blog-section :class="$style.section"/>
-		<friends-section :class="$style.section"/>
-	</base-page-layout>
+		<BlogSection :class="$style.section"/>
+		<FriendsSection :class="$style.section"/>
+	</BasePageLayout>
 </template>
 
 <script lang="ts">

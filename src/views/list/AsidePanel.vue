@@ -3,17 +3,17 @@
 		<h3 :class="$style.padding">浏览排行</h3>
 		<ol v-if="hots" class="rank-list">
 
-			<!-- 这里要保持 <a> 的链接，不能直接把 <router-link> 搞成 <li> -->
+			<!-- 这里要保持 <a> 的链接，不能直接把 <RouterLink> 搞成 <li> -->
 			<li
 				v-for="article of hots"
 				:key="article.id"
 			>
-				<router-link
+				<RouterLink
 					:to="articleLink(article)"
 					class="item"
 				>
 					{{ article.title }}
-				</router-link>
+				</RouterLink>
 			</li>
 		</ol>
 		<p :class="$style.noContent" v-else>加载失败</p>

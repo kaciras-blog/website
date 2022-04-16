@@ -1,5 +1,5 @@
 <template>
-	<kx-frame :class="$style.container" title="编辑评论">
+	<KxFrame :class="$style.container" title="编辑评论">
 		<template #actions>
 			<button
 				v-if="preview"
@@ -29,7 +29,7 @@
 			</button>
 		</template>
 
-		<markdown-view
+		<MarkdownView
 			v-if="preview"
 			:class="$style.body"
 			:value="content"
@@ -60,15 +60,15 @@
 				:class="$style.nickname"
 			>
 
-			<kx-task-button
+			<KxTaskButton
 				:class="$style.button"
 				:on-click="handleSubmit"
 			>
 				发送
 				<PaperPlaneIcon/>
-			</kx-task-button>
+			</KxTaskButton>
 		</div>
-	</kx-frame>
+	</KxFrame>
 </template>
 
 <script lang="ts">

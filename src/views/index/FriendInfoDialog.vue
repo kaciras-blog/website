@@ -1,5 +1,5 @@
 <template>
-	<kx-base-dialog title="友链信息">
+	<KxBaseDialog title="友链信息">
 		<div :class="$style.wrapper">
 			<img
 				:src="value.background"
@@ -17,28 +17,28 @@
 			>
 		</div>
 
-		<material-text-input
+		<MaterialTextInput
 			v-model="value.url"
 			label="URL"
 			name="url"
 			placeholder="http://example.com/index"
 		/>
-		<material-text-input
+		<MaterialTextInput
 			v-model="value.name"
 			name="name"
 			label="名字（16字以内）"
 		/>
-		<material-text-input
+		<MaterialTextInput
 			v-model="value.friendPage"
 			name="friendPage"
 			label="对方的友链页（可选，用于检查互友）"
 		/>
 
-		<kx-dialog-buttons
+		<KxDialogButtons
 			:on-accept="confirm"
 			:on-cancel="dialog.close"
 		/>
-	</kx-base-dialog>
+	</KxBaseDialog>
 </template>
 
 <script setup lang="ts">
