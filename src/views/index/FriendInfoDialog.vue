@@ -2,14 +2,14 @@
 	<KxBaseDialog title="友链信息">
 		<div :class="$style.wrapper">
 			<img
-				:src="value.background"
+				:src="friend.background"
 				title="设置背景"
 				:class="$style.background"
 				alt="background"
 				@click="uploadBackground"
 			>
 			<img
-				:src="value.favicon ?? DEFAULT_AVATAR"
+				:src="friend.favicon ?? DEFAULT_AVATAR"
 				title="设置图标"
 				alt="favicon"
 				:class="$style.favicon"
@@ -18,18 +18,18 @@
 		</div>
 
 		<MaterialTextInput
-			v-model="value.url"
+			v-model="friend.url"
 			label="URL"
 			name="url"
 			placeholder="http://example.com/index"
 		/>
 		<MaterialTextInput
-			v-model="value.name"
+			v-model="friend.name"
 			name="name"
 			label="名字（16字以内）"
 		/>
 		<MaterialTextInput
-			v-model="value.friendPage"
+			v-model="friend.friendPage"
 			name="friendPage"
 			label="对方的友链页（可选，用于检查互友）"
 		/>
@@ -43,7 +43,14 @@
 
 <script setup lang="ts">
 import { reactive, toRaw } from "vue";
-import { openFile, useDialog, MaterialTextInput, KxDialogButtons, KxBaseDialog } from "@kaciras-blog/uikit";
+import {
+	ImageCropper,
+	KxBaseDialog,
+	KxDialogButtons,
+	MaterialTextInput,
+	openFile,
+	useDialog,
+} from "@kaciras-blog/uikit";
 import api from "@/api";
 import { DEFAULT_AVATAR } from "@/common";
 
@@ -58,31 +65,30 @@ interface Friend_Copy {
 const props = defineProps<Friend_Copy>();
 
 const dialog = useDialog();
-const value = reactive({ ...toRaw(props) });
+const friend = reactive({ ...toRaw(props) });
 
 async function uploadBackground() {
-	value.background = await cropAndUploadImage(16 / 9);
+	friend.background = await selectImage(false, 16 / 9);
 }
 
 async function uploadFavicon() {
-	value.favicon = await cropAndUploadImage(1);
+	friend.favicon = await selectImage(true, 1);
 }
 
-async function cropAndUploadImage(aspectRatio: number) {
-	let image:Blob = await openFile("image/*");
-	const cropping = await dialog.cropImage({ image, aspectRatio });
-	if (cropping.isConfirm) {
-		image = cropping.data;
-	}
-	return api.misc.uploadImage(image);
+async function selectImage(circle: boolean, aspectRatio: number) {
+	const image = await openFile("image/*");
+	const cropping = await dialog.show(ImageCropper, {
+		image, circle, aspectRatio,
+	});
+	return api.misc.uploadImage(image, cropping.data);
 }
 
 // 烦人的空字符串与 null 的问题
 function confirm() {
-	if (!value.friendPage) {
-		delete value.friendPage;
+	if (!friend.friendPage) {
+		delete friend.friendPage;
 	}
-	dialog.confirm(toRaw(value));
+	dialog.confirm(toRaw(friend));
 }
 </script>
 

@@ -6,13 +6,14 @@ type ProgressHandler = (event: ProgressEvent) => void;
 
 export default class extends AbstractResource {
 
-	private upload(path: string, file: Blob, progress?: ProgressHandler) {
+	private upload(path: string, file: Blob, params: any, progress?: ProgressHandler) {
 		const data = new FormData();
 		data.append("file", file);
 
 		// 媒体文件大，需要跟 API 的超时分开
 		const config = {
 			timeout: Infinity,
+			params,
 			onUploadProgress: progress,
 		};
 		return this.servers.web.post(path, data, config).then(getLocation());
@@ -22,18 +23,32 @@ export default class extends AbstractResource {
 	 * 上传图片文件，返回保存的文件的路径。
 	 *
 	 * @param file 文件数据
+	 * @param crop 裁剪参数
 	 * @param progress 进度回调
 	 */
-	uploadImage(file: Blob, progress?: ProgressHandler) {
-		return this.upload("/image", file, progress);
+	uploadImage(file: Blob, crop?: any, progress?: ProgressHandler) {
+		let params: any;
+		if (crop) {
+			params = {
+				crop: `${crop.top}-${crop.left}-${crop.width}-${crop.height}`,
+				rotate: crop.rotate,
+			};
+			if (crop.flipX) {
+				params.flip ??= "" + "X";
+			}
+			if (crop.flipY) {
+				params.flip ??= "" + "Y";
+			}
+		}
+		return this.upload("/image", file, params, progress);
 	}
 
 	uploadVideo(file: Blob, progress?: ProgressHandler) {
-		return this.upload("/video", file, progress);
+		return this.upload("/video", file, null, progress);
 	}
 
 	uploadAudio(file: Blob, progress?: ProgressHandler) {
-		return this.upload("/audio", file, progress);
+		return this.upload("/audio", file, null, progress);
 	}
 
 	/**
