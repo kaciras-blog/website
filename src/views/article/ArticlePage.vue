@@ -85,6 +85,7 @@
 import { defineComponent } from "vue";
 import { PrefetchContext } from "@/prefetch";
 import { usePrefetch } from "@/store";
+import { articleLink } from "@/common";
 
 /**
  * 在路由切换前加载数据，并检查 URL 是否正确。
@@ -101,8 +102,8 @@ function asyncData(session: PrefetchContext) {
 
 	data.article = api.article.get(idInt).then(v => {
 		// 检查 URL 中的标题，不正确则重定向。
-		if (!urlTitle || urlTitle !== v.urlTitle) {
-			session.redirect(301, `/article/${id}/${v.urlTitle}`);
+		if (urlTitle !== v.urlTitle) {
+			session.redirect(301, articleLink(v));
 		}
 		return v;
 	});
@@ -117,7 +118,7 @@ import ChatIcon from "@material-design-icons/svg/outlined/forum.svg?sfc";
 import ArrowTopIcon from "@material-design-icons/svg/outlined/rocket_launch.svg?sfc";
 import { KxButton } from "@kaciras-blog/uikit";
 import { Article } from "@/api";
-import { articleLink, localDateMinute } from "@/common";
+import { localDateMinute } from "@/common";
 import { escapeHtml } from "@/utils";
 import BannerPageLayout from "@/components/BannerPageLayout.vue";
 import PageMeta from "@/components/PageMeta";
