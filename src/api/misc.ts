@@ -33,6 +33,10 @@ export default class extends AbstractResource {
 				crop: `${crop.top}-${crop.left}-${crop.width}-${crop.height}`,
 				rotate: crop.rotate,
 			};
+			// 后端是先旋转后翻转，跟前端相反，要额外处理下。
+			if (crop.rotate % 180 !== 0) {
+				[crop.flipX, crop.flipY] = [crop.flipY, crop.flipX];
+			}
 			if (crop.flipX) {
 				params.flip ??= "" + "X";
 			}
