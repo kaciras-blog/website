@@ -1,6 +1,5 @@
 import { openFile } from "@kaciras-blog/uikit";
 import { APIService } from "./core";
-import { getLocation } from "@/api/common";
 
 export default class MediaEndpoint extends APIService {
 
@@ -8,7 +7,7 @@ export default class MediaEndpoint extends APIService {
 		const data = new FormData();
 		data.append("file", file);
 
-		return this.post(path, data, params).then(getLocation());
+		return this.post(path, data, params).location;
 	}
 
 	/**

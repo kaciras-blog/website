@@ -1,4 +1,4 @@
-import { APIService } from "@/api2/core";
+import { APIService } from "./core";
 
 export interface Card {
 	name: string;
@@ -10,10 +10,10 @@ export interface Card {
 export default class CardEndpoint extends APIService {
 
 	getCards() {
-		return this.content.get<Card[]>("/cards");
+		return this.get<Card[]>("/cards").data;
 	}
 
 	setCards(cards: Card[]) {
-		return this.content.put("/cards", cards);
+		return this.put("/cards", cards);
 	}
 }

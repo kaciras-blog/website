@@ -13,24 +13,46 @@ export class BlogAPIError extends Error {
 	}
 }
 
-export class RequestFacade<T> {
+async function check(response: Response) {
+	if (response.ok) {
+		return response;
+	}
+	const message = await response.text();
+	throw new BlogAPIError(response, message);
+}
 
-	readonly raw: Promise<Response>;
+export class ResponseFacade<T> implements Promise<Response> {
+
+	public readonly raw: Promise<Response>;
 
 	constructor(raw: Promise<Response>) {
 		this.raw = raw;
 	}
 
-	async data(default_?: T): Promise<T> {
-		const response = await this.raw;
-		if (response.ok) {
-			return response.json();
-		}
-		if (default_ !== undefined) {
-			return default_;
-		}
-		const message = await response.text();
-		throw new BlogAPIError(response, message);
+	get data(): Promise<T> {
+		return this.raw.then(check).then(r => r.json());
+	}
+
+	get location(): Promise<string> {
+		return this.raw
+			.then(check)
+			.then(r => r.headers.get("location")!);
+	}
+
+	get [Symbol.toStringTag]() {
+		return "ResponseFacade";
+	}
+
+	catch<E = never>(onRejected: any): Promise<Response | E> {
+		return this.raw.then(check).catch(onRejected);
+	}
+
+	finally(onFinally?: any): Promise<Response> {
+		return this.raw.then(check).finally(onFinally);
+	}
+
+	then<R = Response, E = never>(...args: any[]): Promise<R | E> {
+		return this.raw.then(check).then(...args);
 	}
 }
 
@@ -60,7 +82,7 @@ export class APIService {
 	 * @param data 请求体
 	 * @param params URL 中的参数部分
 	 */
-	protected async fetch<R>(method: string, url: string, data?: any, params?: Record<string, any>) {
+	protected fetch<R>(method: string, url: string, data?: any, params?: Record<string, any>) {
 		const init = { ...this.init };
 		const headers = init.headers as Record<string, string>;
 
@@ -76,7 +98,7 @@ export class APIService {
 			url = `${url}?${new URLSearchParams(params)}`;
 		}
 
-		return new RequestFacade<R>(fetch(new URL(url, this.baseURL), init));
+		return new ResponseFacade<R>(fetch(new URL(url, this.baseURL), init));
 	}
 
 	// 下面都是快捷方法，用函数名作为请求方法从而省略一个参数。
@@ -113,7 +135,7 @@ const defaults: RequestInit = {
 	},
 };
 
-type Factories = Record<string, (init: RequestInit) => APIService>;
+type Factories = Record<string | symbol, (init: RequestInit) => APIService>;
 
 class BlogAPISet implements ProxyHandler<Factories> {
 
@@ -128,7 +150,7 @@ class BlogAPISet implements ProxyHandler<Factories> {
 		return new Proxy(target, new BlogAPISet(init));
 	}
 
-	get(target: Factories, property: string) {
+	get(target: Factories, property: string | symbol) {
 		if (property === "configure") {
 			return (init: RequestInit) => this.configure(target, init);
 		}
