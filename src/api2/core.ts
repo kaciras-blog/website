@@ -113,6 +113,29 @@ const defaults: RequestInit = {
 	},
 };
 
+type Factories = Record<string, (init: RequestInit) => APIService>;
+
+class BlogAPISet implements ProxyHandler<Factories> {
+
+	private readonly base: RequestInit;
+
+	constructor(base: RequestInit) {
+		this.base = base;
+	}
+
+	configure(target: Factories, init: RequestInit) {
+		init = { ...this.base, ...init };
+		return new Proxy(target, new BlogAPISet(init));
+	}
+
+	get(target: Factories, property: string) {
+		if (property === "configure") {
+			return (init: RequestInit) => this.configure(target, init);
+		}
+		return target[property](this.base);
+	}
+}
+
 type EndpointMap = Record<string | symbol, typeof APIService>;
 type APIDefs = Record<string, EndpointMap>;
 
@@ -125,27 +148,6 @@ type APIMap<T extends APIDefs> = {
 } & {
 	configure(init: RequestInit): APIMap<T>;
 };
-
-class BlogAPISet implements ProxyHandler<any> {
-
-	private readonly base: RequestInit;
-
-	constructor(base: RequestInit) {
-		this.base = base;
-	}
-
-	configure(target: any, init: RequestInit) {
-		init = { ...this.base, ...init };
-		return new Proxy(target, new BlogAPISet(init));
-	}
-
-	get(target: any, property: any) {
-		if (property === "configure") {
-			return (init: RequestInit) => this.configure(target, init);
-		}
-		return new target[property](this.base);
-	}
-}
 
 export function defineAPIs<T extends APIDefs>(defs: T) {
 	const factories: any = {};
