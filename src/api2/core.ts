@@ -1,9 +1,12 @@
 /**
- *
+ * HTTP 请求成功，但返回的响应不符合预期，比如状态码非 2xx 时抛出的异常。
  */
 export class BlogAPIError extends Error {
 
+	/** 原始的响应 */
 	readonly response: Response;
+
+	/** 状态码，等于 response.status */
 	readonly code: number;
 
 	constructor(response: Response, message: string) {
