@@ -1,22 +1,26 @@
-import { AxiosResponse } from "axios";
-
 /**
- * 服务器正常回复，而不是出现5xx状态码。
- * 加入到Axios的请求选项中：Config.validateStatus。
  *
- * @param status 状态码
- * @return 是否算作正常回复
  */
-export function standardRange(status: number) {
-	return status >= 0 && status < 500;
+export interface ListQueryView<T> {
+	items: T[];
+	total: number;
 }
 
 /**
- * 从响应的 Location 头重截取一部分
- *
- * @param prefix 跳过的前缀
- * @return 截取的函数
+ * 表示分页请求，包括起点、数量、排序三个属性。
  */
-export function getLocation(prefix: string = "") {
-	return (response: AxiosResponse) => response.headers.location.substring(prefix.length) as string;
+export interface Pageable {
+
+	/** 分页的起点，默认为0 */
+	start?: number;
+
+	/** 数量没有默认值，应当始终指定该项 */
+	count: number;
+
+	/**
+	 * 排序方式，格式 <字段>,<ASC | DESC>
+	 * 例如："create_time,DESC"
+	 * 如果没有指定则使用服务端的默认排序。
+	 */
+	sort?: string;
 }

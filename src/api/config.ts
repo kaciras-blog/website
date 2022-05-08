@@ -1,12 +1,12 @@
-import { AbstractResource } from "./core";
+import { APIService } from "./core";
 
-export default class ConfigResource extends AbstractResource {
+export default class ConfigEndpoint extends APIService {
 
-	get(namespace: string) {
-		return this.servers.content.get(`/config/${namespace}`).then(r => r.data);
+	getAll(namespace: string) {
+		return this.get(`/config/${namespace}`).data;
 	}
 
 	set(namespace: string, properties: object) {
-		return this.servers.content.patch(`/config/${namespace}`, properties);
+		return this.patch(`/config/${namespace}`, properties);
 	}
 }

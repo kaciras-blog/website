@@ -1,5 +1,6 @@
-import { AbstractResource, ListQueryView, Pageable } from "./core";
+import { APIService } from "./core";
 import { User } from "./user";
+import { ListQueryView, Pageable } from "./common";
 
 export interface TopicKey {
 
@@ -115,14 +116,14 @@ function assembly(mappingView: MappingListView) {
 	return { total, items } as ListQueryView<Discussion>;
 }
 
-export default class DiscussionResource extends AbstractResource {
+export default class DiscussionEndpoint extends APIService {
 
 	add(data: DiscussionInput) {
-		return this.servers.content.post<Discussion>("/discussions", data).then(r => r.data);
+		return this.post<Discussion>("/discussions", data).data;
 	}
 
 	getList(params: DiscussionQuery) {
-		return this.servers.content.get("/discussions", { params }).then(r => assembly(r.data));
+		return this.get<MappingListView>("/discussions", params).data.then(assembly);
 	}
 
 	/**
@@ -137,7 +138,7 @@ export default class DiscussionResource extends AbstractResource {
 	 */
 	getReplies(nestId: number, start: number, count: number) {
 		const params = { nestId, start, count };
-		return this.servers.content.get("/discussions", { params }).then(r => assembly(r.data));
+		return this.get<MappingListView>("/discussions", params).data.then(assembly);
 	}
 
 	/**
@@ -153,6 +154,6 @@ export default class DiscussionResource extends AbstractResource {
 		} else if (!Array.isArray(ids)) {
 			ids = Array.from(ids);
 		}
-		return this.servers.content.patch("/discussions", { ids, state });
+		return this.patch("/discussions", { ids, state });
 	}
 }

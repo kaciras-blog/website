@@ -1,4 +1,4 @@
-import { AbstractResource } from "./core";
+import { APIService } from "./core";
 
 export enum CategoryTheme {
 	Default = 0, Light = 1, Dark = 2,
@@ -12,7 +12,7 @@ export interface CategoryContent {
 	banner: {
 		image: string;
 		theme: CategoryTheme;
-	}
+	};
 	theme: CategoryTheme;
 }
 
@@ -21,29 +21,29 @@ export interface Category extends CategoryContent {
 	parent: number;
 }
 
-export default class CategoryResource extends AbstractResource {
+export default class CategoryEndpoint extends APIService {
 
 	getChildren(id: number) {
-		return this.servers.content.get(`/categories/${id}/children`).then(r => r.data);
+		return this.get(`/categories/${id}/children`).data;
 	}
 
-	remove(id: number, treeMode: boolean) {
-		return this.servers.content.delete(`/categories/${id}`, { params: { tree: treeMode } });
-	}
-
-	get(id: number, aggregate?: boolean) {
-		return this.servers.content.get(`/categories/${id}`, { params: { aggregate } }).then(r => r.data);
+	findById(id: number, aggregate?: boolean) {
+		return this.get(`/categories/${id}`, { aggregate }).data;
 	}
 
 	move(id: number, parent: number, treeMode: boolean) {
-		return this.servers.content.post("/categories/transfer", { id, parent, treeMode });
+		return this.post("/categories/transfer", { id, parent, treeMode });
 	}
 
 	create(data: Category, parent: number) {
-		return this.servers.content.post("/categories/", data, { params: { parent } });
+		return this.post("/categories/", data, { parent });
 	}
 
 	update(id: number, data: any) {
-		return this.servers.content.put(`/categories/${id}`, data);
+		return this.put(`/categories/${id}`, data);
+	}
+
+	remove(id: number, tree: boolean) {
+		return this.delete(`/categories/${id}`, { tree });
 	}
 }

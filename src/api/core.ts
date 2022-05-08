@@ -1,101 +1,186 @@
-import { AxiosInstance, AxiosRequestConfig } from "axios";
+/**
+ * HTTP 请求成功，但返回的响应不符合预期，比如状态码非 2xx 时抛出的异常。
+ */
+export class BlogAPIError extends Error {
 
-// TODO: 前端服务器的API好像不需要扩展
-export interface ServerList {
-	web: AxiosInstance;
-	content: AxiosInstance;
+	/** 原始的响应 */
+	readonly response: Response;
+
+	/** 状态码，等于 response.status */
+	readonly code: number;
+
+	constructor(response: Response, message: string) {
+		super(message);
+		this.response = response;
+		this.code = response.status;
+	}
 }
 
-export type RequestConfigProcessor = (config: AxiosRequestConfig) => void;
+async function check(response: Response) {
+	if (response.ok) {
+		return response;
+	}
+	const message = await response.text();
+	throw new BlogAPIError(response, message);
+}
+
+export class ResponseFacade<T> implements Promise<Response> {
+
+	public readonly raw: Promise<Response>;
+
+	constructor(raw: Promise<Response>) {
+		this.raw = raw;
+	}
+
+	get data(): Promise<T> {
+		return this.raw.then(check).then(r => r.json());
+	}
+
+	get location(): Promise<string> {
+		return this.raw
+			.then(check)
+			.then(r => r.headers.get("location")!);
+	}
+
+	get [Symbol.toStringTag]() {
+		return "ResponseFacade";
+	}
+
+	catch<E = never>(onRejected: any): Promise<Response | E> {
+		return this.raw.then(check).catch(onRejected);
+	}
+
+	finally(onFinally?: any): Promise<Response> {
+		return this.raw.then(check).finally(onFinally);
+	}
+
+	then<R = Response, E = never>(...args: any[]): Promise<R | E> {
+		return this.raw.then(check).then(...args);
+	}
+}
 
 /**
- * 使用ES6代理Axios，以便在请求前修改设置。
+ * 对 fetch 的封装，API 的设计模仿了 Axios。
  *
- * Axios创建实例不能再使用create来扩展，并且用了个wrap函数封装使得扩展难以进行，
- * 所以才用这种方式，等1.0版本出了再看看能不能用更优雅的方法。
+ * <h2>API 规范</h2>
+ * 1）除上传二进制对象外均使用 JSON 请求体，响应体均为 JSON 格式。
+ * 2）遵循 REST 规范。
  */
-class AxiosProxy implements ProxyHandler<AxiosInstance> {
+export class APIService {
 
-	private readonly processor: RequestConfigProcessor;
+	private readonly init: RequestInit;
 
-	constructor(processor: RequestConfigProcessor) {
-		this.processor = processor;
+	readonly baseURL: string;
+
+	constructor(baseURL: string, init: RequestInit) {
+		this.baseURL = baseURL;
+		this.init = init;
 	}
-
-	private prepare(config?: AxiosRequestConfig) {
-		config ??= {};
-		this.processor(config);
-		return config;
-	}
-
-	get(target: AxiosInstance, name: keyof AxiosInstance) {
-		switch (name) {
-			case "request":
-				return (config: AxiosRequestConfig) => target[name](this.prepare(config));
-			case "get":
-			case "delete":
-			case "head":
-				return (url: string, config: AxiosRequestConfig) =>
-					target[name](url, this.prepare(config));
-			case "post":
-			case "put":
-			case "patch":
-				return (url: string, data: any, config: AxiosRequestConfig) =>
-					target[name](url, data, this.prepare(config));
-			default:
-				return target[name];
-		}
-	}
-}
-
-export class ServerListFilter implements ServerList {
-
-	private readonly inner: ServerList;
-	private readonly processor: RequestConfigProcessor;
-
-	constructor(inner: ServerList, processor: RequestConfigProcessor) {
-		this.inner = inner;
-		this.processor = processor;
-	}
-
-	get web() {
-		return new Proxy(this.inner.web, new AxiosProxy(this.processor));
-	}
-
-	get content() {
-		return new Proxy(this.inner.content, new AxiosProxy(this.processor));
-	}
-}
-
-/**
- * 继承这个类可以省略写构造方法
- */
-// @formatter:off
-export class AbstractResource {
-	constructor(protected readonly servers: ServerList) {}
-}
-// @formatter:on
-
-/**
- * 表示分页请求，包括起点、数量、排序三个属性。
- */
-export interface Pageable {
-
-	/** 分页的起点，默认为0 */
-	start?: number;
-
-	/** 数量没有默认值，应当始终指定该项 */
-	count: number;
 
 	/**
-	 * 排序方式，格式 <字段>,<ASC | DESC>
-	 * 例如："create_time,DESC"
-	 * 如果没有指定则使用服务端的默认排序。
+	 * 一个最简单的请求封装，处理了请求头、请求体和异常。
+	 *
+	 * @param method 请求方法，默认为 GET
+	 * @param url API 路径
+	 * @param data 请求体
+	 * @param params URL 中的参数部分
 	 */
-	sort?: string;
+	protected fetch<R>(method: string, url: string, data?: any, params?: Record<string, any>) {
+		const init = { ...this.init };
+		const headers = init.headers as Record<string, string>;
+
+		if (data instanceof FormData) {
+			init.body = data;
+			headers["content-type"] = "multipart/form-data";
+		} else if (data) {
+			init.body = JSON.stringify(data);
+			headers["content-type"] = "application/json";
+		}
+
+		if (params) {
+			url = `${url}?${new URLSearchParams(params)}`;
+		}
+
+		return new ResponseFacade<R>(fetch(new URL(url, this.baseURL), init));
+	}
+
+	// 下面都是快捷方法，用函数名作为请求方法从而省略一个参数。
+
+	protected head(url: string, params?: Record<string, any>) {
+		return this.fetch<void>("HEAD", url, null, params);
+	}
+
+	protected get<R>(url: string, params?: Record<string, any>) {
+		return this.fetch<R>("GET", url, null, params);
+	}
+
+	protected delete<R>(url: string, params?: Record<string, any>) {
+		return this.fetch<R>("DELETE", url, null, params);
+	}
+
+	protected post<R>(url: string, data?: any, params?: Record<string, any>) {
+		return this.fetch<R>("POST", url, data, params);
+	}
+
+	protected put<R>(url: string, data?: any, params?: Record<string, any>) {
+		return this.fetch<R>("PUT", url, data, params);
+	}
+
+	protected patch<R>(url: string, data?: any, params?: Record<string, any>) {
+		return this.fetch<R>("PATCH", url, data, params);
+	}
 }
 
-export interface ListQueryView<T> {
-	items: T[];
-	total: number;
+const defaults: RequestInit = {
+	credentials: "include",
+	headers: {
+		accept: "application/json",
+	},
+};
+
+type Factories = Record<string | symbol, (init: RequestInit) => APIService>;
+
+class BlogAPISet implements ProxyHandler<Factories> {
+
+	private readonly base: RequestInit;
+
+	constructor(base: RequestInit) {
+		this.base = base;
+	}
+
+	configure(target: Factories, init: RequestInit) {
+		init = { ...this.base, ...init };
+		return new Proxy(target, new BlogAPISet(init));
+	}
+
+	get(target: Factories, property: string | symbol) {
+		if (property === "configure") {
+			return (init: RequestInit) => this.configure(target, init);
+		}
+		return target[property](this.base);
+	}
+}
+
+type EndpointMap = Record<string | symbol, typeof APIService>;
+type APIDefs = Record<string, EndpointMap>;
+
+type S<T extends EndpointMap> = { [K in keyof T]: [K, T[K]] }[keyof T];
+
+type FlatToArray<T extends APIDefs> = { [K in keyof T]: S<T[K]> }[keyof T];
+
+type APIMap<T extends APIDefs> = {
+	[P in FlatToArray<T> as P[0]]: InstanceType<P[1]>;
+} & {
+	configure(init: RequestInit): APIMap<T>;
+};
+
+export function defineAPIs<T extends APIDefs>(defs: T) {
+	const factories: any = {};
+	for (const url of Object.keys(defs)) {
+		for (const name of Object.keys(defs[url])) {
+			const clazz = defs[url][name];
+			factories[name] = (init: RequestInit) => new clazz(url, init);
+		}
+	}
+	return new Proxy(factories, new BlogAPISet(defaults)) as APIMap<T>;
 }

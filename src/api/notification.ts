@@ -1,4 +1,5 @@
-import { AbstractResource } from "./core";
+import { APIService } from "./core";
+
 
 export enum FriendAccidentType {
 	Moved,
@@ -27,13 +28,13 @@ export interface Notice<T> {
 	time: number;
 }
 
-export default class extends AbstractResource {
+export default class NotificationEndpoint extends APIService {
 
 	getAll() {
-		return this.servers.content.get<Array<Notice<unknown>>>("/notifications").then(r => r.data);
+		return this.get<Array<Notice<unknown>>>("/notifications").data;
 	}
 
 	clear() {
-		return this.servers.content.delete<void>("/notifications");
+		return this.delete("/notifications");
 	}
 }

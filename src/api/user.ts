@@ -1,5 +1,4 @@
-import { AbstractResource } from "./core";
-import { standardRange } from "./common";
+import { APIService } from "./core";
 
 export enum AuthType {
 	None,
@@ -31,27 +30,37 @@ export interface User extends UserProfile {
 	auth: AuthType;
 }
 
-export default class UserResource extends AbstractResource {
+export default class UserEndpoint extends APIService {
+
 
 	/** 用户登录，登录成功后会添加相应的Cookie */
 	login(form: AccountLoginRequest) {
-		return this.servers.content.post("/accounts/login", form);
+		return this.post("/accounts/login", form);
 	}
 
 	/** 用户注册后自动登录 */
 	signup(data: AccountSignUpRequest) {
-		return this.servers.content.post("/accounts", data);
+		return this.post("/accounts", data);
 	}
 
 	logout() {
-		return this.servers.content.delete("/user");
+		return this.delete("/user");
 	}
 
 	getCurrent() {
-		return this.servers.content.get<User>("/user", { validateStatus: standardRange });
+		return this.get<User>("/user").raw;
 	}
 
 	updateProfile(profile: UserProfile) {
-		return this.servers.content.patch("/user", profile);
+		return this.patch("/user", profile);
+	}
+
+	/**
+	 * 生成一个随机的验证码 URL。
+	 *
+	 * @return {string} 验证码URL
+	 */
+	captchaAddress() {
+		return this.baseURL + "/captcha?r=" + Math.random();
 	}
 }

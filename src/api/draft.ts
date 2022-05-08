@@ -1,5 +1,5 @@
-import { AbstractResource, Pageable } from "./core";
-import { getLocation } from "./common";
+import { APIService } from "./core";
+import { Pageable } from "./common";
 
 export interface Draft {
 	id: number;
@@ -35,45 +35,43 @@ const initial: DraftHistoryInput = {
 	keywords: "",
 };
 
-export default class DraftResource extends AbstractResource {
+export default class DraftEndpoint extends APIService {
 
 	createNew() {
-		return this.servers.content.post<Draft>("/drafts", initial).then(getLocation("/drafts/"));
+		return this.post<Draft>("/drafts", initial).data;
 	}
 
 	fromArticle(article: number) {
-		return this.servers.content.post<Draft>("/drafts", null, {
-			params: { article },
-		}).then(getLocation("/drafts/"));
+		return this.post<Draft>("/drafts", null, { article }).data;
 	}
 
 	getList(params: DraftListQuery) {
-		return this.servers.content.get<Draft[]>("/drafts", { params }).then(r => r.data);
+		return this.get<Draft[]>("/drafts", params).data;
 	}
 
-	get(id: number) {
-		return this.servers.content.get<Draft>(`/drafts/${id}`).then(r => r.data);
+	findById(id: number) {
+		return this.get<Draft>(`/drafts/${id}`).data;
 	}
 
 	/** 删除一个草稿 */
 	remove(id: number) {
-		return this.servers.content.delete("/drafts/" + id);
+		return this.delete("/drafts/" + id);
 	}
 
 	/** 清空所有草稿 */
 	clear() {
-		return this.servers.content.delete("/drafts");
+		return this.delete("/drafts");
 	}
 
 	getHistory(id: number, saveCount: number) {
-		return this.servers.content.get<DraftHistory>(`/drafts/${id}/histories/${saveCount}`).then(r => r.data);
+		return this.get<DraftHistory>(`/drafts/${id}/histories/${saveCount}`).data;
 	}
 
 	saveNewHistory(id: number, data: DraftHistoryInput) {
-		return this.servers.content.post(`/drafts/${id}/histories`, data);
+		return this.post(`/drafts/${id}/histories`, data);
 	}
 
 	save(id: number, saveCount: number, data: DraftHistoryInput) {
-		return this.servers.content.put(`/drafts/${id}/histories/${saveCount}`, data);
+		return this.put(`/drafts/${id}/histories/${saveCount}`, data);
 	}
 }

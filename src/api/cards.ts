@@ -1,4 +1,4 @@
-import { AbstractResource } from "./core";
+import { APIService } from "./core";
 
 export interface Card {
 	name: string;
@@ -7,13 +7,13 @@ export interface Card {
 	description: string;
 }
 
-export default class CardResource extends AbstractResource {
+export default class CardEndpoint extends APIService {
 
 	getCards() {
-		return this.servers.content.get<Card[]>("/cards").then(r => r.data);
+		return this.get<Card[]>("/cards").data;
 	}
 
 	setCards(cards: Card[]) {
-		return this.servers.content.put("/cards", cards);
+		return this.put("/cards", cards);
 	}
 }

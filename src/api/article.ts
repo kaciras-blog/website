@@ -1,4 +1,5 @@
-import { AbstractResource, Pageable } from "./core";
+import { APIService } from "./core";
+import { Pageable } from "./common";
 
 /*
  * 由于Vue的HTML模板里无法很方便地引用到外部导入的成员，并且后端不是JS写的无法保证枚举的一致，
@@ -45,34 +46,33 @@ export interface PublishRequest extends ArticleMeta {
 	destroy?: boolean;
 }
 
-export default class ArticleResource extends AbstractResource {
+export default class ArticleEndpoint extends APIService {
 
-	get(id: number) {
-		return this.servers.content.get("/articles/" + id).then(r => r.data);
+	getList(params: ArticleListQuery) {
+		return this.get("/articles", { start: 0, ...params }).data;
+	}
+
+	findById(id: number) {
+		return this.get<Article>("/articles/" + id).data;
 	}
 
 	publish(data: PublishRequest) {
-		return this.servers.content.post<Article>("/articles", data).then(r => r.data);
+		return this.post<Article>("/articles", data).data;
 	}
 
 	update(id: number, data: any) {
-		return this.servers.content.put<Article>("/articles/" + id, data).then(r => r.data);
-	}
-
-	getList(params: ArticleListQuery) {
-		params = Object.assign({ start: 0, count: 20, }, params);
-		return this.servers.content.get("/articles", { params }).then(r => r.data);
+		return this.put<Article>("/articles/" + id, data).data;
 	}
 
 	changeDeletion(id: number, deletion: boolean) {
-		return this.servers.content.patch(`/articles/${id}`, { deletion });
+		return this.patch(`/articles/${id}`, { deletion });
 	}
 
 	changeCategory(id: number, category: number) {
-		return this.servers.content.patch(`/articles/${id}`, { category });
+		return this.patch(`/articles/${id}`, { category });
 	}
 
 	getHots() {
-		return this.servers.content.get("/recommendation/articles").then(r => r.data);
+		return this.get("/recommendation/articles").data;
 	}
 }
