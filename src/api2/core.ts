@@ -1,5 +1,6 @@
-import CardsEndpoint from "@/api2/cards";
-
+/**
+ *
+ */
 export class BlogAPIError extends Error {
 
 	readonly response: Response;
@@ -113,8 +114,7 @@ const defaults: RequestInit = {
 };
 
 type EndpointMap = Record<string | symbol, typeof APIService>;
-type APIDefs = Record<string | symbol, EndpointMap>;
-
+type APIDefs = Record<string, EndpointMap>;
 
 type S<T extends EndpointMap> = { [K in keyof T]: [K, T[K]] }[keyof T];
 
@@ -126,51 +126,34 @@ type APIMap<T extends APIDefs> = {
 	configure(init: RequestInit): APIMap<T>;
 };
 
-type ServerURLs<T extends APIDefs> = {
-	[k in keyof T]: string;
-}
-
-const s = {
-	content: {
-		cards: CardsEndpoint,
-		ssg: CardsEndpoint,
-	},
-	web: {
-		media: CardsEndpoint,
-	},
-};
-
-
 class BlogAPISet implements ProxyHandler<any> {
 
-	private readonly endpoints: ServerURLs<any>;
 	private readonly base: RequestInit;
 
-	constructor(endpoints: ServerURLs<any>, base = defaults) {
-		this.endpoints = endpoints;
+	constructor(base: RequestInit) {
 		this.base = base;
 	}
 
 	configure(target: any, init: RequestInit) {
-		const h = new BlogAPISet(this.endpoints, { ...this.base, ...init });
-		return new Proxy(target, h) ;
+		init = { ...this.base, ...init };
+		return new Proxy(target, new BlogAPISet(init));
 	}
 
 	get(target: any, property: any) {
 		if (property === "configure") {
 			return (init: RequestInit) => this.configure(target, init);
 		}
-		return new target[property](this.endpoints[property]);
+		return new target[property](this.base);
 	}
 }
 
-export function defineAPIs<T extends APIDefs>(defs: T, urls: ServerURLs<T>) {
-	const map = {};
-	for (const list of Object.values(defs)) {
-		Object.assign(map, list);
+export function defineAPIs<T extends APIDefs>(defs: T) {
+	const factories: any = {};
+	for (const url of Object.keys(defs)) {
+		for (const name of Object.keys(defs[url])) {
+			const clazz = defs[url][name];
+			factories[name] = (init: RequestInit) => new clazz(url, init);
+		}
 	}
-	return new Proxy(map, new BlogAPISet(urls)) as APIMap<T>;
+	return new Proxy(factories, new BlogAPISet(defaults)) as APIMap<T>;
 }
-
-const e = defineAPIs(s, {});
-
