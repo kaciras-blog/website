@@ -24,7 +24,7 @@ export interface Category extends CategoryContent {
 export default class CategoryEndpoint extends APIService {
 
 	getChildren(id: number) {
-		return this.get(`/categories/${id}/children`).data;
+		return this.get<Category[]>(`/categories/${id}/children`).data;
 	}
 
 	findById(id: number, aggregate?: boolean) {

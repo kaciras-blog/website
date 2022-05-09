@@ -35,7 +35,7 @@ async function addImage() {
 
 	// 加上宽高便于确定占位图的尺寸，从 https://chanshiyu.com/#/post/41 学到的
 	const { width, height } = await getImageResolution(file);
-	const res = await api.misc.uploadImage(file) + `?vw=${width}&vh=${height}`;
+	const res = await api.media.uploadImage(file) + `?vw=${width}&vh=${height}`;
 
 	const [, selEnd] = context.selection;
 	overwrite(context, selEnd, selEnd, `![${basename(file.name)}](${res})`);
@@ -67,7 +67,7 @@ async function addVideo() {
 
 async function addAudio() {
 	const file = await openFile("audio/*");
-	const res = await api.misc.uploadAudio(file);
+	const res = await api.media.uploadAudio(file);
 	const [selEnd] = context.selection;
 	overwrite(context, selEnd, selEnd, `@audio[](${res})`);
 }

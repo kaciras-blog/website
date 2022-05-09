@@ -100,7 +100,7 @@ function asyncData(session: PrefetchContext) {
 		return; // 重定向来的，文章已经加载过了，这里假定 urlTitle 是正确的。
 	}
 
-	data.article = api.article.get(idInt).then(v => {
+	data.article = api.article.findById(idInt).then(v => {
 		// 检查 URL 中的标题，不正确则重定向。
 		if (urlTitle !== v.urlTitle) {
 			session.redirect(301, articleLink(v));

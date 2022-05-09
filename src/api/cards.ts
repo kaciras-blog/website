@@ -9,7 +9,7 @@ export interface Card {
 
 export default class CardEndpoint extends APIService {
 
-	getCards() {
+	getAll() {
 		return this.get<Card[]>("/cards").data;
 	}
 

@@ -167,7 +167,7 @@ useEventListener("beforeunload", event => {
 });
 
 onBeforeMount(async () => {
-	const got = await api.draft.get(parseInt(props.draftId));
+	const got = await api.draft.findById(parseInt(props.draftId));
 	const { lastSaveCount, articleId } = got;
 	Object.assign(draft, got);
 

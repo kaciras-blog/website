@@ -95,7 +95,7 @@ function dragStart(event: TouchEvent & MouseEvent) {
 
 // TODO: 是不是有问题这里
 function setPicture() {
-	api.misc.uploadImageFile().then(name => props.card.picture = name);
+	api.media.uploadImageFile().then(name => props.card.picture = name);
 }
 </script>
 

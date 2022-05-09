@@ -121,14 +121,14 @@ function inputLabel(event: Event) {
 
 async function uploadVideo() {
 	const file = await openFile("video/*");
-	data.src = await api.misc.uploadVideo(file);
+	data.src = await api.media.uploadVideo(file);
 	if (data.autoLabel) {
 		data.label = basename(file.name);
 	}
 }
 
 async function uploadPoster() {
-	data.poster = await api.misc.uploadImageFile();
+	data.poster = await api.media.uploadImageFile();
 }
 </script>
 

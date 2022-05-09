@@ -54,7 +54,7 @@ export default {
 		let start = parseInt(session.route.params.index as string);
 		start *= DEFAULT_PAGE_SIZE;
 
-		session.data.category = category.get(0);
+		session.data.category = category.findById(0);
 		session.data.hots = article.getHots();
 		session.data.articleList = article
 			.getList({ start, count: DEFAULT_PAGE_SIZE });

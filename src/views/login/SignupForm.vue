@@ -121,12 +121,12 @@ function switchPanel() {
 }
 
 function updateCaptcha() {
-	captcha.value = api.misc.captchaAddress();
+	captcha.value = api.user.captchaAddress();
 	form.captcha = "";
 	captchaInput.value!.focus();
 }
 
-onMounted(() => captcha.value = api.misc.captchaAddress());
+onMounted(() => captcha.value = api.user.captchaAddress());
 </script>
 
 <style module lang="less">

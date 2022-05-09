@@ -113,14 +113,14 @@ function setCover() {
 	if (!props.editable) {
 		return;
 	}
-	api.misc.uploadImageFile().then(name => props.item.cover = name);
+	api.media.uploadImageFile().then(name => props.item.cover = name);
 }
 
 function setBackground() {
 	if (!props.editable) {
 		return;
 	}
-	api.misc.uploadImageFile().then(name => props.item.background = name);
+	api.media.uploadImageFile().then(name => props.item.background = name);
 }
 
 async function move() {

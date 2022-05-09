@@ -61,7 +61,7 @@ async function changeAvatar() {
 		aspectRatio: 1,
 	});
 	const cropped = await session.confirmPromise;
-	user.avatar = await api.misc.uploadImage(cropped);
+	user.avatar = await api.media.uploadImage(cropped);
 }
 
 async function save() {

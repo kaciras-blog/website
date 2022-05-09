@@ -99,7 +99,7 @@ const props = defineProps(["value"]);
 
 function edit() {
 	return api.draft.fromArticle(props.value.id)
-		.then(id => window.location.href = "/edit/" + id)
+		.then(d => window.location.href = "/edit/" + d.id)
 		.catch(err => console.log(err));
 }
 

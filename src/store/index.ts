@@ -24,7 +24,7 @@ export const useCurrentUser = defineStore("user", {
 		async refresh(apiUse = api) {
 			const res = await apiUse.user.getCurrent();
 			if (res.status < 300) {
-				this.$patch(res.data);
+				this.$patch(await res.json());
 			}
 		},
 		logout() {
@@ -43,7 +43,7 @@ export const useDiscussOptions = defineStore("discussOptions", {
 	state: () => ({ options: null }),
 	actions: {
 		async load() {
-			this.options ??= await api.config.get("discussion");
+			this.options ??= await api.config.load("discussion");
 		},
 	},
 });

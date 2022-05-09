@@ -10,7 +10,7 @@ export interface Friend {
 
 export default class FriendEndpoint extends APIService {
 
-	getFriends() {
+	getAll() {
 		return this.get<Friend[]>("/friends").data;
 	}
 

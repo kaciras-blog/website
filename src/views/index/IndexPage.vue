@@ -78,8 +78,8 @@ const BANNER_MAP_MOBILE: Record<string, string> = {
 export default {
 	name: "IndexPage",
 	asyncData({ data, api }: PrefetchContext) {
-		data.cards = api.recommend.getCards().then(attachRandomId);
-		data.friends = api.friend.getFriends().then(attachRandomId);
+		data.cards = api.cards.getAll().then(attachRandomId);
+		data.friends = api.friend.getAll().then(attachRandomId);
 	},
 };
 </script>

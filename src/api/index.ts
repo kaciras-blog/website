@@ -39,7 +39,7 @@ export default defineAPIs({
 		article: ArticleEndpoint,
 		cards: CardsEndpoint,
 		draft: DraftEndpoint,
-		discussion: DiscussionEndpoint,
+		discuss: DiscussionEndpoint,
 		user: UserEndpoint,
 		friend: FriendEndpoint,
 		config: ConfigEndpoint,

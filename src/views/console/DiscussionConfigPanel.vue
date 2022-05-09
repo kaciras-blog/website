@@ -44,7 +44,7 @@ watch(config, async changed => {
 	refreshing.value = false;
 });
 
-api.config.get("discussion").then(v => Object.assign(config, v));
+api.config.load("discussion").then(v => Object.assign(config, v));
 </script>
 
 <style module lang="less">

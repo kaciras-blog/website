@@ -80,7 +80,7 @@ async function selectImage(circle: boolean, aspectRatio: number) {
 	const cropping = await dialog.show(ImageCropper, {
 		image, circle, aspectRatio,
 	});
-	return api.misc.uploadImage(image, cropping.data);
+	return api.media.uploadImage(image, cropping.data);
 }
 
 // 烦人的空字符串与 null 的问题

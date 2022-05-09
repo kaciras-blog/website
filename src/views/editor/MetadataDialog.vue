@@ -61,7 +61,7 @@ function ok() {
 }
 
 async function changeCover() {
-	local.cover = await api.misc.uploadImageFile();
+	local.cover = await api.media.uploadImageFile();
 }
 </script>
 

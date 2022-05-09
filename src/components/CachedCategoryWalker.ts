@@ -33,7 +33,7 @@ export default class CachedCategoryWalker {
 		let category = this.cache.get(id);
 
 		if (!category) {
-			category = await api.category.get(id, true) as CategoryWithChildren;
+			category = await api.category.findById(id, true) as CategoryWithChildren;
 			this.cache.set(0, category);
 		}
 
