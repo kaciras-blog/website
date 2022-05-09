@@ -1,6 +1,6 @@
 <script>
 import { h } from "vue";
-import { BASE_URL } from "@/api";
+import { contentServiceURL } from "@/api";
 
 export default {
 	name: "OauthIcon",
@@ -31,7 +31,7 @@ export default {
 		});
 
 		// <a :href="href"><img ...></a>
-		const href = `${BASE_URL}/oauth2/connect/${endpoint}?ret=${returnUri}`;
+		const href = `${contentServiceURL}/oauth2/connect/${endpoint}?ret=${returnUri}`;
 		return h("a", { href }, [imgElement]);
 	},
 };

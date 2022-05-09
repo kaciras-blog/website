@@ -11,18 +11,19 @@ import CategoryEndpoint from "./category";
 import DiscussionEndpoint from "./discussion";
 
 const apiOrigin = import.meta.env.API_PUBLIC as any;
-export const contentService = import.meta.env.SSR
+export const contentServiceURL = import.meta.env.SSR
 	? import.meta.env.API_INTERNAL
 	: typeof apiOrigin === "string"
 		? apiOrigin
 		: apiOrigin[location.protocol.substring(0, location.protocol.length - 1)];
 
+const webServiceURL = import.meta.env.SSR ? "__NEVER_USED__" : location.href;
 
 export default defineAPIs({
-	[location.href]: {
+	[webServiceURL]: {
 		media: MediaEndpoint,
 	},
-	[contentService]: {
+	[contentServiceURL]: {
 		category: CategoryEndpoint,
 		article: ArticleEndpoint,
 		cards: CardsEndpoint,
