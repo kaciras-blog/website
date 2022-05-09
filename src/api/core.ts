@@ -86,12 +86,12 @@ export class APIService {
 	 * @param params URL 中的参数部分
 	 */
 	protected fetch<R>(method: string, url: string, data?: any, params?: Record<string, any>) {
-		const init = { ...this.init };
+		const init = { ...this.init, method };
 		const headers = init.headers as Record<string, string>;
 
+		// body 为 FormData 时会自动设置 Content-Type 为 multipart/form-data。
 		if (data instanceof FormData) {
 			init.body = data;
-			headers["content-type"] = "multipart/form-data";
 		} else if (data) {
 			init.body = JSON.stringify(data);
 			headers["content-type"] = "application/json";
