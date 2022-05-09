@@ -91,7 +91,9 @@ import { articleLink, localDateMinute } from "@/common";
 import { errorMessage } from "@/utils";
 import SelectCategoryDialog from "@/components/SelectCategoryDialog.vue";
 import CardsConsole from "./CardsConsole.vue";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const dialog = useDialog();
 const sendMessage = inject<(target: any, data: unknown) => void>("sendMessage")!;
 
@@ -99,7 +101,7 @@ const props = defineProps(["value"]);
 
 function edit() {
 	return api.draft.fromArticle(props.value.id)
-		.then(d => window.location.href = "/edit/" + d.id)
+		.then(d => router.push("/edit/" + d.id))
 		.catch(err => console.log(err));
 }
 

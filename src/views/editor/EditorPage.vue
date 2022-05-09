@@ -1,7 +1,7 @@
 <template>
-	<MarkdownEditor :class="$style.editor" v-model="current.content">
-		<PageMeta title="编辑器" body-class=""/>
+	<PageMeta title="编辑器" body-class=""/>
 
+	<MarkdownEditor :class="$style.editor" v-model="current.content">
 		<template #toolbar-left="{ ctx }">
 			<TextTools :ctx="ctx"/>
 			<MediaTools :ctx="ctx"/>
