@@ -149,7 +149,14 @@ class BlogAPISet implements ProxyHandler<Factories> {
 	}
 
 	configure(target: Factories, init: RequestInit) {
-		init = { ...this.base, ...init };
+		init = {
+			...this.base,
+			...init,
+			headers: {
+				...this.base.headers,
+				...init.headers,
+			},
+		};
 		return new Proxy(target, new BlogAPISet(init));
 	}
 
