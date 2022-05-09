@@ -1,6 +1,6 @@
-import { APIService } from "./core";
+import { EndpointBase } from "./core";
 
-export default class ConfigEndpoint extends APIService {
+export default class ConfigEndpoint extends EndpointBase {
 
 	load(namespace: string) {
 		return this.get<any>(`/config/${namespace}`).data;

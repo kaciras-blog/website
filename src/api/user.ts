@@ -1,4 +1,4 @@
-import { APIService } from "./core";
+import { EndpointBase } from "./core";
 
 export enum AuthType {
 	None,
@@ -30,7 +30,7 @@ export interface User extends UserProfile {
 	auth: AuthType;
 }
 
-export default class UserEndpoint extends APIService {
+export default class UserEndpoint extends EndpointBase {
 
 
 	/** 用户登录，登录成功后会添加相应的Cookie */

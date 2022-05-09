@@ -1,4 +1,4 @@
-import { APIService } from "./core";
+import { EndpointBase } from "./core";
 
 export enum CategoryTheme {
 	Default = 0, Light = 1, Dark = 2,
@@ -21,7 +21,7 @@ export interface Category extends CategoryContent {
 	parent: number;
 }
 
-export default class CategoryEndpoint extends APIService {
+export default class CategoryEndpoint extends EndpointBase {
 
 	getChildren(id: number) {
 		return this.get<Category[]>(`/categories/${id}/children`).data;

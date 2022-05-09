@@ -1,4 +1,4 @@
-import { APIService } from "./core";
+import { EndpointBase } from "./core";
 
 
 export enum FriendAccidentType {
@@ -28,7 +28,7 @@ export interface Notice<T> {
 	time: number;
 }
 
-export default class NotificationEndpoint extends APIService {
+export default class NotificationEndpoint extends EndpointBase {
 
 	getAll() {
 		return this.get<Array<Notice<unknown>>>("/notifications").data;

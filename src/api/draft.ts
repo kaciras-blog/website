@@ -1,4 +1,4 @@
-import { APIService } from "./core";
+import { EndpointBase } from "./core";
 import { Pageable } from "./common";
 
 export interface Draft {
@@ -35,7 +35,7 @@ const initial: DraftHistoryInput = {
 	keywords: "",
 };
 
-export default class DraftEndpoint extends APIService {
+export default class DraftEndpoint extends EndpointBase {
 
 	createNew() {
 		return this.post<Draft>("/drafts", initial).data;

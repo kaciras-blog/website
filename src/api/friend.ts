@@ -1,4 +1,4 @@
-import { APIService } from "./core";
+import { EndpointBase } from "./core";
 
 export interface Friend {
 	url: string;
@@ -8,7 +8,7 @@ export interface Friend {
 	friendPage?: string;
 }
 
-export default class FriendEndpoint extends APIService {
+export default class FriendEndpoint extends EndpointBase {
 
 	getAll() {
 		return this.get<Friend[]>("/friends").data;

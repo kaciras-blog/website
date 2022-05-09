@@ -1,4 +1,4 @@
-import { APIService } from "./core";
+import { EndpointBase } from "./core";
 import { User } from "./user";
 import { ListQueryView, Pageable } from "./common";
 
@@ -116,7 +116,7 @@ function assembly(mappingView: MappingListView) {
 	return { total, items } as ListQueryView<Discussion>;
 }
 
-export default class DiscussionEndpoint extends APIService {
+export default class DiscussionEndpoint extends EndpointBase {
 
 	add(data: DiscussionInput) {
 		return this.post<Discussion>("/discussions", data).data;

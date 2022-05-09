@@ -1,7 +1,7 @@
 import { openFile } from "@kaciras-blog/uikit";
-import { APIService } from "./core";
+import { EndpointBase } from "./core";
 
-export default class MediaEndpoint extends APIService {
+export default class MediaEndpoint extends EndpointBase {
 
 	private upload(path: string, file: Blob, params: any) {
 		const data = new FormData();

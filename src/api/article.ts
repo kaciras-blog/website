@@ -1,4 +1,4 @@
-import { APIService } from "./core";
+import { EndpointBase } from "./core";
 import { Pageable } from "./common";
 
 /*
@@ -46,7 +46,7 @@ export interface PublishRequest extends ArticleMeta {
 	destroy?: boolean;
 }
 
-export default class ArticleEndpoint extends APIService {
+export default class ArticleEndpoint extends EndpointBase {
 
 	getList(params: ArticleListQuery) {
 		return this.get("/articles", { start: 0, ...params }).data;

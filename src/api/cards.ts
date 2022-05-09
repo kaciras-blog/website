@@ -1,4 +1,4 @@
-import { APIService } from "./core";
+import { EndpointBase } from "./core";
 
 export interface Card {
 	name: string;
@@ -7,7 +7,7 @@ export interface Card {
 	description: string;
 }
 
-export default class CardEndpoint extends APIService {
+export default class CardEndpoint extends EndpointBase {
 
 	getAll() {
 		return this.get<Card[]>("/cards").data;
