@@ -24,6 +24,12 @@ async function check(response: Response) {
 	throw new BlogAPIError(response, message);
 }
 
+/**
+ * Promise 的回调函数类型，因为太长所以拿出来，搞不懂 TS 为什么不内置。
+ */
+type OnFulfilled<T, R> = ((value: T) => R | PromiseLike<R>)  | null;
+type OnRejected<R> = ((reason: any) => R | PromiseLike<R>)  | null;
+
 export class ResponseFacade<T> implements Promise<Response> {
 
 	public readonly raw: Promise<Response>;
@@ -46,7 +52,7 @@ export class ResponseFacade<T> implements Promise<Response> {
 		return "ResponseFacade";
 	}
 
-	catch<E = never>(onRejected: any): Promise<Response | E> {
+	catch<E = never>(onRejected: OnRejected<E>) {
 		return this.raw.then(check).catch(onRejected);
 	}
 
@@ -54,8 +60,12 @@ export class ResponseFacade<T> implements Promise<Response> {
 		return this.raw.then(check).finally(onFinally);
 	}
 
-	then<R = Response, E = never>(...args: any[]): Promise<R | E> {
-		return this.raw.then(check).then(...args);
+	// 不能偷懒直接用 ...args 作为参数，否则调用时会报 TS1230 错误。
+	then<T = Response, R = never>(
+		onFulfilled?: OnFulfilled<Response,T>,
+		onRejected?: OnRejected<R>,
+	) {
+		return this.raw.then(check).then(onFulfilled, onRejected);
 	}
 }
 
