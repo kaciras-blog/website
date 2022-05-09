@@ -98,6 +98,12 @@ export class APIService {
 		}
 
 		if (params) {
+			// URLSearchParams 会将 undefined 值序列化为字符串，这里处理下。
+			// https://github.com/whatwg/url/issues/427
+			for (const k of Object.keys(params)) {
+				if (params[k] === undefined)
+					delete params[k];
+			}
 			url = `${url}?${new URLSearchParams(params)}`;
 		}
 
