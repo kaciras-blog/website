@@ -10,6 +10,17 @@ import NotificationEndpoint from "./notification";
 import CategoryEndpoint from "./category";
 import DiscussionEndpoint from "./discussion";
 
+export * from "./article";
+export * from "./cards";
+export * from "./friend";
+export * from "./draft";
+export * from "./user";
+export * from "./media";
+export * from "./config";
+export * from "./notification";
+export * from "./category";
+export * from "./discussion";
+
 const apiOrigin = import.meta.env.API_PUBLIC as any;
 export const contentServiceURL = import.meta.env.SSR
 	? import.meta.env.API_INTERNAL

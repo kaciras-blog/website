@@ -29,7 +29,7 @@ export async function prefetch(
 	if (components.length === 0) {
 		return;
 	}
-	const scopedAPI = api.withCancelToken(controller.signal);
+	const scopedAPI = api.configure({ signal: controller.signal });
 	const ctx = new PrefetchContext(store, to, scopedAPI, controller);
 
 	const prefetching = collectTasks(components, ctx);

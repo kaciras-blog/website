@@ -1,9 +1,9 @@
+import type API from "./api";
 import { ComponentOptions } from "vue";
 import { Pinia } from "pinia";
 import { RouteComponent, RouteLocationNormalizedLoaded } from "vue-router";
 import { Awaitable } from "@vueuse/core";
 import { createNanoEvents, Emitter } from "nanoevents";
-import { Api } from "./api";
 
 /*
  * 本项目使用预载模式，即先获取数据再渲染路由页面，官方也有介绍：
@@ -39,14 +39,14 @@ class RedirectException extends Error {
 	readonly location: string;
 
 	constructor(code: number, location: string) {
-		super();
+		super("Should redirect to" + location);
 		this.code = code;
 		this.location = location;
 	}
 }
 
 /**
- * 预载函数的参数，包含了预载所需的全部信息，注意跟 Vue 自带的 SSRContext 区分。
+ * 预载函数的参数，包含了预载所需的全部信息，注意跟 Vue 的 SSRContext 区分。
  *
  * <h2>为什么自己实现预载机制</h2>
  * 1）serverPrefetch 钩子不在客户端执行，自己调用吧感觉耦合高了不太好。
@@ -56,7 +56,7 @@ export class PrefetchContext {
 
 	readonly store: Pinia;
 	readonly route: RouteLocationNormalizedLoaded;
-	readonly api: Api;
+	readonly api: typeof API;
 	readonly signal: AbortSignal;
 
 	readonly data: Record<string, Promise<unknown>> = {};
@@ -64,7 +64,7 @@ export class PrefetchContext {
 	constructor(
 		store: Pinia,
 		route: RouteLocationNormalizedLoaded,
-		api: Api,
+		api: typeof API,
 		controller: AbortController,
 	) {
 		this.store = store;

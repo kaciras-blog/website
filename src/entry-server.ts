@@ -4,7 +4,6 @@ import { Router } from "vue-router";
 import { renderToString, SSRContext } from "vue/server-renderer";
 import { Pinia } from "pinia";
 import { breakpoints, useMQStore } from "@kaciras-blog/uikit";
-import { configureForProxy } from "@kaciras-blog/server/lib/axios-helper.js";
 import { useCurrentUser, usePrefetch } from "@/store";
 import { compositor } from "@/utils";
 import api from "./api";
@@ -34,9 +33,13 @@ async function prefetch(store: Pinia, router: Router, request: any) {
 	}
 
 	const controller = new AbortController();
-	const ssrApi = api
-		.withConfig(c => configureForProxy(request, c))
-		.withCancelToken(controller.signal);
+	const ssrApi = api.configure({
+		signal: controller.signal,
+		headers: {
+			"X-Forwarded-For": request.ip,
+			Cookie: request.headers.cookie,
+		},
+	});
 	const ctx = new PrefetchContext(store, route, ssrApi, controller);
 
 	/*
