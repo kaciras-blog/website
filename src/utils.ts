@@ -1,5 +1,6 @@
 import { RouteLocationNormalized } from "vue-router";
 import { uniqueKey } from "@kaciras-blog/uikit";
+import { BlogAPIError } from "@/api/core";
 
 export const NOOP = () => {};
 
@@ -22,17 +23,13 @@ export function escapeHtml(text: string) {
 }
 
 /**
- * 从Axios的错误原因对象中提取错误信息。
+ * 从 BlogAPIError 对象中提取错误信息。
  *
  * @param object 异常
  * @return 错误信息
  */
-export function errorMessage(object: any) {
-	const res = object.response;
-	if (res?.data?.message) {
-		return res.data.message;
-	}
-	return object.message || "未知的错误";
+export function errorMessage(object: BlogAPIError) {
+	return object.message ?? "未知的错误";
 }
 
 /**
