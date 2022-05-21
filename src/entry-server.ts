@@ -13,6 +13,17 @@ import { collectTasks, PrefetchContext } from "./prefetch";
 // 后台页面就不预渲染了。
 const noSSR = new RegExp("^/(?:edit|console)/?(?:\\?|$)?");
 
+// TODO：从 @kaciras-blog/server 导入
+function getProxyHeaders(ctx: any) {
+	const headers: HeadersInit = {
+		"X-Forwarded-For": ctx.ip,
+	};
+	if (ctx.headers.cookie) {
+		headers.Cookie = ctx.headers.cookie;
+	}
+	return headers;
+}
+
 /**
  * 简单地通过 User-Agent 判断客户端的设备是不是手机
  *
@@ -35,10 +46,7 @@ async function prefetch(store: Pinia, router: Router, request: any) {
 	const controller = new AbortController();
 	const ssrApi = api.configure({
 		signal: controller.signal,
-		headers: {
-			"X-Forwarded-For": request.ip,
-			Cookie: request.headers.cookie,
-		},
+		headers: getProxyHeaders(request),
 	});
 	const ctx = new PrefetchContext(store, route, ssrApi, controller);
 
