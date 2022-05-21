@@ -73,13 +73,11 @@ export class ResponseFacade<T> implements Promise<Response> {
 	}
 
 	get data(): Promise<T> {
-		return this.raw.then(check).then(r => r.json());
+		return this.then(r => r.json());
 	}
 
 	get location(): Promise<string> {
-		return this.raw
-			.then(check)
-			.then(r => r.headers.get("location")!);
+		return this.then(r => r.headers.get("location")!);
 	}
 
 	get [Symbol.toStringTag]() {

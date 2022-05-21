@@ -57,9 +57,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, provide } from "vue";
+import { ref, watch } from "vue";
 import { useLocalStorage } from "@vueuse/core";
-import { KxSelect, ScrollPagingView, ButtonPagingView } from "@kaciras-blog/uikit";
+import { ButtonPagingView, KxSelect, ScrollPagingView } from "@kaciras-blog/uikit";
 import api, { Discussion, DiscussionQuery, ListQueryView } from "@/api";
 import { useDiscussOptions } from "@/store";
 import BootLoader from "./BootLoader.vue";
