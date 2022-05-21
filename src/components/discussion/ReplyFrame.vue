@@ -11,6 +11,7 @@
 						<DiscussionContent
 							v-for="item of items"
 							:key="item.id"
+							:nest-root="host"
 							:value="item"
 							:class="$style.item"
 						/>
@@ -33,8 +34,7 @@
 import { ref, watch } from "vue";
 import { KxFrame, ScrollPagingView, useDialog } from "@kaciras-blog/uikit";
 import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
-import api, { Discussion } from "@/api";
-import { ListQueryView } from "@/api/core";
+import api, { Discussion, ListQueryView } from "@/api";
 import EditorFrame from "./EditorFrame.vue";
 import DiscussionContent from "./DiscussionContent.vue";
 

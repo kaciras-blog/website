@@ -57,15 +57,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref, watch, provide } from "vue";
 import { useLocalStorage } from "@vueuse/core";
 import { KxSelect, ScrollPagingView, ButtonPagingView } from "@kaciras-blog/uikit";
-import api, { Discussion, DiscussionQuery } from "@/api";
-import { ListQueryView } from "@/api/core";
+import api, { Discussion, DiscussionQuery, ListQueryView } from "@/api";
+import { useDiscussOptions } from "@/store";
 import BootLoader from "./BootLoader.vue";
 import DiscussionItem from "./DiscussionItem.vue";
 import InputSection from "./InputSection.vue";
-import { useDiscussOptions } from "@/store";
 
 const PAGE_SIZE = 30;
 const NEST_SIZE = 3;
@@ -115,7 +114,7 @@ function fetchData(start: number, count: number, signal?: AbortSignal) {
 		query.includeParent = true;
 	}
 
-	return api.withCancelToken(signal).discuss.getList(query);
+	return api.configure({ signal }).discuss.getList(query);
 }
 
 /**

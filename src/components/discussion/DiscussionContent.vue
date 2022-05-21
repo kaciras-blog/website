@@ -70,6 +70,7 @@ import { useCurrentUser } from "@/store";
 
 interface DiscussContentProps {
 	tag?: string;
+	nestRoot?: Discussion;
 	value: Discussion;
 }
 
@@ -82,19 +83,18 @@ const dialog = useDialog();
 const currentUser = useCurrentUser();
 
 /**
- * 楼层号，引用模式下返回 floor，楼中楼模式返回 nestFloor。
- * 这里使用 replies 属性是否存在来判断处于哪种模式，比起 provide-inject 少些代码。
+ * 楼层号，引用模式下返回 floor，楼中楼模式返回 parent.nestFloor-nestFloor。
  */
 const localFloor = computed(() => {
-	const { parent, floor, nestFloor } = props.value;
-	const { replies } = (parent ?? props.value);
-	if (!replies) {
-		return floor; // 引用模式
+	const { nestRoot } = props;
+	const { replies, floor, nestFloor } = props.value;
+
+	// 无 nestRoot 的是顶层评论，根据 replies 判断模式。
+	// 有 nestRoot 的则是楼中楼。
+	if (!nestRoot) {
+		return replies ? nestFloor : floor;
 	}
-	if (!parent) {
-		return nestFloor; // 顶层评论
-	}
-	return `${parent.nestFloor}-${nestFloor}`;
+	return `${nestRoot.nestFloor}-${nestFloor}`;
 });
 
 function remove() {

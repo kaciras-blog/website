@@ -51,6 +51,7 @@
 						<DiscussionContent
 							v-for="item of items"
 							:key="item.id"
+							:nest-root="props"
 							:value="item"
 							:class="$style.reply"
 							@removed="refresh"
@@ -65,6 +66,7 @@
 					<DiscussionContent
 						v-for="item of children.items"
 						:key="item.id"
+						:nest-root="props"
 						:value="item"
 						:class="$style.reply"
 						@removed="refresh"
@@ -109,8 +111,7 @@
 import { nextTick, ref } from "vue";
 import { useBreakPoint, useDialog, ButtonPagingView } from "@kaciras-blog/uikit";
 import { debounceFirst } from "@kaciras-blog/server/lib/functions.js";
-import api, { Discussion, DiscussionState, Topic, User } from "@/api";
-import { ListQueryView } from "@/api/core";
+import api, { Discussion, DiscussionState, Topic, User, ListQueryView } from "@/api";
 import MarkdownView from "@/markdown/MarkdownView.vue";
 import DiscussionContent from "./DiscussionContent.vue";
 import ReplyFrame from "./ReplyFrame.vue";

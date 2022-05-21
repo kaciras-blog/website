@@ -10,6 +10,7 @@ import NotificationEndpoint from "./notification";
 import CategoryEndpoint from "./category";
 import DiscussionEndpoint from "./discussion";
 
+export * from "./common";
 export * from "./article";
 export * from "./cards";
 export * from "./friend";
