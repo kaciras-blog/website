@@ -16,10 +16,10 @@
 		但是 VueRouter 要求初始化时就配置好子路由，难以分离代码，所以还是用动态组件。
 	-->
 	<aside :class="$style.tabs">
-		<h1>控制台</h1>
+		<h1>Kaciras' Blog</h1>
 		<ul class="clean-list" role="tablist">
 			<li
-				v-for="{ label, view } of views"
+				v-for="{ label, view, icon } of views"
 				:key="label"
 				role="tab"
 				tabindex="2"
@@ -31,6 +31,7 @@
 				@click="active = view"
 				@keyup.enter="active = view"
 			>
+				<component :is="icon" :class="$style.icon"/>
 				{{ label }}
 			</li>
 		</ul>
@@ -48,21 +49,27 @@
 
 <script setup lang="ts">
 import { DefineComponent, nextTick, provide, shallowRef } from "vue";
+import PageMeta from "@/components/PageMeta";
+import AddLinkIcon from "@material-design-icons/svg/round/add_link.svg?sfc";
+import CodeIcon from "@material-design-icons/svg/round/code.svg?sfc";
+import PencilIcon from "bootstrap-icons/icons/pencil-fill.svg?sfc";
+import ChatIcon from "bootstrap-icons/icons/chat-dots-fill.svg?sfc";
+import DiagramIcon from "bootstrap-icons/icons/tag-fill.svg?sfc";
+import BellIcon from "bootstrap-icons/icons/bell.svg?sfc";
 import ArticleConsole from "./ArticleConsole.vue";
 import DraftConsole from "./DraftConsole.vue";
 import CategoryConsole from "./CategoryConsole.vue";
 import CardsConsole from "./CardsConsole.vue";
 import DiscussionConsole from "./DiscussionConsole.vue";
 import NotificationConsole from "./NotificationConsole.vue";
-import PageMeta from "@/components/PageMeta";
 
 const views = [
-	{ view: ArticleConsole, label: "文章列表" },
-	{ view: DraftConsole, label: "草稿" },
-	{ view: DiscussionConsole, label: "评论" },
-	{ view: CardsConsole, label: "首页卡片" },
-	{ view: CategoryConsole, label: "分类" },
-	{ view: NotificationConsole, label: "消息通知" },
+	{ view: ArticleConsole, label: "文章列表", icon: CodeIcon },
+	{ view: DraftConsole, label: "草稿", icon: PencilIcon },
+	{ view: DiscussionConsole, label: "评论", icon: ChatIcon },
+	{ view: CardsConsole, label: "首页卡片", icon: AddLinkIcon },
+	{ view: CategoryConsole, label: "分类", icon: DiagramIcon },
+	{ view: NotificationConsole, label: "消息通知", icon: BellIcon },
 ];
 
 const active = shallowRef(ArticleConsole);
@@ -87,7 +94,7 @@ provide("sendMessage", async (component: DefineComponent, data: unknown) => {
 
 	display: grid;
 	grid-template-areas: "menu nav" "menu body";
-	grid-template-columns: 210px 1fr;
+	grid-template-columns: 250px 1fr;
 	grid-template-rows: auto 1fr;
 }
 
@@ -106,10 +113,11 @@ provide("sendMessage", async (component: DefineComponent, data: unknown) => {
 .tabs {
 	padding-top: 1rem;
 	grid-area: menu;
-
-	background-color: #222429;
-	color: #DDD;
 	text-align: center;
+
+	color: white;
+	background: rgb(8,50,91);
+	background: linear-gradient(180deg, rgba(8,50,91,1) 0%, rgba(49,109,166,1) 100%);
 }
 
 .left-triangle(@size) {
@@ -127,13 +135,14 @@ provide("sendMessage", async (component: DefineComponent, data: unknown) => {
 .tabItem {
 	composes: click-item from global;
 
-	padding: 10px 0;
+	padding: 14px 0 14px 50px;
 	transform: rotateZ(0);
 
+	text-align: start;
 	font-size: 1rem;
 	border: none;
 	background-color: transparent;
-	color: whitesmoke;
+	transition: background-color .12s;
 
 	&:hover, &:focus {
 		background-color: rgba(255, 255, 255, 0.1);
@@ -144,6 +153,12 @@ provide("sendMessage", async (component: DefineComponent, data: unknown) => {
 		content: "";
 		.left-triangle(.8rem);
 	}
+}
+
+.icon {
+	margin-right: 10px;
+	font-size: 1.25em;
+	vertical-align: -4px;
 }
 
 .bodyWrapper {
