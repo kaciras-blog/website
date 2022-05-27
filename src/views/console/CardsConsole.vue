@@ -25,15 +25,14 @@
 	</div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { nextTick, ref, watch } from "vue";
 import { KxButton, moveElement, observeMouseMove, useDialog } from "@kaciras-blog/uikit";
-import api from "@/api";
+import api, { Card } from "@/api";
 import { attachRandomId, deleteOn } from "@/utils";
 import CardListItem from "./CardListItem.vue";
 
-const CARD_TEMPLATE = {
-	picture: null,
+const CARD_TEMPLATE: Card = {
 	name: "新的卡片",
 	link: "",
 	description: "",
@@ -41,7 +40,10 @@ const CARD_TEMPLATE = {
 
 class ListDraggingRegion {
 
-	constructor(container) {
+	private readonly territory: number;
+	private readonly offset: number;
+
+	constructor(container: HTMLElement) {
 		const region = container.getBoundingClientRect();
 		const item = container.children[0].getBoundingClientRect();
 
@@ -50,20 +52,27 @@ class ListDraggingRegion {
 	}
 
 	// 索引必须要取整
-	getIndex(x, y) {
+	getIndex(x: number, y: number) {
 		return Math.floor((y - this.offset) / this.territory);
 	}
+}
+
+interface CardEntry {
+	id: number;
+	expand: boolean;
+	card: Card;
+	placeholder?: boolean;
 }
 
 const dialog = useDialog();
 
 const container = ref();
-const cards = ref([]);
+const cards = ref<CardEntry[]>([]);
 const initialized = ref(false);
 
 // const dragging = ref(null);
 
-function receiveMessage(data) {
+function receiveMessage(data: Card) {
 	if (initialized.value) {
 		addCard(data);
 	} else {
@@ -77,32 +86,32 @@ function createNew() {
 	addCard(CARD_TEMPLATE);
 }
 
-function addCard(data) {
+function addCard(data: Card) {
 	cards.value.unshift(attachRandomId({ expand: true, card: data }));
 }
 
-function remove(id) {
+function remove(id: number) {
 	deleteOn(cards.value, (s) => s.id === id);
 }
 
 async function load() {
-	const data = await api.recommend.getCards();
+	const data = await api.cards.getAll();
 	cards.value = data.map(card => attachRandomId({ card, expand: false }));
 }
 
 function submit() {
-	api.recommend.setCards(cards.value.map(item => item.card))
+	api.cards.setCards(cards.value.map(item => item.card))
 		.then(() => dialog.alertSuccess("修改成功"))
 		.catch(e => dialog.alertError("修改失败", e.message));
 }
 
 load().then(() => initialized.value = true);
 
-async function drag(event, item) {
+async function drag(event: any, item: CardEntry) {
 	const list = cards.value;
 
 	// 查找拖动页的索引，并折叠全部轮播页
-	let holderIndex;
+	let holderIndex = 0;
 	for (let i = 0; i < list.length; i++) {
 		if (list[i].id === item.id) {
 			holderIndex = i;
@@ -137,13 +146,13 @@ async function drag(event, item) {
 	});
 	document.body.appendChild(dragEl);
 
-	// 原来的位置替换为占位元素
-	list[holderIndex] = {
+	// 原来的位置替换为占位元素，因为类型不同所以转了 any
+	(list as any)[holderIndex] = {
 		id: Symbol(),
 		placeholder: true,
 	};
 
-	function insertInto(i) {
+	function insertInto(i: number) {
 		if (holderIndex === i) {
 			return;
 		}

@@ -3,7 +3,7 @@ import { EndpointBase } from "./core";
 export interface Card {
 	name: string;
 	link: string;
-	picture: string;
+	picture?: string;
 	description: string;
 }
 
