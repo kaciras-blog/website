@@ -73,16 +73,6 @@ export default {
 				},
 			},
 		},
-
-		/** 一些第三方服务，所有项均可由 import.meta.env.* 访问 */
-		env: {
-
-			/** 【可选】Google Analytics 的ID，填写后将启用 */
-			// GOOGLE_ANALYTICS_ID: "UA-12345678-1",
-
-			/** 【可选】本站使用 Sentry 来上报异常，填写后将启用 */
-			// SENTRY_DSN: "https://foobar@sentry.io/123456",
-		},
 	},
 
 	/** 连接设置，可以配置接受 HTTP 和 HTTPS 连接 */
@@ -171,7 +161,7 @@ export default {
 		// cert: "/etc/letsencrypt/live/api.example.com/cert.pem",
 
 		/**
-		 * 【环境】内容服务器的公网 URL，如果是对象则依据页面使用HTTP还是HTTPS选择
+		 * 【环境】内容服务器的公网 URL，如果是对象则依据页面使用 HTTP 还是 HTTPS 选择
 		 * 在客户端构建时用 import.meta.env.INTERNAL_ORIGIN 访问
 		 */
 		public: "https://api.example.com",
@@ -179,5 +169,20 @@ export default {
 		// 	http: "http://api.example.com:54321",
 		// 	https: "https://api.example.com:12345",
 		// },
+	},
+
+	/**
+	 * 一些可选的功能，所有项在构建时均可由 import.meta.env.* 访问。
+	 * 服务端也可以使用，但它们并不修改运行时的环境变量。
+	 */
+	env: {
+		/**
+		 * 【可选】让服务器代理 Sentry 请求，以绕过广告拦截器。
+		 * 该选项仅在启用了 Sentry 后有效。
+		 */
+		// SENTRY_TUNNEL: "/sentry",
+
+		/** 【可选】本站使用 Sentry 来上报异常，填写后将启用 */
+		// SENTRY_DSN: "https://foobar@sentry.io/123456",
 	},
 };

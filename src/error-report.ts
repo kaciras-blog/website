@@ -1,5 +1,5 @@
 import * as Sentry from "@sentry/vue";
-import { Integrations } from "@sentry/tracing";
+import { BrowserTracing } from "@sentry/tracing";
 import { App } from "vue";
 import { Router } from "vue-router";
 
@@ -16,10 +16,11 @@ export function setupSentry(app: App, router: Router) {
 		attachProps: true,
 		logErrors: true,
 		integrations: [
-			new Integrations.BrowserTracing({
+			new BrowserTracing({
 				routingInstrumentation: Sentry.vueRouterInstrumentation(router),
 			}),
 		],
+		tunnel: import.meta.env.SENTRY_TUNNEL,
 	});
 }
 
