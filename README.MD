@@ -22,7 +22,7 @@
 
 系统需求：
 
-* NodeJS >= 17.0.0
+* NodeJS >= 18
 * 运行时需要和后端服务通信，故先要运行[content-server](https://github.com/kaciras-blog/content-server)
 
 浏览器支持：
