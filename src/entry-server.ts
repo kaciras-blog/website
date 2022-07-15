@@ -64,8 +64,15 @@ async function prefetch(store: Pinia, router: Router, request: any) {
 	const prefetch = usePrefetch(store);
 
 	try {
-		await userStore.refresh(ssrApi);
-		prefetch.data = await prefetching;
+		// 不能分开等待，如果这样写 refresh 出错时 prefetching 的异常无法捕获，导致进程退出。
+		// await userStore.refresh(ssrApi);
+		// prefetch.data = await prefetching;
+
+		const results = await Promise.all([
+			prefetching,
+			userStore.refresh(ssrApi),
+		]);
+		prefetch.data = results[0];
 	} catch (e) {
 		controller.abort();
 
