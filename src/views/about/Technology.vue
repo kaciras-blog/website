@@ -4,7 +4,7 @@
 
 		<section class="about-section">
 			<IconSectionHeader
-				icon="@/assets/img/logo-kaciras.svg"
+				icon="@/assets/img/logo-kaciras.png"
 				title="Kaciras' Blog"
 			/>
 			<IconParagraph
@@ -37,7 +37,7 @@
 				src="@/assets/img/logo-vue.svg"
 				title="vue"
 			>
-				网页端是用 Vue3 全家桶编写的单页应用，纯手撸组件未使用 UI 库。
+				网页端是用 Vue3 全家桶编写的单页应用，手撸组件。
 			</IconParagraph>
 			<IconParagraph
 				src="@/assets/img/tools-and-utensils.svg"
@@ -61,8 +61,7 @@
 				src="@/assets/img/logo-pwa.png"
 				title="pwa"
 			>
-				本站拥有 PWA 支持，大幅提升了加载速度，
-				使用了自己写的 ServiceWorker，主要参考了 workbox 项目。
+				本站拥有 PWA 支持，大幅提升了加载速度，使用自己实现的 ServiceWorker。
 			</IconParagraph>
 		</section>
 
@@ -137,5 +136,4 @@ import { browserslist } from "../../../package.json";
 
 import IconSectionHeader from "@/components/IconSectionHeader.vue";
 import IconParagraph from "@/components/IconParagraph.vue";
-import PageMeta from "@/components/PageMeta";
-</script>
+import PageMeta from "@/components/PageMeta";</script>

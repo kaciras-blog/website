@@ -10,7 +10,7 @@
 			:class="$style.logoLink"
 		>
 			<img
-				src="@/assets/img/logo-kaciras-wide.svg"
+				src="@/assets/img/logo-kaciras-wide.png"
 				alt="logo"
 				:class="$style.logo"
 			>
@@ -134,7 +134,6 @@ if (breakPoint.value === "mobile") {
 // 外层套了个<a>所以宽高不能用百分比，只能写死图片的大小
 .logo {
 	display: block;
-	width: calc(var(--nav-height) * 3);
 	height: var(--nav-height);
 
 	object-fit: cover;
