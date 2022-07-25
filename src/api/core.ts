@@ -130,7 +130,7 @@ export abstract class EndpointBase {
 	 * @param params URL 中的参数部分
 	 */
 	protected fetch<R>(method: string, url: string, data?: any, params?: Record<string, any>) {
-		const init = { ...this.init, method };
+		const init = { ...this.init, method , headers: { ...this.init.headers } };
 		const headers = init.headers as Record<string, string>;
 
 		// body 为 FormData 时会自动设置 Content-Type 为 multipart/form-data。
