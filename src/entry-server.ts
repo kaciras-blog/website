@@ -4,6 +4,7 @@ import { Router } from "vue-router";
 import { renderToString, SSRContext } from "vue/server-renderer";
 import { Pinia } from "pinia";
 import { breakpoints, useMQStore } from "@kaciras-blog/uikit";
+import { getProxyHeaders } from "@kaciras-blog/server/lib/fetch-helper";
 import { useCurrentUser, usePrefetch } from "@/store";
 import { compositor } from "@/utils";
 import api from "./api";
@@ -12,17 +13,6 @@ import { collectTasks, PrefetchContext } from "./prefetch";
 
 // 后台页面就不预渲染了。
 const noSSR = new RegExp("^/(?:edit|console)/?(?:\\?|$)?");
-
-// TODO：从 @kaciras-blog/server 导入
-function getProxyHeaders(ctx: any) {
-	const headers: HeadersInit = {
-		"X-Forwarded-For": ctx.ip,
-	};
-	if (ctx.headers.cookie) {
-		headers.Cookie = ctx.headers.cookie;
-	}
-	return headers;
-}
 
 /**
  * 简单地通过 User-Agent 判断客户端的设备是不是手机

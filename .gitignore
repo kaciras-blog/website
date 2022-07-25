@@ -3,6 +3,7 @@ node_modules
 /dist
 /coverage
 *.log
+/debug.[jt]s
 
 # local env files
 .env.local
