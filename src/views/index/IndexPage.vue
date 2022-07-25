@@ -200,9 +200,17 @@ onBeforeMount(() => {
 }
 
 .banner {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
 	height: 100vh;
 	background-position: center bottom;
 	background-size: cover;
+
+	@media screen and (max-width: @length-screen-mobile) {
+		height: 38vh;
+	}
 }
 
 .active_enter {
@@ -214,23 +222,20 @@ onBeforeMount(() => {
 }
 
 .banner_content {
-	position: absolute;
-	top: 30vh;
-	left: 30px;
-	right: 30px;
+	position: relative;
 
-	font-size: 24px;
+	font-size: 18px;
 	text-align: center;
 	transition: color 1s cubic-bezier(.25, .7, .7, .8);
 
 	@media screen and (min-width: @length-screen-wide) {
-		top: 35vh;
 		font-size: 30px;
 	}
 }
 
 .title {
 	font-size: 2em;
+	margin-bottom: 0;
 
 	@media screen and (min-width: @length-screen-wide) {
 		font-size: 2.5em;

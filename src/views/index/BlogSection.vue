@@ -60,7 +60,7 @@ const { cards } = usePrefetch().data;
 
 .title {
 	margin: 0;
-	font-size: 2rem;
+	font-size: 1.75rem;
 }
 
 // ================================ Cards ================================
@@ -89,13 +89,13 @@ const { cards } = usePrefetch().data;
 
 // 博客上的图还是白底的多，擦亮动画效果不好，还是用放大吧
 .figure {
-	font-size: 16px;
 	overflow: hidden;
 	border-radius: 3px;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, .15);
 
 	@media screen and (min-width: @length-screen-mobile) {
 		transition: .3s;
+		font-size: 16px;
 
 		&:hover, &:focus {
 			transform: translateY(-4px);
@@ -150,7 +150,7 @@ const { cards } = usePrefetch().data;
 
 	// 卡片下面阴影较大，需要更大的间隔才能看起来跟左右一致
 	.card_list {
-		grid-gap: 16px;
+		grid-gap: 25px;
 	}
 
 	.name {
