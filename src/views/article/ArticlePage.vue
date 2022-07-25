@@ -133,7 +133,7 @@ const discussion = ref<ComponentPublicInstance>();
 // 为了 SEO，需要在预渲染的文章页面的 <head> 中加入一些标签。暂时没法用 teleport 因为有 BUG：
 // https://github.com/vuejs/core/issues/5242
 if (import.meta.env.SSR) {
-	const { keywords, summary, prev, next } = article;
+	const { keywords, summary, prev, next, title } = article;
 	const head = useSSRContext()!;
 
 	head.meta = `<meta name="keywords" content="${escapeHtml(keywords.join(","))}">`;
@@ -144,6 +144,14 @@ if (import.meta.env.SSR) {
 	if (next) {
 		head.meta += `<link rel="next" title="${next.title}" href="${articleLink(next)}">`;
 	}
+
+	// TODO: 好多标签啊，能不能用 vue-meta 或自己实现个机制来简化。
+	head.meta += `<meta property="og:title" content="${escapeHtml(title)}">`;
+	head.meta += `<meta property="og:description" content="${escapeHtml(summary)}">`;
+	head.meta += `<meta property="og:image" content="https://blog.kaciras.com${article.cover}">`;
+	head.meta += `<meta property="og:site_name" content="Kaciras Blog">`;
+	head.meta += `<meta property="og:type" content="article">`;
+	head.meta += `<meta property="og:url" content="https://blog.kaciras.com${articleLink(article)}">`;
 }
 
 function gotoTop() {
