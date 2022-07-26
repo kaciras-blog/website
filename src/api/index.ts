@@ -47,7 +47,8 @@ function getContentServerURL(config: PublicAPIConfig): string {
 	}
 }
 
-const contentServiceURL = getContentServerURL(import.meta.env.API_PUBLIC);
+export const contentServiceURL = getContentServerURL(import.meta.env.API_PUBLIC);
+
 const webServiceURL = import.meta.env.SSR ? "__NEVER_USED__" : location.href;
 
 export default defineAPIs({
