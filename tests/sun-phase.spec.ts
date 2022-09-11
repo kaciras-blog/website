@@ -1,12 +1,12 @@
 import { SunPhases } from "@/store/sun-phase";
-import { jest } from "@jest/globals";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
-jest.useFakeTimers();
-afterEach(jest.clearAllTimers);
+vi.useFakeTimers();
+afterEach(vi.clearAllTimers);
 
 function expectTimeout(time: number) {
 	expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), time);
-	jest.runOnlyPendingTimers();
+	vi.runOnlyPendingTimers();
 }
 
 it("should fail on empty points", () => {
@@ -59,7 +59,7 @@ describe("observe", () => {
 		expectTimeout(3600000 * 10);
 		expectTimeout(3600000 * 9);
 
-		jest.clearAllTimers();
+		vi.clearAllTimers();
 		expect(results).toStrictEqual(["third", "first", "second", "third", "first"]);
 	});
 
@@ -70,7 +70,7 @@ describe("observe", () => {
 			.observe()
 			.subscribe(name => results.push(name));
 
-		jest.runOnlyPendingTimers();
+		vi.runOnlyPendingTimers();
 		expectTimeout(86400 * 1000);
 
 		expect(results).toStrictEqual(["first", "first", "first"]);

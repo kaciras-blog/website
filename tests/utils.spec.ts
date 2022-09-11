@@ -1,5 +1,6 @@
 import { createMemoryHistory, createRouter } from "vue-router";
 import { basename, compositor, isOnlyHashChange } from "../src/utils";
+import { describe, expect, it } from "vitest";
 
 describe("isOnlyHashChange", () => {
 	const router = createRouter({ routes: [], history: createMemoryHistory() });
@@ -21,7 +22,7 @@ describe("isOnlyHashChange", () => {
 	it("should detect query changes", () => run("/test?foo=bar", "/test?foo=___#hash", false));
 });
 
-test.each([
+it.each([
 	["foobar.jpg", "foobar"],
 	["foo.bar.jpg", "foo.bar"],
 	["", ""],
