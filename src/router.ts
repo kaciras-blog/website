@@ -9,10 +9,10 @@ import ErrorPage from "./views/error/ErrorPage.vue";
  * 如果用动态导入，关于页的子路由组件全会被分割，都是很小的文件完全不值得，如果能合并成一个的话还行。
  */
 import AbortPage from "./views/about/AboutPage.vue";
-import AbortMe from "./views/about/Me.vue";
-import AbortFriends from "./views/about/Friends.vue";
-import AbortTechnology from "./views/about/Technology.vue";
-import AbortCopyrights from "./views/about/Copyrights.vue";
+import MeTab from "./views/about/MeTab.vue";
+import FriendsTab from "./views/about/FriendsTab.vue";
+import TechnologyTab from "./views/about/TechnologyTab.vue";
+import CopyrightTab from "./views/about/CopyrightTab.vue";
 
 const routes: RouteRecordRaw[] = [
 	{
@@ -52,22 +52,10 @@ const routes: RouteRecordRaw[] = [
 		path: "/about",
 		component: AbortPage,
 		children: [
-			{
-				path: "me",
-				component: AbortMe,
-			},
-			{
-				path: "friends",
-				component: AbortFriends,
-			},
-			{
-				path: "technology",
-				component: AbortTechnology,
-			},
-			{
-				path: "copyright",
-				component: AbortCopyrights,
-			},
+			{ path: "friends", component: FriendsTab },
+			{ path: "me", component: MeTab },
+			{ path: "technology", component: TechnologyTab },
+			{ path: "copyright", component: CopyrightTab },
 		],
 	},
 	{
