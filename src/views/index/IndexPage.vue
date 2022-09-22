@@ -45,11 +45,6 @@ import BannerDaytime from "@/assets/img/IndexBannerLight.png";
 import BannerDusk from "@/assets/img/IndexBannerDusk.png";
 import BannerNight from "@/assets/img/IndexBannerNight.png";
 
-import MobileBannerDawn from "@/assets/img/IndexBannerDawn.png?size=IndexBannerM";
-import MobileBannerDaytime from "@/assets/img/IndexBannerLight.png?size=IndexBannerM";
-import MobileBannerDusk from "@/assets/img/IndexBannerDusk.png?size=IndexBannerM";
-import MobileBannerNight from "@/assets/img/IndexBannerNight.png?size=IndexBannerM";
-
 /*
  * 这里的大部分代码都是实现根据时段（早晨，白天，黄昏，夜晚）切换背景大图的功能。
  *
@@ -66,13 +61,6 @@ const BANNER_MAP: Record<string, string> = {
 	Daytime: BannerDaytime,
 	Dusk: BannerDusk,
 	Night: BannerNight,
-};
-
-const BANNER_MAP_MOBILE: Record<string, string> = {
-	Dawn: MobileBannerDawn,
-	Daytime: MobileBannerDaytime,
-	Dusk: MobileBannerDusk,
-	Night: MobileBannerNight,
 };
 
 export default {
@@ -92,7 +80,6 @@ import PageMeta from "@/components/PageMeta";
 import TopNavGlass from "@/components/top-nav/TopNavGlass.vue";
 import BlogSection from "./BlogSection.vue";
 import FriendsSection from "./FriendsSection.vue";
-import { useBreakPoint } from "@kaciras-blog/uikit";
 
 /*
  * 四个状态与过渡动画的关系：
@@ -109,7 +96,6 @@ import { useBreakPoint } from "@kaciras-blog/uikit";
 
 const $style = useCssModule();
 const sunPhase = useSunPhase();
-const breakPoint = useBreakPoint();
 
 // data 在 computed 之前创建，此时 currentSunPhase 还无法访问
 const transitionSunPhase = ref("");
@@ -119,10 +105,6 @@ let lock = false;
 
 const targetSunPhase = computed(() => {
 	return transitionSunPhase.value || visibleSunPhase.value;
-});
-
-const bannerMap = computed(() => {
-	return breakPoint.value === "mobile" ? BANNER_MAP_MOBILE : BANNER_MAP;
 });
 
 const navClass = computed(() => {
@@ -137,7 +119,7 @@ const titleStyle = computed(() => {
 });
 
 const bannerStyle = computed(() => {
-	const imageFile = bannerMap.value[visibleSunPhase.value];
+	const imageFile = BANNER_MAP[visibleSunPhase.value];
 	if (!imageFile) {
 		return {};
 	}
@@ -145,7 +127,7 @@ const bannerStyle = computed(() => {
 });
 
 const transitionStyle = computed(() => {
-	const imageFile = bannerMap.value[transitionSunPhase.value];
+	const imageFile = BANNER_MAP[transitionSunPhase.value];
 	return { backgroundImage: `url(${imageFile})` };
 });
 
@@ -159,7 +141,7 @@ function switchSunPhase(sunPhase: string) {
 		return visibleSunPhase.value = sunPhase;
 	}
 	const image = document.createElement("img");
-	image.src = bannerMap.value[sunPhase];
+	image.src = BANNER_MAP[sunPhase];
 	image.addEventListener("load", () => transitionSunPhase.value = sunPhase);
 }
 
