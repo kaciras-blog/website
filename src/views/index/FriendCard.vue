@@ -1,9 +1,4 @@
 <!--
-【props 说明】
-active   - 是否加载图片等消耗性能的资源
-disabled - 是否禁止点击跳转，以及 hover、focus 动效，在拖动排序时用
-friend	 - 友链对象
-
 【禁用的实现】
 改变 <component> 渲染的元素会导致整个子树更新，应该避免，改为其它禁用实现。
 -->
@@ -30,13 +25,25 @@ friend	 - 友链对象
 </template>
 
 <script setup lang="ts">
-import { Friend } from "@/api";
 import { DEFAULT_AVATAR } from "@/common";
+import { Friend } from "@/api";
 
 interface FriendCardProps {
-	friend: Friend;
-	disabled: boolean;
+
+	/**
+	 * 是否加载图片等消耗性能的资源，用于懒加载。
+	 */
 	active: boolean;
+
+	/**
+	 * 友链对象。
+	 */
+	friend: Friend;
+
+	/**
+	 * 是否禁止点击、hover 和 focus 动效，在拖动时用。
+	 */
+	disabled: boolean;
 }
 
 defineProps<FriendCardProps>();
@@ -65,8 +72,11 @@ defineProps<FriendCardProps>();
 	// 默认是拖动状态
 	cursor: grab;
 
-	border-radius: 4px;
+	border-radius: 6px;
 	overflow: hidden;
+
+	// 卡片背景可能是白色，故用阴影跟外部区分一下。
+	box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
 
 	&::before {
 		content: "";

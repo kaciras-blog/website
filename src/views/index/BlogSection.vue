@@ -87,10 +87,10 @@ const { cards } = usePrefetch().data;
 	}
 }
 
-// 博客上的图还是白底的多，擦亮动画效果不好，还是用放大吧
+// 博客上的图白底的多，擦亮动画效果不好，还是用浮起吧。
 .figure {
 	overflow: hidden;
-	border-radius: 3px;
+	border-radius: 6px;
 	box-shadow: 0 4px 4px rgba(0, 0, 0, .15);
 
 	@media screen and (min-width: @length-screen-mobile) {
