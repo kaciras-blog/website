@@ -1,8 +1,6 @@
 import { defineStore } from "pinia";
 import api, { AuthType, User } from "@/api";
 
-export * from "./sun-phase";
-
 const GUESTS: User = {
 	id: 0,
 	auth: AuthType.None,

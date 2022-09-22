@@ -3,7 +3,7 @@ import { observeMediaQuery } from "@kaciras-blog/uikit";
 import { setupSentry } from "./error-report";
 import createBlogApp from "./main";
 import { useServiceWorker } from "@/service-worker/client/installer";
-import { SUN_PHASES, useCurrentUser, useSunPhase } from "@/store";
+import { useCurrentUser } from "@/store";
 import { ClientPrefetchMixin, installRouterHooks, prefetch } from "./client-prefetch";
 
 interface CustomGlobals {
@@ -30,13 +30,7 @@ if (import.meta.env.SENTRY_DSN && window.__isSupport__) {
  */
 function initApplication() {
 	observeMediaQuery(store);
-
 	app.mount(document.body);
-
-	// Vue3 在激活时似乎不会重新设置元素的属性，必须把它放挂载后面。
-	const subPhase = useSunPhase();
-	SUN_PHASES.observe().subscribe(value => subPhase.current = value);
-
 	installRouterHooks(store, router);
 }
 
