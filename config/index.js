@@ -75,6 +75,25 @@ export default {
 		},
 	},
 
+	sentry: {
+		/**
+		 * 【可选】填写后将启用 Sentry 上报异常，前端由 SENTRY_DSN 环境变量访问。
+		 */
+		// dsn: "https://foobar@sentry.io/123456",
+
+		/**
+		 * 是否代理 Sentry 请求以防止 ADBlock 拦截，前端由 SENTRY_TUNNEL 环境变量访问。
+		 */
+		tunnel: false,
+
+		/**
+		 * 上传 SourceMap 需要的一些信息，不上传则不需要写。
+		 */
+		// org: "org or account name",
+		// project: "project",
+		// authToken: "see https://sentry.io/settings/account/api/auth-tokens/",
+	},
+
 	/** 连接设置，可以配置接受 HTTP 和 HTTPS 连接 */
 	server: {
 
@@ -175,14 +194,5 @@ export default {
 	 * 一些可选的功能，所有项在构建时均可由 import.meta.env.* 访问。
 	 * 服务端也可以使用，但它们并不修改运行时的环境变量。
 	 */
-	env: {
-		/**
-		 * 【可选】让服务器代理 Sentry 请求，以绕过广告拦截器。
-		 * 该选项仅在启用了 Sentry 后有效。
-		 */
-		// SENTRY_TUNNEL: "/sentry",
-
-		/** 【可选】本站使用 Sentry 来上报异常，填写后将启用 */
-		// SENTRY_DSN: "https://foobar@sentry.io/123456",
-	},
+	env: {},
 };
