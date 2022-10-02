@@ -1,66 +1,66 @@
 <template>
 	<component
-		:is="tag"
-		:class="[$style.container, colored && $style.colored]"
-		class="top-nav"
+		:is='tag'
+		:class='[$style.container, colored && $style.colored]'
+		class='top-nav'
 	>
 		<RouterLink
-			to="/"
-			title="回到首页"
-			:class="$style.logoLink"
+			to='/'
+			title='回到首页'
+			:class='$style.logoLink'
 		>
 			<img
-				src="@/assets/img/logo-kaciras-wide.png"
-				alt="logo"
-				:class="$style.logo"
+				src='@/assets/img/logo-kaciras-wide.png'
+				alt='logo'
+				:class='$style.logo'
 			>
 		</RouterLink>
 
 		<!-- 手机屏的折叠菜单 -->
 		<button
-			v-if="$bp.value === 'mobile'"
-			title="弹出菜单"
-			class="nav-item nav-right"
-			@click="showMenu"
+			v-if='$bp.value === "mobile"'
+			title='弹出菜单'
+			class='nav-item nav-right'
+			@click='showMenu'
 		>
 			<ListIcon/>
 		</button>
 
 		<!-- 宽屏直接把按钮都显示在上面 -->
-		<div v-else class="nav-right">
-			<template v-if="user.id > 0">
-				<RouterLink to="/profile">
+		<div v-else class='nav-right'>
+			<template v-if='user.id > 0'>
+				<RouterLink to='/profile'>
 					<img
-						:src="user.avatar"
-						:alt="user.name"
-						title="就是一个头像而已"
-						class="small head"
-						:class="$style.head"
+						:src='user.avatar'
+						:alt='user.name'
+						title='就是一个头像而已'
+						class='small head'
+						:class='$style.head'
 					>
 				</RouterLink>
 				<RouterLink
-					v-if="user.isAdmin"
-					to="/console"
-					class="nav-item"
+					v-if='user.isAdmin'
+					to='/console'
+					class='nav-item'
 				>
 					管理
 				</RouterLink>
-				<button class="nav-item" @click="logout">退出登录</button>
+				<button class='nav-item' @click='logout'>退出登录</button>
 			</template>
 
-			<RouterLink v-else to="/login" class="nav-item">
+			<RouterLink v-else to='/login' class='nav-item'>
 				登录
 			</RouterLink>
-			<RouterLink to="/list" class="nav-item">
+			<RouterLink to='/list' class='nav-item'>
 				文章
 			</RouterLink>
-			<RouterLink to="/about/me" class="nav-item">
+			<RouterLink to='/about/me' class='nav-item'>
 				关于
 			</RouterLink>
-			<a href="/feed/atom" class="nav-item" title="Feed订阅">
+			<a href='/feed/atom' class='nav-item' title='Feed订阅'>
 				<RssIcon/>
 			</a>
-			<button class="nav-item" title="设置" @click="showSettings">
+			<button class='nav-item' title='设置' @click='showSettings'>
 				<SettingIcon/>
 			</button>
 		</div>

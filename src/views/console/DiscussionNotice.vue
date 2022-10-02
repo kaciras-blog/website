@@ -1,8 +1,8 @@
 <template>
 	<div>
-		在 <a :href="url" class="highlight" target="_blank">{{ title }}</a>
+		在 <a :href='url' class='highlight' target='_blank'>{{ title }}</a>
 		的 {{ floor }} 楼有新的评论：
-		<blockquote :class="$style.content">{{ preview }}</blockquote>
+		<blockquote :class='$style.content'>{{ preview }}</blockquote>
 	</div>
 </template>
 

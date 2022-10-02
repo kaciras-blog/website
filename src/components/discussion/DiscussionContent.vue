@@ -1,46 +1,46 @@
 <template>
-	<component :is="tag">
-		<header :class="$style.header">
+	<component :is='tag'>
+		<header :class='$style.header'>
 			<img
-				:src="value.user.avatar ?? DEFAULT_AVATAR"
-				alt="头像"
-				class="head"
-				:class="$style.avatar"
+				:src='value.user.avatar ?? DEFAULT_AVATAR'
+				alt='头像'
+				class='head'
+				:class='$style.avatar'
 			>
 
-			<div :class="$style.nameGroup">
+			<div :class='$style.nameGroup'>
 				<div>
 					<span
-						v-if="value.user.id === 2"
-						:class="$style.stick"
+						v-if='value.user.id === 2'
+						:class='$style.stick'
 					>
 						博主
 					</span>
-					<span :class="$style.name">
+					<span :class='$style.name'>
 						{{ value.nickname || value.user.name }}
 					</span>
 				</div>
-				<time :class="$style.time">
+				<time :class='$style.time'>
 					{{ localDateMinute(value.time) }}
 				</time>
 			</div>
 
 			<!-- 这两个按钮用文字比图标更好 -->
 			<KxButton
-				v-if="currentUser.isAdmin"
-				type="text"
-				color="dangerous"
-				title="删除"
-				:class="$style.clickable"
-				@click="remove"
+				v-if='currentUser.isAdmin'
+				type='text'
+				color='dangerous'
+				title='删除'
+				:class='$style.clickable'
+				@click='remove'
 			>
 				删除
 			</KxButton>
 			<KxButton
-				type="text"
-				title="回复"
-				:class="$style.clickable"
-				@click="$emit('reply', value)"
+				type='text'
+				title='回复'
+				:class='$style.clickable'
+				@click='$emit("reply", value)'
 			>
 				回复
 			</KxButton>
@@ -52,9 +52,9 @@
 		<slot/>
 
 		<MarkdownView
-			:class="$style.content"
-			:value="value.content"
-			:doc-id="value.id.toString()"
+			:class='$style.content'
+			:value='value.content'
+			:doc-id='value.id.toString()'
 		/>
 	</component>
 </template>

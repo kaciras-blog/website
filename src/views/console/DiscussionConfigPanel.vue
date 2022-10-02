@@ -1,19 +1,19 @@
 <template>
-	<section class="panel" :class="$style.config_section">
+	<section class='panel' :class='$style.config_section'>
 		<h2>设置</h2>
 
-		<div :class="$style.config_row">
+		<div :class='$style.config_row'>
 			<KxCheckBox
-				v-for="(_, name) of config"
-				:key="name"
-				v-model="config[name]"
-				:class="$style.checkbox"
+				v-for='(_, name) of config'
+				:key='name'
+				v-model='config[name]'
+				:class='$style.checkbox'
 			>
 				{{ LABELS[name] }}
 			</KxCheckBox>
 		</div>
 
-		<SkFadingCircle v-show="refreshing" :class="$style.progress"/>
+		<SkFadingCircle v-show='refreshing' :class='$style.progress'/>
 	</section>
 </template>
 

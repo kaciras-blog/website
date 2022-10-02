@@ -1,10 +1,10 @@
 <template>
 	<span
-		:class="[
+		:class='[
 			$style[AuthType[type]],
 			$style.authTag,
-		]"
-		title="登录类型"
+		]'
+		title='登录类型'
 	>
 		{{ AuthType[type] }}
 	</span>

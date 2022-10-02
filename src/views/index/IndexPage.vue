@@ -1,21 +1,21 @@
 <template>
 	<BasePageLayout>
-		<PageMeta title="首页" body-class=""/>
+		<PageMeta title='首页' body-class=''/>
 
 		<!-- 经过1小时的尝试仍未能做到模糊层背景定位，已放弃 -->
 		<template #nav>
-			<TopNavGlass :class="$style.nav"/>
+			<TopNavGlass :class='$style.nav'/>
 		</template>
 
-		<section :class="$style.banner">
-			<div :class="$style.banner_content">
-				<h1 :class="$style.title">Kaciras' Blog</h1>
+		<section :class='$style.banner'>
+			<div :class='$style.banner_content'>
+				<h1 :class='$style.title'>Kaciras' Blog</h1>
 				编程 • 生活 • 梦想
 			</div>
 		</section>
 
-		<BlogSection :class="$style.section"/>
-		<FriendsSection :class="$style.section"/>
+		<BlogSection :class='$style.section'/>
+		<FriendsSection :class='$style.section'/>
 	</BasePageLayout>
 </template>
 

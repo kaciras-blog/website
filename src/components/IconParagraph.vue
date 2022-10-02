@@ -1,12 +1,12 @@
 <template>
-	<p :class="$style.wrapper">
+	<p :class='$style.wrapper'>
 		<img
-			:class="$style.image"
-			:src="src"
-			:alt="title"
-			:title="title"
+			:class='$style.image'
+			:src='src'
+			:alt='title'
+			:title='title'
 		>
-		<span :class="$style.text"><slot/></span>
+		<span :class='$style.text'><slot/></span>
 	</p>
 </template>
 

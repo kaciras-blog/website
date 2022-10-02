@@ -1,50 +1,50 @@
 <template>
-	<div :class="$style.container">
-		<div :class="$style.toolbar" role="toolbar">
-			<slot name="toolbar-left" :ctx="ctx"/>
-			<span :class="$style.span"></span>
-			<slot name="toolbar-right" :ctx="ctx"/>
+	<div :class='$style.container'>
+		<div :class='$style.toolbar' role='toolbar'>
+			<slot name='toolbar-left' :ctx='ctx'/>
+			<span :class='$style.span'></span>
+			<slot name='toolbar-right' :ctx='ctx'/>
 		</div>
 
-		<div :class="$style.main">
+		<div :class='$style.main'>
 			<textarea
-				v-show="viewMode !== ViewMode.Preview"
-				ref="textareaEl"
-				:class="{
+				v-show='viewMode !== ViewMode.Preview'
+				ref='textareaEl'
+				:class='{
 					[$style.textarea]: true,
 					[$style.window]: true,
 					[$style.split]: viewMode === ViewMode.Split,
 					[$style.single]: viewMode === ViewMode.Edit,
-				}"
-				title="编辑区"
-				spellcheck="false"
-				v-model="content"
-				v-bind-selection.focus="selection"
-				v-on-selection-change="selection"
-				@keydown.tab.prevent="insertTab"
-				@scroll="lastScrollPreview = false"
+				}'
+				title='编辑区'
+				spellcheck='false'
+				v-model='content'
+				v-bind-selection.focus='selection'
+				v-on-selection-change='selection'
+				@keydown.tab.prevent='insertTab'
+				@scroll='lastScrollPreview = false'
 			/>
 			<article
-				v-show="viewMode !== ViewMode.Edit"
-				v-html="html"
-				ref="previewEl"
-				class="markdown"
-				:class="{
+				v-show='viewMode !== ViewMode.Edit'
+				v-html='html'
+				ref='previewEl'
+				class='markdown'
+				:class='{
 					[$style.window]: true,
 					[$style.split]: viewMode === ViewMode.Split,
 					[$style.single]: viewMode === ViewMode.Preview,
-				}"
-				@scroll="lastScrollPreview = true"
+				}'
+				@scroll='lastScrollPreview = true'
 			/>
 		</div>
 
-		<div :class="$style.statebar">
-			<slot name="statebar-left" :ctx="ctx"/>
-			<span :class="$style.span"></span>
-			<slot name="statebar-right" :ctx="ctx"/>
+		<div :class='$style.statebar'>
+			<slot name='statebar-left' :ctx='ctx'/>
+			<span :class='$style.span'></span>
+			<slot name='statebar-right' :ctx='ctx'/>
 
-			<TextStateGroup :ctx="ctx"/>
-			<SyncScrollToggle :ctx="ctx"/>
+			<TextStateGroup :ctx='ctx'/>
+			<SyncScrollToggle :ctx='ctx'/>
 		</div>
 	</div>
 </template>
@@ -209,6 +209,7 @@ onUnmounted(() => disconnect?.());
 	font-size: initial;
 	word-break: break-all;
 	line-height: 1.8;
+	border-right: solid 1px #ddd;
 }
 
 .split {

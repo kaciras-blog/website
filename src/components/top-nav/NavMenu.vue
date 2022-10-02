@@ -1,35 +1,35 @@
 <template>
-	<div :class="$style.container">
-		<div :class="$style.header">
-			<div :class="$style.header_content">
+	<div :class='$style.container'>
+		<div :class='$style.header'>
+			<div :class='$style.header_content'>
 				<img
-					src="/avatar.png"
-					alt="Kaciras' Blog"
-					class="head"
+					src='/avatar.png'
+					alt='Kaciras" Blog'
+					class='head'
 				>
-				<p :class="$style.name">Kaciras' Blog</p>
+				<p :class='$style.name'>Kaciras' Blog</p>
 			</div>
 		</div>
 
-		<div :class="$style.body">
-			<RouterLink to="/" :class="$style.item">
-				<HomeIcon fill="#0099ff"/>
+		<div :class='$style.body'>
+			<RouterLink to='/' :class='$style.item'>
+				<HomeIcon fill='#0099ff'/>
 				首页
 			</RouterLink>
-			<RouterLink to="/list" :class="$style.item">
+			<RouterLink to='/list' :class='$style.item'>
 				<ListIcon/>
 				文章
 			</RouterLink>
-			<RouterLink to="/about/me" :class="$style.item">
-				<CopyrightIcon fill="#01AD20"/>
+			<RouterLink to='/about/me' :class='$style.item'>
+				<CopyrightIcon fill='#01AD20'/>
 				关于
 			</RouterLink>
-			<a href="/feed/rss" :class="$style.item">
-				<RssIcon fill="#eb8a34"/>
+			<a href='/feed/rss' :class='$style.item'>
+				<RssIcon fill='#eb8a34'/>
 				Feed 订阅
 			</a>
-			<div :class="$style.item" @click="showSettingFrame">
-				<SettingIcon fill="#3961ff"/>
+			<div :class='$style.item' @click='showSettingFrame'>
+				<SettingIcon fill='#3961ff'/>
 				设置
 			</div>
 		</div>

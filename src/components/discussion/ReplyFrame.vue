@@ -1,19 +1,19 @@
 <template>
-	<KxFrame title="查看回复">
-		<div :class="$style.frameBody">
+	<KxFrame title='查看回复'>
+		<div :class='$style.frameBody'>
 			<ScrollPagingView
-				v-model="data"
-				:loader="loadNext"
-				:auto-load="true"
+				v-model='data'
+				:loader='loadNext'
+				:auto-load='true'
 			>
-				<template v-slot="{ items }">
-					<ol :class="$style.list">
+				<template v-slot='{ items }'>
+					<ol :class='$style.list'>
 						<DiscussionContent
-							v-for="item of items"
-							:key="item.id"
-							:nest-root="host"
-							:value="item"
-							:class="$style.item"
+							v-for='item of items'
+							:key='item.id'
+							:nest-root='host'
+							:value='item'
+							:class='$style.item'
 						/>
 					</ol>
 				</template>
@@ -21,10 +21,10 @@
 		</div>
 
 		<button
-			:class="$style.bottom"
-			@click="showEditorFrame"
+			:class='$style.bottom'
+			@click='showEditorFrame'
 		>
-			<EditIcon :class="$style.icon"/>
+			<EditIcon :class='$style.icon'/>
 			写回复...
 		</button>
 	</KxFrame>

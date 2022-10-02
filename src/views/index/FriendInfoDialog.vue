@@ -1,42 +1,42 @@
 <template>
-	<KxBaseDialog title="友链信息">
-		<div :class="$style.wrapper">
+	<KxBaseDialog title='友链信息'>
+		<div :class='$style.wrapper'>
 			<img
-				:src="friend.background"
-				title="设置背景"
-				:class="$style.background"
-				alt="background"
-				@click="uploadBackground"
+				:src='friend.background'
+				title='设置背景'
+				:class='$style.background'
+				alt='background'
+				@click='uploadBackground'
 			>
 			<img
-				:src="friend.favicon ?? DEFAULT_AVATAR"
-				title="设置图标"
-				alt="favicon"
-				:class="$style.favicon"
-				@click.stop="uploadFavicon"
+				:src='friend.favicon ?? DEFAULT_AVATAR'
+				title='设置图标'
+				alt='favicon'
+				:class='$style.favicon'
+				@click.stop='uploadFavicon'
 			>
 		</div>
 
 		<MaterialTextInput
-			v-model="friend.url"
-			label="URL"
-			name="url"
-			placeholder="http://example.com/index"
+			v-model='friend.url'
+			label='URL'
+			name='url'
+			placeholder='http://example.com/index'
 		/>
 		<MaterialTextInput
-			v-model="friend.name"
-			name="name"
-			label="名字（16字以内）"
+			v-model='friend.name'
+			name='name'
+			label='名字（16字以内）'
 		/>
 		<MaterialTextInput
-			v-model="friend.friendPage"
-			name="friendPage"
-			label="对方的友链页（可选，用于检查互友）"
+			v-model='friend.friendPage'
+			name='friendPage'
+			label='对方的友链页（可选，用于检查互友）'
 		/>
 
 		<KxDialogButtons
-			:on-accept="confirm"
-			:on-cancel="dialog.close"
+			:on-accept='confirm'
+			:on-cancel='dialog.close'
 		/>
 	</KxBaseDialog>
 </template>

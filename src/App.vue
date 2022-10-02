@@ -1,10 +1,10 @@
 <!-- 很多组件必须跟主实例中挂载，否则功能将受限 -->
 <template>
-	<KxProgress :ref="connect"/>
+	<KxProgress :ref='connect'/>
 	<RouterView/>
 	<DialogContainer/>
 	<ToastContainer/>
-	<noscript class="global-error">
+	<noscript class='global-error'>
 		禁用 JavaScript 会导致部分功能不正常
 	</noscript>
 </template>

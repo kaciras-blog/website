@@ -1,25 +1,25 @@
 <template>
-	<KxBaseDialog title="添加链接">
-		<form :class="$style.form" @keyup.enter="ok">
+	<KxBaseDialog title='添加链接'>
+		<form :class='$style.form' @keyup.enter='ok'>
 			<label>链接地址</label>
 			<input
-				v-model="data.href"
-				title="链接地址"
-				:class="$style.input"
-				placeholder="地址不能为空"
+				v-model='data.href'
+				title='链接地址'
+				:class='$style.input'
+				placeholder='地址不能为空'
 				required
 				v-autofocus
 			/>
 
 			<label>文字</label>
 			<input
-				v-model="data.text"
-				title="文字"
-				:class="$style.input"
-				:placeholder="data.href"
+				v-model='data.text'
+				title='文字'
+				:class='$style.input'
+				:placeholder='data.href'
 			/>
 		</form>
-		<KxDialogButtons @accept="ok" @cancel="dialog.close"/>
+		<KxDialogButtons @accept='ok' @cancel='dialog.close'/>
 	</KxBaseDialog>
 </template>
 

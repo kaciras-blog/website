@@ -1,33 +1,33 @@
 <!-- /about/me 更具通用性，比用自己名字做 url 更好，况且名字还可能变 -->
 <template>
-	<div class="about-tab-page">
-		<PageMeta title="站长"/>
+	<div class='about-tab-page'>
+		<PageMeta title='站长'/>
 
-		<section class="about-section">
-			<div :class="$style.profile">
+		<section class='about-section'>
+			<div :class='$style.profile'>
 				<img
-					src="/avatar.png"
-					alt="logo"
-					class="large head"
+					src='/avatar.png'
+					alt='logo'
+					class='large head'
 				>
-				<h1 :class="$style.name">Kaciras</h1>
+				<h1 :class='$style.name'>Kaciras</h1>
 				<p>自学码农 / 热爱技术 / 全栈开发 / 二刺螈 / 啥都想学</p>
 
-				<p :class="$style.socialLinks">
+				<p :class='$style.socialLinks'>
 					<SocialLink
-						href="mailto:Kaciras@protonmail.com"
-						name="Email"
-						icon="@/assets/img/email.svg"
+						href='mailto:Kaciras@protonmail.com'
+						name='Email'
+						icon='@/assets/img/email.svg'
 					/>
 					<SocialLink
-						href="https://github.com/Kaciras"
-						name="GitHub"
-						icon="@/assets/img/logo-github.svg"
+						href='https://github.com/Kaciras'
+						name='GitHub'
+						icon='@/assets/img/logo-github.svg'
 					/>
 					<SocialLink
-						href="https://matrix.to/#/@kaciras:matrix.org"
-						name="Matrix"
-						icon="@/assets/img/element-io.svg"
+						href='https://matrix.to/#/@kaciras:matrix.org'
+						name='Matrix'
+						icon='@/assets/img/element-io.svg'
 					/>
 				</p>
 			</div>
@@ -40,11 +40,11 @@
 		</section>
 
 		<DiscussionSection
-			:type="2"
-			:object-id="1"
-			:key="1"
-			class="about-section"
-			:class="$style.discussion"
+			:type='2'
+			:object-id='1'
+			:key='1'
+			class='about-section'
+			:class='$style.discussion'
 		/>
 	</div>
 </template>

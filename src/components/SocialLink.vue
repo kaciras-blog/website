@@ -1,15 +1,15 @@
 <template>
 	<a
-		:title="name"
-		:href="href"
-		target="_blank"
-		rel="noopener"
-		:class="$style.container"
+		:title='name'
+		:href='href'
+		target='_blank'
+		rel='noopener'
+		:class='$style.container'
 	>
 		<img
-			:src="icon"
-			:alt="name"
-			:class="$style.icon"
+			:src='icon'
+			:alt='name'
+			:class='$style.icon'
 		>
 	</a>
 </template>

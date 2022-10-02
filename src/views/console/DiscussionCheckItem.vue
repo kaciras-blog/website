@@ -1,14 +1,14 @@
 <template>
-	<li :class="$style.container">
-		<div :class="$style.link">
+	<li :class='$style.container'>
+		<div :class='$style.link'>
 			<KxCheckBox
-				v-model="checkedForward"
+				v-model='checkedForward'
 			/>
 			<span>
 				用户评论了文章：
 				<a
-					class="highlight"
-					:href="topic.url"
+					class='highlight'
+					:href='topic.url'
 				>
 					{{ topic.name }}
 				</a>
@@ -16,14 +16,14 @@
 		</div>
 
 		<img
-			:src="user.avatar"
-			alt="头像"
-			:class="$style.head"
-			class="small head"
+			:src='user.avatar'
+			alt='头像'
+			:class='$style.head'
+			class='small head'
 		>
 
-		<div :class="$style.content">
-			<p :class="$style.name">
+		<div :class='$style.content'>
+			<p :class='$style.name'>
 				{{ user.name }}
 			</p>
 			<div>{{ content }}</div>

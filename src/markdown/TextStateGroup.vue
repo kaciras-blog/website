@@ -1,8 +1,8 @@
 <template>
-	<span v-if="start !== end" :class="$style.item">
+	<span v-if='start !== end' :class='$style.item'>
 		选择：{{ start + " - " + end }} | {{ end - start }} 字
 	</span>
-	<span :class="$style.item">总字数：{{ ctx.content.length }}</span>
+	<span :class='$style.item'>总字数：{{ ctx.content.length }}</span>
 </template>
 
 <script setup lang="ts">

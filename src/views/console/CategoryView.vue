@@ -1,62 +1,62 @@
 <template>
 	<div>
 		<div
-			:class="$style.infoSection"
-			@click.self="setBackground"
-			:style="styleVars"
-			:title="editable ? '点击换背景' : null"
+			:class='$style.infoSection'
+			@click.self='setBackground'
+			:style='styleVars'
+			:title='editable ? "点击换背景" : null'
 		>
-			<div :class="$style.infoPanel">
+			<div :class='$style.infoPanel'>
 				<img
-					class="head"
-					:class="$style.head"
-					:src="item.cover ?? DEFAULT_CODER"
-					:title="editable ? '点击换头像' : null"
-					alt="图标"
-					@click="setCover"
+					class='head'
+					:class='$style.head'
+					:src='item.cover ?? DEFAULT_CODER'
+					:title='editable ? "点击换头像" : null'
+					alt='图标'
+					@click='setCover'
 				>
 				<input
-					v-if="editable"
-					v-model="item.name"
-					title="名称"
-					class="dark"
-					:class="$style.name"
+					v-if='editable'
+					v-model='item.name'
+					title='名称'
+					class='dark'
+					:class='$style.name'
 				>
-				<span v-else :class="$style.name">
+				<span v-else :class='$style.name'>
 					{{ item.name }}
 				</span>
 
 				<textarea
-					v-if="editable"
-					v-model="item.description"
-					title="描述"
-					class="dark input"
-					:class="$style.desc"
+					v-if='editable'
+					v-model='item.description'
+					title='描述'
+					class='dark input'
+					:class='$style.desc'
 				/>
 
-				<span v-else :class="$style.desc">
+				<span v-else :class='$style.desc'>
 					{{ item.description }}
 				</span>
 
-				<div :class="$style.buttons" v-if="editable">
+				<div :class='$style.buttons' v-if='editable'>
 					<KxButton
-						type="outline"
-						color="primary"
-						@click="$emit('change')"
+						type='outline'
+						color='primary'
+						@click='$emit("change")'
 					>
 						应用更改
 					</KxButton>
 					<KxButton
-						type="outline"
-						color="primary"
-						@click="move"
+						type='outline'
+						color='primary'
+						@click='move'
 					>
 						移动
 					</KxButton>
 					<KxButton
-						type="outline"
-						color="dangerous"
-						@click="remove"
+						type='outline'
+						color='dangerous'
+						@click='remove'
 					>
 						删除
 					</KxButton>
@@ -64,12 +64,12 @@
 			</div>
 		</div>
 
-		<div v-if="editable" :class="$style.optionSection">
+		<div v-if='editable' :class='$style.optionSection'>
 			<h3>导航栏背景色：</h3>
-			<KxRadioBoxGroup v-model="item.theme" name="theme">
-				<KxRadioBox :value="0">默认</KxRadioBox>
-				<KxRadioBox :value="1">明亮</KxRadioBox>
-				<KxRadioBox :value="2">暗色</KxRadioBox>
+			<KxRadioBoxGroup v-model='item.theme' name='theme'>
+				<KxRadioBox :value='0'>默认</KxRadioBox>
+				<KxRadioBox :value='1'>明亮</KxRadioBox>
+				<KxRadioBox :value='2'>暗色</KxRadioBox>
 			</KxRadioBoxGroup>
 		</div>
 	</div>
@@ -78,7 +78,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import DEFAULT_CODER from "@/assets/img/category.png";
-import { useDialog, KxButton, KxRadioBoxGroup, KxRadioBox } from "@kaciras-blog/uikit";
+import { KxButton, KxRadioBox, KxRadioBoxGroup, useDialog } from "@kaciras-blog/uikit";
 import api from "@/api";
 import SelectCategoryDialog from "@/components/SelectCategoryDialog.vue";
 import MoveCategoryDialog from "./MoveCategoryDialog.vue";

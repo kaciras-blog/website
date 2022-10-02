@@ -1,85 +1,85 @@
 <template>
-	<section :ref="lazyLoad">
-		<header :class="$style.header">
-			<h1 :class="$style.title">友情链接</h1>
+	<section :ref='lazyLoad'>
+		<header :class='$style.header'>
+			<h1 :class='$style.title'>友情链接</h1>
 
-			<div v-if="sorting" :class="$style.toolbar">
+			<div v-if='sorting' :class='$style.toolbar'>
 				<KxButton
-					:class="$style.iconButton2"
-					type="icon"
-					title="取消"
-					@click="sortFinish(false)"
+					:class='$style.iconButton2'
+					type='icon'
+					title='取消'
+					@click='sortFinish(false)'
 				>
-					<CloseIcon fill="#f44336"/>
+					<CloseIcon fill='#f44336'/>
 				</KxButton>
 				<KxButton
-					:class="$style.iconButton2"
-					type="icon"
-					title="确定"
-					@click="sortFinish(true)"
+					:class='$style.iconButton2'
+					type='icon'
+					title='确定'
+					@click='sortFinish(true)'
 				>
-					<CheckIcon fill="#2196f3"/>
+					<CheckIcon fill='#2196f3'/>
 				</KxButton>
 			</div>
 
 			<div
-				v-else-if="user.isAdmin"
-				:class="$style.toolbar"
+				v-else-if='user.isAdmin'
+				:class='$style.toolbar'
 			>
 				<KxButton
-					type="icon"
-					title="调整顺序"
-					:class="$style.iconButton"
-					@click="sort"
+					type='icon'
+					title='调整顺序'
+					:class='$style.iconButton'
+					@click='sort'
 				>
 					<SortIcon/>
 				</KxButton>
 				<KxButton
-					type="icon"
-					title="添加"
-					:class="$style.iconButton"
-					@click="makeFriend"
+					type='icon'
+					title='添加'
+					:class='$style.iconButton'
+					@click='makeFriend'
 				>
 					<AddIcon/>
 				</KxButton>
 			</div>
 		</header>
 
-		<ul :class="$style.list" ref="listEl">
+		<ul :class='$style.list' ref='listEl'>
 			<li
-				v-for="(friend, i) of friends"
-				:key="friend.id"
-				:class="$style.item"
+				v-for='(friend, i) of friends'
+				:key='friend.id'
+				:class='$style.item'
 			>
 				<div
-					v-if="friend.placeholder"
-					:style="friend.style"
+					v-if='friend.placeholder'
+					:style='friend.style'
 				/>
 				<FriendCard
 					v-else
-					:disabled="sorting"
-					:active="active"
-					:friend="friend"
-					@dragstart="drag($event, i)"
+					:disabled='sorting'
+					:active='active'
+					:friend='friend'
+					@dragstart='drag($event, i)'
 				/>
 
 				<KxButton
-					v-if="user.isAdmin && !sorting"
-					type="icon"
-					title="修改"
-					:class="$style.edit"
-					@click="edit(friend)"
+					v-if='user.isAdmin && !sorting'
+					type='icon'
+					title='修改'
+					:class='$style.edit'
+					@click='edit(friend)'
 				>
 					<PencilIcon/>
 				</KxButton>
 				<KxButton
-					v-if="user.isAdmin && !sorting"
-					type="icon"
-					title="删除"
-					:class="$style.remove"
-					@click="rupture(i)"
+					v-if='user.isAdmin && !sorting'
+					type='icon'
+					title='删除'
+					:class='$style.remove'
+					@click='rupture(i)'
 				>
-					<CloseIcon fill="#f44336"/>
+					<CloseIcon fill='#f44336'/>
 				</KxButton>
 			</li>
 		</ul>

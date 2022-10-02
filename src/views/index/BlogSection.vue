@@ -1,37 +1,37 @@
 <template>
 	<section>
-		<header :class="$style.header">
-			<h1 :class="$style.title">推荐</h1>
+		<header :class='$style.header'>
+			<h1 :class='$style.title'>推荐</h1>
 			<KxButton
-				type="outline"
-				route="/list"
+				type='outline'
+				route='/list'
 			>
 				更多文章 >
 			</KxButton>
 		</header>
 
 		<!-- 懒得再套一层 li 了没用 ul -->
-		<div v-if="cards.length" :class="$style.card_list">
+		<div v-if='cards.length' :class='$style.card_list'>
 			<SmartLink
-				v-for="card of cards"
-				:key="card.id"
-				:href="card.link"
-				:aria-label="card.name"
-				class="clean-link"
-				:class="$style.figure"
+				v-for='card of cards'
+				:key='card.id'
+				:href='card.link'
+				:aria-label='card.name'
+				class='clean-link'
+				:class='$style.figure'
 			>
 				<article>
-					<div :class="$style.card_header">
+					<div :class='$style.card_header'>
 						<img
-							:src="card.picture"
-							alt="封面"
-							:class="$style.picture"
+							:src='card.picture'
+							alt='封面'
+							:class='$style.picture'
 						>
-						<h1 :class="$style.name">
+						<h1 :class='$style.name'>
 							{{ card.name }}
 						</h1>
 					</div>
-					<div :class="$style.content">
+					<div :class='$style.content'>
 						{{ card.description }}
 					</div>
 				</article>

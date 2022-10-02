@@ -1,22 +1,22 @@
 <template>
 	<div>
-		<h3 :class="$style.padding">浏览排行</h3>
-		<ol v-if="hots" class="rank-list">
+		<h3 :class='$style.padding'>浏览排行</h3>
+		<ol v-if='hots' class='rank-list'>
 
 			<!-- 这里要保持 <a> 的链接，不能直接把 <RouterLink> 搞成 <li> -->
 			<li
-				v-for="article of hots"
-				:key="article.id"
+				v-for='article of hots'
+				:key='article.id'
 			>
 				<RouterLink
-					:to="articleLink(article)"
-					class="item"
+					:to='articleLink(article)'
+					class='item'
 				>
 					{{ article.title }}
 				</RouterLink>
 			</li>
 		</ol>
-		<p :class="$style.noContent" v-else>加载失败</p>
+		<p :class='$style.noContent' v-else>加载失败</p>
 	</div>
 </template>
 

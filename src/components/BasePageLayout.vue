@@ -1,15 +1,15 @@
 <template>
 	<!-- 做个属性穿透这么麻烦 -->
-	<slot name="nav">
+	<slot name='nav'>
 		<top-nav
-			:class="navClass"
-			:style="navStyle"
+			:class='navClass'
+			:style='navStyle'
 		/>
 	</slot>
 
 	<slot></slot>
 
-	<PageFooter v-if="footer"/>
+	<PageFooter v-if='footer'/>
 </template>
 
 <script>

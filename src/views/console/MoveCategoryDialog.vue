@@ -1,21 +1,21 @@
 <template>
-	<KxBaseDialog v-once title="选择移动方式">
-		<button :class="$style.button" @click="$dialog.confirm(false)">
-			<span :class="$style.text">仅单个分类</span>
+	<KxBaseDialog v-once title='选择移动方式'>
+		<button :class='$style.button' @click='$dialog.confirm(false)'>
+			<span :class='$style.text'>仅单个分类</span>
 			<img
-				title="only current"
-				alt="only current"
-				:class="$style.image"
-				src="@/assets/img/category-single.svg"
+				title='only current'
+				alt='only current'
+				:class='$style.image'
+				src='@/assets/img/category-single.svg'
 			>
 		</button>
-		<button :class="$style.button" @click="$dialog.confirm(true)">
-			<span :class="$style.text">包含子树</span>
+		<button :class='$style.button' @click='$dialog.confirm(true)'>
+			<span :class='$style.text'>包含子树</span>
 			<img
-				title="include subtree"
-				alt="include subtree"
-				:class="$style.image"
-				src="@/assets/img/category-subtree.svg"
+				title='include subtree'
+				alt='include subtree'
+				:class='$style.image'
+				src='@/assets/img/category-subtree.svg'
 			>
 		</button>
 	</KxBaseDialog>

@@ -1,51 +1,51 @@
 <template>
 	<KxBaseDialog :title='draft.articleId ? "更新文章": "发表文章"'>
-		<form :class="$style.body">
+		<form :class='$style.body'>
 
-			<div :class="$style.category" class="segment">
-				<span class="label">分类：</span>
+			<div :class='$style.category' class='segment'>
+				<span class='label'>分类：</span>
 
-				<template v-if="category">
+				<template v-if='category'>
 					<img
-						class="small head"
-						:src="category.cover"
-						alt="分类图标"
+						class='small head'
+						:src='category.cover'
+						alt='分类图标'
 					>
-					<h3 :class="$style.name">{{ category.name }}</h3>
+					<h3 :class='$style.name'>{{ category.name }}</h3>
 				</template>
 
 				<KxButton
-					type="outline"
-					:style="{ marginLeft: 'auto' }"
-					@click="selectCategory"
+					type='outline'
+					:style='{ marginLeft: "auto" }'
+					@click='selectCategory'
 				>
 					选择分类
 				</KxButton>
 			</div>
 
-			<label for="urlTitle" :class="$style.block_label">
+			<label for='urlTitle' :class='$style.block_label'>
 				URL里的标题（尽量使用英文）
 			</label>
-			<div :class="$style.field">
+			<div :class='$style.field'>
 				<input
-					v-model="urlTitle"
-					id="urlTitle"
-					title="URL，尽量用英文"
-					:placeholder="current.title"
-					:class="$style.input"
+					v-model='urlTitle'
+					id='urlTitle'
+					title='URL，尽量用英文'
+					:placeholder='current.title'
+					:class='$style.input'
 				>
 				<KxButton
-					type="outline"
-					@click="replace"
+					type='outline'
+					@click='replace'
 				>
 					替换空格
 				</KxButton>
 			</div>
 
-			<KxCheckBox v-model="destroy">发表后删除草稿</KxCheckBox>
+			<KxCheckBox v-model='destroy'>发表后删除草稿</KxCheckBox>
 		</form>
 
-		<KxDialogButtons @accept="accept" @cancel="dialog.close"/>
+		<KxDialogButtons @accept='accept' @cancel='dialog.close'/>
 	</KxBaseDialog>
 </template>
 

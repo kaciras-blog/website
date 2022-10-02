@@ -1,21 +1,21 @@
 <!-- TODO: 这一版的设计以rem长度单位为主，对宽屏不友好，但由于我没有那么宽的屏幕来做调试，所以搞不了 -->
 <template>
-	<BasePageLayout nav-class="login-header">
-		<PageMeta :body-class="$style.container"/>
+	<BasePageLayout nav-class='login-header'>
+		<PageMeta :body-class='$style.container'/>
 
-		<div :class="$style.body">
-			<div :class="$style.picture_box">
+		<div :class='$style.body'>
+			<div :class='$style.picture_box'>
 				<img
-					src="@/assets/img/LoginPicture.jpg"
-					alt="banner"
-					:class="$style.picture"
+					src='@/assets/img/LoginPicture.jpg'
+					alt='banner'
+					:class='$style.picture'
 				>
 			</div>
 			<component
-				:is="activePanel"
-				:class="$style.formPanel"
-				:return-uri="returnUri"
-				@switch-panel="switchPanel"
+				:is='activePanel'
+				:class='$style.formPanel'
+				:return-uri='returnUri'
+				@switch-panel='switchPanel'
 			/>
 		</div>
 	</BasePageLayout>

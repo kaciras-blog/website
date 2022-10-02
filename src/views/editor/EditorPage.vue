@@ -1,44 +1,44 @@
 <template>
-	<PageMeta title="编辑器" body-class=""/>
+	<PageMeta title='编辑器' body-class=''/>
 
-	<MarkdownEditor :class="$style.editor" v-model="current.content">
-		<template #toolbar-left="{ ctx }">
-			<TextTools :ctx="ctx"/>
-			<MediaTools :ctx="ctx"/>
+	<MarkdownEditor :class='$style.editor' v-model='current.content'>
+		<template #toolbar-left='{ ctx }'>
+			<TextTools :ctx='ctx'/>
+			<MediaTools :ctx='ctx'/>
 		</template>
-		<template #toolbar-right="{ ctx }">
-			<ConfigToolbar :ctx="ctx"/>
+		<template #toolbar-right='{ ctx }'>
+			<ConfigToolbar :ctx='ctx'/>
 			<KxButton
-				class="primary"
-				type="icon"
-				title="修改简介"
-				@click="showMetadataDialog"
+				class='primary'
+				type='icon'
+				title='修改简介'
+				@click='showMetadataDialog'
 			>
 				<CardIcon/>
 			</KxButton>
 			<KxButton
-				class="primary"
-				type="icon"
-				title="保存"
-				@click="manualSave"
+				class='primary'
+				type='icon'
+				title='保存'
+				@click='manualSave'
 			>
 				<SaveIcon/>
 			</KxButton>
 			<KxButton
-				class="primary"
-				type="icon"
-				title="发布!"
-				@click="showPublishDialog"
+				class='primary'
+				type='icon'
+				title='发布!'
+				@click='showPublishDialog'
 			>
 				<PaperPlaneIcon/>
 			</KxButton>
 		</template>
 
 		<template #statebar-left>
-			<span v-if="autoSaveError" :class="$style.error">
+			<span v-if='autoSaveError' :class='$style.error'>
 				自动保存出错
 			</span>
-			<span v-else-if="draft.updateTime">
+			<span v-else-if='draft.updateTime'>
 				上次保存：{{ localDateMinute(draft.updateTime) }}
 			</span>
 		</template>

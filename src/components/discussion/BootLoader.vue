@@ -1,12 +1,12 @@
 <!-- 等 Suspense 出了看能不能替代 -->
 <template>
-	<section v-if="loading" :class="$style.loading" :ref="observe">
+	<section v-if='loading' :class='$style.loading' :ref='observe'>
 		<AtomSpinner/>
-		<span :class="$style.loadingText">评论加载中</span>
+		<span :class='$style.loadingText'>评论加载中</span>
 	</section>
 
-	<section v-else-if="loadFail" :class="$style.loading">
-		<span :class="$style.failed">评论加载失败</span>
+	<section v-else-if='loadFail' :class='$style.loading'>
+		<span :class='$style.failed'>评论加载失败</span>
 	</section>
 
 	<section v-else><slot></slot></section>

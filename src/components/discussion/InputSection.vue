@@ -1,32 +1,32 @@
 <template>
-	<div v-if="options.disabled" ref="thisEl" :class="$style.shore">
+	<div v-if='options.disabled' ref='thisEl' :class='$style.shore'>
 		已设置为禁止评论
 	</div>
 
-	<div v-else-if="options.loginRequired && user.id === 0" ref="thisEl" :class="$style.shore">
+	<div v-else-if='options.loginRequired && user.id === 0' ref='thisEl' :class='$style.shore'>
 		已禁止匿名评论,请先
 		<RouterLink class='highlight' to='/login'>登录</RouterLink>
 	</div>
 
-	<div v-else :class="$style.form">
-		<EmbeddedEditor v-if="$bp.isGreater('tablet')" ref="thisEl" v-bind="props"/>
+	<div v-else :class='$style.form'>
+		<EmbeddedEditor v-if='$bp.isGreater("tablet")' ref='thisEl' v-bind='props'/>
 
 		<!-- 是在想不到更好看的做法了，还是用输入框的样式吧 -->
-		<div v-else ref="thisEl" :class="$style.mobileSection">
+		<div v-else ref='thisEl' :class='$style.mobileSection'>
 			<img
-				:src="user.avatar"
-				alt="头像"
-				class="lite head"
+				:src='user.avatar'
+				alt='头像'
+				class='lite head'
 			>
 			<button
-				:class="$style.fakeInput"
-				@click="showEditorFrame"
+				:class='$style.fakeInput'
+				@click='showEditorFrame'
 			>
 				说点什么吧...
 			</button>
 		</div>
 
-		<div v-if="options.moderation" :class="$style.warn">为防止滥用，评论将在审核后显示</div>
+		<div v-if='options.moderation' :class='$style.warn'>为防止滥用，评论将在审核后显示</div>
 	</div>
 </template>
 

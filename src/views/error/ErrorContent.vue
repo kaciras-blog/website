@@ -1,12 +1,12 @@
 <template>
-	<section :class="$style.container">
-		<h1 :class="$style.title">{{ title }}</h1>
+	<section :class='$style.container'>
+		<h1 :class='$style.title'>{{ title }}</h1>
 		<img
-			:src="image"
-			alt="ErrorImage"
-			:class="$style.image"
+			:src='image'
+			alt='ErrorImage'
+			:class='$style.image'
 		>
-		<div :class="$style.content"><slot/></div>
+		<div :class='$style.content'><slot/></div>
 	</section>
 </template>
 

@@ -1,65 +1,65 @@
 <template>
 	<img
-		class="small head"
-		alt="头像"
-		:src="user.avatar ?? DEFAULT_AVATAR"
+		class='small head'
+		alt='头像'
+		:src='user.avatar ?? DEFAULT_AVATAR'
 	>
-	<label :class="$style.name">
+	<label :class='$style.name'>
 		名字（可选）
 		<input
-			v-model="nickname"
-			name="nickname"
-			:placeholder="user.name"
-			:class="$style.nickname"
+			v-model='nickname'
+			name='nickname'
+			:placeholder='user.name'
+			:class='$style.nickname'
 		>
 	</label>
 
-	<button :class="$style.guide" @click="showGuide">
+	<button :class='$style.guide' @click='showGuide'>
 		<QuestionIcon/>
-		<span class="hide-m">帮助</span>
+		<span class='hide-m'>帮助</span>
 	</button>
 
 	<MarkdownView
-		v-if="preview"
-		:class="$style.preview"
-		:value="content"
+		v-if='preview'
+		:class='$style.preview'
+		:value='content'
 	/>
 	<textarea
 		v-else
-		ref="textareaEl"
-		:class="$style.textarea"
-		class="input"
-		:value="content"
-		name="content"
+		ref='textareaEl'
+		:class='$style.textarea'
+		class='input'
+		:value='content'
+		name='content'
 		:placeholder='placeholder'
-		aria-label="输入评论"
+		aria-label='输入评论'
 		v-autofocus
-		v-ime-input="handleInput"
+		v-ime-input='handleInput'
 	/>
 
 	<div :class='$style.bottom_toolbar'>
 		<KxButton
-			v-if="preview"
-			type="outline"
-			title="编辑"
-			@click="preview=false"
+			v-if='preview'
+			type='outline'
+			title='编辑'
+			@click='preview=false'
 		>
-			<EditIcon class="prefix"/>
+			<EditIcon class='prefix'/>
 			编辑
 		</KxButton>
 		<KxButton
 			v-else
-			type="outline"
-			title="预览"
-			@click="preview=true"
+			type='outline'
+			title='预览'
+			@click='preview=true'
 		>
-			<EyeIcon class="prefix"/>
+			<EyeIcon class='prefix'/>
 			预览
 		</KxButton>
 
 		<KxTaskButton
 			class='primary'
-			:class="$style.submit"
+			:class='$style.submit'
 			:on-click='submit'
 		>
 			发表评论
@@ -72,7 +72,7 @@ import { computed, nextTick, ref } from "vue";
 import QuestionIcon from "bootstrap-icons/icons/question-circle.svg?sfc";
 import EyeIcon from "bootstrap-icons/icons/eye-fill.svg?sfc";
 import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
-import { useDialog, KxButton, KxTaskButton } from "@kaciras-blog/uikit";
+import { KxButton, KxTaskButton, useDialog } from "@kaciras-blog/uikit";
 import { DEFAULT_AVATAR } from "@/common";
 import { useCurrentUser } from "@/store";
 import { Discussion } from "@/api";

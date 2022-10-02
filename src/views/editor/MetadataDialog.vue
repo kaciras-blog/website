@@ -1,32 +1,32 @@
 <template>
-	<KxBaseDialog title="描述信息">
-		<form :class="$style.content">
+	<KxBaseDialog title='描述信息'>
+		<form :class='$style.content'>
 			<img
-				:class="$style.cover"
-				:src="local.cover ?? DEFAULT_COVER"
-				alt="封面"
-				@click="changeCover"
+				:class='$style.cover'
+				:src='local.cover ?? DEFAULT_COVER'
+				alt='封面'
+				@click='changeCover'
 			/>
 			<input
-				v-model="local.title"
-				title="标题"
-				:class="$style.title"
-				placeholder="标题最多50个字"
+				v-model='local.title'
+				title='标题'
+				:class='$style.title'
+				placeholder='标题最多50个字'
 			/>
 			<textarea
-				v-model="local.summary"
-				:class="$style.summary"
-				class="input"
-				placeholder="100字以内，留空则使用文章前50字"
+				v-model='local.summary'
+				:class='$style.summary'
+				class='input'
+				placeholder='100字以内，留空则使用文章前50字'
 			/>
 			<input
-				v-model="local.keywords"
-				title="关键字"
-				:class="$style.keywords"
-				placeholder="关键字,空格隔开"
+				v-model='local.keywords'
+				title='关键字'
+				:class='$style.keywords'
+				placeholder='关键字,空格隔开'
 			/>
 		</form>
-		<KxDialogButtons @accept="ok" @cancel="$dialog.close"/>
+		<KxDialogButtons @accept='ok' @cancel='$dialog.close'/>
 	</KxBaseDialog>
 </template>
 

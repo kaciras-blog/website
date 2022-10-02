@@ -1,8 +1,8 @@
 <template>
-	<nav :class="$style.container">
+	<nav :class='$style.container'>
 		<!-- 为了动态接收传入的样式，不能用伪元素 -->
-		<div :class="[$style.pseudo, imageClass]" :style="imageStyle"></div>
-		<TopNav tag="div" class="full-vertex"/>
+		<div :class='[$style.pseudo, imageClass]' :style='imageStyle'></div>
+		<TopNav tag='div' class='full-vertex'/>
 	</nav>
 </template>
 

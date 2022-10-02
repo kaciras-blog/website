@@ -1,5 +1,5 @@
 <template>
-	<div :ref="setupLazyLoad" class="markdown" v-html="html"></div>
+	<div :ref='setupLazyLoad' class='markdown' v-html='html'></div>
 </template>
 
 <script setup lang="ts">

@@ -1,23 +1,23 @@
 <template>
 	<KxSwitchBox
-		:disabled="unsupported || loading"
-		:modelValue="StaleApi"
-		:class="$style.line"
-		@update:modelValue="v => setOption('StaleApi', v)"
+		:disabled='unsupported || loading'
+		:modelValue='StaleApi'
+		:class='$style.line'
+		@update:modelValue='v => setOption("StaleApi", v)'
 	>
 		动态内容缓存
 	</KxSwitchBox>
 
-	<div v-if="unsupported" :class="$style.alert">
+	<div v-if='unsupported' :class='$style.alert'>
 		您的浏览器不支持 ServiceWorker，无法使用该功能
 	</div>
-	<div v-else-if="error" :class="$style.alert">
+	<div v-else-if='error' :class='$style.alert'>
 		无法连接 ServiceWorker：{{ error }}
 	</div>
-	<div v-else-if="loading" :class="$style.alert">
+	<div v-else-if='loading' :class='$style.alert'>
 		正在连接 ServiceWorker……
 	</div>
-	<div v-else class="minor-text">
+	<div v-else class='minor-text'>
 		该选项将对动态内容使用 stale-while-revalidate 缓存策略，
 		这能让访问过的内容无需网络立即加载，但新内容会被延迟到下一次访问。
 	</div>

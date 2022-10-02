@@ -1,29 +1,29 @@
 <template>
-	<KxButton type="icon" title="标题" @click="addHeader(1)">
+	<KxButton type='icon' title='标题' @click='addHeader(1)'>
 		<TitleIcon/>
 	</KxButton>
-	<KxButton type="icon" title="粗体" @click="switchWrapper('**')">
+	<KxButton type='icon' title='粗体' @click='switchWrapper("**")'>
 		<BoldIcon/>
 	</KxButton>
-	<KxButton type="icon" title="斜体" @click="switchWrapper('*')">
+	<KxButton type='icon' title='斜体' @click='switchWrapper("*")'>
 		<ItalicIcon/>
 	</KxButton>
-	<KxButton type="icon" title="删除线" @click="switchWrapper('~~')">
+	<KxButton type='icon' title='删除线' @click='switchWrapper("~~")'>
 		<StrikethroughIcon/>
 	</KxButton>
-	<KxButton type="icon" title="行内代码" @click="switchWrapper('`')">
+	<KxButton type='icon' title='行内代码' @click='switchWrapper("`")'>
 		<CodeIcon/>
 	</KxButton>
-	<KxButton type="icon" title="横线" @click="addNewLine('- - -')">
+	<KxButton type='icon' title='横线' @click='addNewLine("- - -")'>
 		<RemoveIcon/>
 	</KxButton>
-	<KxButton type="icon" title="引用块" @click="addPrefixToLines('>')">
+	<KxButton type='icon' title='引用块' @click='addPrefixToLines(">")'>
 		<QuoteIcon/>
 	</KxButton>
-	<KxButton type="icon" title="列表" @click="addPrefixToLines('* ')">
+	<KxButton type='icon' title='列表' @click='addPrefixToLines("* ")'>
 		<ListIcon/>
 	</KxButton>
-	<KxButton type="icon" title="插入链接" @click="addLink">
+	<KxButton type='icon' title='插入链接' @click='addLink'>
 		<AddLinkIcon/>
 	</KxButton>
 </template>

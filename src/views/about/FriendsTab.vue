@@ -1,10 +1,10 @@
 <template>
-	<div class="about-tab-page">
-		<PageMeta title="友链"/>
+	<div class='about-tab-page'>
+		<PageMeta title='友链'/>
 
-		<section id="friend" class="about-section">
+		<section id='friend' class='about-section'>
 			<h1>友情链接</h1>
-			<img alt="example" src="@/assets/img/friend-example.png" :class="$style.example">
+			<img alt='example' src='@/assets/img/friend-example.png' :class='$style.example'>
 			<p>
 				加友链在下面评论即可，填写以下几项：
 			</p>
@@ -18,13 +18,13 @@
 			<h2>本站信息</h2>
 			<p>
 				网站地址：
-				<a class="highlight" href="https://blog.kaciras.com">https://blog.kaciras.com</a>
+				<a class='highlight' href='https://blog.kaciras.com'>https://blog.kaciras.com</a>
 			</p>
 
 			<!-- 有些地方可能直接引用这个链接，所以要保证URL不变，并能在任意位置访问。-->
 			<p>
 				图标：
-				<a :class="$style.inlineLink" href='/avatar.png'>avatar.png</a>
+				<a :class='$style.inlineLink' href='/avatar.png'>avatar.png</a>
 			</p>
 			<p>名字：Kaciras</p>
 			<p>描述：编程 • 生活 • 梦想</p>
@@ -40,11 +40,11 @@
 			这里设置 key=<object-id> 强制页面切换时重新创建组件。
 		-->
 		<DiscussionSection
-			:type="2"
-			:object-id="2"
-			:key="2"
-			class="about-section"
-			:class="$style.discussion"
+			:type='2'
+			:object-id='2'
+			:key='2'
+			class='about-section'
+			:class='$style.discussion'
 		/>
 	</div>
 </template>

@@ -11,12 +11,12 @@
 <template>
 	<li>
 		<DiscussionContent
-			:value="$props"
-			tag="div"
-			@removed="$emit('removed')"
-			@reply="showReplyEditor"
+			:value='$props'
+			tag='div'
+			@removed='$emit("removed")'
+			@reply='showReplyEditor'
 		>
-			<blockquote v-if="parent" :class="$style.blockquote">
+			<blockquote v-if='parent' :class='$style.blockquote'>
 				<p>
 					回复：
 					@{{ displayName(parent) }}
@@ -24,7 +24,7 @@
 				</p>
 				<MarkdownView
 					:doc-id='"dq" + id'
-					:value="parent.content"
+					:value='parent.content'
 				/>
 			</blockquote>
 		</DiscussionContent>
@@ -36,82 +36,82 @@
 
 			一共三种组合，由于组件比较简单所以没提取组件，可能比较乱。
 		-->
-		<template v-if="expend || children.items.length">
+		<template v-if='expend || children.items.length'>
 			<ButtonPagingView
-				v-if="expend"
-				ref="repliesEl"
-				v-model="children"
-				theme="text"
-				:loader="loadNext"
-				:page-size="PAGE_SIZE"
-				:class="$style.nest"
+				v-if='expend'
+				ref='repliesEl'
+				v-model='children'
+				theme='text'
+				:loader='loadNext'
+				:page-size='PAGE_SIZE'
+				:class='$style.nest'
 			>
-				<template v-slot="{ items }">
-					<ol class="clean-list" :class="$style.list">
+				<template v-slot='{ items }'>
+					<ol class='clean-list' :class='$style.list'>
 						<DiscussionContent
-							v-for="item of items"
-							:key="item.id"
-							:nest-root="props"
-							:value="item"
-							:class="$style.reply"
-							@removed="refresh"
-							@reply="showReplyEditor"
+							v-for='item of items'
+							:key='item.id'
+							:nest-root='props'
+							:value='item'
+							:class='$style.reply'
+							@removed='refresh'
+							@reply='showReplyEditor'
 						/>
 					</ol>
 				</template>
 			</ButtonPagingView>
 
-			<div v-else-if="$bp.isGreater('tablet')" :class="$style.nest">
-				<ol class="clean-list" :class="$style.list">
+			<div v-else-if='$bp.isGreater("tablet")' :class='$style.nest'>
+				<ol class='clean-list' :class='$style.list'>
 					<DiscussionContent
-						v-for="item of children.items"
-						:key="item.id"
-						:nest-root="props"
-						:value="item"
-						:class="$style.reply"
-						@removed="refresh"
-						@reply="showReplyEditor"
+						v-for='item of children.items'
+						:key='item.id'
+						:nest-root='props'
+						:value='item'
+						:class='$style.reply'
+						@removed='refresh'
+						@reply='showReplyEditor'
 					/>
 				</ol>
-				<a class="hd-link" @click="showAllReplies">
+				<a class='hd-link' @click='showAllReplies'>
 					共 {{ children.total }} 条回复 &gt;
 				</a>
 			</div>
 
-			<div v-else :class="$style.nest">
-				<ol class="clean-list" :class="$style.list">
+			<div v-else :class='$style.nest'>
+				<ol class='clean-list' :class='$style.list'>
 					<li
-						v-for="item of children.items.slice(0, 3)"
-						:key="item.id"
-						:class="$style.preview"
+						v-for='item of children.items.slice(0, 3)'
+						:key='item.id'
+						:class='$style.preview'
 					>
-						<span :class="$style.name">
+						<span :class='$style.name'>
 							{{ item.user.name }}：
 						</span>
 						{{ item.content }}
 					</li>
 				</ol>
-				<a class="hd-link" @click="showNestFrame">
+				<a class='hd-link' @click='showNestFrame'>
 					共 {{ children.total }} 条回复 &gt;
 				</a>
 			</div>
 		</template>
 
 		<InputSection
-			v-if="replyContext"
-			:key="replyContext.parent.id"
-			v-bind="replyContext"
-			ref="editorEl"
-			:class="$style.input"
+			v-if='replyContext'
+			:key='replyContext.parent.id'
+			v-bind='replyContext'
+			ref='editorEl'
+			:class='$style.input'
 		/>
 	</li>
 </template>
 
 <script setup lang="ts">
 import { nextTick, ref } from "vue";
-import { useBreakPoint, useDialog, ButtonPagingView } from "@kaciras-blog/uikit";
+import { ButtonPagingView, useBreakPoint, useDialog } from "@kaciras-blog/uikit";
 import { debounceFirst } from "@kaciras-blog/server/lib/functions.js";
-import api, { Discussion, DiscussionState, Topic, User, ListQueryView } from "@/api";
+import api, { Discussion, DiscussionState, ListQueryView, Topic, User } from "@/api";
 import MarkdownView from "@/markdown/MarkdownView.vue";
 import DiscussionContent from "./DiscussionContent.vue";
 import ReplyFrame from "./ReplyFrame.vue";

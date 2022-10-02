@@ -1,26 +1,26 @@
 <template>
 	<transition
-		:enter-from-class="$style.enter_before"
-		:enter-active-class="$style.active_enter"
-		:leave-to-class="$style.enter_before"
-		:leave-active-class="$style.active_leave"
-		@after-leave="afterLeave"
+		:enter-from-class='$style.enter_before'
+		:enter-active-class='$style.active_enter'
+		:leave-to-class='$style.enter_before'
+		:leave-active-class='$style.active_leave'
+		@after-leave='afterLeave'
 	>
 		<!--
 			A11y: div 弹出层默认被辅助工具忽略，且组件内没有其他的关闭按钮，
 			必须设置 role 和 title 属性来提示
 		-->
 		<div
-			v-show="visible"
-			:class="$style.container"
-			role="button"
-			title="点击或按 ESC 关闭弹窗"
-			tabindex="0"
+			v-show='visible'
+			:class='$style.container'
+			role='button'
+			title='点击或按 ESC 关闭弹窗'
+			tabindex='0'
 			v-autofocus
-			@keydown.esc.self="$dialog.close"
-			@click.self="$dialog.close"
+			@keydown.esc.self='$dialog.close'
+			@click.self='$dialog.close'
 		>
-			<NavMenu :class="$style.navMenu"/>
+			<NavMenu :class='$style.navMenu'/>
 		</div>
 	</transition>
 </template>

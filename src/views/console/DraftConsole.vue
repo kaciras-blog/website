@@ -1,38 +1,38 @@
 <template>
-	<div class="btn-group console-toolbar">
+	<div class='btn-group console-toolbar'>
 		<KxButton
-			class="primary"
-			@click="newArticle"
+			class='primary'
+			@click='newArticle'
 		>
-			<EditIcon class="prefix"/>
+			<EditIcon class='prefix'/>
 			新文章
 		</KxButton>
 		<KxButton
-			color="dangerous"
-			@click="deleteAll"
+			color='dangerous'
+			@click='deleteAll'
 		>
-			<TrashIcon class="prefix"/>
+			<TrashIcon class='prefix'/>
 			全部删除
 		</KxButton>
 	</div>
 
 	<ScrollPagingView
-		v-model="draftList"
-		:loader="loadPage"
-		:page-size="20"
-		:auto-load="true"
+		v-model='draftList'
+		:loader='loadPage'
+		:page-size='20'
+		:auto-load='true'
 	>
-		<template v-slot="{ items }">
-			<ol v-if="items.length" class="clean-list">
+		<template v-slot='{ items }'>
+			<ol v-if='items.length' class='clean-list'>
 				<DraftConsoleItem
-					v-for="draft of items"
-					:key="draft.id"
-					class="segment"
-					v-bind="draft"
-					@removed="removeItem(draft)"
+					v-for='draft of items'
+					:key='draft.id'
+					class='segment'
+					v-bind='draft'
+					@removed='removeItem(draft)'
 				/>
 			</ol>
-			<span v-else class="minor-text">空空如也</span>
+			<span v-else class='minor-text'>空空如也</span>
 		</template>
 	</ScrollPagingView>
 </template>

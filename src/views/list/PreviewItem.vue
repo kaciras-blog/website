@@ -1,47 +1,47 @@
 <template>
-	<li :class="$style.container">
+	<li :class='$style.container'>
 		<RouterLink
-			:to="articleLink(item)"
-			tabindex="-1"
-			:class="$style.cover_link"
+			:to='articleLink(item)'
+			tabindex='-1'
+			:class='$style.cover_link'
 		>
 			<img
-				:src="item.cover"
-				alt="封面"
-				:class="$style.cover"
+				:src='item.cover'
+				alt='封面'
+				:class='$style.cover'
 			>
 		</RouterLink>
 
-		<h2 class="compact" :class="$style.title">
-			<RouterLink :to="articleLink(item)">
+		<h2 class='compact' :class='$style.title'>
+			<RouterLink :to='articleLink(item)'>
 				{{ item.title }}
 			</RouterLink>
 		</h2>
 
-		<div :class="$style.summary">
+		<div :class='$style.summary'>
 			{{ item.summary }}
 		</div>
 
-		<div class="tag-group" :class="$style.category">
+		<div class='tag-group' :class='$style.category'>
 			<span
-				v-for="c of item.categories"
-				:key="c.id"
-				class="tag-group-item"
+				v-for='c of item.categories'
+				:key='c.id'
+				class='tag-group-item'
 			>
 				{{ c.name }}
 			</span>
 		</div>
 
-		<div class="minor-text" :class="$style.meta">
-			<span title="发表于" :class="$style.metaItem">
+		<div class='minor-text' :class='$style.meta'>
+			<span title='发表于' :class='$style.metaItem'>
 				<EditIcon/>
 				<time>{{ localDate(item.create) }}</time>
 			</span>
-			<span title="浏览数" :class="$style.metaItem">
+			<span title='浏览数' :class='$style.metaItem'>
 				<EyeIcon/>
 				<span>{{ item.viewCount }}</span>
 			</span>
-			<span title="评论数" :class="$style.metaItem">
+			<span title='评论数' :class='$style.metaItem'>
 				<ChatIcon/>
 				<span>{{ item.discussionCount }}</span>
 			</span>

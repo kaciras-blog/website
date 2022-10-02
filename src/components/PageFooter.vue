@@ -1,15 +1,15 @@
 <!--suppress HtmlUnknownTarget -->
 <template v-once>
-	<footer :class="$style.globalFooter">
-		<div :class="$style.info">
+	<footer :class='$style.globalFooter'>
+		<div :class='$style.info'>
 			<p>&copy; Kaciras 2018-2022</p>
 			<address>Kaciras@protonmail.com</address>
 		</div>
 		<div>
-			<RouterLink class="highlight pink" to="/">首页</RouterLink>
+			<RouterLink class='highlight pink' to='/'>首页</RouterLink>
 		</div>
 		<div>
-			<a class="highlight pink" href="/sitemap.xml">站点地图</a>
+			<a class='highlight pink' href='/sitemap.xml'>站点地图</a>
 		</div>
 	</footer>
 </template>

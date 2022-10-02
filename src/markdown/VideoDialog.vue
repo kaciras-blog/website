@@ -1,78 +1,78 @@
 <template>
-	<KxBaseDialog title="插入视频">
-		<form :class="$style.form" @keyup.enter="enterKey">
-			<label for="video_url">
+	<KxBaseDialog title='插入视频'>
+		<form :class='$style.form' @keyup.enter='enterKey'>
+			<label for='video_url'>
 				视频URL（必需）
 			</label>
-			<div :class="$style.field">
+			<div :class='$style.field'>
 				<input
-					id="video_url"
-					v-model="data.src"
-					name="src"
-					:class="$style.text_box"
+					id='video_url'
+					v-model='data.src'
+					name='src'
+					:class='$style.text_box'
 				>
 				<KxTaskButton
-					:class="$style.button"
-					type="outline"
-					:on-click="uploadVideo"
+					:class='$style.button'
+					type='outline'
+					:on-click='uploadVideo'
 				>
 					上传
 				</KxTaskButton>
 			</div>
 
 			<KxRadioBoxGroup
-				v-model="data.isVideo"
-				name="isVideo"
-				:class="$style.field"
+				v-model='data.isVideo'
+				name='isVideo'
+				:class='$style.field'
 			>
-				<KxRadioBox :value="false">
+				<KxRadioBox :value='false'>
 					作为 GIF 动图
 				</KxRadioBox>
-				<KxRadioBox :value="true">
+				<KxRadioBox :value='true'>
 					作为视频
 				</KxRadioBox>
 			</KxRadioBoxGroup>
 
-			<template v-if="data.isVideo">
-				<label for="video_poster">
+			<template v-if='data.isVideo'>
+				<label for='video_poster'>
 					视频封面
 				</label>
-				<div :class="$style.field">
+				<div :class='$style.field'>
 					<input
-						id="video_poster"
-						v-model="data.poster"
-						name="poster"
-						:class="$style.text_box"
+						id='video_poster'
+						v-model='data.poster'
+						name='poster'
+						:class='$style.text_box'
 					>
 					<KxTaskButton
-						:class="$style.button"
-						type="outline"
-						:on-click="uploadPoster"
+						:class='$style.button'
+						type='outline'
+						:on-click='uploadPoster'
 					>
 						上传
 					</KxTaskButton>
 				</div>
 			</template>
 			<template v-else>
-				<label for="video_alt">
+				<label for='video_alt'>
 					说明文字
 				</label>
-				<div :class="$style.field">
+				<div :class='$style.field'>
 					<input
-						id="video_alt"
-						name="alt"
-						:class="$style.text_box"
-						:value="data.label"
-						@input="inputLabel"
+						id='video_alt'
+						name='alt'
+						:class='$style.text_box'
+						:value='data.label'
+						@input='inputLabel'
 					>
 				</div>
 			</template>
 		</form>
 
 		<KxDialogButtons
-			:acceptable="data.src.length > 0"
-			@cancel="dialog.close"
-			@accept="dialog.confirm(data)"
+			:acceptable='data.src.length > 0'
+			@cancel='dialog.close'
+			@accept='dialog.confirm(data)'
 		/>
 	</KxBaseDialog>
 </template>
@@ -159,6 +159,10 @@ async function uploadPoster() {
 
 .text_box {
 	flex: 1;
+}
+
+.progress {
+	width: 100%;
 }
 
 .button {

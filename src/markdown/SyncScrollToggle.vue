@@ -1,15 +1,15 @@
 <template>
 	<span
-		v-if="scrollSynced"
-		:class="[$style.element, $style.on]"
-		@click="scrollSynced = false"
+		v-if='scrollSynced'
+		:class='[$style.element, $style.on]'
+		@click='scrollSynced = false'
 	>
 		同步滚动开
 	</span>
 	<span
 		v-else
-		:class="[$style.element, $style.off]"
-		@click="scrollSynced = true"
+		:class='[$style.element, $style.off]'
+		@click='scrollSynced = true'
 	>
 		同步滚动关
 	</span>

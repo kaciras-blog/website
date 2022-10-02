@@ -1,10 +1,10 @@
 <template>
-	<BannerPageLayout :banner="article.banner">
-		<PageMeta :title="article.title" :body-class="$style.container"/>
+	<BannerPageLayout :banner='article.banner'>
+		<PageMeta :title='article.title' :body-class='$style.container'/>
 
-		<article :class="$style.article">
-			<header class="segment" :class="$style.header">
-				<h1 :class="$style.title">{{ article.title }}</h1>
+		<article :class='$style.article'>
+			<header class='segment' :class='$style.header'>
+				<h1 :class='$style.title'>{{ article.title }}</h1>
 				<p>
 					<span>发布时间：</span>
 					<time>{{ localDateMinute(article.create) }}</time>
@@ -16,9 +16,9 @@
 				<div>
 					<span>关键词：</span>
 					<span
-						v-for="keyword of article.keywords"
-						:key="keyword"
-						:class="$style.keyword"
+						v-for='keyword of article.keywords'
+						:key='keyword'
+						:class='$style.keyword'
 					>
 						{{ keyword }}
 					</span>
@@ -26,58 +26,62 @@
 			</header>
 
 			<MarkdownView
-				:value="article.content"
-				:is-article="true"
-				:class="$style.content"
+				:value='article.content'
+				:is-article='true'
+				:class='$style.content'
 			/>
 
-			<footer :class="$style.copyright">
-				<a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+			<footer :class='$style.copyright'>
+				<a rel='license' href='https://creativecommons.org/licenses/by/4.0/'>
 					<img
-						alt="知识共享许可协议"
-						width="88"
-						height="31"
-						src="https://i.creativecommons.org/l/by/4.0/88x31.png"
+						alt='知识共享许可协议'
+						width='88'
+						height='31'
+						src='https://i.creativecommons.org/l/by/4.0/88x31.png'
 					/>
 				</a>
 				<br/>
 				本作品采用
-				<a rel="license" href="https://creativecommons.org/licenses/by/4.0/" class="highlight">知识共享署名 4.0
+				<a rel='license' href='https://creativecommons.org/licenses/by/4.0/' class='highlight'>知识共享署名 4.0
 					国际许可协议</a>进行许可。
 			</footer>
 		</article>
 
 		<DiscussionSection
-			ref="discussion"
-			:key="article.id"
-			:object-id="article.id"
-			:type="1"
-			:class="$style.discussion"
+			ref='discussion'
+			:key='article.id'
+			:object-id='article.id'
+			:type='1'
+			:class='$style.discussion'
 		/>
 
 		<div
-			v-if="$bp.isGreater('tablet')"
-			:class="$style.sideButtons"
+			v-if='$bp.isGreater("tablet")'
+			:class='$style.sideButtons'
 		>
 			<KxButton
-				type="outline"
-				color="primary"
-				:class="$style.toolButton"
-				title="转到评论"
-				@click="gotoDiscuss"
+				type='outline'
+				color='primary'
+				:class='$style.toolButton'
+				title='转到评论'
+				@click='gotoDiscuss'
 			>
 				<ChatIcon/>
 			</KxButton>
 			<KxButton
-				type="outline"
-				color="primary"
-				:class="$style.toolButton"
-				title="回顶部"
-				@click="gotoTop"
+				type='outline'
+				color='primary'
+				:class='$style.toolButton'
+				title='回顶部'
+				@click='gotoTop'
 			>
 				<ArrowTopIcon/>
 			</KxButton>
 		</div>
+
+		<teleport to='head'>
+			<meta name='test' content='test,test'>
+		</teleport>
 	</BannerPageLayout>
 </template>
 
@@ -149,8 +153,8 @@ if (import.meta.env.SSR) {
 	head.meta += `<meta property="og:title" content="${escapeHtml(title)}">`;
 	head.meta += `<meta property="og:description" content="${escapeHtml(summary)}">`;
 	head.meta += `<meta property="og:image" content="https://blog.kaciras.com${article.cover}">`;
-	head.meta += `<meta property="og:site_name" content="Kaciras Blog">`;
-	head.meta += `<meta property="og:type" content="article">`;
+	head.meta += "<meta property=\"og:site_name\" content=\"Kaciras Blog\">";
+	head.meta += "<meta property=\"og:type\" content=\"article\">";
 	head.meta += `<meta property="og:url" content="https://blog.kaciras.com${articleLink(article)}">`;
 }
 

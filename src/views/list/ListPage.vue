@@ -1,39 +1,39 @@
 <template>
-	<BannerPageLayout :banner="category.banner">
-		<PageMeta title="所有文章" body-class=""/>
+	<BannerPageLayout :banner='category.banner'>
+		<PageMeta title='所有文章' body-class=''/>
 
-		<div id="index-page">
-			<section :class="$style.list">
-				<h1 class="segment" :class="$style.listTitle">
+		<div id='index-page'>
+			<section :class='$style.list'>
+				<h1 class='segment' :class='$style.listTitle'>
 					全部文章
 				</h1>
 				<ScrollPagingView
-					ref="listView"
-					v-model="articles"
-					:loader="loadPage"
-					:start="startPos"
-					:page-size="DEFAULT_PAGE_SIZE"
-					:next-link="nextPageUrl"
-					:auto-load="autoLoad"
+					ref='listView'
+					v-model='articles'
+					:loader='loadPage'
+					:start='startPos'
+					:page-size='DEFAULT_PAGE_SIZE'
+					:next-link='nextPageUrl'
+					:auto-load='autoLoad'
 				>
-					<template v-slot="{ items }">
-						<ul class="clean-list">
+					<template v-slot='{ items }'>
+						<ul class='clean-list'>
 							<PreviewItem
-								v-for="item of items"
-								:key="item.id"
-								:item="item"
-								class="segment"
+								v-for='item of items'
+								:key='item.id'
+								:item='item'
+								class='segment'
 							/>
 						</ul>
 					</template>
 				</ScrollPagingView>
 			</section>
 
-			<aside :class="$style.aside">
+			<aside :class='$style.aside'>
 				<AsidePanel></AsidePanel>
 
-				<h3 class="padding">设置</h3>
-				<KxSwitchBox name="auto-load" v-model="autoLoad">
+				<h3 class='padding'>设置</h3>
+				<KxSwitchBox name='auto-load' v-model='autoLoad'>
 					滚动加载
 				</KxSwitchBox>
 			</aside>

@@ -1,10 +1,10 @@
 <template>
-	<BasePageLayout :nav-class="navClass" :nav-style="navStyle">
+	<BasePageLayout :nav-class='navClass' :nav-style='navStyle'>
 
-		<template v-if="$bp.isGreater('tablet')" v-slot:nav>
-			<div :style="desktopNavStyle" :class="desktopNavClass">
-				<TopNavGlass :image-class="$style.image_resolver"/>
-				<div :class="$style.banner" role="banner"></div>
+		<template v-if='$bp.isGreater("tablet")' v-slot:nav>
+			<div :style='desktopNavStyle' :class='desktopNavClass'>
+				<TopNavGlass :image-class='$style.image_resolver'/>
+				<div :class='$style.banner' role='banner'></div>
 			</div>
 		</template>
 

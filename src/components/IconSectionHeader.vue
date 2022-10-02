@@ -1,7 +1,7 @@
 <template>
-	<header :class="$style.section_header">
-		<h1 class="compact">{{ title }}</h1>
-		<img :src="icon" alt="header icon" :class="$style.section_icon">
+	<header :class='$style.section_header'>
+		<h1 class='compact'>{{ title }}</h1>
+		<img :src='icon' alt='header icon' :class='$style.section_icon'>
 	</header>
 </template>
 

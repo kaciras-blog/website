@@ -1,77 +1,77 @@
 <template>
-	<div :class="$style.container">
-		<img :class="$style.cover" :src="value.cover" alt="封面">
+	<div :class='$style.container'>
+		<img :class='$style.cover' :src='value.cover' alt='封面'>
 
-		<div :class="$style.info_section">
-			<div :class="$style.header">
-				<span v-if="value.deleted" :class="$style.removed">
+		<div :class='$style.info_section'>
+			<div :class='$style.header'>
+				<span v-if='value.deleted' :class='$style.removed'>
 					已删除
 				</span>
 				<h3>{{ value.title }}</h3>
 			</div>
 
-			<div :class="$style.tag_group">
+			<div :class='$style.tag_group'>
 				<span
-					v-for="category of value.categories"
-					:key="category.id"
-					class="tag-group-item"
+					v-for='category of value.categories'
+					:key='category.id'
+					class='tag-group-item'
 				>
 					{{ category.name }}
 				</span>
 			</div>
 
-			<div :class="$style.attrs">
-				<PaperPlaneIcon :class="$style.icon" title="发表于"/>
+			<div :class='$style.attrs'>
+				<PaperPlaneIcon :class='$style.icon' title='发表于'/>
 				<time>{{ localDateMinute(value.create) }}</time>
 
-				<UpdateIcon :class="$style.icon" title="更新时间"/>
+				<UpdateIcon :class='$style.icon' title='更新时间'/>
 				<time>{{ localDateMinute(value.update) }}</time>
 
-				<EyeIcon :class="$style.icon" title="浏览数"/>
+				<EyeIcon :class='$style.icon' title='浏览数'/>
 				<span>{{ value.viewCount }}</span>
 
-				<ChatIcon :class="$style.icon" title="评论数"/>
+				<ChatIcon :class='$style.icon' title='评论数'/>
 				<span>{{ value.discussionCount }}</span>
 			</div>
 		</div>
 
-		<div :class="$style.buttons">
+		<div :class='$style.buttons'>
 			<KxButton
-				type="outline"
-				color="primary"
-				@click="addToCards"
+				type='outline'
+				color='primary'
+				@click='addToCards'
 			>
 				创建卡片
 			</KxButton>
 			<KxButton
-				type="outline"
-				color="primary"
-				@click="changeCategory"
+				type='outline'
+				color='primary'
+				@click='changeCategory'
 			>
 				更改分类
 			</KxButton>
 		</div>
-		<div :class="$style.buttons">
+		<div :class='$style.buttons'>
 			<KxButton
-				type="outline"
-				color="primary"
-				@click="edit"
+				type='outline'
+				color='primary'
+				@click='edit'
 			>
 				修改
 			</KxButton>
 			<KxButton
-				v-if="value.deleted"
-				color="info"
-				type="outline"
-				@click="updateDeleteState(false)"
+				v-if='value.deleted'
+				color='info'
+				type='outline'
+				@click='updateDeleteState(false)'
 			>
 				恢复
 			</KxButton>
 			<KxButton
 				v-else
-				type="outline"
-				color="dangerous"
-				@click="updateDeleteState(true)"
+				type='outline'
+				color='dangerous'
+				@click='updateDeleteState(true)'
 			>
 				删除
 			</KxButton>

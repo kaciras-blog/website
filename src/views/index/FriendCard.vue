@@ -4,23 +4,23 @@
 -->
 <template>
 	<a
-		:disabled="disabled"
-		:href="friend.url"
-		target="_blank"
-		rel="noopener"
-		:class="$style.container"
+		:disabled='disabled'
+		:href='friend.url'
+		target='_blank'
+		rel='noopener'
+		:class='$style.container'
 	>
 		<img
-			:src="active ? friend.background : null"
-			alt="background"
-			:class="$style.background"
+			:src='active ? friend.background : null'
+			alt='background'
+			:class='$style.background'
 		>
 		<img
-			:src="active ? friend.favicon ?? DEFAULT_AVATAR : null"
-			alt="favicon"
-			:class="$style.favicon"
+			:src='active ? friend.favicon ?? DEFAULT_AVATAR : null'
+			alt='favicon'
+			:class='$style.favicon'
 		>
-		<span :class="$style.name">{{ friend.name }}</span>
+		<span :class='$style.name'>{{ friend.name }}</span>
 	</a>
 </template>
 

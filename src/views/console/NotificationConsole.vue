@@ -1,39 +1,39 @@
 <template>
-	<div class="btn-group console-toolbar">
+	<div class='btn-group console-toolbar'>
 		<KxTaskButton
-			class="primary"
-			:on-click="clear"
+			class='primary'
+			:on-click='clear'
 		>
-			<ClearIcon class="prefix"/>
+			<ClearIcon class='prefix'/>
 			清除全部
 		</KxTaskButton>
 	</div>
 
 	<div
-		v-if="loading"
-		:class="$style.spinner"
+		v-if='loading'
+		:class='$style.spinner'
 	>
 		<AtomSpinner/>
 		<span>加载中……</span>
 	</div>
 
-	<ul v-else :class="$style.list">
-		<li v-for="{type, data, time} of notifications" class="segment">
+	<ul v-else :class='$style.list'>
+		<li v-for='{type, data, time} of notifications' class='segment'>
 			<p>
-				<span :class="[$style.label, $style[MAP[type].name]]">
+				<span :class='[$style.label, $style[MAP[type].name]]'>
 					{{ MAP[type].displayName }}
 				</span>
-				<time :class="$style.time">{{ localDateMinute(time) }}</time>
+				<time :class='$style.time'>{{ localDateMinute(time) }}</time>
 			</p>
 
-			<component :is="MAP[type].component" v-bind="data"/>
+			<component :is='MAP[type].component' v-bind='data'/>
 		</li>
 	</ul>
 </template>
 
 <script setup lang="ts">
 import { shallowRef } from "vue";
-import { useDialog, KxTaskButton, AtomSpinner } from "@kaciras-blog/uikit";
+import { AtomSpinner, KxTaskButton, useDialog } from "@kaciras-blog/uikit";
 import ClearIcon from "@material-design-icons/svg/filled/clear_all.svg?sfc";
 import api, { Notice } from "@/api";
 import { localDateMinute } from "@/common";

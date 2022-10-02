@@ -1,68 +1,68 @@
 <template>
-	<KxFrame :class="$style.container" title="编辑评论">
+	<KxFrame :class='$style.container' title='编辑评论'>
 		<template #actions>
 			<button
-				v-if="preview"
-				:class="$style.headerButton"
-				title="编辑"
+				v-if='preview'
+				:class='$style.headerButton'
+				title='编辑'
 				v-ripple
-				@click="preview=false"
+				@click='preview=false'
 			>
 				<EditIcon/>
 			</button>
 			<button
 				v-else
-				:class="$style.headerButton"
-				title="预览"
+				:class='$style.headerButton'
+				title='预览'
 				v-ripple
-				@click="preview=true"
+				@click='preview=true'
 			>
 				<EyeIcon/>
 			</button>
 			<button
-				:class="$style.headerButton"
-				title="帮助"
+				:class='$style.headerButton'
+				title='帮助'
 				v-ripple
-				@click="showGuide"
+				@click='showGuide'
 			>
 				<HelpIcon/>
 			</button>
 		</template>
 
 		<MarkdownView
-			v-if="preview"
-			:class="$style.body"
-			:value="content"
+			v-if='preview'
+			:class='$style.body'
+			:value='content'
 		/>
 		<textarea
 			v-else
-			:class="$style.body"
-			:value="content"
-			name="content"
+			:class='$style.body'
+			:value='content'
+			name='content'
 			:placeholder='placeholder'
-			aria-label="输入评论"
+			aria-label='输入评论'
 			v-autofocus
-			v-ime-input="handleInput"
+			v-ime-input='handleInput'
 		/>
 
-		<div :class="$style.toolbar">
+		<div :class='$style.toolbar'>
 			<img
-				:src="user.avatar"
-				alt="头像"
-				:class="$style.avatar"
+				:src='user.avatar'
+				alt='头像'
+				:class='$style.avatar'
 			>
 
 			名字：
 			<input
-				v-model="nickname"
-				name="nickname"
-				:placeholder="user.name"
-				:class="$style.nickname"
+				v-model='nickname'
+				name='nickname'
+				:placeholder='user.name'
+				:class='$style.nickname'
 			>
 
 			<KxTaskButton
-				:class="$style.button"
-				:on-click="handleSubmit"
+				:class='$style.button'
+				:on-click='handleSubmit'
 			>
 				发送
 				<PaperPlaneIcon/>

@@ -1,39 +1,39 @@
 <template>
-	<li :class="$style.container">
-		<div :class="$style.main">
+	<li :class='$style.container'>
+		<div :class='$style.main'>
 			<h3>{{ title }}</h3>
 
-			<span :class="$style.time" title="创建时间">
+			<span :class='$style.time' title='创建时间'>
 				<EditIcon/>
 				<time>{{ localDateMinute(createTime) }}</time>
 			</span>
-			<span :class="$style.time" title="最后更新">
+			<span :class='$style.time' title='最后更新'>
 				<UpdateIcon/>
 				<time>{{ localDateMinute(updateTime) }}</time>
 			</span>
 
 			<span
-				v-if="articleId"
-				title="修改现有的文章"
-				:class="$style.target"
+				v-if='articleId'
+				title='修改现有的文章'
+				:class='$style.target'
 			>
 				<PaperPlaneIcon/>
 				{{ articleId }}
 			</span>
 		</div>
 
-		<div class="btn-group">
+		<div class='btn-group'>
 			<KxButton
-				:route="'/edit/' + id"
-				type="outline"
-				color="primary"
+				:route='"/edit/" + id'
+				type='outline'
+				color='primary'
 			>
 				编辑
 			</KxButton>
 			<KxButton
-				type="outline"
-				color="dangerous"
-				@click="deleteDraft"
+				type='outline'
+				color='dangerous'
+				@click='deleteDraft'
 			>
 				删除
 			</KxButton>

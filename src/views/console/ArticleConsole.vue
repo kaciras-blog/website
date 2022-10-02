@@ -1,23 +1,23 @@
 <template>
-	<div class="btn-group console-toolbar">
+	<div class='btn-group console-toolbar'>
 		<KxButton
-			@click="newArticle"
+			@click='newArticle'
 		>
-			<EditIcon class="prefix"/>
+			<EditIcon class='prefix'/>
 			新文章
 		</KxButton>
 	</div>
 
 	<ArticleItem
-		v-for="article of list.items"
-		:key="article.id"
-		:value="article"
-		class="segment"
+		v-for='article of list.items'
+		:key='article.id'
+		:value='article'
+		class='segment'
 	/>
-	<span v-if="list.total === 0">
+	<span v-if='list.total === 0'>
 		没有找到文章,去写一篇吧~
 	</span>
-	<SkFadingCircle v-if="loading"/>
+	<SkFadingCircle v-if='loading'/>
 </template>
 
 <script setup lang="ts">

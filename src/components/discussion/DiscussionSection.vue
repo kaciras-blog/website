@@ -1,58 +1,58 @@
 <template>
-	<BootLoader :load-fn="initialize">
-		<header :class="$style.header">
-			<h2 :class="$style.title">
+	<BootLoader :load-fn='initialize'>
+		<header :class='$style.header'>
+			<h2 :class='$style.title'>
 				评论区({{ data.total }})
 			</h2>
 
-			<div :class="$style.options">
+			<div :class='$style.options'>
 				<!-- 有些组合是多余的，比如 nest_size,ASC -->
 				<KxSelect
-					:class="$style.sortSelect"
-					v-model="sort"
-					title="排序方式"
+					:class='$style.sortSelect'
+					v-model='sort'
+					title='排序方式'
 				>
-					<option value="id,ASC">最早</option>
-					<option value="id,DESC">最新</option>
-					<option value="nest_size,DESC">回复数</option>
+					<option value='id,ASC'>最早</option>
+					<option value='id,DESC'>最新</option>
+					<option value='nest_size,DESC'>回复数</option>
 				</KxSelect>
 
-				<KxSelect v-model="mode" title="评论结构">
-					<option value="ref">引用模式</option>
-					<option value="nest">楼中楼模式</option>
+				<KxSelect v-model='mode' title='评论结构'>
+					<option value='ref'>引用模式</option>
+					<option value='nest'>楼中楼模式</option>
 				</KxSelect>
 			</div>
 		</header>
 
 		<InputSection
-			:object-id="objectId"
-			:type="type"
-			@after-submit="afterSubmit"
+			:object-id='objectId'
+			:type='type'
+			@after-submit='afterSubmit'
 		/>
 
 		<component
-			:is="$bp.value === 'mobile' ? ScrollPagingView : ButtonPagingView"
-			ref="discussions"
-			v-model="data"
-			:page-size="30"
-			:loader="fetchData"
-			:top-buttons="true"
+			:is='$bp.value === "mobile" ? ScrollPagingView : ButtonPagingView'
+			ref='discussions'
+			v-model='data'
+			:page-size='30'
+			:loader='fetchData'
+			:top-buttons='true'
 		>
-			<template v-slot="{ items }">
-				<ol :class="$style.list">
+			<template v-slot='{ items }'>
+				<ol :class='$style.list'>
 					<DiscussionItem
-						v-for="item of items"
-						v-bind="item"
-						:key="item.id"
-						class="segment"
-						@after-submit="afterSubmit"
-						@removed="refresh"
+						v-for='item of items'
+						v-bind='item'
+						:key='item.id'
+						class='segment'
+						@after-submit='afterSubmit'
+						@removed='refresh'
 					/>
 				</ol>
 			</template>
 		</component>
 
-		<div v-if="data.total===0" :class="$style.empty">还没有评论呢</div>
+		<div v-if='data.total===0' :class='$style.empty'>还没有评论呢</div>
 	</BootLoader>
 </template>
 

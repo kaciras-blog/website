@@ -1,16 +1,16 @@
 <template>
 	<li
-		:class="$style.container"
-		tabindex="0"
-		@click="$emit('click')"
-		@keyup.enter="$emit('click')"
+		:class='$style.container'
+		tabindex='0'
+		@click='$emit("click")'
+		@keyup.enter='$emit("click")'
 	>
 		<img
-			:src="cover ?? CATEGORY_IMG"
-			alt="分类图标"
-			:class="$style.cover"
+			:src='cover ?? CATEGORY_IMG'
+			alt='分类图标'
+			:class='$style.cover'
 		>
-		<span :class="$style.name">
+		<span :class='$style.name'>
 			{{ name }}
 		</span>
 	</li>

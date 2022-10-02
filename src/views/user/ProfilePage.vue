@@ -1,38 +1,38 @@
 <template>
 	<BasePageLayout>
-		<PageMeta title="用户" :body-class="$style.pageLayout"/>
+		<PageMeta title='用户' :body-class='$style.pageLayout'/>
 
-		<div :class="$style.body">
-			<form :class="$style.card" class="panel">
+		<div :class='$style.body'>
+			<form :class='$style.card' class='panel'>
 				<h2>修改用户信息</h2>
 
-				<div :class="[$style.headSection, $style.field]">
+				<div :class='[$style.headSection, $style.field]'>
 					<img
-						:class="$style.head"
-						alt="头像"
-						title="换头像"
-						:src="user.avatar ?? DEFAULT_AVATAR"
-						@click="changeAvatar"
+						:class='$style.head'
+						alt='头像'
+						title='换头像'
+						:src='user.avatar ?? DEFAULT_AVATAR'
+						@click='changeAvatar'
 					>
 				</div>
 
-				<div :class="$style.field">
+				<div :class='$style.field'>
 					ID:
-					<AuthTypeTag :type="user.auth"/>
+					<AuthTypeTag :type='user.auth'/>
 					{{ user.id }}
 				</div>
 
-				<div :class="$style.field">
-					<label for="name" :class="$style.label">用户名</label>
+				<div :class='$style.field'>
+					<label for='name' :class='$style.label'>用户名</label>
 					<input
-						id="name"
-						v-model="user.name"
-						name="name"
-						:class="$style.input"
+						id='name'
+						v-model='user.name'
+						name='name'
+						:class='$style.input'
 					>
 				</div>
 
-				<KxButton class="primary" @click="save">保存</KxButton>
+				<KxButton class='primary' @click='save'>保存</KxButton>
 			</form>
 		</div>
 	</BasePageLayout>

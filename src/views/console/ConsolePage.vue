@@ -1,11 +1,11 @@
 <template>
-	<PageMeta title="控制台" :body-class="$style.container"/>
+	<PageMeta title='控制台' :body-class='$style.container'/>
 
-	<nav class="light" :class="$style.nav">
+	<nav class='light' :class='$style.nav'>
 		<RouterLink
-			to="/"
-			class="nav-item"
-			tabindex="1"
+			to='/'
+			class='nav-item'
+			tabindex='1'
 		>
 			返回首页
 		</RouterLink>
@@ -15,23 +15,23 @@
 		如果用路由来导航面板，可以让URL更好看，而且能记住历史直接跳转到对应的面板上。
 		但是 VueRouter 要求初始化时就配置好子路由，难以分离代码，所以还是用动态组件。
 	-->
-	<aside :class="$style.tabs">
+	<aside :class='$style.tabs'>
 		<h1>Kaciras' Blog</h1>
-		<ul class="clean-list" role="tablist">
+		<ul class='clean-list' role='tablist'>
 			<li
-				v-for="{ label, view, icon } of views"
-				:key="label"
-				role="tab"
-				tabindex="2"
-				:aria-selected="active === view"
-				:class="{
+				v-for='{ label, view, icon } of views'
+				:key='label'
+				role='tab'
+				tabindex='2'
+				:aria-selected='active === view'
+				:class='{
 						[$style.active]: active === view,
 						[$style.tabItem]: true,
-					}"
-				@click="active = view"
-				@keyup.enter="active = view"
+					}'
+				@click='active = view'
+				@keyup.enter='active = view'
 			>
-				<component :is="icon" :class="$style.icon"/>
+				<component :is='icon' :class='$style.icon'/>
 				{{ label }}
 			</li>
 		</ul>
@@ -40,9 +40,9 @@
 	<!--
 		将容器元素放在这里，里头的视图使用 Fragment，就像 iframe 一样。
 	-->
-	<main :class="$style.bodyWrapper">
+	<main :class='$style.bodyWrapper'>
 		<KeepAlive>
-			<component :is="active" ref="panel"/>
+			<component :is='active' ref='panel'/>
 		</KeepAlive>
 	</main>
 </template>

@@ -1,52 +1,52 @@
 <template>
-	<div :class="$style.buttons">
-		<div class="btn-group">
+	<div :class='$style.buttons'>
+		<div class='btn-group'>
 			<KxButton
-				:disabled="!hasAncestor"
-				@click="$data.gotoId(0)"
+				:disabled='!hasAncestor'
+				@click='$data.gotoId(0)'
 			>
-				<ArrowUpward class="prefix"/>
+				<ArrowUpward class='prefix'/>
 				返回顶层
 			</KxButton>
 			<KxButton
-				:disabled="!hasAncestor"
-				@click="$data.gotoParent()"
+				:disabled='!hasAncestor'
+				@click='$data.gotoParent()'
 			>
-				<ArrowLeft class="prefix"/>
+				<ArrowLeft class='prefix'/>
 				回到父级
 			</KxButton>
 		</div>
 
 		<KxButton
-			class="second"
-			@click="createNew"
+			class='second'
+			@click='createNew'
 		>
 			新建分类
 		</KxButton>
 	</div>
 
 	<CategoryView
-		v-if="current"
-		:editable="true"
-		:item="current"
-		@moved="$data.gotoParent()"
-		@removed="$data.gotoParent()"
-		@change="submit"
+		v-if='current'
+		:editable='true'
+		:item='current'
+		@moved='$data.gotoParent()'
+		@removed='$data.gotoParent()'
+		@change='submit'
 	/>
 
-	<div :class="$style.childrenTitle" v-if="current">下级分类</div>
+	<div :class='$style.childrenTitle' v-if='current'>下级分类</div>
 
-	<div v-if="!children">正在加载中</div>
+	<div v-if='!children'>正在加载中</div>
 
-	<ul v-else-if="children.length" :class="$style.cards">
+	<ul v-else-if='children.length' :class='$style.cards'>
 		<CategoryCard
-			v-for="item of children"
-			:key="item.id"
-			v-bind="item"
-			@click="$data.goto(item)"
+			v-for='item of children'
+			:key='item.id'
+			v-bind='item'
+			@click='$data.goto(item)'
 		/>
 	</ul>
-	<div v-else :class="$style.empty_holder">没有下级分类了</div>
+	<div v-else :class='$style.empty_holder'>没有下级分类了</div>
 </template>
 
 <script>

@@ -1,70 +1,70 @@
 <template>
-	<section :class="{ [$style.expand]: expand }">
-		<div :class="$style.summary">
-			<h2 class="compact" @click="$emit('switch-expand')">
+	<section :class='{ [$style.expand]: expand }'>
+		<div :class='$style.summary'>
+			<h2 class='compact' @click='$emit("switch-expand")'>
 				{{ card.name }}
 			</h2>
 
 			<KxButton
-				:class="$style.handler"
-				type="icon"
-				title="拖动调整次序"
-				@mousedown.stop="dragStart"
+				:class='$style.handler'
+				type='icon'
+				title='拖动调整次序'
+				@mousedown.stop='dragStart'
 			>
 				<DownUpIcon/>
 			</KxButton>
 
 			<KxButton
-				type="icon"
-				title="删除"
-				@click="$emit('remove', id)"
+				type='icon'
+				title='删除'
+				@click='$emit("remove", id)'
 			>
 				<TrashIcon/>
 			</KxButton>
 		</div>
 
-		<form :class="$style.details">
-			<div :class="$style.pictureWrapper" @click="setPicture">
+		<form :class='$style.details'>
+			<div :class='$style.pictureWrapper' @click='setPicture'>
 				<img
-					:src="card.picture"
-					alt="封面"
-					:class="$style.cover"
+					:src='card.picture'
+					alt='封面'
+					:class='$style.cover'
 				/>
-				<span :class="$style.tip">点击更换图片</span>
+				<span :class='$style.tip'>点击更换图片</span>
 			</div>
 
 			<label>
-				<span class="minor-text">
+				<span class='minor-text'>
 					标题
 				</span>
 				<input
-					v-model="card.name"
-					name="name"
-					:class="$style.inputBox"
+					v-model='card.name'
+					name='name'
+					:class='$style.inputBox'
 				/>
 			</label>
 
 			<label>
-				<span class="minor-text">
+				<span class='minor-text'>
 					URI，相对路径（以/开头的）将使用单页路由
 				</span>
 				<input
-					v-model="card.link"
-					name="link"
-					:class="$style.inputBox"
+					v-model='card.link'
+					name='link'
+					:class='$style.inputBox'
 				/>
 			</label>
 
 			<label>
-				<span class="minor-text">
+				<span class='minor-text'>
 					描述（100字以内，太长不便于展示）
 				</span>
 				<textarea
-					v-model="card.description"
-					name="description"
-					class="input"
-					:class="$style.inputBox"
-					placeholder="为卡片添加个描述吧"
+					v-model='card.description'
+					name='description'
+					class='input'
+					:class='$style.inputBox'
+					placeholder='为卡片添加个描述吧'
 				/>
 			</label>
 		</form>

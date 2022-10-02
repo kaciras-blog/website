@@ -3,28 +3,28 @@
 	Vue-Router 4 的写法变复杂了啊。
 -->
 <template>
-	<ol :class="$style.tabList" class="clean-list" role="tablist">
+	<ol :class='$style.tabList' class='clean-list' role='tablist'>
 		<RouterLink
-			v-for="tab of tabs"
-			:key="tab.title"
+			v-for='tab of tabs'
+			:key='tab.title'
 			replace
 			custom
-			:to="tab.route"
-			v-slot="{ isActive, navigate }"
+			:to='tab.route'
+			v-slot='{ isActive, navigate }'
 		>
 			<li
-				role="tab"
-				:class="{
+				role='tab'
+				:class='{
 					[$style.tabItem]:true,
 					[$style.active]: isActive
-				}"
+				}'
 				v-ripple
 			>
 				<a
-					:href="tab.route"
-					:class="$style.text"
-					@click="navigate"
-					@keypress.enter="navigate"
+					:href='tab.route'
+					:class='$style.text'
+					@click='navigate'
+					@keypress.enter='navigate'
 				>
 					{{ tab.title }}
 				</a>

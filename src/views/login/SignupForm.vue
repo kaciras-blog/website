@@ -1,74 +1,74 @@
 <template>
-	<form class="login-form" @keyup.enter="signUp">
-		<PageMeta title="注册"/>
+	<form class='login-form' @keyup.enter='signUp'>
+		<PageMeta title='注册'/>
 
-		<h1 class="center segment">注册</h1>
+		<h1 class='center segment'>注册</h1>
 
-		<label for="name">用户名:</label>
+		<label for='name'>用户名:</label>
 		<input
-			id="name"
-			v-model="form.name"
-			name="name"
-			placeholder="中英文数字和下划线"
+			id='name'
+			v-model='form.name'
+			name='name'
+			placeholder='中英文数字和下划线'
 			required
 			v-autofocus
 		>
 
 		<!--suppress XmlInvalidId -->
-		<label for="password">密码:</label>
+		<label for='password'>密码:</label>
 		<KxPasswordInput
-			input-id="password"
-			v-model="form.password"
-			name="password"
+			input-id='password'
+			v-model='form.password'
+			name='password'
 			required
-			title="密码"
-			placeholder="至少有个8位"
+			title='密码'
+			placeholder='至少有个8位'
 		/>
 
-		<label for="email">邮箱:</label>
+		<label for='email'>邮箱:</label>
 		<input
-			id="email"
-			v-model="form.email"
-			type="email"
-			name="email"
-			placeholder="（可选）不填也行"
+			id='email'
+			v-model='form.email'
+			type='email'
+			name='email'
+			placeholder='（可选）不填也行'
 		>
 
-		<label for="captcha">验证码:</label>
-		<div :class="$style.captcha">
+		<label for='captcha'>验证码:</label>
+		<div :class='$style.captcha'>
 			<input
-				id="captcha"
-				ref="captchaInput"
-				v-model="form.captcha"
-				name="captcha"
-				title="验证码"
-				:class="$style.inputCaptcha"
+				id='captcha'
+				ref='captchaInput'
+				v-model='form.captcha'
+				name='captcha'
+				title='验证码'
+				:class='$style.inputCaptcha'
 				required
 			>
 			<img
-				:src="captcha"
-				alt="验证码"
-				title="点击换一张"
-				@click="updateCaptcha"
+				:src='captcha'
+				alt='验证码'
+				title='点击换一张'
+				@click='updateCaptcha'
 			>
 		</div>
 
-		<span class="text-warning center">
+		<span class='text-warning center'>
 			{{ message }}
 		</span>
 
-		<div class="buttons">
+		<div class='buttons'>
 			<KxTaskButton
-				type="outline"
-				color="primary"
-				@click="signUp"
+				type='outline'
+				color='primary'
+				@click='signUp'
 			>
 				确定
 			</KxTaskButton>
 			<KxButton
-				type="outline"
-				color="second"
-				@click="switchPanel"
+				type='outline'
+				color='second'
+				@click='switchPanel'
 			>
 				登录
 			</KxButton>
@@ -79,7 +79,7 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref, toRaw } from "vue";
 import { useRouter } from "vue-router";
-import { KxButton, KxTaskButton, KxPasswordInput } from "@kaciras-blog/uikit";
+import { KxButton, KxPasswordInput, KxTaskButton } from "@kaciras-blog/uikit";
 import api from "@/api";
 import { errorMessage } from "@/utils";
 import { useCurrentUser } from "@/store";

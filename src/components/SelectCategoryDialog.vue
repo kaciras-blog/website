@@ -1,89 +1,89 @@
 <template>
-	<KxBaseDialog title="选择分类">
-		<div :class="$style.buttons">
+	<KxBaseDialog title='选择分类'>
+		<div :class='$style.buttons'>
 
-			<template v-if="current">
-				<h3 class="compact minor-text">当前分类：</h3>
+			<template v-if='current'>
+				<h3 class='compact minor-text'>当前分类：</h3>
 				<img
-					class="small head"
-					:class="$style.cover"
-					:src="current.cover ?? CATEGORY_IMG"
-					alt="分类图标"
+					class='small head'
+					:class='$style.cover'
+					:src='current.cover ?? CATEGORY_IMG'
+					alt='分类图标'
 				>
-				<span :class="$style.name">{{ current.name }}</span>
+				<span :class='$style.name'>{{ current.name }}</span>
 			</template>
-			<div v-else :class="$style.hold"></div>
+			<div v-else :class='$style.hold'></div>
 
-			<div class="btn-group">
+			<div class='btn-group'>
 				<KxButton
-					type="outline"
-					:disabled="!hasAncestor"
-					@click="walker.gotoParent()"
+					type='outline'
+					:disabled='!hasAncestor'
+					@click='walker.gotoParent()'
 				>
-					<ArrowLeft class="prefix"/>
+					<ArrowLeft class='prefix'/>
 					回到父级
 				</KxButton>
 
 				<KxButton
-					type="outline"
-					:disabled="!hasAncestor"
-					@click="walker.goto(0)"
+					type='outline'
+					:disabled='!hasAncestor'
+					@click='walker.goto(0)'
 				>
-					<ArrowUpward class="prefix"/>
+					<ArrowUpward class='prefix'/>
 					返回顶层
 				</KxButton>
 			</div>
 		</div>
 
-		<ul class="clean-list" :class="$style.cards">
+		<ul class='clean-list' :class='$style.cards'>
 			<li
-				v-for="category of categories"
-				:key="category.id"
-				:class="{ [$style.category]: true, selected: category.selected }"
-				@click="walker.goto(category)"
+				v-for='category of categories'
+				:key='category.id'
+				:class='{ [$style.category]: true, selected: category.selected }'
+				@click='walker.goto(category)'
 			>
 				<KxCheckBox
-					:modelValue="!!category.selected"
+					:modelValue='!!category.selected'
 					@click.stop
-					@update:modelValue="select(category)"
+					@update:modelValue='select(category)'
 				/>
-				<div :class="$style.categoryWrapper">
+				<div :class='$style.categoryWrapper'>
 					<img
-						class="head"
-						:class="$style.cover"
-						:src="category.cover ?? CATEGORY_IMG"
-						alt="分类图标"
+						class='head'
+						:class='$style.cover'
+						:src='category.cover ?? CATEGORY_IMG'
+						alt='分类图标'
 					>
-					<h3 :class="$style.name">{{ category.name }}</h3>
+					<h3 :class='$style.name'>{{ category.name }}</h3>
 				</div>
 			</li>
 		</ul>
 
-		<div :class="$style.footer">
-			<div v-if="multiple" :class="$style.tip">
+		<div :class='$style.footer'>
+			<div v-if='multiple' :class='$style.tip'>
 				已选择{{ selected.length }}个分类
 			</div>
-			<div v-else :class="$style.tip">
+			<div v-else :class='$style.tip'>
 				已选择：{{ selected.length ? selected[0].name : '' }}
 			</div>
 
-			<div class="btn-group">
+			<div class='btn-group'>
 				<KxButton
-					color="second"
-					@click="clear"
+					color='second'
+					@click='clear'
 				>
 					清空选择
 				</KxButton>
 				<KxButton
-					color="second"
-					@click="cancel"
+					color='second'
+					@click='cancel'
 				>
 					取消
 				</KxButton>
 				<KxButton
-					class="primary"
-					:disabled="!selected.length"
-					@click="ok"
+					class='primary'
+					:disabled='!selected.length'
+					@click='ok'
 				>
 					确定
 				</KxButton>
