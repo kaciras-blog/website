@@ -1,22 +1,13 @@
 <template>
 	<PageMeta title='控制台' :body-class='$style.container'/>
 
-	<nav class='light' :class='$style.nav'>
-		<RouterLink
-			to='/'
-			class='nav-item'
-			tabindex='1'
-		>
-			返回首页
-		</RouterLink>
-	</nav>
-
 	<!--
 		如果用路由来导航面板，可以让URL更好看，而且能记住历史直接跳转到对应的面板上。
 		但是 VueRouter 要求初始化时就配置好子路由，难以分离代码，所以还是用动态组件。
 	-->
 	<aside :class='$style.tabs'>
-		<h1>Kaciras' Blog</h1>
+		<h1 :class='$style.title'>Kaciras' Blog</h1>
+
 		<ul class='clean-list' role='tablist'>
 			<li
 				v-for='{ label, view, icon } of views'
@@ -35,6 +26,14 @@
 				{{ label }}
 			</li>
 		</ul>
+
+		<RouterLink
+			to='/'
+			:class='$style.backButton'
+		>
+			<ArrowLeft :class='$style.icon'/>
+			返回首页
+		</RouterLink>
 	</aside>
 
 	<!--
@@ -56,6 +55,7 @@ import PencilIcon from "bootstrap-icons/icons/pencil-fill.svg?sfc";
 import ChatIcon from "bootstrap-icons/icons/chat-dots-fill.svg?sfc";
 import DiagramIcon from "bootstrap-icons/icons/tag-fill.svg?sfc";
 import BellIcon from "bootstrap-icons/icons/bell.svg?sfc";
+import ArrowLeft from "@material-design-icons/svg/round/arrow_back.svg?sfc";
 import ArticleConsole from "./ArticleConsole.vue";
 import DraftConsole from "./DraftConsole.vue";
 import CategoryConsole from "./CategoryConsole.vue";
@@ -98,22 +98,15 @@ provide("sendMessage", async (component: DefineComponent, data: unknown) => {
 	grid-template-rows: auto 1fr;
 }
 
-.nav {
-	--nav-height: 3rem;
-
-	text-align: right;
-	padding: 0 1rem;
-	min-height: 3rem; // 谷歌的浏览器必须用min-height
-	z-index: 1;
-
-	border-bottom: solid 1px @color-border;
-	box-shadow: 0 0 @length-border-shadow 1px fade(@color-border, 30%);
+.title {
+	text-align: center;
 }
 
 .tabs {
+	display: flex;
+	flex-direction: column;
 	padding-top: 1rem;
 	grid-area: menu;
-	text-align: center;
 
 	color: white;
 	background: rgb(8,50,91);
@@ -153,6 +146,15 @@ provide("sendMessage", async (component: DefineComponent, data: unknown) => {
 		content: "";
 		.left-triangle(.8rem);
 	}
+}
+
+.backButton {
+	composes: clean-link from global;
+	composes: tabItem;
+
+	display: block;
+	margin-top: auto;
+	border-top: solid 1px rgba(255, 255, 255, 0.4);
 }
 
 .icon {
