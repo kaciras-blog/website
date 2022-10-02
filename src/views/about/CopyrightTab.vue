@@ -38,30 +38,7 @@
 					https://www.pixiv.net/artworks/68079722
 				</a>
 			</p>
-			<p>
-				<a
-					class="highlight"
-					href="https://www.pixiv.net/artworks/68080014"
-				>
-					https://www.pixiv.net/artworks/68080014
-				</a>
-			</p>
-			<p>
-				<a
-					class="highlight"
-					href="https://www.pixiv.net/artworks/68080160"
-				>
-					https://www.pixiv.net/artworks/68080160
-				</a>
-			</p>
-			<p>
-				<a
-					class="highlight"
-					href="https://www.pixiv.net/artworks/68079868"
-				>
-					https://www.pixiv.net/artworks/68079868
-				</a>
-			</p>
+
 			<p>手机版侧边菜单上的图</p>
 			<p>
 				<a
@@ -77,5 +54,4 @@
 
 <script setup lang="ts">
 import IconSectionHeader from "@/components/IconSectionHeader.vue";
-import PageMeta from "@/components/PageMeta";
-</script>
+import PageMeta from "@/components/PageMeta";</script>
