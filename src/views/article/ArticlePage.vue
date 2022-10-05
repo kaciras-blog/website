@@ -79,9 +79,19 @@
 			</KxButton>
 		</div>
 
-		<teleport to='head'>
-			<meta name='test' content='test,test'>
-		</teleport>
+		<HeadTags>
+			<meta name='keywords' :content='article.keywords.join(",")'>
+			<meta name='description' :content='article.summary'>
+			<link v-if='article.prev' rel='prev' :title='article.prev.title' :href='articleLink(article.prev)'>
+			<link v-if='article.next' rel='prev' :title='article.next.title' :href='articleLink(article.next)'>
+
+			<meta property='og:image' :content='`https://blog.kaciras.com${article.cover}`'>
+			<meta property='og:title' :content='article.title'>
+			<meta property='og:type' content='article'>
+			<meta property='og:description' :content='article.summary'>
+			<meta property='og:site_name' content='Kaciras Blog'>
+			<meta property='og:url' :content='`https://blog.kaciras.com${articleLink(article)}`'>
+		</HeadTags>
 	</BannerPageLayout>
 </template>
 
@@ -117,46 +127,22 @@ export default defineComponent({ asyncData });
 </script>
 
 <script setup lang="ts">
-import { ref, ComponentPublicInstance, useSSRContext } from "vue";
+import { ref, ComponentPublicInstance } from "vue";
 import ChatIcon from "@material-design-icons/svg/outlined/forum.svg?sfc";
 import ArrowTopIcon from "@material-design-icons/svg/outlined/rocket_launch.svg?sfc";
 import { KxButton } from "@kaciras-blog/uikit";
 import { Article } from "@/api";
 import { localDateMinute } from "@/common";
-import { escapeHtml } from "@/utils";
 import BannerPageLayout from "@/components/BannerPageLayout.vue";
 import PageMeta from "@/components/PageMeta";
 import DiscussionSection from "@/components/discussion/DiscussionSection.vue";
 import MarkdownView from "@/markdown/MarkdownView.vue";
+import HeadTags from "@/components/HeadTags";
 
 const prefetch = usePrefetch();
 
 const article = prefetch.data.article as Article;
 const discussion = ref<ComponentPublicInstance>();
-
-// 为了 SEO，需要在预渲染的文章页面的 <head> 中加入一些标签。暂时没法用 teleport 因为有 BUG：
-// https://github.com/vuejs/core/issues/5242
-if (import.meta.env.SSR) {
-	const { keywords, summary, prev, next, title } = article;
-	const head = useSSRContext()!;
-
-	head.meta = `<meta name="keywords" content="${escapeHtml(keywords.join(","))}">`;
-	head.meta += `<meta name="description" content="${escapeHtml(summary)}">`;
-	if (prev) {
-		head.meta += `<link rel="prev" title="${prev.title}" href="${articleLink(prev)}">`;
-	}
-	if (next) {
-		head.meta += `<link rel="next" title="${next.title}" href="${articleLink(next)}">`;
-	}
-
-	// TODO: 好多标签啊，能不能用 vue-meta 或自己实现个机制来简化。
-	head.meta += `<meta property="og:title" content="${escapeHtml(title)}">`;
-	head.meta += `<meta property="og:description" content="${escapeHtml(summary)}">`;
-	head.meta += `<meta property="og:image" content="https://blog.kaciras.com${article.cover}">`;
-	head.meta += "<meta property=\"og:site_name\" content=\"Kaciras Blog\">";
-	head.meta += "<meta property=\"og:type\" content=\"article\">";
-	head.meta += `<meta property="og:url" content="https://blog.kaciras.com${articleLink(article)}">`;
-}
 
 function gotoTop() {
 	document.documentElement.scrollTo({ top: 0, behavior: "smooth" });

@@ -1,19 +1,29 @@
 <!-- 很多组件必须跟主实例中挂载，否则功能将受限 -->
 <template>
+	<HeadTags :base='true'>
+		<meta name='description' content='欢迎来到 Kaciras 的博客'>
+
+		<meta property='og:site_name' content='Kaciras Blog'>
+		<meta property='og:type' content='website'>
+		<meta property='og:title' content='首页'>
+		<meta property='og:description' content='欢迎来到 Kaciras 的博客'>
+		<meta property='og:image' content='https://blog.kaciras.com/favicon.png'>
+		<meta property='og:url' content='https://blog.kaciras.com'>
+	</HeadTags>
+
 	<KxProgress :ref='connect'/>
 	<RouterView/>
 	<DialogContainer/>
 	<ToastContainer/>
-	<noscript class='global-error'>
-		禁用 JavaScript 会导致部分功能不正常
-	</noscript>
+	<noscript class='global-error'>禁用 JavaScript 会导致部分功能不正常</noscript>
 </template>
 
 <script setup lang="ts">
-import { DialogContainer, KxProgress, ToastContainer, useDialog } from "@kaciras-blog/uikit";
 import { Unsubscribe } from "nanoevents";
-import { events, PrefetchContext } from "./prefetch";
 import { useRouter } from "vue-router";
+import { DialogContainer, KxProgress, ToastContainer, useDialog } from "@kaciras-blog/uikit";
+import HeadTags from "@/components/HeadTags";
+import { events, PrefetchContext } from "./prefetch";
 
 // 切换视图后关掉所有弹窗，因为窗口容器在这里挂载所以也放这了。
 // vue-router 4 即使 pushState 未改变 URL 也触发导航，所以检查下路径是否改变了。

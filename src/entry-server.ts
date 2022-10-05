@@ -10,6 +10,7 @@ import { compositor } from "@/utils";
 import api from "./api";
 import createBlogApp from "./main";
 import { collectTasks, PrefetchContext } from "./prefetch";
+import { getHeadTagsSSR } from "@/components/HeadTags";
 
 // 后台页面就不预渲染了。
 const noSSR = new RegExp("^/(?:edit|console)/?(?:\\?|$)?");
@@ -87,6 +88,7 @@ async function prefetch(store: Pinia, router: Router, request: any) {
 export default function (template: string, manifest?: SSRManifest) {
 	const newComposite = compositor(template, {
 		metadata: "<!--ssr-metadata-->",
+		tp: "<!--tp-->",
 		title: /(?<=<title>).*(?=<\/title>)/s,
 		preloads: /(?=<\/head>)/s,
 		bodyAttrs: /(?<=<body.*?)(?=>)/s,
@@ -107,7 +109,7 @@ export default function (template: string, manifest?: SSRManifest) {
 		await prefetch(store, router, request);
 
 		const ssrContext: SSRContext = {
-			meta: "<meta name='description' content='欢迎来到 Kaciras 的博客'>",
+			meta: "",
 			title: "Kaciras Blog",
 		};
 
@@ -126,6 +128,8 @@ export default function (template: string, manifest?: SSRManifest) {
 		composite.put("title", title);
 		composite.put("metadata", meta);
 		composite.put("bodyAttrs", ` class="${bodyClass}"`);
+
+		composite.put("tp",  getHeadTagsSSR(ssrContext));
 		return composite.toString();
 	};
 }
