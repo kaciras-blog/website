@@ -38,6 +38,12 @@ import PageMeta from "@/components/PageMeta";
 import TopNavGlass from "@/components/top-nav/TopNavGlass.vue";
 import BlogSection from "./BlogSection.vue";
 import FriendsSection from "./FriendsSection.vue";
+
+/**
+ * 之前曾使用多个背景图，在不同的时间段切换，但后来又取消了这种设计，原因如下：
+ * 1）需要多个图片并与时间段配合，在没有画师的情况下难以做到。
+ * 2）若以客户端时间为准，则 SSR 中无法选择图片，导致 LCP 延迟，这个性能问题是不可接受的。
+ */
 </script>
 
 <style module lang="less">

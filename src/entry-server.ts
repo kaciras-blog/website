@@ -88,7 +88,7 @@ async function prefetch(store: Pinia, router: Router, request: any) {
 export default function (template: string, manifest?: SSRManifest) {
 	const newComposite = compositor(template, {
 		metadata: "<!--ssr-metadata-->",
-		tp: "<!--tp-->",
+		headTags: "<!--seo-head-tags-->",
 		title: /(?<=<title>).*(?=<\/title>)/s,
 		preloads: /(?=<\/head>)/s,
 		bodyAttrs: /(?<=<body.*?)(?=>)/s,
@@ -109,7 +109,6 @@ export default function (template: string, manifest?: SSRManifest) {
 		await prefetch(store, router, request);
 
 		const ssrContext: SSRContext = {
-			meta: "",
 			title: "Kaciras Blog",
 		};
 
@@ -117,7 +116,7 @@ export default function (template: string, manifest?: SSRManifest) {
 		context.status = ssrContext.status;
 
 		const data = JSON.stringify(store.state.value);
-		ssrContext.meta += `<script>window.__INITIAL_STATE__=${data}</script>`;
+		ssrContext.meta = `<script>window.__INITIAL_STATE__=${data}</script>`;
 
 		const { title, modules, meta, bodyClass = "" } = ssrContext;
 		const composite = newComposite();
@@ -128,8 +127,7 @@ export default function (template: string, manifest?: SSRManifest) {
 		composite.put("title", title);
 		composite.put("metadata", meta);
 		composite.put("bodyAttrs", ` class="${bodyClass}"`);
-
-		composite.put("tp",  getHeadTagsSSR(ssrContext));
+		composite.put("headTags",  getHeadTagsSSR(ssrContext));
 		return composite.toString();
 	};
 }
