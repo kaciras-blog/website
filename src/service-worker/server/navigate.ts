@@ -21,32 +21,6 @@ import { FetchFn, staleWhileRevalidate } from "./fetch-strategy";
 declare const self: ServiceWorkerGlobalScope;
 
 /**
- * Typescript 4.4 移除了一些有用的类型定义，这里给补回来。
- */
-declare global {
-	interface NavigationPreloadManager {
-		disable(): Promise<void>;
-		enable(): Promise<void>;
-		getState(): Promise<NavigationPreloadState>;
-		setHeaderValue(value: string): Promise<void>;
-	}
-
-	interface NavigationPreloadState {
-		enabled?: boolean;
-		headerValue?: string;
-	}
-
-	interface FetchEvent {
-		readonly preloadResponse: Promise<Response | undefined>;
-	}
-
-	// noinspection JSUnusedGlobalSymbols
-	interface ServiceWorkerRegistration {
-		readonly navigationPreload: NavigationPreloadManager;
-	}
-}
-
-/**
  * 处理导航请求的路由，根据情况返回网络请求或缓存的 AppShell。
  */
 class NavigateRoute implements Route {
