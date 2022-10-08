@@ -8,7 +8,7 @@ export function setupSentry(app: App, router: Router) {
 	Sentry.init({
 		app,
 		dsn: import.meta.env.SENTRY_DSN,
-		release: `${name}@${version}`,
+		release: `${name.replace("/", ".")}@${version}`,
 		tracesSampleRate: 1.0,
 		ignoreErrors: [
 			/Network ?Error/,
