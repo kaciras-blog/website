@@ -21,6 +21,9 @@
 	</KxBaseDialog>
 </template>
 
+<script setup lang='ts'>
+import { KxBaseDialog } from "@kaciras-blog/uikit";</script>
+
 <style module lang="less">
 .button {
 	display: inline-flex;

@@ -22,7 +22,7 @@ export function setupSentry(app: App, router: Router) {
 				routingInstrumentation: Sentry.vueRouterInstrumentation(router),
 			}),
 		],
-		tunnel: import.meta.env.SENTRY_TUNNEL ? "/tunnel" : undefined,
+		tunnel: import.meta.env.SENTRY_TUNNEL ? "/sentry" : undefined,
 	});
 }
 
