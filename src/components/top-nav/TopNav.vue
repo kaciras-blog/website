@@ -131,9 +131,10 @@ if (breakPoint.value === "mobile") {
 	}
 }
 
-// 外层套了个<a>所以宽高不能用百分比，只能写死图片的大小
+// 外层套了个 <a> 所以宽高不能用百分比，只能写死图片的大小
 .logo {
 	display: block;
+	aspect-ratio: 703 / 225;
 	height: var(--nav-height);
 
 	object-fit: cover;
