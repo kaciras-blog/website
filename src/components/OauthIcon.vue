@@ -1,6 +1,6 @@
 <script>
 import { h } from "vue";
-import { contentServiceURL } from "@/api";
+import { contentServiceURL } from "@/api/constants";
 
 export default {
 	name: "OauthIcon",

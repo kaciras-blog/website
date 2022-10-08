@@ -1,3 +1,4 @@
+import { contentServiceURL } from "@/api/constants";
 import { CacheWrapper, ManagedCache } from "./cache";
 import { Route } from "./routing";
 import { FetchFn, networkFirst, staleWhileRevalidate } from "./fetch-strategy";
@@ -55,11 +56,6 @@ class ApiOfflineRoute implements Route {
  * 对动态内容使用缓存，保证在网络不通的情况下也能显示旧的内容。
  */
 export default function apiCacheRoute(cacheName: string) {
-	const apiOrigin = import.meta.env.API_PUBLIC as any;
-	const BASE_URL = typeof apiOrigin === "string"
-		? apiOrigin
-		: apiOrigin[location.protocol.substring(0, location.protocol.length - 1)];
-
-	const { host } = new URL(BASE_URL);
+	const { host } = new URL(contentServiceURL);
 	return new ApiOfflineRoute(host, new CacheWrapper(cacheName));
 }
