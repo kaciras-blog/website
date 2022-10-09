@@ -57,7 +57,7 @@ defineProps<FriendCardProps>();
  *
  * 原版 hover 的动画是整个上移，我这改成了上下两个方向开启。
  */
-@width: 260px;
+@width: 256px;
 @height: (@width * 9 / 16);
 
 @favicon-size: 70px;
@@ -133,7 +133,7 @@ defineProps<FriendCardProps>();
 	height: 50%;
 
 	font-size: 16px;
-	padding-top: (@height / 2 - 30px);
+	padding-top: (@height / 2 - 32px);
 	padding-bottom: 8px;
 	text-align: center;
 

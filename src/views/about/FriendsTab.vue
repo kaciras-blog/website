@@ -56,7 +56,8 @@ import PageMeta from "@/components/PageMeta";</script>
 <style module lang="less">
 .example {
 	display: block;
-	width: 380px;
+	width: 330px;
+	aspect-ratio: 660 / 346;
 	max-width: 100%;
 	margin: 0 auto 1em auto;
 }
