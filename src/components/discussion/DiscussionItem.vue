@@ -73,9 +73,9 @@
 						@reply='showReplyEditor'
 					/>
 				</ol>
-				<a class='hd-link' @click='showAllReplies'>
+				<button :class='$style.linkButton' @click='showAllReplies'>
 					共 {{ children.total }} 条回复 &gt;
-				</a>
+				</button>
 			</div>
 
 			<div v-else :class='$style.nest'>
@@ -91,9 +91,9 @@
 						{{ item.content }}
 					</li>
 				</ol>
-				<a class='hd-link' @click='showNestFrame'>
+				<button :class='$style.linkButton' @click='showNestFrame'>
 					共 {{ children.total }} 条回复 &gt;
-				</a>
+				</button>
 			</div>
 		</template>
 
@@ -269,5 +269,16 @@ function loadNext(start: number, count: number) {
 .preview {
 	margin-bottom: .5rem;
 	.line-clamp(2);
+}
+
+// 模仿链接样式的按钮，感觉能复用一下。
+.linkButton {
+	padding: 0;
+	font-size: 0.875rem;
+	color: @color-link;
+
+	&:hover, &:focus-visible {
+		text-decoration: underline;
+	}
 }
 </style>
