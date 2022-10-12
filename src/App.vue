@@ -7,7 +7,9 @@
 		<meta property='og:type' content='website'>
 		<meta property='og:title' content='首页'>
 		<meta property='og:description' content='欢迎来到 Kaciras 的博客'>
-		<meta property='og:image' content='https://blog.kaciras.com/favicon.png'>
+		<meta property='og:image' :content='"https://blog.kaciras.com" + OGImage'>
+		<meta property="og:image:width" content="1200"/>
+		<meta property="og:image:height" content="630"/>
 		<meta property='og:url' content='https://blog.kaciras.com'>
 	</HeadTags>
 
@@ -23,6 +25,7 @@ import { Unsubscribe } from "nanoevents";
 import { useRouter } from "vue-router";
 import { DialogContainer, KxProgress, ToastContainer, useDialog } from "@kaciras-blog/uikit";
 import HeadTags from "@/components/HeadTags";
+import OGImage from "@/assets/img/OpenGraph.png";
 import { events, PrefetchContext } from "./prefetch";
 
 // 切换视图后关掉所有弹窗，因为窗口容器在这里挂载所以也放这了。

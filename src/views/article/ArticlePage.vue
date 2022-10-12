@@ -86,6 +86,8 @@
 			<link v-if='article.next' rel='prev' :title='article.next.title' :href='articleLink(article.next)'>
 
 			<meta property='og:image' :content='`https://blog.kaciras.com${article.cover}`'>
+			<meta property="og:image:width" content="400"/>
+			<meta property="og:image:height" content="300"/>
 			<meta property='og:title' :content='article.title'>
 			<meta property='og:type' content='article'>
 			<meta property='og:description' :content='article.summary'>
