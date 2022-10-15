@@ -25,6 +25,11 @@
 						icon='@/assets/img/logo-github.svg'
 					/>
 					<SocialLink
+						href='https://www.zhihu.com/people/kaciras'
+						name='ZhiHu'
+						icon='@/assets/img/zhihu.png'
+					/>
+					<SocialLink
 						href='https://matrix.to/#/@kaciras:matrix.org'
 						name='Matrix'
 						icon='@/assets/img/element-io.svg'
@@ -65,11 +70,13 @@ import PageMeta from "@/components/PageMeta";</script>
 }
 
 .socialLinks > a {
-	&[title="Email"] { --color: rgba(0, 217, 184, .6); }
+	&[title="Email"] { --color: rgba(0, 217, 170, 0.5); }
 
 	&[title="GitHub"] { --color: rgba(0, 0, 0, .25); }
 
-	&[title="Matrix"] { --color: rgba(247, 227, 0, 0.65); }
+	&[title="Matrix"] { --color: rgba(242, 222, 0, 0.65); }
+
+	&[title="ZhiHu"] { --color: rgba(31, 147, 255, 0.5); }
 }
 
 .discussion {
