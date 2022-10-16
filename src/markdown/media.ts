@@ -18,13 +18,13 @@ function getContainerClassAndStyle(url: string) {
 	const height = parseFloat(urlParams.get("vh")!);
 
 	if (!(width && height)) {
-		return 'class="md-media-container"';
+		return "class='md-media-container'";
 	}
 
 	const ratio = height / width * 100;
 	const style = `--width:${width}px; --aspect-ratio:${ratio}%`;
 
-	return `class="md-media-container sized" style="${style}"`;
+	return `class='md-media-container sized' style='${style}'`;
 }
 
 /**
@@ -47,16 +47,16 @@ function renderImage(tokens: Token[], idx: number) {
 	const alt = token.content;
 
 	return `
-		<span class="center-wrapper">
+		<span class='center-wrapper'>
 			<a
 				${getContainerClassAndStyle(src)}
-				href="${src}"
-				target="_blank"
-				rel="noopener,nofollow"
+				href='${src}'
+				target='_blank'
+				rel='noopener,nofollow'
 			>
-				<img data-src="${src}" alt="${alt}" class="md-img" crossorigin>
+				<img data-src='${src}' alt='${alt}' class='md-img' crossorigin>
 			</a>
-			${alt ? `<span class="md-img-alt">${alt}</span>` : ""}
+			${alt ? `<span class='md-img-alt'>${alt}</span>` : ""}
     	</span>
 	`;
 }
@@ -68,11 +68,11 @@ const directiveMap: RendererMap = {
 	// 大部分浏览器只允许无声视频自动播放，不过 GIF 视频本来就是无声的。
 	gif(src, alt) {
 		return `
-			<p class="center-wrapper">
+			<p class='center-wrapper'>
 				<span ${getContainerClassAndStyle(src)}>
-					<video class="gif" src="${src}" loop muted crossorigin></video>
+					<video class='gif' src='${src}' loop muted crossorigin></video>
 				</span>
-				${alt ? `<span class="md-img-alt">${alt}</span>` : ""}
+				${alt ? `<span class='md-img-alt'>${alt}</span>` : ""}
     		</p>
 		`;
 	},
@@ -82,16 +82,16 @@ const directiveMap: RendererMap = {
 			poster = "";
 		}
 		return `
-			<p class="center-wrapper md-video">
-				<span class="md-media-container sized">
-					<video poster="${poster}" src="${src}" controls crossorigin></video>
+			<p class='center-wrapper md-video'>
+				<span class='md-media-container sized'>
+					<video poster='${poster}' src='${src}' controls crossorigin></video>
 				</span>
 			</p>
 		`;
 	},
 	audio(src) {
 		return `
-			<p class="center-wrapper">
+			<p class='center-wrapper'>
 				<audio controls src=${src} crossorigin></audio>
 			</p>`;
 	},

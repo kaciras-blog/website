@@ -1,10 +1,10 @@
+import type { SSRContext } from "vue/server-renderer";
 import { defineComponent, h, nextTick, onUnmounted, SetupContext, Teleport } from "vue";
 import { defineStore } from "pinia";
-import { SSRContext } from "vue/server-renderer";
 
 /**
  * 首次渲染的状态，使用 nextTick 来递进该值实现推迟渲染。
- * 没有很好的方法探测是否处于混合还是非 SSR，只能规避首次渲染了。
+ * 没有很好的方法探测是否处于混合状态，只能规避首次渲染了。
  */
 enum HydrationState {
 	Before,
@@ -14,8 +14,8 @@ enum HydrationState {
 
 const useHeadMetas = defineStore("HeadMetas", {
 	state: () => ({
-		hydration: HydrationState.Before,	// 客户端混合的阶段。
 		inherited: false,					// 是否存在非 base 的组件。
+		hydration: HydrationState.Before,	// 客户端混合的阶段。
 	}),
 });
 
@@ -25,7 +25,12 @@ type Store = ReturnType<typeof useHeadMetas>;
  * 这里的实现参考了 react-head 的思路，SSR 出来的标签打上一个标记，
  * CSR 时将这些元素全部移除，然后重新使用 Teleport 渲染一遍。
  *
+ * 虽然这样在删除和插入之间有一个不一致状态，但 DOM 的变化本身就是异步的，
+ * 需要访问这些标签的代码不应该依赖强一致。
+ *
  * 另外为了减少 DOM 操作，首次渲染将延迟到下一个 Track。
+ *
+ * @see https://github.com/tizmagik/react-head
  */
 function HeadMetaWeb(this: SetupContext, info: Store, isBase: boolean) {
 	if (info.hydration === HydrationState.Before) {
@@ -82,7 +87,7 @@ export function getHeadTagsSSR(ctx: SSRContext) {
 
 /**
  * 为了 SEO，使用该组件可以在页面的 <head> 中加入一些标签，与 Teleport 相比有些区别：
- * 1）Teleport 在混合时如果修改过目标的子元素，则会混合失败，没看具体实现但 React 似乎没这个问题。
+ * 1）如果修改过目标的子元素，则 Teleport 会混合失败，React 似乎没这个问题。
  * 2）需要支持一个默认值，避免每个页面都写一堆，而 Teleport 相同的目标不覆盖。
  *
  * @see https://github.com/vuejs/core/issues/5242

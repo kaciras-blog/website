@@ -48,7 +48,8 @@ function renderClient(this: PageMetaProps) {
  * 而且比起在 JS 里用各种钩子，模板渲染也正好是修改它们的时机。
  *
  * 这个类的灵感来自于 Next.js 的 Head 组件。
- * https://nextjs.org/docs/api-reference/next/head
+ *
+ * @see https://nextjs.org/docs/api-reference/next/head
  */
 export default defineComponent({
 	props: {
