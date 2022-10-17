@@ -60,13 +60,17 @@ import SocialLink from "@/components/SocialLink.vue";
 import PageMeta from "@/components/PageMeta";</script>
 
 <style module lang="less">
+@import "../../css/imports";
+
 .profile {
 	text-align: center;
 	margin-bottom: 1rem;
 }
 
-.name {
-	margin: revert;
+@media screen and (min-width: @length-screen-mobile) {
+	.name {
+		margin: revert;
+	}
 }
 
 .socialLinks > a {

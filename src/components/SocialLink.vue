@@ -27,7 +27,7 @@ defineProps<SocialLinkProps>();
 <style module lang="less">
 .container {
 	display: inline-block;
-	margin: 0 8px;
+	margin: 0 5px;
 	padding: 10px;
 
 	border-radius: 50%;
