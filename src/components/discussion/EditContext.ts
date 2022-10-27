@@ -1,4 +1,5 @@
 import { ref } from "vue";
+import { useLocalStorage } from "@vueuse/core";
 import { useDialog, useToast } from "@kaciras-blog/uikit";
 import api, { Discussion } from "@/api";
 import { errorMessage } from "@/utils";
@@ -19,7 +20,9 @@ export function useDiscussContext(props: EditContextProps) {
 
 	const cached = localStorage.getItem(key) ?? "";
 	const content = ref(cached);
-	const nickname = ref(localStorage.getItem("nickname"));
+	const email = useLocalStorage("email", "");
+	const nickname = useLocalStorage("nickname", "");
+
 	let snapshot = cached;
 
 	/**
@@ -43,23 +46,12 @@ export function useDiscussContext(props: EditContextProps) {
 	 * @return 表示评论提交过程的 Promise
 	 */
 	async function submit() {
-		const contentVal = content.value;
-		let nicknameVal = nickname.value;
-
-		if (/^\s*$/.test(contentVal)) {
+		if (/^\s*$/.test(content.value)) {
 			return; // 没写评论就按发表按钮
 		}
 
-		// null 会被转换为 "null" 所以要检查一下
-		if (nicknameVal) {
-			if (nicknameVal.length > 10) {
-				return $dialog.alertError("名字最多16个字");
-			}
-			localStorage.setItem("nickname", nicknameVal);
-		} else {
-			// 空字符串转为 null，后端省一个检查。
-			nicknameVal = null;
-			localStorage.removeItem("nickname");
+		if (nickname.value.length > 10) {
+			return $dialog.alertError("名字最多 10 个字");
 		}
 
 		try {
@@ -67,8 +59,11 @@ export function useDiscussContext(props: EditContextProps) {
 				objectId,
 				type,
 				parent: parent?.id ?? 0,
-				content: contentVal,
-				nickname: nicknameVal,
+				content: content.value,
+
+				// 这几个不能为空字符串。
+				email: email.value || null,
+				nickname: nickname.value || null,
 			});
 			content.value = "";
 			localStorage.removeItem(key);
@@ -80,5 +75,5 @@ export function useDiscussContext(props: EditContextProps) {
 		}
 	}
 
-	return { nickname, content, handleInput, submit };
+	return { nickname, email, content, handleInput, submit };
 }

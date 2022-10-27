@@ -13,6 +13,15 @@
 			:class='$style.nickname'
 		>
 	</label>
+	<label :class='$style.name'>
+		邮箱（可选，用于回复提醒）
+		<input
+			v-model='email'
+			type='email'
+			name='email'
+			:class='$style.nickname'
+		>
+	</label>
 
 	<button :class='$style.guide' @click='showGuide'>
 		<QuestionIcon/>
@@ -89,7 +98,7 @@ interface EditContextProps_Copy {
 
 const props = defineProps<EditContextProps_Copy>();
 
-const { nickname, content, handleInput, submit } = useDiscussContext(props);
+const { nickname, email, content, handleInput, submit } = useDiscussContext(props);
 const dialog = useDialog();
 const user = useCurrentUser();
 
@@ -145,11 +154,12 @@ defineExpose({ focus });
 	display: inline-flex;
 	flex-direction: column;
 	margin-left: 1rem;
+	font-size: small;
 	vertical-align: top;
 }
 
 .nickname {
-	margin-top: 4px;
+	margin-top: 3px;
 	font-weight: 600;
 }
 

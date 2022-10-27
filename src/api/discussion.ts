@@ -67,6 +67,9 @@ export interface DiscussionInput extends TopicKey {
 
 	/** 可以随意填写的昵称，不能为空字符串 */
 	nickname?: string | null;
+
+	/** 接收回复通知的邮箱，不能为空字符串 */
+	email?: string | null;
 }
 
 /**
