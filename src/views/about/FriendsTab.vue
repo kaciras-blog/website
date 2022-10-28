@@ -24,7 +24,7 @@
 			<!-- 有些地方可能直接引用这个链接，所以要保证URL不变，并能在任意位置访问。-->
 			<p>
 				图标：
-				<a :class='$style.inlineLink' href='/avatar.png'>avatar.png</a>
+				<a :class='$style.inlineLink' href='/favicon-bg.png'>favicon-bg.png</a>
 			</p>
 			<p>名字：Kaciras</p>
 			<p>描述：编程 • 生活 • 梦想</p>
