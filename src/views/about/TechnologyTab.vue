@@ -5,7 +5,7 @@
 		<section class='about-section'>
 			<IconSectionHeader
 				icon='@/assets/img/logo-kaciras.png'
-				title='Kaciras" Blog'
+				title="Kaciras' Blog"
 			/>
 			<IconParagraph
 				src='@/assets/img/logo-github.svg'
@@ -37,7 +37,7 @@
 				src='@/assets/img/logo-vue.svg'
 				title='vue'
 			>
-				网页端是用 Vue3 全家桶编写的单页应用，手撸组件。
+				网页端是用 Vue3 全家桶编写的单页应用，手撸组件和 CSS。
 			</IconParagraph>
 			<IconParagraph
 				src='@/assets/img/tools-and-utensils.svg'
@@ -61,7 +61,7 @@
 				src='@/assets/img/logo-pwa.png'
 				title='pwa'
 			>
-				本站拥有 PWA 支持，大幅提升了加载速度，使用自己实现的 ServiceWorker。
+				支持 PWA，大幅提升了加载速度，使用自己实现的 ServiceWorker。
 			</IconParagraph>
 		</section>
 
@@ -74,7 +74,7 @@
 				src='@/assets/img/logo-nodejs.svg'
 				title='nodejs'
 			>
-				页面服务器使用 NodeJS 编写，使用了 Koa 全家桶。
+				页面服务使用 NodeJS 编写，使用了 Koa 全家桶。
 			</IconParagraph>
 			<IconParagraph
 				src='@/assets/img/browser-gears.svg'
@@ -86,8 +86,8 @@
 				src='@/assets/img/photo.svg'
 				title='webp'
 			>
-				支持图片自动优化、压缩，转码为最新的格式，节约了 93.5% 的流量
-				（根据文章里的图片计算，假定浏览器支持 AVIF）。
+				支持图片自动优化、转码，节约了 93.5% 的流量
+				（根据文章里的图片计算，假定支持 AVIF）。
 			</IconParagraph>
 		</section>
 
@@ -100,7 +100,7 @@
 				src='@/assets/img/logo-spring-framework.svg'
 				title='spring framework'
 			>
-				内容服务器以 JAVA 语言为主，使用 Spring 全家桶。
+				内容服务以 JAVA 语言为主，使用 Spring 全家桶。
 			</IconParagraph>
 			<IconParagraph
 				src='@/assets/img/logo-redis.svg'
@@ -112,7 +112,7 @@
 				src='@/assets/img/logo-mariadb.png'
 				title='mariadb'
 			>
-				文章、评论、分类、用户等数据存储在 Mariadb 数据库中。
+				文章、评论、分类、用户等数据存储在 MariaDB 数据库中。
 			</IconParagraph>
 			<IconParagraph
 				src='@/assets/img/icons8-nginx.svg'
@@ -124,7 +124,7 @@
 				src='@/assets/img/debian.png'
 				title='debian'
 			>
-				本网站运行于 Debian 系统上，使用 testing 分支滚动更新。
+				本站运行于 Debian 系统上，使用 testing 分支滚动更新。
 			</IconParagraph>
 		</section>
 	</div>

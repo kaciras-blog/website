@@ -1,7 +1,7 @@
 <!-- /about/me 更具通用性，比用自己名字做 url 更好，况且名字还可能变 -->
 <template>
 	<div class='about-tab-page'>
-		<PageMeta title='站长'/>
+		<PageMeta title='博主'/>
 
 		<section class='about-section'>
 			<div :class='$style.profile'>

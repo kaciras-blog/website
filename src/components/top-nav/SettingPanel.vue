@@ -18,8 +18,8 @@
 		正在连接 ServiceWorker……
 	</div>
 	<div v-else class='minor-text'>
-		该选项将对动态内容使用 stale-while-revalidate 缓存策略，
-		这能让访问过的内容无需网络立即加载，但新内容会被延迟到下一次访问。
+		对动态内容使用 stale-while-revalidate 缓存策略，
+		使访问过的页面无需网络立即加载，但新内容会被延迟到下一次请求。
 	</div>
 </template>
 

@@ -9,28 +9,30 @@
 				加友链在下面评论即可，填写以下几项：
 			</p>
 			<ul>
-				<li>网站地址（必需）</li>
-				<li>名字，如果没有则使用您网站的标题</li>
-				<li>背景，16：9 的图片，如果没有则使用您首页的截图</li>
-				<li>图标，如果没有则使用您网站的图标或GitHub头像</li>
+				<li>网站地址（必需）。</li>
+				<li>名字，如果没有则使用您网站的标题。</li>
+				<li>背景，16：9 的图片，如果没有则使用您首页的截图。</li>
+				<li>图标，如果没有则使用您网站的图标或 GitHub 头像。</li>
 			</ul>
 
 			<h2>本站信息</h2>
-			<p>
-				网站地址：
-				<a class='highlight' href='https://blog.kaciras.com'>https://blog.kaciras.com</a>
-			</p>
-
-			<!-- 有些地方可能直接引用这个链接，所以要保证URL不变，并能在任意位置访问。-->
-			<p>
-				图标：
-				<a :class='$style.inlineLink' href='/favicon-bg.png'>favicon-bg.png</a>
-			</p>
-			<p>名字：Kaciras</p>
-			<p>描述：编程 • 生活 • 梦想</p>
+			<dl :class='$style.info'>
+				<dt>地址</dt>
+				<dd>
+					<a class='highlight' href='https://blog.kaciras.com'>https://blog.kaciras.com</a>
+				</dd>
+				<dt>名字</dt>
+				<dd>Kaciras Blog</dd>
+				<dt>图标</dt>
+				<dd>
+					<a :class='$style.inlineLink' href='/favicon-bg.png'>favicon-bg.png</a>
+				</dd>
+				<dt>描述</dt>
+				<dd>编程 • 生活 • 梦想</dd>
+			</dl>
 
 			<h2>其它说明</h2>
-			<p>您的站点必须启用 HTTPS。</p>
+			<p>您的站点地址必须使用 HTTPS。</p>
 			<p>原则上只加计算机和 ACG 内容相关，并且是原创内容的站点，友链最好能互加。</p>
 			<p>本站会自动清理超过一个月无法访问的链接。</p>
 		</section>
@@ -60,6 +62,26 @@ import PageMeta from "@/components/PageMeta";</script>
 	aspect-ratio: 660 / 346;
 	max-width: 100%;
 	margin: 0 auto 1em auto;
+}
+
+.info {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	grid-row-gap: 1em;
+
+	& > dt {
+		&::after {
+			content: "："
+		}
+
+		grid-column: 1;
+		justify-self: end;
+	}
+
+	& > dd {
+		margin-left: 0;
+		grid-column: 2;
+	}
 }
 
 .inlineLink {
