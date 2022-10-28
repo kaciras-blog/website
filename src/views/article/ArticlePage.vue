@@ -264,14 +264,12 @@ function gotoDiscuss() {
 	top: 61vh;
 	right: 1rem;
 
-	background-color: white;
-
 	@media screen {
 		@media (min-width: @length-screen-pad) {
 			right: 3%;
 		}
 		@media (min-width: @length-screen-wide) {
-			left: calc(50vw + 540px);
+			left: calc(84vw + 40px);
 		}
 	}
 }
@@ -282,6 +280,7 @@ function gotoDiscuss() {
 	width: 55px;
 	height: 55px;
 	padding: 0;
+	background-color: white;
 
 	border-radius: 50%;
 	font-size: 1.8rem;

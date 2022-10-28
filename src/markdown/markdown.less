@@ -66,14 +66,22 @@
 		border-left: 6px solid @quote-padding;
 	}
 
+	table {
+		margin: 0 auto 1rem auto;
+	}
+
 	a {
 		word-break: break-all;
 		.highlight-color(@color-link, @color-link);
 	}
 }
 
-.table-of-contents ol {
-	margin: 0;
+.table-of-contents {
+	margin-bottom: 16px;
+
+	& ol {
+		margin: 0;
+	}
 }
 
 .center-wrapper {
