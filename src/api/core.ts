@@ -30,7 +30,7 @@ async function check(response: Response) {
 	if (response.ok) {
 		return response;
 	}
-	const message = await response.text();
+	const { message } = await response.json();
 	throw new BlogAPIError(response, message);
 }
 
