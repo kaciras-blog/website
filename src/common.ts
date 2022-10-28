@@ -7,6 +7,8 @@ import CATEGORY_IMG from "@/assets/img/category.png";
 
 export { DEFAULT_AVATAR, DEFAULT_COVER, CATEGORY_IMG };
 
+export const USERNAME_LENGTH = 16;
+
 /**
  * 获取文章所在页面的的完整路径。
  * 格式：/article/{id}/{url}

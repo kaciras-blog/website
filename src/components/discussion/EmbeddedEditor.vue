@@ -5,10 +5,11 @@
 		:src='user.avatar ?? DEFAULT_AVATAR'
 	>
 	<label :class='$style.name'>
-		名字（可选）
+		名字（可选，最多 16 字）
 		<input
 			v-model='nickname'
 			name='nickname'
+			:maxlength='USERNAME_LENGTH'
 			:placeholder='user.name'
 			:class='$style.nickname'
 		>
@@ -33,6 +34,13 @@
 		:class='$style.preview'
 		:value='content'
 	/>
+
+	<!--
+		输入框可能被默认聚焦，如果设了 required 属性，
+		则一开始就会显示错误样式，这给用户感觉不好。
+
+		不过这样表单验证就只能手动去做了，弹个框之类的。
+	-->
 	<textarea
 		v-else
 		ref='textareaEl'
@@ -66,6 +74,7 @@
 			预览
 		</KxButton>
 
+		<!-- 同样由于用户感觉，不要搞禁用样式 -->
 		<KxTaskButton
 			class='primary'
 			:class='$style.submit'
@@ -82,7 +91,7 @@ import QuestionIcon from "bootstrap-icons/icons/question-circle.svg?sfc";
 import EyeIcon from "bootstrap-icons/icons/eye-fill.svg?sfc";
 import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
 import { KxButton, KxTaskButton, useDialog } from "@kaciras-blog/uikit";
-import { DEFAULT_AVATAR } from "@/common";
+import { DEFAULT_AVATAR, USERNAME_LENGTH } from "@/common";
 import { useCurrentUser } from "@/store";
 import { Discussion } from "@/api";
 import MarkdownView from "@/markdown/MarkdownView.vue";

@@ -56,6 +56,7 @@
 			<input
 				v-model='nickname'
 				name='nickname'
+				:maxlength='USERNAME_LENGTH'
 				:placeholder='user.name'
 				:class='$style.nickname'
 			>
@@ -83,6 +84,7 @@ import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
 import HelpIcon from "bootstrap-icons/icons/question-circle.svg?sfc";
 import PaperPlaneIcon from "@/assets/icon/paper-plane.svg?sfc";
 import { Discussion } from "@/api";
+import { USERNAME_LENGTH } from "@/common";
 import { useCurrentUser } from "@/store";
 import MarkdownView from "@/markdown/MarkdownView.vue";
 import GuideDialog from "./GuideDialog.vue";

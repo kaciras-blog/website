@@ -2,6 +2,7 @@ import { ref } from "vue";
 import { useLocalStorage } from "@vueuse/core";
 import { useDialog, useToast } from "@kaciras-blog/uikit";
 import api, { Discussion } from "@/api";
+import { USERNAME_LENGTH } from "@/common";
 import { errorMessage } from "@/utils";
 
 export interface EditContextProps {
@@ -50,8 +51,8 @@ export function useDiscussContext(props: EditContextProps) {
 			return; // 没写评论就按发表按钮
 		}
 
-		if (nickname.value.length > 10) {
-			return $dialog.alertError("名字最多 10 个字");
+		if (nickname.value.length > USERNAME_LENGTH) {
+			return $dialog.alertError(`名字最多 ${USERNAME_LENGTH} 个字`);
 		}
 
 		try {
@@ -65,6 +66,7 @@ export function useDiscussContext(props: EditContextProps) {
 				email: email.value || null,
 				nickname: nickname.value || null,
 			});
+
 			content.value = "";
 			localStorage.removeItem(key);
 			$toast.success("评论提交成功");

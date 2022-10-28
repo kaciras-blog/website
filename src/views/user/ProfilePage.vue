@@ -28,6 +28,7 @@
 						id='name'
 						v-model='user.name'
 						name='name'
+						:maxlength='USERNAME_LENGTH'
 						:class='$style.input'
 					>
 				</div>
@@ -42,7 +43,7 @@
 import { shallowReactive, toRaw } from "vue";
 import { ImageCropper, KxButton, openFile, useDialog } from "@kaciras-blog/uikit";
 import api from "@/api";
-import { DEFAULT_AVATAR } from "@/common";
+import { DEFAULT_AVATAR, USERNAME_LENGTH } from "@/common";
 import { useCurrentUser } from "@/store";
 import { errorMessage } from "@/utils";
 import BasePageLayout from "@/components/BasePageLayout.vue";
