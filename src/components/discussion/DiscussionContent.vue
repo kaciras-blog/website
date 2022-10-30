@@ -10,12 +10,11 @@
 
 			<div :class='$style.nameGroup'>
 				<div>
+					<!-- 如果内容换行了，编译器会在后面加空格 -->
 					<span
 						v-if='value.user.id === 2'
-						:class='$style.stick'
-					>
-						博主
-					</span>
+						:class='$style.stick'>博主</span>
+
 					<span :class='$style.name'>
 						{{ value.nickname || value.user.name }}
 					</span>
@@ -147,6 +146,10 @@ function remove() {
 	border-radius: 3px;
 	color: white;
 	background-color: @color-primary;
+
+	@media screen and (max-width: @length-screen-mobile) {
+		font-size: 0.75rem;
+	}
 }
 
 .name {

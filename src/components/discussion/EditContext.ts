@@ -48,11 +48,12 @@ export function useDiscussContext(props: EditContextProps) {
 	 */
 	async function submit(signal?: AbortSignal) {
 		if (/^\s*$/.test(content.value)) {
-			return; // 没写评论就按发表按钮
+			return false; // 没写评论就按发表按钮
 		}
 
 		if (nickname.value.length > USERNAME_LENGTH) {
-			return $dialog.alertError(`名字最多 ${USERNAME_LENGTH} 个字`);
+			$dialog.alertError(`名字最多 ${USERNAME_LENGTH} 个字`);
+			return false;
 		}
 
 		try {
@@ -73,6 +74,8 @@ export function useDiscussContext(props: EditContextProps) {
 			localStorage.removeItem(key);
 			$toast.success("评论提交成功");
 			onAfterSubmit(entity);
+
+			return true;
 		} catch (e) {
 			$dialog.alertError("评论失败", errorMessage(e));
 			throw e; // 继续抛出传递给 Sentry 和上层

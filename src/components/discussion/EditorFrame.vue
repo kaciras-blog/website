@@ -172,8 +172,8 @@ function showGuide() {
 	dialog.show(GuideDialog);
 }
 
-function handleSubmit(_: unknown, signal: AbortSignal) {
-	return submit(signal).then(dialog.close);
+async function handleSubmit(_: unknown, signal: AbortSignal) {
+	(await submit(signal)) && dialog.close();
 }
 </script>
 
@@ -187,8 +187,10 @@ function handleSubmit(_: unknown, signal: AbortSignal) {
 .headerButton {
 	display: inline-flex;
 	align-items: center;
-	font-size: 20px;
+
 	padding: 0 16px;
+	font-size: 20px;
+	border-radius: 0;
 }
 
 .body {

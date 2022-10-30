@@ -76,9 +76,7 @@
 
 		<!-- 同样由于用户感觉，不要搞禁用样式 -->
 		<KxTaskButton
-			class='primary'
-			:class='$style.submit'
-			:on-click='submit'
+			:on-click='(_, s) => submit(s)'
 		>
 			发表评论
 		</KxTaskButton>

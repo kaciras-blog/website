@@ -14,6 +14,7 @@
 							:nest-root='host'
 							:value='item'
 							:class='$style.item'
+							@reply='showEditorFrame'
 						/>
 					</ol>
 				</template>
@@ -22,7 +23,7 @@
 
 		<button
 			:class='$style.bottom'
-			@click='showEditorFrame'
+			@click='showEditorFrame(host)'
 		>
 			<EditIcon :class='$style.icon'/>
 			写回复...
@@ -52,8 +53,7 @@ const data = ref(props.modelValue);
 
 watch(data, v => emit("update:modelValue", v));
 
-function showEditorFrame() {
-	const parent = props.host;
+function showEditorFrame(parent: Discussion) {
 	const { objectId, type } = parent;
 	const context = {
 		type,

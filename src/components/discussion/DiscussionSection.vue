@@ -127,6 +127,7 @@ function afterSubmit(entity: Discussion) {
 	if ("refresh" in discussions.value) {
 		discussions.value.refresh();
 	} else {
+		data.value.total++;
 		data.value.items.push(entity);
 	}
 }
