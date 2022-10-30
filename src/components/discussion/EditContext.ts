@@ -46,7 +46,7 @@ export function useDiscussContext(props: EditContextProps) {
 	 *
 	 * @return 表示评论提交过程的 Promise
 	 */
-	async function submit() {
+	async function submit(signal?: AbortSignal) {
 		if (/^\s*$/.test(content.value)) {
 			return; // 没写评论就按发表按钮
 		}
@@ -56,16 +56,18 @@ export function useDiscussContext(props: EditContextProps) {
 		}
 
 		try {
-			const entity = await api.discuss.add({
-				objectId,
-				type,
-				parent: parent?.id ?? 0,
-				content: content.value,
+			const entity = await api
+				.configure({ signal })
+				.discuss.add({
+					objectId,
+					type,
+					parent: parent?.id ?? 0,
+					content: content.value,
 
-				// 这几个不能为空字符串。
-				email: email.value || null,
-				nickname: nickname.value || null,
-			});
+					// 这几个不能为空字符串。
+					email: email.value || null,
+					nickname: nickname.value || null,
+				});
 
 			content.value = "";
 			localStorage.removeItem(key);
