@@ -9,6 +9,7 @@ specifiers:
   '@kaciras/eslint-config-core': ^2.4.1
   '@kaciras/eslint-config-typescript': ^2.4.1
   '@kaciras/eslint-config-vue': ^2.4.1
+  '@kaciras/utilities': ^0.3.2
   '@material-design-icons/svg': ^0.13.0
   '@sentry/tracing': ^7.17.2
   '@sentry/vue': ^7.17.2
@@ -40,6 +41,7 @@ dependencies:
   '@kaciras-blog/markdown': 2.2.3_ea7kj7wzjkld5jo2noyjqxi764
   '@kaciras-blog/server': 2.2.3_@types+markdown-it@12.2.3
   '@kaciras-blog/uikit': 2.4.2_typescript@4.8.4
+  '@kaciras/utilities': 0.3.2
   '@material-design-icons/svg': 0.13.0
   '@sentry/tracing': 7.17.2
   '@sentry/vue': 7.17.2_vue@3.2.41

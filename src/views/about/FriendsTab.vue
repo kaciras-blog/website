@@ -16,7 +16,7 @@
 			</ul>
 
 			<h2>本站信息</h2>
-			<dl :class='$style.info'>
+			<dl class='grid-dl'>
 				<dt>地址</dt>
 				<dd>
 					<a class='highlight' href='https://blog.kaciras.com'>https://blog.kaciras.com</a>
@@ -62,26 +62,6 @@ import PageMeta from "@/components/PageMeta";</script>
 	aspect-ratio: 660 / 346;
 	max-width: 100%;
 	margin: 0 auto 1em auto;
-}
-
-.info {
-	display: grid;
-	grid-template-columns: auto 1fr;
-	grid-row-gap: 1em;
-
-	& > dt {
-		&::after {
-			content: "："
-		}
-
-		grid-column: 1;
-		justify-self: end;
-	}
-
-	& > dd {
-		margin-left: 0;
-		grid-column: 2;
-	}
 }
 
 .inlineLink {

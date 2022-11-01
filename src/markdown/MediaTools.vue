@@ -11,13 +11,14 @@
 </template>
 
 <script setup lang="ts">
-import { getImageResolution, getVideoResolution, KxButton, openFile, useDialog } from "@kaciras-blog/uikit";
+import { getVideoResolution, KxButton, openFile, useDialog } from "@kaciras-blog/uikit";
 import ImageIcon from "bootstrap-icons/icons/image-fill.svg?sfc";
 import VideoIcon from "bootstrap-icons/icons/play-btn.svg?sfc";
 import MusicIcon from "bootstrap-icons/icons/music-note-beamed.svg?sfc";
 import api from "@/api";
 import { basename } from "@/utils";
 import VideoDialog from "./VideoDialog.vue";
+import UploadImageDialog from "./UploadImageDialog.vue";
 import { AddonContext, overwrite } from "./editor-addon";
 
 interface TextStateGroupProps {
@@ -30,15 +31,21 @@ const dialog = useDialog();
 // eslint-disable-next-line vue/no-setup-props-destructure
 const context = props.ctx;
 
-async function addImage() {
-	const file = await openFile("image/*");
+interface ImageUploadResult {
+	vw: number;
+	vh: number;
+	name: string;
+	url: string;
+}
 
-	// 加上宽高便于确定占位图的尺寸，从 https://chanshiyu.com/#/post/41 学到的
-	const { width, height } = await getImageResolution(file);
-	const res = await api.media.uploadImage(file) + `?vw=${width}&vh=${height}`;
+async function addImage() {
+	const r = await dialog.show<ImageUploadResult>(UploadImageDialog).confirmPromise;
+
+	// 加上宽高便于确定占位图的尺寸，从 https://chanshiyu.com/#/post/41 学的。
+	const res = r.url + `?vw=${r.vw}&vh=${r.vh}`;
 
 	const [, selEnd] = context.selection;
-	overwrite(context, selEnd, selEnd, `![${basename(file.name)}](${res})`);
+	overwrite(context, selEnd, selEnd, `![${basename(r.name)}](${res})`);
 }
 
 interface VDP_Copy {

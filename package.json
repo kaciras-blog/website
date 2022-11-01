@@ -32,6 +32,7 @@
 		"@kaciras-blog/markdown": "^2.2.3",
 		"@kaciras-blog/server": "^2.2.3",
 		"@kaciras-blog/uikit": "^2.4.2",
+		"@kaciras/utilities": "^0.3.2",
 		"@material-design-icons/svg": "^0.13.0",
 		"@sentry/tracing": "^7.17.2",
 		"@sentry/vue": "^7.17.2",
