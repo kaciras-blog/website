@@ -10,7 +10,7 @@
 			<img
 				:class='$style.image'
 				alt='预览'
-				:src='url'
+				:src='objectUrl'
 				@load='handleLoad'
 			>
 			<dl class='grid-dl'>
@@ -33,8 +33,8 @@
 		</template>
 
 		<Size2DInput
-			v-model:width='viewSize.width'
-			v-model:height='viewSize.height'
+			v-model:width='view.width'
+			v-model:height='view.height'
 			:aspect-ratio='rawSize.width / rawSize.height'
 			:class='$style.sizeInput'
 		/>
@@ -50,7 +50,7 @@
 </template>
 
 <script setup lang='ts'>
-import { reactive, shallowRef } from "vue";
+import { onBeforeUnmount, reactive, shallowRef } from "vue";
 import { useObjectUrl } from "@vueuse/core";
 import { formatSize } from "@kaciras/utilities/format";
 import { KxBaseDialog, KxDialogButtons, Resolution, useDialog } from "@kaciras-blog/uikit";
@@ -67,15 +67,19 @@ const props = defineProps<UploadImageDialogProps>();
 const dialog = useDialog();
 
 const file = shallowRef<File | undefined>(props.initFile);
-const url = useObjectUrl(file);
-const progress = shallowRef(0);
+const progress = shallowRef<number | undefined>(0);
+const objectUrl = useObjectUrl(file);
+
+const controller = new AbortController();
+
+onBeforeUnmount(() => controller.abort());
 
 const rawSize = reactive<Resolution>({
 	width: NaN,
 	height: NaN,
 });
 
-const viewSize = reactive<Resolution>({
+const view = reactive<Resolution>({
 	width: NaN,
 	height: NaN,
 });
@@ -86,19 +90,25 @@ function handleChange([selected]: File[]) {
 
 function handleLoad(event: Event) {
 	const el = event.target as HTMLImageElement;
-	viewSize.width = rawSize.width = el.naturalWidth;
-	viewSize.height = rawSize.height = el.naturalHeight;
+	view.width = rawSize.width = el.naturalWidth;
+	view.height = rawSize.height = el.naturalHeight;
 }
 
 async function upload() {
-	const { width, height } = viewSize;
-	progress.value = NaN;
+	const { signal } = controller;
+	const { width, height } = view;
+
+	progress.value = undefined;
+	const url = await api
+		.configure({ signal })
+		.media
+		.uploadImage(file.value);
 
 	dialog.confirm({
-		name: file.value!.name,
 		vw: width,
 		vh: height,
-		url: await api.media.uploadImage(file.value),
+		url,
+		name: file.value!.name,
 	});
 }
 </script>
