@@ -17,8 +17,8 @@ import VideoIcon from "bootstrap-icons/icons/play-btn.svg?sfc";
 import MusicIcon from "bootstrap-icons/icons/music-note-beamed.svg?sfc";
 import api from "@/api";
 import { basename } from "@/utils";
-import VideoDialog from "./VideoDialog.vue";
 import UploadImageDialog from "./UploadImageDialog.vue";
+import VideoDialog2 from "./UploadVideoDialog.vue";
 import { AddonContext, overwrite } from "./editor-addon";
 
 interface TextStateGroupProps {
@@ -38,8 +38,10 @@ interface ImageUploadResult {
 	url: string;
 }
 
-async function addImage() {
-	const r = await dialog.show<ImageUploadResult>(UploadImageDialog).confirmPromise;
+async function addImage(initFile?: File) {
+	const r = await dialog
+		.show<ImageUploadResult>(UploadImageDialog, { initFile })
+		.confirmPromise;
 
 	// 加上宽高便于确定占位图的尺寸，从 https://chanshiyu.com/#/post/41 学的。
 	const res = r.url + `?vw=${r.vw}&vh=${r.vh}`;
@@ -56,9 +58,9 @@ interface VDP_Copy {
 	autoLabel: boolean;
 }
 
-async function addVideo() {
+async function addVideo(initFiles: File[]) {
 	const { src, label, poster, isVideo } = await dialog
-		.show<VDP_Copy>(VideoDialog).confirmPromise;
+		.show<VDP_Copy>(VideoDialog2).confirmPromise;
 	let text;
 
 	if (isVideo) {
@@ -72,10 +74,12 @@ async function addVideo() {
 	overwrite(context, selEnd, selEnd, text);
 }
 
-async function addAudio() {
-	const file = await openFile("audio/*");
+async function addAudio(file?: File) {
+	file ??= await openFile("audio/*");
 	const res = await api.media.uploadAudio(file);
 	const [selEnd] = context.selection;
 	overwrite(context, selEnd, selEnd, `@audio[](${res})`);
 }
+
+defineExpose({ addImage, addVideo, addAudio });
 </script>

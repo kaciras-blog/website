@@ -21,6 +21,8 @@
 				v-model='content'
 				v-bind-selection.focus='selection'
 				v-on-selection-change='selection'
+				@dragover.prevent
+				@drop='handleDrop'
 				@keydown.tab.prevent='insertTab'
 				@scroll='lastScrollPreview = false'
 			/>
@@ -54,23 +56,27 @@ import { computed, nextTick, onMounted, onUnmounted, reactive, ref, watchEffect 
 import { useVModel } from "@vueuse/core";
 import { syncScroll } from "@kaciras-blog/uikit";
 import { articleRenderer, initLazyLoading } from ".";
-import { ViewMode } from "./editor-addon";
+import { AddonContext, ViewMode } from "./editor-addon";
 import TextStateGroup from "./TextStateGroup.vue";
 import SyncScrollToggle from "./SyncScrollToggle.vue";
+
+type DropHandler = (files: FileList, ctx: AddonContext) => boolean | void;
 
 interface MarkdownEditorProps {
 	modelValue: string;
 	debounce?: number;
+	dropHandler: DropHandler;
 }
 
 const props = withDefaults(defineProps<MarkdownEditorProps>(), {
 	debounce: 500,
+	dropHandler: () => false,
 });
 
 const emit = defineEmits(["update:modelValue"]);
 
 const content = useVModel(props, "modelValue", emit);
-const selection = ref([0, 0]);
+const selection = ref<[number, number]>([0, 0]);
 const viewMode = ref(ViewMode.Split);
 
 const html = ref(articleRenderer.render(props.modelValue));
@@ -108,6 +114,24 @@ const scrollSynced = computed({
 });
 
 /**
+ * 官网上说紧密耦合的组件使用可变 props 也行。
+ * https://vuejs.org/guide/components/props.html#mutating-object-array-props
+ */
+const ctx = reactive({
+	viewMode,
+	selection,
+	content,
+	scrollSynced,
+});
+
+function handleDrop(event: DragEvent) {
+	const { files } = event.dataTransfer!;
+	if (props.dropHandler(files, ctx)) {
+		return event.preventDefault();
+	}
+}
+
+/**
  * 浏览器默认的tab键用于切换选择的元素。
  * 在文本框上监听@keydown.tab.prevent="inputTab"，使其能够输入tab字符。
  */
@@ -120,17 +144,6 @@ function insertTab() {
 	content.value = v.substring(0, selStart) + "\t" + v.substring(selEnd, v.length);
 	selection.value = [newEnd, newEnd];
 }
-
-/**
- * 官网上说紧密耦合的组件使用可变 props 也行。
- * https://vuejs.org/guide/components/props.html#mutating-object-array-props
- */
-const ctx = reactive({
-	viewMode,
-	selection,
-	content,
-	scrollSynced,
-});
 
 // watchEffect 在 setup 阶段就调用，所以要检查 previewEl。
 watchEffect(() => {

@@ -1,10 +1,14 @@
 <template>
 	<PageMeta title='编辑器' body-class=''/>
 
-	<MarkdownEditor :class='$style.editor' v-model='current.content'>
+	<MarkdownEditor
+		v-model='current.content'
+		:class='$style.editor'
+		:drop-handler='handleDrop'
+	>
 		<template #toolbar-left='{ ctx }'>
 			<TextTools :ctx='ctx'/>
-			<MediaTools :ctx='ctx'/>
+			<MediaTools ref='mediaTools' :ctx='ctx'/>
 		</template>
 		<template #toolbar-right='{ ctx }'>
 			<ConfigToolbar :ctx='ctx'/>
@@ -46,8 +50,7 @@
 </template>
 
 <script setup lang="ts">
-import api, { Article, Draft, DraftHistory } from "@/api";
-import { onBeforeMount, onBeforeUnmount, reactive, ref, watch } from "vue";
+import { onBeforeMount, onBeforeUnmount, reactive, ref, shallowRef, watch } from "vue";
 import { onBeforeRouteLeave, useRouter } from "vue-router";
 import { useEventListener } from "@vueuse/core";
 import { KxButton, useDialog } from "@kaciras-blog/uikit";
@@ -56,13 +59,14 @@ import CardIcon from "bootstrap-icons/icons/credit-card-2-front.svg?sfc";
 import PaperPlaneIcon from "@/assets/icon/paper-plane.svg?sfc";
 import { articleLink, localDateMinute } from "@/common";
 import { errorMessage } from "@/utils";
+import PageMeta from "@/components/PageMeta";
 import MarkdownEditor from "@/markdown/MarkdownEditor.vue";
 import TextTools from "@/markdown/TextTools.vue";
 import ConfigToolbar from "@/markdown/ConfigToolbar.vue";
 import MediaTools from "@/markdown/MediaTools.vue";
+import api, { Article, Draft, DraftHistory } from "@/api";
 import PublishDialog from "./PublishDialog.vue";
 import MetadataDialog from "./MetadataDialog.vue";
-import PageMeta from "@/components/PageMeta";
 
 interface EditorPageProps {
 	draftId: string;
@@ -74,6 +78,7 @@ const dialog = useDialog();
 const router = useRouter();
 
 const draft = reactive<Draft>({} as any);
+const mediaTools = shallowRef<any>();
 
 const current = reactive<DraftHistory>({
 	title: "",
@@ -90,6 +95,16 @@ const changes = ref(false);
 const autoSaveError = ref<Error>();
 
 let autoSaveTimer: any;
+
+function handleDrop(files: FileList) {
+	for (const file of files) {
+		if (file.type.startsWith("image/")) {
+			mediaTools.value.addImage(file);
+			return true;
+		}
+	}
+	return false;
+}
 
 /**
  * 监视文本的改变，当改变时开始计时 5 分钟，到点自动保存
