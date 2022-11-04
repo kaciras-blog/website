@@ -55,7 +55,7 @@
 import { computed, nextTick, onMounted, onUnmounted, reactive, ref, watchEffect } from "vue";
 import { useVModel } from "@vueuse/core";
 import { syncScroll } from "@kaciras-blog/uikit";
-import { articleRenderer, initLazyLoading } from ".";
+import { articleRenderer, lazyLoad } from ".";
 import { AddonContext, ViewMode } from "./editor-addon";
 import TextStateGroup from "./TextStateGroup.vue";
 import SyncScrollToggle from "./SyncScrollToggle.vue";
@@ -159,7 +159,7 @@ watchEffect(() => {
 		if (!previewEl.value) {
 			return;
 		}
-		disconnect = initLazyLoading(previewEl.value);
+		disconnect = lazyLoad(previewEl.value);
 	};
 
 	clearTimeout(timer);

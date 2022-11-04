@@ -4,7 +4,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { articleRenderer, discussionRenderer, initLazyLoading } from ".";
+import { articleRenderer, discussionRenderer, lazyLoad } from ".";
 import { NOOP } from "@/utils";
 
 interface MarkdownViewProps {
@@ -32,7 +32,7 @@ function setupLazyLoad(el: HTMLElement) {
 		disconnect();
 		disconnect = NOOP;
 	} else if (disconnect === NOOP) {
-		disconnect = initLazyLoading(el);
+		disconnect = lazyLoad(el);
 	}
 }
 </script>

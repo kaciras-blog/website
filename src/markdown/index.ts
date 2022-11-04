@@ -3,9 +3,9 @@ import { Anchor, Classify, Footnote, TOC, UGC } from "@kaciras-blog/markdown";
 import MarkdownIt from "markdown-it";
 import { escapeHtml } from "markdown-it/lib/common/utils.js";
 import hljs from "./highlight";
-import { clientMediaPlugin, initLazyLoading } from "./media";
+import { clientMediaPlugin, lazyLoad } from "./media";
 
-export { initLazyLoading };
+export { lazyLoad };
 
 function highlight(code: string, language: string) {
 	let result;
