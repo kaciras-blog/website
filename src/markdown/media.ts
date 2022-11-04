@@ -1,7 +1,7 @@
-import lozad from "lozad";
 import { Media, RendererMap } from "@kaciras-blog/markdown";
 import MarkdownIt from "markdown-it";
 import Token from "markdown-it/lib/token";
+import { silencePromise } from "@/utils";
 
 /**
  * 从资源的链接参数（?vw=...&vh=...）里读取媒体的尺寸，
@@ -70,7 +70,7 @@ const directiveMap: RendererMap = {
 		return `
 			<p class='center-wrapper'>
 				<span ${getContainerClassAndStyle(src)}>
-					<video class='gif' src='${src}' loop muted crossorigin></video>
+					<video class='gif' data-src='${src}' loop muted crossorigin></video>
 				</span>
 				${alt ? `<span class='md-img-alt'>${alt}</span>` : ""}
     		</p>
@@ -84,7 +84,7 @@ const directiveMap: RendererMap = {
 		return `
 			<p class='center-wrapper md-video'>
 				<span class='md-media-container sized'>
-					<video poster='${poster}' src='${src}' controls crossorigin></video>
+					<video poster='${poster}' data-src='${src}' controls crossorigin></video>
 				</span>
 			</p>
 		`;
@@ -98,13 +98,60 @@ const directiveMap: RendererMap = {
 };
 
 /**
- * MarkdownIt 的插件，使用方式：markdownIt.use(clientMediaPlugin)
- *
- * @param markdownIt 要安装的实例
+ * https://cconcolato.github.io/media-mime-support/
+ * https://evilmartians.com/chronicles/better-web-video-with-av1-codec
  */
-export function clientMediaPlugin(markdownIt: MarkdownIt) {
-	markdownIt.use(Media, directiveMap);
-	markdownIt.renderer.rules.image = renderImage;
+function getSupportedCodecs() {
+	const codecMap: Record<string, string> = {
+		// opus: "video/mp4; codecs=opus",
+		hevc: "video/mp4; codecs=hvc1",
+		av1: "video/mp4; codecs=av01.0.05M.08",
+	};
+
+	const video = document.createElement("video");
+	return Object.keys(codecMap)
+		.filter(k => video.canPlayType(codecMap[k]) === "probably");
+}
+
+const codecs = import.meta.env.SSR
+	? ""
+	: getSupportedCodecs().join(",");
+
+function intersect(entries: IntersectionObserverEntry[]) {
+	for (const entry of entries) {
+
+		if (entry.target.tagName === "IMG") {
+			const target = entry.target as HTMLImageElement;
+
+			if (target.dataset.src) {
+				target.src = target.dataset.src!;
+				delete target.dataset.src;
+				return;
+			}
+		}
+
+		/*
+ 		 * play 返回 Promise 来加等待加载完成，如果元数据还未加载完就暂停会抛出异常。
+ 		 * 这个异常在 Chrome 里是 AbortError，Firefox 是 DomException，无法很好地跟其他情况区分。
+ 		 *
+ 		 * 但元数据的加载被中断是正常的，不影响下次播放，故直接屏蔽掉。
+ 		 *
+ 		 * https://developers.google.com/web/updates/2017/06/play-request-was-interrupted
+ 		 */
+		const target = entry.target as HTMLVideoElement;
+		if (target.dataset.src) {
+			const url = new URL(target.dataset.src, location.href);
+			url.searchParams.set("codecs", codecs);
+			target.src = url.toString();
+			delete target.dataset.src;
+		}
+
+		if (entry.intersectionRatio < 0) {
+			target.pause();
+		} else {
+			silencePromise(target.play());
+		}
+	}
 }
 
 /**
@@ -119,41 +166,19 @@ export function clientMediaPlugin(markdownIt: MarkdownIt) {
  * @return {function} 取消监听的函数，在被监视的元素移除后调用，以避免内存泄漏。
  */
 export function initLazyLoading(el: HTMLElement) {
-	const lozadImages = lozad(el.querySelectorAll("img"));
-	lozadImages.observe();
-
-	// gif 视频自动播放/暂停
-	const autoPlay = new IntersectionObserver(entries => {
-		for (const entry of entries) {
-			const target = entry.target as HTMLVideoElement;
-			/*
-			 * play 返回 Promise 来加等待加载完成，如果元数据还未加载完就暂停会抛出异常。
-			 * 这个异常在 Chrome 里是 AbortError，Firefox 是 DomException，无法很好地跟其他情况区分。
-			 *
-			 * 但元数据的加载被中断是正常的，不影响下次播放，故直接屏蔽掉。
-			 *
-			 * https://developers.google.com/web/updates/2017/06/play-request-was-interrupted
-			 */
-			entry.intersectionRatio > 0 ? silencePromise(target.play()) : target.pause();
-		}
-	});
-
-	el.querySelectorAll(".gif").forEach(video => autoPlay.observe(video));
-
-	return function disconnect() {
-		autoPlay.disconnect();
-		lozadImages.observer.disconnect();
-	};
+	const observer = new IntersectionObserver(intersect);
+	for (const e of el.querySelectorAll("img, video")) {
+		observer.observe(e);
+	}
+	return observer.disconnect.bind(observer);
 }
 
 /**
- * 屏蔽 Promise 的异常，防止某些无关紧要的错误出现在控制台里。
+ * MarkdownIt 的插件，使用方式：markdownIt.use(clientMediaPlugin)
  *
- * 【本代码抄自】
- * https://github.com/videojs/video.js/blob/main/src/js/utils/promise.js
- *
- * @param value An object that may or may not be `Promise`-like.
+ * @param markdownIt 要安装的实例
  */
-function silencePromise(value: any) {
-	if (typeof value?.then === "function") value.catch(() => {});
+export function clientMediaPlugin(markdownIt: MarkdownIt) {
+	markdownIt.use(Media, directiveMap);
+	markdownIt.renderer.rules.image = renderImage;
 }
