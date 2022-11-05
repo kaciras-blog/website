@@ -33,7 +33,7 @@ interface FileDropProps {
 
 interface FileDropEvents {
 	selectStart: () => void;
-	change: (files: File[]) => void;
+	select: (files: File[]) => void;
 	error: (error: Error) => void;
 }
 

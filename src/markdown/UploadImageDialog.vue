@@ -4,7 +4,7 @@
 			v-if='file === undefined'
 			:class='$style.image'
 			accept='image/*'
-			@change='handleChange'
+			@select='handleChange'
 		/>
 		<template v-else>
 			<img
