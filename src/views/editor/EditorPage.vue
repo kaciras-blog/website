@@ -102,6 +102,12 @@ function handleDrop(files: FileList) {
 			mediaTools.value.addImage(file);
 			return true;
 		}
+		if (file.type.startsWith("video/")) {
+			const videos = Array.from(files)
+				.filter(f => f.type.startsWith("video/"));
+			mediaTools.value.addVideo(videos);
+			return true;
+		}
 	}
 	return false;
 }

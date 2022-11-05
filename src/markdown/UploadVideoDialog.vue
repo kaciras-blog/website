@@ -235,7 +235,8 @@ function handleVideoLoad(event: Event, video: VideoDetail) {
 	video.width = el.videoWidth;
 	video.height = el.videoHeight;
 
-	if (files.value.length === 1) {
+	// 删完再选 length===1，初始化 vw===NaN。
+	if (files.value.length === 1 || !data.vw) {
 		data.vw = el.videoWidth;
 		data.vh = el.videoHeight;
 		data.aspectRatio = data.vw / data.vh;
