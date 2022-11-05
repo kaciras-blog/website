@@ -121,17 +121,22 @@ const lazyHandlers: Record<string, OnIntersect> & CodecSupportDetector = {
 		if (this._codecs) {
 			return this._codecs;
 		}
-		const codecMap: Record<string, string> = {
-			hevc: "video/mp4; codecs=hvc1",
-			av1: "video/mp4; codecs=av01.0.05M.08",
-		};
 
-		// 只有 iPhone 可能不支持 MediaSource。
-		const list = "MediaSource" in window ?
-			Object.keys(codecMap).filter(k => MediaSource.isTypeSupported(codecMap[k]))
-			: ["hevc"];
+		// 顺序跟优先级相同，靠前的编码更先进。
+		const codecMap: Array<[string, string]> = [
+			["av1", "video/mp4; codecs=av01.0.05M.08"],
+			["hevc", "video/mp4; codecs=hvc1"],
+		];
 
-		return this._codecs = list.join(",");
+		// 只有 iPhone 可能不支持 MediaSource，它可以解码 HEVC。
+		if (!("MediaSource" in window)) {
+			return "hevc";
+		}
+
+		// 另外也可以用 navigator.mediaCapabilities，不过参数略复杂。
+		return this._codecs = codecMap
+			.filter(c => MediaSource.isTypeSupported(c[1]))
+			.map(c => c[0]).join(",");
 	},
 
 	IMG(element: HTMLImageElement) {
