@@ -96,20 +96,38 @@ const autoSaveError = ref<Error>();
 
 let autoSaveTimer: any;
 
+/**
+ * 处理拖放的函数，目前也就支持拖媒体文件来上传。
+ * 如果拖了多个图片则会挨个弹上传窗，多个视频则认为是单视频的多版本。
+ *
+ * @param files 拖过来的文件们
+ * @return 如果有能处理的就返回 true，否则走默认的拖放操作。
+ */
 function handleDrop(files: FileList) {
+	const images: File[] = [];
+	const videos: File[] = [];
+
 	for (const file of files) {
 		if (file.type.startsWith("image/")) {
-			mediaTools.value.addImage(file);
-			return true;
+			images.push(file);
 		}
 		if (file.type.startsWith("video/")) {
-			const videos = Array.from(files)
-				.filter(f => f.type.startsWith("video/"));
-			mediaTools.value.addVideo(videos);
-			return true;
+			videos.push(file);
 		}
 	}
-	return false;
+
+	insertMedias(images, videos);
+	return images.length + videos.length > 0;
+}
+
+// 因为要顺序执行异步操作，所以单独一个 async 函数。
+async function insertMedias(images: File[], videos: File[]) {
+	for (const image of images) {
+		await mediaTools.value.addImage(image);
+	}
+	if (videos.length) {
+		await mediaTools.value.addVideo(videos);
+	}
 }
 
 /**
