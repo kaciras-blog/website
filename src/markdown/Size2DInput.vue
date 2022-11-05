@@ -1,6 +1,7 @@
 <template>
-	<div :class='$style.container'>
-		显示大小：
+	<fieldset :class='$style.container'>
+		<!-- legend 布局有 BUG，暂不用 -->
+		显示大小
 		<input
 			:class='$style.size'
 			type='number'
@@ -25,7 +26,7 @@
 		>
 			<LinkIcon/>
 		</KxButton>
-	</div>
+	</fieldset>
 </template>
 
 <script setup lang='ts'>
