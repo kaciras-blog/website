@@ -127,7 +127,7 @@ export default function (template: string, manifest?: SSRManifest) {
 		composite.put("title", title);
 		composite.put("metadata", meta);
 		composite.put("bodyAttrs", ` class="${bodyClass}"`);
-		composite.put("headTags",  getHeadTagsSSR(ssrContext));
+		composite.put("headTags", getHeadTagsSSR(ssrContext));
 		return composite.toString();
 	};
 }

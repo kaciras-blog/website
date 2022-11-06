@@ -45,7 +45,12 @@
 				>
 					管理
 				</RouterLink>
-				<button class='nav-item' @click='logout'>退出登录</button>
+				<button
+					class='nav-item'
+					@click='logout'
+				>
+					退出登录
+				</button>
 			</template>
 
 			<RouterLink v-else to='/login' class='nav-item'>

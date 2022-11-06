@@ -136,6 +136,9 @@ interface EditContextProps_Copy {
 	onAfterSubmit: (entity: Discussion) => void;
 }
 
+/**
+ * Config Panel 的类型，因为到处再用懒得写一堆就简写了。
+ */
 enum CP {
 	None,
 	Name,

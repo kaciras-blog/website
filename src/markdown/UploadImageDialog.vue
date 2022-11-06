@@ -39,7 +39,11 @@
 			:class='$style.sizeInput'
 		/>
 
-		<progress :value='progress' max='1' style='width: 100%'/>
+		<progress
+			:value='progress'
+			max='1'
+			style='width: 100%'
+		/>
 
 		<KxDialogButtons
 			:acceptable='!!file'

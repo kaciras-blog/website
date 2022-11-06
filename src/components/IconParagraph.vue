@@ -6,7 +6,9 @@
 			:alt='title'
 			:title='title'
 		>
-		<span :class='$style.text'><slot/></span>
+		<span :class='$style.text'>
+			<slot/>
+		</span>
 	</p>
 </template>
 

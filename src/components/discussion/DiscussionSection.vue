@@ -1,9 +1,7 @@
 <template>
 	<BootLoader :load-fn='initialize'>
 		<header :class='$style.header'>
-			<h2 :class='$style.title'>
-				评论区({{ data.total }})
-			</h2>
+			<h2 :class='$style.title'>评论区({{ data.total }})</h2>
 
 			<div :class='$style.options'>
 				<!-- 有些组合是多余的，比如 nest_size,ASC -->

@@ -1,7 +1,7 @@
 <template>
 	<BasePageLayout :nav-class='$style.top_nav'>
 		<PageMeta :body-class='$style.container'/>
-		<slide-nav :class='$style.header' :tabs='tabs'/>
+		<SlideNav :class='$style.header' :tabs='tabs'/>
 		<RouterView/>
 	</BasePageLayout>
 </template>

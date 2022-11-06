@@ -1,12 +1,12 @@
 <template>
-	<header :class='$style.section_header'>
+	<header :class='$style.header'>
 		<h1 class='compact'>
 			{{ title }}
 		</h1>
 		<img
 			alt='header icon'
 			:src='icon'
-			:class='$style.section_icon'
+			:class='$style.icon'
 		>
 	</header>
 </template>
@@ -23,7 +23,7 @@ defineProps<IconSectionHeaderProps>();
 <style module lang="less">
 @import "../css/imports";
 
-.section_header {
+.header {
 	display: flex;
 	align-items: center;
 	margin-bottom: 1em;
@@ -33,7 +33,7 @@ defineProps<IconSectionHeaderProps>();
 	}
 }
 
-.section_icon {
+.icon {
 	.size(80px);
 	margin-left: auto;
 }

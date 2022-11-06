@@ -21,8 +21,8 @@
 </template>
 
 <script setup lang="ts">
+import { RouterView, useRouter } from "vue-router";
 import { Unsubscribe } from "nanoevents";
-import { useRouter } from "vue-router";
 import { DialogContainer, KxProgress, ToastContainer, useDialog } from "@kaciras-blog/uikit";
 import HeadTags from "@/components/HeadTags";
 import OGImage from "@/assets/img/OpenGraph.png";
@@ -32,6 +32,7 @@ import { events, PrefetchContext } from "./prefetch";
 // vue-router 4 即使 pushState 未改变 URL 也触发导航，所以检查下路径是否改变了。
 const router = useRouter();
 const dialog = useDialog();
+
 router.afterEach((to, form) => {
 	if (to.fullPath !== form.fullPath)
 		dialog.clear();

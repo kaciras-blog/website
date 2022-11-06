@@ -6,16 +6,16 @@
 			:class='$style.size'
 			type='number'
 			min='1'
-			:value="width"
-			@input="handleInputW"
+			:value='width'
+			@input='handleInputW'
 		>
 		x
 		<input
 			:class='$style.size'
 			type='number'
 			min='1'
-			:value="height"
-			@input="handleInputH"
+			:value='height'
+			@input='handleInputH'
 		>
 
 		<KxButton
@@ -34,6 +34,10 @@ import { shallowRef } from "vue";
 import LinkIcon from "bootstrap-icons/icons/link-45deg.svg?sfc";
 import { KxButton } from "@kaciras-blog/uikit";
 
+/*
+ * 一旦将宽高状态放到外面，则无法区分它们是从内部还是外部改变的，
+ * 进而无法确定是否需要更新宽高比，只能由外部传入了。
+ */
 interface Size2DProps {
 	width: number;
 	height: number;

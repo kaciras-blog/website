@@ -39,10 +39,13 @@ interface ImageUploadResult {
 }
 
 async function addImage(initFile?: File) {
-	const { vw, vh, name, url } = await dialog
-		.show<ImageUploadResult>(UploadImageDialog, { initFile })
-		.confirmPromise;
+	const result = await dialog
+		.show<ImageUploadResult>(UploadImageDialog, { initFile });
 
+	if (!result.isConfirm) {
+		return;
+	}
+	const { vw, vh, name, url } = result.data;
 	// 加上宽高便于确定占位图的尺寸，从 https://chanshiyu.com/#/post/41 学的。
 	const res = `![${basename(name)}](${url}?vw=${vw}&vh=${vh})`;
 
@@ -60,9 +63,13 @@ export interface VideoStatement {
 }
 
 async function addVideo(initFiles: File[] = []) {
-	const { src, vw, vh, label, poster, isVideo } = await dialog
-		.show<VideoStatement>(VideoVideoDialog, { initFiles }).confirmPromise;
+	const result = await dialog
+		.show<VideoStatement>(VideoVideoDialog, { initFiles });
 
+	if (!result.isConfirm) {
+		return;
+	}
+	const { src, vw, vh, label, poster, isVideo } = result.data;
 	const text = isVideo
 		? `@video[${poster}](${src})`
 		: `@gif[${label}](${src}?vw=${vw}&vh=${vh})`;

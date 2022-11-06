@@ -3,7 +3,7 @@ import { EndpointBase } from "./core";
 
 export default class MediaEndpoint extends EndpointBase {
 
-	private upload(path: string, file: Blob, params: any) {
+	private upload(path: string, file: Blob, params?: any) {
 		const data = new FormData();
 		data.append("file", file);
 
@@ -37,12 +37,12 @@ export default class MediaEndpoint extends EndpointBase {
 		return this.upload("/image", file, params);
 	}
 
-	uploadVideo(file: Blob) {
-		return this.upload("/video", file, null);
+	uploadVideo(file: Blob, params?: any) {
+		return this.upload("/video", file, params);
 	}
 
-	uploadAudio(file: Blob) {
-		return this.upload("/audio", file, null);
+	uploadAudio(file: Blob, params?: any) {
+		return this.upload("/audio", file, params);
 	}
 
 	/**

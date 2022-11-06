@@ -61,7 +61,7 @@
 			<KxTaskButton
 				type='outline'
 				color='primary'
-				@click='signUp'
+				:on-click='signUp'
 			>
 				确定
 			</KxTaskButton>

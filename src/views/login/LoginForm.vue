@@ -39,7 +39,7 @@
 			<KxTaskButton
 				type='outline'
 				color='primary'
-				@click='login'
+				:on-click='login'
 			>
 				确定
 			</KxTaskButton>

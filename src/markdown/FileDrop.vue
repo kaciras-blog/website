@@ -13,11 +13,10 @@
 		</slot>
 		<input
 			:class='$style.fileInput'
-			name="file"
-			type="file"
+			name='file'
+			type='file'
 			:accept='accept'
 			:multiple='multiple'
-			@click='$emit("selectStart")'
 			@change='handleChange'
 		/>
 	</label>
@@ -27,13 +26,30 @@
 import { useCssModule } from "vue";
 
 interface FileDropProps {
+
+	/**
+	 * 按 MIME 类型过滤文件，比如 image/*，默认不过滤。
+	 */
 	accept?: string;
+
+	/**
+	 * 是否可以多选，默认 false。
+	 */
 	multiple?: boolean;
 }
 
 interface FileDropEvents {
-	selectStart: () => void;
+
+	/**
+	 * 用户拖放、或者通过点击选择了至少一个文件时触发。
+	 *
+	 * 原始的 change、drop* 事件仍可监听。
+	 */
 	select: (files: File[]) => void;
+
+	/**
+	 * 如果出现了错误，或者拖放的对象有不是文件的时候发出该事件。
+	 */
 	error: (error: Error) => void;
 }
 
@@ -44,7 +60,7 @@ const styles = useCssModule();
 function handleChange(event: InputEvent) {
 	const { files } = event.currentTarget as HTMLInputElement;
 	if (files?.length) {
-		emit("change", Array.from(files));
+		emit("select", Array.from(files));
 	}
 }
 
@@ -67,7 +83,7 @@ function handleDrop(event: DragEvent) {
 	const files = Array.from(items).map(e => e.getAsFile()).filter(Boolean);
 
 	if (files.length === items.length) {
-		emit("change", files as File[]);
+		emit("select", files as File[]);
 	} else {
 		emit("error", new Error("Non-file item in the dropped list"));
 	}

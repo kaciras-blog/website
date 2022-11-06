@@ -5,24 +5,6 @@ import { BlogAPIError } from "@/api/core";
 export const NOOP = () => {};
 
 /**
- * 转义HTML文本中的特殊字符
- *
- * @param text 原始文本
- * @return 转义后的文本
- */
-export function escapeHtml(text: string) {
-	const map = {
-		"&": "&amp;",
-		"<": "&lt;",
-		">": "&gt;",
-		"\"": "&quot;",
-		"'": "&#039;",
-	};
-	// @ts-ignore 正则提取的 ch 一定是 map 的 key
-	return text.replace(/[&<>"']/g, (ch) => map[ch]);
-}
-
-/**
  * 从 BlogAPIError 对象中提取错误信息。
  *
  * @param object 异常
@@ -30,6 +12,18 @@ export function escapeHtml(text: string) {
  */
 export function errorMessage(object: BlogAPIError) {
 	return object.message ?? "未知的错误";
+}
+
+/**
+ * 屏蔽 Promise 的异常，防止某些无关紧要的错误出现在控制台里。
+ *
+ * 【本代码抄自】
+ * https://github.com/videojs/video.js/blob/main/src/js/utils/promise.js
+ *
+ * @param value An object that may or may not be `Promise`-like.
+ */
+export function silencePromise(value: any) {
+	if (typeof value?.then === "function") value.catch(() => {});
 }
 
 /**

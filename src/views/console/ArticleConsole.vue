@@ -17,6 +17,7 @@
 	<span v-if='list.total === 0'>
 		没有找到文章,去写一篇吧~
 	</span>
+
 	<SkFadingCircle v-if='loading'/>
 </template>
 
@@ -44,20 +45,20 @@ async function newArticle() {
 	}
 }
 
-function loadArticles() {
+async function loadArticles() {
 	loading.value = true;
 
-	return api.article.getList({
-		start: 0,
-		count: 99999, // TODO: 文章多了就做下分页
-		deletion: DeletionState.None,
-	}).then(data => {
-		list.value = data;
-	}).catch(e => {
+	try {
+		list.value = await api.article.getList({
+			start: 0,
+			count: 99999, // TODO: 文章多了就做下分页
+			deletion: DeletionState.None,
+		});
+	} catch (e) {
 		dialog.alertError("加载文章失败", errorMessage(e));
-	}).finally(() => {
+	} finally {
 		loading.value = false;
-	});
+	}
 }
 
 loadArticles();
