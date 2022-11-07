@@ -36,7 +36,6 @@
 		"@material-design-icons/svg": "^0.13.1",
 		"@sentry/tracing": "^7.17.4",
 		"@sentry/vue": "^7.17.4",
-		"@vue/server-renderer": "3.2.41",
 		"@vueuse/core": "^9.4.0",
 		"bootstrap-icons": "^1.9.1",
 		"date-fns": "^2.29.3",
@@ -50,12 +49,10 @@
 		"vue-router": "4.1.6"
 	},
 	"devDependencies": {
-		"@jest/globals": "^29.2.2",
 		"@kaciras-blog/devtool": "^2.2.3",
 		"@kaciras/eslint-config-core": "^2.4.1",
 		"@kaciras/eslint-config-typescript": "^2.4.1",
 		"@kaciras/eslint-config-vue": "^2.4.1",
-		"@types/lozad": "^1.16.1",
 		"@types/markdown-it": "^12.2.3",
 		"@types/web": "^0.0.78",
 		"@vue/test-utils": "^2.2.1",
