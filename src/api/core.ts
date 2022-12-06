@@ -25,13 +25,19 @@ const defaults: RequestInit = {
 
 /**
  * 检查下响应的状态码是否是 2xx，如果不是则抛出异常。
+ *
+ * <h1>异常信息的格式</h1>
+ * 本项目采用 RFC 7807 Problem Details 格式的响应体。
+ * https://www.rfc-editor.org/rfc/rfc7807.html
+ *
+ * 这个格式定义了多个可选的属性，但仅 detail 被使用。
  */
 async function check(response: Response) {
 	if (response.ok) {
 		return response;
 	}
-	const { message } = await response.json();
-	throw new BlogAPIError(response, message);
+	const { detail } = await response.json();
+	throw new BlogAPIError(response, detail);
 }
 
 /**
