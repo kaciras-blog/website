@@ -132,7 +132,7 @@ async function changeCategory() {
 <style module lang="less">
 @import "../../css/imports";
 
-@cover-width: 10rem;
+@cover-width: 12rem;
 
 .container {
 	display: flex;
@@ -140,7 +140,7 @@ async function changeCategory() {
 
 .cover {
 	width: @cover-width;
-	height: @cover-width * 0.75;
+	height: @cover-width * 0.5625;
 }
 
 .buttons {

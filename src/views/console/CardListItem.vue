@@ -46,7 +46,7 @@
 
 			<label>
 				<span class='minor-text'>
-					URI，相对路径（以/开头的）将使用单页路由
+					URI，相对路径将使用单页路由
 				</span>
 				<input
 					v-model='card.link'
@@ -125,7 +125,7 @@ function setPicture() {
 	padding: 1.5rem;
 
 	display: none; // grid 在 .expand > .details
-	grid-gap: 1rem;
+	grid-gap: 12px;
 	grid-template-columns: auto 1fr;
 	grid-template-rows: auto auto 1fr;
 }
@@ -155,7 +155,7 @@ textarea.inputBox {
 	overflow: hidden;
 	grid-row: ~"1/4";
 
-	width: 24vw;
+	width: 32vw;
 	height: 18vw;
 	cursor: pointer;
 

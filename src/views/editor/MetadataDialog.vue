@@ -98,8 +98,8 @@ async function changeCover() {
 
 .cover {
 	grid-area: cover;
-	width: 14rem;
-	height: 10.5rem;
+	width: 16rem;
+	height: 9rem;
 	cursor: pointer;
 }
 

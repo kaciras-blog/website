@@ -21,16 +21,16 @@
 				:class='$style.figure'
 			>
 				<article>
-					<div :class='$style.card_header'>
+
 						<img
 							:src='card.picture'
 							alt='封面'
 							:class='$style.picture'
 						>
-						<h1 :class='$style.name'>
-							{{ card.name }}
-						</h1>
-					</div>
+
+					<h1 :class='$style.name'>
+						{{ card.name }}
+					</h1>
 					<div :class='$style.content'>
 						{{ card.description }}
 					</div>
@@ -66,11 +66,11 @@ const { cards } = usePrefetch().data;
 // ================================ Cards ================================
 
 @pic-width: 400px;
-@pic-height: @pic-width * 0.75;
+@pic-height: @pic-width * 0.5625;
 
-// 左右各5vw间距，再乘以0.75比例
+// 左右各 5vw 间距，再乘以0.75比例
 // 或者直接裁剪图片到指定比例？
-@pic-height-mobile: 63vw;
+@pic-height-mobile: 50.625vw;
 
 // 简介行数上限，超出显示省略号
 @max-lines: 4;
@@ -104,11 +104,6 @@ const { cards } = usePrefetch().data;
 	}
 }
 
-.card_header {
-	position: relative;
-	overflow: hidden;
-}
-
 .picture {
 	display: block;
 	width: 100%;
@@ -120,13 +115,7 @@ const { cards } = usePrefetch().data;
 }
 
 .name {
-	position: absolute;
-	left: 0;
-	right: 0;
-	bottom: 0;
-
-	margin: 0;
-	padding: 14px;
+	margin: 14px;
 
 	// 虽然浏览器默认 article 下的 h1 是这个大小，但还是写上保险些
 	font-size: 1.17em;
@@ -154,7 +143,7 @@ const { cards } = usePrefetch().data;
 	}
 
 	.name {
-		padding: 10px;
+		margin: 10px;
 	}
 
 	.content {

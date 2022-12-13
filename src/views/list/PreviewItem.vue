@@ -129,12 +129,13 @@ defineProps<PreviewItemProps>();
 
 .cover {
 	display: block;
-	width: 12rem;
+	width: 16rem;
 	height: 9rem;
+	border-radius: 6px;
 
 	@media screen and (max-width: @length-screen-mobile) {
-		width: 72vw;
-		height: 54vw;
+		width: 80vw;
+		height: 45vw;
 		border-radius: 10px;
 	}
 }
