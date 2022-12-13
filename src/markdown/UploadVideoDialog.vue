@@ -43,7 +43,7 @@
 							title='编码'
 							:class='$style.select'
 						>
-							<option value=''>AVC</option>
+							<option value='AVC'>AVC</option>
 							<option value='HEVC'>HEVC</option>
 							<option value='AV1'>AV1</option>
 						</KxSelect>
@@ -126,7 +126,7 @@
 <script setup lang="ts">
 import type { VideoStatement } from "./MediaTools.vue";
 import { onUnmounted, reactive, ref, toRaw } from "vue";
-import { formatSize } from "@kaciras/utilities/format";
+import { formatSize } from "@kaciras/utilities/browser";
 import {
 	KxBaseDialog,
 	KxButton,
@@ -138,7 +138,7 @@ import {
 	KxTaskButton,
 	useDialog,
 } from "@kaciras-blog/uikit";
-import api from "@/api";
+import api, { VariantSaveParams } from "@/api";
 import CloseIcon from "@kaciras-blog/uikit/src/assets/icon-close.svg?sfc";
 import FileDrop from "./FileDrop.vue";
 import Size2DInput from "./Size2DInput.vue";
@@ -191,21 +191,29 @@ async function upload() {
 	const list = toRaw(files.value);
 	const i = list.findIndex(v => v.isMain);
 
-	const { file, codec } = list[i];
-	const variant = await api
-		.media
-		.uploadVideo(file, { codec });
-
-	for (const { file, codec, isMain } of list) {
-		if (isMain) {
+	const variant = await doUpload(list[i]);
+	for (const info of list) {
+		if (info.isMain) {
 			continue;
 		}
 		progress.value++;
-		await api.media.uploadVideo(file, { codec, variant });
+		await doUpload(info, variant);
 	}
 
 	data.src = variant;
 	dialog.confirm(data as VideoStatement);
+}
+
+// codec 特殊处理下
+function doUpload(info: VideoDetail, variant?: string) {
+	const { file, codec } = info;
+	const params: VariantSaveParams = {
+		variant,
+	};
+	if (codec !== "AVC") {
+		params.codec = codec;
+	}
+	return api.media.uploadVideo(file, params);
 }
 
 // 用户的输入给设个标识，关闭 label 的自动填充

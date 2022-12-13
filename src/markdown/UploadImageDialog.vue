@@ -56,7 +56,7 @@
 <script setup lang='ts'>
 import { onBeforeUnmount, reactive, shallowRef } from "vue";
 import { useObjectUrl } from "@vueuse/core";
-import { formatSize } from "@kaciras/utilities/format";
+import { formatSize } from "@kaciras/utilities/browser";
 import { KxBaseDialog, KxDialogButtons, Resolution, useDialog } from "@kaciras-blog/uikit";
 import api from "@/api/index";
 import FileDrop from "./FileDrop.vue";
