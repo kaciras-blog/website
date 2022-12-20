@@ -38,19 +38,19 @@ const initial: DraftHistoryInput = {
 export default class DraftEndpoint extends EndpointBase {
 
 	createNew() {
-		return this.post<Draft>("/drafts", initial).data;
+		return this.post<Draft>("/drafts", initial).json;
 	}
 
 	fromArticle(article: number) {
-		return this.post<Draft>("/drafts", null, { article }).data;
+		return this.post<Draft>("/drafts", null, { article }).json;
 	}
 
 	getList(params: DraftListQuery) {
-		return this.get<Draft[]>("/drafts", params).data;
+		return this.get<Draft[]>("/drafts", params).json;
 	}
 
 	findById(id: number) {
-		return this.get<Draft>(`/drafts/${id}`).data;
+		return this.get<Draft>(`/drafts/${id}`).json;
 	}
 
 	/** 删除一个草稿 */
@@ -64,7 +64,7 @@ export default class DraftEndpoint extends EndpointBase {
 	}
 
 	getHistory(id: number, saveCount: number) {
-		return this.get<DraftHistory>(`/drafts/${id}/histories/${saveCount}`).data;
+		return this.get<DraftHistory>(`/drafts/${id}/histories/${saveCount}`).json;
 	}
 
 	saveNewHistory(id: number, data: DraftHistoryInput) {

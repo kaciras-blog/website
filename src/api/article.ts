@@ -49,19 +49,19 @@ export interface PublishRequest extends ArticleMeta {
 export default class ArticleEndpoint extends EndpointBase {
 
 	getList(params: ArticleListQuery) {
-		return this.get("/articles", { start: 0, ...params }).data;
+		return this.get("/articles", { start: 0, ...params }).json;
 	}
 
 	findById(id: number) {
-		return this.get<Article>("/articles/" + id).data;
+		return this.get<Article>("/articles/" + id).json;
 	}
 
 	publish(data: PublishRequest) {
-		return this.post<Article>("/articles", data).data;
+		return this.post<Article>("/articles", data).json;
 	}
 
 	update(id: number, data: any) {
-		return this.put<Article>("/articles/" + id, data).data;
+		return this.put<Article>("/articles/" + id, data).json;
 	}
 
 	changeDeletion(id: number, deletion: boolean) {
@@ -73,6 +73,6 @@ export default class ArticleEndpoint extends EndpointBase {
 	}
 
 	getHots() {
-		return this.get("/recommendation/articles").data;
+		return this.get("/recommendation/articles").json;
 	}
 }

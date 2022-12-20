@@ -10,7 +10,7 @@ export interface Card {
 export default class CardEndpoint extends EndpointBase {
 
 	getAll() {
-		return this.get<Card[]>("/cards").data;
+		return this.get<Card[]>("/cards").json;
 	}
 
 	setCards(cards: Card[]) {

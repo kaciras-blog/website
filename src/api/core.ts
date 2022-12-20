@@ -78,7 +78,7 @@ export class ResponseFacade<T> implements Promise<Response> {
 		this.raw = raw;
 	}
 
-	get data(): Promise<T> {
+	get json(): Promise<T> {
 		return this.then(r => r.json());
 	}
 
@@ -139,7 +139,7 @@ export abstract class EndpointBase {
 		const init = { ...this.init, method , headers: { ...this.init.headers } };
 		const headers = init.headers as Record<string, string>;
 
-		// body 为 FormData 时会自动设置 Content-Type 为 multipart/form-data。
+		// body 为 FormData 时会自动设置 Content-Type。
 		if (data instanceof FormData) {
 			init.body = data;
 		} else if (data) {
@@ -197,6 +197,7 @@ export abstract class EndpointBase {
 type EndpointClass = new (...args: ConstructorParameters<typeof EndpointBase>) => EndpointBase;
 
 type EndpointMap = Record<string | symbol, EndpointClass>;
+
 type APIDefs = Record<string, EndpointMap>;
 
 type FlatEndpoints<T extends EndpointMap> = { [K in keyof T]: [K, T[K]] }[keyof T];

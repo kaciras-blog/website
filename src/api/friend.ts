@@ -11,11 +11,11 @@ export interface Friend {
 export default class FriendEndpoint extends EndpointBase {
 
 	getAll() {
-		return this.get<Friend[]>("/friends").data;
+		return this.get<Friend[]>("/friends").json;
 	}
 
 	makeFriend(friend: Friend) {
-		return this.post<Friend>("/friends", friend).data;
+		return this.post<Friend>("/friends", friend).json;
 	}
 
 	updateFriend(old: Friend, new_: Friend) {

@@ -122,11 +122,11 @@ function assembly(mappingView: MappingListView) {
 export default class DiscussionEndpoint extends EndpointBase {
 
 	add(data: DiscussionInput) {
-		return this.post<Discussion>("/discussions", data).data;
+		return this.post<Discussion>("/discussions", data).json;
 	}
 
 	getList(params: DiscussionQuery) {
-		return this.get<MappingListView>("/discussions", params).data.then(assembly);
+		return this.get<MappingListView>("/discussions", params).json.then(assembly);
 	}
 
 	/**
@@ -141,7 +141,7 @@ export default class DiscussionEndpoint extends EndpointBase {
 	 */
 	getReplies(nestId: number, start: number, count: number) {
 		const params = { nestId, start, count };
-		return this.get<MappingListView>("/discussions", params).data.then(assembly);
+		return this.get<MappingListView>("/discussions", params).json.then(assembly);
 	}
 
 	/**

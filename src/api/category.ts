@@ -24,11 +24,11 @@ export interface Category extends CategoryContent {
 export default class CategoryEndpoint extends EndpointBase {
 
 	getChildren(id: number) {
-		return this.get<Category[]>(`/categories/${id}/children`).data;
+		return this.get<Category[]>(`/categories/${id}/children`).json;
 	}
 
 	findById(id: number, aggregate?: boolean) {
-		return this.get(`/categories/${id}`, { aggregate }).data;
+		return this.get(`/categories/${id}`, { aggregate }).json;
 	}
 
 	move(id: number, parent: number, treeMode: boolean) {

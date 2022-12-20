@@ -23,7 +23,6 @@ export * from "./notification";
 export * from "./category";
 export * from "./discussion";
 
-
 export default defineAPIs({
 	[webServiceURL]: {
 		media: MediaEndpoint,

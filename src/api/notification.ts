@@ -31,7 +31,7 @@ export interface Notice<T> {
 export default class NotificationEndpoint extends EndpointBase {
 
 	getAll() {
-		return this.get<Array<Notice<unknown>>>("/notifications").data;
+		return this.get<Array<Notice<unknown>>>("/notifications").json;
 	}
 
 	clear() {
