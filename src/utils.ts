@@ -2,8 +2,6 @@ import { RouteLocationNormalized } from "vue-router";
 import { uniqueKey } from "@kaciras-blog/uikit";
 import { BlogAPIError } from "@/api/core";
 
-export const NOOP = () => {};
-
 /**
  * 从 BlogAPIError 对象中提取错误信息。
  *
@@ -12,18 +10,6 @@ export const NOOP = () => {};
  */
 export function errorMessage(object: BlogAPIError) {
 	return object.message ?? "未知的错误";
-}
-
-/**
- * 屏蔽 Promise 的异常，防止某些无关紧要的错误出现在控制台里。
- *
- * 【本代码抄自】
- * https://github.com/videojs/video.js/blob/main/src/js/utils/promise.js
- *
- * @param value An object that may or may not be `Promise`-like.
- */
-export function silencePromise(value: any) {
-	if (typeof value?.then === "function") value.catch(() => {});
 }
 
 /**
@@ -87,86 +73,4 @@ export function isOnlyHashChange(to: RouteLocationNormalized, from: RouteLocatio
 export function basename(name: string) {
 	const i = name.lastIndexOf(".");
 	return i === -1 ? name : name.slice(0, i);
-}
-
-type Placeholders = Record<string, string | RegExp>;
-
-/**
- * 闲着无聊写了个简单的字符串替换器，可用于 SSR 中组合最终的 HTML 结果。
- *
- * 原理是通过提前计算替换点位，避免每次都要搜索，从而提高性能。
- * 经测试比 String.replace 快 10 倍，不过也是蚊子肉罢了。
- *
- * @param template 模板字符串
- * @param placeholders 所有替换点位的定义，各个之间不能重叠
- */
-export function compositor<T extends Placeholders>(
-	template: string,
-	placeholders: T,
-) {
-	const nameToSlot = new Map<keyof T, number>();
-	const positions = [];
-
-	for (const name of Object.keys(placeholders)) {
-		const pattern = placeholders[name];
-		let startPos: number;
-		let endPos: number;
-
-		if (typeof pattern === "string") {
-			startPos = template.indexOf(pattern);
-			if (startPos === -1) {
-				throw new Error("找不到匹配串");
-			}
-			endPos = startPos + pattern.length;
-		} else {
-			const match = pattern.exec(template);
-			if (!match) {
-				throw new Error("找不到匹配串");
-			}
-			startPos = match.index;
-			endPos = startPos + match[0].length;
-		}
-
-		positions.push({ name, startPos, endPos });
-	}
-
-	positions.sort((a, b) => a.startPos - b.startPos);
-
-	let lastEnd = 0;
-	const parts: string[] = [];
-
-	for (let i = 0; i < positions.length; i++) {
-		const { name, startPos, endPos } = positions[i];
-		nameToSlot.set(name, i * 2 + 1);
-
-		if (startPos < lastEnd) {
-			throw new Error("placeholders overlap.");
-		}
-
-		parts.push(template.slice(lastEnd, startPos));
-		parts.push(template.slice(startPos, lastEnd = endPos));
-	}
-
-	parts.push(template.slice(lastEnd));
-
-	return () => new Composite<T>(nameToSlot, [...parts]);
-}
-
-export class Composite<T extends Placeholders> {
-
-	private readonly nameToSlot: Map<keyof T, number>;
-	private readonly parts: string[];
-
-	constructor(nameToSlot: Map<keyof T, number>, parts: string[]) {
-		this.parts = parts;
-		this.nameToSlot = nameToSlot;
-	}
-
-	toString() {
-		return this.parts.join("");
-	}
-
-	put(name: keyof T, value: string) {
-		this.parts[this.nameToSlot.get(name)!] = value;
-	}
 }

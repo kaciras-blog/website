@@ -6,7 +6,7 @@ import { Pinia } from "pinia";
 import { breakpoints, useMQStore } from "@kaciras-blog/uikit";
 import { getProxyHeaders } from "@kaciras-blog/server/lib/fetch-helper";
 import { useCurrentUser, usePrefetch } from "@/store";
-import { compositor } from "@/utils";
+import { compositor } from "@kaciras/utilities/browser";
 import api from "./api";
 import createBlogApp from "./main";
 import { collectTasks, PrefetchContext } from "./prefetch";
