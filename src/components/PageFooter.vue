@@ -2,7 +2,7 @@
 <template v-once>
 	<footer :class='$style.globalFooter'>
 		<div :class='$style.info'>
-			<p>&copy; Kaciras 2018-2022</p>
+			<p>&copy; Kaciras 2018-{{ new Date().getFullYear() }}</p>
 			<address>Kaciras@protonmail.com</address>
 		</div>
 		<div>
