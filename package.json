@@ -29,14 +29,14 @@
 		"iOS >= 13.4"
 	],
 	"dependencies": {
-		"@kaciras-blog/markdown": "^2.2.3",
-		"@kaciras-blog/server": "^2.2.3",
+		"@kaciras-blog/markdown": "^2.3.0",
+		"@kaciras-blog/server": "^2.3.0",
 		"@kaciras-blog/uikit": "^2.4.2",
-		"@kaciras/utilities": "^0.6.0",
+		"@kaciras/utilities": "^0.6.2",
 		"@material-design-icons/svg": "^0.14.2",
-		"@sentry/tracing": "^7.28.1",
-		"@sentry/vue": "^7.28.1",
-		"@vueuse/core": "^9.9.0",
+		"@sentry/tracing": "^7.30.0",
+		"@sentry/vue": "^7.30.0",
+		"@vueuse/core": "^9.10.0",
 		"bootstrap-icons": "^1.10.3",
 		"date-fns": "^2.29.3",
 		"highlight.js": "^11.7.0",
@@ -49,18 +49,18 @@
 		"vue-router": "4.1.6"
 	},
 	"devDependencies": {
-		"@kaciras-blog/devtool": "^2.2.3",
+		"@kaciras-blog/devtool": "^2.3.0",
 		"@kaciras/eslint-config-core": "^2.5.0",
 		"@kaciras/eslint-config-typescript": "^2.5.0",
 		"@kaciras/eslint-config-vue": "^2.5.0",
 		"@types/markdown-it": "^12.2.3",
-		"@types/web": "^0.0.86",
-		"@vue/test-utils": "^2.2.6",
+		"@types/web": "^0.0.87",
+		"@vue/test-utils": "^2.2.7",
 		"autoprefixer": "^10.4.13",
-		"eslint": "^8.30.0",
+		"eslint": "^8.31.0",
 		"less": "^4.1.3",
-		"postcss": "^8.4.20",
+		"postcss": "^8.4.21",
 		"typescript": "^4.9.4",
-		"vitest": "^0.26.2"
+		"vitest": "^0.27.0"
 	}
 }
