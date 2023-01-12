@@ -3,9 +3,9 @@
 </template>
 
 <script setup lang="ts">
+import { noop } from "@vueuse/core";
 import { computed } from "vue";
-import { articleRenderer, discussionRenderer, lazyLoad } from ".";
-import { NOOP } from "@/utils";
+import { activate, articleRenderer, discussionRenderer } from ".";
 
 interface MarkdownViewProps {
 	value: string;
@@ -25,14 +25,14 @@ const html = computed(() => {
 	return renderer.render(value, { docId });
 });
 
-let disconnect = NOOP;
+let disconnect = noop;
 
 function setupLazyLoad(el: HTMLElement) {
 	if (!el) {
 		disconnect();
-		disconnect = NOOP;
-	} else if (disconnect === NOOP) {
-		disconnect = lazyLoad(el);
+		disconnect = noop;
+	} else if (disconnect === noop) {
+		disconnect = activate(el);
 	}
 }
 </script>

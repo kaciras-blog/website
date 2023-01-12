@@ -40,17 +40,16 @@
 		}
 	}
 
-	pre > code {
+	pre {
 		overflow-x: auto;
-	}
+		padding: 0.5em;
 
-	// 14÷16 小一号的字体
-	code {
-		border-radius: 5px;
-		tab-size: 4;
+		// 使用小一号的字体，以便能看到更多代码。
 		font-size: .875em;
+		tab-size: 4;
+		border-radius: 5px;
 
-		// 照顾手机看代码，进一步减小字号
+		// 照顾手机，进一步减小字号。
 		@media screen and (max-width: @length-screen-mobile) {
 			tab-size: 3;
 			font-size: .75em;

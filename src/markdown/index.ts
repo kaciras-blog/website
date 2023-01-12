@@ -1,23 +1,11 @@
 import "./markdown.less";
 import { Anchor, Classify, Footnote, TOC, UGC } from "@kaciras-blog/markdown";
 import MarkdownIt from "markdown-it";
-import { escapeHtml } from "markdown-it/lib/common/utils.js";
-import hljs from "./highlight";
-import { clientMediaPlugin, lazyLoad } from "./media";
+import highlight from "./highlight";
+import { clientMediaPlugin, observeLazyLoad } from "./media";
 
-export { lazyLoad };
-
-function highlight(code: string, language: string) {
-	let result;
-	if (language && hljs.getLanguage(language)) {
-		result = hljs.highlight(code, { language }).value;
-	} else {
-		result = escapeHtml(code);
-	}
-	return `<pre class='hljs'><code>${result}</code></pre>`;
-}
-
-export const articleRenderer = new MarkdownIt({ highlight });
+export const articleRenderer = new MarkdownIt();
+articleRenderer.use(highlight);
 articleRenderer.use(Anchor);
 articleRenderer.use(Footnote);
 articleRenderer.use(TOC);
@@ -25,8 +13,14 @@ articleRenderer.use(Classify);
 articleRenderer.use(clientMediaPlugin);
 
 // 评论一般也不长，不需要 TOC；另外没有 Anchor 因为会冲突。
-export const discussionRenderer = new MarkdownIt({ highlight });
+export const discussionRenderer = new MarkdownIt();
+discussionRenderer.use(highlight);
 discussionRenderer.use(Footnote);
 discussionRenderer.use(Classify);
 discussionRenderer.use(UGC);
 discussionRenderer.use(clientMediaPlugin);
+
+/**
+ * 激活 Markdown 元素，其实就是添加各种监听，卸载后记得清理哦。
+ */
+export { observeLazyLoad as activate };
