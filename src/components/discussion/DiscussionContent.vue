@@ -19,9 +19,10 @@
 						{{ value.nickname || value.user.name }}
 					</span>
 				</div>
-				<time :class='$style.time'>
-					{{ localDateMinute(value.time) }}
-				</time>
+				<RelativeTime
+					:class='$style.time'
+					:value='value.time'
+				/>
 			</div>
 
 			<!-- 这两个按钮用文字比图标更好 -->
@@ -62,9 +63,10 @@
 import { computed } from "vue";
 import { KxButton, useDialog } from "@kaciras-blog/uikit";
 import api, { Discussion, DiscussionState } from "@/api";
+import RelativeTime from "../../components/RelativeTime.vue";
 import MarkdownView from "@/markdown/MarkdownView.vue";
 import { errorMessage } from "@/utils";
-import { DEFAULT_AVATAR, localDateMinute } from "@/common";
+import { DEFAULT_AVATAR } from "@/common";
 import { useCurrentUser } from "@/store";
 
 interface DiscussContentProps {

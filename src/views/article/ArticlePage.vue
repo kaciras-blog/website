@@ -7,11 +7,11 @@
 				<h1 :class='$style.title'>{{ article.title }}</h1>
 				<p>
 					<span>发布时间：</span>
-					<time>{{ localDateMinute(article.create) }}</time>
+					<RelativeTime :value='article.create'/>
 				</p>
 				<p>
 					<span>最后更新：</span>
-					<time>{{ localDateMinute(article.update) }}</time>
+					<RelativeTime :value='article.update'/>
 				</p>
 				<div>
 					<span>关键词：</span>
@@ -138,6 +138,7 @@ import { localDateMinute } from "@/common";
 import BannerPageLayout from "@/components/BannerPageLayout.vue";
 import PageMeta from "@/components/PageMeta";
 import DiscussionSection from "@/components/discussion/DiscussionSection.vue";
+import RelativeTime from "../../components/RelativeTime.vue";
 import MarkdownView from "@/markdown/MarkdownView.vue";
 import HeadTags from "@/components/HeadTags";
 

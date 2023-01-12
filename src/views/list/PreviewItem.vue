@@ -35,7 +35,7 @@
 		<div class='minor-text' :class='$style.meta'>
 			<span title='发表于' :class='$style.metaItem'>
 				<EditIcon/>
-				<time>{{ localDate(item.create) }}</time>
+				<RelativeTime :value='item.create'/>
 			</span>
 			<span title='浏览数' :class='$style.metaItem'>
 				<EyeIcon/>
@@ -54,7 +54,8 @@ import { RouterLink } from "vue-router";
 import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
 import EyeIcon from "bootstrap-icons/icons/eye-fill.svg?sfc";
 import ChatIcon from "bootstrap-icons/icons/chat-dots.svg?sfc";
-import { articleLink, localDate } from "@/common";
+import RelativeTime from "../../components/RelativeTime.vue";
+import { articleLink } from "@/common";
 
 interface PreviewItemProps {
 	item: any;

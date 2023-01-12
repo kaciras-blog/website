@@ -21,10 +21,6 @@ export function articleLink({ id, urlTitle }: Article) {
 	return `/article/${id}/${urlTitle}`;
 }
 
-export function localDate(timestamp: number) {
-	return format(timestamp, "yyyy-M-d");
-}
-
 export function localDateMinute(timestamp: number) {
 	return format(timestamp, "yyyy-M-d HH:mm");
 }
