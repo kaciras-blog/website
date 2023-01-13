@@ -38,7 +38,6 @@
 		"@sentry/vue": "^7.30.0",
 		"@vueuse/core": "^9.10.0",
 		"bootstrap-icons": "^1.10.3",
-		"date-fns": "^2.29.3",
 		"highlight.js": "^11.7.0",
 		"idb": "^7.1.1",
 		"markdown-it": "^13.0.1",

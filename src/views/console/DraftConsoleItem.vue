@@ -5,11 +5,11 @@
 
 			<span :class='$style.time' title='创建时间'>
 				<EditIcon/>
-				<time>{{ localDateMinute(createTime) }}</time>
+				<RelativeTime :value='createTime'/>
 			</span>
 			<span :class='$style.time' title='最后更新'>
 				<UpdateIcon/>
-				<time>{{ localDateMinute(updateTime) }}</time>
+				<RelativeTime :value='updateTime'/>
 			</span>
 
 			<span
@@ -47,7 +47,8 @@ import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
 import PaperPlaneIcon from "@/assets/icon/paper-plane.svg?sfc";
 import UpdateIcon from "@material-design-icons/svg/filled/update.svg?sfc";
 import api from "@/api";
-import { localDateMinute } from "@/common";
+import RelativeTime from "../../components/RelativeTime.vue";
+
 
 interface Draft_COPY {
 	id: number;

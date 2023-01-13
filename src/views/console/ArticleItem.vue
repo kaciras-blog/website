@@ -22,10 +22,10 @@
 
 			<div :class='$style.attrs'>
 				<PaperPlaneIcon :class='$style.icon' title='发表于'/>
-				<time>{{ localDateMinute(value.create) }}</time>
+				<RelativeTime :value='value.create' :threshold='0'/>
 
 				<UpdateIcon :class='$style.icon' title='更新时间'/>
-				<time>{{ localDateMinute(value.update) }}</time>
+				<RelativeTime :value='value.update' :threshold='0'/>
 
 				<EyeIcon :class='$style.icon' title='浏览数'/>
 				<span>{{ value.viewCount }}</span>
@@ -87,9 +87,10 @@ import PaperPlaneIcon from "@/assets/icon/paper-plane.svg?sfc";
 import UpdateIcon from "@material-design-icons/svg/filled/update.svg?sfc";
 import EyeIcon from "bootstrap-icons/icons/eye-fill.svg?sfc";
 import ChatIcon from "bootstrap-icons/icons/chat-dots.svg?sfc";
-import { articleLink, localDateMinute } from "@/common";
+import { articleLink } from "@/common";
 import { errorMessage } from "@/utils";
 import SelectCategoryDialog from "@/components/SelectCategoryDialog.vue";
+import RelativeTime from "../../components/RelativeTime.vue";
 import CardsConsole from "./CardsConsole.vue";
 import { useRouter } from "vue-router";
 

@@ -1,4 +1,3 @@
-import { format } from "date-fns";
 import { Article } from "@/api";
 
 import DEFAULT_AVATAR from "@/assets/img/akalin.jpg";
@@ -19,8 +18,4 @@ export const USERNAME_LENGTH = 16;
  */
 export function articleLink({ id, urlTitle }: Article) {
 	return `/article/${id}/${urlTitle}`;
-}
-
-export function localDateMinute(timestamp: number) {
-	return format(timestamp, "yyyy-M-d HH:mm");
 }

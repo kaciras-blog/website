@@ -43,7 +43,8 @@
 				自动保存出错
 			</span>
 			<span v-else-if='draft.updateTime'>
-				上次保存：{{ localDateMinute(draft.updateTime) }}
+				上次保存：
+				<RelativeTime :value='draft.updateTime'/>
 			</span>
 		</template>
 	</MarkdownEditor>
@@ -57,9 +58,10 @@ import { KxButton, useDialog } from "@kaciras-blog/uikit";
 import SaveIcon from "@material-design-icons/svg/filled/save.svg?sfc";
 import CardIcon from "bootstrap-icons/icons/credit-card-2-front.svg?sfc";
 import PaperPlaneIcon from "@/assets/icon/paper-plane.svg?sfc";
-import { articleLink, localDateMinute } from "@/common";
+import { articleLink } from "@/common";
 import { errorMessage } from "@/utils";
 import PageMeta from "@/components/PageMeta";
+import RelativeTime from "../../components/RelativeTime.vue";
 import MarkdownEditor from "@/markdown/MarkdownEditor.vue";
 import TextTools from "@/markdown/TextTools.vue";
 import ConfigToolbar from "@/markdown/ConfigToolbar.vue";

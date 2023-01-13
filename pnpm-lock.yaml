@@ -18,7 +18,6 @@ specifiers:
   '@vueuse/core': ^9.10.0
   autoprefixer: ^10.4.13
   bootstrap-icons: ^1.10.3
-  date-fns: ^2.29.3
   eslint: ^8.31.0
   highlight.js: ^11.7.0
   idb: ^7.1.1
@@ -43,7 +42,6 @@ dependencies:
   '@sentry/vue': 7.30.0_vue@3.2.45
   '@vueuse/core': 9.10.0_vue@3.2.45
   bootstrap-icons: 1.10.3
-  date-fns: 2.29.3
   highlight.js: 11.7.0
   idb: 7.1.1
   markdown-it: 13.0.1
@@ -1744,11 +1742,6 @@ packages:
 
   /csstype/2.6.21:
     resolution: {integrity: sha512-Z1PhmomIfypOpoMjRQB70jfvy/wxT50qW08YXO5lMIJkrdq4yOTR+AW7FqutScmB9NkLwxo+jU+kZLbofZZq/w==}
-
-  /date-fns/2.29.3:
-    resolution: {integrity: sha512-dDCnyH2WnnKusqvZZ6+jA1O51Ibt8ZMRNkDZdyAyK4YfbDwa/cEmuztzG5pk6hqlp9aSBPYcjOlktquahGwGeA==}
-    engines: {node: '>=0.11'}
-    dev: false
 
   /date-format/4.0.14:
     resolution: {integrity: sha512-39BOQLs9ZjKh0/patS9nrT8wc3ioX3/eA/zgbKNopnF2wCqJEoxywwwElATYvRsXdnOxA/OQeQoFZ3rFjVajhg==}

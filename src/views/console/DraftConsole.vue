@@ -43,10 +43,9 @@ import { useRouter } from "vue-router";
 import { KxButton, MessageType, ScrollPagingView, useDialog } from "@kaciras-blog/uikit";
 import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
 import TrashIcon from "bootstrap-icons/icons/trash.svg?sfc";
-import api, { Draft } from "@/api";
+import api, { Draft, ListQueryView } from "@/api";
 import { deleteOn, errorMessage } from "@/utils";
 import DraftConsoleItem from "./DraftConsoleItem.vue";
-import { ListQueryView } from "@/api/core";
 
 const dialog = useDialog();
 const router = useRouter();
@@ -56,10 +55,13 @@ const DEFAULT_PAGE_DATA: ListQueryView<Draft> = { items: [], total: Infinity };
 
 const draftList = ref(DEFAULT_PAGE_DATA);
 
-function newArticle() {
-	return api.draft.createNew()
-		.then(id => router.push("/edit/" + id))
-		.catch(e => dialog.alertError("创建失败", errorMessage(e)));
+async function newArticle() {
+	try {
+		const draft = await api.draft.createNew();
+		await router.push("/edit/" + draft.id);
+	} catch (e) {
+		dialog.alertError("创建失败", errorMessage(e));
+	}
 }
 
 async function deleteAll() {
