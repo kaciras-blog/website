@@ -49,10 +49,6 @@ import FriendsSection from "./FriendsSection.vue";
 <style module lang="less">
 @import "../../css/imports";
 
-:global(#welcome-page) {
-	margin-bottom: 100px;
-}
-
 .nav {
 	position: absolute !important;
 	top: 0;
@@ -101,11 +97,10 @@ import FriendsSection from "./FriendsSection.vue";
 
 .section {
 	max-width: 1600px;
-	margin: 0 auto;
-	padding: 25px;
+	margin: 48px 24px;
 
 	@media screen and(min-width: @length-screen-mobile) {
-		padding: 50px 64px;
+		margin: 64px;
 	}
 }
 </style>

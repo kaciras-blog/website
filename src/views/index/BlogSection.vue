@@ -20,21 +20,21 @@
 				class='clean-link'
 				:class='$style.figure'
 			>
-				<article>
-
-						<img
-							:src='card.picture'
-							alt='封面'
-							:class='$style.picture'
-						>
-
-					<h1 :class='$style.name'>
-						{{ card.name }}
-					</h1>
-					<div :class='$style.content'>
-						{{ card.description }}
-					</div>
-				</article>
+				<img
+					:src='card.picture'
+					alt='封面'
+					:class='$style.picture'
+				>
+				<div :class='$style.meta'>
+					<span :class='$style.category'>#TODO</span>
+					2023-1-13
+				</div>
+				<h2 :class='$style.name'>
+					{{ card.name }}
+				</h2>
+				<div :class='$style.content'>
+					{{ card.description }}
+				</div>
 			</SmartLink>
 		</div>
 	</section>
@@ -52,46 +52,51 @@ const { cards } = usePrefetch().data;
 
 .header {
 	display: flex;
-	justify-content: space-between;
 	align-items: center;
-
 	margin-bottom: 2rem;
 }
 
 .title {
-	margin: 0;
+	margin: 0 auto 0 0;
 	font-size: 1.75rem;
 }
 
 // ================================ Cards ================================
 
-@pic-width: 400px;
+@pic-width: 368px;
 @pic-height: @pic-width * 0.5625;
 
-// 左右各 5vw 间距，再乘以0.75比例
-// 或者直接裁剪图片到指定比例？
-@pic-height-mobile: 50.625vw;
-
-// 简介行数上限，超出显示省略号
-@max-lines: 4;
+// 简介行数上限，超出显示省略号。
+@max-lines: 6;
 
 // 自动网格的卡片布局
 // https://blog.kaciras.com/article/14/use-pure-CSS-to-implement-center+wrap+left-alignment-layout
 .card_list {
 	display: grid;
-	grid-gap: 40px;
 	justify-content: center;
+	gap: 25px;
+
+	// 左右各 5vw 间距，再乘以 0.75 比例，或者直接裁剪图片到指定比例？
+	--pic-height: 50.625vw;
+	--text-margin: 12px;
 
 	@media screen and (min-width: @length-screen-mobile) {
+		--pic-height: @pic-height;
+		--text-margin: 16px;
+
+		gap: 40px;
 		grid-template-columns: repeat(auto-fit, @pic-width);
 	}
 }
 
 // 博客上的图白底的多，擦亮动画效果不好，还是用浮起吧。
 .figure {
+	position: relative;
 	overflow: hidden;
-	border-radius: 6px;
-	box-shadow: 0 4px 4px rgba(0, 0, 0, .15);
+
+	border-radius: 12px;
+	background: white;
+	box-shadow: 0 8px 16px rgba(0, 0, 0, .1);
 
 	@media screen and (min-width: @length-screen-mobile) {
 		transition: .3s;
@@ -99,7 +104,7 @@ const { cards } = usePrefetch().data;
 
 		&:hover, &:focus {
 			transform: translateY(-4px);
-			box-shadow: 0 7px 10px rgba(0, 0, 0, .25);
+			box-shadow: 0 14px 20px rgba(0, 0, 0, .2);
 		}
 	}
 }
@@ -107,15 +112,31 @@ const { cards } = usePrefetch().data;
 .picture {
 	display: block;
 	width: 100%;
-	height: @pic-height-mobile;
+	height: var(--pic-height);
+}
 
-	@media screen and (min-width: @length-screen-mobile) {
-		height: @pic-height;
-	}
+.meta {
+	position: absolute;
+	width: 100%;
+	height: 38px;
+	top: calc(var(--pic-height) - 38px);
+
+	display: none; // TODO: 等后端修改完再启用。
+	//display: flex;
+	padding: 24px var(--text-margin) 0 var(--text-margin);
+	line-height: 1;
+	font-size: 0.875em;
+
+	background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #FFFFFF 100%);
+}
+
+.category {
+	color: deeppink;
+	margin-right: auto;
 }
 
 .name {
-	margin: 14px;
+	margin: var(--text-margin);
 
 	// 虽然浏览器默认 article 下的 h1 是这个大小，但还是写上保险些
 	font-size: 1.17em;
@@ -124,7 +145,7 @@ const { cards } = usePrefetch().data;
 
 .content {
 	box-sizing: content-box;
-	margin: 14px;
+	margin: var(--text-margin);
 
 	line-height: 1.6;
 	height: @max-lines * 1.6em;
@@ -137,17 +158,7 @@ const { cards } = usePrefetch().data;
 		margin-bottom: 25px;
 	}
 
-	// 卡片下面阴影较大，需要更大的间隔才能看起来跟左右一致
-	.card_list {
-		grid-gap: 25px;
-	}
-
-	.name {
-		margin: 10px;
-	}
-
 	.content {
-		margin: 10px;
 		font-size: 14px;
 	}
 }

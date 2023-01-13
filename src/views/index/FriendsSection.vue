@@ -370,7 +370,7 @@ const lazyLoad = useIntersectionHandler((entries, observer) => {
 }
 
 .title {
-	font-size: 2rem;
+	font-size: 1.75rem;
 }
 
 // 自动网格的卡片布局
