@@ -3,7 +3,7 @@
 	Vue-Router 4 的写法变复杂了啊。
 -->
 <template>
-	<ol :class='$style.tabList' class='clean-list' role='tablist'>
+	<ol :class='$style.tabList' role='tablist'>
 		<RouterLink
 			v-for='tab of tabs'
 			:key='tab.title'
@@ -47,11 +47,14 @@ defineProps<SlideNavProps>();
 @import "../../css/imports";
 
 .tabList {
+	composes: clean-list from global;
+
 	display: flex;
-	margin: 0;
-	background-color: white;
-	overflow-x: auto;
 	justify-content: center;
+	margin: 0;
+	overflow-x: auto;
+
+	background-color: white;
 }
 
 /*

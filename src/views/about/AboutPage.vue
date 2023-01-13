@@ -1,8 +1,8 @@
 <template>
-	<BasePageLayout :nav-class='$style.top_nav'>
-		<PageMeta :body-class='$style.container'/>
-		<SlideNav :class='$style.header' :tabs='tabs'/>
-		<RouterView/>
+	<BasePageLayout :nav-class='$style.topNav'>
+		<PageMeta :body-class='$style.body'/>
+		<SlideNav :class='$style.tabs' :tabs='tabs'/>
+		<main :class='$style.main'><RouterView/></main>
 	</BasePageLayout>
 </template>
 
@@ -23,20 +23,20 @@ const tabs = [
 <style module lang="less">
 @import "../../css/imports";
 
-.container {
+.body {
 	display: flex;
 	flex-direction: column;
 	min-height: 100vh;
 	background: whitesmoke;
 }
 
-.top_nav {
+.topNav {
 	position: static;
 	box-shadow: none;
 	background: white;
 }
 
-.header {
+.tabs {
 	position: sticky;
 	top: 0;
 	z-index: 90; // 比 TopNav 小一点
@@ -51,6 +51,22 @@ const tabs = [
 		width: 100%;
 		height: 1px;
 		background-color: #eee;
+	}
+}
+
+.main {
+	margin: 20px 0;
+	flex: 1;
+	font-size: initial;
+
+	@media screen and (min-width: @length-screen-mobile) {
+		margin: 80px 15vw;
+	}
+
+	@media screen and (min-width: @length-screen-wide) {
+		margin: 80px auto;
+		width: 56vw;
+		max-width: 1200px;
 	}
 }
 </style>
