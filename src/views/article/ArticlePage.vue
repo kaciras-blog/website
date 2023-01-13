@@ -32,18 +32,18 @@
 			/>
 
 			<footer :class='$style.copyright'>
-				<a rel='license' href='https://creativecommons.org/licenses/by/4.0/'>
+				<a rel='license' href='https://creativecommons.org/licenses/by-sa/4.0/'>
 					<img
 						alt='知识共享许可协议'
 						width='88'
 						height='31'
-						src='https://i.creativecommons.org/l/by/4.0/88x31.png'
+						src='https://i.creativecommons.org/l/by-sa/4.0/88x31.png'
 					/>
 				</a>
 				<br/>
 				本作品采用
-				<a rel='license' href='https://creativecommons.org/licenses/by/4.0/' class='highlight'>知识共享署名 4.0
-					国际许可协议</a>进行许可。
+				<a rel='license' href='https://creativecommons.org/licenses/by-sa/4.0/' class='highlight'>
+					知识共享署名-相同方式共享 4.0 国际许可协议</a>进行许可。
 			</footer>
 		</article>
 
@@ -55,7 +55,7 @@
 			:class='$style.discussion'
 		/>
 
-		<div
+		<aside
 			v-if='$bp.isGreater("tablet")'
 			:class='$style.sideButtons'
 		>
@@ -77,7 +77,7 @@
 			>
 				<ArrowTopIcon/>
 			</KxButton>
-		</div>
+		</aside>
 
 		<HeadTags>
 			<meta name='keywords' :content='article.keywords.join(",")'>
@@ -86,8 +86,8 @@
 			<link v-if='article.next' rel='prev' :title='article.next.title' :href='articleLink(article.next)'>
 
 			<meta property='og:image' :content='`https://blog.kaciras.com${article.cover}`'>
-			<meta property="og:image:width" content="400"/>
-			<meta property="og:image:height" content="300"/>
+			<meta property='og:image:width' content='400'/>
+			<meta property='og:image:height' content='300'/>
 			<meta property='og:title' :content='article.title'>
 			<meta property='og:type' content='article'>
 			<meta property='og:description' :content='article.summary'>
