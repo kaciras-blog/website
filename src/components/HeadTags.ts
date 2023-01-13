@@ -68,11 +68,11 @@ function HeadMetaSSR(this: SetupContext, info: Store, isBase: boolean) {
 	if (!isBase) {
 		info.inherited = true;
 	}
-	const vnodes = this.slots.default!();
-	for (const { props } of vnodes) {
+	const vNodes = this.slots.default!();
+	for (const { props } of vNodes) {
 		props && (props["data-ht"] = "");
 	}
-	return h(Teleport, { to }, { default: () => vnodes });
+	return h(Teleport, { to }, { default: () => vNodes });
 }
 
 /**

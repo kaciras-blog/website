@@ -37,7 +37,7 @@ function initApplication() {
 async function appShellStartup() {
 	const route = router.currentRoute.value;
 
-	const cs = route.matched.flatMap(v => v.components.default);
+	const cs = route.matched.flatMap(v => v.components!.default);
 	await prefetch(store, route, cs);
 
 	initApplication();
@@ -47,7 +47,7 @@ async function appShellStartup() {
 
 	// AppShell 模式不会在服务端加载用户
 	// TODO: 这会导致控制台不能直接访问（以及刷新），但不是什么严重的问题
-	useCurrentUser(store).refresh();
+	await useCurrentUser(store).refresh();
 }
 
 // 如果有 window.__INITIAL_STATE__ 全局属性则说明使用了服务端渲染。

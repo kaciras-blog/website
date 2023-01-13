@@ -1,6 +1,11 @@
 import { openFile } from "@kaciras-blog/uikit";
 import { EndpointBase } from "./core";
 
+export interface VariantSaveParams {
+	codec?: string;
+	variant?: string;
+}
+
 export default class MediaEndpoint extends EndpointBase {
 
 	private upload(path: string, file: Blob, params?: any) {
@@ -37,7 +42,7 @@ export default class MediaEndpoint extends EndpointBase {
 		return this.upload("/image", file, params);
 	}
 
-	uploadVideo(file: Blob, params?: any) {
+	uploadVideo(file: Blob, params?: VariantSaveParams) {
 		return this.upload("/video", file, params);
 	}
 

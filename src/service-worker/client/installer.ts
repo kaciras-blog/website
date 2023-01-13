@@ -66,6 +66,7 @@ export function useServiceWorker() {
 	} else if (document.readyState === "complete") {
 		void initialize();
 	} else {
+		// @ts-ignore For Safari.
 		window.addEventListener("load", initialize);
 	}
 }

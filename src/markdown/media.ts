@@ -1,7 +1,7 @@
-import { Media, RendererMap } from "@kaciras-blog/markdown";
 import MarkdownIt from "markdown-it";
 import Token from "markdown-it/lib/token";
-import { silencePromise } from "@/utils";
+import { silencePromise } from "@kaciras/utilities/browser";
+import { Media, RendererMap } from "@kaciras-blog/markdown";
 
 /**
  * 从资源的链接参数（?vw=...&vh=...）里读取媒体的尺寸，
@@ -28,7 +28,11 @@ function getContainerClassAndStyle(url: string) {
 }
 
 /**
- * 自定义图片的渲染。
+ * 自定义图片的渲染，相比默认的来说多了标签元素、懒加载、以及居中。
+ *
+ * 【不用 figure 元素】
+ * <figure> 介绍里提到即使移除也不影响 main flow，但文章里的图可能跟上下文联系紧密，
+ * 似乎并不能代替 <img> + <span>。
  *
  * 【防止布局抖动】
  * 通过 URL 里携带的宽高信息，设置图片的大小和宽高比，防止加载后元素尺寸的变化。
@@ -37,9 +41,9 @@ function getContainerClassAndStyle(url: string) {
  * 详细的原理见：
  * https://blog.kaciras.com/article/18/add-video-support-to-markdown
  *
- * 【加载指示器（菊花图）】
+ * 【加载指示器】
  * 图片本身就有在不完全加载的时的显示方式，比如从上往下显示或者渐进式图片。
- * 如果无法加载，下面的标签也能表明空白区域是图片，所以没有必要使用指示器。
+ * 如果无法加载，下面的标签也能表明空白区域是图片，所以没有必要用菊花图。
  */
 function renderImage(tokens: Token[], idx: number) {
 	const token = tokens[idx];
@@ -146,12 +150,6 @@ const lazyHandlers: Record<string, OnIntersect> & CodecSupportDetector = {
 		}
 	},
 
-	/**
-	 *
-	 *
-	 * @param target
-	 * @param isInView
-	 */
 	VIDEO(target: HTMLVideoElement, isInView: boolean) {
 		if (target.dataset.src) {
 			const url = new URL(target.dataset.src, location.href);
@@ -162,7 +160,7 @@ const lazyHandlers: Record<string, OnIntersect> & CodecSupportDetector = {
 		}
 
 		/*
-		 * play 返回 Promise 来加等待加载完成，如果元数据还未加载完就暂停会抛出异常。
+		 * play() 返回 Promise 来加等待加载完成，如果元数据还未加载完就暂停会抛出异常。
 		 * 这个异常在 Chrome 里是 AbortError，Firefox 是 DomException，无法很好地跟其他情况区分。
 		 *
 		 * 但元数据的加载被中断是正常的，不影响下次播放，故直接屏蔽掉。
@@ -186,7 +184,7 @@ const lazyHandlers: Record<string, OnIntersect> & CodecSupportDetector = {
  * @param el 容器元素
  * @return 取消监听的函数，在被监视的元素移除后调用，以避免内存泄漏。
  */
-export function lazyLoad(el: HTMLElement) {
+export function observeLazyLoad(el: HTMLElement) {
 	const observer = new IntersectionObserver(entries => {
 		for (const entry of entries) {
 			const { target, intersectionRatio } = entry;

@@ -47,7 +47,7 @@ async function prefetch(store: Pinia, router: Router, request: any) {
 	 * 目前的方案是在 error/Index.vue 里设置一个标识表示 NotFound.
 	 */
 	const components = route.matched
-		.flatMap(v => Object.values(v.components));
+		.flatMap(v => Object.values(v.components!));
 
 	const prefetching = collectTasks(components, ctx);
 

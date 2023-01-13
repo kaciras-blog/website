@@ -8,8 +8,8 @@
 		<meta property='og:title' content='首页'>
 		<meta property='og:description' content='欢迎来到 Kaciras 的博客'>
 		<meta property='og:image' :content='"https://blog.kaciras.com" + OGImage'>
-		<meta property="og:image:width" content="1200"/>
-		<meta property="og:image:height" content="630"/>
+		<meta property='og:image:width' content='1200'/>
+		<meta property='og:image:height' content='630'/>
 		<meta property='og:url' content='https://blog.kaciras.com'>
 	</HeadTags>
 
@@ -17,6 +17,7 @@
 	<RouterView/>
 	<DialogContainer/>
 	<ToastContainer/>
+
 	<noscript class='global-error'>禁用 JavaScript 会导致部分功能不正常</noscript>
 </template>
 
