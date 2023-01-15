@@ -1,5 +1,12 @@
 <!-- 很多组件必须跟主实例中挂载，否则功能将受限 -->
 <template>
+	<noscript class='global-error'>禁用 JavaScript 会导致部分功能不正常</noscript>
+
+	<KxProgress :ref='connect'/>
+	<RouterView/>
+	<DialogContainer/>
+	<ToastContainer/>
+
 	<HeadTags :base='true'>
 		<meta name='description' content='欢迎来到 Kaciras 的博客'>
 
@@ -12,13 +19,6 @@
 		<meta property='og:image:height' content='630'/>
 		<meta property='og:url' content='https://blog.kaciras.com'>
 	</HeadTags>
-
-	<KxProgress :ref='connect'/>
-	<RouterView/>
-	<DialogContainer/>
-	<ToastContainer/>
-
-	<noscript class='global-error'>禁用 JavaScript 会导致部分功能不正常</noscript>
 </template>
 
 <script setup lang="ts">

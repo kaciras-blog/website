@@ -50,17 +50,20 @@
 	}
 }
 
-// 最顶上警告框，在浏览器不支持和未开启JS情况下显示
+// 最顶上警告框，在浏览器不支持和未开启 JS 情况下显示。
 .global-error {
 	display: block;
-	position: relative;
-	left: 0;
-	right: 0;
-	top: 0;
-	z-index: 99999;
 	padding: 14px;
 	text-align: center;
 	font-size: 18px;
-	color: #e62e2e;
-	background-color: #f9f9fa;
+
+	background-size: 24px 24px;
+	background-color: #fce94f;
+	background-image: linear-gradient(
+			135deg,
+			transparent,			transparent 25%,
+			rgba(0, 0, 0, .05) 25%, rgba(0, 0, 0, .05) 50%,
+			transparent 50%,		transparent 75%,
+			rgba(0, 0, 0, .05) 75%, rgba(0, 0, 0, .05)
+	);
 }
