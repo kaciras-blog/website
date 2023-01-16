@@ -70,7 +70,7 @@ defineProps<PreviewItemProps>();
 .container {
 	display: grid;
 	grid-template-columns: 1fr;
-	grid-gap: 1rem;
+	gap: 1rem;
 
 	padding: 15px 0;
 	margin: 1rem 0;

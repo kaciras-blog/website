@@ -181,7 +181,7 @@ function clear() {
 .cards {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, 9rem);
-	grid-gap: .8rem;
+	gap: .8rem;
 	justify-content: center;
 	align-items: start;
 

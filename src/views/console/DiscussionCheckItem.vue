@@ -68,7 +68,7 @@ const checkedForward = useVModel(props, "checked", emit);
 	display: grid;
 	grid-template-areas: "link link" "head content";
 	grid-template-columns: auto minmax(0, 1fr);
-	grid-gap: 20px 10px;
+	gap: 20px 10px;
 
 	padding: 20px 0;
 	border-top: solid 1px #c9c9c9;

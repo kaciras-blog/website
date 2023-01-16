@@ -132,8 +132,8 @@ function switchPanel(name: string) {
 .login-form {
 	display: grid;
 	grid-template-columns: 4em 1fr;
-	grid-column-gap: .5em;
-	grid-row-gap: 1em;
+	row-gap: 1em;
+	column-gap: .5em;
 
 	& > label {
 		align-self: center;

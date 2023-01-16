@@ -125,7 +125,7 @@ function setPicture() {
 	padding: 1.5rem;
 
 	display: none; // grid 在 .expand > .details
-	grid-gap: 12px;
+	gap: 12px;
 	grid-template-columns: auto 1fr;
 	grid-template-rows: auto auto 1fr;
 }

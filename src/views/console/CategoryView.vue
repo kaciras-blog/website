@@ -155,7 +155,7 @@ async function remove() {
 
 .infoPanel {
 	display: grid;
-	grid-gap: 1rem;
+	gap: 1rem;
 
 	grid-template-rows: auto auto 10rem;
 	grid-template-columns: 1fr auto;

@@ -50,7 +50,7 @@ defineProps<ErrorContentProps>();
 .container {
 	display: grid;
 	justify-content: center;
-	grid-row-gap: 1rem;
+	row-gap: 1rem;
 	grid-template-rows: auto auto auto;
 	grid-template-areas: "title" "image" "content";
 
@@ -59,7 +59,7 @@ defineProps<ErrorContentProps>();
 	@media screen and (min-width: @length-screen-mobile) {
 		grid-template-rows: auto 10rem;
 		grid-template-columns: 11rem auto;
-		grid-column-gap: 2rem;
+		column-gap: 2rem;
 		grid-template-areas: "title title" "image content";
 	}
 }

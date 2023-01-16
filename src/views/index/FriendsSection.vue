@@ -104,7 +104,7 @@ class GridDraggingRegion {
 		const region = container.getBoundingClientRect();
 		const card = container.children[0].getBoundingClientRect();
 
-		// 不能使用 gridGap 属性，CSS 设置的 grid-gap 会转换为 gridRowGap & gridColumnGap。
+		// CSS 里的 gap 会转换为 rowGap & columnGap。
 		const cStyle = getComputedStyle(container);
 		const rowGap = parseInt(cStyle.rowGap), columnGap = parseInt(cStyle.columnGap);
 
@@ -380,7 +380,7 @@ const lazyLoad = useIntersectionHandler((entries, observer) => {
 
 	display: grid;
 	grid-template-columns: repeat(auto-fit, @friend-width);
-	grid-gap: 40px;
+	gap: 40px;
 	justify-content: center;
 }
 

@@ -67,7 +67,7 @@ async function changeCover() {
 			"  cover   title"
 			"  cover  summary";
 
-	grid-gap: 1rem;
+	gap: 1rem;
 	width: 680px;
 }
 

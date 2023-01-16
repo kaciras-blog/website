@@ -24,7 +24,7 @@
 	padding: 20px;
 
 	display: grid;
-	grid-gap: 1rem;
+	gap: 1rem;
 	grid-template-columns: 1fr 1fr;
 	justify-items: center;
 
