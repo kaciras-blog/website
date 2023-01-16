@@ -91,15 +91,6 @@ defineProps<PreviewItemProps>();
 	}
 }
 
-.keyword {
-	display: inline;
-	margin-right: .4em;
-}
-
-.keyword_header {
-	font-weight: 600;
-}
-
 @media screen and (min-width: @length-screen-mobile) {
 	.cover_link {
 		grid-area: cover;
@@ -111,11 +102,6 @@ defineProps<PreviewItemProps>();
 
 	.summary {
 		grid-area: summary;
-	}
-
-	.keywords {
-		grid-area: keywords;
-		align-self: end;
 	}
 
 	.category {

@@ -19,13 +19,6 @@
 				class='input'
 				placeholder='100字以内，留空则使用文章前50字'
 			/>
-			<input
-				placeholder='关键字,空格隔开'
-				title='关键字'
-				:class='$style.keywords'
-				:value='local.keywords'
-				@input='handleKeywordInput'
-			/>
 		</form>
 		<KxDialogButtons @accept='ok' @cancel='$dialog.close'/>
 	</KxBaseDialog>
@@ -46,7 +39,6 @@ import { DEFAULT_COVER } from "@/common";
 interface ArticleMeta {
 	title: string;
 	cover?: string;
-	keywords: string;
 	summary: string;
 }
 
@@ -56,22 +48,6 @@ const dialog = useDialog();
 
 // metadata 是直接传的，复制一份防止影响原数据
 const local = reactive<ArticleMeta>(toRaw(props));
-
-/**
- * 检验下关键词（或者以后的标签）不能存在重复的。
- */
-function handleKeywordInput(event: InputEvent) {
-	const input = event.currentTarget as HTMLInputElement;
-	const words = input.value.split(" ");
-
-	if (words.length !== new Set(words).size) {
-		input.setCustomValidity("关键词重复");
-		input.reportValidity();
-	} else {
-		input.setCustomValidity("");
-		local.keywords = input.value;
-	}
-}
 
 function ok() {
 	dialog.confirm(toRaw(local));
@@ -86,11 +62,10 @@ async function changeCover() {
 .content {
 	display: grid;
 	grid-template-columns: auto 1fr;
-	grid-template-rows: auto 1fr auto;
+	grid-template-rows: auto 1fr;
 	grid-template-areas:
 			"  cover   title"
-			"  cover  summary"
-			"keywords keywords";
+			"  cover  summary";
 
 	grid-gap: 1rem;
 	width: 680px;
@@ -109,9 +84,5 @@ async function changeCover() {
 
 .summary {
 	grid-area: summary;
-}
-
-.keywords {
-	grid-area: keywords;
 }
 </style>

@@ -81,8 +81,8 @@ async function accept() {
 	const { draft, current } = props;
 	try {
 		const data = Object.assign({}, current);
-		data.keywords = current.keywords.split(" ");
-		data.draftId = draft.id; // 文章API里是draftId
+		data.keywords = []; // TODO: 关键词已废弃
+		data.draftId = draft.id; // 文章 API 里是 draftId。
 		data.destroy = destroy.value;
 
 		let id = draft.articleId;

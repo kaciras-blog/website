@@ -13,7 +13,6 @@ export enum DeletionState {
 
 interface ArticleMeta {
 	title: string;
-	keywords: string[];
 	cover: string;
 	summary: string;
 	content: string;

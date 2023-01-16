@@ -13,16 +13,6 @@
 					<span>最后更新：</span>
 					<RelativeTime :value='article.update'/>
 				</p>
-				<div>
-					<span>关键词：</span>
-					<span
-						v-for='keyword of article.keywords'
-						:key='keyword'
-						:class='$style.keyword'
-					>
-						{{ keyword }}
-					</span>
-				</div>
 			</header>
 
 			<MarkdownView
@@ -80,7 +70,6 @@
 		</aside>
 
 		<HeadTags>
-			<meta name='keywords' :content='article.keywords.join(",")'>
 			<meta name='description' :content='article.summary'>
 			<link v-if='article.prev' rel='prev' :title='article.prev.title' :href='articleLink(article.prev)'>
 			<link v-if='article.next' rel='prev' :title='article.next.title' :href='articleLink(article.next)'>
@@ -217,10 +206,6 @@ function gotoDiscuss() {
 
 .title {
 	font-size: 2rem;
-}
-
-.keyword {
-	margin-right: .3em;
 }
 
 .content {
