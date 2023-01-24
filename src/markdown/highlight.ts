@@ -1,7 +1,9 @@
-// TreeShaking 优化，排除掉不需要的语言
 import hljs from "highlight.js/lib/core";
 import MarkdownIt from "markdown-it";
+import CopyIcon from "bootstrap-icons/icons/clipboard.svg?raw";
+import CopiedIcon from "bootstrap-icons/icons/clipboard-check.svg?raw";
 
+// TreeShaking 优化，只添加我常用的语言。
 import c from "highlight.js/lib/languages/c";
 import cpp from "highlight.js/lib/languages/cpp";
 import xml from "highlight.js/lib/languages/xml";
@@ -75,10 +77,46 @@ export default function hljsPlugin(markdownIt: MarkdownIt) {
 			[language] = unescapeAll(info).trim().split(/(\s+)/g);
 		}
 
-		const result = hljs.getLanguage(language)
+		const codeHTML = hljs.getLanguage(language)
 			? hljs.highlight(content, { language }).value
 			: escapeHtml(content);
 
-		return `<pre class='hljs'>${result}</pre>`;
+		if (language) {
+			return `
+				<div class='hljs'>
+					<div class='code-meta'>
+						${language}
+						<button class='copy'>
+							${CopyIcon}复制
+						</button>
+					</div>
+					<pre>${codeHTML}</pre>
+				</div>
+			`;
+		} else {
+			return `<pre class='hljs'>${codeHTML}</pre>`;
+		}
 	};
+}
+
+async function handleCopy(event: Event) {
+	const button = event.currentTarget as HTMLButtonElement;
+	const pre = button.parentNode!.parentNode!.lastElementChild!;
+	await navigator.clipboard.writeText(pre.textContent!);
+
+	button.classList.add("copied");
+	button.innerHTML = `${CopiedIcon}复制`;
+}
+
+function handleMouseLeave(event: Event) {
+	const button = event.currentTarget as HTMLButtonElement;
+	button.classList.remove("copied");
+	button.innerHTML = `${CopyIcon}复制`;
+}
+
+export function activateCopyButtons(root: HTMLElement) {
+	for (const button of root.querySelectorAll(".copy")) {
+		(button as HTMLButtonElement).onclick = handleCopy;
+		(button as HTMLButtonElement).onmouseleave = handleMouseLeave;
+	}
 }

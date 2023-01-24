@@ -40,14 +40,21 @@
 		}
 	}
 
+	.hljs {
+		overflow: hidden;
+		margin: 1em 0;
+		border-radius: 5px;
+	}
+
 	pre {
 		overflow-x: auto;
+		margin: 0;
 		padding: 0.5em;
 
 		// 使用小一号的字体，以便能看到更多代码。
 		font-size: .875em;
 		tab-size: 4;
-		border-radius: 5px;
+
 
 		// 照顾手机，进一步减小字号。
 		@media screen and (max-width: @length-screen-mobile) {
@@ -73,6 +80,35 @@
 		word-break: break-all;
 		.highlight-color(@color-link, @color-link);
 	}
+}
+
+.code-meta {
+	display: flex;
+	background: #414547;
+	padding-left: 12px;
+}
+
+.copy {
+	display: flex;
+	gap: 4px;
+	align-items: center;
+
+	font-size: inherit;
+	color: inherit;
+	margin-left: auto;
+	padding: 0 12px;
+
+	&:hover {
+		background: rgba(255, 255, 255, 0.1);
+	}
+
+	&:active {
+		background: rgba(255, 255, 255, 0.07);
+	}
+}
+
+.copied {
+	color: #60e177;
 }
 
 .table-of-contents {
