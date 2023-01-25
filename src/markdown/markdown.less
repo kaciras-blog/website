@@ -5,6 +5,10 @@
 @quote-padding: #bfbfbf; // 引用块左边装饰颜色
 @quote-background: #f8f8f8; // 引用块背景颜色
 
+@details-color: #fda;
+@details-padding-v: 8px;
+@details-padding-h: 14px;
+
 .markdown {
 	line-height: 1.8;
 
@@ -72,6 +76,36 @@
 		border-left: 6px solid @quote-padding;
 	}
 
+	details {
+		margin-bottom: 1em;
+		padding: @details-padding-v @details-padding-h;
+
+		border-radius: 6px;
+		border: solid 2px @details-color;
+
+		&[open] {
+			padding-bottom: 0;
+		}
+
+		&[open] > summary {
+			/* 因为用了段落仅下边距的设计，所以这里要补上。 */
+			margin-bottom: 1em;
+
+			border-bottom-left-radius: 0;
+			border-bottom-right-radius: 0;
+		}
+	}
+
+	summary {
+		/* 在 details 里面，受填充影响，所以用负边距抵消。 */
+		margin: -@details-padding-v -@details-padding-h;
+		padding: @details-padding-v @details-padding-h;
+
+		border-radius: 5px;
+		cursor: pointer;
+		background: @details-color;
+	}
+
 	table {
 		margin: 0 auto 1rem auto;
 	}
@@ -133,6 +167,7 @@
 
 	background-color: #f7f7f7;
 	color: #fa0085;
+	border-radius: 5px;
 
 	// 如果在未达行尾就换行会跟多行代码块混淆，故改为 break-all
 	word-break: break-all;
