@@ -81,13 +81,14 @@ export default function hljsPlugin(markdownIt: MarkdownIt) {
 			? hljs.highlight(content, { language }).value
 			: escapeHtml(content);
 
+		// Copy 是个很常见的单词，谁都看得懂，就不做本地化了。
 		if (language) {
 			return `
 				<div class='hljs'>
 					<div class='code-meta'>
 						${language}
 						<button class='copy'>
-							${CopyIcon}复制
+							${CopyIcon}Copy
 						</button>
 					</div>
 					<pre>${codeHTML}</pre>
@@ -104,14 +105,14 @@ async function handleCopy(event: Event) {
 	const pre = button.parentNode!.parentNode!.lastElementChild!;
 	await navigator.clipboard.writeText(pre.textContent!);
 
-	button.classList.add("copied");
-	button.innerHTML = `${CopiedIcon}复制`;
+	button.disabled = true;
+	button.innerHTML = `${CopiedIcon}Copy`;
 }
 
 function handleMouseLeave(event: Event) {
 	const button = event.currentTarget as HTMLButtonElement;
-	button.classList.remove("copied");
-	button.innerHTML = `${CopyIcon}复制`;
+	button.disabled = false;
+	button.innerHTML = `${CopyIcon}Copy`;
 }
 
 export function activateCopyButtons(root: HTMLElement) {

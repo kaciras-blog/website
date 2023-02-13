@@ -192,7 +192,7 @@ function gotoDiscuss() {
 		//
 		// 因为图片处于 <p> 内部无法与文字区分，所以只能用白名单模式，
 		// 给这些元素加上负边距扩大，而不能用黑名单去给要边距的缩小。
-		:global(.center-wrapper), pre {
+		:global(.center-wrapper), :global(.hljs) {
 			border-radius: 0;
 			margin-left: -@mobile-margin;
 			margin-right: -@mobile-margin;
