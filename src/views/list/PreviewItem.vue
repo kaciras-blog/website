@@ -1,5 +1,5 @@
 <template>
-	<li :class='$style.container'>
+	<article :class='$style.container'>
 		<RouterLink
 			:to='articleLink(item)'
 			tabindex='-1'
@@ -46,7 +46,7 @@
 				<span>{{ item.discussionCount }}</span>
 			</span>
 		</div>
-	</li>
+	</article>
 </template>
 
 <script setup lang="ts">
@@ -68,6 +68,8 @@ defineProps<PreviewItemProps>();
 @import "../../css/imports";
 
 .container {
+	composes: segment from global;
+
 	display: grid;
 	grid-template-columns: 1fr;
 	gap: 1rem;

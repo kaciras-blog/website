@@ -1,10 +1,17 @@
+<!--
+	【列表的 Tag 选择】比起 ul+li，使用 article 能减少一层元素；
+	另外从语义上讲，预览类似于 product card，其内容是独立的，所以用 article 没问题。
+
+	MDN 上也推荐用 article 做 product card：
+	https://developer.mozilla.org/en-US/docs/Web/HTML/Element/article
+-->
 <template>
 	<BannerPageLayout :banner='category.banner'>
 		<PageMeta title='所有文章' body-class=''/>
 
 		<div id='index-page'>
-			<section :class='$style.list'>
-				<h1 class='segment' :class='$style.listTitle'>
+			<main :class='$style.list'>
+				<h1 :class='$style.title'>
 					全部文章
 				</h1>
 				<ScrollPagingView
@@ -17,17 +24,14 @@
 					:auto-load='autoLoad'
 				>
 					<template v-slot='{ items }'>
-						<ul class='clean-list'>
-							<PreviewItem
-								v-for='item of items'
-								:key='item.id'
-								:item='item'
-								class='segment'
-							/>
-						</ul>
+						<PreviewItem
+							v-for='item of items'
+							:item='item'
+							:key='item.id'
+						/>
 					</template>
 				</ScrollPagingView>
-			</section>
+			</main>
 
 			<aside :class='$style.aside'>
 				<AsidePanel></AsidePanel>
@@ -137,7 +141,9 @@ function nextPageUrl() {
 	max-width: 64rem;
 }
 
-.listTitle {
+.title {
+	composes: segment from global;
+
 	font-size: 1.8rem;
 	text-align: center;
 
