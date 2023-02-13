@@ -16,13 +16,14 @@
 			@removed='$emit("removed")'
 			@reply='showReplyEditor'
 		>
-			<blockquote v-if='parent' :class='$style.blockquote'>
-				<p>
+			<blockquote v-if='parent' :class='$style.quote'>
+				<div :class='$style.quoteHeader'>
 					回复：
 					@{{ displayName(parent) }}
 					(#{{ parent.floor }})
-				</p>
+				</div>
 				<MarkdownView
+					:class='$style.quoteBody'
 					:doc-id='"dq" + id'
 					:value='parent.content'
 				/>
@@ -242,16 +243,45 @@ function loadNext(start: number, count: number) {
 }
 
 /* 跟 Markdown 里的样式重复了，但用户应该能区分 */
-.blockquote {
-	margin: 14px 0;
-	padding: 1em 1em 1px;
+.quote {
+	@max-height: 25em;
+	@fade-height: 25px;
 
-	background-color: #f8f8f8;
-	border-left: 6px solid #bfbfbf;
+	position: relative;
+	margin: 14px 0;
+
+	border: 1px solid #e5e5e5;
+	background-color: #ffffee;
+	max-height: @max-height;
+	overflow: hidden;
+	border-radius: 4px;
+
+	&::after {
+		content: "";
+		position: absolute;
+		width: 100%;
+		top: calc(@max-height - @fade-height * 2);
+		padding: @fade-height;
+		background: linear-gradient(0deg,
+				#fff 0%,
+				rgba(255,255,255,0.5) 40%,
+				rgba(255,255,255,0.05) 90%,
+				transparent 100%
+		);
+	}
 
 	@media screen and(min-width: @length-screen-mobile) {
 		font-size: initial;
 	}
+}
+
+.quoteHeader {
+	padding: 10px;
+	border-bottom: 1px solid #e5e5e5;
+}
+
+.quoteBody {
+	padding: 10px;
 }
 
 .list {
