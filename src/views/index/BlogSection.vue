@@ -17,7 +17,6 @@
 				:key='card.id'
 				:href='card.link'
 				:aria-label='card.name'
-				class='clean-link'
 				:class='$style.figure'
 			>
 				<img
@@ -91,6 +90,8 @@ const { cards } = usePrefetch().data;
 
 // 博客上的图白底的多，擦亮动画效果不好，还是用浮起吧。
 .figure {
+	composes: clean-link from global;
+
 	position: relative;
 	overflow: hidden;
 

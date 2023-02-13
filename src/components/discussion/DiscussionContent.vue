@@ -4,7 +4,6 @@
 			<img
 				:src='value.user.avatar ?? DEFAULT_AVATAR'
 				alt='头像'
-				class='head'
 				:class='$style.avatar'
 			>
 
@@ -116,6 +115,8 @@ function remove() {
 }
 
 .avatar {
+	composes: head from global;
+
 	display: block;
 	float: left;
 	position: relative;

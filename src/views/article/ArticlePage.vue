@@ -3,7 +3,7 @@
 		<PageMeta :title='article.title' :body-class='$style.container'/>
 
 		<article :class='$style.article'>
-			<header class='segment' :class='$style.header'>
+			<header :class='$style.header'>
 				<h1 :class='$style.title'>{{ article.title }}</h1>
 				<p>
 					<span>发布时间：</span>
@@ -201,6 +201,7 @@ function gotoDiscuss() {
 }
 
 .header {
+	composes: segment from global;
 	text-align: center;
 }
 

@@ -16,7 +16,6 @@
 			<textarea
 				v-model='local.summary'
 				:class='$style.summary'
-				class='input'
 				placeholder='100字以内，留空则使用文章前50字'
 			/>
 		</form>
@@ -83,6 +82,7 @@ async function changeCover() {
 }
 
 .summary {
+	composes: input from global;
 	grid-area: summary;
 }
 </style>

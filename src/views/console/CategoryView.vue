@@ -8,8 +8,7 @@
 		>
 			<div :class='$style.infoPanel'>
 				<img
-					class='head'
-					:class='$style.head'
+					:class='$style.icon'
 					:src='item.cover ?? DEFAULT_CODER'
 					:title='editable ? "点击换头像" : null'
 					alt='图标'
@@ -159,13 +158,13 @@ async function remove() {
 
 	grid-template-rows: auto auto 10rem;
 	grid-template-columns: 1fr auto;
-	grid-template-areas: "head button" "name button" "desc desc";
+	grid-template-areas: "icon button" "name button" "desc desc";
 	justify-items: center;
 
 	@media screen and (min-width: @length-screen-mobile) {
 		grid-template-rows: auto auto;
 		grid-template-columns: auto 1fr auto;
-		grid-template-areas: "head desc button" "name desc button";
+		grid-template-areas: "icon desc button" "name desc button";
 	}
 
 	cursor: default;
@@ -175,16 +174,17 @@ async function remove() {
 	background-color: rgba(0, 0, 0, 0.7);
 	border-radius: 1rem;
 
-	& .head {
+	& .icon {
 		margin-left: 2rem;
 		margin-right: 2rem;
 		margin-bottom: 0;
 	}
 }
 
-.head {
-	grid-area: head;
-
+.icon {
+	composes: head from global;
+	
+	grid-area: icon;
 	display: block;
 	margin: 1rem;
 	border-radius: 1rem;

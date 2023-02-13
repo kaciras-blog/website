@@ -5,7 +5,7 @@
 			<template v-if='current'>
 				<h3 class='compact minor-text'>当前分类：</h3>
 				<img
-					class='small head'
+					class='small'
 					:class='$style.cover'
 					:src='current.cover ?? CATEGORY_IMG'
 					alt='分类图标'
@@ -35,7 +35,7 @@
 			</div>
 		</div>
 
-		<ul class='clean-list' :class='$style.cards'>
+		<ul :class='$style.cards'>
 			<li
 				v-for='category of categories'
 				:key='category.id'
@@ -49,7 +49,6 @@
 				/>
 				<div :class='$style.categoryWrapper'>
 					<img
-						class='head'
 						:class='$style.cover'
 						:src='category.cover ?? CATEGORY_IMG'
 						alt='分类图标'
@@ -119,7 +118,7 @@ const walker = reactive(new CachedCategoryWalker());
 
 walker.goto(0);
 
-const current =  computed(() => walker.current);
+const current = computed(() => walker.current);
 
 const categories = computed(() => {
 	const { children } = walker;
@@ -179,6 +178,8 @@ function clear() {
 }
 
 .cards {
+	composes: clean-list from global;
+
 	display: grid;
 	grid-template-columns: repeat(auto-fit, 9rem);
 	gap: .8rem;
@@ -234,6 +235,8 @@ function clear() {
 }
 
 .cover {
+	composes: head from global;
+
 	display: inline-block;
 	margin-bottom: 1rem;
 }

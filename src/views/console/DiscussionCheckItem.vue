@@ -18,8 +18,7 @@
 		<img
 			:src='user.avatar'
 			alt='头像'
-			:class='$style.head'
-			class='small head'
+			:class='$style.avatar'
 		>
 
 		<div :class='$style.content'>
@@ -66,7 +65,7 @@ const checkedForward = useVModel(props, "checked", emit);
 <style module lang="less">
 .container {
 	display: grid;
-	grid-template-areas: "link link" "head content";
+	grid-template-areas: "link link" "avatar content";
 	grid-template-columns: auto minmax(0, 1fr);
 	gap: 20px 10px;
 
@@ -74,9 +73,14 @@ const checkedForward = useVModel(props, "checked", emit);
 	border-top: solid 1px #c9c9c9;
 }
 
-.link { grid-area: link; }
+.link {
+	grid-area: link;
+}
 
-.head { grid-area: head; }
+.avatar {
+	composes: small head from global;
+	grid-area: avatar;
+}
 
 .content {
 	grid-area: content;

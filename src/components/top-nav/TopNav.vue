@@ -2,7 +2,6 @@
 	<component
 		:is='tag'
 		:class='[$style.container, colored && $style.colored]'
-		class='top-nav'
 	>
 		<RouterLink
 			to='/'
@@ -34,7 +33,6 @@
 						:src='user.avatar'
 						:alt='user.name'
 						title='就是一个头像而已'
-						class='small head'
 						:class='$style.head'
 					>
 				</RouterLink>
@@ -122,6 +120,8 @@ if (breakPoint.value === "mobile") {
 @import "../../css/imports";
 
 .container {
+	composes: top-nav from global;
+
 	display: flex;
 	background-color: rgba(255, 255, 255, .5);
 	transition: background-color .3s;
@@ -155,8 +155,10 @@ if (breakPoint.value === "mobile") {
 }
 
 .head {
-	vertical-align: top;
+	composes: small head from global;
+
 	margin: 0 10px;
+	vertical-align: top;
 }
 
 .fontIcon {

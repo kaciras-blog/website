@@ -47,7 +47,7 @@
 				:class='$style.nest'
 			>
 				<template v-slot='{ items }'>
-					<ol class='clean-list' :class='$style.list'>
+					<ol :class='$style.list'>
 						<DiscussionContent
 							v-for='item of items'
 							:key='item.id'
@@ -62,7 +62,7 @@
 			</ButtonPagingView>
 
 			<div v-else-if='$bp.isGreater("tablet")' :class='$style.nest'>
-				<ol class='clean-list' :class='$style.list'>
+				<ol :class='$style.list'>
 					<DiscussionContent
 						v-for='item of children.items'
 						:key='item.id'
@@ -79,7 +79,7 @@
 			</div>
 
 			<div v-else :class='$style.nest'>
-				<ol class='clean-list' :class='$style.list'>
+				<ol :class='$style.list'>
 					<li
 						v-for='item of children.items.slice(0, 3)'
 						:key='item.id'
@@ -254,8 +254,12 @@ function loadNext(start: number, count: number) {
 	}
 }
 
-.list:not(:first-child) {
-	margin-top: 20px;
+.list {
+	composes: clean-list from global;
+
+	&:not(:first-child) {
+		margin-top: 20px;
+	}
 }
 
 .reply {

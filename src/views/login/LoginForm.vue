@@ -53,7 +53,7 @@
 			</KxButton>
 		</div>
 
-		<span class='center' :class='$style.separator'>
+		<span :class='$style.separator'>
 			第三方登录
 		</span>
 		<div class='center'>
@@ -120,6 +120,8 @@ function switchPanel() {
 @import "../../css/imports";
 
 .separator {
+	composes: center from global;
+
 	position: relative;
 	color: #747474;
 	margin-top: .5rem;

@@ -3,7 +3,7 @@
 		<PageMeta title='用户' :body-class='$style.pageLayout'/>
 
 		<div :class='$style.body'>
-			<form :class='$style.card' class='panel'>
+			<form :class='$style.card'>
 				<h2>修改用户信息</h2>
 
 				<div :class='[$style.headSection, $style.field]'>
@@ -93,6 +93,8 @@ async function save() {
 }
 
 .card {
+	composes: panel from global;
+
 	width: 20rem;
 	margin: 0 auto;
 	padding: 1rem;

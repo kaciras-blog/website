@@ -12,7 +12,7 @@
 			>
 		</RouterLink>
 
-		<h2 class='compact' :class='$style.title'>
+		<h2 :class='$style.title'>
 			<RouterLink :to='articleLink(item)'>
 				{{ item.title }}
 			</RouterLink>
@@ -22,7 +22,7 @@
 			{{ item.summary }}
 		</div>
 
-		<div class='tag-group' :class='$style.category'>
+		<div :class='$style.category'>
 			<span
 				v-for='c of item.categories'
 				:key='c.id'
@@ -32,7 +32,7 @@
 			</span>
 		</div>
 
-		<div class='minor-text' :class='$style.meta'>
+		<div :class='$style.meta'>
 			<span title='发表于' :class='$style.metaItem'>
 				<EditIcon/>
 				<RelativeTime :value='item.create'/>
@@ -130,12 +130,22 @@ defineProps<PreviewItemProps>();
 }
 
 .title {
+	composes: compact from global;
+
 	font-size: 1.5em;
 	font-weight: 500;
 
 	@media screen and (max-width: @length-screen-mobile) {
 		text-align: center;
 	}
+}
+
+.category {
+	composes: tag-group from global;
+}
+
+.meta {
+	color: @color-text-minor;
 }
 
 .metaItem {

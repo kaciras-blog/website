@@ -1,5 +1,5 @@
 <template>
-	<div class='btn-group' :class='$style.toolbar'>
+	<div :class='$style.toolbar'>
 		<KxButton type='outline' @click='createNew'>添加</KxButton>
 		<KxButton type='outline' @click='load'>重新加载</KxButton>
 		<KxButton color='primary' @click='submit'>应用更改</KxButton>
@@ -186,6 +186,7 @@ async function drag(event: any, item: CardEntry) {
 }
 
 .toolbar {
+	composes: btn-group from global;
 	text-align: right;
 }
 </style>

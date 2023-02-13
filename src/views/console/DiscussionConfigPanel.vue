@@ -1,5 +1,5 @@
 <template>
-	<section class='panel' :class='$style.config_section'>
+	<section :class='$style.container'>
 		<h2>设置</h2>
 
 		<div :class='$style.config_row'>
@@ -48,7 +48,8 @@ api.config.load("discussion").then(v => Object.assign(config, v));
 </script>
 
 <style module lang="less">
-.config_section {
+.container {
+	composes: panel from global;
 	position: relative;
 	margin-bottom: 30px;
 }

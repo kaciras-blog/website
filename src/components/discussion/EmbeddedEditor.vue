@@ -45,7 +45,6 @@
 		v-else
 		ref='textareaEl'
 		:class='$style.textarea'
-		class='input'
 		:value='content'
 		name='content'
 		:placeholder='placeholder'
@@ -149,8 +148,10 @@ defineExpose({ focus });
 }
 
 .textarea {
-	border: solid 1px #dcdee0;
+	composes: input from global;
+
 	resize: vertical;
+	border: solid 1px #dcdee0;
 }
 
 .header {

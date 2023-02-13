@@ -44,7 +44,6 @@
 		:type='2'
 		:object-id='2'
 		:key='2'
-		class='about-section'
 		:class='$style.discussion'
 	/>
 </template>
@@ -68,6 +67,7 @@ import PageMeta from "@/components/PageMeta";</script>
 }
 
 .discussion {
+	composes: about-section from global;
 	font-size: 14px; // 这里还得改回来...
 }
 </style>
