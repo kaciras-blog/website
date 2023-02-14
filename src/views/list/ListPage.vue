@@ -34,10 +34,18 @@
 			</main>
 
 			<aside :class='$style.aside'>
-				<AsidePanel></AsidePanel>
+				<h3 :class='$style.padding'>
+					浏览排行
+				</h3>
+				<HotArticles/>
 
-				<h3 class='padding'>设置</h3>
-				<KxSwitchBox name='auto-load' v-model='autoLoad'>
+				<h3 :class='$style.padding'>
+					设置
+				</h3>
+				<KxSwitchBox
+					name='auto-load'
+					v-model='autoLoad'
+				>
 					滚动加载
 				</KxSwitchBox>
 			</aside>
@@ -75,7 +83,7 @@ import api from "@/api";
 import { usePrefetch } from "@/store";
 import BannerPageLayout from "@/components/BannerPageLayout.vue";
 import PreviewItem from "./PreviewItem.vue";
-import AsidePanel from "./AsidePanel.vue";
+import HotArticles from "./HotArticles.vue";
 import PageMeta from "@/components/PageMeta";
 
 const breakPoint = useBreakPoint();
@@ -169,5 +177,13 @@ function nextPageUrl() {
 			margin-left: 8%;
 		}
 	}
+}
+
+.padding {
+	border-left: 8px solid @color-primary-light;
+	padding-left: 10px;
+	padding-top: .2em;
+	padding-bottom: .2em;
+	line-height: initial;
 }
 </style>
