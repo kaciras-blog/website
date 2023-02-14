@@ -98,7 +98,7 @@ defineProps<FriendCardProps>();
 	@media screen and (min-width: @length-screen-mobile) {
 		@ty: ((@height + @favicon-size) / -2);
 
-		&:hover, &:focus {
+		&:is(:hover, :focus) {
 			&::before { transform: translateY(@ty); }
 
 			& > .favicon { transform: translateY(@ty); }

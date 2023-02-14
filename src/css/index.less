@@ -60,7 +60,7 @@ fieldset {
 }
 
 /** 处于暗色背景下的输入框 */
-input.dark, .input.dark {
+:where(.input, input, textarea).dark {
 	color: white;
 
 	&:focus {

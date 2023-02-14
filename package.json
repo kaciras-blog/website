@@ -22,9 +22,9 @@
 		"build-cache": "blog-server build-cache"
 	},
 	"browserslist": [
-		"Edge >= 80",
+		"Edge >= 88",
 		"Firefox >= 74",
-		"Chrome >= 80",
+		"Chrome >= 88",
 		"Safari >= 13.1",
 		"iOS >= 13.4"
 	],

@@ -20,7 +20,7 @@
 				</span>
 			</div>
 
-			<div :class='$style.attrs'>
+			<div class='minor-text'>
 				<PaperPlaneIcon :class='$style.icon' title='发表于'/>
 				<RelativeTime :value='value.create' :threshold='0'/>
 
@@ -158,18 +158,6 @@ async function changeCategory() {
 
 .header {
 	flex: 1;
-}
-
-.attrs {
-	composes: minor-text from global;
-
-	& > i {
-		&:not(:first-of-type) {
-			margin-left: 1rem;
-		}
-
-		margin-right: .2rem;
-	}
 }
 
 .removed {

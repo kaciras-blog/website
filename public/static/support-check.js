@@ -2,7 +2,8 @@
  * 判断浏览器是否支持运行本应用，根据以下标准：
  *
  * 1.以 ES2020 的 Nullish coalescing operator 为基准。
- * 2.一些垃圾比如 IPadQQ 内置的浏览器不支持 IntersectionObserver。
+ * 2.难以检测 :is() 选择器，换 aspect-ratio 属性代替（在 Chrome 和 Edge 的支持与 :is 相同）
+ * 3.一些垃圾比如 IPadQQ 内置的浏览器不支持 IntersectionObserver。
  *
  * 【为什么单独一个文件】
  * SyntaxError thrown while the code is being parsed,
@@ -18,7 +19,9 @@ try {
 	// noinspection JSUnusedLocalSymbols
 	eval("const x = null ?? 0");
 
-	window.__isSupport__ = "IntersectionObserver" in window;
+	window.__isSupport__ =
+		CSS.supports("aspect-ratio", "1")
+		&& "IntersectionObserver" in window;
 } catch {
 	window.__isSupport__ = false;
 }

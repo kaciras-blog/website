@@ -191,13 +191,6 @@
 	}
 }
 
-// 【新写法】
-//:is(h1 h2 h3 h4 h5 h6):hover > .header-anchor
-h1:hover > .anchor-link,
-h2:hover > .anchor-link,
-h3:hover > .anchor-link,
-h4:hover > .anchor-link,
-h5:hover > .anchor-link,
-h6:hover > .anchor-link {
+:is(h1, h2, h3, h4, h5, h6):hover > .anchor-link {
 	opacity: 1;
 }

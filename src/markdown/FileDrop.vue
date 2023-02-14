@@ -102,19 +102,13 @@ function handleDrop(event: DragEvent) {
 	border: dashed 5px #ccc;
 	transition: .2s;
 
-	&.dragging,
-	&:focus-within,
-	&:hover {
+	&:is(.dragging, :focus-within, :hover) {
 		outline: none;
 		border-color: #76b3ff;
 
-		& .text {
-			color: #4d89ff;
-		}
+		& .text { color: #4d89ff; }
 
-		& .icon {
-			color: #da76ff;
-		}
+		& .icon { color: #da76ff; }
 	}
 }
 

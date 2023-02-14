@@ -261,8 +261,6 @@ function gotoDiscuss() {
 }
 
 .toolButton {
-	composes: outline primary from global;
-
 	width: 55px;
 	height: 55px;
 	padding: 0;

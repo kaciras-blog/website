@@ -6,39 +6,35 @@
 			<slot name='toolbar-right' :ctx='ctx'/>
 		</div>
 
-		<div :class='$style.main'>
-			<textarea
-				v-show='viewMode !== ViewMode.Preview'
-				ref='textareaEl'
-				:class='{
-					[$style.textarea]: true,
-					[$style.window]: true,
-					[$style.split]: viewMode === ViewMode.Split,
-					[$style.single]: viewMode === ViewMode.Edit,
-				}'
-				title='编辑区'
-				spellcheck='false'
-				v-model='content'
-				v-bind-selection.focus='selection'
-				v-on-selection-change='selection'
-				@dragover.prevent
-				@drop='handleDrop'
-				@keydown.tab.prevent='insertTab'
-				@scroll='lastScrollPreview = false'
-			/>
-			<article
-				v-show='viewMode !== ViewMode.Edit'
-				v-html='html'
-				ref='previewEl'
-				class='markdown'
-				:class='{
-					[$style.window]: true,
-					[$style.split]: viewMode === ViewMode.Split,
-					[$style.single]: viewMode === ViewMode.Preview,
-				}'
-				@scroll='lastScrollPreview = true'
-			/>
-		</div>
+		<textarea
+			v-show='viewMode !== ViewMode.Preview'
+			ref='textareaEl'
+			:class='{
+				[$style.textarea]: true,
+				[$style.window]: true,
+				[$style.single]: viewMode === ViewMode.Edit,
+			}'
+			title='编辑区'
+			spellcheck='false'
+			v-model='content'
+			v-bind-selection.focus='selection'
+			v-on-selection-change='selection'
+			@dragover.prevent
+			@drop='handleDrop'
+			@keydown.tab.prevent='insertTab'
+			@scroll='lastScrollPreview = false'
+		/>
+		<article
+			v-show='viewMode !== ViewMode.Edit'
+			v-html='html'
+			ref='previewEl'
+			class='markdown'
+			:class='{
+				[$style.window]: true,
+				[$style.single]: viewMode === ViewMode.Preview,
+			}'
+			@scroll='lastScrollPreview = true'
+		/>
 
 		<div :class='$style.statebar'>
 			<slot name='statebar-left' :ctx='ctx'/>
@@ -174,8 +170,9 @@ onUnmounted(() => disconnect?.());
 @import "../css/imports";
 
 .container {
-	display: flex;
-	flex-direction: column;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: auto 1fr auto;
 }
 
 .window {
@@ -190,6 +187,8 @@ onUnmounted(() => disconnect?.());
 }
 
 .toolbar {
+	grid-column: 1/3;
+
 	display: flex;
 	background-color: whitesmoke;
 	--btn-radius: 0;
@@ -200,22 +199,13 @@ onUnmounted(() => disconnect?.());
 }
 
 .statebar {
+	grid-column: 1/3;
+
 	display: flex;
 	line-height: 22px;
 	padding: 0 .5em;
 	color: white;
 	background-color: #003ee7;
-}
-
-.left_items {
-	display: flex;
-	flex-grow: 1;
-}
-
-.main {
-	display: flex;
-	flex: 1;
-	overflow: hidden;
 }
 
 .textarea {
@@ -225,13 +215,9 @@ onUnmounted(() => disconnect?.());
 	border-right: solid 1px #ddd;
 }
 
-.split {
-	width: 50%;
-}
-
 .single {
 	display: block;
-	width: 100%;
+	grid-column: 1/3;
 
 	@media screen and (min-width: @length-screen-mobile) {
 		padding-left: 10%;
