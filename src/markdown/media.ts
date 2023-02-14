@@ -4,13 +4,12 @@ import { silencePromise } from "@kaciras/utilities/browser";
 import { Media, RendererMap } from "@kaciras-blog/markdown";
 
 /**
- * 从资源的链接参数（?vw=...&vh=...）里读取媒体的尺寸，
- * 生成防抖容器的 class 和 style 属性。
+ * 从资源的链接参数（?vw=...&vh=...）里读取尺寸，生成防抖容器的 style 属性。
  *
  * @param url 资源的链接
- * @return class 和 style 属性字符串
+ * @return style 属性字符串
  */
-function getContainerClassAndStyle(url: string) {
+function getSizeStyle(url: string) {
 	const urlParams = new URLSearchParams(url.split("?")[1]);
 
 	// parseFloat(null) 返回 NaN 也是可以的
@@ -18,13 +17,9 @@ function getContainerClassAndStyle(url: string) {
 	const height = parseFloat(urlParams.get("vh")!);
 
 	if (!(width && height)) {
-		return "class='md-media-container'";
+		return "";
 	}
-
-	const ratio = height / width * 100;
-	const style = `--width:${width}px; --aspect-ratio:${ratio}%`;
-
-	return `class='md-media-container sized' style='${style}'`;
+	return `style='--width:${width}px; --height:${height}px'`;
 }
 
 /**
@@ -53,7 +48,7 @@ function renderImage(tokens: Token[], idx: number) {
 	return `
 		<span class='center-wrapper'>
 			<a
-				${getContainerClassAndStyle(src)}
+				${getSizeStyle(src)}
 				href='${src}'
 				target='_blank'
 				rel='noopener,nofollow'
@@ -74,10 +69,8 @@ const directiveMap: RendererMap = {
 	// 大部分浏览器只允许无声视频自动播放，不过 GIF 视频本来就是无声的。
 	gif(src, alt) {
 		return `
-			<p class='center-wrapper'>
-				<span ${getContainerClassAndStyle(src)}>
-					<video class='gif' data-src='${src}' loop muted crossorigin></video>
-				</span>
+			<p class='center-wrapper' ${getSizeStyle(src)}>
+				<video class='gif' data-src='${src}' loop muted crossorigin></video>
 				${alt ? `<span class='md-img-alt'>${alt}</span>` : ""}
     		</p>
 		`;
@@ -88,10 +81,8 @@ const directiveMap: RendererMap = {
 			poster = "";
 		}
 		return `
-			<p class='center-wrapper md-video'>
-				<span class='md-media-container sized'>
-					<video poster='${poster}' data-src='${src}' controls crossorigin></video>
-				</span>
+			<p class='center-wrapper'>
+				<video class='md-video' poster='${poster}' data-src='${src}' controls crossorigin></video>
 			</p>
 		`;
 	},
@@ -181,10 +172,10 @@ const lazyHandlers: Record<string, OnIntersect> & CodecSupportDetector = {
  * 但该属性兼容性还不行。
  * 故不建议使用阅读视图浏览本站的文章，本站的页面已经足够简洁。
  *
- * @param el 容器元素
+ * @param root 容器元素
  * @return 取消监听的函数，在被监视的元素移除后调用，以避免内存泄漏。
  */
-export function observeLazyLoad(el: HTMLElement) {
+export function observeLazyLoad(root: HTMLElement) {
 	const observer = new IntersectionObserver(entries => {
 		for (const entry of entries) {
 			const { target, intersectionRatio } = entry;
@@ -192,7 +183,7 @@ export function observeLazyLoad(el: HTMLElement) {
 			lazyHandlers[target.tagName](target, isInView);
 		}
 	});
-	for (const e of el.querySelectorAll("img, video")) {
+	for (const e of root.querySelectorAll("img, video")) {
 		observer.observe(e);
 	}
 	return observer.disconnect.bind(observer);

@@ -1,44 +1,13 @@
-@default-width: 480px;
-@default-height: 270px;
-
-/*
- * 防抖容器，原理讲解见：
- * https://blog.kaciras.com/article/15/preventing-content-reflow-from-lazy-loaded-images-by-pure-css
- */
-.md-media-container {
-	position: relative;
-
-	&.sized {
-		width: var(--width);
-		max-width: 100%;
-
-		&::before {
-			content: "";
-			display: block;
-			padding-top: var(--aspect-ratio);
-		}
-	}
+.md-img,
+.gif {
+	width: var(--width);
+	max-width: 100%;
+	aspect-ratio: var(--width) / var(--height);
 }
 
 .md-img {
 	display: block;
 	resize: none;
-	max-width: 100%;
-}
-
-.md-img[data-src] {
-	width: @default-width;
-	height: @default-height;
-}
-
-// 这个必须放在下面以覆盖 width & height
-.sized > .md-img,
-.sized > video {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
 }
 
 // 中文斜体不好看，还是别乱加样式了
@@ -51,6 +20,6 @@
 }
 
 .md-video {
-	--width: 640px;
-	--aspect-ratio: 56.25%;
+	width: 640px;
+	height: 360px;
 }
