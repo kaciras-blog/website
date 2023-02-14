@@ -5,12 +5,8 @@
 			<p>&copy; Kaciras 2018-{{ new Date().getFullYear() }}</p>
 			<address>Kaciras@protonmail.com</address>
 		</div>
-		<div>
-			<RouterLink class='highlight pink' to='/'>首页</RouterLink>
-		</div>
-		<div>
-			<a class='highlight pink' href='/sitemap.xml'>站点地图</a>
-		</div>
+		<RouterLink class='highlight pink' to='/'>首页</RouterLink>
+		<a class='highlight pink' href='/sitemap.xml'>站点地图</a>
 	</footer>
 </template>
 
@@ -30,20 +26,17 @@
 
 	@media screen and (min-width: @length-screen-mobile) {
 		padding: 20px 5%;
-		grid-template-rows: auto;
-		grid-template-columns: 1fr auto auto;
 		justify-items: start;
+		grid-template-columns: 1fr;
+		grid-auto-flow: column;
 	}
 }
 
 .info {
-	grid-column-start: 1;
-	grid-column-end: 3;
-	text-align: center;
-
-	@media screen and (min-width: @length-screen-mobile) {
-		text-align: start;
-		grid-column-end: 2;
+	@media screen and (max-width: @length-screen-mobile) {
+		grid-column-start: 1;
+		grid-column-end: 3;
+		text-align: center;
 	}
 }
 </style>
