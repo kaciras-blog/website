@@ -1,8 +1,5 @@
 <template>
-	<component
-		:is='tag'
-		:class='[$style.container, colored && $style.colored]'
-	>
+	<nav :class='[$style.container, colored && $style.colored]'>
 		<RouterLink
 			to='/'
 			title='回到首页'
@@ -67,7 +64,7 @@
 				<SettingIcon/>
 			</button>
 		</template>
-	</component>
+	</nav>
 </template>
 
 <script setup lang="ts">
@@ -80,14 +77,6 @@ import RssIcon from "@material-design-icons/svg/filled/rss_feed.svg?sfc";
 import { useCurrentUser } from "@/store";
 import NavMenuFrame from "./NavMenuFrame.vue";
 import SettingDialog from "./SettingDialog.vue";
-
-interface TopNavBodyProps {
-	tag?: string;
-}
-
-withDefaults(defineProps<TopNavBodyProps>(), {
-	tag: "nav",
-});
 
 const user = useCurrentUser();
 const dialog = useDialog();
@@ -124,6 +113,7 @@ if (breakPoint.value === "mobile") {
 
 	display: flex;
 	background-color: rgba(255, 255, 255, .5);
+	backdrop-filter: blur(4px);
 	transition: background-color .3s;
 
 	@media screen and (max-width: @length-screen-mobile) {
@@ -134,6 +124,10 @@ if (breakPoint.value === "mobile") {
 	@media screen and (min-width: @length-screen-pad) {
 		padding: 0 5vw;
 	}
+}
+
+:global(.dark).container {
+	background-color: rgba(255, 255, 255, .1);
 }
 
 // 外层套了个 <a> 所以宽高不能用百分比，只能写死图片的大小
@@ -164,16 +158,12 @@ if (breakPoint.value === "mobile") {
 	text-align: center;
 }
 
-:global(.dark) .container {
-	background-color: rgba(255, 255, 255, .1);
-}
-
 // 懒得改了重构整个TopNav，先用 !important 凑合过吧
 .colored {
 	background-color: white !important;
-}
 
-.colored :global(.nav-item) {
-	color: black !important;
+	& :global(.nav-item) {
+		color: black !important;
+	}
 }
 </style>

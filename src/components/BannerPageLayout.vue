@@ -1,11 +1,8 @@
 <template>
 	<BasePageLayout :nav-class='navClass' :nav-style='navStyle'>
-
 		<template v-if='$bp.isGreater("tablet")' v-slot:nav>
-			<div :style='desktopNavStyle' :class='desktopNavClass'>
-				<TopNavGlass :image-class='$style.image_resolver'/>
-				<div :class='$style.banner' role='banner'></div>
-			</div>
+			<TopNav :class='desktopNavClass'/>
+			<div :class='$style.banner' :style='desktopNavStyle' role='banner'></div>
 		</template>
 
 		<slot></slot>
@@ -14,12 +11,12 @@
 
 <script>
 import BasePageLayout from "./BasePageLayout.vue";
-import TopNavGlass from "./top-nav/TopNavGlass.vue";
+import TopNav from "./top-nav/TopNav.vue";
 
 export default {
 	name: "BannerPageLayout",
 	components: {
-		TopNavGlass,
+		TopNav,
 		BasePageLayout,
 	},
 	props: {
@@ -38,6 +35,7 @@ export default {
 			}
 			return null;
 		},
+		// 好像没用了
 		desktopNavClass() {
 			const { banner } = this;
 			if (!banner) {
@@ -60,24 +58,16 @@ export default {
 @import "../css/imports";
 
 // 使用变量设置背景图，只要在外层元素设置即可
-.image_resolver {
+.banner {
+	min-height: 211px;
+	height: 11vw;
+	margin-top: -50px;
+
 	background: var(--background);
 	background-size: var(--background-size); // 这个属性写一起毛病多
 
 	@media screen and (min-width: @length-screen-pad) {
 		background-size: var(--background-size, cover);
 	}
-}
-
-.banner {
-	composes: image_resolver;
-
-	min-height: 211px;
-	height: 11vw;
-	margin-top: -50px;
-}
-
-:global(.dark) .navWrapper {
-	box-shadow: rgba(0, 0, 0, .5) 0 0 3px 1px;
 }
 </style>

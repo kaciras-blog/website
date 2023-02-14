@@ -2,9 +2,8 @@
 	<BasePageLayout>
 		<PageMeta title='首页' body-class=''/>
 
-		<!-- 经过1小时的尝试仍未能做到模糊层背景定位，已放弃 -->
 		<template #nav>
-			<TopNavGlass :class='$style.nav'/>
+			<TopNav :class='$style.nav'/>
 		</template>
 
 		<section :class='$style.banner'>
@@ -35,7 +34,7 @@ export default {
 <script setup lang="ts">
 import BasePageLayout from "@/components/BasePageLayout.vue";
 import PageMeta from "@/components/PageMeta";
-import TopNavGlass from "@/components/top-nav/TopNavGlass.vue";
+import TopNav from "@/components/top-nav/TopNav.vue";
 import BlogSection from "./BlogSection.vue";
 import FriendsSection from "./FriendsSection.vue";
 
