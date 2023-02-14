@@ -19,14 +19,14 @@
 		<button
 			v-if='$bp.value === "mobile"'
 			title='弹出菜单'
-			class='nav-item nav-right'
+			class='nav-item'
 			@click='showMenu'
 		>
 			<ListIcon/>
 		</button>
 
 		<!-- 宽屏直接把按钮都显示在上面 -->
-		<div v-else class='nav-right'>
+		<template v-else>
 			<template v-if='user.id > 0'>
 				<RouterLink to='/profile'>
 					<img
@@ -66,7 +66,7 @@
 			<button class='nav-item' title='设置' @click='showSettings'>
 				<SettingIcon/>
 			</button>
-		</div>
+		</template>
 	</component>
 </template>
 
@@ -141,17 +141,10 @@ if (breakPoint.value === "mobile") {
 	display: block;
 	aspect-ratio: 703 / 225;
 	height: var(--nav-height);
-
-	object-fit: cover;
-	object-position: top;
-
-	&:hover {
-		object-position: bottom;
-	}
 }
 
-.logoLink:focus > .logo {
-	object-position: bottom;
+.logoLink {
+	margin-right: auto;
 }
 
 .head {
