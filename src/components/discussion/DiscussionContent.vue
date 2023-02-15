@@ -60,9 +60,8 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { KxButton, useDialog } from "@kaciras-blog/uikit";
+import { KxButton, RelativeTime, useDialog } from "@kaciras-blog/uikit";
 import api, { Discussion, DiscussionState } from "@/api";
-import RelativeTime from "../../components/RelativeTime.vue";
 import MarkdownView from "@/markdown/MarkdownView.vue";
 import { errorMessage } from "@/utils";
 import { DEFAULT_AVATAR } from "@/common";

@@ -42,13 +42,11 @@
 </template>
 
 <script setup lang="ts">
-import { KxButton, MessageType, useDialog } from "@kaciras-blog/uikit";
+import { KxButton, MessageType, RelativeTime, useDialog } from "@kaciras-blog/uikit";
 import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
 import PaperPlaneIcon from "@/assets/icon/paper-plane.svg?sfc";
 import UpdateIcon from "@material-design-icons/svg/filled/update.svg?sfc";
 import api from "@/api";
-import RelativeTime from "../../components/RelativeTime.vue";
-
 
 interface Draft_COPY {
 	id: number;

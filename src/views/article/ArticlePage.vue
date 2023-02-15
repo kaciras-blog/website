@@ -121,12 +121,11 @@ export default defineComponent({ asyncData });
 import { ref, ComponentPublicInstance } from "vue";
 import ChatIcon from "@material-design-icons/svg/outlined/forum.svg?sfc";
 import ArrowTopIcon from "@material-design-icons/svg/outlined/rocket_launch.svg?sfc";
-import { KxButton } from "@kaciras-blog/uikit";
+import { KxButton, RelativeTime } from "@kaciras-blog/uikit";
 import { Article } from "@/api";
 import BannerPageLayout from "@/components/BannerPageLayout.vue";
 import PageMeta from "@/components/PageMeta";
 import DiscussionSection from "@/components/discussion/DiscussionSection.vue";
-import RelativeTime from "../../components/RelativeTime.vue";
 import MarkdownView from "@/markdown/MarkdownView.vue";
 import HeadTags from "@/components/HeadTags";
 

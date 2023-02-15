@@ -54,14 +54,13 @@
 import { onBeforeMount, onBeforeUnmount, reactive, ref, shallowRef, watch } from "vue";
 import { onBeforeRouteLeave, useRouter } from "vue-router";
 import { useEventListener } from "@vueuse/core";
-import { KxButton, useDialog } from "@kaciras-blog/uikit";
+import { KxButton, RelativeTime, useDialog } from "@kaciras-blog/uikit";
 import SaveIcon from "@material-design-icons/svg/filled/save.svg?sfc";
 import CardIcon from "bootstrap-icons/icons/credit-card-2-front.svg?sfc";
 import PaperPlaneIcon from "@/assets/icon/paper-plane.svg?sfc";
 import { articleLink } from "@/common";
 import { errorMessage } from "@/utils";
 import PageMeta from "@/components/PageMeta";
-import RelativeTime from "../../components/RelativeTime.vue";
 import MarkdownEditor from "@/markdown/MarkdownEditor.vue";
 import TextTools from "@/markdown/TextTools.vue";
 import ConfigToolbar from "@/markdown/ConfigToolbar.vue";
