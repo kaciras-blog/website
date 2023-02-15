@@ -28,7 +28,7 @@
 				</dd>
 
 				<dt>文件大小</dt>
-				<dd>{{ formatSize(file.size) }}</dd>
+				<dd>{{ dataSizeIEC.n2sDivision(file.size) }}</dd>
 			</dl>
 		</template>
 
@@ -56,7 +56,7 @@
 <script setup lang='ts'>
 import { onBeforeUnmount, reactive, shallowRef } from "vue";
 import { useObjectUrl } from "@vueuse/core";
-import { formatSize } from "@kaciras/utilities/browser";
+import { dataSizeIEC } from "@kaciras/utilities/browser";
 import { KxBaseDialog, KxDialogButtons, Resolution, useDialog } from "@kaciras-blog/uikit";
 import api from "@/api/index";
 import FileDrop from "./FileDrop.vue";

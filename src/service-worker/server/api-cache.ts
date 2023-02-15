@@ -1,4 +1,4 @@
-import { contentServiceURL } from "@/api/constants";
+import { contentServiceURL } from "../../api/constants";
 import { CacheWrapper, ManagedCache } from "./cache";
 import { Route } from "./routing";
 import { FetchFn, networkFirst, staleWhileRevalidate } from "./fetch-strategy";

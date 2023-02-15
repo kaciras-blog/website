@@ -29,7 +29,6 @@
 					v-if='editable'
 					v-model='item.description'
 					title='描述'
-					class='dark input'
 					:class='$style.desc'
 				/>
 
@@ -183,7 +182,7 @@ async function remove() {
 
 .icon {
 	composes: head from global;
-	
+
 	grid-area: icon;
 	display: block;
 	margin: 1rem;
@@ -207,6 +206,8 @@ async function remove() {
 }
 
 .desc {
+	composes: dark from global;
+
 	grid-area: desc;
 	justify-self: stretch;
 	flex: 1;

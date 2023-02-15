@@ -213,6 +213,10 @@ onUnmounted(() => disconnect?.());
 	word-break: break-all;
 	line-height: 1.8;
 	border-right: solid 1px #ddd;
+
+	&:focus-within {
+		box-shadow: none;
+	}
 }
 
 .single {

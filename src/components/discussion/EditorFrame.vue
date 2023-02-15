@@ -197,12 +197,14 @@ async function handleSubmit(_: unknown, signal: AbortSignal) {
 }
 
 .body {
-	resize: none;
-	flex: 1;
 	padding: 10px;
 	border: none;
+	flex: 1;
 	font-size: initial;
-	outline: none;
+
+	&:focus-within {
+		box-shadow: none;
+	}
 }
 
 .toolbar {

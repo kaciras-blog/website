@@ -148,8 +148,6 @@ defineExpose({ focus });
 }
 
 .textarea {
-	composes: input from global;
-
 	resize: vertical;
 	border: solid 1px #dcdee0;
 }

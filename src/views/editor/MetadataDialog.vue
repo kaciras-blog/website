@@ -82,7 +82,6 @@ async function changeCover() {
 }
 
 .summary {
-	composes: input from global;
 	grid-area: summary;
 }
 </style>

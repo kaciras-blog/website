@@ -62,7 +62,6 @@
 				<textarea
 					v-model='card.description'
 					name='description'
-					class='input'
 					:class='$style.inputBox'
 					placeholder='为卡片添加个描述吧'
 				/>

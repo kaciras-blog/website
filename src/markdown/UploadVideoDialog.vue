@@ -28,7 +28,7 @@
 					<div>
 						{{ video.width }} x {{ video.height }},
 						{{ video.time.toFixed(2) }}s,
-						{{ formatSize(video.file.size) }}
+						{{ dataSizeIEC.n2sDivision(video.file.size) }}
 					</div>
 					<div>
 						<KxCheckBox
@@ -126,7 +126,7 @@
 <script setup lang="ts">
 import type { VideoStatement } from "./MediaTools.vue";
 import { onUnmounted, reactive, ref, toRaw } from "vue";
-import { formatSize } from "@kaciras/utilities/browser";
+import { dataSizeIEC } from "@kaciras/utilities/browser";
 import {
 	KxBaseDialog,
 	KxButton,
