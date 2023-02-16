@@ -38,12 +38,10 @@
 				<RelativeTime :value='item.create'/>
 			</span>
 			<span title='浏览数' :class='$style.metaItem'>
-				<EyeIcon/>
-				<span>{{ item.viewCount }}</span>
+				<EyeIcon/>{{ item.viewCount }}
 			</span>
 			<span title='评论数' :class='$style.metaItem'>
-				<ChatIcon/>
-				<span>{{ item.discussionCount }}</span>
+				<ChatIcon/>{{ item.discussionCount }}
 			</span>
 		</div>
 	</article>

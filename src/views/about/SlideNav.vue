@@ -3,7 +3,7 @@
 	Vue-Router 4 的写法变复杂了啊。
 -->
 <template>
-	<ol :class='$style.tabList' role='tablist'>
+	<nav :class='$style.tabList'>
 		<RouterLink
 			v-for='tab of tabs'
 			:key='tab.title'
@@ -12,25 +12,20 @@
 			:to='tab.route'
 			v-slot='{ isActive, navigate }'
 		>
-			<li
-				role='tab'
-				:class='{
-					[$style.tabItem]:true,
-					[$style.active]: isActive
-				}'
+			<a
+				:href='tab.route'
+				:class='[
+					$style.tabItem,
+					isActive && $style.active
+				]'
+				@click='navigate'
+				@keypress.enter='navigate'
 				v-ripple
 			>
-				<a
-					:href='tab.route'
-					:class='$style.text'
-					@click='navigate'
-					@keypress.enter='navigate'
-				>
-					{{ tab.title }}
-				</a>
-			</li>
+				{{ tab.title }}
+			</a>
 		</RouterLink>
-	</ol>
+	</nav>
 </template>
 
 <script setup lang="ts">
@@ -47,11 +42,8 @@ defineProps<SlideNavProps>();
 @import "../../css/imports";
 
 .tabList {
-	composes: clean-list from global;
-
 	display: flex;
 	justify-content: center;
-	margin: 0;
 	overflow-x: auto;
 
 	background-color: white;
@@ -65,14 +57,19 @@ defineProps<SlideNavProps>();
  * https://www.cnblogs.com/coco1s/p/8657192.html
  */
 .tabItem {
+	display: block;
+	padding: 10px 16px;
+
 	position: relative;
 	font-size: 16px;
 	word-break: keep-all;
-	cursor: pointer;
-	user-select: none;
 
-	@media screen and (min-width: @length-screen-mobile) {
-		font-size: 20px;
+	/* TODO: 去除高亮样式的链接元素很多地方都要用 */
+	color: var(--color);
+
+	&:is(:hover, :active, :visited, :focus) {
+		color: var(--color);
+		text-decoration: none;
 	}
 
 	&::before {
@@ -85,10 +82,14 @@ defineProps<SlideNavProps>();
 		background-color: @color-primary;
 		transition: .15s all linear;
 	}
+
+	@media screen and (min-width: @length-screen-mobile) {
+		font-size: 20px;
+	}
 }
 
 .active {
-	color: @color-primary;
+	--color: @color-primary;
 
 	&::before {
 		left: 0;
@@ -98,17 +99,6 @@ defineProps<SlideNavProps>();
 	& ~ .tabItem::before {
 		left: 0;
 		right: 100%;
-	}
-}
-
-/* TODO: 去除高亮样式的链接元素很多地方都要用 */
-.text {
-	display: block;
-	padding: 10px 16px;
-
-	&:hover, &:active, &:visited, &:focus {
-		color: inherit;
-		text-decoration: none;
 	}
 }
 </style>

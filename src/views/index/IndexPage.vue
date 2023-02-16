@@ -7,10 +7,8 @@
 		</template>
 
 		<section :class='$style.banner'>
-			<div :class='$style.banner_content'>
-				<h1 :class='$style.title'>Kaciras' Blog</h1>
-				编程 • 生活 • 梦想
-			</div>
+			<h1 :class='$style.title'>Kaciras' Blog</h1>
+			编程 • 生活 • 梦想
 		</section>
 
 		<BlogSection :class='$style.section'/>
@@ -49,11 +47,11 @@ import FriendsSection from "./FriendsSection.vue";
 @import "../../css/imports";
 
 .nav {
-	position: absolute !important;
+	position: absolute;
 	top: 0;
 
 	@media screen and (max-width: @length-screen-mobile) {
-		position: fixed !important;
+		position: fixed;
 	}
 }
 
@@ -61,23 +59,18 @@ import FriendsSection from "./FriendsSection.vue";
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	flex-direction: column;
 
-	height: 100vh;
-	background-image: url("../../assets/img/IndexBannerLight.png");
-	background-position: center bottom;
-	background-size: cover;
-
-	@media screen and (max-width: @length-screen-mobile) {
-		height: 38vh;
-	}
-}
-
-.banner_content {
-	position: relative;
-
+	height: 38vh;
 	font-size: 18px;
-	text-align: center;
-	transition: color 1s cubic-bezier(.25, .7, .7, .8);
+
+	background-image: url("../../assets/img/IndexBannerLight.png");
+	background-size: cover;
+	background-position: center bottom;
+
+	@media screen and (min-width: @length-screen-mobile) {
+		height: 100vh;
+	}
 
 	@media screen and (min-width: @length-screen-wide) {
 		font-size: 30px;
