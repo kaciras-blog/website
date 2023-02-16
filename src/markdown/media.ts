@@ -19,7 +19,7 @@ function getSizeStyle(url: string) {
 	if (!(width && height)) {
 		return "";
 	}
-	return `style='--width:${width}px; --height:${height}px'`;
+	return `style='--width:${width}px; --aspect:${width}/${height}'`;
 }
 
 /**
@@ -134,8 +134,8 @@ const lazyHandlers: Record<string, OnIntersect> & CodecSupportDetector = {
 			.map(c => c[0]).join(",");
 	},
 
-	IMG(element: HTMLImageElement) {
-		if (element.dataset.src) {
+	IMG(element: HTMLImageElement, isInView: boolean) {
+		if (isInView && element.dataset.src) {
 			element.src = element.dataset.src;
 			delete element.dataset.src;
 		}
@@ -178,9 +178,8 @@ const lazyHandlers: Record<string, OnIntersect> & CodecSupportDetector = {
 export function observeLazyLoad(root: HTMLElement) {
 	const observer = new IntersectionObserver(entries => {
 		for (const entry of entries) {
-			const { target, intersectionRatio } = entry;
-			const isInView = intersectionRatio > 0;
-			lazyHandlers[target.tagName](target, isInView);
+			const { target, isIntersecting } = entry;
+			lazyHandlers[target.tagName](target, isIntersecting);
 		}
 	});
 	for (const e of root.querySelectorAll("img, video")) {
