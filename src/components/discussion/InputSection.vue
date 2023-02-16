@@ -3,22 +3,36 @@
 		已设置为禁止评论
 	</div>
 
-	<div v-else-if='options.loginRequired && user.id === 0' ref='thisEl' :class='$style.shore'>
+	<div
+		v-else-if='options.loginRequired && user.id === 0'
+		ref='thisEl'
+		:class='$style.shore'
+	>
 		已禁止匿名评论,请先
 		<RouterLink class='highlight' to='/login'>登录</RouterLink>
 	</div>
 
-	<div v-else :class='$style.form'>
-		<EmbeddedEditor v-if='$bp.isGreater("tablet")' ref='thisEl' v-bind='props'/>
+	<template v-else>
+		<EmbeddedEditor
+			v-if='$bp.isGreater("tablet")'
+			ref='thisEl'
+			v-bind='props'
+			:class='$style.form'
+		/>
 
 		<!-- 是在想不到更好看的做法了，还是用输入框的样式吧 -->
-		<div v-else ref='thisEl' :class='$style.mobileSection'>
+		<div
+			v-else
+			ref='thisEl'
+			:class='$style.mobileSection'
+		>
 			<img
 				:src='user.avatar'
 				alt='头像'
 				class='lite head'
 			>
 			<button
+				type='button'
 				:class='$style.fakeInput'
 				@click='showEditorFrame'
 			>
@@ -26,8 +40,13 @@
 			</button>
 		</div>
 
-		<div v-if='options.moderation' :class='$style.warn'>为防止滥用，评论将在审核后显示</div>
-	</div>
+		<p
+			v-if='options.moderation'
+			:class='$style.warn'
+		>
+			为防止滥用，评论将在审核后显示
+		</p>
+	</template>
 </template>
 
 <script setup lang="ts">
@@ -104,7 +123,6 @@ defineExpose({ focus });
 }
 
 .warn {
-	margin-top: 1.5rem;
 	color: red;
 	text-align: center;
 }

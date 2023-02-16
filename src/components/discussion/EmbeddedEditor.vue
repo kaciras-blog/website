@@ -1,85 +1,91 @@
 <template>
-	<img
-		class='small head'
-		alt='头像'
-		:src='user.avatar ?? DEFAULT_AVATAR'
-	>
-	<label :class='$style.name'>
-		名字（可选，最多 16 字）
-		<input
-			v-model='nickname'
-			name='nickname'
-			:maxlength='USERNAME_LENGTH'
-			:placeholder='user.name'
-			:class='$style.nickname'
+	<form>
+		<img
+			class='small head'
+			alt='头像'
+			:src='user.avatar ?? DEFAULT_AVATAR'
 		>
-	</label>
-	<label :class='$style.name'>
-		邮箱（可选，用于回复提醒）
-		<input
-			v-model='email'
-			type='email'
-			name='email'
-			:class='$style.nickname'
+		<label :class='$style.name'>
+			名字（可选，最多 16 字）
+			<input
+				v-model='nickname'
+				name='nickname'
+				:maxlength='USERNAME_LENGTH'
+				:placeholder='user.name'
+				:class='$style.nickname'
+			>
+		</label>
+		<label :class='$style.name'>
+			邮箱（可选，用于回复提醒）
+			<input
+				v-model='email'
+				type='email'
+				name='email'
+				:class='$style.nickname'
+			>
+		</label>
+
+		<button
+			type='button'
+			:class='$style.guide'
+			@click='showGuide'
 		>
-	</label>
+			<QuestionIcon/>
+			<span class='hide-m'>帮助</span>
+		</button>
 
-	<button :class='$style.guide' @click='showGuide'>
-		<QuestionIcon/>
-		<span class='hide-m'>帮助</span>
-	</button>
-
-	<MarkdownView
-		v-if='preview'
-		:class='$style.preview'
-		:value='content'
-	/>
-
-	<!--
-		输入框可能被默认聚焦，如果设了 required 属性，
-		则一开始就会显示错误样式，这给用户感觉不好。
-
-		不过这样表单验证就只能手动去做了，弹个框之类的。
-	-->
-	<textarea
-		v-else
-		ref='textareaEl'
-		:class='$style.textarea'
-		:value='content'
-		name='content'
-		:placeholder='placeholder'
-		aria-label='输入评论'
-		v-autofocus
-		v-ime-input='handleInput'
-	/>
-
-	<div :class='$style.bottom_toolbar'>
-		<KxButton
+		<MarkdownView
 			v-if='preview'
-			type='outline'
-			title='编辑'
-			@click='preview=false'
-		>
-			<EditIcon class='prefix'/>
-			编辑
-		</KxButton>
-		<KxButton
-			v-else
-			type='outline'
-			title='预览'
-			@click='preview=true'
-		>
-			<EyeIcon class='prefix'/>
-			预览
-		</KxButton>
+			:class='$style.preview'
+			:value='content'
+		/>
 
-		<!-- 同样由于用户感觉，不要搞禁用样式 -->
-		<KxTaskButton
-			:on-click='(_, s) => submit(s)'
-		>
-			发表评论
-		</KxTaskButton>
-	</div>
+		<!--
+			输入框可能被默认聚焦，如果设了 required 属性，
+			则一开始就会显示错误样式，这给用户感觉不好。
+
+			不过这样表单验证就只能手动去做了，弹个框之类的。
+		-->
+		<textarea
+			v-else
+			ref='textareaEl'
+			:class='$style.textarea'
+			:value='content'
+			name='content'
+			:placeholder='placeholder'
+			aria-label='输入评论'
+			v-autofocus
+			v-ime-input='handleInput'
+		/>
+
+		<div :class='$style.actions'>
+			<KxButton
+				v-if='preview'
+				type='outline'
+				title='编辑'
+				@click='preview=false'
+			>
+				<EditIcon class='prefix'/>
+				编辑
+			</KxButton>
+			<KxButton
+				v-else
+				type='outline'
+				title='预览'
+				@click='preview=true'
+			>
+				<EyeIcon class='prefix'/>
+				预览
+			</KxButton>
+
+			<!-- 同样由于用户感觉，不要搞禁用样式 -->
+			<KxTaskButton
+				:on-click='(_, s) => submit(s)'
+			>
+				发表评论
+			</KxTaskButton>
+		</div>
+	</form>
 </template>
 
 <script setup lang="ts">
@@ -149,11 +155,6 @@ defineExpose({ focus });
 
 .textarea {
 	resize: vertical;
-	border: solid 1px #dcdee0;
-}
-
-.header {
-	display: flex;
 }
 
 .name {
@@ -172,15 +173,16 @@ defineExpose({ focus });
 .guide {
 	composes: click-item from global;
 
+	display: inline-flex;
+	gap: 4px;
+	align-items: center;
+
 	float: right;
 	padding: 0;
-
 	font-size: 1rem;
-	align-self: flex-end;
-	background: none;
 
 	&:hover, &.active {
-		color: #f785d7;
+		color: @color-second;
 	}
 
 	@media screen and (max-width: @length-screen-mobile) {
@@ -188,7 +190,7 @@ defineExpose({ focus });
 	}
 }
 
-.bottom_toolbar {
+.actions {
 	composes: btn-group from global;
 	display: flex;
 	align-items: center;
