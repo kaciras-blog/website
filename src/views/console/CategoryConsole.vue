@@ -1,24 +1,23 @@
 <template>
 	<div :class='$style.buttons'>
-		<div class='btn-group'>
-			<KxButton
-				:disabled='!hasAncestor'
-				@click='$data.gotoId(0)'
-			>
-				<ArrowUpward class='prefix'/>
-				返回顶层
-			</KxButton>
-			<KxButton
-				:disabled='!hasAncestor'
-				@click='$data.gotoParent()'
-			>
-				<ArrowLeft class='prefix'/>
-				回到父级
-			</KxButton>
-		</div>
+		<KxButton
+			:disabled='!hasAncestor'
+			@click='$data.gotoId(0)'
+		>
+			<ArrowUpward class='prefix'/>
+			返回顶层
+		</KxButton>
+		<KxButton
+			:disabled='!hasAncestor'
+			@click='$data.gotoParent()'
+		>
+			<ArrowLeft class='prefix'/>
+			回到父级
+		</KxButton>
 
 		<KxButton
-			class='second'
+			color='second'
+			:class='$style.createButton'
 			@click='createNew'
 		>
 			新建分类
@@ -34,7 +33,7 @@
 		@change='submit'
 	/>
 
-	<div :class='$style.childrenTitle' v-if='current'>下级分类</div>
+	<h2 :class='$style.childrenTitle' v-if='current'>下级分类</h2>
 
 	<div v-if='!children'>正在加载中</div>
 
@@ -111,7 +110,12 @@ export default {
 .buttons {
 	composes: global(console-toolbar);
 	display: flex;
+	gap: 10px;
 	justify-content: space-between;
+}
+
+.createButton {
+	margin-left: auto;
 }
 
 .childrenTitle {

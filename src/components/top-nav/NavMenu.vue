@@ -1,14 +1,12 @@
 <template>
 	<div :class='$style.container'>
 		<div :class='$style.header'>
-			<div :class='$style.header_content'>
-				<img
-					src='/avatar.png'
-					alt='Kaciras" Blog'
-					class='head'
-				>
-				<p :class='$style.name'>Kaciras' Blog</p>
-			</div>
+			<img
+				src='/avatar.png'
+				alt='Kaciras" Blog'
+				class='head'
+			>
+			<p :class='$style.name'>Kaciras' Blog</p>
 		</div>
 
 		<div :class='$style.body'>
@@ -62,15 +60,13 @@ function showSettingFrame() {
 }
 
 .header {
-	background: url("../../assets/img/54045756_p0.png");
-	background-size: cover;
-}
-
-.header_content {
 	padding: 35px 0;
-	color: black;
-	background: rgba(255, 255, 255, .15);
 	text-align: center;
+
+	// 无需套元素也能实现半透明遮罩。
+	background: url("../../assets/img/54045756_p0.png") rgba(255, 255, 255, .15);
+	background-size: cover;
+	background-blend-mode: overlay;
 }
 
 .name {

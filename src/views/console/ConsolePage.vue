@@ -5,7 +5,7 @@
 		如果用路由来导航面板，可以让URL更好看，而且能记住历史直接跳转到对应的面板上。
 		但是 VueRouter 要求初始化时就配置好子路由，难以分离代码，所以还是用动态组件。
 	-->
-	<aside :class='$style.tabs'>
+	<nav :class='$style.tabs'>
 		<h1 :class='$style.title'>Kaciras' Blog</h1>
 
 		<ul class='clean-list' role='tablist'>
@@ -34,7 +34,7 @@
 			<ArrowLeft :class='$style.icon'/>
 			返回首页
 		</RouterLink>
-	</aside>
+	</nav>
 
 	<!--
 		将容器元素放在这里，里头的视图使用 Fragment，就像 iframe 一样。

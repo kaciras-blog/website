@@ -1,6 +1,10 @@
 <!--
 【禁用的实现】
-改变 <component> 渲染的元素会导致整个子树更新，应该避免，改为其它禁用实现。
+原本通过把根元素改成 span 来禁用跳转，但改变 <component> 的元素会导致整个子树重新渲染。
+所以换用 disabled 属性。
+
+【背景放哪】
+背景图不认为是跟内容强相关的，所以应当使用 background 样式而不是 img 元素。
 -->
 <template>
 	<a
@@ -9,12 +13,10 @@
 		target='_blank'
 		rel='noopener'
 		:class='$style.container'
+		:style='active && {
+			background: `url("${friend.background}")`,
+		}'
 	>
-		<img
-			:src='active ? friend.background : null'
-			alt='background'
-			:class='$style.background'
-		>
 		<img
 			:src='active ? friend.favicon ?? DEFAULT_AVATAR : null'
 			alt='favicon'
@@ -106,12 +108,6 @@ defineProps<FriendCardProps>();
 			& > .name { transform: translateY(100%); }
 		}
 	}
-}
-
-.background {
-	composes: full-vertex from global;
-	width: 100%;
-	height: 100%;
 }
 
 .favicon {

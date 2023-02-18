@@ -22,22 +22,20 @@
 			</span>
 		</div>
 
-		<div class='btn-group'>
-			<KxButton
-				:route='"/edit/" + id'
-				type='outline'
-				color='primary'
-			>
-				编辑
-			</KxButton>
-			<KxButton
-				type='outline'
-				color='dangerous'
-				@click='deleteDraft'
-			>
-				删除
-			</KxButton>
-		</div>
+		<KxButton
+			:route='"/edit/" + id'
+			type='outline'
+			color='primary'
+		>
+			编辑
+		</KxButton>
+		<KxButton
+			type='outline'
+			color='dangerous'
+			@click='deleteDraft'
+		>
+			删除
+		</KxButton>
 	</li>
 </template>
 
@@ -81,6 +79,8 @@ async function deleteDraft() {
 
 .container {
 	display: flex;
+	gap: 12px;
+	align-items: flex-start;
 }
 
 .main {

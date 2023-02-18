@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<form>
 		<div
 			:class='$style.infoSection'
 			@click.self='setBackground'
@@ -70,7 +70,7 @@
 				<KxRadioBox :value='2'>暗色</KxRadioBox>
 			</KxRadioBoxGroup>
 		</div>
-	</div>
+	</form>
 </template>
 
 <script setup lang="ts">
