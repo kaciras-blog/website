@@ -66,7 +66,7 @@ const { cards } = usePrefetch().data;
 @pic-height: @pic-width * 0.5625;
 
 // 简介行数上限，超出显示省略号。
-@max-lines: 6;
+@max-lines: 4;
 
 // 自动网格的卡片布局
 // https://blog.kaciras.com/article/14/use-pure-CSS-to-implement-center+wrap+left-alignment-layout
@@ -97,7 +97,7 @@ const { cards } = usePrefetch().data;
 
 	border-radius: 12px;
 	background: white;
-	box-shadow: 0 8px 16px rgba(0, 0, 0, .1);
+	box-shadow: 0 8px 18px rgba(0, 0, 0, .12);
 
 	@media screen and (min-width: @length-screen-mobile) {
 		transition: .3s;
