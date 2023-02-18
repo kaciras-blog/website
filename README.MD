@@ -6,7 +6,7 @@
 
 # 特性
 
-📝  使用 Markdown 编写文章，支持图片、视频、KaTeX。
+📝  使用 Markdown 编写文章，支持图片、视频。
 
 🚀  支持 PWA，页面加载丝滑顺畅，还能离线访问。
 
@@ -27,9 +27,9 @@
 
 浏览器支持：
 
-* Microsoft Edge >= 80
+* Microsoft Edge >= 88
 * Firefox >= 74
-* Chrome >= 80
+* Chrome >= 88
 * Safari >= 13.1
 * IOS >= 13.4
 * IE 全部都不支持

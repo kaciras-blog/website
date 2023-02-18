@@ -3,7 +3,7 @@
 		<RouterLink
 			:to='articleLink(item)'
 			tabindex='-1'
-			:class='$style.cover_link'
+			:class='$style.coverLink'
 		>
 			<img
 				:src='item.cover'
@@ -78,6 +78,7 @@ defineProps<PreviewItemProps>();
 
 	@media screen and (max-width: @length-screen-mobile) {
 		padding: 10px 30px;
+		grid-auto-flow: row;
 		justify-items: center;
 	}
 
@@ -88,29 +89,6 @@ defineProps<PreviewItemProps>();
 				"cover   title "
 				"cover  summary"
 				"category meta "
-	}
-}
-
-@media screen and (min-width: @length-screen-mobile) {
-	.cover_link {
-		grid-area: cover;
-	}
-
-	.title {
-		grid-area: title;
-	}
-
-	.summary {
-		grid-area: summary;
-	}
-
-	.category {
-		grid-area: category;
-	}
-
-	.meta {
-		grid-area: meta;
-		justify-self: right;
 	}
 }
 
@@ -153,6 +131,29 @@ defineProps<PreviewItemProps>();
 		vertical-align: -4px;
 		font-size: 18px;
 		margin-right: 4px;
+	}
+}
+
+@media screen and (min-width: @length-screen-mobile) {
+	.coverLink {
+		grid-area: cover;
+	}
+
+	.title {
+		grid-area: title;
+	}
+
+	.summary {
+		grid-area: summary;
+	}
+
+	.category {
+		grid-area: category;
+	}
+
+	.meta {
+		grid-area: meta;
+		justify-self: right;
 	}
 }
 </style>

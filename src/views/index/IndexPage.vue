@@ -1,10 +1,6 @@
 <template>
-	<BasePageLayout>
+	<BasePageLayout :nav-class='$style.nav'>
 		<PageMeta title='首页' body-class=''/>
-
-		<template #nav>
-			<TopNav :class='$style.nav'/>
-		</template>
 
 		<section :class='$style.banner'>
 			<h1 :class='$style.title'>Kaciras' Blog</h1>

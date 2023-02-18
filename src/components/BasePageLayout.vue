@@ -1,5 +1,4 @@
 <template>
-	<!-- 做个属性穿透这么麻烦 -->
 	<slot name='nav'>
 		<TopNav
 			:class='navClass'

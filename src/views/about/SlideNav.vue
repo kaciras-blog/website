@@ -1,6 +1,7 @@
 <!--
-	RouterLink 不能在函数式组件里使用。
-	Vue-Router 4 的写法变复杂了啊。
+【多个 nav 元素】
+GitHub 在 Explore 页面同样用了多个 nav 来包裹不同区域的链接，
+并且都处于顶层上下文，所以这么做应该是可行的。
 -->
 <template>
 	<nav :class='$style.tabList'>
