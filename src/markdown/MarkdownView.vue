@@ -1,11 +1,12 @@
+<!-- 将 Markdown 转换成 HTML 并显示出来的组件。-->
 <template>
-	<div :ref='setupLazyLoad' class='markdown' v-html='html'></div>
+	<FinishedMDView :html='html'/>
 </template>
 
 <script setup lang="ts">
-import { noop } from "@vueuse/core";
 import { computed } from "vue";
-import { activate, articleRenderer, discussionRenderer } from ".";
+import { articleRenderer, discussionRenderer } from ".";
+import FinishedMDView from "./FinishedMDView.vue";
 
 interface MarkdownViewProps {
 	value: string;
@@ -24,15 +25,4 @@ const html = computed(() => {
 		: discussionRenderer;
 	return renderer.render(value, { docId });
 });
-
-let disconnect = noop;
-
-function setupLazyLoad(el: HTMLElement) {
-	if (!el) {
-		disconnect();
-		disconnect = noop;
-	} else if (disconnect === noop) {
-		disconnect = activate(el);
-	}
-}
 </script>
