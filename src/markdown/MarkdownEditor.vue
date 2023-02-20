@@ -24,11 +24,11 @@
 			@keydown.tab.prevent='insertTab'
 			@scroll='lastScrollPreview = false'
 		/>
-		<article
+		<MarkdownView
 			v-show='viewMode !== ViewMode.Edit'
-			v-html='html'
 			ref='previewEl'
-			class='markdown'
+			:is-article='true'
+			:value='outMarkdown'
 			:class='{
 				[$style.window]: true,
 				[$style.single]: viewMode === ViewMode.Preview,
@@ -48,11 +48,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onMounted, onUnmounted, reactive, ref, watchEffect } from "vue";
-import { useVModel } from "@vueuse/core";
+import { ComponentPublicInstance, computed, onMounted, reactive, ref } from "vue";
+import { refDebounced, useVModel } from "@vueuse/core";
 import { syncScroll } from "@kaciras-blog/uikit";
-import { activate, articleRenderer } from ".";
 import { AddonContext, ViewMode } from "./editor-addon";
+import MarkdownView from "./MarkdownView.vue";
 import TextStateGroup from "./TextStateGroup.vue";
 import SyncScrollToggle from "./SyncScrollToggle.vue";
 
@@ -74,16 +74,12 @@ const emit = defineEmits(["update:modelValue"]);
 const content = useVModel(props, "modelValue", emit);
 const selection = ref<[number, number]>([0, 0]);
 const viewMode = ref(ViewMode.Split);
-
-const html = ref(articleRenderer.render(props.modelValue));
+const outMarkdown = refDebounced(content, props.debounce);
 
 const textareaEl = ref<HTMLElement>();
-const previewEl = ref<HTMLElement>();
+const previewEl = ref<ComponentPublicInstance>();
 const lastScrollPreview = ref(false);
 const disableSyncScroll = ref<(() => void) | null>(null);
-
-let disconnect: () => void;
-let timer: any;
 
 /**
  * 设置是否启用同步滚动，如果由关闭变为开启则会立即触发同步。
@@ -100,7 +96,7 @@ const scrollSynced = computed({
 			return disable();
 		}
 
-		const preview = previewEl.value!;
+		const preview = previewEl.value!.$el;
 		const textarea = textareaEl.value!;
 
 		disableSyncScroll.value = lastScrollPreview.value
@@ -128,8 +124,8 @@ function handleDrop(event: DragEvent) {
 }
 
 /**
- * 浏览器默认的tab键用于切换选择的元素。
- * 在文本框上监听@keydown.tab.prevent="inputTab"，使其能够输入tab字符。
+ * 浏览器默认的 tab 键用于切换选择的元素。
+ * 在文本框上监听 @keydown.tab.prevent="inputTab"，使其能够输入 tab 字符。
  */
 function insertTab() {
 	const [selStart, selEnd] = selection.value;
@@ -141,29 +137,7 @@ function insertTab() {
 	selection.value = [newEnd, newEnd];
 }
 
-// watchEffect 在 setup 阶段就调用，所以要检查 previewEl。
-watchEffect(() => {
-	const { modelValue } = props;
-
-	const render = async () => {
-		html.value = articleRenderer.render(modelValue);
-		await nextTick();
-
-		if (disconnect) {
-			disconnect();
-		}
-		if (!previewEl.value) {
-			return;
-		}
-		disconnect = activate(previewEl.value);
-	};
-
-	clearTimeout(timer);
-	timer = setTimeout(render, props.debounce);
-});
-
 onMounted(() => scrollSynced.value = true);
-onUnmounted(() => disconnect?.());
 </script>
 
 <style module lang="less">
