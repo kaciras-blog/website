@@ -5,12 +5,18 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { articleRenderer, discussionRenderer } from ".";
+import { articleRenderer, discussionRenderer } from "./renderer";
 import FinishedMDView from "./FinishedMDView.vue";
 
 interface MarkdownViewProps {
+
+	/** 要渲染的 Markdown 文本，注意转换过程是同步的。*/
 	value: string;
+
+	/** 给文本设置个唯一 ID，由于区分锚点。*/
 	docId?: any;
+
+	/** 是否使用文章转换器，默认使用功能更少也更安全的评论转换器。*/
 	isArticle?: boolean;
 }
 

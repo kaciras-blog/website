@@ -9,7 +9,7 @@
 <script setup lang="ts">
 import { noop } from "@vueuse/core";
 import "./markdown.less";
-import { activate } from ".";
+import { activate } from "./index";
 
 interface FinishedMDViewProps {
 	html: string;
