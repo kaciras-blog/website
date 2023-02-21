@@ -51,9 +51,9 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, onBeforeUnmount, reactive, ref, shallowRef, watch } from "vue";
+import { onBeforeMount, onMounted, reactive, ref, shallowRef, watch } from "vue";
 import { onBeforeRouteLeave, useRouter } from "vue-router";
-import { useEventListener } from "@vueuse/core";
+import { useEventListener, useTimeoutFn } from "@vueuse/core";
 import { KxButton, RelativeTime, useDialog } from "@kaciras-blog/uikit";
 import SaveIcon from "@material-design-icons/svg/filled/save.svg?sfc";
 import CardIcon from "bootstrap-icons/icons/credit-card-2-front.svg?sfc";
@@ -92,10 +92,8 @@ const current = reactive<DraftHistory>({
 
 /** 是否有在未保存的改动 */
 const changes = ref(false);
-
 const autoSaveError = ref<Error>();
-
-let autoSaveTimer: any;
+const autoSaveTimer = useTimeoutFn(autoSave, 5 * 60 * 1000);
 
 /**
  * 处理拖放的函数，目前也就支持拖媒体文件来上传。
@@ -131,17 +129,6 @@ async function insertMedias(images: File[], videos: File[]) {
 	}
 }
 
-/**
- * 监视文本的改变，当改变时开始计时 5 分钟，到点自动保存
- */
-function watchForAutoSave() {
-	const callback = () => {
-		unwatch();
-		autoSaveTimer = setTimeout(autoSave, 5 * 60 * 1000);
-	};
-	const unwatch = watch(current, callback, { deep: true });
-}
-
 async function autoSave() {
 	watchForAutoSave();
 
@@ -155,6 +142,17 @@ async function autoSave() {
 	}
 }
 
+/**
+ * 监视文本的改变，当改变时开始计时 5 分钟，到点自动保存。
+ */
+function watchForAutoSave() {
+	const callback = () => {
+		unwatch();
+		autoSaveTimer.start();
+	};
+	const unwatch = watch(current, callback, { deep: true });
+}
+
 async function manualSave() {
 	try {
 		await api.draft.saveNewHistory(draft.id, current);
@@ -165,8 +163,8 @@ async function manualSave() {
 
 		dialog.alertSuccess("保存成功");
 
-		// 刷新自动保存的计时
-		clearTimeout(autoSaveTimer);
+		// 刷新自动保存的计时。
+		autoSaveTimer.stop();
 		watchForAutoSave();
 	} catch (e) {
 		dialog.alertError("保存失败，请手动备份", errorMessage(e));
@@ -208,21 +206,19 @@ useEventListener("beforeunload", event => {
 
 onBeforeMount(async () => {
 	const got = await api.draft.findById(parseInt(props.draftId));
-	const { lastSaveCount, articleId } = got;
 	Object.assign(draft, got);
+	await loadHistory(got.lastSaveCount);
 
-	await loadHistory(lastSaveCount);
+	watchForAutoSave();
 
 	changes.value = false;
 	watch(current, () => changes.value = true, { deep: true });
-	watchForAutoSave();
-
-	if (!articleId && current.saveCount === 0) {
-		await showMetadataDialog();
-	}
 });
 
-onBeforeUnmount(() => clearTimeout(autoSaveTimer));
+// 如果是新的文章，且从未保存过，就自动弹出属性框，告诉用户先填属性。
+onMounted(() => {
+	draft.articleId || current.saveCount > 0 || showMetadataDialog();
+});
 </script>
 
 <style module lang="less">
