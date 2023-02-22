@@ -75,7 +75,6 @@ const routes: RouteRecordRaw[] = [
 		 * 最后的 * 表示任意次数，加上它就能匹配深层目录。
 		 */
 		path: "/:pathMatch(.*)*",
-		alias: "/error/404",
 		component: ErrorPage,
 		props: { value: "404" },
 	},

@@ -1,5 +1,5 @@
 <template>
-	<section :class='$style.container'>
+	<main :class='$style.container'>
 		<h1 :class='$style.title'>{{ title }}</h1>
 		<img
 			:src='image'
@@ -7,7 +7,7 @@
 			:class='$style.image'
 		>
 		<div :class='$style.content'><slot/></div>
-	</section>
+	</main>
 </template>
 
 <script setup lang="ts">
@@ -22,9 +22,31 @@ defineProps<ErrorContentProps>();
 <style module lang="less">
 @import "../../css/imports";
 
+.container {
+	display: grid;
+	grid-template-rows: auto auto auto;
+	grid-template-areas: "title" "image" "content";
+	gap: 2rem;
+	justify-content: center;
+	align-content: center;
+
+	margin-bottom: 2rem; // 整体往上移点。
+	flex: 1;
+	font-size: 16px;
+
+	@media screen and (min-width: @length-screen-mobile) {
+		grid-template-rows: auto 10rem;
+		grid-template-columns: 11rem auto;
+		grid-template-areas: "title title" "image content";
+	}
+}
+
 .title {
-	color: #2f91ff;
+	composes: compact from global;
+
 	grid-area: title;
+	font-size: 2.5rem;
+	color: #2f91ff;
 	text-align: center;
 }
 
@@ -44,23 +66,6 @@ defineProps<ErrorContentProps>();
 
 	@media screen and (max-width: @length-screen-mobile) {
 		padding: 20px 0;
-	}
-}
-
-.container {
-	display: grid;
-	justify-content: center;
-	row-gap: 1rem;
-	grid-template-rows: auto auto auto;
-	grid-template-areas: "title" "image" "content";
-
-	font-size: 16px;
-
-	@media screen and (min-width: @length-screen-mobile) {
-		grid-template-rows: auto 10rem;
-		grid-template-columns: 11rem auto;
-		column-gap: 2rem;
-		grid-template-areas: "title title" "image content";
 	}
 }
 </style>
