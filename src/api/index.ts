@@ -23,11 +23,19 @@ export * from "./notification";
 export * from "./category";
 export * from "./discussion";
 
+/*
+ * 顶层的键使用了变量，都是 string，TypeScript 会做处理以便表示可能出现的键相等的情况。
+ * 处理后的类型破坏了 APIMap 的推导，导致 api 的类型出错。
+ *
+ * 实际上 webServiceURL 和 contentServiceURL 不会相等，但这是静态推导无法判断的。
+ * 故此处给顶层的键强制转换成不相等的常量，手动避免这种情况。
+ */
+
 export default defineAPIs({
-	[webServiceURL]: {
+	[webServiceURL as "1"]: {
 		media: MediaEndpoint,
 	},
-	[contentServiceURL]: {
+	[contentServiceURL as "2"]: {
 		category: CategoryEndpoint,
 		article: ArticleEndpoint,
 		cards: CardsEndpoint,

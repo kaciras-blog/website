@@ -136,7 +136,7 @@ export abstract class EndpointBase {
 	 * @param params URL 中的参数部分
 	 */
 	protected fetch<R>(method: string, url: string, data?: any, params?: Record<string, any>) {
-		const init = { ...this.init, method , headers: { ...this.init.headers } };
+		const init = { ...this.init, method, headers: { ...this.init.headers } };
 		const headers = init.headers as Record<string, string>;
 
 		// body 为 FormData 时会自动设置 Content-Type。
@@ -198,7 +198,7 @@ type EndpointClass = new (...args: ConstructorParameters<typeof EndpointBase>) =
 
 type EndpointMap = Record<string | symbol, EndpointClass>;
 
-type APIDefs = Record<string, EndpointMap>;
+type APIDefs = Record<string | symbol, EndpointMap>;
 
 type FlatEndpoints<T extends EndpointMap> = { [K in keyof T]: [K, T[K]] }[keyof T];
 
