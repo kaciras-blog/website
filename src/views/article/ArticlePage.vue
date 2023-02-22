@@ -1,24 +1,40 @@
 <template>
-	<BannerPageLayout :banner='article.banner'>
-		<PageMeta :title='article.title' :body-class='$style.container'/>
+	<BannerPageLayout :banner='post.banner'>
+		<PageMeta :title='post.title' :body-class='$style.container'/>
 
 		<article :class='$style.article'>
 			<header :class='$style.header'>
-				<h1 :class='$style.title'>{{ article.title }}</h1>
+				<h1 :class='$style.title'>{{ post.title }}</h1>
 				<p>
 					<span>发布时间：</span>
-					<RelativeTime :value='article.create'/>
+					<RelativeTime :value='post.create'/>
 				</p>
 				<p>
 					<span>最后更新：</span>
-					<RelativeTime :value='article.update'/>
+					<RelativeTime :value='post.update'/>
 				</p>
 			</header>
 
-			<MarkdownView
-				:value='article.content'
+			<!--
+			因为 Markdown 转换出的是 HTML，激活操作也是在 HTML 层，所以不需要 Vue 的 Hydrate。
+			同时转换结果就是 innerHTML，直接就能从元素上读取，无需再次转换。
+
+			这提供了一种新的思路，即首屏直接从 innerHTML 取结果，无需引入庞大的转换器代码；
+			在后端仍需要转换（SSR 或 SSG），所以此处两个组件在前后端是不同的，
+			但只要渲染出的 HTML 相同，就能通过 Hydrate 检查。
+			-->
+			<FinishedMDView
+				v-if='serverGeneratedHTML'
+				:class='$style.content'
+				:html='serverGeneratedHTML'
+				:data-article-id='post.id'
+			/>
+			<LazyMarkdownView
+				v-else
+				:value='post.content'
 				:is-article='true'
 				:class='$style.content'
+				:data-article-id='post.id'
 			/>
 
 			<footer :class='$style.copyright'>
@@ -39,8 +55,8 @@
 
 		<DiscussionSection
 			ref='discussion'
-			:key='article.id'
-			:object-id='article.id'
+			:key='post.id'
+			:object-id='post.id'
 			:type='1'
 			:class='$style.discussion'
 		/>
@@ -70,18 +86,18 @@
 		</aside>
 
 		<HeadTags>
-			<meta name='description' :content='article.summary'>
-			<link v-if='article.prev' rel='prev' :title='article.prev.title' :href='articleLink(article.prev)'>
-			<link v-if='article.next' rel='prev' :title='article.next.title' :href='articleLink(article.next)'>
+			<meta name='description' :content='post.summary'>
+			<link v-if='post.prev' rel='prev' :title='post.prev.title' :href='articleLink(post.prev)'>
+			<link v-if='post.next' rel='next' :title='post.next.title' :href='articleLink(post.next)'>
 
-			<meta property='og:image' :content='`https://blog.kaciras.com${article.cover}`'>
+			<meta property='og:image' :content='`https://blog.kaciras.com${post.cover}`'>
 			<meta property='og:image:width' content='400'/>
 			<meta property='og:image:height' content='300'/>
-			<meta property='og:title' :content='article.title'>
+			<meta property='og:title' :content='post.title'>
 			<meta property='og:type' content='article'>
-			<meta property='og:description' :content='article.summary'>
+			<meta property='og:description' :content='post.summary'>
 			<meta property='og:site_name' content='Kaciras Blog'>
-			<meta property='og:url' :content='`https://blog.kaciras.com${articleLink(article)}`'>
+			<meta property='og:url' :content='`https://blog.kaciras.com${articleLink(post)}`'>
 		</HeadTags>
 	</BannerPageLayout>
 </template>
@@ -91,10 +107,8 @@ import { defineComponent } from "vue";
 import { PrefetchContext } from "@/prefetch";
 import { usePrefetch } from "@/store";
 import { articleLink } from "@/common";
+import { prefetchMarkdownView } from "@/markdown";
 
-/**
- * 在路由切换前加载数据，并检查 URL 是否正确。
- */
 function asyncData(session: PrefetchContext) {
 	const { store, route, api, data } = session;
 	const { id, urlTitle } = route.params;
@@ -112,13 +126,15 @@ function asyncData(session: PrefetchContext) {
 		}
 		return v;
 	});
+
+	data.markdownView = prefetchMarkdownView().then();
 }
 
 export default defineComponent({ asyncData });
 </script>
 
 <script setup lang="ts">
-import { ref, ComponentPublicInstance } from "vue";
+import { ref, ComponentPublicInstance, computed, useCssModule } from "vue";
 import ChatIcon from "@material-design-icons/svg/outlined/forum.svg?sfc";
 import ArrowTopIcon from "@material-design-icons/svg/outlined/rocket_launch.svg?sfc";
 import { KxButton, RelativeTime } from "@kaciras-blog/uikit";
@@ -126,13 +142,31 @@ import { Article } from "@/api";
 import BannerPageLayout from "@/components/BannerPageLayout.vue";
 import PageMeta from "@/components/PageMeta";
 import DiscussionSection from "@/components/discussion/DiscussionSection.vue";
-import MarkdownView from "@/markdown/MarkdownView.vue";
 import HeadTags from "@/components/HeadTags";
+import { LazyMarkdownView } from "@/markdown/index.js";
+import FinishedMDView from "@/markdown/FinishedMDView.vue";
 
 const prefetch = usePrefetch();
+const styles = useCssModule();
 
-const article = prefetch.data.article as Article;
+// WebStorm 好像把 article 跟其它什么东西搞混了，所以改名叫 post。
+const post = prefetch.data.article as Article;
 const discussion = ref<ComponentPublicInstance>();
+
+/**
+ * 页面上已经存在的 Markdown HTML，如果当前不是文章页，或当前文章不是要渲染的则返回 null。
+ */
+const serverGeneratedHTML = computed(() => {
+	if (import.meta.env.SSR) {
+		return null;
+	}
+	const markdownEl = document.querySelector("." + styles.content);
+	if (!markdownEl) {
+		return null;
+	}
+	const ssrId = Number(markdownEl.getAttribute("data-article-id"));
+	return ssrId === post.id ? markdownEl.innerHTML : null;
+});
 
 function gotoTop() {
 	document.documentElement.scrollTo({ top: 0, behavior: "smooth" });
@@ -167,7 +201,7 @@ function gotoDiscuss() {
 	// dev.to：		80 字母，678 px。
 	// css-tricks：	80 字母，700 px，媒体 950 px。
 	//
-	// 我自己的测试 1000px 太宽了，900 px（54 汉字）读起来也挺顺的，先用着试试，确实比指南和其他站宽了点。
+	// 我自己的测试 1000px 太宽了，900 px（54 汉字）读起来也挺顺的，先用着试试，确实比指南和其它站宽了点。
 	max-width: 900px;
 
 	width: 66vw;

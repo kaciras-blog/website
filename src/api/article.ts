@@ -23,9 +23,12 @@ interface ArticleMeta {
 
 export interface Article extends ArticleMeta {
 	id: number;
+	banner: string;
 
 	prev?: any;
 	next?: any;
+	create: number;
+	update: number;
 }
 
 interface ArticleListQuery extends Pageable {
