@@ -1,12 +1,13 @@
 <template>
-	<PageMeta title='编辑器' body-class=''/>
-
 	<MarkdownEditor
 		v-model='current.content'
 		:class='$style.editor'
 		:drop-handler='handleDrop'
 	>
 		<template #toolbar-left='{ ctx }'>
+			<!-- 虽然不是工具栏的组件，但还是放这免得根节点变成片段。-->
+			<PageMeta title='编辑器' body-class=''/>
+
 			<TextTools :ctx='ctx'/>
 			<MediaTools ref='mediaTools' :ctx='ctx'/>
 		</template>
@@ -50,8 +51,24 @@
 	</MarkdownEditor>
 </template>
 
+<script lang="ts">
+import { PrefetchContext } from "@/prefetch";
+import { defineComponent } from "vue";
+
+// 因为有防抖，创建之后再下载数据的话首屏会有一个渲染延迟，所以改用预载。
+function asyncData(session: PrefetchContext) {
+	const { data, route: { params }, api: { draft } } = session;
+	const id = parseInt(params.draftId as string);
+
+	const metadata = data.draft = draft.findById(id);
+	data.latest = metadata.then(v => draft.getHistory(id, v.lastSaveCount));
+}
+
+export default defineComponent({ asyncData });
+</script>
+
 <script setup lang="ts">
-import { onBeforeMount, onMounted, reactive, ref, shallowRef, watch } from "vue";
+import { onMounted, reactive, ref, shallowRef, watch } from "vue";
 import { onBeforeRouteLeave, useRouter } from "vue-router";
 import { useEventListener, useTimeoutFn } from "@vueuse/core";
 import { KxButton, RelativeTime, useDialog } from "@kaciras-blog/uikit";
@@ -60,6 +77,7 @@ import CardIcon from "bootstrap-icons/icons/credit-card-2-front.svg?sfc";
 import PaperPlaneIcon from "@/assets/icon/paper-plane.svg?sfc";
 import { articleLink } from "@/common";
 import { errorMessage } from "@/utils";
+import { usePrefetch } from "@/store";
 import PageMeta from "@/components/PageMeta";
 import MarkdownEditor from "@/markdown/MarkdownEditor.vue";
 import TextTools from "@/markdown/TextTools.vue";
@@ -69,29 +87,19 @@ import api, { Article, Draft, DraftHistory } from "@/api";
 import PublishDialog from "./PublishDialog.vue";
 import MetadataDialog from "./MetadataDialog.vue";
 
-interface EditorPageProps {
-	draftId: string;
-}
-
-const props = defineProps<EditorPageProps>();
-
 const dialog = useDialog();
 const router = useRouter();
+const prefetch = usePrefetch().data;
 
-const draft = reactive<Draft>({} as any);
+const draft = reactive<Draft>(prefetch.draft);
+const current = reactive<DraftHistory>(prefetch.latest);
+draft.updateTime = current.time;
+
 const mediaTools = shallowRef<any>();
 
-const current = reactive<DraftHistory>({
-	title: "",
-	keywords: "",
-	summary: "",
-	content: "",
-	time: 0,
-	saveCount: 0,
-});
-
 /** 是否有在未保存的改动 */
-const changes = ref(false);
+const hasChange = ref(false);
+
 const autoSaveError = ref<Error>();
 const autoSaveTimer = useTimeoutFn(autoSave, 5 * 60 * 1000);
 
@@ -135,7 +143,7 @@ async function autoSave() {
 	try {
 		await api.draft.save(draft.id, current.saveCount, current);
 		draft.updateTime = Date.now();
-		changes.value = false;
+		hasChange.value = false;
 		autoSaveError.value = undefined;
 	} catch (e) {
 		autoSaveError.value = e;
@@ -158,7 +166,7 @@ async function manualSave() {
 		await api.draft.saveNewHistory(draft.id, current);
 
 		draft.updateTime = Date.now();
-		changes.value = false;
+		hasChange.value = false;
 		autoSaveError.value = undefined;
 
 		dialog.alertSuccess("保存成功");
@@ -178,18 +186,12 @@ async function showMetadataDialog() {
 
 async function showPublishDialog() {
 	const article = await dialog.show<Article>(PublishDialog, { current, draft }).confirmPromise;
-	changes.value = false;
+	hasChange.value = false;
 	return router.push(articleLink(article));
 }
 
-async function loadHistory(saveCount: number) {
-	const got = await api.draft.getHistory(draft.id, saveCount);
-	Object.assign(current, got);
-	draft.updateTime = current.time;
-}
-
 onBeforeRouteLeave(() => {
-	if (!changes.value) {
+	if (!hasChange.value) {
 		return;
 	}
 	const exit = window.confirm("有未保存的改动，是否退出？");
@@ -199,24 +201,16 @@ onBeforeRouteLeave(() => {
 });
 
 useEventListener("beforeunload", event => {
-	if (changes.value) {
+	if (hasChange.value) {
 		return event.returnValue = "Sure?";
 	}
 });
 
-onBeforeMount(async () => {
-	const got = await api.draft.findById(parseInt(props.draftId));
-	Object.assign(draft, got);
-	await loadHistory(got.lastSaveCount);
-
+onMounted(() => {
+	watch(current, () => hasChange.value = true, { deep: true });
 	watchForAutoSave();
 
-	changes.value = false;
-	watch(current, () => changes.value = true, { deep: true });
-});
-
-// 如果是新的文章，且从未保存过，就自动弹出属性框，告诉用户先填属性。
-onMounted(() => {
+	// 如果是新创建的文章，且从未保存过，就自动弹出属性框，告诉用户先填属性。
 	draft.articleId || current.saveCount > 0 || showMetadataDialog();
 });
 </script>

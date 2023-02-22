@@ -42,7 +42,6 @@ const routes: RouteRecordRaw[] = [
 	{
 		path: "/edit/:draftId",
 		component: () => import("./views/editor/EditorPage.vue"),
-		props: true,
 	},
 	{
 		path: "/profile",
