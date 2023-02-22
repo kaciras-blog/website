@@ -45,12 +45,12 @@ interface FileDropEvents {
 	 *
 	 * 原始的 change、drop* 事件仍可监听。
 	 */
-	select: (files: File[]) => void;
+	(event: "select", files: File[]): void;
 
 	/**
 	 * 如果出现了错误，或者拖放的对象有不是文件的时候发出该事件。
 	 */
-	error: (error: Error) => void;
+	(event: "error", error: Error): void;
 }
 
 defineProps<FileDropProps>();

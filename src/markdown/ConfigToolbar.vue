@@ -2,10 +2,10 @@
 	<KxButton type='icon' color='info' title='双列视图' @click='viewMode = 0'>
 		<SplitIcon/>
 	</KxButton>
-	<KxButton type='icon' color='info' title='Markdown视图' @click='viewMode = 1'>
+	<KxButton type='icon' color='info' title='Markdown 视图' @click='viewMode = 1'>
 		<EditIcon/>
 	</KxButton>
-	<KxButton type='icon' color='info' title='Html视图' @click='viewMode = 2'>
+	<KxButton type='icon' color='info' title='预览视图' @click='viewMode = 2'>
 		<EyeIcon/>
 	</KxButton>
 </template>

@@ -44,8 +44,15 @@ interface Size2DProps {
 	aspectRatio: number;
 }
 
+interface Size2DEvents {
+
+	(event: "update:width", value: number): void;
+
+	(event: "update:height", value: number): void;
+}
+
 const props = defineProps<Size2DProps>();
-const emit = defineEmits(["update:width", "update:height"]);
+const emit = defineEmits<Size2DEvents>();
 
 const locked = shallowRef(true);
 

@@ -2,6 +2,9 @@ import type MarkdownIt from "markdown-it";
 import CopyIcon from "bootstrap-icons/icons/clipboard.svg?raw";
 import CopiedIcon from "bootstrap-icons/icons/clipboard-check.svg?raw";
 
+/**
+ * 高亮代码的函数，返回带有高亮标签的 HTML，language 为空或不支持则返回 falsy 值。
+ */
 type HighLighter = (code: string, language: string) => string | undefined;
 
 /**

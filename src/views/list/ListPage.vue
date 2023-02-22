@@ -59,16 +59,16 @@ import { PrefetchContext } from "@/prefetch";
 const DEFAULT_PAGE_SIZE = 10;
 
 export default {
-	name: "ArticleListPage",
+	name: "ListPage",
 	asyncData(session: PrefetchContext) {
-		const { article, category } = session.api;
+		const { data, route, api: { article, category } } = session;
 
-		let start = parseInt(session.route.params.index as string);
+		let start = parseInt(route.params.index as string);
 		start *= DEFAULT_PAGE_SIZE;
 
-		session.data.category = category.findById(0);
-		session.data.hots = article.getHots();
-		session.data.articleList = article
+		data.category = category.findById(0);
+		data.hots = article.getHots();
+		data.articleList = article
 			.getList({ start, count: DEFAULT_PAGE_SIZE });
 	},
 };
@@ -116,8 +116,6 @@ function nextPageUrl() {
 	const path = `/list/${index + 1}`;
 	return qs ? `${path}?${qs}` : path;
 }
-
-// watch(autoLoad, v => v && listView.value.loadNext());
 </script>
 
 <style module lang="less">
