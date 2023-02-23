@@ -22,7 +22,7 @@
 					@{{ displayName(parent) }}
 					(#{{ parent.floor }})
 				</div>
-				<MarkdownView
+				<LazyMarkdownView
 					:class='$style.quoteBody'
 					:doc-id='"dq" + id'
 					:value='parent.content'
@@ -113,7 +113,7 @@ import { nextTick, ref } from "vue";
 import { ButtonPagingView, useBreakPoint, useDialog } from "@kaciras-blog/uikit";
 import { debounceFirst } from "@kaciras-blog/server/lib/functions.js";
 import api, { Discussion, DiscussionState, ListQueryView, Topic, User } from "@/api";
-import MarkdownView from "@/markdown/MarkdownView.vue";
+import { LazyMarkdownView } from "@/markdown/index";
 import DiscussionContent from "./DiscussionContent.vue";
 import ReplyFrame from "./ReplyFrame.vue";
 import EditorFrame from "./EditorFrame.vue";
@@ -263,11 +263,10 @@ function loadNext(start: number, count: number) {
 		top: calc(@max-height - @fade-height * 2);
 		padding: @fade-height;
 		background: linear-gradient(0deg,
-				#fff 0%,
-				rgba(255,255,255,0.5) 40%,
-				rgba(255,255,255,0.05) 90%,
-				transparent 100%
-		);
+		#fff 0%,
+		rgba(255, 255, 255, 0.5) 40%,
+		rgba(255, 255, 255, 0.05) 90%,
+		transparent 100%);
 	}
 
 	@media screen and(min-width: @length-screen-mobile) {

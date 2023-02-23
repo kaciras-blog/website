@@ -50,7 +50,7 @@
 		<!-- 引用的内容 -->
 		<slot/>
 
-		<MarkdownView
+		<LazyMarkdownView
 			:class='$style.content'
 			:value='value.content'
 			:doc-id='value.id.toString()'
@@ -62,7 +62,7 @@
 import { computed } from "vue";
 import { KxButton, RelativeTime, useDialog } from "@kaciras-blog/uikit";
 import api, { Discussion, DiscussionState } from "@/api";
-import MarkdownView from "@/markdown/MarkdownView.vue";
+import { LazyMarkdownView } from "@/markdown/index";
 import { errorMessage } from "@/utils";
 import { DEFAULT_AVATAR } from "@/common";
 import { useCurrentUser } from "@/store";

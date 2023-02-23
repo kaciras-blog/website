@@ -34,7 +34,7 @@
 			<span class='hide-m'>帮助</span>
 		</button>
 
-		<MarkdownView
+		<LazyMarkdownView
 			v-if='preview'
 			:class='$style.preview'
 			:value='content'
@@ -97,7 +97,7 @@ import { KxButton, KxTaskButton, useDialog } from "@kaciras-blog/uikit";
 import { DEFAULT_AVATAR, USERNAME_LENGTH } from "@/common";
 import { useCurrentUser } from "@/store";
 import { Discussion } from "@/api";
-import MarkdownView from "@/markdown/MarkdownView.vue";
+import { LazyMarkdownView } from "@/markdown/index";
 import { useDiscussContext } from "./EditContext";
 import GuideDialog from "./GuideDialog.vue";
 

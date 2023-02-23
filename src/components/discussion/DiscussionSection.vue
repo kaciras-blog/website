@@ -63,6 +63,7 @@ import { useDiscussOptions } from "@/store";
 import BootLoader from "./BootLoader.vue";
 import DiscussionItem from "./DiscussionItem.vue";
 import InputSection from "./InputSection.vue";
+import { prefetchMarkdownView } from "@/markdown/index";
 
 const PAGE_SIZE = 30;
 const NEST_SIZE = 3;
@@ -133,9 +134,9 @@ function afterSubmit(entity: Discussion) {
 /** 初始化，加载配置信息和第一页，完成时切换加载指示器到列表 */
 function initialize() {
 	return Promise.all([
+		prefetchMarkdownView(),
 		discussOptions.load(),
-		fetchData(0, PAGE_SIZE)
-			.then(v => data.value = v),
+		fetchData(0, PAGE_SIZE).then(v => data.value = v),
 	]);
 }
 </script>

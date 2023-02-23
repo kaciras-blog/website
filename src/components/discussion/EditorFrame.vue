@@ -18,7 +18,7 @@
 			</KxTaskButton>
 		</template>
 
-		<MarkdownView
+		<LazyMarkdownView
 			v-if='configPanel === CP.Preview'
 			:value='content'
 			:class='$style.body'
@@ -125,7 +125,7 @@ import PaperPlaneIcon from "@/assets/icon/paper-plane.svg?sfc";
 import { Discussion } from "@/api";
 import { USERNAME_LENGTH } from "@/common";
 import { useCurrentUser } from "@/store";
-import MarkdownView from "@/markdown/MarkdownView.vue";
+import { LazyMarkdownView } from "@/markdown/index";
 import GuideDialog from "./GuideDialog.vue";
 import { useDiscussContext } from "./EditContext";
 
