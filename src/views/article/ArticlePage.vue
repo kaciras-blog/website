@@ -33,6 +33,7 @@
 				v-else
 				:value='post.content'
 				:is-article='true'
+				doc-id='h'
 				:class='$style.content'
 				:data-article-id='post.id'
 			/>
@@ -148,6 +149,11 @@ import FinishedMDView from "@/markdown/FinishedMDView.vue";
 
 const prefetch = usePrefetch();
 const styles = useCssModule();
+
+/*
+ * TODO: 这里把预载状态复制到了本地，会丧失响应性，但如果用 computed 又存在
+ *  下一个页面的数据覆盖导致一致性问题，在 Suspense 稳定之前我不想研究解决方案。
+ */
 
 // WebStorm 好像把 article 跟其它什么东西搞混了，所以改名叫 post。
 const post = prefetch.data.article as Article;

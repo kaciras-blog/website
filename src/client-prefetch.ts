@@ -4,13 +4,12 @@
  * 2.处理一些异常情况，例如跳转。在出现内部错误时显示错误页面。
  * 3.允许取消正在进行的预加载，并中止网络请求。
  */
-import { ComponentOptions } from "vue";
 import { RouteComponent, RouteLocationNormalizedLoaded, Router } from "vue-router";
-import api from "@/api";
-import { isOnlyHashChange } from "@/utils";
-import { collectTasks, events, PrefetchComponent, PrefetchContext } from "./prefetch";
 import { Pinia } from "pinia";
+import api from "@/api";
 import { usePrefetch } from "@/store";
+import { isOnlyHashChange } from "@/utils";
+import { collectTasks, events, PrefetchContext } from "./prefetch";
 
 let controller = new AbortController();
 
@@ -70,17 +69,6 @@ export async function prefetch(
 		}
 	}
 }
-
-export const ClientPrefetchMixin: ComponentOptions = {
-	beforeRouteUpdate(this, to) {
-		const component = this.$options as PrefetchComponent;
-		if (component.asyncData) {
-			controller = new AbortController();
-			events.emit("start", controller.signal);
-			return prefetch(this.$pinia, to, [component]);
-		}
-	},
-};
 
 export function installRouterHooks(store: Pinia, router: Router) {
 
