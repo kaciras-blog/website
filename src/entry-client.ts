@@ -1,30 +1,27 @@
-// 注意导入顺序，因为打包后CSS里元素的顺序跟导入顺序一致，所以 main.ts 必须靠前
 import { observeMediaQuery } from "@kaciras-blog/uikit";
 import { setupSentry } from "./error-report";
 import createBlogApp from "./main";
 import { useServiceWorker } from "@/service-worker/client/installer";
 import { useCurrentUser } from "@/store";
-import { ClientPrefetchMixin, installRouterHooks, prefetch } from "./client-prefetch";
+import { installRouterHooks, prefetch } from "./client-prefetch";
 
 interface CustomGlobals {
-	__INITIAL_STATE__?: any;
-	__isSupport__: boolean;
+	__INITIAL_STATE__?: any;	// SSR 的初始数据，没有表示该页未经服务端渲染。
+	__SUPPORTED__: boolean;		// 浏览器是否受支持，见 support-check-2.js
 }
 
 declare const window: Window & CustomGlobals;
 
 const { app, router, store } = createBlogApp(window.__INITIAL_STATE__);
 
-app.mixin(ClientPrefetchMixin);
-
-if (import.meta.env.SENTRY_DSN && window.__isSupport__) {
+if (import.meta.env.SENTRY_DSN && window.__SUPPORTED__) {
 	setupSentry(app, router);
 }
 
 /**
  * 初始化应用的各个模块并挂载，该函数是客户端的入口点。
  *
- * <h2>直接挂载到 body</h2>
+ * <h1>挂载到 body</h1>
  * 很多框架都不建议这样做，因为会跟一些三方库冲突，特别是在 body 末尾加 script 的。
  * 但 Vue3 并未警告，而且从原理上看似乎可行，所以先试试如果不行再改回去。
  */

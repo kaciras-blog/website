@@ -23,10 +23,10 @@
 	},
 	"browserslist": [
 		"Edge >= 88",
-		"Firefox >= 74",
+		"Firefox >= 103",
 		"Chrome >= 88",
-		"Safari >= 13.1",
-		"iOS >= 13.4"
+		"Safari >= 14",
+		"iOS >= 14"
 	],
 	"dependencies": {
 		"@kaciras-blog/markdown": "^2.3.0",

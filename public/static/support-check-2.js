@@ -3,7 +3,7 @@
  *
  * 1.以 ES2020 的 Nullish coalescing operator 为基准。
  * 2.难以检测 :is() 选择器，换 aspect-ratio 属性代替（在 Chrome 和 Edge 的支持与 :is 相同）
- * 3.一些垃圾比如 IPadQQ 内置的浏览器不支持 IntersectionObserver。
+ * 3.顶部的导航栏使用了 backdrop-filter，若不支持则很难看。
  *
  * 【为什么单独一个文件】
  * SyntaxError thrown while the code is being parsed,
@@ -17,16 +17,16 @@
 
 try {
 	// noinspection JSUnusedLocalSymbols
-	eval("const x = null ?? 0");
+	eval("let x = null; x ??= 1");
 
-	window.__isSupport__ =
-		CSS.supports("aspect-ratio", "1")
-		&& "IntersectionObserver" in window;
+	window.__SUPPORTED__ =
+		CSS.supports("aspect-ratio", "1") &&
+		CSS.supports("backdrop-filter", "blur()");
 } catch {
-	window.__isSupport__ = false;
+	window.__SUPPORTED__ = false;
 }
 
-if (!window.__isSupport__) {
+if (!window.__SUPPORTED__) {
 	window.alert("您的浏览器版本太旧，或是非主流内核，可能无法正常浏览本站，\n" +
 		"请使用最新版的 Edge、Firefox、Chrome、Safari 等浏览器。");
 }
