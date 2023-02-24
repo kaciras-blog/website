@@ -94,9 +94,8 @@ const directiveMap: RendererMap = {
 };
 
 /**
- * MarkdownIt 的插件，使用方式：markdownIt.use(clientMediaPlugin)
- *
- * @param markdownIt 要安装的实例
+ * 自定义媒体元素的前端版，覆盖 Media 插件和默认的图片渲染器，
+ * 在这里，媒体将被渲染成具有更复杂的布局的元素，同时还启用了延迟加载。
  */
 export function clientMediaPlugin(markdownIt: MarkdownIt) {
 	markdownIt.use(Media, directiveMap);

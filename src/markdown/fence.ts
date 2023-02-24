@@ -68,6 +68,9 @@ function handleMouseLeave(event: Event) {
 	button.innerHTML = `${CopyIcon}Copy`;
 }
 
+/**
+ * 实现点击按钮复制代码，考虑到代码一行可能很长，以及手机端框选困难，这个功能还是必要的。
+ */
 export function activateCopyButtons(root: HTMLElement) {
 	for (const button of root.querySelectorAll(".copy")) {
 		(button as HTMLButtonElement).onclick = handleCopy;

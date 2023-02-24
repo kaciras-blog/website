@@ -7,6 +7,7 @@
 			title='400 Bad Request'
 			image='@/assets/img/error-other.png'
 		>
+			<p>服务器理解不了您的请求。</p>
 			<p>如果正常操作跳到本页，快叫作者起床<span class='red'>改BUG!!!</span></p>
 			<p>如果是自己输入的地址，请看看有没有写错。</p>
 		</ErrorContent>
@@ -53,11 +54,11 @@
 
 		<ErrorContent
 			v-else
-			:title='value + " 其它错误"'
+			:title='value + " ???"'
 			image='@/assets/img/error-other.png'
 		>
-			<p>你发现了一个隐藏的错误</p>
-			<p>就连作者都没有为这个错误编写页面</p>
+			<p>恭喜你发现了一个隐藏的错误！</p>
+			<p>就连作者都没有为这个错误编写页面。</p>
 		</ErrorContent>
 	</BasePageLayout>
 </template>

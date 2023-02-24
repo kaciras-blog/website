@@ -1,11 +1,10 @@
 import { createMemoryHistory, createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import IndexPage from "./views/index/IndexPage.vue";
+import ErrorPage from "./views/error/ErrorPage.vue";
+import ArticlePage from "./views/article/ArticlePage.vue";
 import ListPage from "./views/list/ListPage.vue";
 import LoginPage from "./views/login/LoginPage.vue";
 import ProfilePage from "./views/user/ProfilePage.vue";
-import ErrorPage from "./views/error/ErrorPage.vue";
-import ArticlePage from "./views/article/ArticlePage.vue";
-
 import AbortPage from "./views/about/AboutPage.vue";
 import MeTab from "./views/about/MeTab.vue";
 import FriendsTab from "./views/about/FriendsTab.vue";
@@ -16,18 +15,13 @@ import CopyrightTab from "./views/about/CopyrightTab.vue";
  * 路由表，这里把页面按照对访问速度的敏感性分成了 3 组，越靠前的越重要。
  */
 const routes: RouteRecordRaw[] = [
-	
-	// 外链入口，是访问频率最高的页面，在优化时要优先考虑。
+
+	// 1）外链入口，是访问频率最高的页面，在优化时要优先考虑。
 	{ path: "/", component: IndexPage },
 	{ path: "/article/:id/:urlTitle", component: ArticlePage },
 	{ path: "/article/:id", component: ArticlePage },
-	{
-		path: "/error/:value([0-9]+)",
-		props: true,
-		component: ErrorPage,
-	},
 
-	// 其它前台页，重要性次之，是对本站感兴趣的用户才会看的，他们的忍耐性更高些。
+	// 2）其它前台页，对本站感兴趣的人才会看，他们的忍耐性更高些。
 	{ path: "/list", redirect: "/list/0" },
 	{ path: "/list/:index", component: ListPage },
 	{ path: "/login", component: LoginPage },
@@ -43,7 +37,7 @@ const routes: RouteRecordRaw[] = [
 		],
 	},
 
-	// 后台只有管理员才用，没有上面的那么重要了。
+	// 3）后台只有管理员才用，没有上面的那么重要，尽量分割出来。
 	{
 		path: "/edit/:draftId",
 		component: () => import("./views/editor/EditorPage.vue"),
@@ -54,6 +48,12 @@ const routes: RouteRecordRaw[] = [
 		meta: { requireAuth: true },
 	},
 
+	// 错误页有些特殊，虽然访问频率不高，但还是打包到主模块里。
+	{
+		path: "/error/:value([0-9]+)",
+		props: true,
+		component: ErrorPage,
+	},
 	{
 		/*
 		 * 【vue-router 4 匹配串】

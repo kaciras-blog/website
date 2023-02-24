@@ -23,7 +23,7 @@ type Store = ReturnType<typeof useHeadMetas>;
 
 /**
  * 这里的实现参考了 react-head 的思路，SSR 出来的标签打上一个标记，
- * CSR 时将这些元素全部移除，然后重新使用 Teleport 渲染一遍。
+ * Hydration 时将这些元素全部移除，然后重新使用 Teleport 渲染一遍。
  *
  * 虽然这样在删除和插入之间有一个不一致状态，但 DOM 的变化本身就是异步的，
  * 需要访问这些标签的代码不应该依赖强一致。
@@ -76,7 +76,7 @@ function HeadMetaSSR(this: SetupContext, info: Store, isBase: boolean) {
 }
 
 /**
- * SSR 渲染时调用这个函数，获取需要插入 <head> 内的 HTML，末尾的 Teleport 标记已移除。
+ * SSR 时调用这个函数，获取需要插入 <head> 内的 HTML，末尾的 Teleport 标记已移除。
  *
  * @param ctx SSR 上下文
  */
@@ -102,6 +102,7 @@ export default defineComponent({
 	setup(props, ctx) {
 		const info = useHeadMetas();
 
+		// 目前不支持多级嵌套覆盖，该组件只能用在每个顶级页面里。
 		onUnmounted(() => {
 			if (!props.base) info.inherited = false;
 		});
