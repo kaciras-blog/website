@@ -168,9 +168,13 @@ function preloads(modules: Set<string>, manifest: SSRManifest) {
 /**
  * 根据页面使用到的文件生成对应的预载链接，用于优化加载速度。
  *
- * <h2>Preload vs. Prefetch</h2>
+ * # Preload vs. Prefetch
  * Preload 预载当前页面必定会用到的资源，重要性比 Prefetch 高，如果没用到会显示警告。
  * Prefetch 指示未来可能用到的资源，当前页也许不会用，浏览器也可能忽略它。
+ *
+ * # modulepreload 无用
+ * 该属性相当于 JS 的 Preload，是为了冰雪加载立即要用但却被切分出去的文件。
+ * 而本项目中的异步模块均是为优化性能而切出去的，不会在首屏用到，预载反而挤占带宽。
  *
  * @param file 文件路径
  * @return 链接元素的 HTML，如果无需预载则为 undefined。
@@ -178,8 +182,6 @@ function preloads(modules: Set<string>, manifest: SSRManifest) {
 function renderPreloadLink(file: string) {
 	const ext = extname(file).slice(1);
 	switch (ext) {
-		case "js":
-			return `<link rel="modulepreload" crossorigin href="${file}">`;
 		case "css":
 			return `<link rel="stylesheet" href="${file}">`;
 		case "woff":
