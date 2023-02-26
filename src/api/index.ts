@@ -4,6 +4,7 @@ import ArticleEndpoint from "./article";
 import CardsEndpoint from "./cards";
 import FriendEndpoint from "./friend";
 import DraftEndpoint from "./draft";
+import DiagnosticsEndpoint from "./diagnostics";
 import UserEndpoint from "./user";
 import MediaEndpoint from "./media";
 import ConfigEndpoint from "./config";
@@ -33,6 +34,7 @@ export * from "./discussion";
 
 export default defineAPIs({
 	[webServiceURL as "1"]: {
+		diagnostics: DiagnosticsEndpoint,
 		media: MediaEndpoint,
 	},
 	[contentServiceURL as "2"]: {

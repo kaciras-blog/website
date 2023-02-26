@@ -55,6 +55,7 @@ import PencilIcon from "bootstrap-icons/icons/pencil-fill.svg?sfc";
 import ChatIcon from "bootstrap-icons/icons/chat-dots-fill.svg?sfc";
 import DiagramIcon from "bootstrap-icons/icons/tag-fill.svg?sfc";
 import BellIcon from "bootstrap-icons/icons/bell.svg?sfc";
+import HeartPulse from "bootstrap-icons/icons/heart-pulse-fill.svg?sfc";
 import ArrowLeft from "@material-design-icons/svg/round/arrow_back.svg?sfc";
 import ArticleConsole from "./ArticleConsole.vue";
 import DraftConsole from "./DraftConsole.vue";
@@ -62,6 +63,7 @@ import CategoryConsole from "./CategoryConsole.vue";
 import CardsConsole from "./CardsConsole.vue";
 import DiscussionConsole from "./DiscussionConsole.vue";
 import NotificationConsole from "./NotificationConsole.vue";
+import DiagnosticsConsole from "./DiagnosticsConsole.vue";
 
 const views = [
 	{ view: ArticleConsole, label: "文章列表", icon: CodeIcon },
@@ -70,6 +72,7 @@ const views = [
 	{ view: CardsConsole, label: "首页卡片", icon: AddLinkIcon },
 	{ view: CategoryConsole, label: "分类", icon: DiagramIcon },
 	{ view: NotificationConsole, label: "消息通知", icon: BellIcon },
+	{ view: DiagnosticsConsole, label: "诊断", icon: HeartPulse },
 ];
 
 const active = shallowRef(ArticleConsole);
