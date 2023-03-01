@@ -1,6 +1,7 @@
 import type MarkdownIt from "markdown-it";
 import type Token from "markdown-it/lib/token";
 import { Media, RendererMap } from "@kaciras-blog/markdown";
+import { $HTML } from "@/utils";
 
 /**
  * 从资源的链接参数（?vw=...&vh=...）里读取尺寸，生成防抖容器的 style 属性。
@@ -39,23 +40,24 @@ function getSizeStyle(url: string) {
  * 图片本身就有在不完全加载的时的显示方式，比如从上往下显示或者渐进式图片。
  * 如果无法加载，下面的标签也能表明空白区域是图片，所以没有必要用菊花图。
  */
-function renderImage(tokens: Token[], idx: number) {
+function renderImage(this: MarkdownIt, tokens: Token[], idx: number) {
 	const token = tokens[idx];
-	const src = token.attrGet("src") || "";
-	const alt = token.content;
+	const src = token.attrGet("src") ?? "";
+	const label = this.utils.escapeHtml(token.content);
 
-	return `
+	// 【注意】MarkdownIt 遵守 CommonMark 规范对单引号不转义，所以 alt 必须用双引号。
+	return $HTML`
 		<span class='center-wrapper'>
 			<a
 				${getSizeStyle(src)}
-				href='${src}'
+				href="${src}"
 				target='_blank'
 				rel='noopener,nofollow'
 			>
-				<img data-src='${src}' alt='${alt}' class='md-img' crossorigin>
+				<img data-src="${src}" alt="${label}" class='md-img' crossorigin>
 			</a>
-			${alt ? `<span class='md-img-alt'>${alt}</span>` : ""}
-    	</span>
+			${label ? `<span class='md-alt'>${label}</span>` : ""}
+		</span>
 	`;
 }
 
@@ -66,12 +68,18 @@ function renderImage(tokens: Token[], idx: number) {
  */
 const directiveMap: RendererMap = {
 	// 大部分浏览器只允许无声视频自动播放，不过 GIF 视频本来就是无声的。
-	gif(src, alt) {
-		return `
+	gif(src, alt, md) {
+		return $HTML`
 			<p class='center-wrapper' ${getSizeStyle(src)}>
-				<video class='gif' data-src='${src}' loop muted crossorigin></video>
-				${alt ? `<span class='md-img-alt'>${alt}</span>` : ""}
-    		</p>
+				<video
+					class='gif'
+					crossorigin
+					loop
+					muted
+					data-src="${src}"
+				/>
+				${alt ? `<span class='md-alt'>${alt}</span>` : ""}
+			</p>
 		`;
 	},
 	video(src, poster, md) {
@@ -79,16 +87,22 @@ const directiveMap: RendererMap = {
 		if (!md.validateLink(poster)) {
 			poster = "";
 		}
-		return `
+		return $HTML`
 			<p class='center-wrapper'>
-				<video class='md-video' poster='${poster}' data-src='${src}' controls crossorigin></video>
+				<video 
+					class='md-video'
+					controls
+					crossorigin
+					poster="${poster}"
+					data-src="${src}"
+				/>
 			</p>
 		`;
 	},
 	audio(src) {
-		return `
+		return $HTML`
 			<p class='center-wrapper'>
-				<audio controls src=${src} crossorigin></audio>
+				<audio controls src="${src}" crossorigin/>
 			</p>`;
 	},
 };
@@ -99,5 +113,5 @@ const directiveMap: RendererMap = {
  */
 export function clientMediaPlugin(markdownIt: MarkdownIt) {
 	markdownIt.use(Media, directiveMap);
-	markdownIt.renderer.rules.image = renderImage;
+	markdownIt.renderer.rules.image = renderImage.bind(markdownIt);
 }

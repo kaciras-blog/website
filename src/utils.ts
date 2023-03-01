@@ -74,3 +74,10 @@ export function basename(name: string) {
 	const i = name.lastIndexOf(".");
 	return i === -1 ? name : name.slice(0, i);
 }
+
+/**
+ * 标记 HTML，使其被 htmlStringPlugin 处理（展开必要的标签，压缩等）。该函数将在处理后移除。
+ */
+export function $HTML(..._: unknown[]): string {
+	throw new Error("$HTML has not been processed, did you add htmlStringPlugin to build?");
+}

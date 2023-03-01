@@ -1,6 +1,7 @@
 import type MarkdownIt from "markdown-it";
 import CopyIcon from "bootstrap-icons/icons/clipboard.svg?raw";
 import CopiedIcon from "bootstrap-icons/icons/clipboard-check.svg?raw";
+import { $HTML } from "@/utils";
 
 /**
  * 高亮代码的函数，返回带有高亮标签的 HTML，language 为空或不支持则返回 falsy 值。
@@ -36,7 +37,7 @@ export default function fencePlugin(md: MarkdownIt, highlight: HighLighter) {
 
 		// Copy 是个很常见的单词，谁都看得懂，就不做本地化了。
 		if (language) {
-			return `
+			return $HTML`
 				<div class='hljs'>
 					<div class='code-meta'>
 						${language}
@@ -48,7 +49,7 @@ export default function fencePlugin(md: MarkdownIt, highlight: HighLighter) {
 				</div>
 			`;
 		} else {
-			return `<pre class='hljs'>${codeHTML}</pre>`;
+			return $HTML`<pre class='hljs'>${codeHTML}</pre>`;
 		}
 	};
 }
