@@ -24,10 +24,10 @@
 					alt='封面'
 					:class='$style.picture'
 				>
-				<div :class='$style.meta'>
-					<span :class='$style.category'>#TODO</span>
-					2023-1-13
-				</div>
+				<!--<div :class='$style.meta'>-->
+				<!--	<span :class='$style.category'>#TODO</span>-->
+				<!--	2023-1-13-->
+				<!--</div>-->
 				<h2 :class='$style.name'>
 					{{ card.name }}
 				</h2>
@@ -97,7 +97,7 @@ const { cards } = usePrefetch().data;
 
 	border-radius: 12px;
 	background: white;
-	box-shadow: 0 8px 18px rgba(0, 0, 0, .12);
+	box-shadow: 0 6px 16px rgba(0, 0, 0, .12);
 
 	@media screen and (min-width: @length-screen-mobile) {
 		transition: .3s;

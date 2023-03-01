@@ -14,7 +14,7 @@ interface MarkdownViewProps {
 	value: string;
 
 	/** 给文本设置个唯一 ID，由于区分锚点。*/
-	docId?: any;
+	docId?: string;
 
 	/** 是否使用文章转换器，默认使用功能更少也更安全的评论转换器。*/
 	isArticle?: boolean;

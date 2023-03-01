@@ -28,7 +28,6 @@ export default {
 <script setup lang="ts">
 import BasePageLayout from "@/components/BasePageLayout.vue";
 import PageMeta from "@/components/PageMeta";
-import TopNav from "@/components/top-nav/TopNav.vue";
 import BlogSection from "./BlogSection.vue";
 import FriendsSection from "./FriendsSection.vue";
 

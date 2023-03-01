@@ -144,7 +144,7 @@ import BannerPageLayout from "@/components/BannerPageLayout.vue";
 import PageMeta from "@/components/PageMeta";
 import DiscussionSection from "@/components/discussion/DiscussionSection.vue";
 import HeadTags from "@/components/HeadTags";
-import { LazyMarkdownView } from "@/markdown/index.js";
+import { LazyMarkdownView } from "@/markdown";
 import FinishedMDView from "@/markdown/FinishedMDView.vue";
 
 const prefetch = usePrefetch();
