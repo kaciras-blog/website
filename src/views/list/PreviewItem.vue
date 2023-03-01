@@ -73,8 +73,6 @@ defineProps<PreviewItemProps>();
 	gap: 1rem;
 
 	padding: 15px 0;
-	margin: 1rem 0;
-	border-bottom: solid 1px @color-border;
 
 	@media screen and (max-width: @length-screen-mobile) {
 		padding: 10px 30px;

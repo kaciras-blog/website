@@ -16,7 +16,6 @@
 				v-for='card of cards'
 				:key='card.id'
 				:href='card.link'
-				:aria-label='card.name'
 				:class='$style.figure'
 			>
 				<img

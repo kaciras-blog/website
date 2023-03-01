@@ -14,7 +14,7 @@
 		rel='noopener'
 		:class='$style.container'
 		:style='active && {
-			background: `url("${friend.background}")`,
+			backgroundImage: `url("${friend.background}")`,
 		}'
 	>
 		<img
@@ -76,6 +76,7 @@ defineProps<FriendCardProps>();
 
 	border-radius: 6px;
 	overflow: hidden;
+	background-size: contain;
 
 	// 卡片背景可能是白色，故用阴影跟外部区分一下。
 	box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
