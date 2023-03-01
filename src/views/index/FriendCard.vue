@@ -8,7 +8,7 @@
 -->
 <template>
 	<a
-		:disabled='disabled'
+		:disabled='disabled || null'
 		:href='friend.url'
 		target='_blank'
 		rel='noopener'
