@@ -83,11 +83,11 @@ import FriendsSection from "./FriendsSection.vue";
 }
 
 .section {
-	max-width: 1600px;
+	max-width: var(--body-max);
 	margin: 48px 24px;
 
 	@media screen and(min-width: @length-screen-mobile) {
-		margin: 64px;
+		margin: 64px ~"max(64px, calc(50vw - var(--body-max) / 2))";
 	}
 }
 </style>

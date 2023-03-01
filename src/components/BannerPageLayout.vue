@@ -2,7 +2,7 @@
 	<BasePageLayout :nav-class='navClass' :nav-style='navStyle'>
 		<template v-if='$bp.isGreater("tablet")' v-slot:nav>
 			<TopNav :class='desktopNavClass'/>
-			<div :class='$style.banner' :style='desktopNavStyle' role='banner'></div>
+			<div :class='$style.banner' :style='desktopNavStyle' role='banner'/>
 		</template>
 
 		<slot></slot>
@@ -61,7 +61,7 @@ export default {
 .banner {
 	min-height: 211px;
 	height: 11vw;
-	margin-top: -50px;
+	margin-top: -@nav-height;
 
 	background: var(--background);
 	background-size: var(--background-size); // 这个属性写一起毛病多

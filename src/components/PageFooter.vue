@@ -25,7 +25,7 @@
 	justify-items: center;
 
 	@media screen and (min-width: @length-screen-mobile) {
-		padding: 20px 5%;
+		padding: 20px ~"max(5vw, calc(50vw - var(--body-max) / 2))";
 		justify-items: start;
 		grid-template-columns: 1fr;
 		grid-auto-flow: column;

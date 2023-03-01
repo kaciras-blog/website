@@ -1,8 +1,6 @@
 @import "./imports";
 
 .top-nav {
-	--nav-height: 48px;
-
 	width: 100%;
 	box-shadow: 0 0 4px 1px rgba(0, 0, 0, .15);
 	z-index: 100; // 一些页面需要浮动。
@@ -13,7 +11,7 @@
 	align-items: center;
 
 	padding: 0 1.5rem;
-	line-height: var(--nav-height);
+	line-height: @nav-height;
 
 	font-size: 16px;
 	background-color: transparent;

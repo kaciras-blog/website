@@ -123,6 +123,7 @@ function nextPageUrl() {
 
 :global(#index-page) {
 	display: flex;
+	gap: 7%;
 	justify-content: center;
 	align-items: flex-start;
 
@@ -137,6 +138,7 @@ function nextPageUrl() {
 			padding-top: 50px;
 		}
 		@media (min-width: @length-screen-wide) {
+			gap: 120px;
 			max-width: 84%;
 		}
 	}
@@ -159,7 +161,7 @@ function nextPageUrl() {
 }
 
 .aside {
-	// sticky在支持Grid的浏览器上都可用，但是table里面使用有些问题
+	// sticky 在支持 Grid 的浏览器上都可用，但是 table 里面使用有些问题
 	position: sticky;
 	top: 30px;
 
@@ -167,13 +169,9 @@ function nextPageUrl() {
 	max-width: 30em;
 
 	flex: 0 0 auto;
-	display: none;
 
-	@media screen {
-		@media (min-width: @length-screen-pad) {
-			display: block;
-			margin-left: 8%;
-		}
+	@media screen and (max-width: @length-screen-mobile){
+		display: none;
 	}
 }
 

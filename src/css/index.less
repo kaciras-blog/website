@@ -2,17 +2,14 @@
 @import "./top-nav";
 @import "./app-shell";
 
+:root {
+	--body-max: 1600px;
+}
+
 html {
 	@media screen and (max-width: 768px) {
 		font-size: 14px;
 	}
-}
-
-// 这东西主要用来批量禁用 input，样式就不要了。
-fieldset {
-	min-width: 0;
-	padding: 0;
-	border: none;
 }
 
 .panel {

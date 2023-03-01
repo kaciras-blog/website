@@ -161,6 +161,7 @@ const discussion = ref<ComponentPublicInstance>();
 
 /**
  * 页面上已经存在的 Markdown HTML，如果当前不是文章页，或当前文章不是要渲染的则返回 null。
+ * 1.706ms vs 0.112ms
  */
 const serverGeneratedHTML = computed(() => {
 	if (import.meta.env.SSR) {

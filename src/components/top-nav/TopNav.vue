@@ -122,7 +122,7 @@ if (breakPoint.value === "mobile") {
 	}
 
 	@media screen and (min-width: @length-screen-pad) {
-		padding: 0 5vw;
+		padding: 0 ~"max(5vw, calc(50vw - var(--body-max) / 2))";
 	}
 }
 
@@ -134,7 +134,7 @@ if (breakPoint.value === "mobile") {
 .logo {
 	display: block;
 	aspect-ratio: 703 / 225;
-	height: var(--nav-height);
+	height: @nav-height;
 }
 
 .logoLink {
