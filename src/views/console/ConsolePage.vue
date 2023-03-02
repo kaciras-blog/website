@@ -1,31 +1,18 @@
 <template>
-	<PageMeta title='控制台' :body-class='$style.container'/>
+	<PageMeta title='控制台' :body-class='$style.body'/>
 
-	<!--
-		如果用路由来导航面板，可以让URL更好看，而且能记住历史直接跳转到对应的面板上。
-		但是 VueRouter 要求初始化时就配置好子路由，难以分离代码，所以还是用动态组件。
-	-->
 	<nav :class='$style.tabs'>
 		<h1 :class='$style.title'>Kaciras' Blog</h1>
 
-		<ul class='clean-list' role='tablist'>
-			<li
-				v-for='{ label, view, icon } of views'
-				:key='label'
-				role='tab'
-				tabindex='2'
-				:aria-selected='active === view'
-				:class='{
-						[$style.active]: active === view,
-						[$style.tabItem]: true,
-					}'
-				@click='active = view'
-				@keyup.enter='active = view'
-			>
-				<component :is='icon' :class='$style.icon'/>
-				{{ label }}
-			</li>
-		</ul>
+		<RouterLink
+			v-for='{ label, icon, path } of views'
+			:key='path'
+			:to='path'
+			:class='$style.tabItem'
+		>
+			<component :is='icon' :class='$style.icon'/>
+			{{ label }}
+		</RouterLink>
 
 		<RouterLink
 			to='/'
@@ -39,16 +26,16 @@
 	<!--
 		将容器元素放在这里，里头的视图使用 Fragment，就像 iframe 一样。
 	-->
-	<main :class='$style.bodyWrapper'>
-		<KeepAlive>
-			<component :is='active' ref='panel'/>
-		</KeepAlive>
+	<main :class='$style.main'>
+		<RouterView v-slot='{ Component }'>
+			<KeepAlive>
+				<component :is='Component' ref='panel'/>
+			</KeepAlive>
+		</RouterView>
 	</main>
 </template>
 
-<script setup lang="ts">
-import { DefineComponent, nextTick, provide, shallowRef } from "vue";
-import PageMeta from "@/components/PageMeta";
+<script lang="ts">
 import AddLinkIcon from "@material-design-icons/svg/round/add_link.svg?sfc";
 import CodeIcon from "@material-design-icons/svg/round/code.svg?sfc";
 import PencilIcon from "bootstrap-icons/icons/pencil-fill.svg?sfc";
@@ -56,30 +43,42 @@ import ChatIcon from "bootstrap-icons/icons/chat-dots-fill.svg?sfc";
 import DiagramIcon from "bootstrap-icons/icons/tag-fill.svg?sfc";
 import BellIcon from "bootstrap-icons/icons/bell.svg?sfc";
 import HeartPulse from "bootstrap-icons/icons/heart-pulse-fill.svg?sfc";
-import ArrowLeft from "@material-design-icons/svg/round/arrow_back.svg?sfc";
-import ArticleConsole from "./ArticleConsole.vue";
-import DraftConsole from "./DraftConsole.vue";
-import CategoryConsole from "./CategoryConsole.vue";
-import CardsConsole from "./CardsConsole.vue";
-import DiscussionConsole from "./DiscussionConsole.vue";
-import NotificationConsole from "./NotificationConsole.vue";
-import DiagnosticsConsole from "./DiagnosticsConsole.vue";
 
+import ArticleConsole from "@/views/console/ArticleConsole.vue";
+import DraftConsole from "@/views/console/DraftConsole.vue";
+import DiscussionConsole from "@/views/console/DiscussionConsole.vue";
+import CardsConsole from "@/views/console/CardsConsole.vue";
+import CategoryConsole from "@/views/console/CategoryConsole.vue";
+import NotificationConsole from "@/views/console/NotificationConsole.vue";
+import DiagnosticsConsole from "@/views/console/DiagnosticsConsole.vue";
+
+let unregistered = true;
+
+//@formatter:off
 const views = [
-	{ view: ArticleConsole, label: "文章列表", icon: CodeIcon },
-	{ view: DraftConsole, label: "草稿", icon: PencilIcon },
-	{ view: DiscussionConsole, label: "评论", icon: ChatIcon },
-	{ view: CardsConsole, label: "首页卡片", icon: AddLinkIcon },
-	{ view: CategoryConsole, label: "分类", icon: DiagramIcon },
-	{ view: NotificationConsole, label: "消息通知", icon: BellIcon },
-	{ view: DiagnosticsConsole, label: "诊断", icon: HeartPulse },
+	{ path: "article",		component: ArticleConsole,		label: "文章列表",	icon: CodeIcon },
+	{ path: "draft",		component: DraftConsole,		label: "草稿",		icon: PencilIcon },
+	{ path: "discussion",	component: DiscussionConsole,	label: "评论",		icon: ChatIcon },
+	{ path: "card",			component: CardsConsole,		label: "首页卡片",	icon: AddLinkIcon },
+	{ path: "category",		component: CategoryConsole,		label: "分类",		icon: DiagramIcon },
+	{ path: "notice",		component: NotificationConsole, label: "消息通知",	icon: BellIcon },
+	{ path: "diagnostics",	component: DiagnosticsConsole,	label: "诊断",		icon: HeartPulse },
 ];
+//@formatter:on
+</script>
 
-const active = shallowRef(ArticleConsole);
+<script setup lang="ts">
+import { nextTick, provide, shallowRef } from "vue";
+import { useRouter } from "vue-router";
+import PageMeta from "@/components/PageMeta";
+import ArrowLeft from "@material-design-icons/svg/round/arrow_back.svg?sfc";
+
+const router = useRouter();
+
 const panel = shallowRef();
 
-provide("sendMessage", async (component: DefineComponent, data: unknown) => {
-	active.value = component;
+provide("sendMessage", async (name: string, data: unknown) => {
+	await router.push(`/console/${name}`);
 	await nextTick();
 
 	const target = panel.value;
@@ -87,12 +86,26 @@ provide("sendMessage", async (component: DefineComponent, data: unknown) => {
 		target.receiveMessage(data);
 	}
 });
+
+/*
+ * 动态注册子路由，比起写在 router.ts 里内聚性更高，也更简洁。
+ * https://router.vuejs.org/guide/advanced/dynamic-routing.html
+ *
+ * 这里检查了是否能匹配到子组件，没有才添加，避免内存泄漏。
+ */
+const { matched } = router.resolve("/console/article");
+if (matched.length < 2) {
+	for (const { path, component } of views) {
+		router.addRoute("console", { path, component });
+	}
+	router.replace(router.currentRoute.value.fullPath);
+}
 </script>
 
 <style module lang="less">
 @import "../../css/imports";
 
-.container {
+.body {
 	height: 100vh;
 
 	display: grid;
@@ -112,8 +125,8 @@ provide("sendMessage", async (component: DefineComponent, data: unknown) => {
 	grid-area: menu;
 
 	color: white;
-	background: rgb(8,50,91);
-	background: linear-gradient(180deg, rgba(8,50,91,1) 0%, rgba(49,109,166,1) 100%);
+	background: rgb(8, 50, 91);
+	background: linear-gradient(180deg, rgba(8, 50, 91, 1) 0%, rgba(49, 109, 166, 1) 100%);
 }
 
 .left-triangle(@size) {
@@ -129,7 +142,7 @@ provide("sendMessage", async (component: DefineComponent, data: unknown) => {
 }
 
 .tabItem {
-	composes: click-item from global;
+	composes: clean-link from global;
 
 	padding: 14px 0 14px 50px;
 	transform: rotateZ(0);
@@ -145,17 +158,15 @@ provide("sendMessage", async (component: DefineComponent, data: unknown) => {
 		outline: none;
 	}
 
-	&.active::after {
+	&:global(.router-link-active)::after {
 		content: "";
 		.left-triangle(.8rem);
 	}
 }
 
 .backButton {
-	composes: clean-link from global;
 	composes: tabItem;
 
-	display: block;
 	margin-top: auto;
 	border-top: solid 1px rgba(255, 255, 255, 0.4);
 }
@@ -166,7 +177,7 @@ provide("sendMessage", async (component: DefineComponent, data: unknown) => {
 	vertical-align: -4px;
 }
 
-.bodyWrapper {
+.main {
 	grid-area: body;
 	padding: 30px;
 	overflow-y: scroll;

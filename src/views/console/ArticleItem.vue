@@ -82,7 +82,6 @@ import ChatIcon from "bootstrap-icons/icons/chat-dots.svg?sfc";
 import { articleLink } from "@/common";
 import { errorMessage } from "@/utils";
 import SelectCategoryDialog from "@/components/SelectCategoryDialog.vue";
-import CardsConsole from "./CardsConsole.vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
@@ -99,7 +98,7 @@ function edit() {
 
 function addToCards() {
 	const { value } = props;
-	sendMessage(CardsConsole, {
+	sendMessage("card", {
 		picture: value.cover,
 		description: value.summary,
 		name: value.title,

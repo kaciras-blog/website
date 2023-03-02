@@ -44,6 +44,12 @@ const routes: RouteRecordRaw[] = [
 	},
 	{
 		path: "/console",
+		redirect: "/console/article",
+	},
+	{
+		path: "/console",
+		name: "console",
+		end: false,
 		component: () => import("./views/console/ConsolePage.vue"),
 		meta: { requireAuth: true },
 	},
