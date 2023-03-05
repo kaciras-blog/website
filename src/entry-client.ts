@@ -5,13 +5,6 @@ import { useServiceWorker } from "@/service-worker/client/installer";
 import { useCurrentUser } from "@/store";
 import { installRouterHooks, prefetch } from "./client-prefetch";
 
-interface CustomGlobals {
-	__INITIAL_STATE__?: any;	// SSR 的初始数据，没有表示该页未经服务端渲染。
-	__SUPPORTED__: boolean;		// 浏览器是否受支持，见 support-check-2.js
-}
-
-declare const window: Window & CustomGlobals;
-
 const { app, router, store } = createBlogApp(window.__INITIAL_STATE__);
 
 if (import.meta.env.SENTRY_DSN && window.__SUPPORTED__) {

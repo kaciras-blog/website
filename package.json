@@ -22,11 +22,11 @@
 		"build-cache": "blog-server build-cache"
 	},
 	"browserslist": [
-		"Edge >= 88",
+		"Edge >= 92",
 		"Firefox >= 103",
-		"Chrome >= 88",
-		"Safari >= 14",
-		"iOS >= 14"
+		"Chrome >= 92",
+		"Safari >= 15.4",
+		"iOS >= 15.4"
 	],
 	"dependencies": {
 		"@kaciras-blog/markdown": "^2.4.0",
