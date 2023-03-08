@@ -4,7 +4,7 @@
  * 2.顶部的导航栏使用了 backdrop-filter，若不支持则很难看。
  *
  * 【为什么单独一个文件】
- * 如果打包在一起，主模块引用的三方库一旦出现不支持的语法，则在解析节点就会出错，
+ * 如果打包在一起，主模块一旦出现不支持的语法，在解析阶段就会出错，
  * 从而导致此处的代码无法运行，显示不了提示。
  *
  * 【为什么放在 public 里】
@@ -13,11 +13,10 @@
  */
 
 try {
-	eval("let x dasdsa");
-
-	window.__SUPPORTED__ =
-		CSS.supports("backdrop-filter", "blur()")
-		&& "at" in Array.prototype;
+	window.__SUPPORTED__ = "at" in Array.prototype && (
+		CSS.supports("backdrop-filter", "blur()") ||
+		CSS.supports("-webkit-backdrop-filter", "blur()")
+	);
 } catch {
 	window.__SUPPORTED__ = false;
 }
