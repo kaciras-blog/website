@@ -1,13 +1,8 @@
 {
-	"include": [
-		"src/**/*.vue",
-		"src/**/*.ts",
-		"tests/**/*.ts"
-	],
 	"compilerOptions": {
 		"target": "ESNext",
 		"module": "ESNext",
-		"moduleResolution": "Node",
+		"moduleResolution": "bundler",
 		"baseUrl": ".",
 		"paths": {
 			"@/*": ["src/*"]
@@ -17,6 +12,7 @@
 		"sourceMap": true,
 		"resolveJsonModule": true,
 		"strict": true,
+		"allowArbitraryExtensions": true,
 		"allowSyntheticDefaultImports": true
 	},
 }
