@@ -136,10 +136,6 @@ export default function (template: string, manifest?: SSRManifest) {
  * 我感觉 Vite 这个清单有问题，它简单地把引用的文件作为页面需要的资源，这是错误的，
  * 因为并非引用了资源就一定会使用，而且第三方库里的资源也许首屏用不到但也包含了。
  *
- * <h2>设想的方案</h2>
- * 通过封 hook 资源元素 <img>、<video> 等等，应该能分析出哪些在首屏用到了，
- * CSS 里面的也能用 postcss 检查，这样可以更精确的预载。
- *
  * 代码参考：
  * https://github.com/vitejs/vite/blob/main/packages/playground/ssr-vue/src/entry-server.js
  */
@@ -175,6 +171,7 @@ function preloads(modules: Set<string>, manifest: SSRManifest) {
  * # modulepreload 无用
  * 该属性相当于 JS 的 Preload，是为了冰雪加载立即要用但却被切分出去的文件。
  * 而本项目中的异步模块均是为优化性能而切出去的，不会在首屏用到，预载反而挤占带宽。
+ * 这些资源应该用 Prefetch 做低优先级预载，但可惜没有 moduleprefetch。
  *
  * @param file 文件路径
  * @return 链接元素的 HTML，如果无需预载则为 undefined。

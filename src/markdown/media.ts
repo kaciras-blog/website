@@ -1,6 +1,6 @@
 import type MarkdownIt from "markdown-it";
 import type Token from "markdown-it/lib/token";
-import { Media, RendererMap } from "@kaciras-blog/markdown";
+import { DirectiveMap, Media } from "@kaciras-blog/markdown";
 import { $HTML } from "@/utils";
 
 /**
@@ -66,7 +66,7 @@ function renderImage(this: MarkdownIt, tokens: Token[], idx: number) {
  *
  * 对于其它的环境，比如 RSS，使用的是另外的渲染方案。
  */
-const directiveMap: RendererMap = {
+const directiveMap: DirectiveMap = {
 	// 大部分浏览器只允许无声视频自动播放，不过 GIF 视频本来就是无声的。
 	gif(src, alt, md) {
 		return $HTML`

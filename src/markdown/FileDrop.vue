@@ -107,8 +107,6 @@ function handleDrop(event: DragEvent) {
 		border-color: #76b3ff;
 
 		& .text { color: #4d89ff; }
-
-		& .icon { color: #da76ff; }
 	}
 }
 

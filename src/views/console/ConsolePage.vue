@@ -52,8 +52,6 @@ import CategoryConsole from "@/views/console/CategoryConsole.vue";
 import NotificationConsole from "@/views/console/NotificationConsole.vue";
 import DiagnosticsConsole from "@/views/console/DiagnosticsConsole.vue";
 
-let unregistered = true;
-
 //@formatter:off
 const views = [
 	{ path: "article",		component: ArticleConsole,		label: "文章列表",	icon: CodeIcon },
@@ -68,10 +66,10 @@ const views = [
 </script>
 
 <script setup lang="ts">
-import { nextTick, provide, shallowRef } from "vue";
+import { provide, shallowRef } from "vue";
 import { useRouter } from "vue-router";
-import PageMeta from "@/components/PageMeta";
 import ArrowLeft from "@material-design-icons/svg/round/arrow_back.svg?sfc";
+import PageMeta from "@/components/PageMeta";
 
 const router = useRouter();
 
@@ -79,7 +77,6 @@ const panel = shallowRef();
 
 provide("sendMessage", async (name: string, data: unknown) => {
 	await router.push(`/console/${name}`);
-	await nextTick();
 
 	const target = panel.value;
 	if ("receiveMessage" in target) {
@@ -95,8 +92,8 @@ provide("sendMessage", async (name: string, data: unknown) => {
  */
 const { matched } = router.resolve("/console/article");
 if (matched.length < 2) {
-	for (const { path, component } of views) {
-		router.addRoute("console", { path, component });
+	for (const v of views) {
+		router.addRoute("console", v);
 	}
 	router.replace(router.currentRoute.value.fullPath);
 }
