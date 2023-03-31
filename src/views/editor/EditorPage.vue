@@ -45,7 +45,7 @@
 			</span>
 			<span v-else-if='draft.updateTime'>
 				上次保存：
-				<RelativeTime :value='draft.updateTime'/>
+				<RelativeTime :value='draft.updateTime' :auto-refresh='60000'/>
 			</span>
 		</template>
 	</MarkdownEditor>
