@@ -1,4 +1,4 @@
-import { EndpointBase } from "./core";
+import { FetchClient } from "@kaciras/utilities/browser";
 
 export interface Card {
 	name: string;
@@ -7,10 +7,10 @@ export interface Card {
 	description: string;
 }
 
-export default class CardEndpoint extends EndpointBase {
+export default class CardEndpoint extends FetchClient {
 
 	getAll() {
-		return this.get<Card[]>("/cards").json;
+		return this.get("/cards").json<Card[]>();
 	}
 
 	setCards(cards: Card[]) {

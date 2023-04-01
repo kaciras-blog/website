@@ -1,12 +1,11 @@
-import { openFile } from "@kaciras-blog/uikit";
-import { EndpointBase } from "./core";
+import { FetchClient, selectFile } from "@kaciras/utilities/browser";
 
 export interface VariantSaveParams {
 	codec?: string;
 	variant?: string;
 }
 
-export default class MediaEndpoint extends EndpointBase {
+export default class MediaEndpoint extends FetchClient {
 
 	private upload(path: string, file: Blob, params?: any) {
 		const data = new FormData();
@@ -57,10 +56,10 @@ export default class MediaEndpoint extends EndpointBase {
 	 * @returns 保存的图片文件名
 	 */
 	async uploadImageFile() {
-		return this.uploadImage(await openFile("image/*"));
+		return this.uploadImage((await selectFile("image/*"))[0]);
 	}
 
 	async uploadVideoFile() {
-		return this.uploadVideo(await openFile("video/*"));
+		return this.uploadVideo((await selectFile("video/*"))[0]);
 	}
 }

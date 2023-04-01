@@ -1,4 +1,4 @@
-import { EndpointBase } from "./core";
+import { FetchClient } from "@kaciras/utilities/browser";
 import { Pageable } from "./common";
 
 /*
@@ -48,22 +48,22 @@ export interface PublishRequest extends ArticleMeta {
 	destroy?: boolean;
 }
 
-export default class ArticleEndpoint extends EndpointBase {
+export default class ArticleEndpoint extends FetchClient {
 
 	getList(params: ArticleListQuery) {
-		return this.get("/articles", { start: 0, ...params }).json;
+		return this.get("/articles", { start: 0, ...params }).json();
 	}
 
 	findById(id: number) {
-		return this.get<Article>("/articles/" + id).json;
+		return this.get("/articles/" + id).json<Article>();
 	}
 
 	publish(data: PublishRequest) {
-		return this.post<Article>("/articles", data).json;
+		return this.post("/articles", data).json<Article>();
 	}
 
 	update(id: number, data: any) {
-		return this.put<Article>("/articles/" + id, data).json;
+		return this.put("/articles/" + id, data).json<Article>();
 	}
 
 	changeDeletion(id: number, deletion: boolean) {
@@ -75,6 +75,6 @@ export default class ArticleEndpoint extends EndpointBase {
 	}
 
 	getHots() {
-		return this.get("/recommendation/articles").json;
+		return this.get("/recommendation/articles").json();
 	}
 }

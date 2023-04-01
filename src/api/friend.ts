@@ -1,4 +1,4 @@
-import { EndpointBase } from "./core";
+import { FetchClient } from "@kaciras/utilities/browser";
 
 export interface Friend {
 	url: string;
@@ -8,28 +8,28 @@ export interface Friend {
 	friendPage?: string;
 }
 
-export default class FriendEndpoint extends EndpointBase {
+export default class FriendEndpoint extends FetchClient {
 
 	getAll() {
-		return this.get<Friend[]>("/friends").json;
+		return this.get("/friends").json<Friend[]>();
 	}
 
 	makeFriend(friend: Friend) {
-		return this.post<Friend>("/friends", friend).json;
+		return this.post("/friends", friend).json<Friend>();
 	}
 
 	updateFriend(old: Friend, new_: Friend) {
 		const oldHost = new URL(old.url).hostname;
-		return this.put<void>(`/friends/${oldHost}`, new_);
+		return this.put(`/friends/${oldHost}`, new_);
 	}
 
 	updateSort(friends: Friend[]) {
 		const hostList = friends.map(friend => new URL(friend.url).hostname);
-		return this.put<void>("/friends", hostList);
+		return this.put("/friends", hostList);
 	}
 
 	rupture(friend: Friend) {
 		const host = new URL(friend.url).hostname;
-		return this.delete<void>(`/friends/${host}`);
+		return this.delete(`/friends/${host}`);
 	}
 }

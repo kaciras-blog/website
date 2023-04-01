@@ -1,4 +1,4 @@
-import { EndpointBase } from "./core";
+import { FetchClient } from "@kaciras/utilities/browser";
 import { User } from "./user";
 import { ListQueryView, Pageable } from "./common";
 
@@ -119,14 +119,14 @@ function assembly(mappingView: MappingListView) {
 	return { total, items } as ListQueryView<Discussion>;
 }
 
-export default class DiscussionEndpoint extends EndpointBase {
-
-	add(data: DiscussionInput) {
-		return this.post<Discussion>("/discussions", data).json;
-	}
+export default class DiscussionEndpoint extends FetchClient {
 
 	getList(params: DiscussionQuery) {
-		return this.get<MappingListView>("/discussions", params).json.then(assembly);
+		return this.get("/discussions", params).json<MappingListView>().then(assembly);
+	}
+
+	add(data: DiscussionInput) {
+		return this.post("/discussions", data).json<Discussion>();
 	}
 
 	/**
@@ -141,7 +141,7 @@ export default class DiscussionEndpoint extends EndpointBase {
 	 */
 	getReplies(nestId: number, start: number, count: number) {
 		const params = { nestId, start, count };
-		return this.get<MappingListView>("/discussions", params).json.then(assembly);
+		return this.get("/discussions", params).json<MappingListView>().then(assembly);
 	}
 
 	/**

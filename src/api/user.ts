@@ -1,4 +1,4 @@
-import { EndpointBase } from "./core";
+import { FetchClient } from "@kaciras/utilities/browser";
 
 export enum AuthType {
 	None,
@@ -30,8 +30,7 @@ export interface User extends UserProfile {
 	auth: AuthType;
 }
 
-export default class UserEndpoint extends EndpointBase {
-
+export default class UserEndpoint extends FetchClient {
 
 	/** 用户登录，登录成功后会添加相应的Cookie */
 	login(form: AccountLoginRequest) {
@@ -48,7 +47,7 @@ export default class UserEndpoint extends EndpointBase {
 	}
 
 	getCurrent() {
-		return this.get<User>("/user").raw;
+		return this.get("/user").raw;
 	}
 
 	updateProfile(profile: UserProfile) {

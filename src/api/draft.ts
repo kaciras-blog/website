@@ -1,4 +1,4 @@
-import { EndpointBase } from "./core";
+import { FetchClient } from "@kaciras/utilities/browser";
 import { Pageable } from "./common";
 
 export interface Draft {
@@ -35,22 +35,22 @@ const initial: DraftHistoryInput = {
 	keywords: "",
 };
 
-export default class DraftEndpoint extends EndpointBase {
+export default class DraftEndpoint extends FetchClient {
 
 	createNew() {
-		return this.post<Draft>("/drafts", initial).json;
+		return this.post("/drafts", initial).json<Draft>();
 	}
 
 	fromArticle(article: number) {
-		return this.post<Draft>("/drafts", null, { article }).json;
+		return this.post("/drafts", null, { article }).json<Draft>();
 	}
 
 	getList(params: DraftListQuery) {
-		return this.get<Draft[]>("/drafts", params).json;
+		return this.get("/drafts", params).json<Draft>();
 	}
 
 	findById(id: number) {
-		return this.get<Draft>(`/drafts/${id}`).json;
+		return this.get(`/drafts/${id}`).json<Draft>();
 	}
 
 	/** 删除一个草稿 */
@@ -64,7 +64,7 @@ export default class DraftEndpoint extends EndpointBase {
 	}
 
 	getHistory(id: number, saveCount: number) {
-		return this.get<DraftHistory>(`/drafts/${id}/histories/${saveCount}`).json;
+		return this.get(`/drafts/${id}/histories/${saveCount}`).json<Draft>();
 	}
 
 	saveNewHistory(id: number, data: DraftHistoryInput) {

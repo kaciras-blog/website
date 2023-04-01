@@ -1,5 +1,4 @@
-import { EndpointBase } from "./core";
-
+import { FetchClient } from "@kaciras/utilities/browser";
 
 export enum FriendAccidentType {
 	Moved,
@@ -28,10 +27,10 @@ export interface Notice<T> {
 	time: number;
 }
 
-export default class NotificationEndpoint extends EndpointBase {
+export default class NotificationEndpoint extends FetchClient {
 
 	getAll() {
-		return this.get<Array<Notice<unknown>>>("/notifications").json;
+		return this.get("/notifications").json<Array<Notice<unknown>>>();
 	}
 
 	clear() {

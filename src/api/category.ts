@@ -1,4 +1,4 @@
-import { EndpointBase } from "./core";
+import { FetchClient } from "@kaciras/utilities/browser";
 
 export enum CategoryTheme {
 	Default = 0, Light = 1, Dark = 2,
@@ -21,14 +21,14 @@ export interface Category extends CategoryContent {
 	parent: number;
 }
 
-export default class CategoryEndpoint extends EndpointBase {
+export default class CategoryEndpoint extends FetchClient {
 
 	getChildren(id: number) {
-		return this.get<Category[]>(`/categories/${id}/children`).json;
+		return this.get(`/categories/${id}/children`).json<Category[]>();
 	}
 
 	findById(id: number, aggregate?: boolean) {
-		return this.get(`/categories/${id}`, { aggregate }).json;
+		return this.get(`/categories/${id}`, { aggregate }).json<Category[]>();
 	}
 
 	move(id: number, parent: number, treeMode: boolean) {
