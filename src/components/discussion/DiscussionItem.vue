@@ -112,7 +112,7 @@
 import { nextTick, ref } from "vue";
 import { ButtonPagingView, useBreakPoint, useDialog } from "@kaciras-blog/uikit";
 import { debounceFirst } from "@kaciras-blog/server/lib/functions.js";
-import api, { Discussion, DiscussionState, ListQueryView, Topic, User } from "@/api";
+import api, { Discussion, ListQueryView } from "@/api";
 import { LazyMarkdownView } from "@/markdown/index";
 import DiscussionContent from "./DiscussionContent.vue";
 import ReplyFrame from "./ReplyFrame.vue";
@@ -121,25 +121,7 @@ import InputSection from "./InputSection.vue";
 
 const PAGE_SIZE = 10;
 
-interface Discussion_Copy {
-	type: number;
-	objectId: number;
-	id: number;
-	parent?: Discussion;
-	floor: number;
-	nestId: number;
-	nestFloor: number;
-	nestSize: number;
-	user: User;
-	nickname?: string;
-	content: string;
-	time: number;
-	state: DiscussionState;
-	topic?: Topic;
-	replies?: Discussion[];
-}
-
-const props = defineProps<Discussion_Copy>();
+const props = defineProps<Discussion>();
 const emit = defineEmits(["removed", "afterSubmit"]);
 
 const breakPoint = useBreakPoint();

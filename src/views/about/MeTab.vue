@@ -52,9 +52,10 @@
 </template>
 
 <script setup lang="ts">
-import DiscussionSection from "@/components/discussion/DiscussionSection.vue";
 import SocialLink from "@/components/SocialLink.vue";
-import PageMeta from "@/components/PageMeta";</script>
+import PageMeta from "@/components/PageMeta";
+import DiscussionSection from "@/components/discussion/DiscussionSection.vue";
+</script>
 
 <style module lang="less">
 @import "../../css/imports";

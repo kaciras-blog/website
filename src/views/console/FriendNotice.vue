@@ -19,14 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { FriendAccidentType } from "@/api";
+import { FriendAccident } from "@/api";
 
-interface FriendAccident_Copy {
-	type: FriendAccidentType;
-	name: string;
-	url: string;
-	newUrl?: string;
-}
-
-defineProps<FriendAccident_Copy>();
+defineProps<FriendAccident>();
 </script>

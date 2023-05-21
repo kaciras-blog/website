@@ -127,14 +127,7 @@ import { USERNAME_LENGTH } from "@/common";
 import { useCurrentUser } from "@/store";
 import { LazyMarkdownView } from "@/markdown/index";
 import GuideDialog from "./GuideDialog.vue";
-import { useDiscussContext } from "./EditContext";
-
-interface EditContextProps_Copy {
-	objectId: number;
-	type: number;
-	parent?: Discussion;
-	onAfterSubmit: (entity: Discussion) => void;
-}
+import { EditContextProps, useDiscussContext } from "./EditContext";
 
 /**
  * Config Panel 的类型，因为到处再用懒得写一堆就简写了。
@@ -147,7 +140,7 @@ enum CP {
 	Tools,
 }
 
-const props = defineProps<EditContextProps_Copy>();
+const props = defineProps<EditContextProps>();
 
 const user = useCurrentUser();
 const dialog = useDialog();

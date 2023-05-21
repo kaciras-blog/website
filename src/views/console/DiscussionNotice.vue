@@ -7,14 +7,9 @@
 </template>
 
 <script setup lang="ts">
-interface DiscussionActivity_Copy {
-	url: string;
-	title: string;
-	floor: number;
-	preview: string;
-}
+import { DiscussionActivity } from "@/api/index.ts";
 
-defineProps<DiscussionActivity_Copy>();
+defineProps<DiscussionActivity>();
 </script>
 
 <style module lang="less">

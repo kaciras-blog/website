@@ -132,6 +132,7 @@
 // noinspection ES6UnusedImports WebStorm 的分析有问题。
 import { browserslist } from "../../../package.json";
 
-import IconSectionHeader from "@/components/IconSectionHeader.vue";
 import IconParagraph from "@/components/IconParagraph.vue";
-import PageMeta from "@/components/PageMeta";</script>
+import PageMeta from "@/components/PageMeta";
+import IconSectionHeader from "@/components/IconSectionHeader.vue";
+</script>

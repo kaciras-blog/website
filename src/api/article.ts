@@ -11,7 +11,7 @@ export enum DeletionState {
 	Deleted,
 }
 
-interface ArticleMeta {
+export interface ArticleMeta {
 	title: string;
 	cover: string;
 	summary: string;

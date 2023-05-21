@@ -31,32 +31,11 @@
 </template>
 
 <script setup lang="ts">
-import { KxCheckBox } from "@kaciras-blog/uikit";
 import { useVModel } from "@vueuse/core";
-import { Discussion, DiscussionState, Topic, User } from "@/api";
+import { KxCheckBox } from "@kaciras-blog/uikit";
+import { Discussion } from "@/api";
 
-interface Discussion_Copy {
-	// 多了一个属性
-	checked: boolean;
-
-	type: number;
-	objectId: number;
-	id: number;
-	parent?: Discussion;
-	floor: number;
-	nestId: number;
-	nestFloor: number;
-	nestSize: number;
-	user: User;
-	nickname?: string;
-	content: string;
-	time: number;
-	state: DiscussionState;
-	topic?: Topic;
-	replies?: Discussion[];
-}
-
-const props = defineProps<Discussion_Copy>();
+const props = defineProps<Discussion & { checked: boolean }>();
 const emit = defineEmits(["update:checked"]);
 
 const checkedForward = useVModel(props, "checked", emit);

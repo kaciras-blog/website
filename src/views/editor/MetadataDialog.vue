@@ -23,23 +23,13 @@
 	</KxBaseDialog>
 </template>
 
-<script lang="ts">
-export default {
-	inheritAttrs: false,
-};
-</script>
-
 <script setup lang="ts">
 import { reactive, toRaw } from "vue";
-import { useDialog, KxDialogButtons, KxBaseDialog } from "@kaciras-blog/uikit";
-import api from "@/api";
+import { KxBaseDialog, KxDialogButtons, useDialog } from "@kaciras-blog/uikit";
+import api, { ArticleMeta } from "@/api";
 import { DEFAULT_COVER } from "@/common";
 
-interface ArticleMeta {
-	title: string;
-	cover?: string;
-	summary: string;
-}
+defineOptions({ inheritAttrs: false });
 
 const props = defineProps<ArticleMeta>();
 

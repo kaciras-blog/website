@@ -51,18 +51,10 @@ import {
 	openFile,
 	useDialog,
 } from "@kaciras-blog/uikit";
-import api from "@/api";
+import api, { Friend } from "@/api";
 import { DEFAULT_AVATAR } from "@/common";
 
-interface Friend_Copy {
-	url: string;
-	name: string;
-	background: string;
-	favicon?: string;
-	friendPage?: string;
-}
-
-const props = defineProps<Friend_Copy>();
+const props = defineProps<Friend>();
 
 const dialog = useDialog();
 const friend = reactive({ ...toRaw(props) });

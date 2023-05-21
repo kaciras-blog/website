@@ -96,19 +96,11 @@ import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
 import { KxButton, KxTaskButton, useDialog } from "@kaciras-blog/uikit";
 import { DEFAULT_AVATAR, USERNAME_LENGTH } from "@/common";
 import { useCurrentUser } from "@/store";
-import { Discussion } from "@/api";
 import { LazyMarkdownView } from "@/markdown/index";
-import { useDiscussContext } from "./EditContext";
+import { EditContextProps, useDiscussContext } from "./EditContext";
 import GuideDialog from "./GuideDialog.vue";
 
-interface EditContextProps_Copy {
-	objectId: number;
-	type: number;
-	parent?: Discussion;
-	onAfterSubmit: (entity: Discussion) => void;
-}
-
-const props = defineProps<EditContextProps_Copy>();
+const props = defineProps<EditContextProps>();
 
 const { nickname, email, content, handleInput, submit } = useDiscussContext(props);
 const dialog = useDialog();

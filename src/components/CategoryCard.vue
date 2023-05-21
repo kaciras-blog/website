@@ -18,11 +18,10 @@
 
 <script setup lang="ts">
 import { CATEGORY_IMG } from "@/common";
+import { Category } from "@/api/index.ts";
 
-// defineProps 目前不支持外部导入的类型，只能先写死了。
-// https://github.com/vuejs/core/issues/4294
-defineProps(["cover", "name"]);
-defineEmits(["click"]);
+defineProps<Category>();
+defineEmits<{ click: [] }>();
 </script>
 
 <style module lang="less">

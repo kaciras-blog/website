@@ -44,19 +44,9 @@ import { KxButton, MessageType, RelativeTime, useDialog } from "@kaciras-blog/ui
 import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
 import PaperPlaneIcon from "@/assets/icon/paper-plane.svg?sfc";
 import UpdateIcon from "@material-design-icons/svg/filled/update.svg?sfc";
-import api from "@/api";
+import api, { Draft } from "@/api";
 
-interface Draft_COPY {
-	id: number;
-	articleId?: number;
-	userId: number;
-	title: string;
-	lastSaveCount: number;
-	createTime: number;
-	updateTime: number;
-}
-
-const props = defineProps<Draft_COPY>();
+const props = defineProps<Draft>();
 const emit = defineEmits(["removed"]);
 
 const dialog = useDialog();

@@ -25,16 +25,12 @@
 	</transition>
 </template>
 
-<script lang="ts">
-export default {
-	isolation: true,
-};
-</script>
-
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import { PromiseSource, usePreventScroll } from "@kaciras-blog/uikit";
 import NavMenu from "./NavMenu.vue";
+
+defineOptions({ isolation: true });
 
 usePreventScroll();
 

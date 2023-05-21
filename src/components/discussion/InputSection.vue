@@ -51,20 +51,13 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
+import { useDialog } from "@kaciras-blog/uikit";
+import { useCurrentUser, useDiscussOptions } from "@/store";
 import EmbeddedEditor from "./EmbeddedEditor.vue";
 import EditorFrame from "./EditorFrame.vue";
-import { useDialog } from "@kaciras-blog/uikit";
-import { Discussion } from "@/api";
-import { useCurrentUser, useDiscussOptions } from "@/store";
+import { EditContextProps } from "./EditContext.ts";
 
-interface EditContextProps_Copy {
-	objectId: number;
-	type: number;
-	parent?: Discussion;
-	onAfterSubmit: (entity: Discussion) => void;
-}
-
-const props = defineProps<EditContextProps_Copy>();
+const props = defineProps<EditContextProps>();
 
 const user = useCurrentUser();
 const o = useDiscussOptions();
