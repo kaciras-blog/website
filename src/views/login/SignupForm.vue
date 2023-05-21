@@ -12,6 +12,7 @@
 			placeholder='中英文数字和下划线'
 			required
 			v-autofocus
+			autocomplete='username'
 		>
 
 		<!--suppress XmlInvalidId -->
@@ -23,6 +24,7 @@
 			required
 			title='密码'
 			placeholder='至少有个8位'
+			autocomplete='new-password'
 		/>
 
 		<label for='email'>邮箱:</label>

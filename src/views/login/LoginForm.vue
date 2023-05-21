@@ -12,6 +12,7 @@
 			title='用户名'
 			required
 			v-autofocus
+			autocomplete='username'
 		>
 
 		<!--suppress XmlInvalidId -->
@@ -22,6 +23,7 @@
 			title='密码'
 			required
 			name='password'
+			autocomplete='current-password'
 		/>
 
 		<KxCheckBox
@@ -76,7 +78,7 @@
 <script setup lang="ts">
 import { reactive, ref, toRaw } from "vue";
 import { useRouter } from "vue-router";
-import { KxButton, KxCheckBox, KxPasswordInput, KxTaskButton } from "@kaciras-blog/uikit";
+import { KxButton, KxCheckBox, KxPasswordInput, KxTaskButton, vAutofocus } from "@kaciras-blog/uikit";
 import api from "@/api";
 import OauthIcon from "@/components/OauthIcon.vue";
 import { errorMessage } from "@/utils";
