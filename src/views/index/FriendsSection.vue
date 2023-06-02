@@ -258,8 +258,8 @@ async function rupture(index: number) {
 async function edit(friend: Friend) {
 	const result = await dialog.show(FriendInfoDialog, friend);
 	if (result.isConfirm) {
+		await api.friend.updateFriend(friend, result.data);
 		Object.assign(friend, result.data);
-		await api.friend.updateFriend(friend, result.data as Friend);
 	}
 }
 
