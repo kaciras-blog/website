@@ -1,8 +1,5 @@
 import { createNanoEvents } from "nanoevents";
 import { DBSchema, IDBPDatabase, openDB } from "idb";
-import { MessageType } from "./message";
-
-declare const self: ServiceWorkerGlobalScope;
 
 interface Schema extends DBSchema {
 	settings: {
@@ -40,8 +37,8 @@ export function set(key: string, value: any) {
 	return database.put("settings", { key, value });
 }
 
-export function get(key: string) {
-	return current[key];
+export function getAll() {
+	return current;
 }
 
 /**
@@ -56,29 +53,6 @@ export function bind(key: string, handler: (value: any) => void) {
 	emitter.on(key, handler);
 }
 
-async function handleEvent(event: ExtendableMessageEvent) {
-	const { type, id, data } = event.data;
-
-	function reply(result: any) {
-
-		// @ts-ignore TypeScript 的 BUG？
-		event.source.postMessage({ type: MessageType.Reply, id, result });
-	}
-
-	switch (type) {
-		case MessageType.GetSettings:
-			await initPromise;
-			reply(current);
-			break;
-		case MessageType.PutSetting:
-			await set(data.key, data.value);
-			reply(data.value);
-			break;
-		default:
-			throw new Error("Unknown message type: " + data.type);
-	}
-}
-
 async function loadSettings() {
 	database = await openDB<Schema>("app", 1, { upgrade: upgradeDatabase });
 	const kvs = await database.getAll("settings");
@@ -86,18 +60,10 @@ async function loadSettings() {
 }
 
 /**
- * 表示全部配置项都加载完成的Promise，任何读取配置的地方都应该等待此Promise。
- *
- * 因为ServiceWorker里的存储API都是异步的，所以只能这么写。
- */
-export let initPromise: Promise<void>;
-
-/**
- * 加载保存的配置，该函数是异步的，使用 initPromise 来等待配置加载完成。
- * 请在 ServiceWorker 启动时调用此函数，否则配置将不可用。
+ * 表示配置都加载完成，任何读取配置的地方都应该等待此 Promise。
  *
  * @example
- * import { initializeSettingManager, initPromise, get } from "./settings";
+ * import { initPromise, get } from "./settings";
  *
  * initializeSettingManager();
  *
@@ -106,7 +72,4 @@ export let initPromise: Promise<void>;
  *     console.log("key: " + get("key"));
  * }
  */
-export function initializeSettingManager() {
-	initPromise = loadSettings();
-	self.addEventListener("message", handleEvent);
-}
+export const initPromise = loadSettings();

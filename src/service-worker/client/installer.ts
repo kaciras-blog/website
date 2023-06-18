@@ -1,27 +1,46 @@
-import { MessageType } from "../server/message";
-import { setResult } from "./settings";
+import { PostMessage, RPC } from "@kaciras/utilities/browser";
 import { reportError } from "@/error-report";
+import { SWAPI } from "../server/index.ts";
 
 const SCRIPT_PATH = "/sw.js";
 
-function dispatchMessage(message: MessageEvent) {
-	const { data } = message;
-	switch (data.type) {
-		case MessageType.Reply:
-			setResult(data);
-			break;
-		case MessageType.Error:
-			reportError(data.error);
-			break;
-		default:
-			throw new Error("Unknown message type: " + data.type);
-	}
+const functions = { reportError };
+
+export type RPCMethods = typeof functions;
+
+const post: PostMessage = (message, transfer) => {
+	navigator.serviceWorker.controller?.postMessage(message, transfer);
+};
+
+const client = import.meta.env.SSR ? (null as never) : RPC.createClient<SWAPI>(post, rec => {
+	navigator.serviceWorker.addEventListener("message", e => rec(e.data));
+});
+
+/**
+ * 设置 ServiceWorker 配置的选项值。
+ *
+ * @param key 选项名
+ * @param value 值
+ * @return 等待配置已存储并生效的Promise
+ */
+export function putSetting<T>(key: string, value: T) {
+	return client.setOption(key, value);
+}
+
+/**
+ * 获取全部 ServiceWorker 配置选项。
+ */
+export function getSettings() {
+	return client.getOptions();
 }
 
 async function register() {
 	try {
 		await navigator.serviceWorker.register(SCRIPT_PATH);
-		navigator.serviceWorker.addEventListener("message", dispatchMessage);
+
+		const serve = RPC.createServer(functions );
+		navigator.serviceWorker.addEventListener("message", e => serve(e.data));
+
 		console.debug("[Init] ServiceWorker 注册成功");
 	} catch (e) {
 		console.error("[Init] ServiceWorker 注册失败", e);
@@ -58,7 +77,7 @@ async function initialize() {
  * 若之前启用过，要禁用的话必须得注销，该函数始终需要被调用。
  */
 export function useServiceWorker() {
-	if (!("serviceWorker" in navigator)) {
+	if (!navigator.serviceWorker) {
 		return;
 	}
 	if ("requestIdleCallback" in window) {

@@ -26,7 +26,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { KxSwitchBox } from "@kaciras-blog/uikit";
-import { getSettings, putSetting } from "@/service-worker/client/settings";
+import { getSettings, putSetting } from "@/service-worker/client/installer.ts";
 
 const unsupported = import.meta.env.SSR || !("serviceWorker" in navigator);
 

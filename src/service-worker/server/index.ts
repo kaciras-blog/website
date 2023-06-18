@@ -1,5 +1,6 @@
+import { RPC } from "@kaciras/utilities/browser";
 import "./error-report";
-import { initializeSettingManager } from "./settings";
+import * as settings from "./settings";
 import apiCacheRoute from "./api-cache";
 import { CacheWrapper, cleanUnusedCache, useStaticCache } from "./cache";
 import { RegexRoute, Router } from "./routing";
@@ -20,8 +21,6 @@ const assets = self.__WB_MANIFEST;
  * 后端 API 有 Breaking Change 时增加版本号。
  */
 const API_CACHE_NAME = "api-v2.0";
-
-initializeSettingManager();
 
 useStaticCache("static", assets);
 const fetcher = cacheFirst(new CacheWrapper("static"));
@@ -67,4 +66,15 @@ self.addEventListener("activate", event => {
 
 	// 接管所有前端页面，即使它们目前并不由该版本的 SW 控制。
 	return self.clients.claim();
+});
+
+const functions = {
+	getOptions: settings.getAll,
+	setOption: settings.set,
+};
+
+export type SWAPI = typeof functions;
+
+self.addEventListener("message", async event => {
+	event.source!.postMessage(...await RPC.serve(functions, event.data));
 });
