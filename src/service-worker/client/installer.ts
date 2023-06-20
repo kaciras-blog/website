@@ -1,18 +1,18 @@
 import { PostMessage, RPC } from "@kaciras/utilities/browser";
 import { reportError } from "@/error-report";
-import { SWAPI } from "../server/index.ts";
+import { SWServerAPI } from "../server/index.ts";
 
 const SCRIPT_PATH = "/sw.js";
 
 const functions = { reportError };
 
-export type RPCMethods = typeof functions;
+export type SWClientAPI = typeof functions;
 
 const post: PostMessage = (message, transfer) => {
 	navigator.serviceWorker.controller?.postMessage(message, transfer);
 };
 
-const client = import.meta.env.SSR ? (null as never) : RPC.createClient<SWAPI>(post, rec => {
+const client = import.meta.env.SSR ? (null as never) : RPC.createClient<SWServerAPI>(post, rec => {
 	navigator.serviceWorker.addEventListener("message", e => rec(e.data));
 });
 
@@ -21,7 +21,7 @@ const client = import.meta.env.SSR ? (null as never) : RPC.createClient<SWAPI>(p
  *
  * @param key 选项名
  * @param value 值
- * @return 等待配置已存储并生效的Promise
+ * @return 等待配置已存储并生效的
  */
 export function putSetting<T>(key: string, value: T) {
 	return client.setOption(key, value);
@@ -38,7 +38,7 @@ async function register() {
 	try {
 		await navigator.serviceWorker.register(SCRIPT_PATH);
 
-		const serve = RPC.createServer(functions );
+		const serve = RPC.createServer(functions);
 		navigator.serviceWorker.addEventListener("message", e => serve(e.data));
 
 		console.debug("[Init] ServiceWorker 注册成功");
@@ -66,7 +66,7 @@ async function initialize() {
 		const { status } = await fetch("/sw-check", { method: "HEAD" });
 		return status === 200 ? register() : unregister();
 	} catch (e) {
-		console.warn("[Init] 无法获取注册指令，暂不更新 ServiceWorker ");
+		console.warn("[Init] 无法获取注册指令，暂不更新 ServiceWorker");
 	}
 }
 

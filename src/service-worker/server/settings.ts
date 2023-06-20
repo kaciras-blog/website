@@ -20,7 +20,7 @@ const current: { [key: string]: any } = {
 	StaleApi: false,
 };
 
-function upgradeDatabase(db: IDBPDatabase<Schema>) {
+function upgrade(db: IDBPDatabase<Schema>) {
 	db.createObjectStore("settings", { keyPath: "key" });
 }
 
@@ -54,7 +54,7 @@ export function bind(key: string, handler: (value: any) => void) {
 }
 
 async function loadSettings() {
-	database = await openDB<Schema>("app", 1, { upgrade: upgradeDatabase });
+	database = await openDB<Schema>("app", 1, { upgrade });
 	const kvs = await database.getAll("settings");
 	kvs.forEach(({ key, value }) => current[key] = value);
 }

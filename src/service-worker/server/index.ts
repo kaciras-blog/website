@@ -50,7 +50,7 @@ self.addEventListener("fetch", router.route.bind(router));
 self.addEventListener("install", () => {
 	console.debug("[SW] Install new version");
 
-	// 新版本安装后会等待旧版控制的页面全部关闭，以确保同时只有一个版本在运行，使用该语句将跳过等待。
+	// 新安装后会等待旧版控制的页面全部关闭，以确保同时只有一个版本在运行，使用该语句将跳过等待。
 	return self.skipWaiting();
 });
 
@@ -73,7 +73,7 @@ const functions = {
 	setOption: settings.set,
 };
 
-export type SWAPI = typeof functions;
+export type SWServerAPI = typeof functions;
 
 self.addEventListener("message", async event => {
 	event.source!.postMessage(...await RPC.serve(functions, event.data));

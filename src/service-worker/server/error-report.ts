@@ -1,4 +1,4 @@
-import type { RPCMethods } from "../client/installer.ts";
+import type { SWClientAPI } from "../client/installer.ts";
 import { RPC } from "@kaciras/utilities/browser";
 
 declare const clients: Clients;
@@ -17,7 +17,7 @@ async function reportError(error: ServiceWorkerError) {
 		return console.error(error);
 	}
 	const post = client.postMessage.bind(client);
-	await RPC.createClient<RPCMethods>(post).reportError(error);
+	await RPC.createClient<SWClientAPI>(post).reportError(error);
 }
 
 self.addEventListener("error", (event) => reportError({

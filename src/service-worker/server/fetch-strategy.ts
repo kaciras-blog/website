@@ -7,24 +7,19 @@ export type FetchFn = (input: RequestInfo) => Promise<Response>;
 
 /**
  * 发送请求，如果响应是可以缓存的则缓存响应。
- *
- * 缓存的响应会添加一个头部 X-Service-Worker: cached
+ * 缓存的响应会添加一个头部 K-Fetch-Cached: 1
  *
  * @param input 请求
  * @param cache 缓存
  * @param fetchFn 发送请求的函数
- * @return 原始响应
  */
 export async function fetchAndCache(input: RequestInfo, cache: ManagedCache, fetchFn: FetchFn) {
 	const rawResponse = await fetchFn(input);
 
 	if (rawResponse.status === 200) {
 		const headers = new Headers(rawResponse.headers);
-		headers.set("X-Service-Worker", "cached");
+		headers.set("K-Fetch-Cached", "1");
 
-		// Edge 79 之前的版本有BUG，不能用 body 属性来创建新请求。
-		// 该情况下可以用 body = await rawResponse.clone().arrayBuffer();
-		// https://stackoverflow.com/a/42846899/7065321
 		const { body } = rawResponse.clone();
 		const response = new Response(body, {
 			headers,
@@ -42,19 +37,12 @@ export async function fetchAndCache(input: RequestInfo, cache: ManagedCache, fet
  * 网络优先，失败则回退到缓存，适用于频繁更新但又需要离线访问的内容。
  */
 export function networkFirst(cache: ManagedCache, fetchFn: FetchFn = fetch) {
-
 	return async (input: RequestInfo) => {
 		try {
 			return await fetchAndCache(input, cache, fetchFn);
-		} catch (err) {
+		} catch (e) {
 			const cached = await cache.match(input);
-			if (cached) {
-				return cached;
-			}
-			throw err;
-
-			// 都抄了 OptionalChaining，咋就不能抄全了，把 ThrowExpression 也拿来。
-			// return (await cache.match(input)) ?? throw err;
+			if (cached) return cached; else throw e;
 		}
 	};
 }
@@ -65,7 +53,6 @@ export function networkFirst(cache: ManagedCache, fetchFn: FetchFn = fetch) {
  * 在后台更新需要下一次访问才能生效，通常给用户显示一个提示，让其刷新页面查看最新的内容。
  */
 export function staleWhileRevalidate(cache: ManagedCache, fetchFn: FetchFn = fetch) {
-
 	return async (input: RequestInfo) => {
 		const fromFetch = fetchAndCache(input, cache, fetchFn);
 		const fromCache = cache.match(input);
@@ -81,12 +68,8 @@ export function staleWhileRevalidate(cache: ManagedCache, fetchFn: FetchFn = fet
  * 适用于永不更新的资源，如带名字里带 Hash 的文件。
  */
 export function cacheFirst(cache: ManagedCache, fetchFn: FetchFn = fetch) {
-
 	return async (input: RequestInfo) => {
 		const cached = await cache.match(input);
-		if (cached) {
-			return cached;
-		}
-		return fetchAndCache(input, cache, fetchFn);
+		return cached ? cached : fetchAndCache(input, cache, fetchFn);
 	};
 }

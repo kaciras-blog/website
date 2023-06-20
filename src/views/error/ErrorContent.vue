@@ -27,8 +27,7 @@ defineProps<ErrorContentProps>();
 	grid-template-rows: auto auto auto;
 	grid-template-areas: "title" "image" "content";
 	gap: 2rem;
-	justify-content: center;
-	align-content: center;
+	place-content: center;
 
 	margin-bottom: 2rem; // 整体往上移点。
 	flex: 1;
