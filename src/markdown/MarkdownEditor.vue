@@ -50,7 +50,7 @@
 <script setup lang="ts">
 import { ComponentPublicInstance, computed, onMounted, reactive, ref } from "vue";
 import { refDebounced, useVModel } from "@vueuse/core";
-import { syncScroll } from "@kaciras-blog/uikit";
+import { syncScroll } from "@kaciras/utilities/browser";
 import { AddonContext, ViewMode } from "./editor-addon";
 import MarkdownView from "./MarkdownView.vue";
 import TextStateGroup from "./TextStateGroup.vue";

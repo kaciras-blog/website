@@ -8,10 +8,12 @@
 			"@/*": ["src/*"]
 		},
 		"jsx": "preserve",
-		"useUnknownInCatchVariables": false,
+		"noEmit": true,
 		"sourceMap": true,
 		"resolveJsonModule": true,
 		"strict": true,
+		"useUnknownInCatchVariables": false,
+		"allowImportingTsExtensions": true,
 		"allowArbitraryExtensions": true,
 		"allowSyntheticDefaultImports": true
 	},
