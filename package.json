@@ -34,8 +34,8 @@
 		"@kaciras-blog/uikit": "^2.5.1",
 		"@kaciras/utilities": "^0.10.0",
 		"@material-design-icons/svg": "^0.14.10",
-		"@sentry/tracing": "^7.61.0",
-		"@sentry/vue": "^7.61.0",
+		"@sentry/tracing": "^7.62.0",
+		"@sentry/vue": "^7.62.0",
 		"@vueuse/core": "^10.3.0",
 		"bootstrap-icons": "^1.10.5",
 		"highlight.js": "^11.8.0",
@@ -52,14 +52,14 @@
 		"@kaciras/eslint-config-core": "^2.6.0",
 		"@kaciras/eslint-config-typescript": "^2.6.0",
 		"@kaciras/eslint-config-vue": "^2.6.0",
-		"@types/markdown-it": "^12.2.3",
-		"@types/web": "^0.0.111",
+		"@types/markdown-it": "^13.0.0",
+		"@types/web": "^0.0.112",
 		"@vue/test-utils": "^2.4.1",
 		"autoprefixer": "^10.4.14",
 		"eslint": "^8.46.0",
-		"less": "^4.1.3",
+		"less": "^4.2.0",
 		"postcss": "^8.4.27",
 		"typescript": "^5.1.6",
-		"vitest": "^0.33.0"
+		"vitest": "^0.34.1"
 	}
 }
