@@ -41,7 +41,7 @@ router.afterEach((to, form) => {
 
 const clean: Unsubscribe[] = [];
 
-function connect(pb: typeof KxProgress | null) {
+function connect(pb: KxProgress | null) {
 
 	function onStart(signal: AbortSignal) {
 		pb!.start();

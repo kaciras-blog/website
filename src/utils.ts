@@ -1,6 +1,5 @@
 import { RouteLocationNormalized } from "vue-router";
-import { uniqueId } from "@kaciras/utilities/browser";
-import { BlogAPIError } from "@/api/core";
+import { FetchClientError, uniqueId } from "@kaciras/utilities/browser";
 
 /**
  * 从 BlogAPIError 对象中提取错误信息。
@@ -8,7 +7,7 @@ import { BlogAPIError } from "@/api/core";
  * @param object 异常
  * @return 错误信息
  */
-export function errorMessage(object: BlogAPIError) {
+export function errorMessage(object: FetchClientError) {
 	return object.message ?? "未知的错误";
 }
 

@@ -3,9 +3,7 @@ import { defineAsyncComponent } from "vue";
 /**
  * 为了拆分庞大的 Markdown 转换器，必须把这个组件搞成异步的。
  */
-const LazyMarkdownView = defineAsyncComponent(() => {
-	return import("@kaciras-blog/markdown-vue/view").then(m => m.MarkdownView);
-});
+const LazyMarkdownView = defineAsyncComponent(() => import("@kaciras-blog/markdown-vue/MarkdownView.vue"));
 
 export default LazyMarkdownView;
 

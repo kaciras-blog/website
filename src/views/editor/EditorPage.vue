@@ -13,6 +13,7 @@
 		</template>
 		<template #toolbar-right>
 			<ConfigWeights></ConfigWeights>
+			<VerticalSeparator/>
 
 			<KxButton
 				class='primary'
@@ -55,7 +56,6 @@
 </template>
 
 <script lang="ts">
-import "@kaciras-blog/markdown-vue/style.css";
 import { PrefetchContext } from "@/prefetch";
 import { defineComponent } from "vue";
 
@@ -83,7 +83,11 @@ import { articleLink } from "@/common";
 import { errorMessage } from "@/utils";
 import { usePrefetch } from "@/store";
 import PageMeta from "@/components/PageMeta";
-import { MarkdownEditor, BaseSyntaxWeights, ConfigWeights, SelectionWeight } from "@kaciras-blog/markdown-vue";
+import MarkdownEditor from "@kaciras-blog/markdown-vue/MarkdownEditor.vue";
+import BaseSyntaxWeights from "@kaciras-blog/markdown-vue/BaseSyntaxWeights.vue";
+import ConfigWeights from "@kaciras-blog/markdown-vue/ConfigWeights.vue";
+import SelectionWeight from "@kaciras-blog/markdown-vue/SelectionWeight.vue";
+import VerticalSeparator from "@kaciras-blog/markdown-vue/VerticalSeparator.vue";
 import api, { Article, Draft, DraftHistory } from "@/api";
 import PublishDialog from "./PublishDialog.vue";
 import MetadataDialog from "./MetadataDialog.vue";

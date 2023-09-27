@@ -138,7 +138,7 @@ export default defineComponent({ asyncData });
 import { ref, ComponentPublicInstance, computed, useCssModule } from "vue";
 import ChatIcon from "@material-design-icons/svg/outlined/forum.svg?sfc";
 import ArrowTopIcon from "@material-design-icons/svg/outlined/rocket_launch.svg?sfc";
-import { MarkdownBox } from "@kaciras-blog/markdown-vue/view";
+import MarkdownBox from "@kaciras-blog/markdown-vue/MarkdownBox.vue";
 import { KxButton, RelativeTime } from "@kaciras-blog/uikit";
 import { Article } from "@/api";
 import BannerPageLayout from "@/components/BannerPageLayout.vue";

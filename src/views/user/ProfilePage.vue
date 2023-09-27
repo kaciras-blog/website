@@ -41,7 +41,8 @@
 
 <script setup lang="ts">
 import { shallowReactive, toRaw } from "vue";
-import { ImageCropper, KxButton, openFile, useDialog } from "@kaciras-blog/uikit";
+import { selectFile } from "@kaciras/utilities/browser";
+import { ImageCropper, KxButton, useDialog } from "@kaciras-blog/uikit";
 import api from "@/api";
 import { DEFAULT_AVATAR, USERNAME_LENGTH } from "@/common";
 import { useCurrentUser } from "@/store";
@@ -56,7 +57,7 @@ const dialog = useDialog();
 const user = shallowReactive(globalUser.$state);
 
 async function changeAvatar() {
-	const image = await openFile("image/*");
+	const [image] = await selectFile("image/*");
 	const session = dialog.show(ImageCropper, {
 		image,
 		circle: true,

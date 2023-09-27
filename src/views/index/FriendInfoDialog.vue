@@ -43,14 +43,8 @@
 
 <script setup lang="ts">
 import { reactive, toRaw } from "vue";
-import {
-	ImageCropper,
-	KxBaseDialog,
-	KxDialogButtons,
-	MaterialTextInput,
-	openFile,
-	useDialog,
-} from "@kaciras-blog/uikit";
+import { ImageCropper, KxBaseDialog, KxDialogButtons, MaterialTextInput, useDialog, } from "@kaciras-blog/uikit";
+import { selectFile } from "@kaciras/utilities/browser";
 import api, { Friend } from "@/api";
 import { DEFAULT_AVATAR } from "@/common";
 
@@ -68,7 +62,7 @@ async function uploadFavicon() {
 }
 
 async function selectImage(circle: boolean, aspectRatio: number) {
-	const image = await openFile("image/*");
+	const [image] = await selectFile("image/*");
 	const cropping = await dialog.show(ImageCropper, {
 		image, circle, aspectRatio,
 	});
