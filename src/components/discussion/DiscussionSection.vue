@@ -63,7 +63,7 @@ import { useDiscussOptions } from "@/store";
 import BootLoader from "./BootLoader.vue";
 import DiscussionItem from "./DiscussionItem.vue";
 import InputSection from "./InputSection.vue";
-import { prefetchMarkdownView } from "@/markdown/index";
+import { prefetchMarkdownView } from "@/components/LazyMarkdownView.ts";
 
 const PAGE_SIZE = 30;
 const NEST_SIZE = 3;

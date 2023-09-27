@@ -125,7 +125,7 @@ import PaperPlaneIcon from "@/assets/icon/paper-plane.svg?sfc";
 import { Discussion } from "@/api";
 import { USERNAME_LENGTH } from "@/common";
 import { useCurrentUser } from "@/store";
-import { LazyMarkdownView } from "@/markdown/index";
+import LazyMarkdownView from "@/components/LazyMarkdownView.ts";
 import GuideDialog from "./GuideDialog.vue";
 import { EditContextProps, useDiscussContext } from "./EditContext";
 

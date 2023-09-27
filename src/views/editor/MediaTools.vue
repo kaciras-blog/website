@@ -11,25 +11,19 @@
 </template>
 
 <script setup lang="ts">
-import { KxButton, openFile, useDialog } from "@kaciras-blog/uikit";
+import { KxButton, useDialog } from "@kaciras-blog/uikit";
+import { selectFile } from "@kaciras/utilities/browser";
 import ImageIcon from "bootstrap-icons/icons/image-fill.svg?sfc";
 import VideoIcon from "bootstrap-icons/icons/play-btn.svg?sfc";
 import MusicIcon from "bootstrap-icons/icons/music-note-beamed.svg?sfc";
-import api from "@/api";
-import { basename } from "@/utils";
+import api from "@/api/index.ts";
+import { basename } from "@/utils.ts";
 import UploadImageDialog from "./UploadImageDialog.vue";
 import VideoVideoDialog from "./UploadVideoDialog.vue";
-import { AddonContext, overwrite } from "./editor-addon";
+import { useAddonContext } from "@kaciras-blog/markdown-vue";
 
-interface TextStateGroupProps {
-	ctx: AddonContext;
-}
-
-const props = defineProps<TextStateGroupProps>();
 const dialog = useDialog();
-
-// eslint-disable-next-line vue/no-setup-props-destructure
-const context = props.ctx;
+const context = useAddonContext();
 
 interface ImageUploadResult {
 	vw: number;
@@ -79,7 +73,7 @@ async function addVideo(initFiles: File[] = []) {
 }
 
 async function addAudio(file?: File) {
-	file ??= await openFile("audio/*");
+	file ??= (await selectFile("audio/*"))[0];
 	const res = await api.media.uploadAudio(file);
 	const [selEnd] = context.selection;
 	overwrite(context, selEnd, selEnd, `@audio[](${res})`);

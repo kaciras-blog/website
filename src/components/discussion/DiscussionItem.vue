@@ -113,7 +113,7 @@ import { nextTick, ref } from "vue";
 import { ButtonPagingView, useBreakPoint, useDialog } from "@kaciras-blog/uikit";
 import { debounceFirst } from "@kaciras-blog/server/lib/functions.js";
 import api, { Discussion, ListQueryView } from "@/api";
-import { LazyMarkdownView } from "@/markdown/index";
+import LazyMarkdownView from "@/components/LazyMarkdownView.ts";
 import DiscussionContent from "./DiscussionContent.vue";
 import ReplyFrame from "./ReplyFrame.vue";
 import EditorFrame from "./EditorFrame.vue";

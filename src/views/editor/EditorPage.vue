@@ -1,18 +1,19 @@
 <template>
 	<MarkdownEditor
 		v-model='current.content'
+		:trust='true'
 		:class='$style.editor'
 		:drop-handler='handleDrop'
 	>
-		<template #toolbar-left='{ ctx }'>
+		<template #toolbar-left>
 			<!-- 虽然不是工具栏的组件，但还是放这免得根节点变成片段。-->
 			<PageMeta title='编辑器' body-class=''/>
 
-			<TextTools :ctx='ctx'/>
-			<MediaTools ref='mediaTools' :ctx='ctx'/>
+			<BaseSyntaxWeights></BaseSyntaxWeights>
 		</template>
-		<template #toolbar-right='{ ctx }'>
-			<ConfigToolbar :ctx='ctx'/>
+		<template #toolbar-right>
+			<ConfigWeights></ConfigWeights>
+
 			<KxButton
 				class='primary'
 				type='icon'
@@ -38,8 +39,7 @@
 				<PaperPlaneIcon/>
 			</KxButton>
 		</template>
-
-		<template #statebar-left>
+		<template #status-left>
 			<span v-if='autoSaveError' :class='$style.error'>
 				自动保存出错
 			</span>
@@ -48,10 +48,14 @@
 				<RelativeTime :value='draft.updateTime' :auto-refresh='60000'/>
 			</span>
 		</template>
+		<template #status-right>
+			<SelectionWeight></SelectionWeight>
+		</template>
 	</MarkdownEditor>
 </template>
 
 <script lang="ts">
+import "@kaciras-blog/markdown-vue/style.css";
 import { PrefetchContext } from "@/prefetch";
 import { defineComponent } from "vue";
 
@@ -79,10 +83,7 @@ import { articleLink } from "@/common";
 import { errorMessage } from "@/utils";
 import { usePrefetch } from "@/store";
 import PageMeta from "@/components/PageMeta";
-import MarkdownEditor from "@/markdown/MarkdownEditor.vue";
-import TextTools from "@/markdown/TextTools.vue";
-import ConfigToolbar from "@/markdown/ConfigToolbar.vue";
-import MediaTools from "@/markdown/MediaTools.vue";
+import { MarkdownEditor, BaseSyntaxWeights, ConfigWeights, SelectionWeight } from "@kaciras-blog/markdown-vue";
 import api, { Article, Draft, DraftHistory } from "@/api";
 import PublishDialog from "./PublishDialog.vue";
 import MetadataDialog from "./MetadataDialog.vue";

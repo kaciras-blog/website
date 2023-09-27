@@ -1,19 +1,13 @@
 import { defineAsyncComponent } from "vue";
-import { activateCopyButtons } from "./fence";
-import { observeLazyLoad } from "./lazy-loading";
-
-/**
- * 激活 Markdown 元素，其实就是添加各种监听。返回一个清理函数，卸载组件后记得调用哦。
- */
-export function activate(el: HTMLElement) {
-	activateCopyButtons(el);
-	return observeLazyLoad(el);
-}
 
 /**
  * 为了拆分庞大的 Markdown 转换器，必须把这个组件搞成异步的。
  */
-export const LazyMarkdownView = defineAsyncComponent(() => import("./MarkdownView.vue"));
+const LazyMarkdownView = defineAsyncComponent(() => {
+	return import("@kaciras-blog/markdown-vue/view").then(m => m.MarkdownView);
+});
+
+export default LazyMarkdownView;
 
 /**
  * 预载 MarkdownView 和依赖的 Markdown 转换器。推荐在顶层统一的加载函数里调用，避免后续渲染出现闪烁。

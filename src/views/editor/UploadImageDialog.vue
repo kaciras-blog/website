@@ -58,7 +58,7 @@ import { onBeforeUnmount, reactive, shallowRef } from "vue";
 import { useObjectUrl } from "@vueuse/core";
 import { dataSizeIEC } from "@kaciras/utilities/browser";
 import { KxBaseDialog, KxDialogButtons, Resolution, useDialog } from "@kaciras-blog/uikit";
-import api from "@/api/index";
+import api from "@/api/index.ts";
 import FileDrop from "./FileDrop.vue";
 import Size2DInput from "./Size2DInput.vue";
 

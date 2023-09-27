@@ -96,7 +96,7 @@ import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
 import { KxButton, KxTaskButton, useDialog } from "@kaciras-blog/uikit";
 import { DEFAULT_AVATAR, USERNAME_LENGTH } from "@/common";
 import { useCurrentUser } from "@/store";
-import { LazyMarkdownView } from "@/markdown/index";
+import LazyMarkdownView from "@/components/LazyMarkdownView.ts";
 import { EditContextProps, useDiscussContext } from "./EditContext";
 import GuideDialog from "./GuideDialog.vue";
 

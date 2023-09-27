@@ -62,7 +62,7 @@
 import { computed } from "vue";
 import { KxButton, RelativeTime, useDialog } from "@kaciras-blog/uikit";
 import api, { Discussion, DiscussionState } from "@/api";
-import { LazyMarkdownView } from "@/markdown/index";
+import LazyMarkdownView from "@/components/LazyMarkdownView.ts";
 import { errorMessage } from "@/utils";
 import { DEFAULT_AVATAR } from "@/common";
 import { useCurrentUser } from "@/store";

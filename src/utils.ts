@@ -1,5 +1,5 @@
 import { RouteLocationNormalized } from "vue-router";
-import { uniqueKey } from "@kaciras-blog/uikit";
+import { uniqueId } from "@kaciras/utilities/browser";
 import { BlogAPIError } from "@/api/core";
 
 /**
@@ -39,9 +39,9 @@ export function deleteOn<T>(array: T[], predicate: (value: T) => boolean) {
  */
 export function attachRandomId(object: any) {
 	if (Array.isArray(object)) {
-		object.forEach(v => v.id ||= uniqueKey());
+		object.forEach(v => v.id ||= uniqueId());
 	} else {
-		object.id ||= uniqueKey();
+		object.id ||= uniqueId();
 	}
 	return object;
 }
@@ -73,11 +73,4 @@ export function isOnlyHashChange(to: RouteLocationNormalized, from: RouteLocatio
 export function basename(name: string) {
 	const i = name.lastIndexOf(".");
 	return i === -1 ? name : name.slice(0, i);
-}
-
-/**
- * 标记 HTML，使其被 htmlStringPlugin 处理（展开必要的标签，压缩等）。该函数将在处理后移除。
- */
-export function $HTML(..._: unknown[]): string {
-	throw new Error("$HTML has not been processed, did you add htmlStringPlugin to build?");
 }

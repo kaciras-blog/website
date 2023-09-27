@@ -21,9 +21,9 @@
 
 			这提供了一种新的思路，即首屏直接从 innerHTML 取结果，无需引入庞大的转换器代码；
 			在后端仍需要转换（SSR 或 SSG），所以此处两个组件在前后端是不同的，
-			但只要渲染出的 HTML 相同，就能通过 Hydrate 检查。
+			但只要渲染出的 HTML 相同，就能通过 Hydrate。
 			-->
-			<FinishedMDView
+			<MarkdownBox
 				v-if='serverGeneratedHTML'
 				:class='$style.content'
 				:html='serverGeneratedHTML'
@@ -32,7 +32,7 @@
 			<LazyMarkdownView
 				v-else
 				:value='post.content'
-				:is-article='true'
+				:trusted='true'
 				doc-id='h'
 				:class='$style.content'
 				:data-article-id='post.id'
@@ -108,7 +108,7 @@ import { defineComponent } from "vue";
 import { PrefetchContext } from "@/prefetch";
 import { usePrefetch } from "@/store";
 import { articleLink } from "@/common";
-import { prefetchMarkdownView } from "@/markdown";
+import { prefetchMarkdownView } from "@/components/LazyMarkdownView.ts";
 
 function asyncData(session: PrefetchContext) {
 	const { store, route, api, data } = session;
@@ -138,14 +138,14 @@ export default defineComponent({ asyncData });
 import { ref, ComponentPublicInstance, computed, useCssModule } from "vue";
 import ChatIcon from "@material-design-icons/svg/outlined/forum.svg?sfc";
 import ArrowTopIcon from "@material-design-icons/svg/outlined/rocket_launch.svg?sfc";
+import { MarkdownBox } from "@kaciras-blog/markdown-vue/view";
 import { KxButton, RelativeTime } from "@kaciras-blog/uikit";
 import { Article } from "@/api";
 import BannerPageLayout from "@/components/BannerPageLayout.vue";
 import PageMeta from "@/components/PageMeta";
 import DiscussionSection from "@/components/discussion/DiscussionSection.vue";
 import HeadTags from "@/components/HeadTags";
-import { LazyMarkdownView } from "@/markdown";
-import FinishedMDView from "@/markdown/FinishedMDView.vue";
+import LazyMarkdownView from "@/components/LazyMarkdownView.ts";
 
 const prefetch = usePrefetch();
 const styles = useCssModule();
