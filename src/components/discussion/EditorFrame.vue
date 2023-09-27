@@ -116,13 +116,12 @@ export default { isolation: true };
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { useDialog, KxFrame, KxTaskButton } from "@kaciras-blog/uikit";
+import { useDialog, KxFrame, KxTaskButton, vRipple, vImeInput, vAutofocus } from "@kaciras-blog/uikit";
 import EyeIcon from "bootstrap-icons/icons/markdown.svg?sfc";
 import HelpIcon from "bootstrap-icons/icons/question-circle.svg?sfc";
 import BellIcon from "bootstrap-icons/icons/bell.svg?sfc";
 import PlusCircleIcon from "bootstrap-icons/icons/plus-circle.svg?sfc";
 import PaperPlaneIcon from "@/assets/icon/paper-plane.svg?sfc";
-import { Discussion } from "@/api";
 import { USERNAME_LENGTH } from "@/common";
 import { useCurrentUser } from "@/store";
 import LazyMarkdownView from "@/components/LazyMarkdownView.ts";

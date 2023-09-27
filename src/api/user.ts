@@ -47,7 +47,7 @@ export default class UserEndpoint extends FetchClient {
 	}
 
 	getCurrent() {
-		return this.get("/user").raw;
+		return this.get("/user").unchecked;
 	}
 
 	updateProfile(profile: UserProfile) {

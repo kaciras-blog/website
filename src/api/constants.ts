@@ -23,6 +23,7 @@ export function getContentServerURL(config: PublicAPIConfig): string {
 	}
 }
 
+export const webServiceURL = "";
+
 // 这俩到处都有用，跟 index.ts 或 utils.ts 放一起可能会引入额外的副作用代码。
 export const contentServiceURL = getContentServerURL(import.meta.env.API_PUBLIC);
-export const webServiceURL = import.meta.env.SSR ? "__NEVER_USED__" : location.href;

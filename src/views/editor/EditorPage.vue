@@ -10,6 +10,7 @@
 			<PageMeta title='编辑器' body-class=''/>
 
 			<BaseSyntaxWeights></BaseSyntaxWeights>
+			<MediaTools ref='mediaTools'></MediaTools>
 		</template>
 		<template #toolbar-right>
 			<ConfigWeights></ConfigWeights>
@@ -89,6 +90,7 @@ import ConfigWeights from "@kaciras-blog/markdown-vue/ConfigWeights.vue";
 import SelectionWeight from "@kaciras-blog/markdown-vue/SelectionWeight.vue";
 import VerticalSeparator from "@kaciras-blog/markdown-vue/VerticalSeparator.vue";
 import api, { Article, Draft, DraftHistory } from "@/api";
+import MediaTools from "./MediaTools.vue";
 import PublishDialog from "./PublishDialog.vue";
 import MetadataDialog from "./MetadataDialog.vue";
 

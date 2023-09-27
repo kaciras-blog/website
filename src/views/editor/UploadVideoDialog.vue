@@ -27,8 +27,8 @@
 					</div>
 					<div>
 						{{ video.width }} x {{ video.height }},
-						{{ video.time.toFixed(2) }}s,
-						{{ dataSizeIEC.n2sDivision(video.file.size) }}
+						{{ video.time!.toFixed(2) }}s,
+						{{ dataSizeIEC.formatDiv(video.file.size) }}
 					</div>
 					<div>
 						<KxCheckBox
@@ -139,7 +139,7 @@ import {
 	useDialog,
 } from "@kaciras-blog/uikit";
 import api, { VariantSaveParams } from "@/api/index.ts";
-import CloseIcon from "@kaciras-blog/uikit/src/assets/icon-close.svg?sfc";
+import CloseIcon from "bootstrap-icons/icons/x.svg?sfc";
 import FileDrop from "./FileDrop.vue";
 import Size2DInput from "./Size2DInput.vue";
 

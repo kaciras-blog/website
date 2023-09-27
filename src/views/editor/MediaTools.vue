@@ -13,6 +13,7 @@
 <script setup lang="ts">
 import { KxButton, useDialog } from "@kaciras-blog/uikit";
 import { selectFile } from "@kaciras/utilities/browser";
+import { useAddonContext } from "@kaciras-blog/markdown-vue/addon-api.ts";
 import ImageIcon from "bootstrap-icons/icons/image-fill.svg?sfc";
 import VideoIcon from "bootstrap-icons/icons/play-btn.svg?sfc";
 import MusicIcon from "bootstrap-icons/icons/music-note-beamed.svg?sfc";
@@ -20,7 +21,6 @@ import api from "@/api/index.ts";
 import { basename } from "@/utils.ts";
 import UploadImageDialog from "./UploadImageDialog.vue";
 import VideoVideoDialog from "./UploadVideoDialog.vue";
-import { useAddonContext } from "@kaciras-blog/markdown-vue";
 
 const dialog = useDialog();
 const context = useAddonContext();
@@ -40,11 +40,9 @@ async function addImage(initFile?: File) {
 		return;
 	}
 	const { vw, vh, name, url } = result.data;
-	// 加上宽高便于确定占位图的尺寸，从 https://chanshiyu.com/#/post/41 学的。
-	const res = `![${basename(name)}](${url}?vw=${vw}&vh=${vh})`;
 
-	const [, selEnd] = context.selection;
-	overwrite(context, selEnd, selEnd, res);
+	// 加上宽高便于确定占位图的尺寸，从 https://chanshiyu.com/#/post/41 学的。
+	context.insertText(`![${basename(name)}](${url}?vw=${vw}&vh=${vh})`, false);
 }
 
 export interface VideoStatement {
@@ -68,15 +66,13 @@ async function addVideo(initFiles: File[] = []) {
 		? `@video[${poster}](${src})`
 		: `@gif[${label}](${src}?vw=${vw}&vh=${vh})`;
 
-	const [selEnd] = context.selection;
-	overwrite(context, selEnd, selEnd, text);
+	context.insertText(text, true);
 }
 
 async function addAudio(file?: File) {
 	file ??= (await selectFile("audio/*"))[0];
 	const res = await api.media.uploadAudio(file);
-	const [selEnd] = context.selection;
-	overwrite(context, selEnd, selEnd, `@audio[](${res})`);
+	context.insertText(`@audio[](${res})`, true);
 }
 
 defineExpose({ addImage, addVideo, addAudio });

@@ -20,7 +20,7 @@ GitHub 在 Explore 页面同样用了多个 nav 来包裹不同区域的链接�
 					isActive && $style.active
 				]'
 				@click='navigate'
-				@keypress.enter='navigate'
+				@keydown.enter='navigate'
 				v-ripple
 			>
 				{{ tab.title }}
@@ -31,6 +31,7 @@ GitHub 在 Explore 页面同样用了多个 nav 来包裹不同区域的链接�
 
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
+import { vRipple } from "@kaciras-blog/uikit";
 
 interface SlideNavProps {
 	tabs: Array<{ title: string; route: string }>;

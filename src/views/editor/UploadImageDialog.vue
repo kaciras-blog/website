@@ -28,7 +28,7 @@
 				</dd>
 
 				<dt>文件大小</dt>
-				<dd>{{ dataSizeIEC.n2sDivision(file.size) }}</dd>
+				<dd>{{ dataSizeIEC.formatDiv(file.size) }}</dd>
 			</dl>
 		</template>
 
