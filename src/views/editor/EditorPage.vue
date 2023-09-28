@@ -42,7 +42,7 @@
 			</KxButton>
 		</template>
 		<template #status-left>
-			<span v-if='autoSaveError' :class='$style.error'>
+			<span v-if='saveError' :class='$style.error'>
 				自动保存出错
 			</span>
 			<span v-else-if='draft.updateTime'>
@@ -73,15 +73,13 @@ export default defineComponent({ asyncData });
 </script>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref, shallowRef, watch } from "vue";
-import { onBeforeRouteLeave, useRouter } from "vue-router";
-import { useEventListener, useTimeoutFn } from "@vueuse/core";
+import { onMounted, reactive, shallowRef } from "vue";
+import { useRouter } from "vue-router";
 import { KxButton, RelativeTime, useDialog } from "@kaciras-blog/uikit";
 import SaveIcon from "@material-design-icons/svg/filled/save.svg?sfc";
 import CardIcon from "bootstrap-icons/icons/credit-card-2-front.svg?sfc";
 import PaperPlaneIcon from "@/assets/icon/paper-plane.svg?sfc";
 import { articleLink } from "@/common";
-import { errorMessage } from "@/utils";
 import { usePrefetch } from "@/store";
 import PageMeta from "@/components/PageMeta";
 import {
@@ -95,6 +93,7 @@ import api, { Article, Draft, DraftHistory } from "@/api";
 import MediaTools from "./MediaTools.vue";
 import PublishDialog from "./PublishDialog.vue";
 import MetadataDialog from "./MetadataDialog.vue";
+import useAutoSave from "./useAutoSave.ts";
 
 const dialog = useDialog();
 const router = useRouter();
@@ -102,15 +101,19 @@ const prefetch = usePrefetch().data;
 
 const draft = reactive<Draft>(prefetch.draft);
 const current = reactive<DraftHistory>(prefetch.latest);
-draft.updateTime = current.time;
-
 const mediaTools = shallowRef<any>();
 
-/** 是否有在未保存的改动 */
-const hasChange = ref(false);
+draft.updateTime = current.time;
 
-const autoSaveError = ref<Error>();
-const autoSaveTimer = useTimeoutFn(autoSave, 5 * 60 * 1000);
+const { changed, saveError, manualSave } = useAutoSave(current, async manual => {
+	if (manual) {
+		await api.draft.saveNewHistory(draft.id, current);
+	} else {
+		await api.draft.save(draft.id, current.saveCount, current);
+	}
+
+	draft.updateTime = Date.now();
+});
 
 /**
  * 处理拖放的函数，目前也就支持拖媒体文件来上传。
@@ -146,48 +149,6 @@ async function insertMedias(images: File[], videos: File[]) {
 	}
 }
 
-async function autoSave() {
-	watchForAutoSave();
-
-	try {
-		await api.draft.save(draft.id, current.saveCount, current);
-		draft.updateTime = Date.now();
-		hasChange.value = false;
-		autoSaveError.value = undefined;
-	} catch (e) {
-		autoSaveError.value = e;
-	}
-}
-
-/**
- * 监视文本的改变，当改变时开始计时 5 分钟，到点自动保存。
- */
-function watchForAutoSave() {
-	const callback = () => {
-		unwatch();
-		autoSaveTimer.start();
-	};
-	const unwatch = watch(current, callback, { deep: true });
-}
-
-async function manualSave() {
-	try {
-		await api.draft.saveNewHistory(draft.id, current);
-
-		draft.updateTime = Date.now();
-		hasChange.value = false;
-		autoSaveError.value = undefined;
-
-		dialog.alertSuccess("保存成功");
-
-		// 刷新自动保存的计时。
-		autoSaveTimer.stop();
-		watchForAutoSave();
-	} catch (e) {
-		dialog.alertError("保存失败，请手动备份", errorMessage(e));
-	}
-}
-
 async function showMetadataDialog() {
 	const result = await dialog.show(MetadataDialog, current).confirmPromise;
 	Object.assign(current, result);
@@ -195,30 +156,11 @@ async function showMetadataDialog() {
 
 async function showPublishDialog() {
 	const article = await dialog.show<Article>(PublishDialog, { current, draft }).confirmPromise;
-	hasChange.value = false;
+	changed.value = false;
 	return router.push(articleLink(article));
 }
 
-onBeforeRouteLeave(() => {
-	if (!hasChange.value) {
-		return;
-	}
-	const exit = window.confirm("有未保存的改动，是否退出？");
-	if (!exit) {
-		return false;
-	}
-});
-
-useEventListener("beforeunload", event => {
-	if (hasChange.value) {
-		return event.returnValue = "Sure?";
-	}
-});
-
 onMounted(() => {
-	watch(current, () => hasChange.value = true, { deep: true });
-	watchForAutoSave();
-
 	// 如果是新创建的文章，且从未保存过，就自动弹出属性框，告诉用户先填属性。
 	draft.articleId || current.saveCount > 0 || showMetadataDialog();
 });
