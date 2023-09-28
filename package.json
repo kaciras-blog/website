@@ -1,6 +1,6 @@
 {
 	"name": "@kaciras-blog/website",
-	"version": "2.4.1",
+	"version": "2.5.0",
 	"description": "Kaciras Blog web pages",
 	"license": "MIT",
 	"author": {
@@ -29,7 +29,7 @@
 		"iOS >= 15.4"
 	],
 	"dependencies": {
-		"@kaciras-blog/markdown-vue": "^1.0.3",
+		"@kaciras-blog/markdown-vue": "^1.0.7",
 		"@kaciras-blog/server": "^2.5.0",
 		"@kaciras-blog/uikit": "^2.6.1",
 		"@kaciras/utilities": "^0.10.1",

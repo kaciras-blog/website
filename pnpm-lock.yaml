@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@kaciras-blog/markdown-vue':
-    specifier: ^1.0.3
-    version: 1.0.3(@types/markdown-it@13.0.1)
+    specifier: ^1.0.7
+    version: 1.0.7(@types/markdown-it@13.0.1)
   '@kaciras-blog/server':
     specifier: ^2.5.0
     version: 2.5.0(@types/markdown-it@13.0.1)
@@ -651,8 +651,8 @@ packages:
       - typescript
     dev: true
 
-  /@kaciras-blog/markdown-vue@1.0.3(@types/markdown-it@13.0.1):
-    resolution: {integrity: sha512-lvTWnsT/P5U52ty4a3H8h56ixKvbunDUWjuzE761mEIrdbAwQ0w2bR+uc3TPbzYbP8EWCQkJ55NH6p/xBKm4TQ==}
+  /@kaciras-blog/markdown-vue@1.0.7(@types/markdown-it@13.0.1):
+    resolution: {integrity: sha512-8CXsEfLGlJ5OJhGnIilFWJDG/q4T6AsPvaiZ/H1wgCsr0y0KbCR0r4UY0PHret/9Ur9SpSJ2RaSPoHb05vi3dQ==}
     dependencies:
       '@kaciras-blog/markdown': 3.0.1(@types/markdown-it@13.0.1)
       '@kaciras/utilities': 0.10.1

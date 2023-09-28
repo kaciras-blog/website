@@ -1,4 +1,5 @@
 import "@kaciras-blog/uikit/dist/style.css";
+import "@kaciras-blog/markdown-vue/style.css";
 import "./css/index.less";
 import { createApp, createSSRApp } from "vue";
 import UIKit from "@kaciras-blog/uikit";

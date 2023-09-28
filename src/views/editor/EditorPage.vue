@@ -84,11 +84,13 @@ import { articleLink } from "@/common";
 import { errorMessage } from "@/utils";
 import { usePrefetch } from "@/store";
 import PageMeta from "@/components/PageMeta";
-import MarkdownEditor from "@kaciras-blog/markdown-vue/MarkdownEditor.vue";
-import BaseSyntaxWeights from "@kaciras-blog/markdown-vue/BaseSyntaxWeights.vue";
-import ConfigWeights from "@kaciras-blog/markdown-vue/ConfigWeights.vue";
-import SelectionWeight from "@kaciras-blog/markdown-vue/SelectionWeight.vue";
-import VerticalSeparator from "@kaciras-blog/markdown-vue/VerticalSeparator.vue";
+import {
+	MarkdownEditor,
+	BaseSyntaxWeights,
+	ConfigWeights,
+	SelectionWeight,
+	VerticalSeparator,
+} from "@kaciras-blog/markdown-vue";
 import api, { Article, Draft, DraftHistory } from "@/api";
 import MediaTools from "./MediaTools.vue";
 import PublishDialog from "./PublishDialog.vue";
