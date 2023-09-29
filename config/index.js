@@ -143,7 +143,7 @@ export default {
 		 * video/ 上传的视频
 		 * audio/ 上传的音频
 		 */
-		dataDir: "/var/lib/blog",
+		dataDir: "/var/opt/blog",
 
 		/**
 		 * 【可选】是否启用 ServiceWorker，默认不启用。
