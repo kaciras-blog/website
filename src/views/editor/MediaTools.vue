@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import { KxButton, useDialog } from "@kaciras-blog/uikit";
 import { selectFile } from "@kaciras/utilities/browser";
-import { useAddonContext } from "@kaciras-blog/markdown-vue/addon-api.ts";
+import { useAddonContext } from "@kaciras-blog/markdown-vue";
 import ImageIcon from "bootstrap-icons/icons/image-fill.svg?sfc";
 import VideoIcon from "bootstrap-icons/icons/play-btn.svg?sfc";
 import MusicIcon from "bootstrap-icons/icons/music-note-beamed.svg?sfc";

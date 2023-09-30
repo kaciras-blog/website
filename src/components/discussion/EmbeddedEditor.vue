@@ -93,7 +93,7 @@ import { computed, nextTick, ref } from "vue";
 import QuestionIcon from "bootstrap-icons/icons/question-circle.svg?sfc";
 import EyeIcon from "bootstrap-icons/icons/eye-fill.svg?sfc";
 import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
-import { KxButton, KxTaskButton, useDialog } from "@kaciras-blog/uikit";
+import { KxButton, KxTaskButton, useDialog, vAutofocus, vImeInput } from "@kaciras-blog/uikit";
 import { DEFAULT_AVATAR, USERNAME_LENGTH } from "@/common";
 import { useCurrentUser } from "@/store";
 import LazyMarkdownView from "@/components/LazyMarkdownView.ts";
