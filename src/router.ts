@@ -37,10 +37,14 @@ const routes: RouteRecordRaw[] = [
 		],
 	},
 
-	// 3）后台只有管理员才用，没有上面的那么重要，尽量分割出来。
+	// 3）后台和完整版编辑器，没有上面的那么重要，尽量分割出来。
 	{
-		path: "/edit/:draftId",
-		component: () => import("./views/editor/EditorPage.vue"),
+		path: "/edit/draft/:draftId",
+		component: () => import("./views/editor/EditArticlePage.vue"),
+	},
+	{
+		path: "/edit/manual",
+		component: () => import("./views/editor/EditDemoPage.vue"),
 	},
 	{
 		path: "/console",

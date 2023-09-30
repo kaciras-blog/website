@@ -39,7 +39,7 @@ const loading = ref(true);
 async function newArticle() {
 	try {
 		const draft = await api.draft.createNew();
-		await router.push("/edit/" + draft.id);
+		await router.push("/edit/draft/" + draft.id);
 	} catch (e) {
 		dialog.alertError("创建失败", errorMessage(e));
 	}

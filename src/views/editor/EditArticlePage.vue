@@ -2,12 +2,12 @@
 	<MarkdownEditor
 		v-model='current.content'
 		:trust='true'
-		:class='$style.editor'
+		class='editor-page'
 		:drop-handler='handleDrop'
 	>
 		<template #toolbar-left>
 			<!-- 虽然不是工具栏的组件，但还是放这免得根节点变成片段。-->
-			<PageMeta title='编辑器' body-class=''/>
+			<PageMeta title='编写文章' body-class=''/>
 
 			<BaseSyntaxWeights></BaseSyntaxWeights>
 			<MediaTools ref='mediaTools'></MediaTools>
@@ -167,10 +167,6 @@ onMounted(() => {
 </script>
 
 <style module lang="less">
-.editor {
-	height: 100vh;
-}
-
 .error {
 	color: #ff4f4f;
 	font-weight: 600;

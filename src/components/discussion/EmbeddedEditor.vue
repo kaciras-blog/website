@@ -25,14 +25,15 @@
 			>
 		</label>
 
-		<button
+		<KxButton
+			href='/edit/manual'
+			target='_blank'
 			type='button'
 			:class='$style.guide'
-			@click='showGuide'
 		>
 			<QuestionIcon/>
 			<span class='hide-m'>帮助</span>
-		</button>
+		</KxButton>
 
 		<LazyMarkdownView
 			v-if='preview'
@@ -93,17 +94,15 @@ import { computed, nextTick, ref } from "vue";
 import QuestionIcon from "bootstrap-icons/icons/question-circle.svg?sfc";
 import EyeIcon from "bootstrap-icons/icons/eye-fill.svg?sfc";
 import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
-import { KxButton, KxTaskButton, useDialog, vAutofocus, vImeInput } from "@kaciras-blog/uikit";
+import { KxButton, KxTaskButton, vAutofocus, vImeInput } from "@kaciras-blog/uikit";
 import { DEFAULT_AVATAR, USERNAME_LENGTH } from "@/common";
 import { useCurrentUser } from "@/store";
 import LazyMarkdownView from "@/components/LazyMarkdownView.ts";
 import { EditContextProps, useDiscussContext } from "./EditContext";
-import GuideDialog from "./GuideDialog.vue";
 
 const props = defineProps<EditContextProps>();
 
 const { nickname, email, content, handleInput, submit } = useDiscussContext(props);
-const dialog = useDialog();
 const user = useCurrentUser();
 
 const preview = ref(false);
@@ -119,10 +118,6 @@ const placeholder = computed(() => {
 	}
 	return `回复 ${parent.user.name}:`;
 });
-
-function showGuide() {
-	dialog.show(GuideDialog);
-}
 
 async function focus() {
 	preview.value = false;

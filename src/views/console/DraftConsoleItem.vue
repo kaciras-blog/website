@@ -23,7 +23,7 @@
 		</div>
 
 		<KxButton
-			:route='"/edit/" + id'
+			:route='"/edit/draft/" + id'
 			type='outline'
 			color='primary'
 		>

@@ -92,7 +92,7 @@ const props = defineProps(["value"]);
 
 function edit() {
 	return api.draft.fromArticle(props.value.id)
-		.then(d => router.push("/edit/" + d.id))
+		.then(d => router.push("/edit/draft/" + d.id))
 		.catch(err => console.log(err));
 }
 
