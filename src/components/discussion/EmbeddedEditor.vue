@@ -28,7 +28,7 @@
 		<KxButton
 			href='/edit/manual'
 			target='_blank'
-			type='button'
+			type='icon'
 			:class='$style.guide'
 		>
 			<QuestionIcon/>
@@ -158,23 +158,9 @@ defineExpose({ focus });
 }
 
 .guide {
-	composes: click-item from global;
-
-	display: inline-flex;
-	gap: 4px;
-	align-items: center;
-
-	float: right;
-	padding: 0;
 	font-size: 1rem;
-
-	&:hover, &.active {
-		color: @color-second;
-	}
-
-	@media screen and (max-width: @length-screen-mobile) {
-		font-size: 22px;
-	}
+	gap: 4px;
+	float: right;
 }
 
 .actions {

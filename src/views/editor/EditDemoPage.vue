@@ -4,7 +4,7 @@
 		class='editor-page'
 	>
 		<template #toolbar-left>
-			<PageMeta title='编辑器演示' body-class=''/>
+			<PageMeta title='评论说明' body-class=''/>
 
 			<BaseSyntaxWeights></BaseSyntaxWeights>
 			<MediaWeights></MediaWeights>

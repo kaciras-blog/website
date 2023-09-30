@@ -116,3 +116,13 @@ html {
 
 	//.kx-btn { font-size: 14px; }
 }
+
+/* UIKit 里的公共样式设计有问题，这里得还原。 */
+.markdown {
+	font-size: initial;
+
+	a {
+		word-break: break-all;
+		.highlight-color(@color-link, @color-link);
+	}
+}
