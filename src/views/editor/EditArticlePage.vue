@@ -1,7 +1,7 @@
 <template>
 	<MarkdownEditor
 		v-model='current.content'
-		:trust='true'
+		renderer='trusted'
 		class='editor-page'
 		:drop-handler='handleDrop'
 	>
