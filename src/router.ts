@@ -39,6 +39,10 @@ const routes: RouteRecordRaw[] = [
 
 	// 3）后台和完整版编辑器，没有上面的那么重要，尽量分割出来。
 	{
+		path: "/edit/discussion",
+		component: () => import("./views/editor/EditGuestPage.vue"),
+	},
+	{
 		path: "/edit/draft/:draftId",
 		component: () => import("./views/editor/EditArticlePage.vue"),
 	},

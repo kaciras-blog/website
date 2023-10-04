@@ -25,7 +25,7 @@
 		<InputSection
 			:object-id='objectId'
 			:type='type'
-			@after-submit='afterSubmit'
+			@submitted='afterSubmit'
 		/>
 
 		<component

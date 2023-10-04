@@ -55,9 +55,9 @@ import { useDialog } from "@kaciras-blog/uikit";
 import { useCurrentUser, useDiscussOptions } from "@/store";
 import EmbeddedEditor from "./EmbeddedEditor.vue";
 import EditorFrame from "./EditorFrame.vue";
-import { EditContextProps } from "./EditContext.ts";
+import { DiscussEditProps } from "./editor-api.ts";
 
-const props = defineProps<EditContextProps>();
+const props = defineProps<DiscussEditProps>();
 
 const user = useCurrentUser();
 const o = useDiscussOptions();

@@ -31,7 +31,7 @@
 			placeholder='支持 Markdown 语法'
 			aria-label='输入评论'
 			v-autofocus
-			v-ime-input='handleInput'
+			v-ime-input='(e: any) => content = e.target.value'
 		/>
 
 		<div :class='$style.toolbar'>
@@ -51,7 +51,6 @@
 				:class='$style.button'
 				:data-active='configPanel === CP.Mail'
 				@click='switchPanel(CP.Mail)'
-
 			>
 				<BellIcon :class='$style.icon'/>
 				通知
@@ -122,11 +121,11 @@ import HelpIcon from "bootstrap-icons/icons/question-circle.svg?sfc";
 import BellIcon from "bootstrap-icons/icons/bell.svg?sfc";
 import PlusCircleIcon from "bootstrap-icons/icons/plus-circle.svg?sfc";
 import PaperPlaneIcon from "@/assets/icon/paper-plane.svg?sfc";
-import { USERNAME_LENGTH } from "@/common";
-import { useCurrentUser } from "@/store";
+import { USERNAME_LENGTH } from "@/common.ts";
+import { useCurrentUser } from "@/store/index.ts";
 import LazyMarkdownView from "@/components/LazyMarkdownView.ts";
 import GuideDialog from "./GuideDialog.vue";
-import { EditContextProps, useDiscussContext } from "./EditContext";
+import { DiscussEditProps, useDiscussContext } from "./editor-api.ts";
 
 /**
  * Config Panel 的类型，因为到处再用懒得写一堆就简写了。
@@ -139,13 +138,13 @@ enum CP {
 	Tools,
 }
 
-const props = defineProps<EditContextProps>();
+const props = defineProps<DiscussEditProps>();
 
 const user = useCurrentUser();
 const dialog = useDialog();
-const { nickname, email, content, handleInput, submit } = useDiscussContext(props);
+const { nickname, email, content, submitSimple } = useDiscussContext(props);
 
-const configPanel = ref<CP>(CP.None);
+const configPanel = ref(CP.None);
 
 const title = computed(() => {
 	const { parent } = props;
@@ -168,7 +167,7 @@ function showGuide() {
 }
 
 async function handleSubmit(_: unknown, signal: AbortSignal) {
-	(await submit(signal)) && dialog.close();
+	(await submitSimple(signal)) && dialog.close();
 }
 </script>
 

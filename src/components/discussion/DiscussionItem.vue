@@ -1,8 +1,7 @@
 <!--
 	【定位功能？】
-	根据评论对象定位评论的页面的功能，在支持删除或多种排序的情况下是做不到的，
-	一旦评论删除后面的评论跟分页就无法计算，而一旦根据分数之类的排序同样也无法计算。
-	如果真要查看父评论，可以像知乎一样弹窗。
+	根据评论对象定位评论的页面的功能，在支持删除或多种排序的情况下需要遍历。
+	另外实现上也比较复杂，目前还没做。
 
 	【气泡样式？】
 	像 IM 一样的气泡样式虽然更具亲和力，但布局宽度会受限，只适合纯文本。
@@ -148,19 +147,16 @@ function displayName(value: Discussion) {
 
 // 宽屏直接在下面加输入框，手机则弹窗。
 async function showReplyEditor(parent: Discussion) {
-	const ctx = {
-		objectId: props.objectId,
-		type: props.type,
-		parent,
-		onAfterSubmit: afterSubmit,
-	};
+	const { objectId, type } = props;
+	const context = { objectId, type, parent };
 
 	if (breakPoint.isGreater("tablet")) {
-		replyContext.value = ctx;
+		replyContext.value = context;
 		await nextTick();
 		editorEl.value!.focus();
 	} else {
-		$dialog.show(EditorFrame, ctx);
+		const s = $dialog.show<any>(EditorFrame, context);
+		await afterSubmit(await s.confirmPromise);
 	}
 }
 

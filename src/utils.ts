@@ -73,3 +73,11 @@ export function basename(name: string) {
 	const i = name.lastIndexOf(".");
 	return i === -1 ? name : name.slice(0, i);
 }
+
+export function validateInt(value: any): number {
+	value = parseInt(value);
+	if (Number.isSafeInteger(value)) {
+		return value;
+	}
+	throw new TypeError(`${value} is not a integer`);
+}

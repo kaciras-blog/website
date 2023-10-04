@@ -56,14 +56,22 @@
 			:placeholder='placeholder'
 			aria-label='输入评论'
 			v-autofocus
-			v-ime-input='handleInput'
+			v-ime-input='(e: any) => content = e.target.value'
 		/>
 
 		<div :class='$style.actions'>
 			<KxButton
+				type='outline'
+				:href='ideURL'
+				target='_blank'
+			>
+				<EditIcon class='prefix'/>
+				完整版编辑器
+			</KxButton>
+
+			<KxButton
 				v-if='preview'
 				type='outline'
-				title='编辑'
 				@click='preview=false'
 			>
 				<EditIcon class='prefix'/>
@@ -72,7 +80,6 @@
 			<KxButton
 				v-else
 				type='outline'
-				title='预览'
 				@click='preview=true'
 			>
 				<EyeIcon class='prefix'/>
@@ -81,7 +88,7 @@
 
 			<!-- 同样由于用户感觉，不要搞禁用样式 -->
 			<KxTaskButton
-				:on-click='(_, s) => submit(s)'
+				:on-click='(_, s) => submitSimple(s)'
 			>
 				发表评论
 			</KxTaskButton>
@@ -98,15 +105,23 @@ import { KxButton, KxTaskButton, vAutofocus, vImeInput } from "@kaciras-blog/uik
 import { DEFAULT_AVATAR, USERNAME_LENGTH } from "@/common";
 import { useCurrentUser } from "@/store";
 import LazyMarkdownView from "@/components/LazyMarkdownView.ts";
-import { EditContextProps, useDiscussContext } from "./EditContext";
+import { DiscussEditProps, useDiscussContext } from "./editor-api.ts";
 
-const props = defineProps<EditContextProps>();
+const props = defineProps<DiscussEditProps>();
 
-const { nickname, email, content, handleInput, submit } = useDiscussContext(props);
+const { nickname, email, content, submitSimple } = useDiscussContext(props);
 const user = useCurrentUser();
 
 const preview = ref(false);
 const textareaEl = ref<HTMLElement>();
+
+const ideURL = computed(() => {
+	let p = `/edit/discussion?objectId=${props.objectId}&type=${props.type}`;
+	if (props.parent) {
+		p += `&parent=${props.parent.id}`;
+	}
+	return p;
+});
 
 /**
  * 跟百度贴吧一样的设计，用占位文字表示回复对象。
