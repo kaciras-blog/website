@@ -12,17 +12,17 @@ import { bind, initPromise } from "./settings";
  * 里也无法避免这一开销。
  */
 
-class ApiOfflineRoute implements Route {
+class APIOfflineRoute implements Route {
 
-	private readonly host: string;
+	private readonly pattern: string;
 	private readonly cache: ManagedCache;
 
 	private initPromise?: Promise<void>;
 
 	private fetchFn!: FetchFn;
 
-	constructor(host: string, cache: ManagedCache) {
-		this.host = host;
+	constructor(pattern: string, cache: ManagedCache) {
+		this.pattern = pattern;
 		this.cache = cache;
 
 		this.initPromise = initPromise.then(() => {
@@ -43,7 +43,7 @@ class ApiOfflineRoute implements Route {
 	}
 
 	match(request: Request) {
-		return new URL(request.url).host === this.host;
+		return request.url.includes(this.pattern);
 	}
 
 	// 伪处理方法，该方法只为了等待配置加载，加载完后将被替换为 directHandle
@@ -64,6 +64,5 @@ class ApiOfflineRoute implements Route {
  * 对动态内容使用缓存，保证在网络不通的情况下也能显示旧的内容。
  */
 export default function apiCacheRoute(cacheName: string) {
-	const { host } = new URL(contentServiceURL);
-	return new ApiOfflineRoute(host, new CacheWrapper(cacheName));
+	return new APIOfflineRoute(contentServiceURL + "/", new CacheWrapper(cacheName));
 }
