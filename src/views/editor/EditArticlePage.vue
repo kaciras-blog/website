@@ -10,7 +10,7 @@
 			<PageMeta title='编写文章' body-class=''/>
 
 			<BaseSyntaxWeights></BaseSyntaxWeights>
-			<MediaTools ref='mediaTools'></MediaTools>
+			<MediaWeights v-bind='mediaUploader'/>
 		</template>
 		<template #toolbar-right>
 			<ConfigWeights></ConfigWeights>
@@ -73,35 +73,36 @@ export default defineComponent({ asyncData });
 </script>
 
 <script setup lang="ts">
-import { onMounted, reactive, shallowRef } from "vue";
+import { onMounted, reactive } from "vue";
 import { useRouter } from "vue-router";
 import { KxButton, RelativeTime, useDialog } from "@kaciras-blog/uikit";
 import SaveIcon from "@material-design-icons/svg/filled/save.svg?sfc";
 import CardIcon from "bootstrap-icons/icons/credit-card-2-front.svg?sfc";
 import PaperPlaneIcon from "@/assets/icon/paper-plane.svg?sfc";
-import { articleLink } from "@/common";
-import { usePrefetch } from "@/store";
-import PageMeta from "@/components/PageMeta";
+import { articleLink } from "@/common.ts";
+import { usePrefetch } from "@/store/index.ts";
+import PageMeta from "@/components/PageMeta.ts";
 import {
 	MarkdownEditor,
 	BaseSyntaxWeights,
 	ConfigWeights,
 	SelectionWeight,
 	VerticalSeparator,
+	MediaWeights,
 } from "@kaciras-blog/markdown-vue";
 import api, { Article, Draft, DraftHistory } from "@/api/index.ts";
-import MediaTools from "./MediaTools.vue";
 import PublishDialog from "./PublishDialog.vue";
 import MetadataDialog from "./MetadataDialog.vue";
 import useAutoSave from "./useAutoSave.ts";
+import useMediaUploader from "./useMediaUploader.ts";
 
+const prefetch = usePrefetch().data;
 const dialog = useDialog();
 const router = useRouter();
-const prefetch = usePrefetch().data;
+const mediaUploader = useMediaUploader();
 
 const draft = reactive<Draft>(prefetch.draft);
 const current = reactive<DraftHistory>(prefetch.latest);
-const mediaTools = shallowRef<any>();
 
 draft.updateTime = current.time;
 

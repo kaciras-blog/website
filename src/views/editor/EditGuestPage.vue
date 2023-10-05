@@ -9,7 +9,7 @@
 			<PageMeta title='编写评论' body-class=''/>
 
 			<BaseSyntaxWeights></BaseSyntaxWeights>
-			<MediaTools ref='mediaTools'></MediaTools>
+			<MediaWeights></MediaWeights>
 		</template>
 		<template #toolbar-right>
 			<label
@@ -74,10 +74,10 @@ import {
 	BaseSyntaxWeights,
 	ConfigWeights,
 	MarkdownEditor,
+	MediaWeights,
 	SelectionWeight,
 	VerticalSeparator,
 } from "@kaciras-blog/markdown-vue";
-import MediaTools from "./MediaTools.vue";
 import { DEFAULT_AVATAR, USERNAME_LENGTH } from "@/common.ts";
 import { validateInt } from "@/utils.ts";
 import { useCurrentUser } from "@/store/index.ts";

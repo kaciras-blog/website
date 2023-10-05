@@ -124,7 +124,7 @@
 </template>
 
 <script setup lang="ts">
-import type { VideoStatement } from "./MediaTools.vue";
+import type { VideoStatement } from "./useMediaUploader.ts";
 import { onUnmounted, reactive, ref, toRaw } from "vue";
 import { dataSizeIEC } from "@kaciras/utilities/browser";
 import {
