@@ -89,6 +89,7 @@ import {
 	SelectionWeight,
 	VerticalSeparator,
 	MediaWeights,
+	AddonContext,
 } from "@kaciras-blog/markdown-vue";
 import api, { Article, Draft, DraftHistory } from "@/api/index.ts";
 import PublishDialog from "./PublishDialog.vue";
@@ -121,32 +122,30 @@ const { changed, saveError, manualSave } = useAutoSave(current, async manual => 
  * 如果拖了多个图片则会挨个弹上传窗，多个视频则认为是单视频的多版本。
  *
  * @param files 拖过来的文件们
+ * @param ctx 编辑器上下文
  * @return 如果有能处理的就返回 true，否则走默认的拖放操作。
  */
-function handleDrop(files: FileList) {
-	const images: File[] = [];
-	const videos: File[] = [];
+function handleDrop(files: FileList, ctx: AddonContext) {
+	insertMedias(files, ctx);
+	return [].some(v => /(?:image|video|audio)\//.test(v));
+}
 
+// 因为要顺序执行异步操作，所以单独一个 async 函数。
+async function insertMedias(files: FileList, ctx: AddonContext) {
+	const videos = [];
 	for (const file of files) {
 		if (file.type.startsWith("image/")) {
-			images.push(file);
+			await mediaUploader.image(ctx, file);
 		}
 		if (file.type.startsWith("video/")) {
 			videos.push(file);
 		}
+		if (file.type.startsWith("audio/")) {
+			await mediaUploader.audio(ctx, file);
+		}
 	}
-
-	insertMedias(images, videos);
-	return images.length + videos.length > 0;
-}
-
-// 因为要顺序执行异步操作，所以单独一个 async 函数。
-async function insertMedias(images: File[], videos: File[]) {
-	for (const image of images) {
-		await mediaTools.value.addImage(image);
-	}
-	if (videos.length) {
-		await mediaTools.value.addVideo(videos);
+	if (videos.length > 0) {
+		await mediaUploader.video(ctx, videos);
 	}
 }
 

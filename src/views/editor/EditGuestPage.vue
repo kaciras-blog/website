@@ -2,7 +2,6 @@
 	<MarkdownEditor
 		v-model='content'
 		class='editor-page'
-		:drop-handler='handleDrop'
 	>
 		<template #toolbar-left>
 			<!-- 虽然不是工具栏的组件，但还是放这免得根节点变成片段。-->
@@ -64,7 +63,6 @@
 
 <script setup lang="ts">
 import { KxButton, useDialog } from "@kaciras-blog/uikit";
-import { shallowRef } from "vue";
 import { useRoute } from "vue-router";
 import EnvelopeIcon from "bootstrap-icons/icons/envelope.svg?sfc";
 import PaperPlaneIcon from "@/assets/icon/paper-plane.svg?sfc";
@@ -97,43 +95,6 @@ async function handleSubmit() {
 	await dialog.alertSuccess("提交成功", "由于还未实现评论导航，请手动刷新原页面。");
 	window.close();
 }
-
-const mediaTools = shallowRef<any>();
-
-/**
- * 处理拖放的函数，目前也就支持拖媒体文件来上传。
- * 如果拖了多个图片则会挨个弹上传窗，多个视频则认为是单视频的多版本。
- *
- * @param files 拖过来的文件们
- * @return 如果有能处理的就返回 true，否则走默认的拖放操作。
- */
-function handleDrop(files: FileList) {
-	const images: File[] = [];
-	const videos: File[] = [];
-
-	for (const file of files) {
-		if (file.type.startsWith("image/")) {
-			images.push(file);
-		}
-		if (file.type.startsWith("video/")) {
-			videos.push(file);
-		}
-	}
-
-	insertMedias(images, videos);
-	return images.length + videos.length > 0;
-}
-
-// 因为要顺序执行异步操作，所以单独一个 async 函数。
-async function insertMedias(images: File[], videos: File[]) {
-	for (const image of images) {
-		await mediaTools.value.addImage(image);
-	}
-	if (videos.length) {
-		await mediaTools.value.addVideo(videos);
-	}
-}
-
 </script>
 
 <style module lang='less'>
