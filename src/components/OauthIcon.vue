@@ -1,6 +1,6 @@
-<script>
+<script lang='ts'>
 import { h } from "vue";
-import { contentServiceURL } from "@/api/constants";
+import { contentServiceURL } from "@/api/constants.ts";
 
 export default {
 	name: "OauthIcon",

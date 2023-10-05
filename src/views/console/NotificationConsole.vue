@@ -35,8 +35,8 @@
 import { shallowRef } from "vue";
 import { AtomSpinner, KxTaskButton, RelativeTime, useDialog } from "@kaciras-blog/uikit";
 import ClearIcon from "@material-design-icons/svg/filled/clear_all.svg?sfc";
-import api, { Notice } from "@/api";
-import { errorMessage } from "@/utils";
+import api, { Notice } from "@/api/index.ts";
+import { errorMessage } from "@/utils.ts";
 import FriendNotice from "@/views/console/FriendNotice.vue";
 import DiscussionNotice from "@/views/console/DiscussionNotice.vue";
 

@@ -25,9 +25,9 @@
 import { RouterView, useRouter } from "vue-router";
 import { Unsubscribe } from "nanoevents";
 import { DialogContainer, KxProgress, ToastContainer, useDialog } from "@kaciras-blog/uikit";
-import HeadTags from "@/components/HeadTags";
+import HeadTags from "@/components/HeadTags.ts";
 import OGImage from "@/assets/img/OpenGraph.png";
-import { events, PrefetchContext } from "./prefetch";
+import { events, PrefetchContext } from "./prefetch.ts";
 
 // 切换视图后关掉所有弹窗，因为窗口容器在这里挂载所以也放这了。
 // vue-router 4 即使 pushState 未改变 URL 也触发导航，所以检查下路径是否改变了。

@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import api, { AuthType, User } from "@/api";
+import api, { AuthType, User } from "@/api/index.ts";
 
 const GUESTS: User = {
 	id: 0,

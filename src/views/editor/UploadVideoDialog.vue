@@ -138,8 +138,8 @@ import {
 	KxTaskButton,
 	useDialog,
 } from "@kaciras-blog/uikit";
-import api, { VariantSaveParams } from "@/api/index.ts";
 import CloseIcon from "bootstrap-icons/icons/x.svg?sfc";
+import api, { VariantSaveParams } from "@/api/index.ts";
 import FileDrop from "./FileDrop.vue";
 import Size2DInput from "./Size2DInput.vue";
 

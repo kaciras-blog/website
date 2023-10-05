@@ -72,17 +72,17 @@
 </template>
 
 <script setup lang="ts">
+import { useRouter } from "vue-router";
 import { inject } from "vue";
-import api from "@/api";
 import { KxButton, RelativeTime, useDialog } from "@kaciras-blog/uikit";
-import PaperPlaneIcon from "@/assets/icon/paper-plane.svg?sfc";
 import UpdateIcon from "@material-design-icons/svg/filled/update.svg?sfc";
 import EyeIcon from "bootstrap-icons/icons/eye-fill.svg?sfc";
 import ChatIcon from "bootstrap-icons/icons/chat-dots.svg?sfc";
-import { articleLink } from "@/common";
-import { errorMessage } from "@/utils";
+import PaperPlaneIcon from "@/assets/icon/paper-plane.svg?sfc";
+import api from "@/api/index.ts";
+import { articleLink } from "@/common.ts";
+import { errorMessage } from "@/utils.ts";
 import SelectCategoryDialog from "@/components/SelectCategoryDialog.vue";
-import { useRouter } from "vue-router";
 
 const router = useRouter();
 const dialog = useDialog();
@@ -121,7 +121,7 @@ async function changeCategory() {
 </script>
 
 <style module lang="less">
-@import "../../css/imports";
+@import "../../css/imports.less";
 
 @cover-width: 13.5rem;
 

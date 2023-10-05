@@ -54,7 +54,7 @@
 </template>
 
 <script lang="ts">
-import { PrefetchContext } from "@/prefetch";
+import { PrefetchContext } from "@/prefetch.ts";
 
 const DEFAULT_PAGE_SIZE = 10;
 
@@ -79,12 +79,12 @@ import { ref } from "vue";
 import { useLocalStorage } from "@vueuse/core";
 import { useRoute } from "vue-router";
 import { useBreakPoint, ScrollPagingView, KxSwitchBox } from "@kaciras-blog/uikit";
-import api from "@/api";
-import { usePrefetch } from "@/store";
+import api from "@/api/index.ts";
+import { usePrefetch } from "@/store/index.ts";
 import BannerPageLayout from "@/components/BannerPageLayout.vue";
 import PreviewItem from "./PreviewItem.vue";
 import HotArticles from "./HotArticles.vue";
-import PageMeta from "@/components/PageMeta";
+import PageMeta from "@/components/PageMeta.ts";
 
 const breakPoint = useBreakPoint();
 const route = useRoute();
@@ -119,7 +119,7 @@ function nextPageUrl() {
 </script>
 
 <style module lang="less">
-@import "../../css/imports";
+@import "../../css/imports.less";
 
 :global(#index-page) {
 	display: flex;

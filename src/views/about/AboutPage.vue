@@ -9,7 +9,7 @@
 <script setup lang="ts">
 import { RouterView } from "vue-router";
 import BasePageLayout from "@/components/BasePageLayout.vue";
-import PageMeta from "@/components/PageMeta";
+import PageMeta from "@/components/PageMeta.ts";
 import SlideNav from "./SlideNav.vue";
 
 const tabs = [
@@ -21,7 +21,7 @@ const tabs = [
 </script>
 
 <style module lang="less">
-@import "../../css/imports";
+@import "../../css/imports.less";
 
 .body {
 	display: flex;

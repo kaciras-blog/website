@@ -45,8 +45,8 @@
 import { reactive, toRaw } from "vue";
 import { ImageCropper, KxBaseDialog, KxDialogButtons, MaterialTextInput, useDialog, } from "@kaciras-blog/uikit";
 import { selectFile } from "@kaciras/utilities/browser";
-import api, { Friend } from "@/api";
-import { DEFAULT_AVATAR } from "@/common";
+import api, { Friend } from "@/api/index.ts";
+import { DEFAULT_AVATAR } from "@/common.ts";
 
 const props = defineProps<Friend>();
 
@@ -79,7 +79,7 @@ function confirm() {
 </script>
 
 <style module lang="less">
-@import "../../css/imports";
+@import "../../css/imports.less";
 
 @background-width: 320px;
 @favicon-size: 100px;

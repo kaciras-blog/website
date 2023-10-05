@@ -43,8 +43,8 @@ import { useRouter } from "vue-router";
 import { KxButton, MessageType, ScrollPagingView, useDialog } from "@kaciras-blog/uikit";
 import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
 import TrashIcon from "bootstrap-icons/icons/trash.svg?sfc";
-import api, { Draft, ListQueryView } from "@/api";
-import { deleteOn, errorMessage } from "@/utils";
+import api, { Draft, ListQueryView } from "@/api/index.ts";
+import { deleteOn, errorMessage } from "@/utils.ts";
 import DraftConsoleItem from "./DraftConsoleItem.vue";
 
 const dialog = useDialog();

@@ -52,7 +52,7 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useDialog } from "@kaciras-blog/uikit";
-import { useCurrentUser, useDiscussOptions } from "@/store";
+import { useCurrentUser, useDiscussOptions } from "@/store/index.ts";
 import EmbeddedEditor from "./EmbeddedEditor.vue";
 import EditorFrame from "./EditorFrame.vue";
 import { DiscussEditProps } from "./editor-api.ts";
@@ -79,7 +79,7 @@ defineExpose({ focus });
 </script>
 
 <style module lang="less">
-@import "../../css/imports";
+@import "../../css/imports.less";
 
 .shore {
 	padding: 3rem 0 4rem 0 !important;

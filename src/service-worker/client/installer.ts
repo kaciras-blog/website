@@ -16,13 +16,6 @@ const client = import.meta.env.SSR ? (null as never) : RPC.createClient<SWServer
 	navigator.serviceWorker.addEventListener("message", e => rec(e.data));
 });
 
-/**
- * 设置 ServiceWorker 配置的选项值。
- *
- * @param key 选项名
- * @param value 值
- * @return 等待配置已存储并生效的
- */
 export function putSetting<T>(key: string, value: T) {
 	return client.setOption(key, value);
 }

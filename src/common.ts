@@ -1,4 +1,4 @@
-import { Article } from "@/api";
+import { Article } from "@/api/index.ts";
 
 import DEFAULT_AVATAR from "@/assets/img/akalin.jpg";
 import DEFAULT_COVER from "@/assets/img/placeholder.png";

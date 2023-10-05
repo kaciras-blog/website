@@ -13,8 +13,8 @@
 </template>
 
 <script lang="ts">
-import { PrefetchContext } from "@/prefetch";
-import { attachRandomId } from "@/utils";
+import { PrefetchContext } from "@/prefetch.ts";
+import { attachRandomId } from "@/utils.ts";
 
 export default {
 	name: "IndexPage",
@@ -27,7 +27,7 @@ export default {
 
 <script setup lang="ts">
 import BasePageLayout from "@/components/BasePageLayout.vue";
-import PageMeta from "@/components/PageMeta";
+import PageMeta from "@/components/PageMeta.ts";
 import BlogSection from "./BlogSection.vue";
 import FriendsSection from "./FriendsSection.vue";
 
@@ -39,7 +39,7 @@ import FriendsSection from "./FriendsSection.vue";
 </script>
 
 <style module lang="less">
-@import "../../css/imports";
+@import "../../css/imports.less";
 
 .nav {
 	position: absolute;

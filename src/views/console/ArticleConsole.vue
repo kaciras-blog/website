@@ -26,8 +26,8 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { KxButton, SkFadingCircle, useDialog } from "@kaciras-blog/uikit";
 import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
-import api, { DeletionState } from "@/api";
-import { errorMessage } from "@/utils";
+import api, { DeletionState } from "@/api/index.ts";
+import { errorMessage } from "@/utils.ts";
 import ArticleItem from "./ArticleItem.vue";
 
 const dialog = useDialog();

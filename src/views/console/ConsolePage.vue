@@ -69,7 +69,7 @@ const views = [
 import { provide, shallowRef } from "vue";
 import { useRouter } from "vue-router";
 import ArrowLeft from "@material-design-icons/svg/round/arrow_back.svg?sfc";
-import PageMeta from "@/components/PageMeta";
+import PageMeta from "@/components/PageMeta.ts";
 
 const router = useRouter();
 
@@ -100,7 +100,7 @@ if (matched.length < 2) {
 </script>
 
 <style module lang="less">
-@import "../../css/imports";
+@import "../../css/imports.less";
 
 .body {
 	height: 100vh;

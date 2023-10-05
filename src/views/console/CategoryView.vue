@@ -75,9 +75,9 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import DEFAULT_CODER from "@/assets/img/category.png";
 import { KxButton, KxRadioBox, KxRadioBoxGroup, useDialog } from "@kaciras-blog/uikit";
-import api from "@/api";
+import DEFAULT_CODER from "@/assets/img/category.png";
+import api from "@/api/index.ts";
 import SelectCategoryDialog from "@/components/SelectCategoryDialog.vue";
 import MoveCategoryDialog from "./MoveCategoryDialog.vue";
 
@@ -136,7 +136,7 @@ async function remove() {
 </script>
 
 <style module lang="less">
-@import "../../css/imports";
+@import "../../css/imports.less";
 
 .infoSection {
 	padding: 2.5rem;

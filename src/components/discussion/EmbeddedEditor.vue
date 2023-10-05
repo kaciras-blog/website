@@ -102,8 +102,8 @@ import QuestionIcon from "bootstrap-icons/icons/question-circle.svg?sfc";
 import EyeIcon from "bootstrap-icons/icons/eye-fill.svg?sfc";
 import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
 import { KxButton, KxTaskButton, vAutofocus, vImeInput } from "@kaciras-blog/uikit";
-import { DEFAULT_AVATAR, USERNAME_LENGTH } from "@/common";
-import { useCurrentUser } from "@/store";
+import { DEFAULT_AVATAR, USERNAME_LENGTH } from "@/common.ts";
+import { useCurrentUser } from "@/store/index.ts";
 import LazyMarkdownView from "@/components/LazyMarkdownView.ts";
 import { DiscussEditProps, useDiscussContext } from "./editor-api.ts";
 
@@ -144,7 +144,7 @@ defineExpose({ focus });
 </script>
 
 <style module lang="less">
-@import "../../css/imports";
+@import "../../css/imports.less";
 
 .textarea, .preview {
 	width: 100%;

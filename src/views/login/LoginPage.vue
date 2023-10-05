@@ -67,7 +67,7 @@ function switchPanel(name: string) {
 </script>
 
 <style module lang="less">
-@import "../../css/imports";
+@import "../../css/imports.less";
 
 .container {
 	display: flex;

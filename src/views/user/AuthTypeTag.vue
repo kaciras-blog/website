@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { AuthType } from "@/api";
+import { AuthType } from "@/api/index.ts";
 
 interface AuthTapeTagProps {
 	type: AuthType;

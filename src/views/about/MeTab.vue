@@ -53,12 +53,12 @@
 
 <script setup lang="ts">
 import SocialLink from "@/components/SocialLink.vue";
-import PageMeta from "@/components/PageMeta";
+import PageMeta from "@/components/PageMeta.ts";
 import DiscussionSection from "@/components/discussion/DiscussionSection.vue";
 </script>
 
 <style module lang="less">
-@import "../../css/imports";
+@import "../../css/imports.less";
 
 .profile {
 	text-align: center;

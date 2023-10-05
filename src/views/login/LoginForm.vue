@@ -79,11 +79,11 @@
 import { reactive, ref, toRaw } from "vue";
 import { useRouter } from "vue-router";
 import { KxButton, KxCheckBox, KxPasswordInput, KxTaskButton, vAutofocus } from "@kaciras-blog/uikit";
-import api from "@/api";
+import api from "@/api/index.ts";
 import OauthIcon from "@/components/OauthIcon.vue";
-import { errorMessage } from "@/utils";
-import { useCurrentUser } from "@/store";
-import PageMeta from "@/components/PageMeta";
+import { errorMessage } from "@/utils.ts";
+import { useCurrentUser } from "@/store/index.ts";
+import PageMeta from "@/components/PageMeta.ts";
 
 interface LoginFormProps {
 	returnUri: string;
@@ -119,7 +119,7 @@ function switchPanel() {
 </script>
 
 <style module lang="less">
-@import "../../css/imports";
+@import "../../css/imports.less";
 
 .separator {
 	composes: center from global;

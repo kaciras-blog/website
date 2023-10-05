@@ -18,8 +18,8 @@
 </template>
 
 <script setup lang="ts">
-import { articleLink } from "@/common";
-import { usePrefetch } from "@/store";
+import { articleLink } from "@/common.ts";
+import { usePrefetch } from "@/store/index.ts";
 
 const { hots } = usePrefetch().data;
 </script>

@@ -1,6 +1,6 @@
-import { CacheWrapper, ManagedCache } from "./cache";
-import { Route } from "./routing";
-import { FetchFn, staleWhileRevalidate } from "./fetch-strategy";
+import { CacheWrapper, ManagedCache } from "./cache.ts";
+import { Route } from "./routing.ts";
+import { FetchFn, staleWhileRevalidate } from "./fetch-strategy.ts";
 
 /*
  * ==================== 关于导航预载（Navigation Preload）====================

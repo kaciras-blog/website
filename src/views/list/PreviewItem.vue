@@ -53,7 +53,7 @@ import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
 import EyeIcon from "bootstrap-icons/icons/eye-fill.svg?sfc";
 import ChatIcon from "bootstrap-icons/icons/chat-dots.svg?sfc";
 import { RelativeTime } from "@kaciras-blog/uikit";
-import { articleLink } from "@/common";
+import { articleLink } from "@/common.ts";
 
 interface PreviewItemProps {
 	item: any;
@@ -63,7 +63,7 @@ defineProps<PreviewItemProps>();
 </script>
 
 <style module lang="less">
-@import "../../css/imports";
+@import "../../css/imports.less";
 
 .container {
 	composes: segment from global;

@@ -52,4 +52,5 @@
 
 <script setup lang="ts">
 import IconSectionHeader from "@/components/IconSectionHeader.vue";
-import PageMeta from "@/components/PageMeta";</script>
+import PageMeta from "@/components/PageMeta.ts";
+</script>

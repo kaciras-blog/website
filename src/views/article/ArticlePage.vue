@@ -105,9 +105,9 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { PrefetchContext } from "@/prefetch";
-import { usePrefetch } from "@/store";
-import { articleLink } from "@/common";
+import { PrefetchContext } from "@/prefetch.ts";
+import { usePrefetch } from "@/store/index.ts";
+import { articleLink } from "@/common.ts";
 import { prefetchMarkdownView } from "@/components/LazyMarkdownView.ts";
 
 function asyncData(session: PrefetchContext) {
@@ -140,7 +140,7 @@ import ChatIcon from "@material-design-icons/svg/outlined/forum.svg?sfc";
 import ArrowTopIcon from "@material-design-icons/svg/outlined/rocket_launch.svg?sfc";
 import MarkdownBox from "@kaciras-blog/markdown-vue/box";
 import { KxButton, RelativeTime } from "@kaciras-blog/uikit";
-import { Article } from "@/api";
+import { Article } from "@/api/index.ts";
 import BannerPageLayout from "@/components/BannerPageLayout.vue";
 import PageMeta from "@/components/PageMeta";
 import DiscussionSection from "@/components/discussion/DiscussionSection.vue";
@@ -185,7 +185,7 @@ function gotoDiscuss() {
 </script>
 
 <style module lang="less">
-@import "../../css/imports";
+@import "../../css/imports.less";
 
 .container {
 	@media screen and (min-width: @length-screen-pad) {

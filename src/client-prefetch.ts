@@ -6,10 +6,10 @@
  */
 import { RouteComponent, RouteLocationNormalizedLoaded, Router } from "vue-router";
 import { Pinia } from "pinia";
-import api from "@/api";
-import { usePrefetch } from "@/store";
-import { isOnlyHashChange } from "@/utils";
-import { collectTasks, events, PrefetchContext } from "./prefetch";
+import api from "@/api/index.ts";
+import { usePrefetch } from "@/store/index.ts";
+import { isOnlyHashChange } from "@/utils.ts";
+import { collectTasks, events, PrefetchContext } from "./prefetch.ts";
 
 let controller = new AbortController();
 

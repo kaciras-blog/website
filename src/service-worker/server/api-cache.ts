@@ -1,8 +1,8 @@
-import { contentServiceURL } from "../../api/constants";
-import { CacheWrapper, ManagedCache } from "./cache";
-import { Route } from "./routing";
-import { FetchFn, networkFirst, staleWhileRevalidate } from "./fetch-strategy";
-import { bind, initPromise } from "./settings";
+import { contentServiceURL } from "../../api/constants.ts";
+import { CacheWrapper, ManagedCache } from "./cache.ts";
+import { Route } from "./routing.ts";
+import { FetchFn, networkFirst, staleWhileRevalidate } from "./fetch-strategy.ts";
+import { bind, initPromise } from "./settings.ts";
 
 /*
  * 从页面代码里拦截 fetch 其实也行，但并未发现这有什么好处。

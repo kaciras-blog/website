@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { FriendAccident } from "@/api";
+import { FriendAccident } from "@/api/index.ts";
 
 defineProps<FriendAccident>();
 </script>

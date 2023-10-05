@@ -57,7 +57,7 @@
 </template>
 
 <script lang="ts">
-import { PrefetchContext } from "@/prefetch";
+import { PrefetchContext } from "@/prefetch.ts";
 import { defineComponent } from "vue";
 
 // 因为有防抖，创建之后再下载数据的话首屏会有一个渲染延迟，所以改用预载。
@@ -89,7 +89,7 @@ import {
 	SelectionWeight,
 	VerticalSeparator,
 } from "@kaciras-blog/markdown-vue";
-import api, { Article, Draft, DraftHistory } from "@/api";
+import api, { Article, Draft, DraftHistory } from "@/api/index.ts";
 import MediaTools from "./MediaTools.vue";
 import PublishDialog from "./PublishDialog.vue";
 import MetadataDialog from "./MetadataDialog.vue";

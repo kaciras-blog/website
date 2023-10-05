@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { CATEGORY_IMG } from "@/common";
+import { CATEGORY_IMG } from "@/common.ts";
 import { Category } from "@/api/index.ts";
 
 defineProps<Category>();
@@ -25,7 +25,7 @@ defineEmits<{ click: [] }>();
 </script>
 
 <style module lang="less">
-@import "../css/imports";
+@import "../css/imports.less";
 
 .container {
 	display: inline-block;

@@ -27,8 +27,8 @@
 </template>
 
 <script setup lang="ts">
-import { DEFAULT_AVATAR } from "@/common";
-import { Friend } from "@/api";
+import { DEFAULT_AVATAR } from "@/common.ts";
+import { Friend } from "@/api/index.ts";
 
 interface FriendCardProps {
 
@@ -52,7 +52,7 @@ defineProps<FriendCardProps>();
 </script>
 
 <style module lang="less">
-@import "../../css/imports";
+@import "../../css/imports.less";
 
 /*
  * 友链的样式模仿了 https://github.com/chanshiyucx/aurora

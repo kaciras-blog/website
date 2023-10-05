@@ -39,7 +39,7 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from "vue";
 import { KxButton, KxCheckBox } from "@kaciras-blog/uikit";
-import api, { Discussion, DiscussionState } from "@/api";
+import api, { Discussion, DiscussionState } from "@/api/index.ts";
 import DiscussionConfigPanel from "./DiscussionConfigPanel.vue";
 import DiscussionCheckItem from "./DiscussionCheckItem.vue";
 

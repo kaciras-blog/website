@@ -58,7 +58,7 @@
 import { ref, watch } from "vue";
 import { useLocalStorage } from "@vueuse/core";
 import { ButtonPagingView, KxSelect, ScrollPagingView } from "@kaciras-blog/uikit";
-import api, { Discussion, DiscussionQuery, ListQueryView } from "@/api";
+import api, { Discussion, DiscussionQuery, ListQueryView } from "@/api/index.ts";
 import { useDiscussOptions } from "@/store";
 import BootLoader from "./BootLoader.vue";
 import DiscussionItem from "./DiscussionItem.vue";
@@ -142,7 +142,7 @@ function initialize() {
 </script>
 
 <style module lang="less">
-@import "../../css/imports";
+@import "../../css/imports.less";
 
 .header {
 	font-size: initial;

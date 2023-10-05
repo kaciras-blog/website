@@ -52,9 +52,9 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { KxBaseDialog, KxButton, KxCheckBox, KxDialogButtons, useDialog } from "@kaciras-blog/uikit";
-import api, { Category } from "@/api";
+import api, { Category } from "@/api/index.ts";
+import { errorMessage } from "@/utils.ts";
 import SelectCategoryDialog from "@/components/SelectCategoryDialog.vue";
-import { errorMessage } from "@/utils";
 
 interface PublishDialogProps {
 	draft: any;

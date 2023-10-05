@@ -28,8 +28,8 @@
 <script setup lang="ts">
 import { nextTick, ref, watch } from "vue";
 import { KxButton, moveElement, observeMouseMove, useDialog } from "@kaciras-blog/uikit";
-import api, { Card } from "@/api";
-import { attachRandomId, deleteOn } from "@/utils";
+import api, { Card } from "@/api/index.ts";
+import { attachRandomId, deleteOn } from "@/utils.ts";
 import CardListItem from "./CardListItem.vue";
 
 const CARD_TEMPLATE: Card = {
@@ -174,7 +174,7 @@ async function drag(event: any, item: CardEntry) {
 </script>
 
 <style module lang="less">
-@import "../../css/imports";
+@import "../../css/imports.less";
 
 .card {
 	margin: 20px 0;

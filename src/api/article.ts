@@ -1,5 +1,5 @@
 import { FetchClient } from "@kaciras/utilities/browser";
-import { Pageable } from "./common";
+import { Pageable } from "./common.ts";
 
 /*
  * 由于Vue的HTML模板里无法很方便地引用到外部导入的成员，并且后端不是JS写的无法保证枚举的一致，

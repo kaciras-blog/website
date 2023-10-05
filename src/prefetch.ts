@@ -1,4 +1,4 @@
-import type API from "./api";
+import type API from "./api/index.ts";
 import { ComponentOptions } from "vue";
 import { Pinia } from "pinia";
 import { RouteComponent, RouteLocationNormalizedLoaded } from "vue-router";

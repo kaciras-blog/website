@@ -52,8 +52,8 @@
 import { KxButton } from "@kaciras-blog/uikit";
 import ArrowLeft from "@material-design-icons/svg/round/arrow_back.svg?sfc";
 import ArrowUpward from "@material-design-icons/svg/round/arrow_upward.svg?sfc";
-import api from "@/api";
-import CachedCategoryWalker from "@/components/CachedCategoryWalker";
+import api from "@/api/index.ts";
+import CachedCategoryWalker from "@/components/CachedCategoryWalker.ts";
 import CategoryCard from "@/components/CategoryCard.vue";
 import CategoryView from "./CategoryView.vue";
 
@@ -105,7 +105,7 @@ export default {
 </script>
 
 <style module lang="less">
-@import "../../css/imports";
+@import "../../css/imports.less";
 
 .buttons {
 	composes: global(console-toolbar);

@@ -26,8 +26,8 @@
 <script setup lang="ts">
 import { reactive, toRaw } from "vue";
 import { KxBaseDialog, KxDialogButtons, useDialog } from "@kaciras-blog/uikit";
-import api, { ArticleMeta } from "@/api";
-import { DEFAULT_COVER } from "@/common";
+import api, { ArticleMeta } from "@/api/index.ts";
+import { DEFAULT_COVER } from "@/common.ts";
 
 defineOptions({ inheritAttrs: false });
 

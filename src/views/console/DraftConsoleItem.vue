@@ -44,7 +44,7 @@ import { KxButton, MessageType, RelativeTime, useDialog } from "@kaciras-blog/ui
 import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
 import PaperPlaneIcon from "@/assets/icon/paper-plane.svg?sfc";
 import UpdateIcon from "@material-design-icons/svg/filled/update.svg?sfc";
-import api, { Draft } from "@/api";
+import api, { Draft } from "@/api/index.ts";
 
 const props = defineProps<Draft>();
 const emit = defineEmits(["removed"]);
@@ -65,7 +65,7 @@ async function deleteDraft() {
 </script>
 
 <style module lang="less">
-@import "../../css/imports";
+@import "../../css/imports.less";
 
 .container {
 	display: flex;

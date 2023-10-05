@@ -50,7 +50,8 @@
 
 <script setup lang="ts">
 import DiscussionSection from "@/components/discussion/DiscussionSection.vue";
-import PageMeta from "@/components/PageMeta";</script>
+import PageMeta from "@/components/PageMeta.ts";
+</script>
 
 <style module lang="less">
 .example {

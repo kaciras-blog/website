@@ -129,10 +129,10 @@
 </template>
 
 <script setup lang="ts">
-// noinspection ES6UnusedImports WebStorm 的分析有问题。
+// noinspection ES6UnusedImports WebStorm 的分析有问题。,
 import { browserslist } from "../../../package.json";
 
 import IconParagraph from "@/components/IconParagraph.vue";
-import PageMeta from "@/components/PageMeta";
+import PageMeta from "@/components/PageMeta.ts";
 import IconSectionHeader from "@/components/IconSectionHeader.vue";
 </script>

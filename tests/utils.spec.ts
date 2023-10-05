@@ -1,5 +1,5 @@
 import { createMemoryHistory, createRouter } from "vue-router";
-import { basename, isOnlyHashChange } from "../src/utils";
+import { basename, isOnlyHashChange } from "../src/utils.ts";
 import { describe, expect, it } from "vitest";
 
 describe("isOnlyHashChange", () => {

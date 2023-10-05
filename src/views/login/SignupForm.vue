@@ -82,10 +82,10 @@
 import { onMounted, reactive, ref, toRaw } from "vue";
 import { useRouter } from "vue-router";
 import { KxButton, KxPasswordInput, KxTaskButton } from "@kaciras-blog/uikit";
-import api from "@/api";
-import { errorMessage } from "@/utils";
-import { useCurrentUser } from "@/store";
-import PageMeta from "@/components/PageMeta";
+import api from "@/api/index.ts";
+import { errorMessage } from "@/utils.ts";
+import { useCurrentUser } from "@/store/index.ts";
+import PageMeta from "@/components/PageMeta.ts";
 
 interface LoginFormProps {
 	returnUri: string;

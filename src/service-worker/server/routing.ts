@@ -1,4 +1,4 @@
-import { FetchFn } from "./fetch-strategy";
+import { FetchFn } from "./fetch-strategy.ts";
 
 /*
  * ServiceWorker 的一大功能：拦截请求，本质上就是一个运行在浏览器中的代理。

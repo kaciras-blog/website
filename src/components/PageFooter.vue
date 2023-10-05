@@ -11,7 +11,7 @@
 </template>
 
 <style module lang="less">
-@import "../css/imports";
+@import "../css/imports.less";
 
 .globalFooter {
 	width: 100%;

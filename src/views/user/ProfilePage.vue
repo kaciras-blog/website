@@ -43,13 +43,13 @@
 import { shallowReactive, toRaw } from "vue";
 import { selectFile } from "@kaciras/utilities/browser";
 import { ImageCropper, KxButton, useDialog } from "@kaciras-blog/uikit";
-import api from "@/api";
-import { DEFAULT_AVATAR, USERNAME_LENGTH } from "@/common";
-import { useCurrentUser } from "@/store";
-import { errorMessage } from "@/utils";
+import api from "@/api/index.ts";
+import { DEFAULT_AVATAR, USERNAME_LENGTH } from "@/common.ts";
+import { useCurrentUser } from "@/store/index.ts";
+import { errorMessage } from "@/utils.ts";
 import BasePageLayout from "@/components/BasePageLayout.vue";
 import AuthTypeTag from "./AuthTypeTag.vue";
-import PageMeta from "@/components/PageMeta";
+import PageMeta from "@/components/PageMeta.ts";
 
 const globalUser = useCurrentUser();
 const dialog = useDialog();
@@ -79,7 +79,7 @@ async function save() {
 </script>
 
 <style module lang="less">
-@import "../../css/imports";
+@import "../../css/imports.less";
 
 .pageLayout {
 	display: flex;

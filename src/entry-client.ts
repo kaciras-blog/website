@@ -1,9 +1,9 @@
 import { observeMediaQuery } from "@kaciras-blog/uikit";
-import { setupSentry } from "./error-report";
-import createBlogApp from "./main";
-import { useServiceWorker } from "@/service-worker/client/installer";
-import { useCurrentUser } from "@/store";
-import { installRouterHooks, prefetch } from "./client-prefetch";
+import { setupSentry } from "./error-report.ts";
+import createBlogApp from "./main.ts";
+import { useServiceWorker } from "@/service-worker/client/installer.ts";
+import { useCurrentUser } from "@/store/index.ts";
+import { installRouterHooks, prefetch } from "./client-prefetch.ts";
 
 const { app, router, store } = createBlogApp(window.__INITIAL_STATE__);
 

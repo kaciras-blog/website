@@ -40,13 +40,13 @@
 
 <script setup lang="ts">
 import { KxButton, SmartLink } from "@kaciras-blog/uikit";
-import { usePrefetch } from "@/store";
+import { usePrefetch } from "@/store/index.ts";
 
 const { cards } = usePrefetch().data;
 </script>
 
 <style module lang="less">
-@import "../../css/imports";
+@import "../../css/imports.less";
 
 .header {
 	display: flex;

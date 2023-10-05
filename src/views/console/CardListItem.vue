@@ -74,7 +74,7 @@
 import { KxButton } from "@kaciras-blog/uikit";
 import DownUpIcon from "bootstrap-icons/icons/arrow-down-up.svg?sfc";
 import TrashIcon from "bootstrap-icons/icons/trash.svg?sfc";
-import api from "@/api";
+import api from "@/api/index.ts";
 
 interface CardListItemProps {
 	id: number;
@@ -99,7 +99,7 @@ function setPicture() {
 </script>
 
 <style module lang="less">
-@import "../../css/imports";
+@import "../../css/imports.less";
 
 @main-color: #4379e6;
 

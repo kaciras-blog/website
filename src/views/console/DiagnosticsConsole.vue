@@ -20,7 +20,7 @@
 
 <script setup lang='ts'>
 import { KxButton, useToast } from "@kaciras-blog/uikit";
-import api from "@/api";
+import api from "@/api/index.ts";
 
 const toast = useToast();
 

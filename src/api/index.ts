@@ -12,17 +12,17 @@ import NotificationEndpoint from "./notification.ts";
 import CategoryEndpoint from "./category.ts";
 import DiscussionEndpoint from "./discussion.ts";
 
-export * from "./common";
-export * from "./article";
-export * from "./cards";
-export * from "./friend";
-export * from "./draft";
-export * from "./user";
-export * from "./media";
-export * from "./config";
-export * from "./notification";
-export * from "./category";
-export * from "./discussion";
+export * from "./common.ts";
+export * from "./article.ts";
+export * from "./cards.ts";
+export * from "./friend.ts";
+export * from "./draft.ts";
+export * from "./user.ts";
+export * from "./media.ts";
+export * from "./config.ts";
+export * from "./notification.ts";
+export * from "./category.ts";
+export * from "./discussion.ts";
 
 /*
  * 顶层的键使用了变量，都是 string，TypeScript 会做处理以便表示可能出现的键相等的情况。

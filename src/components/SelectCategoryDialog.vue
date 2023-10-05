@@ -96,10 +96,10 @@ import { computed, reactive, ref } from "vue";
 import { KxBaseDialog, KxButton, KxCheckBox, useDialog } from "@kaciras-blog/uikit";
 import ArrowLeft from "@material-design-icons/svg/round/arrow_back.svg?sfc";
 import ArrowUpward from "@material-design-icons/svg/round/arrow_upward.svg?sfc";
-import { Category } from "@/api";
-import { deleteOn } from "@/utils";
-import { CATEGORY_IMG } from "@/common";
-import CachedCategoryWalker from "./CachedCategoryWalker";
+import { Category } from "@/api/index.ts";
+import { deleteOn } from "@/utils.ts";
+import { CATEGORY_IMG } from "@/common.ts";
+import CachedCategoryWalker from "./CachedCategoryWalker.ts";
 
 interface SelectCategoryDialogProps {
 	multiple?: boolean;
@@ -162,7 +162,7 @@ function clear() {
 </script>
 
 <style module lang="less">
-@import "../css/imports";
+@import "../css/imports.less";
 
 .buttons {
 	display: flex;

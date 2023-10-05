@@ -35,7 +35,7 @@
 import { ref, watch } from "vue";
 import { KxFrame, ScrollPagingView, useDialog } from "@kaciras-blog/uikit";
 import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
-import api, { Discussion, ListQueryView } from "@/api";
+import api, { Discussion, ListQueryView } from "@/api/index.ts";
 import EditorFrame from "./EditorFrame.vue";
 import DiscussionContent from "./DiscussionContent.vue";
 

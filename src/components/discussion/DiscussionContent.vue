@@ -61,11 +61,11 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { KxButton, RelativeTime, useDialog } from "@kaciras-blog/uikit";
-import api, { Discussion, DiscussionState } from "@/api";
+import api, { Discussion, DiscussionState } from "@/api/index.ts";
 import LazyMarkdownView from "@/components/LazyMarkdownView.ts";
-import { errorMessage } from "@/utils";
-import { DEFAULT_AVATAR } from "@/common";
-import { useCurrentUser } from "@/store";
+import { errorMessage } from "@/utils.ts";
+import { DEFAULT_AVATAR } from "@/common.ts";
+import { useCurrentUser } from "@/store/index.ts";
 
 interface DiscussContentProps {
 	tag?: string;
@@ -104,7 +104,7 @@ function remove() {
 </script>
 
 <style module lang="less">
-@import "../../css/imports";
+@import "../../css/imports.less";
 
 .header {
 	display: flex;

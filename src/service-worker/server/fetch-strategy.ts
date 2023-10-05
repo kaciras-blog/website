@@ -1,4 +1,4 @@
-import { ManagedCache } from "./cache";
+import { ManagedCache } from "./cache.ts";
 
 /**
  * 发送请求的函数，就是 fetch 的类型，不过为了简洁省略掉了 init 参数

@@ -111,12 +111,12 @@
 import { nextTick, ref } from "vue";
 import { ButtonPagingView, useBreakPoint, useDialog } from "@kaciras-blog/uikit";
 import { debounceFirst } from "@kaciras-blog/server/lib/functions.js";
-import api, { Discussion, ListQueryView } from "@/api";
+import api, { Discussion, ListQueryView } from "@/api/index.ts";
 import LazyMarkdownView from "@/components/LazyMarkdownView.ts";
-import DiscussionContent from "./DiscussionContent.vue";
-import ReplyFrame from "./ReplyFrame.vue";
 import EditorFrame from "./EditorFrame.vue";
+import ReplyFrame from "./ReplyFrame.vue";
 import InputSection from "./InputSection.vue";
+import DiscussionContent from "./DiscussionContent.vue";
 
 const PAGE_SIZE = 10;
 
@@ -203,7 +203,7 @@ function loadNext(start: number, count: number) {
 </script>
 
 <style module lang="less">
-@import "../../css/imports";
+@import "../../css/imports.less";
 
 .input {
 	margin-top: 20px;

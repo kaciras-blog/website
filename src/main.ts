@@ -4,9 +4,9 @@ import "./css/index.less";
 import { createApp, createSSRApp } from "vue";
 import UIKit from "@kaciras-blog/uikit";
 import { createPinia } from "pinia";
-import { useCurrentUser } from "@/store";
-import createRouter from "./router";
+import { useCurrentUser } from "@/store/index.ts";
 import App from "./App.vue";
+import createRouter from "./router.ts";
 
 /**
  * 服务端和客户端公共的初始化逻辑。

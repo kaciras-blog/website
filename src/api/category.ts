@@ -28,7 +28,7 @@ export default class CategoryEndpoint extends FetchClient {
 	}
 
 	findById(id: number, aggregate?: boolean) {
-		return this.get(`/categories/${id}`, { aggregate }).json<Category[]>();
+		return this.get(`/categories/${id}`, { aggregate }).json<Category>();
 	}
 
 	move(id: number, parent: number, treeMode: boolean) {

@@ -1,11 +1,11 @@
 import { RPC } from "@kaciras/utilities/browser";
-import "./error-report";
-import * as settings from "./settings";
-import apiCacheRoute from "./api-cache";
-import { CacheWrapper, cleanUnusedCache, useStaticCache } from "./cache";
-import { RegexRoute, Router } from "./routing";
-import { navigateRoute } from "./navigate";
-import { cacheFirst } from "./fetch-strategy";
+import "./error-report.ts";
+import * as settings from "./settings.ts";
+import apiCacheRoute from "./api-cache.ts";
+import { CacheWrapper, cleanUnusedCache, useStaticCache } from "./cache.ts";
+import { RegexRoute, Router } from "./routing.ts";
+import { navigateRoute } from "./navigate.ts";
+import { cacheFirst } from "./fetch-strategy.ts";
 
 // 默认是 WebWorker，需要声明一下 ServiceWorker，其他文件里也一样。
 declare const self: ServiceWorkerGlobalScope & {

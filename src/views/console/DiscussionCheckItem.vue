@@ -33,7 +33,7 @@
 <script setup lang="ts">
 import { useVModel } from "@vueuse/core";
 import { KxCheckBox } from "@kaciras-blog/uikit";
-import { Discussion } from "@/api";
+import { Discussion } from "@/api/index.ts";
 
 const props = defineProps<Discussion & { checked: boolean }>();
 const emit = defineEmits(["update:checked"]);

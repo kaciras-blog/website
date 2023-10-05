@@ -209,7 +209,7 @@ import { errorMessage } from "@/utils";
 import FriendCard from "./FriendCard.vue";
 import FriendInfoDialog from "./FriendInfoDialog.vue";
 import { DEFAULT_COVER } from "@/common";
-import api, { Friend } from "@/api";
+import api, { Friend } from "@/api/index.ts";
 import { useCurrentUser, usePrefetch } from "@/store";
 
 const FRIEND_TEMPLATE: Friend = {
@@ -334,7 +334,7 @@ const lazyLoad = useIntersectionHandler((entries, observer) => {
 </script>
 
 <style module lang="less">
-@import "../../css/imports";
+@import "../../css/imports.less";
 
 // TODO: 能否从 FriendCard 里引入？
 @friend-width: 260px;

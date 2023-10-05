@@ -5,12 +5,12 @@ import { renderToString, SSRContext } from "vue/server-renderer";
 import { Pinia } from "pinia";
 import { breakpoints, useMQStore } from "@kaciras-blog/uikit";
 import { getProxyHeaders } from "@kaciras-blog/server/lib/fetch-helper";
-import { useCurrentUser, usePrefetch } from "@/store";
 import { compositor } from "@kaciras/utilities/browser";
-import api from "./api";
-import createBlogApp from "./main";
-import { collectTasks, PrefetchContext } from "./prefetch";
-import { getHeadTagsSSR } from "@/components/HeadTags";
+import { useCurrentUser, usePrefetch } from "@/store/index.ts";
+import api from "./api/index.ts";
+import createBlogApp from "./main.ts";
+import { collectTasks, PrefetchContext } from "./prefetch.ts";
+import { getHeadTagsSSR } from "@/components/HeadTags.ts";
 
 // 后台页面就不预渲染了。
 const noSSR = new RegExp("^/(?:edit|console)/?(?:\\?|$)?");

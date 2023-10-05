@@ -21,7 +21,7 @@ defineProps<IconSectionHeaderProps>();
 </script>
 
 <style module lang="less">
-@import "../css/imports";
+@import "../css/imports.less";
 
 .header {
 	display: flex;

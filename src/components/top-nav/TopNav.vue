@@ -74,7 +74,7 @@ import { useEventListener } from "@vueuse/core";
 import ListIcon from "bootstrap-icons/icons/list.svg?sfc";
 import SettingIcon from "@material-design-icons/svg/filled/settings.svg?sfc";
 import RssIcon from "@material-design-icons/svg/filled/rss_feed.svg?sfc";
-import { useCurrentUser } from "@/store";
+import { useCurrentUser } from "@/store/index.ts";
 import NavMenuFrame from "./NavMenuFrame.vue";
 import SettingDialog from "./SettingDialog.vue";
 
@@ -106,7 +106,7 @@ if (breakPoint.value === "mobile") {
 </script>
 
 <style module lang="less">
-@import "../../css/imports";
+@import "../../css/imports.less";
 
 .container {
 	composes: top-nav from global;

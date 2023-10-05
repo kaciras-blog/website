@@ -1,6 +1,6 @@
 import { FetchClient } from "@kaciras/utilities/browser";
-import { User } from "./user";
-import { ListQueryView, Pageable } from "./common";
+import { User } from "./user.ts";
+import { ListQueryView, Pageable } from "./common.ts";
 
 export interface TopicKey {
 
