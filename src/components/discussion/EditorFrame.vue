@@ -19,7 +19,7 @@
 		</template>
 
 		<LazyMarkdownView
-			v-if='configPanel === CP.Preview'
+			v-if='configPanel === Tab.Preview'
 			:value='content'
 			:class='$style.body'
 		/>
@@ -37,8 +37,8 @@
 		<div :class='$style.toolbar'>
 			<button
 				:class='$style.button'
-				:data-active='configPanel === CP.Name'
-				@click='switchPanel(CP.Name)'
+				:data-active='configPanel === Tab.Name'
+				@click='switchTab(Tab.Name)'
 			>
 				<img
 					:src='user.avatar'
@@ -49,46 +49,24 @@
 			</button>
 			<button
 				:class='$style.button'
-				:data-active='configPanel === CP.Mail'
-				@click='switchPanel(CP.Mail)'
+				:data-active='configPanel === Tab.Mail'
+				@click='switchTab(Tab.Mail)'
 			>
 				<BellIcon :class='$style.icon'/>
 				通知
 			</button>
 			<button
 				:class='$style.button'
-				:data-active='configPanel === CP.Preview'
-				@click='switchPanel(CP.Preview)'
+				:data-active='configPanel === Tab.Preview'
+				@click='switchTab(Tab.Preview)'
 			>
 				<EyeIcon :class='$style.icon'/>
 				预览
 			</button>
-			<button
-				:class='$style.button'
-				:data-active='configPanel === CP.Tools'
-				@click='switchPanel(CP.Tools)'
-			>
-				<PlusCircleIcon :class='$style.icon'/>
-				更多
-			</button>
 		</div>
 
 		<div
-			v-if='configPanel === CP.Name'
-			:class='$style.configPanel'
-		>
-			<div :class='$style.label'>
-				名字（可选，最多 16 字）
-			</div>
-			<input
-				v-model='nickname'
-				name='nickname'
-				:maxlength='USERNAME_LENGTH'
-				:placeholder='user.name'
-			>
-		</div>
-		<div
-			v-if='configPanel === CP.Mail'
+			v-if='configPanel === Tab.Mail'
 			:class='$style.configPanel'
 		>
 			<div :class='$style.label'>
@@ -101,10 +79,18 @@
 			>
 		</div>
 		<div
-			v-if='configPanel === CP.Tools'
+			v-if='configPanel === Tab.Name'
 			:class='$style.configPanel'
 		>
-			TODO: 工具栏还没做好。
+			<div :class='$style.label'>
+				名字（可选，最多 16 字）
+			</div>
+			<input
+				v-model='nickname'
+				name='nickname'
+				:maxlength='USERNAME_LENGTH'
+				:placeholder='user.name'
+			>
 		</div>
 	</KxFrame>
 </template>
@@ -119,7 +105,6 @@ import { useDialog, KxFrame, KxTaskButton, vRipple, vImeInput, vAutofocus } from
 import EyeIcon from "bootstrap-icons/icons/markdown.svg?sfc";
 import HelpIcon from "bootstrap-icons/icons/question-circle.svg?sfc";
 import BellIcon from "bootstrap-icons/icons/bell.svg?sfc";
-import PlusCircleIcon from "bootstrap-icons/icons/plus-circle.svg?sfc";
 import PaperPlaneIcon from "@/assets/icon/paper-plane.svg?sfc";
 import { USERNAME_LENGTH } from "@/common.ts";
 import { useCurrentUser } from "@/store/index.ts";
@@ -130,12 +115,11 @@ import { DiscussEditProps, useDiscussContext } from "./editor-api.ts";
 /**
  * Config Panel 的类型，因为到处再用懒得写一堆就简写了。
  */
-enum CP {
+enum Tab {
 	None,
 	Name,
 	Mail,
 	Preview,
-	Tools,
 }
 
 const props = defineProps<DiscussEditProps>();
@@ -144,7 +128,7 @@ const user = useCurrentUser();
 const dialog = useDialog();
 const { nickname, email, content, submitSimple } = useDiscussContext(props);
 
-const configPanel = ref(CP.None);
+const configPanel = ref(Tab.None);
 
 const title = computed(() => {
 	const { parent } = props;
@@ -154,11 +138,11 @@ const title = computed(() => {
 	return `回复 ${parent.user.name}`;
 });
 
-function switchPanel(value: CP) {
+function switchTab(value: Tab) {
 	if (configPanel.value !== value) {
 		configPanel.value = value;
 	} else {
-		configPanel.value = CP.None;
+		configPanel.value = Tab.None;
 	}
 }
 
