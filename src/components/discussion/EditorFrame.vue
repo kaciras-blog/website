@@ -1,14 +1,6 @@
 <template>
 	<KxFrame :class='$style.container' :title='title'>
 		<template #actions>
-			<button
-				:class='$style.headerButton'
-				title='帮助'
-				v-ripple
-				@click='showGuide'
-			>
-				<HelpIcon/>
-			</button>
 			<KxTaskButton
 				type='icon'
 				:class='$style.headerButton'
@@ -28,7 +20,7 @@
 			:class='$style.body'
 			:value='content'
 			name='content'
-			placeholder='支持 Markdown 语法'
+			placeholder='支持 Markdown 语法，长文建议 PC 端编辑'
 			aria-label='输入评论'
 			v-autofocus
 			v-ime-input='(e: any) => content = e.target.value'
@@ -101,15 +93,13 @@ export default { isolation: true };
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { useDialog, KxFrame, KxTaskButton, vRipple, vImeInput, vAutofocus } from "@kaciras-blog/uikit";
+import { useDialog, KxFrame, KxTaskButton, vImeInput, vAutofocus } from "@kaciras-blog/uikit";
 import EyeIcon from "bootstrap-icons/icons/markdown.svg?sfc";
-import HelpIcon from "bootstrap-icons/icons/question-circle.svg?sfc";
 import BellIcon from "bootstrap-icons/icons/bell.svg?sfc";
 import PaperPlaneIcon from "@/assets/icon/paper-plane.svg?sfc";
 import { USERNAME_LENGTH } from "@/common.ts";
 import { useCurrentUser } from "@/store/index.ts";
 import LazyMarkdownView from "@/components/LazyMarkdownView.ts";
-import GuideDialog from "./GuideDialog.vue";
 import { DiscussEditProps, useDiscussContext } from "./editor-api.ts";
 
 /**
@@ -144,10 +134,6 @@ function switchTab(value: Tab) {
 	} else {
 		configPanel.value = Tab.None;
 	}
-}
-
-function showGuide() {
-	dialog.show(GuideDialog);
 }
 
 async function handleSubmit(_: unknown, signal: AbortSignal) {
