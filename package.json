@@ -29,12 +29,11 @@
 		"iOS >= 15.4"
 	],
 	"dependencies": {
-		"@kaciras-blog/markdown-vue": "^1.1.0",
+		"@kaciras-blog/markdown-vue": "^1.1.1",
 		"@kaciras-blog/server": "^2.5.0",
 		"@kaciras-blog/uikit": "^2.6.1",
 		"@kaciras/utilities": "^0.10.1",
 		"@material-design-icons/svg": "^0.14.13",
-		"@sentry/tracing": "^7.73.0",
 		"@sentry/vue": "^7.73.0",
 		"@vueuse/core": "^10.4.1",
 		"bootstrap-icons": "^1.11.1",
