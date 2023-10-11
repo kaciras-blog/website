@@ -26,17 +26,17 @@
 <script setup lang="ts">
 import { reactive, toRaw } from "vue";
 import { KxBaseDialog, KxDialogButtons, useDialog } from "@kaciras-blog/uikit";
-import api, { ArticleMeta } from "@/api/index.ts";
+import api, { DraftHistoryInput } from "@/api/index.ts";
 import { DEFAULT_COVER } from "@/common.ts";
 
 defineOptions({ inheritAttrs: false });
 
-const props = defineProps<ArticleMeta>();
+const props = defineProps<DraftHistoryInput>();
 
 const dialog = useDialog();
 
 // metadata 是直接传的，复制一份防止影响原数据
-const local = reactive<ArticleMeta>(toRaw(props));
+const local = reactive<DraftHistoryInput>(toRaw(props));
 
 function ok() {
 	dialog.confirm(toRaw(local));

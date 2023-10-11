@@ -27,7 +27,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { PromiseSource, usePreventScroll } from "@kaciras-blog/uikit";
+import { PromiseSource, usePreventScroll, vAutofocus } from "@kaciras-blog/uikit";
 import NavMenu from "./NavMenu.vue";
 
 defineOptions({ isolation: true });

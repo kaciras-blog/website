@@ -1,7 +1,7 @@
 <template>
 	<MarkdownEditor
-		:model-value='initialContext'
 		class='editor-page'
+		v-model='content'
 	>
 		<template #toolbar-left>
 			<PageMeta title='评论说明' body-class=''/>
@@ -19,6 +19,7 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
 import {
 	BaseSyntaxWeights,
 	ConfigWeights,
@@ -27,5 +28,7 @@ import {
 	SelectionWeight,
 } from "@kaciras-blog/markdown-vue";
 import PageMeta from "@/components/PageMeta.ts";
-import initialContext from "./manual.md?raw";
+import manual from "./manual.md?raw";
+
+const content = ref(manual);
 </script>

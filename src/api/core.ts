@@ -80,6 +80,8 @@ class APIFactoryHandler implements ProxyHandler<Factories> {
 	}
 }
 
+const defaultInit = { credentials: "include" as const };
+
 export function defineAPIs<T extends APIDefs>(defs: T): APIMap<T> {
 	const factories: any = {};
 	for (const baseURL of Object.keys(defs)) {
@@ -88,5 +90,5 @@ export function defineAPIs<T extends APIDefs>(defs: T): APIMap<T> {
 			factories[name] = (init: RequestInit) => new EP({ baseURL, init, check });
 		}
 	}
-	return new Proxy(factories, new APIFactoryHandler({}));
+	return new Proxy(factories, new APIFactoryHandler(defaultInit));
 }
