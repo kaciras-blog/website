@@ -1,4 +1,4 @@
-import { onMounted, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import { onBeforeRouteLeave } from "vue-router";
 import { Awaitable, useEventListener, useTimeoutFn } from "@vueuse/core";
 import { useDialog } from "@kaciras-blog/uikit";
@@ -69,10 +69,8 @@ export default function useAutoSave(data: any, save: SaveFn) {
 		}
 	});
 
-	onMounted(() => {
-		watchForAutoSave();
-		watch(data, () => changed.value = true, { deep: true });
-	});
+	watchForAutoSave();
+	watch(data, () => changed.value = true, { deep: true });
 
 	return { changed, saveError, manualSave };
 }
