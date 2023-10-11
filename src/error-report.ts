@@ -22,6 +22,9 @@ export function setupSentry(app: App, router: Router) {
 			}),
 		],
 		tunnel: import.meta.env.SENTRY_TUNNEL ? "/sentry" : undefined,
+
+		// 禁止在添加追踪相关的请求头，这玩意会造成一些副作用。
+		tracePropagationTargets: [],
 	});
 }
 
