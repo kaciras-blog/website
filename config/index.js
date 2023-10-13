@@ -45,6 +45,13 @@ export default {
 		/** 是否启用 vite-plugin-inspect */
 		debug: false,
 
+		chunkPriority: [
+			[/Console\.vue$/, "Console"],
+			[/Edit\w+Page\.vue$/, "EditorPage"],
+			[/markdown-vue\/lib\/entry-view\.js$/, "MarkdownView"],
+			[/index\.html$/, "index"],
+		],
+
 		/**
 		 * 额外的 ServiceWorker 构建选项，没有则不构建 SW 入口。
 		 *
