@@ -117,6 +117,11 @@ html {
 	//.kx-btn { font-size: 14px; }
 }
 
+/* 不要让全局的样式影响了 Monaco-editor 的组件。*/
+.inputarea:focus-within {
+	box-shadow: none;
+}
+
 /* UIKit 里的公共样式设计有问题，这里得还原。 */
 .markdown {
 	font-size: initial;
