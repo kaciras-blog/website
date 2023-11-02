@@ -32,7 +32,7 @@
 			<LazyMarkdownView
 				v-else
 				:value='post.content'
-				:trust='true'
+				renderer='rich'
 				doc-id='h'
 				:class='$style.content'
 				:data-article-id='post.id'

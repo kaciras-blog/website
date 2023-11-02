@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@kaciras-blog/markdown-vue':
-    specifier: ^1.2.0
-    version: 1.2.0(@types/markdown-it@13.0.5)(typescript@5.2.2)
+    specifier: ^1.2.1
+    version: 1.2.1(@types/markdown-it@13.0.5)(typescript@5.2.2)
   '@kaciras-blog/server':
     specifier: ^2.5.1
     version: 2.5.1(@types/markdown-it@13.0.5)(typescript@5.2.2)
@@ -15,14 +15,14 @@ dependencies:
     specifier: ^2.6.2
     version: 2.6.2(typescript@5.2.2)
   '@kaciras/utilities':
-    specifier: ^0.10.1
-    version: 0.10.1
+    specifier: ^0.10.2
+    version: 0.10.2
   '@material-design-icons/svg':
     specifier: ^0.14.13
     version: 0.14.13
   '@sentry/vue':
-    specifier: ^7.75.1
-    version: 7.75.1(vue@3.3.7)
+    specifier: ^7.77.0
+    version: 7.77.0(vue@3.3.7)
   '@vueuse/core':
     specifier: ^10.5.0
     version: 10.5.0(vue@3.3.7)
@@ -629,12 +629,12 @@ packages:
       - typescript
     dev: true
 
-  /@kaciras-blog/markdown-vue@1.2.0(@types/markdown-it@13.0.5)(typescript@5.2.2):
-    resolution: {integrity: sha512-HaE0CuAb2c6C/RdT5TU1AFZN2c+ScFXcC2d2yJp6eWbcPfp2N3d1ra5vdjIFHHoKiQiHjKTBkB6Ex3SbcvwfRw==}
+  /@kaciras-blog/markdown-vue@1.2.1(@types/markdown-it@13.0.5)(typescript@5.2.2):
+    resolution: {integrity: sha512-GqIApviVHn8EFGaIXlLqNK24+86or3bjjsb+w/jkCDj+09PjyI/iH1PRR00K+/KcvZDqW8vf2wa/jtE/HVTy7g==}
     dependencies:
-      '@kaciras-blog/markdown': 3.1.0(@types/markdown-it@13.0.5)
-      '@kaciras/utilities': 0.10.1
-      '@tabler/icons-vue': 2.39.0(vue@3.3.7)
+      '@kaciras-blog/markdown': 3.2.0(@types/markdown-it@13.0.5)
+      '@kaciras/utilities': 0.10.2
+      '@tabler/icons-vue': 2.40.0(vue@3.3.7)
       '@vueuse/core': 10.5.0(vue@3.3.7)
       monaco-editor: 0.44.0
       vue: 3.3.7(typescript@5.2.2)
@@ -647,7 +647,7 @@ packages:
   /@kaciras-blog/markdown@3.1.0(@types/markdown-it@13.0.5):
     resolution: {integrity: sha512-X0FMa314IbXShjXyaSNxZ+TdxWdHy7/CETBQ3Xt27lDt8a/3wNEbTV0oIb7zcOKXC8OUTwr8KTLDpVPKO70Fkg==}
     dependencies:
-      '@kaciras/utilities': 0.10.1
+      '@kaciras/utilities': 0.10.2
       bootstrap-icons: 1.11.1
       highlight.js: 11.9.0
       markdown-it: 13.0.2
@@ -657,12 +657,26 @@ packages:
     transitivePeerDependencies:
       - '@types/markdown-it'
 
+  /@kaciras-blog/markdown@3.2.0(@types/markdown-it@13.0.5):
+    resolution: {integrity: sha512-vYNcAvElIFgnTOexW13Uhh8qJjlpbiVzqoH+3cgoCH77BHCv7VA/Wm4LuICUeKzfgEV+/F1sljBA6QWP0Lx+Mw==}
+    dependencies:
+      '@kaciras/utilities': 0.10.2
+      bootstrap-icons: 1.11.1
+      highlight.js: 11.9.0
+      markdown-it: 13.0.2
+      markdown-it-anchor: 8.6.7(@types/markdown-it@13.0.5)(markdown-it@13.0.2)
+      markdown-it-footnote: 3.0.3
+      markdown-it-toc-done-right: 4.2.0
+    transitivePeerDependencies:
+      - '@types/markdown-it'
+    dev: false
+
   /@kaciras-blog/media@2.5.1:
     resolution: {integrity: sha512-QDOvy9P66ZP4NjjyMj0eZzyAWxr4N/A2vp029xm+xn/4GJa9eW0BeRoN35OqcO3zwDegc4Eu0wtWgbzSc358dw==}
     engines: {node: '>=20'}
     dependencies:
       '@kaciras-blog/nativelib': 0.3.2
-      '@kaciras/utilities': 0.10.1
+      '@kaciras/utilities': 0.10.2
       cli-progress: 3.12.0
       execa: 8.0.1
       gifsicle: 7.0.1
@@ -689,7 +703,7 @@ packages:
     dependencies:
       '@kaciras-blog/markdown': 3.1.0(@types/markdown-it@13.0.5)
       '@kaciras-blog/media': 2.5.1
-      '@kaciras/utilities': 0.10.1
+      '@kaciras/utilities': 0.10.2
       '@koa/multer': 3.0.2(multer@1.4.5-lts.1)
       '@koa/router': 12.0.1
       combined-stream: 1.0.8
@@ -717,7 +731,7 @@ packages:
   /@kaciras-blog/uikit@2.6.2(typescript@5.2.2):
     resolution: {integrity: sha512-h3L0QL37s4XO+qp/L7QGJ2xGiJ33lbQANklYJtKsClPQFmSVY1nD3oGtmfcxO9UqFomiytW+hI2+cLQJdaIXRw==}
     dependencies:
-      '@kaciras/utilities': 0.10.1
+      '@kaciras/utilities': 0.10.2
       '@vueuse/core': 10.5.0(vue@3.3.7)
       bootstrap-icons: 1.11.1
       pinia: 2.1.7(typescript@5.2.2)(vue@3.3.7)
@@ -777,8 +791,8 @@ packages:
       eslint-utils: 3.0.0(eslint@8.52.0)
     dev: true
 
-  /@kaciras/utilities@0.10.1:
-    resolution: {integrity: sha512-xYWlo1IvECGYWN4KgUPKY+6Vp4EakMcj4gzFgGweGwqVVwyV0ubP6QOPFdJ0QSo0R1xo+b1vZ08VlmGOMWPhiw==}
+  /@kaciras/utilities@0.10.2:
+    resolution: {integrity: sha512-1sLhZ7k/3TyuEoJ7eKfXIJhLPksd1hqYa6bZbU288SoRtkkUeE6qGr0VGczoTe26hCPUciCfauks3OXnsKbtoA==}
 
   /@koa/multer@3.0.2(multer@1.4.5-lts.1):
     resolution: {integrity: sha512-Q6WfPpE06mJWyZD1fzxM6zWywaoo+zocAn2YA9QYz4RsecoASr1h/kSzG0c5seDpFVKCMZM9raEfuM7XfqbRLw==}
@@ -961,24 +975,24 @@ packages:
     dev: true
     optional: true
 
-  /@sentry-internal/tracing@7.75.1:
-    resolution: {integrity: sha512-nynV+7iVcF8k3CqhvI2K7iA8h4ovJhgYHKnXR8RDDevQOqNG2AEX9+hjCj9fZM4MhKHYFqf1od2oO9lTr38kwg==}
+  /@sentry-internal/tracing@7.77.0:
+    resolution: {integrity: sha512-8HRF1rdqWwtINqGEdx8Iqs9UOP/n8E0vXUu3Nmbqj4p5sQPA7vvCfq+4Y4rTqZFc7sNdFpDsRION5iQEh8zfZw==}
     engines: {node: '>=8'}
     dependencies:
-      '@sentry/core': 7.75.1
-      '@sentry/types': 7.75.1
-      '@sentry/utils': 7.75.1
+      '@sentry/core': 7.77.0
+      '@sentry/types': 7.77.0
+      '@sentry/utils': 7.77.0
     dev: false
 
-  /@sentry/browser@7.75.1:
-    resolution: {integrity: sha512-0+jPfPA5P9HVYYRQraDokGCY2NiMknSfz11dggClK4VmjvG+hOXiEyf73SFVwLFnv/hwrkWySjoIrVCX65xXQA==}
+  /@sentry/browser@7.77.0:
+    resolution: {integrity: sha512-nJ2KDZD90H8jcPx9BysQLiQW+w7k7kISCWeRjrEMJzjtge32dmHA8G4stlUTRIQugy5F+73cOayWShceFP7QJQ==}
     engines: {node: '>=8'}
     dependencies:
-      '@sentry-internal/tracing': 7.75.1
-      '@sentry/core': 7.75.1
-      '@sentry/replay': 7.75.1
-      '@sentry/types': 7.75.1
-      '@sentry/utils': 7.75.1
+      '@sentry-internal/tracing': 7.77.0
+      '@sentry/core': 7.77.0
+      '@sentry/replay': 7.77.0
+      '@sentry/types': 7.77.0
+      '@sentry/utils': 7.77.0
     dev: false
 
   /@sentry/cli@2.21.2:
@@ -997,46 +1011,46 @@ packages:
       - supports-color
     dev: true
 
-  /@sentry/core@7.75.1:
-    resolution: {integrity: sha512-Kw4KyKBxbxbh8OKO0S11Tm0gWP+6AaXXYrsq3hp8H338l/wOmIzyckmCbUrc/XJeoRqaFLJbdcCrcUEDZUvsVQ==}
+  /@sentry/core@7.77.0:
+    resolution: {integrity: sha512-Tj8oTYFZ/ZD+xW8IGIsU6gcFXD/gfE+FUxUaeSosd9KHwBQNOLhZSsYo/tTVf/rnQI/dQnsd4onPZLiL+27aTg==}
     engines: {node: '>=8'}
     dependencies:
-      '@sentry/types': 7.75.1
-      '@sentry/utils': 7.75.1
+      '@sentry/types': 7.77.0
+      '@sentry/utils': 7.77.0
     dev: false
 
-  /@sentry/replay@7.75.1:
-    resolution: {integrity: sha512-MKQTDWNYs9QXCJ+irGX5gu8Kxdk/Ds5puhILy8+DnCoXgXuPFRMGob1Sxt8qXmbQmcGeogsx221MNTselsRS6g==}
+  /@sentry/replay@7.77.0:
+    resolution: {integrity: sha512-M9Ik2J5ekl+C1Och3wzLRZVaRGK33BlnBwfwf3qKjgLDwfKW+1YkwDfTHbc2b74RowkJbOVNcp4m8ptlehlSaQ==}
     engines: {node: '>=12'}
     dependencies:
-      '@sentry-internal/tracing': 7.75.1
-      '@sentry/core': 7.75.1
-      '@sentry/types': 7.75.1
-      '@sentry/utils': 7.75.1
+      '@sentry-internal/tracing': 7.77.0
+      '@sentry/core': 7.77.0
+      '@sentry/types': 7.77.0
+      '@sentry/utils': 7.77.0
     dev: false
 
-  /@sentry/types@7.75.1:
-    resolution: {integrity: sha512-km+ygqgMDaFfTrbQwdhrptFqx0Oq15jZABqIoIpbaOCkCAMm+tyCqrFS8dTfaq5wpCktqWOy2qU/DOpppO99Cg==}
+  /@sentry/types@7.77.0:
+    resolution: {integrity: sha512-nfb00XRJVi0QpDHg+JkqrmEBHsqBnxJu191Ded+Cs1OJ5oPXEW6F59LVcBScGvMqe+WEk1a73eH8XezwfgrTsA==}
     engines: {node: '>=8'}
     dev: false
 
-  /@sentry/utils@7.75.1:
-    resolution: {integrity: sha512-QzW2eRjY20epD//9/tQ0FTNwdAL6XZi+LyJNUQIeK3NMnc5NgHrgpxId87gmFq8cNx47utH1Blub8RuMbKqiwQ==}
+  /@sentry/utils@7.77.0:
+    resolution: {integrity: sha512-NmM2kDOqVchrey3N5WSzdQoCsyDkQkiRxExPaNI2oKQ/jMWHs9yt0tSy7otPBcXs0AP59ihl75Bvm1tDRcsp5g==}
     engines: {node: '>=8'}
     dependencies:
-      '@sentry/types': 7.75.1
+      '@sentry/types': 7.77.0
     dev: false
 
-  /@sentry/vue@7.75.1(vue@3.3.7):
-    resolution: {integrity: sha512-GUasSjHOU5Ge4bseuS5Hv35nirGVOT72TjKy0f8e29Oom9gveHTkeOVHIfs2gHT4cmGqzdsON+Dk4vSfG6PSBg==}
+  /@sentry/vue@7.77.0(vue@3.3.7):
+    resolution: {integrity: sha512-mYGkahnLAL9t3XKTTonHC+cv5EN/hjlW4tCRMiOVbR3eN3hXTtFCc4bKC5lHGLTLhx4U7Flc7JXmajw3tJOLBQ==}
     engines: {node: '>=8'}
     peerDependencies:
       vue: 2.x || 3.x
     dependencies:
-      '@sentry/browser': 7.75.1
-      '@sentry/core': 7.75.1
-      '@sentry/types': 7.75.1
-      '@sentry/utils': 7.75.1
+      '@sentry/browser': 7.77.0
+      '@sentry/core': 7.77.0
+      '@sentry/types': 7.77.0
+      '@sentry/utils': 7.77.0
       vue: 3.3.7(typescript@5.2.2)
     dev: false
 
@@ -1048,17 +1062,17 @@ packages:
     resolution: {integrity: sha512-ONhaKPIufzzrlNbqtWFFd+jlnemX6lJAgq9ZeiZtS7I1PIf/la7CW4m83rTXRnVnsMbW2k56pGYu7AUFJD9Pow==}
     engines: {node: '>=4'}
 
-  /@tabler/icons-vue@2.39.0(vue@3.3.7):
-    resolution: {integrity: sha512-hNo0cw1E6HTNVLx2dI4+/w0WIlVl+lQv7stuIdTjQw4oPXZEg+rz5gG22eoZZV1rZyAmHXXClM7zbYpcobwmAg==}
+  /@tabler/icons-vue@2.40.0(vue@3.3.7):
+    resolution: {integrity: sha512-nXwwCa10CKz9dxhOpxnq2QmpkPOriQZ/vvXrsAFwCC0XRow3/Jfc1E1U7D07dcWdmC2GihIeIUKEDj7EU+1mCg==}
     peerDependencies:
       vue: '>=3.0.1'
     dependencies:
-      '@tabler/icons': 2.39.0
+      '@tabler/icons': 2.40.0
       vue: 3.3.7(typescript@5.2.2)
     dev: false
 
-  /@tabler/icons@2.39.0:
-    resolution: {integrity: sha512-iK3j2jIEGIUaJcbYYg5iwyG1Y/m4lzUxAUbxRpvgeXCWP29jvZaH5hajZmU3KaSealddHuJg7PSQislPHpCsoQ==}
+  /@tabler/icons@2.40.0:
+    resolution: {integrity: sha512-VqKsBSX159cLFTnCzkCmGhZtSPJHNN0lM2sC4xe0HPOfPUnjiex7rDHDdut4oe4iKRecDDpwXwM9BcU6xCPlCg==}
     dev: false
 
   /@trysound/sax@0.2.0:
