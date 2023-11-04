@@ -39,10 +39,16 @@
 			网页端是用 Vue3 全家桶编写的单页应用，手撸组件和 CSS。
 		</IconParagraph>
 		<IconParagraph
-			src='@/assets/img/tools-and-utensils.svg'
-			title='write'
+			src='@/assets/img/logo-vscode.svg'
+			title='editor'
 		>
-			拥有 Markdown 编辑器，支持动图、视频等。
+			拥有基于 Monaco Editor 开发的 Markdown 编辑器。
+		</IconParagraph>
+		<IconParagraph
+			src='@/assets/img/logo-kfm.svg'
+			title='Kaciras Flavored Markdown'
+		>
+			内容使用扩展版的 Markdown 语法，额外支持折叠、动图、视频等。
 		</IconParagraph>
 		<IconParagraph
 			src='@/assets/img/logo-sentry.png'
@@ -102,6 +108,12 @@
 			内容服务以 JAVA 语言为主，使用 Spring 全家桶。
 		</IconParagraph>
 		<IconParagraph
+			src='@/assets/img/debian.png'
+			title='debian'
+		>
+			本站运行于 Debian 系统上。
+		</IconParagraph>
+		<IconParagraph
 			src='@/assets/img/logo-redis.svg'
 			title='redis'
 		>
@@ -118,12 +130,6 @@
 			title='nginx'
 		>
 			使用 NGINX 做反向代理，统一访问入口。
-		</IconParagraph>
-		<IconParagraph
-			src='@/assets/img/debian.png'
-			title='debian'
-		>
-			本站运行于 Debian 系统上，使用 testing 分支滚动更新。
 		</IconParagraph>
 	</section>
 </template>
