@@ -12,7 +12,8 @@
 		<RouterLink class='highlight' to='/login'>登录</RouterLink>
 	</div>
 
-	<template v-else>
+	<!-- 必须用个元素包裹起来，形成单根以便接收上层的 class -->
+	<div v-else>
 		<EmbeddedEditor
 			v-if='$bp.isGreater("tablet")'
 			ref='thisEl'
@@ -46,7 +47,7 @@
 		>
 			为防止滥用，评论将在审核后显示
 		</p>
-	</template>
+	</div>
 </template>
 
 <script setup lang="ts">

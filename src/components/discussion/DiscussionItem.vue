@@ -148,19 +148,18 @@ function displayName(value: Discussion) {
 // 宽屏直接在下面加输入框，手机则弹窗。
 async function showReplyEditor(parent: Discussion) {
 	const { objectId, type } = props;
-	const context = { objectId, type, parent };
+	const context = { objectId, type, parent, onSubmitted };
 
 	if (breakPoint.isGreater("tablet")) {
 		replyContext.value = context;
 		await nextTick();
 		editorEl.value!.focus();
 	} else {
-		const s = $dialog.show<any>(EditorFrame, context);
-		await afterSubmit(await s.confirmPromise);
+		return $dialog.show<any>(EditorFrame, context);
 	}
 }
 
-async function afterSubmit(entity: Discussion) {
+async function onSubmitted(entity: Discussion) {
 	replyContext.value = null;
 	await nextTick();
 
