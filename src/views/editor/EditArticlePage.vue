@@ -1,8 +1,8 @@
 <template>
 	<MarkdownEditor
 		v-model='current.content'
-		renderer='trusted'
-		class='editor-page'
+		renderer='rich'
+		class='full-vertex'
 		:drop-handler='handleDrop'
 	>
 		<template #toolbar-left>

@@ -1,8 +1,5 @@
 <template>
-	<MarkdownEditor
-		v-model='content'
-		class='editor-page'
-	>
+	<MarkdownEditor v-model='content' class='full-vertex'>
 		<template #toolbar-left>
 			<!-- 虽然不是工具栏的组件，但还是放这免得根节点变成片段。-->
 			<PageMeta title='编写评论' body-class=''/>

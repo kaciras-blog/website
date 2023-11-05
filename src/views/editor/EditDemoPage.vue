@@ -1,8 +1,5 @@
 <template>
-	<MarkdownEditor
-		class='editor-page'
-		v-model='content'
-	>
+	<MarkdownEditor v-model='content' class='full-vertex'>
 		<template #toolbar-left>
 			<PageMeta title='评论说明' body-class=''/>
 
