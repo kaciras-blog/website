@@ -15,10 +15,11 @@
 					<option value='nest_size,DESC'>回复数</option>
 				</KxSelect>
 
-				<KxSelect v-model='mode' title='评论结构'>
-					<option value='ref'>引用模式</option>
-					<option value='nest'>楼中楼模式</option>
-				</KxSelect>
+				<!-- 双模式带来的复杂度高于收益，未来移除 -->
+				<!--<KxSelect v-model='mode' title='评论结构'>-->
+				<!--	<option value='ref'>引用模式</option>-->
+				<!--	<option value='nest'>楼中楼模式</option>-->
+				<!--</KxSelect>-->
 			</div>
 		</header>
 
@@ -78,7 +79,7 @@ const props = defineProps<DiscussSectionProps>();
 const discussOptions = useDiscussOptions();
 
 const data = ref<ListQueryView<Discussion>>({ items: [], total: 0 });
-const mode = useLocalStorage("DIS:mode", "nest");
+// const mode = useLocalStorage("DIS:mode", "nest");
 const sort = useLocalStorage("DIS:sort", "id,ASC");
 const discussions = ref();
 
@@ -86,7 +87,7 @@ const discussions = ref();
  * 当模式或排序改编后重新加载数据。注意这里更新了两个状态，其中 mode 先改变，
  * 然后异步地重载 data，在 data 更新之前数据处于不一致的状态！对此只能先同步地清空 data。
  */
-watch([mode, sort], () => {
+watch([sort], () => {
 	data.value = { items: [], total: 0 };
 	discussions.value.reload();
 });
@@ -104,14 +105,9 @@ function fetchData(start: number, count: number, signal?: AbortSignal) {
 		start,
 		count,
 		sort: sort.value,
+		nestId: 0,
+		childCount: NEST_SIZE,
 	};
-
-	if (mode.value === "nest") {
-		query.nestId = 0;
-		query.childCount = NEST_SIZE;
-	} else {
-		query.includeParent = true;
-	}
 
 	return api.configure({ signal }).discuss.getList(query);
 }
