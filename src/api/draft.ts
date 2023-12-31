@@ -55,7 +55,7 @@ export default class DraftEndpoint extends FetchClient {
 
 	/** 删除一个草稿 */
 	remove(id: number) {
-		return this.delete("/drafts/" + id);
+		return this.delete(`/drafts/${id}`);
 	}
 
 	/** 清空所有草稿 */

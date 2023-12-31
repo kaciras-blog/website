@@ -36,7 +36,8 @@ export default class CategoryEndpoint extends FetchClient {
 	}
 
 	create(data: Category, parent: number) {
-		return this.post("/categories/", data, { parent });
+		// 严格匹配，URL 末尾不能有多余的分隔符。
+		return this.post("/categories", data, { parent });
 	}
 
 	update(id: number, data: any) {

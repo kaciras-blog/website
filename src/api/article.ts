@@ -55,7 +55,7 @@ export default class ArticleEndpoint extends FetchClient {
 	}
 
 	findById(id: number) {
-		return this.get("/articles/" + id).json<Article>();
+		return this.get(`/articles/${id}`).json<Article>();
 	}
 
 	publish(data: PublishRequest) {
@@ -63,7 +63,7 @@ export default class ArticleEndpoint extends FetchClient {
 	}
 
 	update(id: number, data: any) {
-		return this.put("/articles/" + id, data).json<Article>();
+		return this.put(`/articles/${id}`, data).json<Article>();
 	}
 
 	changeDeletion(id: number, deletion: boolean) {
