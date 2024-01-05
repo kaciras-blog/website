@@ -2,7 +2,7 @@
 	<KxFrame title='查看回复'>
 		<div :class='$style.frameBody'>
 			<ScrollPagingView
-				v-model='data'
+				v-model='model'
 				:loader='loadNext'
 				:auto-load='true'
 			>
@@ -32,7 +32,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
 import { KxFrame, ScrollPagingView, useDialog } from "@kaciras-blog/uikit";
 import EditIcon from "bootstrap-icons/icons/pencil-square.svg?sfc";
 import api, { Discussion, ListQueryView } from "@/api/index.ts";
@@ -41,17 +40,12 @@ import DiscussionContent from "./DiscussionContent.vue";
 
 interface ReplyFrameProps {
 	host: Discussion;
-	modelValue: ListQueryView<Discussion>;
 }
 
 const props = defineProps<ReplyFrameProps>();
-const emit = defineEmits(["update:modelValue"]);
+const model = defineModel<ListQueryView<Discussion>>({ required: true });
 
 const $dialog = useDialog();
-
-const data = ref(props.modelValue);
-
-watch(data, v => emit("update:modelValue", v));
 
 function showEditorFrame(parent: Discussion) {
 	const { objectId, type } = parent;
@@ -59,19 +53,21 @@ function showEditorFrame(parent: Discussion) {
 		type,
 		objectId,
 		parent,
-		onAfterSubmit: afterSubmit,
+		onSubmitted,
 	};
 	$dialog.show(EditorFrame, context);
 }
 
-function afterSubmit(entity: Discussion) {
-	data.value.total++;
-	data.value.items.push(entity);
+function onSubmitted(entity: Discussion) {
+	model.value.total++;
+	model.value.items.push(entity);
 }
 
 function loadNext(start: number, count: number) {
 	return api.discuss.getReplies(props.host.id, start, count);
 }
+
+loadNext(0, 16).then(page => model.value = page);
 </script>
 
 <style module lang="less">

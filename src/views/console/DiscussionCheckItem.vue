@@ -2,7 +2,7 @@
 	<li :class='$style.container'>
 		<div :class='$style.link'>
 			<KxCheckBox
-				v-model='checkedForward'
+				v-model='checked'
 			/>
 			<span>
 				用户评论了文章：
@@ -31,14 +31,12 @@
 </template>
 
 <script setup lang="ts">
-import { useVModel } from "@vueuse/core";
 import { KxCheckBox } from "@kaciras-blog/uikit";
 import { Discussion } from "@/api/index.ts";
 
-const props = defineProps<Discussion & { checked: boolean }>();
-const emit = defineEmits(["update:checked"]);
+defineProps<Discussion>();
 
-const checkedForward = useVModel(props, "checked", emit);
+const checked = defineModel("check", { required: true });
 </script>
 
 <style module lang="less">

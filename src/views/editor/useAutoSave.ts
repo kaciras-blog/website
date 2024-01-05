@@ -28,11 +28,7 @@ export default function useAutoSave(data: any, save: SaveFn) {
 	 * 监视文本的改变，当改变时开始计时 5 分钟，到点自动保存。
 	 */
 	function watchForAutoSave() {
-		const callback = () => {
-			unwatch();
-			timer.start();
-		};
-		const unwatch = watch(data, callback, { deep: true });
+		watch(data, timer.start, { deep: true, once: true });
 	}
 
 	/**

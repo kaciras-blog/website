@@ -131,7 +131,7 @@ const repliesEl = ref();
 const expend = ref(false);
 const replyContext = ref();
 
-// 复用组件实例时重置。
+// 楼中楼窗口会更新它，复用组件实例时重置。
 const children = ref<ListQueryView<Discussion>>({
 	total: props.nestSize,
 	items: props.replies ?? [],
