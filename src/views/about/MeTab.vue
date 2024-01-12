@@ -14,7 +14,7 @@
 
 			<p :class='$style.socialLinks'>
 				<SocialLink
-					href='mailto:Kaciras@protonmail.com'
+					href='mailto:Kaciras@outlook.com'
 					name='Email'
 					icon='@/assets/img/email.svg'
 				/>

@@ -3,7 +3,7 @@
 	<footer :class='$style.globalFooter'>
 		<div :class='$style.info'>
 			<p>&copy; Kaciras 2018-{{ new Date().getFullYear() }}</p>
-			<address>Kaciras@protonmail.com</address>
+			<address>Kaciras@outlook.com</address>
 		</div>
 		<RouterLink class='highlight pink' to='/'>首页</RouterLink>
 		<a class='highlight pink' href='/sitemap.xml'>站点地图</a>
