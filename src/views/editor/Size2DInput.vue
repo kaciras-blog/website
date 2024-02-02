@@ -62,7 +62,7 @@ function toggleLocked() {
 	emit("update:height", Math.round(height));
 }
 
-function handleInputW(event: InputEvent) {
+function handleInputW(event: Event) {
 	let { valueAsNumber } = event.target as HTMLInputElement;
 
 	if (locked.value) {
@@ -72,7 +72,7 @@ function handleInputW(event: InputEvent) {
 	emit("update:width", valueAsNumber);
 }
 
-function handleInputH(event: InputEvent) {
+function handleInputH(event: Event) {
 	let { valueAsNumber } = event.target as HTMLInputElement;
 
 	if (locked.value) {

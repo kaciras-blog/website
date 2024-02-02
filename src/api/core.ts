@@ -4,10 +4,8 @@ import { FetchClient, FetchClientError } from "@kaciras/utilities/browser";
  * 检查下响应的状态码是否是 2xx，如果不是则抛出异常。
  *
  * <h1>异常信息的格式</h1>
- * 本项目采用 RFC 7807 Problem Details 格式的响应体。
+ * 本项目采用 RFC 7807 Problem Details 格式的响应体，这里仅使用 detail 属性。
  * https://www.rfc-editor.org/rfc/rfc7807.html
- *
- * 这个格式定义了多个可选的属性，但仅 detail 被使用。
  */
 async function check(task: Promise<Response>) {
 	const response = await task;

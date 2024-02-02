@@ -22,16 +22,16 @@
 
 系统需求：
 
-* NodeJS >= 18
+* NodeJS >= 20
 * 运行时需要和后端服务通信，故先要运行[content-server](https://github.com/kaciras-blog/content-server)
 
 浏览器支持：
 
-* Microsoft Edge >= 88
-* Firefox >= 74
-* Chrome >= 88
-* Safari >= 13.1
-* IOS >= 13.4
+* Edge >= 92
+* Firefox >= 103
+* Chrome >= 92
+* Safari >= 15.4
+* iOS >= 15.4
 * IE 全部都不支持
 
 安装并启动具有热重载的服务器

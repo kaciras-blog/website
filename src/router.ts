@@ -13,6 +13,8 @@ import CopyrightTab from "./views/about/CopyrightTab.vue";
 
 /**
  * 路由表，这里把页面按照对访问速度的敏感性分成了 3 组，越靠前的越重要。
+ *
+ * TODO: 这版本错误页仅由路由显示，不太好处理 URL 不变但要显示错误的情况，以后考虑在 App 组件里再加个判断。
  */
 const routes: RouteRecordRaw[] = [
 
