@@ -13,7 +13,7 @@ const post: PostMessage = (message, transfer) => {
 };
 
 const client = import.meta.env.SSR ? (null as never) : RPC.createClient<SWServerAPI>(post, rec => {
-	navigator.serviceWorker.addEventListener("message", e => rec(e.data));
+	navigator.serviceWorker?.addEventListener("message", e => rec(e.data));
 });
 
 export function putSetting<T>(key: string, value: T) {
