@@ -251,6 +251,10 @@ function gotoDiscuss() {
 
 .content {
 	font-size: initial;
+
+	@media screen and (max-width: @length-screen-mobile) {
+		letter-spacing: 0;
+	}
 }
 
 .copyright {
