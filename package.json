@@ -34,7 +34,7 @@
 		"@kaciras-blog/uikit": "^2.6.3",
 		"@kaciras/utilities": "^0.12.4",
 		"@material-design-icons/svg": "^0.14.13",
-		"@sentry/vue": "^7.107.0",
+		"@sentry/vue": "^7.109.0",
 		"@vueuse/core": "^10.9.0",
 		"bootstrap-icons": "^1.11.3",
 		"idb": "^8.0.0",
@@ -52,7 +52,7 @@
 		"@vue/test-utils": "^2.4.5",
 		"eslint": "^8.57.0",
 		"less": "^4.2.0",
-		"typescript": "^5.4.3",
+		"typescript": "^5.4.4",
 		"vitest": "^1.4.0"
 	}
 }
