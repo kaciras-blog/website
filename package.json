@@ -34,7 +34,7 @@
 		"@kaciras-blog/uikit": "^2.6.3",
 		"@kaciras/utilities": "^0.12.4",
 		"@material-design-icons/svg": "^0.14.13",
-		"@sentry/vue": "^7.109.0",
+		"@sentry/vue": "^7.110.0",
 		"@vueuse/core": "^10.9.0",
 		"bootstrap-icons": "^1.11.3",
 		"idb": "^8.0.0",
@@ -45,14 +45,14 @@
 	},
 	"devDependencies": {
 		"@kaciras-blog/devtool": "^2.6.1",
-		"@kaciras/eslint-config-core": "^2.6.4",
-		"@kaciras/eslint-config-typescript": "^2.6.4",
-		"@kaciras/eslint-config-vue": "^2.6.4",
+		"@kaciras/eslint-config-core": "^3.0.1",
+		"@kaciras/eslint-config-typescript": "^3.0.1",
+		"@kaciras/eslint-config-vue": "^3.0.1",
 		"@types/web": "^0.0.142",
 		"@vue/test-utils": "^2.4.5",
-		"eslint": "^8.57.0",
+		"eslint": "^9.0.0",
 		"less": "^4.2.0",
-		"typescript": "^5.4.4",
-		"vitest": "^1.4.0"
+		"typescript": "^5.4.5",
+		"vitest": "^1.5.0"
 	}
 }
