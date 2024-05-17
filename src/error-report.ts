@@ -17,9 +17,7 @@ export function setupSentry(app: App, router: Router) {
 		attachProps: true,
 		logErrors: true,
 		integrations: [
-			new Sentry.BrowserTracing({
-				routingInstrumentation: Sentry.vueRouterInstrumentation(router),
-			}),
+			Sentry.browserTracingIntegration({ router }),
 		],
 		tunnel: import.meta.env.SENTRY_TUNNEL ? "/sentry" : undefined,
 
