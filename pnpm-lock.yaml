@@ -18,17 +18,17 @@ importers:
         specifier: ^2.6.3
         version: 2.6.3(typescript@5.4.5)
       '@kaciras/utilities':
-        specifier: ^0.13.0
-        version: 0.13.0
+        specifier: ^0.13.1
+        version: 0.13.1
       '@material-design-icons/svg':
         specifier: ^0.14.13
         version: 0.14.13
       '@sentry/vue':
-        specifier: ^8.4.0
-        version: 8.4.0(vue@3.4.27(typescript@5.4.5))
+        specifier: ^8.7.0
+        version: 8.7.0(vue@3.4.27(typescript@5.4.5))
       '@vueuse/core':
-        specifier: ^10.9.0
-        version: 10.9.0(vue@3.4.27(typescript@5.4.5))
+        specifier: ^10.10.0
+        version: 10.10.0(vue@3.4.27(typescript@5.4.5))
       bootstrap-icons:
         specifier: ^1.11.3
         version: 1.11.3
@@ -50,7 +50,7 @@ importers:
     devDependencies:
       '@kaciras-blog/devtool':
         specifier: ^2.6.1
-        version: 2.6.1(@types/markdown-it@14.1.1)(@types/node@20.12.12)(less@4.2.0)(postcss@8.4.38)(typescript@5.4.5)
+        version: 2.6.1(@types/markdown-it@14.1.1)(@types/node@20.12.13)(less@4.2.0)(postcss@8.4.38)(typescript@5.4.5)
       '@kaciras/eslint-config-core':
         specifier: ^3.0.1
         version: 3.0.1(eslint@9.3.0)
@@ -77,7 +77,7 @@ importers:
         version: 5.4.5
       vitest:
         specifier: ^1.6.0
-        version: 1.6.0(@types/node@20.12.12)(less@4.2.0)
+        version: 1.6.0(@types/node@20.12.13)(less@4.2.0)
 
 packages:
 
@@ -727,8 +727,8 @@ packages:
   '@kaciras/utilities@0.12.4':
     resolution: {integrity: sha512-oDehjlMRik+2UIooEzjm2LXF7bwQoKBYegIE2vAY7bjCSStNSiSbELFQQ8gFwuFPWEJ9QzIcEI1CSzhNmdJIFA==}
 
-  '@kaciras/utilities@0.13.0':
-    resolution: {integrity: sha512-TRLMhk0I3FuLUp55KntbdUiHh3Mt+cdIuaPbDoa9y9peRiJUJjMkWBOaVccY1/3/Z44HIvDUsjrjMGMcsO/hTA==}
+  '@kaciras/utilities@0.13.1':
+    resolution: {integrity: sha512-TByAq7P7R/0hWaAxfAiLCnYCiChRmCGH5hAGDYuLmfAmremrOKQHSqqK06fIRXUXHePvOQpQwz+uMfBFXjkLVA==}
 
   '@koa/multer@3.0.2':
     resolution: {integrity: sha512-Q6WfPpE06mJWyZD1fzxM6zWywaoo+zocAn2YA9QYz4RsecoASr1h/kSzG0c5seDpFVKCMZM9raEfuM7XfqbRLw==}
@@ -928,24 +928,24 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@sentry-internal/browser-utils@8.4.0':
-    resolution: {integrity: sha512-Mfm3TK3KUlghhuKM3rjTeD4D5kAiB7iVNFoaDJIJBVKa67M9BvlNTnNJMDi7+9rV4RuLQYxXn0p5HEZJFYp3Zw==}
+  '@sentry-internal/browser-utils@8.7.0':
+    resolution: {integrity: sha512-RFBK1sYBwV5qGMEwWF0rjOTqQpp4/SvE+qHkOJNRUTVYmfjM+Y9lcxwn4B6lu3aboxePpBw/i1PlP6XwX4UnGA==}
     engines: {node: '>=14.18'}
 
-  '@sentry-internal/feedback@8.4.0':
-    resolution: {integrity: sha512-1/WshI2X9seZAQXrOiv6/LU08fbSSvJU0b1ZWMhn+onb/FWPomsL/UN0WufCYA65S5JZGdaWC8fUcJxWC8PATQ==}
+  '@sentry-internal/feedback@8.7.0':
+    resolution: {integrity: sha512-qcGtWCtRB4eP7NVQoxW936oPkU4qu9otMLYELPGmOJPnuAG0lujlJXW7BucaM7ADyJgJTE75hG849bHecfnbmQ==}
     engines: {node: '>=14.18'}
 
-  '@sentry-internal/replay-canvas@8.4.0':
-    resolution: {integrity: sha512-g+U4IPQdODCg7fQQVNvH6ix05Tl1mOQXXRexgtp+tXdys4sHQSBUYraJYZy+mY3OGnLRgKFqELM0fnffJSpuyQ==}
+  '@sentry-internal/replay-canvas@8.7.0':
+    resolution: {integrity: sha512-FOnvBPbq6MJVHPduc0hcsdE3PeeovQ2z5WJnZDGhvp/Obehxqe+XgX7K/595vRIknv4EokRn/3Kw0mFwG8E+ZQ==}
     engines: {node: '>=14.18'}
 
-  '@sentry-internal/replay@8.4.0':
-    resolution: {integrity: sha512-RSzQwCF/QTi5/5XAuj0VJImAhu4MheeHYvAbr/PuMSF4o1j89gBA7e3boA4u8633IqUeu5w3S5sb6jVrKaVifg==}
+  '@sentry-internal/replay@8.7.0':
+    resolution: {integrity: sha512-bQzOkWplaWTe3u+aDBhxWY3Qy0aT7ss2A3VR8iC6N8ZIEP9PxqyJwTNoouhinfgmlnCguI7RDOO4f3r3e2M80Q==}
     engines: {node: '>=14.18'}
 
-  '@sentry/browser@8.4.0':
-    resolution: {integrity: sha512-hmXeIZBdN0A6yCuoMTcigGxLl42nbeb205fXtouwE7Maa0qM2HM+Ijq0sHzbhxR3zU0JXDtcJh1k6wtJOREJ3g==}
+  '@sentry/browser@8.7.0':
+    resolution: {integrity: sha512-4EEp+PlcktsMN0p+MdCPl/lghTkq7eOtZjQG9NGhWzfyWrJ3tuL1nsDr2SSivJ1V277F01KtKYo6BFwP2NtBZA==}
     engines: {node: '>=14.18'}
 
   '@sentry/cli-darwin@2.28.0':
@@ -994,20 +994,20 @@ packages:
     engines: {node: '>= 10'}
     hasBin: true
 
-  '@sentry/core@8.4.0':
-    resolution: {integrity: sha512-0eACPlJvKloFIlcT1c/vjGnvqxLxpGyGuSsU7uonrkmBqIRwLYXWtR4PoHapysKtjPVoHAn9au50ut6ymC2V8Q==}
+  '@sentry/core@8.7.0':
+    resolution: {integrity: sha512-Sq/46B+5nWmgnCD6dEMZ6HTkKbV/KAdgaSvT8oXDb9OWoPy1jJ/gbLrhLs62KbjuDQk4/vWnOgHiKQbcslSzMw==}
     engines: {node: '>=14.18'}
 
-  '@sentry/types@8.4.0':
-    resolution: {integrity: sha512-mHUaaYEQCNukzYsTLp4rP2NNO17vUf+oSGS6qmhrsGqmGNICKw2CIwJlPPGeAkq9Y4tiUOye2m5OT1xsOtxLIw==}
+  '@sentry/types@8.7.0':
+    resolution: {integrity: sha512-11KLOKumP6akugVGLvSoEig+JlP0ZEzW3nN9P+ppgdIx9HAxMIh6UvumbieG4/DWjAh2kh6NPNfUw3gk2Gfq1A==}
     engines: {node: '>=14.18'}
 
-  '@sentry/utils@8.4.0':
-    resolution: {integrity: sha512-oDF0RVWW0AyEnsP1x4McHUvQSAxJgx3G6wM9Sb4wc1F8rwsHnCtGHc+WRZ5Gd2AXC5EGkfbg5919+1ku/L4Dww==}
+  '@sentry/utils@8.7.0':
+    resolution: {integrity: sha512-aWmcbSoOmrbzll/FkNQFJcCtLAuJLvTYbRKiCSkV3FScA7UaA742HkTZAPFiioALFIESWk/fcGZqtN0s4I281Q==}
     engines: {node: '>=14.18'}
 
-  '@sentry/vue@8.4.0':
-    resolution: {integrity: sha512-1R5Sa2c7v9TRkJXsmTWs1P5y8yx7sV0vRLoTl0c0lmWyhZtTdMWG1xogZbvilE2eyWSFlKjMFNrsukOMZardLQ==}
+  '@sentry/vue@8.7.0':
+    resolution: {integrity: sha512-9tMRt4ltg1hJFFTOhlSWlzdsHhHRWQASOO9dFBFYtwi8ymD6gLX5/Viurdrs9kg4u7DZyW1hL9arILW1O7UGxA==}
     engines: {node: '>=14.18'}
     peerDependencies:
       vue: 2.x || 3.x
@@ -1064,8 +1064,8 @@ packages:
   '@types/node@20.11.17':
     resolution: {integrity: sha512-QmgQZGWu1Yw9TDyAP9ZzpFJKynYNeOvwMJmaxABfieQoVoiVOS6MN1WSpqpRcbeA5+RW82kraAVxCCJg+780Qw==}
 
-  '@types/node@20.12.12':
-    resolution: {integrity: sha512-eWLDGF/FOSPtAvEqeRAQ4C8LSA7M1I7i0ky1I8U7kD1J5ITyW3AsRhQrKVoWf5pFKZ2kILsEGJhsI9r93PYnOw==}
+  '@types/node@20.12.13':
+    resolution: {integrity: sha512-gBGeanV41c1L171rR7wjbMiEpEI/l5XFQdLLfhr/REwpgDy/4U8y89+i8kRiLzDyZdOkXh+cRaTetUnCYutoXA==}
 
   '@types/responselike@1.0.3':
     resolution: {integrity: sha512-H/+L+UkTV33uf49PH5pCAUBVPNj2nDBXTN+qS1dOwyyg24l3CcicicCA7ca+HMvJBZcFgl5r8e+RR6elsb4Lyw==}
@@ -1200,14 +1200,14 @@ packages:
   '@vue/test-utils@2.4.6':
     resolution: {integrity: sha512-FMxEjOpYNYiFe0GkaHsnJPXFHxQ6m4t8vI/ElPGpMWxZKpmRvQ33OIrvRXemy6yha03RxhOlQuy+gZMC3CQSow==}
 
-  '@vueuse/core@10.9.0':
-    resolution: {integrity: sha512-/1vjTol8SXnx6xewDEKfS0Ra//ncg4Hb0DaZiwKf7drgfMsKFExQ+FnnENcN6efPen+1kIzhLQoGSy0eDUVOMg==}
+  '@vueuse/core@10.10.0':
+    resolution: {integrity: sha512-vexJ/YXYs2S42B783rI95lMt3GzEwkxzC8Hb0Ndpd8rD+p+Lk/Za4bd797Ym7yq4jXqdSyj3JLChunF/vyYjUw==}
 
-  '@vueuse/metadata@10.9.0':
-    resolution: {integrity: sha512-iddNbg3yZM0X7qFY2sAotomgdHK7YJ6sKUvQqbvwnf7TmaVPxS4EJydcNsVejNdS8iWCtDk+fYXr7E32nyTnGA==}
+  '@vueuse/metadata@10.10.0':
+    resolution: {integrity: sha512-UNAo2sTCAW5ge6OErPEHb5z7NEAg3XcO9Cj7OK45aZXfLLH1QkexDcZD77HBi5zvEiLOm1An+p/4b5K3Worpug==}
 
-  '@vueuse/shared@10.9.0':
-    resolution: {integrity: sha512-Uud2IWncmAfJvRaFYzv5OHDli+FbOzxiVEQdLCKQKLyhz94PIyFC3CHcH7EDMwIn8NPtD06+PNbC/PiO0LGLtw==}
+  '@vueuse/shared@10.10.0':
+    resolution: {integrity: sha512-2aW33Ac0Uk0U+9yo3Ypg9s5KcR42cuehRWl7vnUHadQyFvCktseyxxEPBi1Eiq4D2yBGACOnqLZpx1eMc7g5Og==}
 
   abbrev@2.0.0:
     resolution: {integrity: sha512-6/mh1E2u2YgEsCHdY0Yx5oW+61gZU+1vXaoiHHrpKeuRNNgFvS+/jrwHiQhB5apAf5oB7UB7E19ol2R2LKH8hQ==}
@@ -3435,8 +3435,8 @@ packages:
       '@vue/composition-api':
         optional: true
 
-  vue-demi@0.14.7:
-    resolution: {integrity: sha512-EOG8KXDQNwkJILkx/gPcoL/7vH+hORoBaKgGe+6W7VFMvCYJfmF2dGbvgDroVnI8LU7/kTu8mbjRZGBU1z9NTA==}
+  vue-demi@0.14.8:
+    resolution: {integrity: sha512-Uuqnk9YE9SsWeReYqK2alDI5YzciATE0r2SkA6iMAtuXvNTMNACJLJEXNXaEy94ECuBe4Sk6RzRU80kjdbIo1Q==}
     engines: {node: '>=12'}
     hasBin: true
     peerDependencies:
@@ -4001,13 +4001,13 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.1
       '@jridgewell/sourcemap-codec': 1.4.15
 
-  '@kaciras-blog/devtool@2.6.1(@types/markdown-it@14.1.1)(@types/node@20.12.12)(less@4.2.0)(postcss@8.4.38)(typescript@5.4.5)':
+  '@kaciras-blog/devtool@2.6.1(@types/markdown-it@14.1.1)(@types/node@20.12.13)(less@4.2.0)(postcss@8.4.38)(typescript@5.4.5)':
     dependencies:
       '@kaciras-blog/media': 2.6.1
       '@kaciras-blog/server': 2.6.1(@types/markdown-it@14.1.1)(typescript@5.4.5)
       '@rollup/plugin-replace': 5.0.5(rollup@4.9.6)
       '@sentry/cli': 2.28.0
-      '@vitejs/plugin-vue': 5.0.3(vite@5.1.0(@types/node@20.12.12)(less@4.2.0))(vue@3.4.27(typescript@5.4.5))
+      '@vitejs/plugin-vue': 5.0.3(vite@5.1.0(@types/node@20.12.13)(less@4.2.0))(vue@3.4.27(typescript@5.4.5))
       autoprefixer: 10.4.17(postcss@8.4.38)
       colorette: 2.0.20
       es-module-lexer: 1.4.1
@@ -4015,10 +4015,10 @@ snapshots:
       magic-string: 0.30.7
       rollup: 4.9.6
       rollup-plugin-visualizer: 5.12.0(rollup@4.9.6)
-      vite: 5.1.0(@types/node@20.12.12)(less@4.2.0)
-      vite-plugin-inspect: 0.8.3(rollup@4.9.6)(vite@5.1.0(@types/node@20.12.12)(less@4.2.0))
+      vite: 5.1.0(@types/node@20.12.13)(less@4.2.0)
+      vite-plugin-inspect: 0.8.3(rollup@4.9.6)(vite@5.1.0(@types/node@20.12.13)(less@4.2.0))
       vite-plugin-svg-sfc: 2.0.1
-      vite-tsconfig-paths: 4.3.1(typescript@5.4.5)(vite@5.1.0(@types/node@20.12.12)(less@4.2.0))
+      vite-tsconfig-paths: 4.3.1(typescript@5.4.5)(vite@5.1.0(@types/node@20.12.13)(less@4.2.0))
       vue: 3.4.27(typescript@5.4.5)
     transitivePeerDependencies:
       - '@nuxt/kit'
@@ -4038,9 +4038,9 @@ snapshots:
   '@kaciras-blog/markdown-vue@1.3.0(@types/markdown-it@14.1.1)(typescript@5.4.5)':
     dependencies:
       '@kaciras-blog/markdown': 3.3.0(@types/markdown-it@14.1.1)
-      '@kaciras/utilities': 0.13.0
+      '@kaciras/utilities': 0.13.1
       '@tabler/icons-vue': 3.5.0(vue@3.4.27(typescript@5.4.5))
-      '@vueuse/core': 10.9.0(vue@3.4.27(typescript@5.4.5))
+      '@vueuse/core': 10.10.0(vue@3.4.27(typescript@5.4.5))
       monaco-editor: 0.48.0
       vue: 3.4.27(typescript@5.4.5)
     transitivePeerDependencies:
@@ -4062,7 +4062,7 @@ snapshots:
 
   '@kaciras-blog/markdown@3.3.0(@types/markdown-it@14.1.1)':
     dependencies:
-      '@kaciras/utilities': 0.13.0
+      '@kaciras/utilities': 0.13.1
       bootstrap-icons: 1.11.3
       highlight.js: 11.9.0
       markdown-it: 14.1.0
@@ -4124,7 +4124,7 @@ snapshots:
   '@kaciras-blog/uikit@2.6.3(typescript@5.4.5)':
     dependencies:
       '@kaciras/utilities': 0.10.4
-      '@vueuse/core': 10.9.0(vue@3.4.27(typescript@5.4.5))
+      '@vueuse/core': 10.10.0(vue@3.4.27(typescript@5.4.5))
       bootstrap-icons: 1.11.3
       pinia: 2.1.7(typescript@5.4.5)(vue@3.4.27(typescript@5.4.5))
       rxjs: 7.8.1
@@ -4177,7 +4177,7 @@ snapshots:
 
   '@kaciras/utilities@0.12.4': {}
 
-  '@kaciras/utilities@0.13.0': {}
+  '@kaciras/utilities@0.13.1': {}
 
   '@koa/multer@3.0.2(multer@1.4.5-lts.1)':
     dependencies:
@@ -4319,41 +4319,41 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.9.6':
     optional: true
 
-  '@sentry-internal/browser-utils@8.4.0':
+  '@sentry-internal/browser-utils@8.7.0':
     dependencies:
-      '@sentry/core': 8.4.0
-      '@sentry/types': 8.4.0
-      '@sentry/utils': 8.4.0
+      '@sentry/core': 8.7.0
+      '@sentry/types': 8.7.0
+      '@sentry/utils': 8.7.0
 
-  '@sentry-internal/feedback@8.4.0':
+  '@sentry-internal/feedback@8.7.0':
     dependencies:
-      '@sentry/core': 8.4.0
-      '@sentry/types': 8.4.0
-      '@sentry/utils': 8.4.0
+      '@sentry/core': 8.7.0
+      '@sentry/types': 8.7.0
+      '@sentry/utils': 8.7.0
 
-  '@sentry-internal/replay-canvas@8.4.0':
+  '@sentry-internal/replay-canvas@8.7.0':
     dependencies:
-      '@sentry-internal/replay': 8.4.0
-      '@sentry/core': 8.4.0
-      '@sentry/types': 8.4.0
-      '@sentry/utils': 8.4.0
+      '@sentry-internal/replay': 8.7.0
+      '@sentry/core': 8.7.0
+      '@sentry/types': 8.7.0
+      '@sentry/utils': 8.7.0
 
-  '@sentry-internal/replay@8.4.0':
+  '@sentry-internal/replay@8.7.0':
     dependencies:
-      '@sentry-internal/browser-utils': 8.4.0
-      '@sentry/core': 8.4.0
-      '@sentry/types': 8.4.0
-      '@sentry/utils': 8.4.0
+      '@sentry-internal/browser-utils': 8.7.0
+      '@sentry/core': 8.7.0
+      '@sentry/types': 8.7.0
+      '@sentry/utils': 8.7.0
 
-  '@sentry/browser@8.4.0':
+  '@sentry/browser@8.7.0':
     dependencies:
-      '@sentry-internal/browser-utils': 8.4.0
-      '@sentry-internal/feedback': 8.4.0
-      '@sentry-internal/replay': 8.4.0
-      '@sentry-internal/replay-canvas': 8.4.0
-      '@sentry/core': 8.4.0
-      '@sentry/types': 8.4.0
-      '@sentry/utils': 8.4.0
+      '@sentry-internal/browser-utils': 8.7.0
+      '@sentry-internal/feedback': 8.7.0
+      '@sentry-internal/replay': 8.7.0
+      '@sentry-internal/replay-canvas': 8.7.0
+      '@sentry/core': 8.7.0
+      '@sentry/types': 8.7.0
+      '@sentry/utils': 8.7.0
 
   '@sentry/cli-darwin@2.28.0':
     optional: true
@@ -4395,23 +4395,23 @@ snapshots:
       - encoding
       - supports-color
 
-  '@sentry/core@8.4.0':
+  '@sentry/core@8.7.0':
     dependencies:
-      '@sentry/types': 8.4.0
-      '@sentry/utils': 8.4.0
+      '@sentry/types': 8.7.0
+      '@sentry/utils': 8.7.0
 
-  '@sentry/types@8.4.0': {}
+  '@sentry/types@8.7.0': {}
 
-  '@sentry/utils@8.4.0':
+  '@sentry/utils@8.7.0':
     dependencies:
-      '@sentry/types': 8.4.0
+      '@sentry/types': 8.7.0
 
-  '@sentry/vue@8.4.0(vue@3.4.27(typescript@5.4.5))':
+  '@sentry/vue@8.7.0(vue@3.4.27(typescript@5.4.5))':
     dependencies:
-      '@sentry/browser': 8.4.0
-      '@sentry/core': 8.4.0
-      '@sentry/types': 8.4.0
-      '@sentry/utils': 8.4.0
+      '@sentry/browser': 8.7.0
+      '@sentry/core': 8.7.0
+      '@sentry/types': 8.7.0
+      '@sentry/utils': 8.7.0
       vue: 3.4.27(typescript@5.4.5)
 
   '@sinclair/typebox@0.27.8': {}
@@ -4464,7 +4464,7 @@ snapshots:
     dependencies:
       undici-types: 5.26.5
 
-  '@types/node@20.12.12':
+  '@types/node@20.12.13':
     dependencies:
       undici-types: 5.26.5
     optional: true
@@ -4569,9 +4569,9 @@ snapshots:
       '@typescript-eslint/types': 7.6.0
       eslint-visitor-keys: 3.4.3
 
-  '@vitejs/plugin-vue@5.0.3(vite@5.1.0(@types/node@20.12.12)(less@4.2.0))(vue@3.4.27(typescript@5.4.5))':
+  '@vitejs/plugin-vue@5.0.3(vite@5.1.0(@types/node@20.12.13)(less@4.2.0))(vue@3.4.27(typescript@5.4.5))':
     dependencies:
-      vite: 5.1.0(@types/node@20.12.12)(less@4.2.0)
+      vite: 5.1.0(@types/node@20.12.13)(less@4.2.0)
       vue: 3.4.27(typescript@5.4.5)
 
   '@vitest/expect@1.6.0':
@@ -4665,21 +4665,21 @@ snapshots:
       js-beautify: 1.15.1
       vue-component-type-helpers: 2.0.16
 
-  '@vueuse/core@10.9.0(vue@3.4.27(typescript@5.4.5))':
+  '@vueuse/core@10.10.0(vue@3.4.27(typescript@5.4.5))':
     dependencies:
       '@types/web-bluetooth': 0.0.20
-      '@vueuse/metadata': 10.9.0
-      '@vueuse/shared': 10.9.0(vue@3.4.27(typescript@5.4.5))
-      vue-demi: 0.14.7(vue@3.4.27(typescript@5.4.5))
+      '@vueuse/metadata': 10.10.0
+      '@vueuse/shared': 10.10.0(vue@3.4.27(typescript@5.4.5))
+      vue-demi: 0.14.8(vue@3.4.27(typescript@5.4.5))
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
 
-  '@vueuse/metadata@10.9.0': {}
+  '@vueuse/metadata@10.10.0': {}
 
-  '@vueuse/shared@10.9.0(vue@3.4.27(typescript@5.4.5))':
+  '@vueuse/shared@10.10.0(vue@3.4.27(typescript@5.4.5))':
     dependencies:
-      vue-demi: 0.14.7(vue@3.4.27(typescript@5.4.5))
+      vue-demi: 0.14.8(vue@3.4.27(typescript@5.4.5))
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
@@ -6898,13 +6898,13 @@ snapshots:
 
   vary@1.1.2: {}
 
-  vite-node@1.6.0(@types/node@20.12.12)(less@4.2.0):
+  vite-node@1.6.0(@types/node@20.12.13)(less@4.2.0):
     dependencies:
       cac: 6.7.14
       debug: 4.3.4
       pathe: 1.1.2
       picocolors: 1.0.0
-      vite: 5.2.11(@types/node@20.12.12)(less@4.2.0)
+      vite: 5.2.11(@types/node@20.12.13)(less@4.2.0)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -6915,7 +6915,7 @@ snapshots:
       - supports-color
       - terser
 
-  vite-plugin-inspect@0.8.3(rollup@4.9.6)(vite@5.1.0(@types/node@20.12.12)(less@4.2.0)):
+  vite-plugin-inspect@0.8.3(rollup@4.9.6)(vite@5.1.0(@types/node@20.12.13)(less@4.2.0)):
     dependencies:
       '@antfu/utils': 0.7.7
       '@rollup/pluginutils': 5.1.0(rollup@4.9.6)
@@ -6926,7 +6926,7 @@ snapshots:
       perfect-debounce: 1.0.0
       picocolors: 1.0.0
       sirv: 2.0.4
-      vite: 5.1.0(@types/node@20.12.12)(less@4.2.0)
+      vite: 5.1.0(@types/node@20.12.13)(less@4.2.0)
     transitivePeerDependencies:
       - rollup
       - supports-color
@@ -6935,38 +6935,38 @@ snapshots:
     dependencies:
       svgo: 3.2.0
 
-  vite-tsconfig-paths@4.3.1(typescript@5.4.5)(vite@5.1.0(@types/node@20.12.12)(less@4.2.0)):
+  vite-tsconfig-paths@4.3.1(typescript@5.4.5)(vite@5.1.0(@types/node@20.12.13)(less@4.2.0)):
     dependencies:
       debug: 4.3.4
       globrex: 0.1.2
       tsconfck: 3.0.2(typescript@5.4.5)
     optionalDependencies:
-      vite: 5.1.0(@types/node@20.12.12)(less@4.2.0)
+      vite: 5.1.0(@types/node@20.12.13)(less@4.2.0)
     transitivePeerDependencies:
       - supports-color
       - typescript
 
-  vite@5.1.0(@types/node@20.12.12)(less@4.2.0):
+  vite@5.1.0(@types/node@20.12.13)(less@4.2.0):
     dependencies:
       esbuild: 0.19.12
       postcss: 8.4.35
       rollup: 4.9.6
     optionalDependencies:
-      '@types/node': 20.12.12
+      '@types/node': 20.12.13
       fsevents: 2.3.3
       less: 4.2.0
 
-  vite@5.2.11(@types/node@20.12.12)(less@4.2.0):
+  vite@5.2.11(@types/node@20.12.13)(less@4.2.0):
     dependencies:
       esbuild: 0.20.2
       postcss: 8.4.38
       rollup: 4.17.2
     optionalDependencies:
-      '@types/node': 20.12.12
+      '@types/node': 20.12.13
       fsevents: 2.3.3
       less: 4.2.0
 
-  vitest@1.6.0(@types/node@20.12.12)(less@4.2.0):
+  vitest@1.6.0(@types/node@20.12.13)(less@4.2.0):
     dependencies:
       '@vitest/expect': 1.6.0
       '@vitest/runner': 1.6.0
@@ -6985,11 +6985,11 @@ snapshots:
       strip-literal: 2.1.0
       tinybench: 2.8.0
       tinypool: 0.8.4
-      vite: 5.2.11(@types/node@20.12.12)(less@4.2.0)
-      vite-node: 1.6.0(@types/node@20.12.12)(less@4.2.0)
+      vite: 5.2.11(@types/node@20.12.13)(less@4.2.0)
+      vite-node: 1.6.0(@types/node@20.12.13)(less@4.2.0)
       why-is-node-running: 2.2.2
     optionalDependencies:
-      '@types/node': 20.12.12
+      '@types/node': 20.12.13
     transitivePeerDependencies:
       - less
       - lightningcss
@@ -7005,7 +7005,7 @@ snapshots:
     dependencies:
       vue: 3.4.27(typescript@5.4.5)
 
-  vue-demi@0.14.7(vue@3.4.27(typescript@5.4.5)):
+  vue-demi@0.14.8(vue@3.4.27(typescript@5.4.5)):
     dependencies:
       vue: 3.4.27(typescript@5.4.5)
 
