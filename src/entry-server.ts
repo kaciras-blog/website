@@ -115,7 +115,9 @@ export default function (template: string, manifest?: SSRManifest) {
 		const appHtml = await renderToString(app, ssrContext);
 		context.status = ssrContext.status;
 
-		const data = JSON.stringify(store.state.value);
+		// TODO: 这地方处理两次好麻烦，有没有更好地设计？
+		const data = JSON.stringify(store.state.value, null, "\t")
+			.replaceAll("</script>", "<\\/script>");
 		ssrContext.meta = `<script>window.__INITIAL_STATE__=${data}</script>`;
 
 		const { title, modules, meta, bodyClass = "" } = ssrContext;
