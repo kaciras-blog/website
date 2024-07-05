@@ -34,13 +34,13 @@
 		"@kaciras-blog/uikit": "^2.6.4",
 		"@kaciras/utilities": "^1.0.1",
 		"@material-design-icons/svg": "^0.14.13",
-		"@sentry/vue": "^8.13.0",
+		"@sentry/vue": "^8.14.0",
 		"@vueuse/core": "^10.11.0",
 		"bootstrap-icons": "^1.11.3",
 		"idb": "^8.0.0",
 		"nanoevents": "^9.0.0",
 		"pinia": "^2.1.7",
-		"vue": "3.4.30",
+		"vue": "3.4.31",
 		"vue-router": "4.4.0"
 	},
 	"devDependencies": {
@@ -48,11 +48,11 @@
 		"@kaciras/eslint-config-core": "^3.0.3",
 		"@kaciras/eslint-config-typescript": "^3.0.3",
 		"@kaciras/eslint-config-vue": "^3.0.3",
-		"@types/web": "^0.0.150",
+		"@types/web": "^0.0.151",
 		"@vue/test-utils": "^2.4.6",
-		"eslint": "^9.5.0",
+		"eslint": "^9.6.0",
 		"less": "^4.2.0",
-		"typescript": "^5.5.2",
+		"typescript": "^5.5.3",
 		"vitest": "^1.6.0"
 	}
 }
