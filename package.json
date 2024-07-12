@@ -32,9 +32,9 @@
 		"@kaciras-blog/markdown-vue": "^1.3.0",
 		"@kaciras-blog/server": "^2.6.2",
 		"@kaciras-blog/uikit": "^2.6.4",
-		"@kaciras/utilities": "^1.0.1",
+		"@kaciras/utilities": "^1.0.2",
 		"@material-design-icons/svg": "^0.14.13",
-		"@sentry/vue": "^8.14.0",
+		"@sentry/vue": "^8.17.0",
 		"@vueuse/core": "^10.11.0",
 		"bootstrap-icons": "^1.11.3",
 		"idb": "^8.0.0",
@@ -53,6 +53,6 @@
 		"eslint": "^9.6.0",
 		"less": "^4.2.0",
 		"typescript": "^5.5.3",
-		"vitest": "^1.6.0"
+		"vitest": "^2.0.2"
 	}
 }
