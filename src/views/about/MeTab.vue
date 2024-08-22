@@ -83,6 +83,6 @@ import DiscussionSection from "@/components/discussion/DiscussionSection.vue";
 
 .discussion {
 	composes: about-section from global;
-	font-size: 14px; // 这里还得改回来...
+	font-size: 14px; /* 这里还得改回来... */
 }
 </style>

@@ -44,7 +44,7 @@ const observe = useIntersectionHandler(([entry]) => {
 	font-size: 16px;
 }
 
-// TODO: 错误字体和颜色用得挺多
+/* TODO: 错误字体和颜色用得挺多 */
 .failed {
 	font-size: 16px;
 	color: red;

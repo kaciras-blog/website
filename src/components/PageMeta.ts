@@ -2,7 +2,6 @@ import type { SSRContext } from "vue/server-renderer";
 import { defineComponent, useSSRContext } from "vue";
 
 export interface PageMetaProps {
-
 	/**
 	 * 如果存在，则修改页面的标题。
 	 */

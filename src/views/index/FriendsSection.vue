@@ -336,7 +336,7 @@ const lazyLoad = useIntersectionHandler((entries, observer) => {
 <style module lang="less">
 @import "../../css/imports.less";
 
-// TODO: 能否从 FriendCard 里引入？
+/* TODO: 能否从 FriendCard 里引入？ */
 @friend-width: 260px;
 
 .header {
@@ -361,7 +361,7 @@ const lazyLoad = useIntersectionHandler((entries, observer) => {
 	}
 }
 
-// 这俩图标比上面的小，要放大些。
+/* 这俩图标比上面的小，要放大些。 */
 .iconButton2 {
 	composes: iconButton;
 
@@ -373,8 +373,8 @@ const lazyLoad = useIntersectionHandler((entries, observer) => {
 	font-size: 1.75rem;
 }
 
-// 自动网格的卡片布局
-// https://blog.kaciras.com/article/14/use-pure-CSS-to-implement-center+wrap+left-alignment-layout
+/* 自动网格的卡片布局 */
+/* https://blog.kaciras.com/article/14/use-pure-CSS-to-implement-center+wrap+left-alignment-layout */
 .list {
 	composes: clean-list from global;
 

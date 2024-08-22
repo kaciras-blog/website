@@ -130,7 +130,7 @@ if (breakPoint.value === "mobile") {
 	background-color: rgba(255, 255, 255, .1);
 }
 
-// 外层套了个 <a> 所以宽高不能用百分比，只能写死图片的大小
+/* 外层套了个 <a> 所以宽高不能用百分比，只能写死图片的大小 */
 .logo {
 	display: block;
 	aspect-ratio: 703 / 225;
@@ -152,13 +152,13 @@ if (breakPoint.value === "mobile") {
 	font-size: 20px;
 	vertical-align: middle;
 
-	// 固定宽度防止字体加载后重排
-	// TODO: 下一版不用垃圾字体图标了
+	/* 固定宽度防止字体加载后重排 */
+	/* TODO: 下一版不用垃圾字体图标了 */
 	width: 25px;
 	text-align: center;
 }
 
-// 懒得改了重构整个TopNav，先用 !important 凑合过吧
+/* 懒得改了重构整个TopNav，先用 !important 凑合过吧 */
 .colored {
 	background-color: white !important;
 

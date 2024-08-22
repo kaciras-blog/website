@@ -24,6 +24,7 @@
 
 <script setup lang='ts'>
 import { useCssModule } from "vue";
+import { isPointerInside } from "@kaciras/utilities/browser";
 
 interface FileDropProps {
 
@@ -66,12 +67,7 @@ function handleChange(event: InputEvent) {
 
 function handleDrag(event: DragEvent) {
 	const el = event.currentTarget as HTMLElement;
-	const { clientX, clientY } = event;
-
-	const rect = el.getBoundingClientRect();
-	const inside = clientY > rect.top && clientY < rect.bottom &&
-		clientX > rect.left && clientX < rect.right;
-
+	const inside = isPointerInside(event, el);
 	el.classList.toggle(styles.dragging, inside);
 }
 

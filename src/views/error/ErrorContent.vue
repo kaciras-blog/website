@@ -29,7 +29,7 @@ defineProps<ErrorContentProps>();
 	gap: 2rem;
 	place-content: center;
 
-	margin-bottom: 2rem; // 整体往上移点。
+	margin-bottom: 2rem; /* 整体往上移点。 */
 	flex: 1;
 	font-size: 16px;
 

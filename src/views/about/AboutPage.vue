@@ -39,10 +39,10 @@ const tabs = [
 .tabs {
 	position: sticky;
 	top: 0;
-	z-index: 90; // 比 TopNav 小一点
+	z-index: 90; /* 比 TopNav 小一点 */
 
-	// 用伪元素模拟边框，使按钮下面的蓝条能够覆盖它，
-	// 普通的 border 在元素内容之外无法覆盖。
+	/* 用伪元素模拟边框，使按钮下面的蓝条能够覆盖它， */
+	/* 普通的 border 在元素内容之外无法覆盖。 */
 	&::before {
 		content: "";
 		position: absolute;

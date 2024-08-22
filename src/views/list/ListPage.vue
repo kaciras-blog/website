@@ -161,7 +161,7 @@ function nextPageUrl() {
 }
 
 .aside {
-	// sticky 在支持 Grid 的浏览器上都可用，但是 table 里面使用有些问题
+	/* sticky 在支持 Grid 的浏览器上都可用，但是 table 里面使用有些问题 */
 	position: sticky;
 	top: 30px;
 

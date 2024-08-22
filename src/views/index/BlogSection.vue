@@ -59,22 +59,22 @@ const { cards } = usePrefetch().data;
 	font-size: 1.75rem;
 }
 
-// ================================ Cards ================================
+/* ================================ Cards ================================ */
 
 @pic-width: 368px;
 @pic-height: @pic-width * 0.5625;
 
-// 简介行数上限，超出显示省略号。
+/* 简介行数上限，超出显示省略号。 */
 @max-lines: 4;
 
-// 自动网格的卡片布局
-// https://blog.kaciras.com/article/14/use-pure-CSS-to-implement-center+wrap+left-alignment-layout
+/* 自动网格的卡片布局 */
+/* https://blog.kaciras.com/article/14/use-pure-CSS-to-implement-center+wrap+left-alignment-layout */
 .card_list {
 	display: grid;
 	justify-content: center;
 	gap: 25px;
 
-	// 左右各 5vw 间距，再乘以 0.75 比例，或者直接裁剪图片到指定比例？
+	/* 左右各 5vw 间距，再乘以 0.75 比例，或者直接裁剪图片到指定比例？ */
 	--pic-height: 50.625vw;
 	--text-margin: 12px;
 
@@ -87,7 +87,7 @@ const { cards } = usePrefetch().data;
 	}
 }
 
-// 博客上的图白底的多，擦亮动画效果不好，还是用浮起吧。
+/* 博客上的图白底的多，擦亮动画效果不好，还是用浮起吧。 */
 .figure {
 	composes: clean-link from global;
 
@@ -121,8 +121,8 @@ const { cards } = usePrefetch().data;
 	height: 38px;
 	top: calc(var(--pic-height) - 38px);
 
-	display: none; // TODO: 等后端修改完再启用。
-	//display: flex;
+	display: none; /* TODO: 等后端修改完再启用。 */
+	/* display: flex; */
 	padding: 24px var(--text-margin) 0 var(--text-margin);
 	line-height: 1;
 	font-size: 0.875em;
@@ -138,19 +138,20 @@ const { cards } = usePrefetch().data;
 .name {
 	margin: var(--text-margin);
 
-	// 虽然浏览器默认 article 下的 h1 是这个大小，但还是写上保险些
+	/* 虽然浏览器默认 article 下的 h1 是这个大小，但还是写上保险些 */
 	font-size: 1.17em;
 	background: rgba(255, 255, 255, .8);
 }
 
 .content {
+	composes: global(line-clamp);
+	--line-clamp: @max-lines;
+
 	box-sizing: content-box;
 	margin: var(--text-margin);
 
 	line-height: 1.6;
 	height: @max-lines * 1.6em;
-
-	.line-clamp(@max-lines);
 }
 
 @media screen and (max-width: @length-screen-mobile) {

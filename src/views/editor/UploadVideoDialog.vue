@@ -328,7 +328,7 @@ onUnmounted(() => files.value.forEach(v => URL.revokeObjectURL(v.url)));
 .field {
 	display: flex;
 
-	// 单选按钮高度不够，需要居中一下
+	/* 单选按钮高度不够，需要居中一下 */
 	align-items: center;
 
 	& > :global(.kx-check-box) {
@@ -347,7 +347,7 @@ onUnmounted(() => files.value.forEach(v => URL.revokeObjectURL(v.url)));
 .button {
 	margin-left: @margin;
 
-	// 跟按钮大小一致，避免右边没按钮时高度改变
+	/* 跟按钮大小一致，避免右边没按钮时高度改变 */
 	height: calc(2rem + 1.6px);
 }
 

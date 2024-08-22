@@ -277,11 +277,13 @@ function loadNext(start: number, count: number) {
 }
 
 .preview {
+	composes: global(line-clamp);
+	--line-clamp: 2;
+
 	margin-bottom: .5rem;
-	.line-clamp(2);
 }
 
-// 模仿链接样式的按钮，感觉能复用一下。
+/* 模仿链接样式的按钮，感觉能复用一下。 */
 .linkButton {
 	padding: 0;
 	font-size: 0.875rem;

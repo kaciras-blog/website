@@ -57,14 +57,14 @@ export default {
 <style module lang="less">
 @import "../css/imports.less";
 
-// 使用变量设置背景图，只要在外层元素设置即可
+/* 使用变量设置背景图，只要在外层元素设置即可 */
 .banner {
 	min-height: 211px;
 	height: 11vw;
 	margin-top: -@nav-height;
 
 	background: var(--background);
-	background-size: var(--background-size); // 这个属性写一起毛病多
+	background-size: var(--background-size); /* 这个属性写一起毛病多 */
 
 	@media screen and (min-width: @length-screen-pad) {
 		background-size: var(--background-size, cover);

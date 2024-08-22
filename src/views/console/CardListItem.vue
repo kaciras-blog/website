@@ -123,7 +123,7 @@ function setPicture() {
 	border-top-width: 0;
 	padding: 1.5rem;
 
-	display: none; // grid 在 .expand > .details
+	display: none; /* grid 在 .expand > .details */
 	gap: 12px;
 	grid-template-columns: auto 1fr;
 	grid-template-rows: auto auto 1fr;

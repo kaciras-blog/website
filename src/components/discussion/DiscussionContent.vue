@@ -130,7 +130,7 @@ function remove() {
 }
 
 .nameGroup {
-	// 让保证末尾行靠底部
+	/* 让保证末尾行靠底部 */
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;

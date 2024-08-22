@@ -63,7 +63,7 @@ function showSettingFrame() {
 	padding: 35px 0;
 	text-align: center;
 
-	// 无需套元素也能实现半透明遮罩。
+	/* 无需套元素也能实现半透明遮罩。 */
 	background: url("../../assets/img/54045756_p0.png") rgba(255, 255, 255, .15);
 	background-size: cover;
 	background-blend-mode: overlay;

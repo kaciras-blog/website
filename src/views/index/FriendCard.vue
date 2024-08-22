@@ -71,14 +71,14 @@ defineProps<FriendCardProps>();
 	width: @width;
 	height: @height;
 
-	// 默认是拖动状态
+	/* 默认是拖动状态 */
 	cursor: grab;
 
 	border-radius: 6px;
 	overflow: hidden;
 	background-size: contain;
 
-	// 卡片背景可能是白色，故用阴影跟外部区分一下。
+	/* 卡片背景可能是白色，故用阴影跟外部区分一下。 */
 	box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
 
 	&::before {

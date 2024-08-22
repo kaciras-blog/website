@@ -132,7 +132,7 @@ export default {
 	justify-content: center;
 	flex-wrap: wrap;
 
-	margin-bottom: 2rem; // 控制台body是网格布局元素，padding有点问题
+	margin-bottom: 2rem; /* 控制台body是网格布局元素，padding有点问题 */
 }
 
 .empty_holder {

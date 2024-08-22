@@ -196,19 +196,21 @@ function gotoDiscuss() {
 .article {
 	@mobile-margin: 1rem;
 
-	// 一行的长度过大会让阅读困难，太小又不利于媒体展示。根据研究英文在 50-80 个字母最佳。
-	// https://ux.stackexchange.com/questions/108801/what-is-the-best-number-of-paragraph-width-for-readability
-	//
-	// 这篇 W3C 的指南推荐 CJK 使用 40 个字：
-	// https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-visual-presentation.html
-	//
-	// 参考其他站点：
-	// 批站专栏：		39 汉字，660 px。
-	// 知乎专栏：		43 汉字，690 px。
-	// dev.to：		80 字母，678 px。
-	// css-tricks：	80 字母，700 px，媒体 950 px。
-	//
-	// 我自己的测试 1000px 太宽了，900 px（54 汉字）读起来也挺顺的，先用着试试，确实比指南和其它站宽了点。
+	/*
+	 * 一行的长度过大会让阅读困难，太小又不利于媒体展示。根据研究英文在 50-80 个字母最佳。
+	 * https://ux.stackexchange.com/questions/108801/what-is-the-best-number-of-paragraph-width-for-readability
+	 *
+	 * 这篇 W3C 的指南推荐 CJK 使用 40 个字：
+	 * https://www.w3.org/TR/UNDERSTANDING-WCAG20/visual-audio-contrast-visual-presentation.html
+	 *
+	 * 参考其他站点：
+	 * 批站专栏：		39 汉字，660 px。
+	 * 知乎专栏：		43 汉字，690 px。
+	 * dev.to：		80 字母，678 px。
+	 * css-tricks：	80 字母，700 px，媒体 950 px。
+	 *
+	 * 我自己的测试 1000px 太宽了，900 px（54 汉字）读起来也挺顺的，先用着试试，确实比指南和其它站宽了点。
+	 */
 	max-width: 900px;
 
 	width: 66vw;
@@ -227,12 +229,14 @@ function gotoDiscuss() {
 		width: initial;
 		padding: 30px @mobile-margin 0;
 
-		// 取消一些元素的左右边距，使其在手机屏下有更大的显示范围。
-		// 这些元素包括自带边距的比如代码块、无需边距的图片视频。
-		//
-		// 因为图片处于 <p> 内部无法与文字区分，所以只能用白名单模式，
-		// 给这些元素加上负边距扩大，而不能用黑名单去给要边距的缩小。
-		:global(.center-wrapper), :global(.hljs) {
+		/*
+		 * 取消一些元素的左右边距，使其在手机屏下有更大的显示范围。
+		 * 这些元素包括自带边距的比如代码块、无需边距的图片视频。
+		 *
+		 * 因为图片处于 <p> 内部无法与文字区分，所以只能用白名单模式，
+		 * 给这些元素加上负边距扩大，而不能用黑名单去给要边距的缩小。
+		 */
+		:global(.md-center), :global(.hljs) {
 			border-radius: 0;
 			margin-left: -@mobile-margin;
 			margin-right: -@mobile-margin;

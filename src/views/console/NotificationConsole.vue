@@ -81,7 +81,7 @@ refresh();
 	flex-direction: column;
 	align-items: center;
 
-	// 虽然浏览器支持还不好，但是后台自己先用用也行
+	/* 虽然浏览器支持还不好，但是后台自己先用用也行 */
 	gap: 10px;
 
 	font-size: 1.125rem;
