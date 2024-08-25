@@ -8,7 +8,7 @@
 -->
 <template>
 	<a
-		:disabled='disabled || null'
+		:aria-disabled='disabled'
 		:href='friend.url'
 		target='_blank'
 		rel='noopener'
@@ -16,9 +16,10 @@
 		:style='active && {
 			backgroundImage: `url("${friend.background}")`,
 		}'
+		@click='e => disabled && e.preventDefault()'
 	>
 		<img
-			:src='active ? friend.favicon ?? DEFAULT_AVATAR : null'
+			:src='active ? friend.favicon ?? DEFAULT_AVATAR : ""'
 			alt='favicon'
 			:class='$style.favicon'
 		>
@@ -31,7 +32,6 @@ import { DEFAULT_AVATAR } from "@/common.ts";
 import { Friend } from "@/api/index.ts";
 
 interface FriendCardProps {
-
 	/**
 	 * 是否加载图片等消耗性能的资源，用于懒加载。
 	 */
@@ -95,7 +95,7 @@ defineProps<FriendCardProps>();
 	}
 }
 
-.container:not([disabled]) {
+.container:not([aria-disabled="true"]) {
 	cursor: revert;
 
 	@media screen and (min-width: @length-screen-mobile) {

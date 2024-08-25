@@ -30,7 +30,7 @@
 					type='icon'
 					title='调整顺序'
 					:class='$style.iconButton'
-					@click='sort'
+					@click='enableDragSort'
 				>
 					<SortIcon/>
 				</KxButton>
@@ -48,21 +48,17 @@
 		<ul :class='$style.list' ref='listEl'>
 			<li
 				v-for='(friend, i) of friends'
-				:key='friend.id'
+				:key='friend.url'
 				:class='$style.item'
+				@dragstart='draggingIndex = i'
+				@dragenter='dragEnter(i)'
 			>
-				<div
-					v-if='friend.placeholder'
-					:style='friend.style'
-				/>
+				<!-- a 自带 draggable 无需再设置 -->
 				<FriendCard
-					v-else
-					:disabled='sorting'
-					:active='active'
 					:friend='friend'
-					@dragstart='drag($event, i)'
+					:active='active'
+					:disabled='sorting'
 				/>
-
 				<KxButton
 					v-if='user.isAdmin && !sorting'
 					type='icon'
@@ -85,117 +81,6 @@
 		</ul>
 	</section>
 </template>
-
-<script lang="ts">
-import { edgeScroll, moveElement, observeMouseMove } from "@kaciras-blog/uikit";
-
-class GridDraggingRegion {
-
-	private readonly xOffset: number;
-	private readonly yOffset: number;
-
-	private readonly tW: number;
-	private readonly tH: number;
-
-	private readonly columns: number;
-	private readonly rows: number;
-
-	constructor(container: HTMLElement) {
-		const region = container.getBoundingClientRect();
-		const card = container.children[0].getBoundingClientRect();
-
-		// CSS 里的 gap 会转换为 rowGap & columnGap。
-		const cStyle = getComputedStyle(container);
-		const rowGap = parseInt(cStyle.rowGap), columnGap = parseInt(cStyle.columnGap);
-
-		this.xOffset = card.left + window.scrollX;
-		this.yOffset = card.top + window.scrollY;
-
-		this.tW = card.width + columnGap;
-		this.tH = card.height + rowGap;
-
-		this.columns = Math.floor((region.width + columnGap) / (card.width + columnGap));
-		this.rows = Math.floor((region.height + rowGap) / (card.height + rowGap));
-	}
-
-	/**
-	 * 计算给定的点落在第几个元素的范围内。
-	 *
-	 * 注意该方法仅计算理论值，假定格子有无穷多个，返回值可能超出实际元素数量。
-	 *
-	 * @param x X坐标
-	 * @param y Y坐标
-	 * @return {number} 格子序号
-	 */
-	getIndex(x: number, y: number) {
-		return this.getRow(y) * this.columns + this.getColumn(x);
-	}
-
-	// 这里不要用 round，而是要向下取整
-	getColumn(x: number) {
-		const c = Math.floor((x - this.xOffset) / this.tW);
-		return Math.max(0, Math.min(c, this.columns - 1));
-	}
-
-	getRow(y: number) {
-		const r = Math.floor((y - this.yOffset) / this.tH);
-		return Math.max(0, Math.min(r, this.rows - 1));
-	}
-}
-
-class VueArrayInsertSort {
-
-	private readonly array: unknown[];
-	private readonly data: unknown;
-
-	private index: number;
-
-	constructor(array: unknown[], index: number) {
-		this.array = array;
-		this.index = index;
-		this.data = array[index];
-	}
-
-	dragOver(k: number) {
-		const { index, array } = this;
-		k = Math.min(k, array.length - 1);
-
-		if (index === k) {
-			return;
-		}
-		const holder = array.splice(index, 1)[0];
-		this.index = k;
-		array.splice(k, 0, holder);
-	}
-
-	dragEnd() {
-		this.array[this.index] = this.data;
-	}
-}
-
-function dragSort(
-	region: GridDraggingRegion,
-	sort: VueArrayInsertSort,
-	event: MouseEvent | TouchEvent,
-	el: HTMLElement,
-) {
-	const observer = {
-		next({ x, y }) {
-			x += window.scrollX;
-			y += window.scrollY;
-			sort.dragOver(region.getIndex(x, y));
-		},
-		complete() {
-			el.remove();
-			sort.dragEnd();
-		},
-	};
-
-	observeMouseMove()
-		.pipe(edgeScroll(), moveElement(event, el))
-		.subscribe(observer);
-}
-</script>
 
 <script setup lang="ts">
 import { reactive, ref } from "vue";
@@ -229,9 +114,6 @@ const sorting = ref(false);
 const listEl = ref();
 
 
-let draggingRegion: GridDraggingRegion;
-let backup: Friend[];
-
 async function makeFriend() {
 	let info = FRIEND_TEMPLATE;
 	for (; ;) {
@@ -263,12 +145,25 @@ async function edit(friend: Friend) {
 	}
 }
 
-// GridDraggingRegion 的构造方法有点耗时，在进入排序模式时就计算好，让拖动更流畅。
-// 注意不能更早去计算，因为非排序模式下可能因添加删除等改变布局。
-function sort() {
+/*
+ * 旧版用得是 mousemove 型拖动，得自己计算区间，复杂不堪，新版改成原生 dragenter 了。
+ * 体验上几乎没有差别，原以为的间隔区域实际上并没有什么影响，而且也同样能排到开头和末尾。
+ */
+let draggingIndex = 0;
+let backup: Friend[];
+
+function enableDragSort() {
 	sorting.value = true;
-	draggingRegion = new GridDraggingRegion(listEl.value);
 	backup = friends.slice();
+}
+
+function dragEnter(i: number) {
+	if (!sorting.value || draggingIndex === i) {
+		return;
+	}
+	const e = friends.splice(draggingIndex, 1);
+	draggingIndex = i;
+	friends.splice(i, 0, e[0]);
 }
 
 async function sortFinish(save: boolean) {
@@ -282,43 +177,6 @@ async function sortFinish(save: boolean) {
 	} catch (e) {
 		dialog.alertError("更新失败", errorMessage(e));
 	}
-}
-
-function drag(event: MouseEvent | TouchEvent, i: number) {
-	if (!sorting.value) {
-		return;
-	}
-	event.preventDefault();
-
-	const el = listEl.value.children[i];
-	const rect = el.getBoundingClientRect();
-
-	const dragEl = el.firstElementChild.cloneNode(true);
-
-	// 不能使用 dragEl.style = {...}
-	Object.assign(dragEl.style, {
-		position: "fixed",
-		top: rect.top + "px",
-		left: rect.left + "px",
-		zIndex: 10000,
-		cursor: "grabbing",
-	});
-	document.body.appendChild(dragEl);
-
-	const sort = new VueArrayInsertSort(friends, i);
-
-	friends[i] = {
-		placeholder: true,
-		id: Symbol(),
-
-		// 这个占位是必要的，用于保持新行
-		style: {
-			width: rect.width + "px",
-			height: rect.height + "px",
-		},
-	};
-
-	dragSort(draggingRegion, sort, event, dragEl);
 }
 
 /*
