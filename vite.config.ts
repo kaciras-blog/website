@@ -1,7 +1,7 @@
 /// <reference types="vitest" />
 import { getViteConfig } from "@kaciras-blog/devtool";
 
-// @ts-ignore
+// @ts-expect-error
 import options from "./config/dev.js";
 
 export default {

@@ -1,6 +1,6 @@
+import { describe, expect, it } from "vitest";
 import { createMemoryHistory, createRouter } from "vue-router";
 import { basename, isOnlyHashChange } from "../src/utils.ts";
-import { describe, expect, it } from "vitest";
 
 describe("isOnlyHashChange", () => {
 	const router = createRouter({ routes: [], history: createMemoryHistory() });

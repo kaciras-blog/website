@@ -168,7 +168,8 @@ onMounted(() => {
 
 <style module lang="less">
 .error {
-	color: #ff4f4f;
-	font-weight: 600;
+	padding: 0 8px;
+	color: white;
+	background: #d7000a;
 }
 </style>
