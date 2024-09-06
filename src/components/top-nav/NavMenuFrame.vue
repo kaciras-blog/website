@@ -27,7 +27,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { PromiseSource, usePreventScroll, vAutofocus } from "@kaciras-blog/uikit";
+import { usePreventScroll, vAutofocus } from "@kaciras-blog/uikit";
 import NavMenu from "./NavMenu.vue";
 
 defineOptions({ isolation: true });
@@ -35,15 +35,16 @@ defineOptions({ isolation: true });
 usePreventScroll();
 
 const visible = ref(false);
-let transitionPromise: PromiseSource<void>;
+
+let resolve: () => void;
 
 function afterLeave() {
-	transitionPromise.resolve();
+	resolve();
 }
 
 function beforeDialogClose() {
 	visible.value = false;
-	return transitionPromise = new PromiseSource();
+	return new Promise<void>(r => resolve = r);
 }
 
 /**

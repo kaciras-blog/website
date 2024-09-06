@@ -9,7 +9,7 @@
 		<template v-for='item of cards'>
 			<div
 				v-if='item.placeholder'
-				:key='item.id'
+				key='placeholder'
 				:class='$style.placeholder'
 			/>
 			<CardListItem
@@ -27,7 +27,7 @@
 
 <script setup lang="ts">
 import { nextTick, ref, watch } from "vue";
-import { KxButton, moveElement, observeMouseMove, useDialog } from "@kaciras-blog/uikit";
+import { KxButton, moveElement, startDragging, useDialog } from "@kaciras-blog/uikit";
 import api, { Card } from "@/api/index.ts";
 import { attachRandomId, deleteOn } from "@/utils.ts";
 import CardListItem from "./CardListItem.vue";
@@ -161,15 +161,20 @@ async function drag(event: any, item: CardEntry) {
 		list.splice(i, 0, holder);
 	}
 
-	observeMouseMove().pipe(moveElement(event, dragEl)).subscribe({
-		next: ({ x, y }) => {
-			insertInto(Math.max(0, Math.min(region.getIndex(x, y), list.length - 1)));
-		},
-		complete: () => {
-			dragEl.remove();
-			list[holderIndex] = item;
-		},
-	});
+	startDragging(event, [
+		moveElement(event, dragEl),
+		{
+			onMove({ x, y }) {
+				let i = region.getIndex(x, y);
+				i = Math.min(i, list.length - 1);
+				insertInto(Math.max(0, i));
+			},
+			onEnd() {
+				dragEl.remove();
+				list[holderIndex] = item;
+			},
+		}
+	]);
 }
 </script>
 
