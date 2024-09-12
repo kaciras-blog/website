@@ -51,7 +51,7 @@
 			<RouterLink v-else to='/login' class='nav-item'>
 				登录
 			</RouterLink>
-			<RouterLink to='/list' class='nav-item'>
+			<RouterLink to='/list/0' class='nav-item'>
 				文章
 			</RouterLink>
 			<RouterLink to='/about/me' class='nav-item'>

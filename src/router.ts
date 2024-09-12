@@ -24,7 +24,7 @@ const routes: RouteRecordRaw[] = [
 	{ path: "/article/:id", component: ArticlePage },
 
 	// 2）其它前台页，对本站感兴趣的人才会看，他们的忍耐性更高些。
-	{ path: "/list", redirect: "/list/0" },
+	{ path: "/list", redirect: "/list/0" }, // 废弃、以后一律要加页码
 	{ path: "/list/:index", component: ListPage },
 	{ path: "/login", component: LoginPage },
 	{ path: "/profile", component: ProfilePage },

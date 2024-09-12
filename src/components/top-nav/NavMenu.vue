@@ -14,7 +14,7 @@
 				<HomeIcon fill='#0099ff'/>
 				首页
 			</RouterLink>
-			<RouterLink to='/list' :class='$style.item'>
+			<RouterLink to='/list/0' :class='$style.item'>
 				<ListIcon/>
 				文章
 			</RouterLink>

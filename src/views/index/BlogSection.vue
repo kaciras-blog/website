@@ -4,7 +4,7 @@
 			<h1 :class='$style.title'>推荐</h1>
 			<KxButton
 				type='outline'
-				route='/list'
+				route='/list/0'
 			>
 				更多文章 >
 			</KxButton>
