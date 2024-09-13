@@ -29,11 +29,11 @@
 				:html='serverGeneratedHTML'
 				:data-article-id='post.id'
 			/>
+			<!-- 目前 TOC 的 slugify 都不支持 env，先别用 docId -->
 			<LazyMarkdownView
 				v-else
 				:value='post.content'
 				renderer='rich'
-				doc-id='h'
 				:class='$style.content'
 				:data-article-id='post.id'
 			/>

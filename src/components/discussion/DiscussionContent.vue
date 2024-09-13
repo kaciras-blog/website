@@ -53,7 +53,7 @@
 		<LazyMarkdownView
 			:class='$style.content'
 			:value='value.content'
-			:doc-id='value.id.toString()'
+			:doc-id='"comment-" + value.id'
 		/>
 	</component>
 </template>
