@@ -1,4 +1,5 @@
 User-agent: *
-Disallow:
+Disallow: /console/
+Disallow: /edit/
 Crawl-delay: 10
 Sitemap: https://blog.kaciras.com/sitemap.xml
