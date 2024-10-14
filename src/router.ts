@@ -20,11 +20,9 @@ const routes: RouteRecordRaw[] = [
 
 	// 1）外链入口，是访问频率最高的页面，在优化时要优先考虑。
 	{ path: "/", component: IndexPage },
-	{ path: "/article/:id(\\d+)/:urlTitle", component: ArticlePage },
-	{ path: "/article/:id(\\d+)", component: ArticlePage },
+	{ path: "/article/:id(\\d+)/:urlTitle?", component: ArticlePage },
 
 	// 2）其它前台页，对本站感兴趣的人才会看，他们的忍耐性更高些。
-	{ path: "/list", redirect: "/list/0" }, // 废弃、以后一律要加页码
 	{ path: "/list/:index(\\d+)", component: ListPage },
 	{ path: "/login", component: LoginPage },
 	{ path: "/profile", component: ProfilePage },
@@ -84,7 +82,7 @@ const routes: RouteRecordRaw[] = [
 
 export default () => createRouter({
 	routes,
-	scrollBehavior(to, from, saved) {
+	scrollBehavior(to, _, saved) {
 		if (saved) {
 			return saved;
 		} else if (to.hash) {
