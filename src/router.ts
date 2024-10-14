@@ -20,12 +20,12 @@ const routes: RouteRecordRaw[] = [
 
 	// 1）外链入口，是访问频率最高的页面，在优化时要优先考虑。
 	{ path: "/", component: IndexPage },
-	{ path: "/article/:id/:urlTitle", component: ArticlePage },
-	{ path: "/article/:id", component: ArticlePage },
+	{ path: "/article/:id(\\d+)/:urlTitle", component: ArticlePage },
+	{ path: "/article/:id(\\d+)", component: ArticlePage },
 
 	// 2）其它前台页，对本站感兴趣的人才会看，他们的忍耐性更高些。
 	{ path: "/list", redirect: "/list/0" }, // 废弃、以后一律要加页码
-	{ path: "/list/:index", component: ListPage },
+	{ path: "/list/:index(\\d+)", component: ListPage },
 	{ path: "/login", component: LoginPage },
 	{ path: "/profile", component: ProfilePage },
 	{
@@ -66,7 +66,7 @@ const routes: RouteRecordRaw[] = [
 
 	// 错误页有些特殊，虽然访问频率不高，但还是打包到主模块里。
 	{
-		path: "/error/:value([0-9]+)",
+		path: "/error/:value(\\d+)",
 		props: true,
 		component: ErrorPage,
 	},

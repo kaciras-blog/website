@@ -68,6 +68,8 @@ async function prefetch(store: Pinia, router: Router, request: any) {
 		controller.abort();
 
 		switch (e.code) {
+			case 400:
+			case 403:
 			case 404:
 			case 410:
 			case 429:
