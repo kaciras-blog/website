@@ -48,7 +48,7 @@ export default {
 		chunkPriority: [
 			[/Console\.vue$/, "Console"],
 			[/Edit\w+Page\.vue$/, "EditorPage"],
-			[/markdown-vue\/lib\/entry-view\.js$/, "MarkdownView"],
+			[/markdown-vue\/lib\/MarkdownView\.js$/, "MarkdownView"],
 			[/index\.html$/, "index"],
 		],
 
