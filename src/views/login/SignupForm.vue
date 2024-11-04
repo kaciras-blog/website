@@ -92,7 +92,7 @@ interface LoginFormProps {
 }
 
 const props = defineProps<LoginFormProps>();
-const emit = defineEmits(["switch-panel"]);
+const emit = defineEmits(["switchPanel"]);
 
 const user = useCurrentUser();
 const router = useRouter();
@@ -119,7 +119,7 @@ async function signUp() {
 }
 
 function switchPanel() {
-	emit("switch-panel", "LoginPanel");
+	emit("switchPanel", "LoginPanel");
 }
 
 function updateCaptcha() {

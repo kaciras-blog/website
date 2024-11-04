@@ -1,7 +1,7 @@
 <template>
 	<section :class='{ [$style.expand]: expand }'>
 		<div :class='$style.summary'>
-			<h2 class='compact' @click='$emit("switch-expand")'>
+			<h2 class='compact' @click='$emit("switchExpand")'>
 				{{ card.name }}
 			</h2>
 
@@ -83,13 +83,13 @@ interface CardListItemProps {
 }
 
 const props = defineProps<CardListItemProps>();
-const emit = defineEmits(["drag-start", "remove", "switch-expand"]);
+const emit = defineEmits(["dragStart", "remove", "switchExpand"]);
 
 function dragStart(event: TouchEvent & MouseEvent) {
 	if (!event.touches && event.button !== 0) {
 		return; // 鼠标右键不拖动
 	}
-	emit("drag-start", event);
+	emit("dragStart", event);
 }
 
 // TODO: 是不是有问题这里
