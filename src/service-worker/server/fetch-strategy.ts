@@ -17,17 +17,17 @@ export async function fetchAndCache(input: RequestInfo, cache: ManagedCache, fet
 	const rawResponse = await fetchFn(input);
 
 	if (rawResponse.status === 200) {
-		// TODO: Firefox 在使用 HTTP3 时从 Stream body 创建新请求报错 NS_ERROR_NET_PARTIAL_TRANSFER
-		rawResponse.clone().blob().then(blob => {
-			const headers = new Headers(rawResponse.headers);
-			headers.set("K-Fetch-Cached", "1");
+		const headers = new Headers(rawResponse.headers);
+		headers.set("K-Fetch-Cached", "1");
 
-			return cache.put(input, new Response(blob, {
-				headers,
-				status: rawResponse.status,
-				statusText: rawResponse.statusText,
-			}));
+		const { body } = rawResponse.clone();
+		const response = new Response(body, {
+			headers,
+			status: rawResponse.status,
+			statusText: rawResponse.statusText,
 		});
+
+		cache.put(input, response).catch(e => console.error(e));
 	}
 
 	return rawResponse;
