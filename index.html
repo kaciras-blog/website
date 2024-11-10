@@ -12,10 +12,24 @@
 	<link rel='icon' href='/favicon.png'>
 	<link rel="apple-touch-icon" href="/icons/maskable.png">
 	<link rel="manifest" href="/manifest.webmanifest">
-
 	<!--ssr-metadata-->
+
+	<script defer>
+	try {
+		window.__SUPPORTED__ = "at" in Array.prototype && (
+			CSS.supports("backdrop-filter", "blur()") ||
+			CSS.supports("-webkit-backdrop-filter", "blur()")
+		);
+	} catch {
+		window.__SUPPORTED__ = false;
+	}
+
+	if (!window.__SUPPORTED__) {
+		window.alert("您的浏览器版本太旧，或是非主流内核，可能无法正常浏览本站，\n" +
+			"请使用最新版的 Edge、Firefox、Chrome、Safari 等浏览器。");
+	}
+	</script>
 	<script type='module' src='/src/entry-client.ts'></script>
-	<script defer src='/static/support-check-3.js'></script>
 
 	<!--seo-head-tags-->
 	<link rel='alternate' type='application/atom+xml' title='Atom Feed' href='/feed/atom'>
