@@ -3,10 +3,6 @@
 	"version": "2.7.2",
 	"description": "Kaciras Blog web pages",
 	"license": "MIT",
-	"author": {
-		"name": "Kaciras",
-		"email": "Kaciras@outlook.com"
-	},
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/kaciras-blog/website"
