@@ -23,16 +23,6 @@
 					name='GitHub'
 					icon='@/assets/img/logo-github.svg'
 				/>
-				<SocialLink
-					href='https://www.zhihu.com/people/kaciras'
-					name='ZhiHu'
-					icon='@/assets/img/zhihu.png'
-				/>
-				<SocialLink
-					href='https://matrix.to/#/@kaciras:matrix.org'
-					name='Matrix'
-					icon='@/assets/img/element-io.svg'
-				/>
 			</p>
 		</div>
 
