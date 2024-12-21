@@ -23,6 +23,11 @@
 					name='GitHub'
 					icon='@/assets/img/logo-github.svg'
 				/>
+				<SocialLink
+					href='https://x.com/AxciaC'
+					name='Twitter'
+					icon='@/assets/img/twitter.svg'
+				/>
 			</p>
 		</div>
 
@@ -66,9 +71,7 @@ import DiscussionSection from "@/components/discussion/DiscussionSection.vue";
 
 	&[title="GitHub"] { --color: rgba(0, 0, 0, .25); }
 
-	&[title="Matrix"] { --color: rgba(242, 222, 0, 0.65); }
-
-	&[title="ZhiHu"] { --color: rgba(31, 147, 255, 0.5); }
+	&[title="Twitter"] { --color: rgba(46, 231, 255, 0.5); }
 }
 
 .discussion {
