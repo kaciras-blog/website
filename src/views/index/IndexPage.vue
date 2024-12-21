@@ -83,9 +83,10 @@ import FriendsSection from "./FriendsSection.vue";
 }
 
 .section {
-	margin: 48px calc(50vw - var(--body-max) / 2);
+	max-width: var(--body-max);
+	margin: 48px 24px;
 
-	@media screen and(min-width: @length-screen-mobile) {
+	@media screen and (min-width: @length-screen-mobile) {
 		width: 90vw;
 		margin: 64px auto;
 	}
