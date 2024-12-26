@@ -53,10 +53,10 @@ const dialog = useDialog();
 
 async function deleteDraft() {
 	const prompt = await dialog.alert({
-		title: "删除草稿",
-		content: "删除后不可恢复，是否确定？",
 		type: MessageType.Warning,
 		cancelable: true,
+		title: "该操作不可恢复",
+		content: `确定要删除《${props.title}》吗？`,
 	});
 	if (prompt.isConfirm) {
 		api.draft.remove(props.id).then(() => emit("removed"));
