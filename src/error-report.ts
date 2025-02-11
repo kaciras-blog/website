@@ -18,14 +18,13 @@ export function setupSentry(app: App, router: Router) {
 			/(chrome|moz)-extension/,
 		],
 		attachProps: true,
-		logErrors: true,
 		integrations: [
 			Sentry.browserTracingIntegration({ router }),
 		],
-		tunnel: import.meta.env.SENTRY_TUNNEL ? "/sentry" : undefined,
 
 		// 禁止在添加追踪相关的请求头，这玩意会造成一些副作用。
 		tracePropagationTargets: [],
+		tunnel: import.meta.env.SENTRY_TUNNEL ? "/sentry" : undefined,
 	});
 }
 
