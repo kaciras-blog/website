@@ -30,7 +30,7 @@
 		"@kaciras-blog/uikit": "^2.7.0",
 		"@kaciras/utilities": "^1.0.4",
 		"@material-design-icons/svg": "^0.14.15",
-		"@sentry/vue": "^9.6.0",
+		"@sentry/vue": "^9.9.0",
 		"@vueuse/core": "^13.0.0",
 		"bootstrap-icons": "^1.11.3",
 		"idb": "^8.0.2",
@@ -46,7 +46,7 @@
 		"@kaciras/eslint-config-vue": "^3.3.0",
 		"@types/web": "^0.0.213",
 		"@vue/test-utils": "^2.4.6",
-		"eslint": "^9.22.0",
+		"eslint": "^9.23.0",
 		"less": "^4.2.2",
 		"typescript": "^5.8.2",
 		"vitest": "^3.0.9"
